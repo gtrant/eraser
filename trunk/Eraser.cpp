@@ -26,11 +26,12 @@
 #include "EraserDoc.h"
 #include "EraserView.h"
 #include "Windows.h"
+#include "version.h"
 
 #include "EraserDll\EraserDll.h"
-#include "shared\HyperLink.h"
-#include "version.h"
 #include "EraserDll\SecurityManager.h"
+#include "EraserUI\HyperLink.h"
+#include "EraserUI\VisualStyles.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

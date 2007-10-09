@@ -3,12 +3,11 @@
 
 #include "stdafx.h"
 #include "..\EraserDll\EraserDll.h"
-//#include "..\shared\FiledialogEx.h"
-#include "resource.h"
-#include "newDialog.h"
+#include "..\EraserUI\NewDialog.h"
 #include "Verify.h"
 #include "VerifyDlg.h"
 #include "ViewerDlg.h"
+#include "resource.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

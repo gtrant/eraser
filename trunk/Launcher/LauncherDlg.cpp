@@ -20,11 +20,11 @@
 
 #include "stdafx.h"
 #include "..\EraserDll\EraserDll.h"
-#include "..\shared\FitFileNameToScrn.h"
+#include "..\EraserUI\FitFileNameToScrn.h"
+#include "..\EraserUI\DriveCombo.h"
 #include "..\shared\FileHelper.h"
 #include "Launcher.h"
 #include "LauncherDlg.h"
-#include "..\shared\DriveCombo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

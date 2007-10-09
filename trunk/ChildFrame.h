@@ -26,7 +26,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "InfoBar.h"
+#include "EraserUI\InfoBar.h"
 #include "EraserView.h"
 #include "SchedulerView.h"
 #include "ShellListView.h"

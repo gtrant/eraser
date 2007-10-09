@@ -25,7 +25,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "../shared/FlatListCtrl.h"
+#include "../EraserUI/FlatListCtrl.h"
 #include "ByteEdit.h"
 #include "Pass.h"
 #include "commctrl.h"

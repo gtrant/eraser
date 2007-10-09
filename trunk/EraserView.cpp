@@ -27,8 +27,8 @@
 #include "EraserDoc.h"
 #include "EraserView.h"
 
+#include "EraserUI\GfxPopupMenu.h"
 #include "TaskPropertySheet.h"
-#include "GfxPopupMenu.h"
 #include "EraserDlg.h"
 
 #ifdef _DEBUG

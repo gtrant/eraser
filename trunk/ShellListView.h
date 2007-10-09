@@ -26,8 +26,9 @@
 #endif // _MSC_VER >= 1000
 
 #include <shlobj.h>
-#include "shared\FlatListView.h"
-#include "ShellPidl.h"
+#include "EraserUI\FlatListView.h"
+#include "EraserUI\ShellPidl.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CShellListView window
 

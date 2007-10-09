@@ -76,7 +76,7 @@
 #include <shlwapi.h>
 #include <lm.h>
 #include <eh.h>             // structured exception
-#include "shared\FileDialogEx.h"
+#include "EraserUI\FileDialogEx.h"
 
 #ifndef _AFXDLL
 #define AfxLoadLibrary  ::LoadLibrary
