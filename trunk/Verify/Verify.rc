@@ -187,7 +187,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\Verify.ico"
+IDR_MAINFRAME           ICON                    "..\\res\\Verify.ico"
 #endif    // Finnish resources
 /////////////////////////////////////////////////////////////////////////////
 
