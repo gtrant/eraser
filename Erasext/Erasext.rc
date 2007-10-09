@@ -125,8 +125,8 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON_ERASER         ICON                    "res\\Eraser.ico"
-IDI_ICON_REPLACE        ICON                    "res\\icon_rep.ico"
+IDI_ICON_ERASER         ICON                    "..\\res\\Eraser.ico"
+IDI_ICON_REPLACE        ICON                    "..\\res\\icon_rep.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

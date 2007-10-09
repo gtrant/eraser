@@ -56,16 +56,16 @@ IDB_IMAGELIST_LARGE     BITMAP                  "res\\imageList.bmp"
 IDR_GFXMENU_TOOLBAR     BITMAP                  "res\\toolbar1.bmp"
 IDB_HEADER              BITMAP                  "res\\Header.bmp"
 IDB_GFX_MENUCHECK       BITMAP                  "res\\MenuCheck.bmp"
-IDB_GFX_MENUCHECK_SELECTED BITMAP                  "res\\MenuCheckSelected.bmp"
+IDB_GFX_MENUCHECK_SELECTED BITMAP               "res\\MenuCheckSelected.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Cursor
 //
 
-IDR_TREEFILECTRL_DROPCOPY CURSOR                  "Verify\\res\\tfdropcopy.cur"
-IDR_TREEFILECTRL_NO_DROPCOPY CURSOR                  "res\\tfnodropcopy.cur"
-IDR_TREEFILECTRL_NO_DROPMOVE CURSOR                  "res\\tfnodropmove.cur"
+IDR_TREEFILECTRL_DROPCOPY CURSOR                "res\\tfdropcopy.cur"
+IDR_TREEFILECTRL_NO_DROPCOPY CURSOR             "res\\tfnodropcopy.cur"
+IDR_TREEFILECTRL_NO_DROPMOVE CURSOR             "res\\tfnodropmove.cur"
 IDC_DRAGGING            CURSOR                  "res\\dragging.cur"
 IDC_HANDCUR             CURSOR                  "res\\icr_hand.cur"
 IDC_NODRAGGING          CURSOR                  "res\\nodraggi.cur"
