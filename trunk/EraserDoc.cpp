@@ -146,7 +146,7 @@ m_smallImageList (NULL)
 		LPTSTR p = m_strExePath.GetBuffer(MAX_PATH);
 		HRESULT hr = ::SHGetFolderPath(NULL,CSIDL_COMMON_DOCUMENTS | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, p);
         m_strExePath.ReleaseBuffer();
-        m_strExePath = m_strExePath.Left(m_strExePath.ReverseFind('\\') + 1)+szDefaultDir;
+        m_strExePath = m_strExePath.Left(m_strExePath.ReverseFind('\\') + 1);
 
 		// read preferences
         if (!ReadPreferences())
@@ -161,7 +161,18 @@ m_smallImageList (NULL)
         m_stIcon.Create(NULL, WM_TRAY_NOTIFY, "Starting...",
                         AfxGetApp()->LoadIcon(IDI_ICON_TRAY),
                         IDR_MENU_TRAY, !m_bNoTrayIcon);
-
+		/*
+		m_stIcon.Create(NULL,                            // Let icon deal with its own messages
+                        WM_ICON_NOTIFY,                  // Icon notify message to use
+                        _T("Starting..."),  // tooltip
+                        AfxGetApp()->LoadIcon(IDI_ICON_TRAY),
+                        IDR_MENU_TRAY,                  // ID of tray icon
+                        FALSE,
+                        _T("Eraser Starting!"), // balloon tip
+                        _T("Eraser"),               // balloon title
+                        NIIF_WARNING,                    // balloon icon
+                        20 );                            // balloon timeout
+		*/
         // create timers
         CalcNextAssignment();
         UpdateToolTip();
