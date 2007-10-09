@@ -20,8 +20,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\bin\80\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)\tmp\80\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
@@ -62,8 +62,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Verify.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 			/>
@@ -114,8 +112,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
@@ -156,8 +154,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Verify.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 			/>
@@ -208,8 +204,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)\bin\80\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)\tmp\80\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
@@ -248,8 +244,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Verify.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -302,8 +296,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
@@ -342,8 +336,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Verify.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"

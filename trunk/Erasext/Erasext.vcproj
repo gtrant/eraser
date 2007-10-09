@@ -20,8 +20,8 @@
 	<Configurations>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\bin\80\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)\tmp\80\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
@@ -62,8 +62,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Erasext.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 			/>
@@ -86,7 +84,6 @@
 				ModuleDefinitionFile=".\Erasext.def"
 				ProgramDatabaseFile=""
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraserext.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -116,8 +113,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="1"
@@ -158,8 +155,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Erasext.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 			/>
@@ -182,7 +177,6 @@
 				ModuleDefinitionFile=".\Erasext.def"
 				ProgramDatabaseFile=""
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraserext.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -212,8 +206,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)\bin\80\$(ConfigurationName)"
-			IntermediateDirectory="$(SolutionDir)\tmp\80\$(ConfigurationName)\$(ProjectName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
@@ -252,8 +246,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Erasext.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -278,7 +270,6 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)\Erasext.pdb"
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraserext.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -308,8 +299,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(SolutionDir)$(PlatformName)\$(ConfigurationName)"
-			IntermediateDirectory="$(PlatformName)\$(ConfigurationName)"
+			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
+			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
 			UseOfMFC="2"
@@ -348,8 +339,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Erasext.pch"
 				AssemblerListingLocation=""
-				ObjectFile="$(IntDir)/"
-				ProgramDataBaseFileName="$(IntDir)/vc70.pdb"
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
@@ -374,7 +363,6 @@
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)\Erasext.pdb"
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraserext.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -548,6 +536,7 @@
 						Name="VCMIDLTool"
 						PreprocessorDefinitions=""
 						TargetEnvironment="1"
+						TypeLibraryName="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)\$(ProjectName).tlb"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -557,6 +546,7 @@
 						Name="VCMIDLTool"
 						PreprocessorDefinitions=""
 						TargetEnvironment="1"
+						TypeLibraryName="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)\$(ProjectName).tlb"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -566,6 +556,7 @@
 						Name="VCMIDLTool"
 						PreprocessorDefinitions=""
 						TargetEnvironment="1"
+						TypeLibraryName="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)\$(ProjectName).tlb"
 					/>
 				</FileConfiguration>
 				<FileConfiguration
@@ -575,6 +566,7 @@
 						Name="VCMIDLTool"
 						PreprocessorDefinitions=""
 						TargetEnvironment="1"
+						TypeLibraryName="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)\$(ProjectName).tlb"
 					/>
 				</FileConfiguration>
 			</File>
