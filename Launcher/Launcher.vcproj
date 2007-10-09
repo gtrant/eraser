@@ -63,7 +63,7 @@
 				AssemblerListingLocation=""
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -79,10 +79,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\Eraserl.exe"
-				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\Eraserl.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -156,7 +154,7 @@
 				AssemblerListingLocation=""
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -172,10 +170,8 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\Eraserl.exe"
-				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\Eraserl.pdb"
 				SubSystem="2"
 				TargetMachine="17"
 			/>
@@ -267,7 +263,7 @@
 				OutputFile="$(OutDir)\Eraserl.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=""
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -359,7 +355,7 @@
 				OutputFile="$(OutDir)\Eraserl.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ProgramDatabaseFile=""
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="17"
 			/>

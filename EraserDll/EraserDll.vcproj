@@ -63,7 +63,7 @@
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -80,13 +80,9 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="netapi32.lib"
 				OutputFile="$(OutDir)\Eraser.dll"
-				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ModuleDefinitionFile="Eraser.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\EraserDll.pdb"
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraser.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -159,7 +155,7 @@
 				WarningLevel="3"
 				SuppressStartupBanner="true"
 				Detect64BitPortabilityProblems="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -176,13 +172,9 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="netapi32.lib"
 				OutputFile="$(OutDir)\Eraser.dll"
-				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ModuleDefinitionFile=".\Eraser.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\EraserDll.pdb"
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraser.lib"
 				TargetMachine="17"
 			/>
 			<Tool
@@ -272,10 +264,8 @@
 				OutputFile="$(OutDir)\Eraser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ModuleDefinitionFile=".\Eraser.def"
-				ProgramDatabaseFile=""
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraser.lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -365,10 +355,8 @@
 				OutputFile="$(OutDir)\Eraser.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				ModuleDefinitionFile=".\Eraser.def"
-				ProgramDatabaseFile=""
+				GenerateDebugInformation="true"
 				SubSystem="2"
-				ImportLibrary="$(SolutionDir)\lib\80\$(ConfigurationName)\Eraser.lib"
 				TargetMachine="17"
 			/>
 			<Tool
