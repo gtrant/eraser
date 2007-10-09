@@ -21,8 +21,8 @@
 #ifndef __TASKDATAPAGE_H__
 #define __TASKDATAPAGE_H__
 
-#include "Masked.h"
-#include "shared\DriveCombo.h"
+#include "EraserUI\Masked.h"
+#include "EraserUI\DriveCombo.h"
 #include "Item.h"
 
 /////////////////////////////////////////////////////////////////////////////

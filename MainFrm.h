@@ -25,12 +25,12 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "GfxSplitterWnd.h"
-#include "GfxOutBarCtrl.h"
-#include "ChildFrame.h"
-#include "ShellPidl.h"
+#include "EraserUI\GfxSplitterWnd.h"
+#include "EraserUI\GfxOutBarCtrl.h"
+#include "EraserUI\ShellPidl.h"
+#include "EraserUI\AlphaToolBar.h"
 #include "ShellTree.h"
-#include "AlphaToolBar.h"
+#include "ChildFrame.h"
 
 class CMainFrame : public CFrameWnd
 {

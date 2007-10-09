@@ -21,7 +21,7 @@
 #ifndef __OPTIONPAGES_H__
 #define __OPTIONPAGES_H__
 
-#include "../shared/FlatListCtrl.h"
+#include "../EraserUI/FlatListCtrl.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsForFiles dialog

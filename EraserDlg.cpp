@@ -22,8 +22,8 @@
 #include "Eraser.h"
 
 #include "Item.h"
-#include "shared\FitFileNameToScrn.h"
-#include "shared\DriveCombo.h"
+#include "EraserUI\FitFileNameToScrn.h"
+#include "EraserUI\DriveCombo.h"
 #include "shared\FileHelper.h"
 #include "EraserDlg.h"
 

@@ -25,13 +25,12 @@
 #include "EraserDll\EraserDll.h"
 #include "shared\key.h"
 #include "shared\utils.h"
-#include "shared\FileDialogEx.h"
 #include "PreferencesSheet.h"
-#include "TimeOutMessageBox.h"
+#include "EraserUI\FileDialogEx.h"
+#include "EraserUI\TimeOutMessageBox.h"
 #include "EraserDoc.h"
 #include "MainFrm.h"
 #include "version.h"
-//#include <afxpriv.h>
 
 #include <direct.h>
 

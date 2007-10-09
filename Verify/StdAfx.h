@@ -50,7 +50,7 @@
 #include <lm.h>
 #include <eh.h>             // structured exception
 #include "..\shared\SeException.h"    // handling
-#include "..\shared\FileDialogEx.h"
+#include "..\EraserUI\FileDialogEx.h"
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

@@ -23,8 +23,8 @@
 
 #include "stdafx.h"
 #include "..\EraserDll\EraserDll.h"
+#include "..\EraserUI\DriveCombo.h"
 #include "..\shared\FileHelper.h"
-#include "..\shared\DriveCombo.h"
 #include "..\shared\UserInfo.h"
 #include "..\EraserDll\FileLockResolver.h"
 #include "Launcher.h"

@@ -26,7 +26,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "shared\FlatListView.h"
+#include "EraserUI\FlatListView.h"
 
 class CEraserView : public CFlatListView
 {

@@ -21,7 +21,7 @@
 #include "stdafx.h"
 #include "erasext.h"
 #include "..\EraserDll\eraserdll.h"
-#include "..\shared\FitFileNameToScrn.h"
+#include "..\EraserUI\FitFileNameToScrn.h"
 #include "ConfirmDialog.h"
 
 #ifdef _DEBUG

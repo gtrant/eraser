@@ -20,8 +20,8 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "shared\DirDialog.h"
-#include "shared\NewDialog.h"
+#include "EraserUI\DirDialog.h"
+#include "EraserUI\NewDialog.h"
 #include "TaskDataPage.h"
 #include ".\taskdatapage.h"
 

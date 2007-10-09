@@ -25,11 +25,10 @@
 #include "SchedulerView.h"
 
 #include "TaskPropertySheet.h"
-#include "shared\DriveCombo.h"
 #include "shared\FileHelper.h"
-#include "GfxPopupMenu.h"
-
-#include "TimeOutMessageBox.h"
+#include "EraserUI\DriveCombo.h"
+#include "EraserUI\GfxPopupMenu.h"
+#include "EraserUI\TimeOutMessageBox.h"
 
 #include "EraserDll\OptionPages.h"
 #include "EraserDll\options.h"

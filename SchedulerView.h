@@ -25,8 +25,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "shared\FlatListView.h"
-#include "ProgressBar.h"
+#include "EraserUI\FlatListView.h"
+#include "EraserUI\ProgressBar.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CSchedulerView view
