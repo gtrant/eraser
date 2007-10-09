@@ -27,6 +27,7 @@
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
+			WholeProgramOptimization="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -63,6 +64,7 @@
 				AssemblerListingLocation=""
 				WarningLevel="4"
 				SuppressStartupBanner="true"
+				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -77,9 +79,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="EraserUI.lib"
 				OutputFile="$(OutDir)\Erasext.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
 				ModuleDefinitionFile=".\Erasext.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -171,9 +175,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="EraserUI.lib"
 				OutputFile="$(OutDir)\Erasext.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
 				ModuleDefinitionFile=".\Erasext.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -264,8 +270,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="EraserUI.lib"
 				OutputFile="$(OutDir)\Erasext.dll"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
 				ModuleDefinitionFile=".\Erasext.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -356,8 +364,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="EraserUI.lib"
 				OutputFile="$(OutDir)\Erasext.dll"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
 				ModuleDefinitionFile=".\Erasext.def"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -689,46 +699,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\shared\FitFileNameToScrn.cpp"
-				>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\shared\key.cpp"
 				>
 				<FileConfiguration
@@ -919,10 +889,6 @@
 			</File>
 			<File
 				RelativePath="..\shared\FileHelper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\FitFileNameToScrn.h"
 				>
 			</File>
 			<File
