@@ -81,7 +81,7 @@ CSecurityManager::Protect(const char* szSecret )
 	DWORD dwErrorCode = 0;
 
 	if (ERROR_SUCCESS != protect.Create(HKEY_LOCAL_MACHINE, REG_PRODUCT_KEY ))
-		throw std::runtime_error("Unable create key");
+		throw std::runtime_error("Unable to create key");
 
 
 	CSecurityAttributes sa;
@@ -99,7 +99,7 @@ CSecurityManager::Protect(const char* szSecret )
 	{
 		if (ERROR_ACCESS_DENIED == dwErrorCode)
 			throw std::runtime_error("Access denied");			
-		throw std::runtime_error("Unable create key");
+		throw std::runtime_error("Unable to create key");
 	}
 
 

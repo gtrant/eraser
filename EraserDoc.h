@@ -66,7 +66,6 @@ const LPCTSTR szFileFilter       = "Eraser Files (*.ers)|*.ers||";
 const LPCTSTR szExportTitle      = "Select Export File";
 const LPCTSTR szImportTitle      = "Select Import File";
 
-const LPCTSTR szDefaultDir       = "\\Documents\\";
 const LPCTSTR szDefaultFile      = "default.ers";
 
 // definitions
