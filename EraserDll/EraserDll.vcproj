@@ -29,7 +29,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="copy %0 command.cmd&#x0D;&#x0A;if not exist $(SolutionDir)\lib md $(SolutionDir)\lib&#x0D;&#x0A;if not exist $(SolutionDir)\lib\$(ConfigurationName) md $(SolutionDir)\lib\$(ConfigurationName)&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -127,7 +127,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="copy %0 command.cmd&#x0D;&#x0A;if not exist $(SolutionDir)\lib md $(SolutionDir)\lib&#x0D;&#x0A;if not exist $(SolutionDir)\lib\$(ConfigurationName) md $(SolutionDir)\lib\$(ConfigurationName)&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -225,7 +225,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="copy %0 command.cmd&#x0D;&#x0A;if not exist $(SolutionDir)\lib md $(SolutionDir)\lib&#x0D;&#x0A;if not exist $(SolutionDir)\lib\$(ConfigurationName) md $(SolutionDir)\lib\$(ConfigurationName)&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -320,7 +320,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="copy %0 command.cmd&#x0D;&#x0A;if not exist $(SolutionDir)\lib md $(SolutionDir)\lib&#x0D;&#x0A;if not exist $(SolutionDir)\lib\$(ConfigurationName) md $(SolutionDir)\lib\$(ConfigurationName)&#x0D;&#x0A;"
+				CommandLine=""
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
