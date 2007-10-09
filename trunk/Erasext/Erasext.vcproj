@@ -82,7 +82,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\Erasext.def"
-				ProgramDatabaseFile=""
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -175,7 +175,7 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\Erasext.def"
-				ProgramDatabaseFile=""
+				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="17"
 			/>
@@ -248,7 +248,7 @@
 				AssemblerListingLocation=""
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -264,11 +264,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\Erasext.dll"
-				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\Erasext.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\Erasext.pdb"
 				SubSystem="2"
 				TargetMachine="1"
 			/>
@@ -341,7 +339,7 @@
 				AssemblerListingLocation=""
 				WarningLevel="3"
 				SuppressStartupBanner="true"
-				DebugInformationFormat="3"
+				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -357,11 +355,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)\Erasext.dll"
-				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				ModuleDefinitionFile=".\Erasext.def"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(OutDir)\Erasext.pdb"
 				SubSystem="2"
 				TargetMachine="17"
 			/>
