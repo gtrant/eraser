@@ -116,7 +116,6 @@ void CHotKeyDlg::LoadValuesFromRegistry()
 		{
 			if (!no_registry) {
 				DWORD dwId = 0;
-				BYTE nItem = 1;
 				while (kReg.GetNextValueName(strValueName,dwId)) {
 					if (kReg.GetValue(strValue,strValueName))
 					{
@@ -192,7 +191,6 @@ void CHotKeyDlg::saveListToRegistry()
 	CIniKey  kReg_ini;
 	CKey    &kReg = no_registry ? kReg_ini : kReg_reg;
 	CString  strPath;
-	BOOL	 bRes = TRUE;
 
 	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
 

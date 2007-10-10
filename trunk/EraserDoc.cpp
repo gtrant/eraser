@@ -142,8 +142,6 @@ m_smallImageList (NULL)
 
 	   */	
 		
-		LPTSTR p = m_strExePath.GetBuffer(MAX_PATH);
-		HRESULT hr = ::SHGetFolderPath(NULL,CSIDL_COMMON_DOCUMENTS | CSIDL_FLAG_CREATE, NULL, SHGFP_TYPE_CURRENT, p);
         m_strExePath.ReleaseBuffer();
         m_strExePath = m_strExePath.Left(m_strExePath.ReverseFind('\\') + 1);
 
@@ -269,7 +267,6 @@ void CEraserDoc::Serialize(CArchive& ar)
     if (ar.IsStoring())
     {
         int iSize;
-        WORD wID = 0;
 
         // remove invalid items
         CleanList(m_paTasks, sizeof(CItem));

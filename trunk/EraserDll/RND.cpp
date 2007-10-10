@@ -65,7 +65,6 @@ wipeFileWithPseudoRandom(CEraserContext *context)
                                    uUsedSize, &uWritten, NULL) &&
                          (uUsedSize == uWritten);
 
-			DWORD le = GetLastError();
             // flush to disk
             FlushFileBuffers(context->m_hFile);
 
