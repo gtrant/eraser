@@ -1,5 +1,25 @@
-// KeyComboDlg.cpp : implementation file
+// KeyComboDlg.cpp
+// $Id$
 //
+// Eraser. Secure data removal. For Windows.
+// Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2001-2006  Garrett Trant (support@heidi.ie).
+// Copyright © 2007 The Eraser Project
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+// 02111-1307, USA.
 
 #include "stdafx.h"
 #include "Eraser.h"
@@ -12,7 +32,7 @@ const LPCTSTR szAccelerKey = "Acceler";
 
 IMPLEMENT_DYNAMIC(CKeyComboDlg, CDialog)
 CKeyComboDlg::CKeyComboDlg(CString wValue /* ="" */, CString strValName /* ="" */, CWnd* pParent /*=NULL*/)
-	: CDialog(CKeyComboDlg::IDD, pParent), m_strValue(wValue),m_strRegKey(strValName)
+: CDialog(CKeyComboDlg::IDD, pParent), m_strValue(wValue),m_strRegKey(strValName)
 {
 }
 
@@ -39,10 +59,10 @@ END_MESSAGE_MAP()
 BOOL CKeyComboDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	m_eKey.SetLimitText(1);
 	m_eKey.SetWindowText(m_strValue);
-	
+
 	// TODO:  Add extra initialization here
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -79,7 +99,7 @@ void CKeyComboDlg::OnEnChangeEdittmp()
 	CString strLine(ch);
 	if (!strLine.IsEmpty())
 	{
-        CString strTmp(m_strRegKey.MakeUpper());
+		CString strTmp(m_strRegKey.MakeUpper());
 		strLine.MakeUpper();
 		if (strTmp.Find(strLine[0]) ==-1 ) {
 			m_eKey.Undo();
