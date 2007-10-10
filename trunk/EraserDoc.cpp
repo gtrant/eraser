@@ -27,7 +27,6 @@
 #include "shared\key.h"
 #include "shared\utils.h"
 #include "PreferencesSheet.h"
-#include "EraserUI\FileDialogEx.h"
 #include "EraserUI\TimeOutMessageBox.h"
 #include "EraserDoc.h"
 #include "MainFrm.h"

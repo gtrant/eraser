@@ -33,7 +33,7 @@ class CHotKeyDlg : public CDialog
 	DECLARE_DYNAMIC(CHotKeyDlg)
 
 public:
-	CHotKeyDlg(CWnd* pParent = NULL, int iValCnt = iCommandCount);   // standard constructor
+	CHotKeyDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CHotKeyDlg();
 
 // Dialog Data

@@ -1,8 +1,8 @@
-using namespace System::Runtime::Serialization;
 // Eraser.cpp
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2007 The Eraser Project
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,6 +47,9 @@ using namespace System::Runtime::Serialization;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#undef MAX_PATH
+#define MAX_PATH 2048 //HACK: Some filenames under Vista can exceed the 260
+                      //char limit. This will have to do for now.
 
 /////////////////////////////////////////////////////////////////////////////
 // CEraserApp
@@ -721,10 +724,9 @@ eraserAddItem(E_IN ERASER_HANDLE param1, E_IN LPVOID param2, E_IN E_UINT16 param
             // if the item is a file, a fully qualified name is required,
             // drive must be given as "X:\\"
 
-			// In thi needed for UNC files?
-            //if (!isalpha(szItem[0]) || szItem[1] != ':' || szItem[2] != '\\') {
-            //    return ERASER_ERROR_PARAM2;
-            //}
+            if (!isalpha(szItem[0]) || szItem[1] != ':' || szItem[2] != '\\') {
+                return ERASER_ERROR_PARAM2;
+            }
 
             eraserContextAccess(context);
 
@@ -2463,7 +2465,7 @@ void makeWindowsSystemFile(LPTSTR filename) {
 		if (!systemfiles.GetCount())
 			return;
 
-		srand(time(NULL));
+		srand((unsigned int)time(NULL));
 		for (int retries = 10; retries > 0; retries--) {
 			CFile file;
 			TCHAR newfilename[MAX_PATH + 1];

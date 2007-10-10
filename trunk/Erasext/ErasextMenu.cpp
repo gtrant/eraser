@@ -528,7 +528,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpici)
 }
 
 void 
-CErasextMenu::getstr_handle_erase(UINT nType, CString& cmdstr)
+CErasextMenu::getstr_handle_erase(UINT /*nType*/, CString& cmdstr)
 {
 	if (m_bUseFiles)
 	{
@@ -543,8 +543,9 @@ CErasextMenu::getstr_handle_erase(UINT nType, CString& cmdstr)
 	}
 
 }
+
 void 
-CErasextMenu::getstr_handle_move(UINT nType, CString& cmdstr)
+CErasextMenu::getstr_handle_move(UINT /*nType*/, CString& cmdstr)
 {
 	
 	cmdstr = "Move";

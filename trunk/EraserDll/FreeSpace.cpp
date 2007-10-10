@@ -2,6 +2,7 @@
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2007 The Eraser Project
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,6 +36,10 @@ static const LPCTSTR ERASER_REGISTRY_FILESYSTEM
     = "System\\CurrentControlSet\\Control\\FileSystem";
 static const LPCTSTR ERASER_REGISTRY_LOWDISKSPACE
     = "DisableLowDiskSpaceBroadcast";
+
+#undef MAX_PATH
+#define MAX_PATH 2048 //HACK: Some filenames under Vista can exceed the 260
+                      //char limit. This will have to do for now.
 
 static inline E_UINT32
 disableLowDiskSpaceNotification(TCHAR szDrive)
@@ -231,6 +236,10 @@ countFilesOnDrive(CEraserContext *context, const CString& strDrive, E_UINT32& uF
                     break;
                 }
 
+                // skip volume mount point
+                if (bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_REPARSE_POINT)) {
+                    continue;
+                }
                 if (bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_DIRECTORY)) {
                     // skip "." and ".."
                     if (ISNT_SUBFOLDER(wfdData.cFileName)) {
@@ -291,6 +300,12 @@ wipeClusterTipsRecursive(CEraserContext *context, SFCISFILEPROTECTED pSfcIsFileP
             }
 
             if (bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_DIRECTORY)) {
+                // skip volume mount point
+                if (bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_REPARSE_POINT)) {
+                    strFile = strDirectory + wfdData.cFileName;
+                    context->m_saFailed.Add(strFile + " (Reparse point)");
+                    continue;
+                }
                 // skip "." and ".."
                 if (ISNT_SUBFOLDER(wfdData.cFileName)) {
                     continue;
