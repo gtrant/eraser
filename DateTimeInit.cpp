@@ -1,4 +1,5 @@
 // DateTimeInit.cpp
+// $Id$
 //
 // Use instead of COleDateTime::GetCurrentTime to
 // initialize COleDateTime object even after year 2038
