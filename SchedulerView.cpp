@@ -530,7 +530,6 @@ void CSchedulerView::OnEditDeleteTask()
 
         if (lc.GetSelectedCount() > 0)
         {
-            DWORD dwExitCode = 0;
             int nItem, nIndex, iSize = pDoc->m_paScheduledTasks.GetSize();
             CScheduleItem *psiItem = 0;
 
@@ -847,9 +846,6 @@ void CSchedulerView::OnEditProperties()
 void CSchedulerView::OnTimer(UINT_PTR nIDEvent)
 {
     TRACE("CSchedulerView::OnTimer\n");
-
-    CListCtrl& lc = GetListCtrl();
-
     CEraserDoc *pDoc = static_cast<CEraserDoc*>(GetDocument());
     ASSERT(AfxIsValidAddress(pDoc, sizeof(CEraserDoc)));
 

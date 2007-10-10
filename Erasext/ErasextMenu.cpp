@@ -165,7 +165,6 @@ STDMETHODIMP_(ULONG) CErasextMenu::XMenuExt::Release(void)
 CString setShortcut(CString str)
 {
 	CKey kReg;
-	BOOL bEnabled = TRUE;
 	CString strPath(""), strKey(""), strRes("");
 	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
 	int iPos;
@@ -276,7 +275,7 @@ BOOL GetFolder(HWND hParent, TCHAR* path)
 	bi.lpszTitle = "Select target folder";
 
 
-	LPITEMIDLIST pidlFolder, pidlTarget = NULL;
+	LPITEMIDLIST pidlFolder;
 	pidlFolder = SHBrowseForFolder(&bi);
 	if (!pidlFolder)
 		return FALSE;

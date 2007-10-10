@@ -81,7 +81,6 @@ void CKeyComboDlg::OnEnChangeEdittmp()
 	{
         CString strTmp(m_strRegKey.MakeUpper());
 		strLine.MakeUpper();
-		int ii = strTmp.Find(strLine[0]); 
 		if (strTmp.Find(strLine[0]) ==-1 ) {
 			m_eKey.Undo();
 			m_eKey.SetWindowText("");
