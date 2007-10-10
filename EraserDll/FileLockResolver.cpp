@@ -154,8 +154,9 @@ CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int em, un
 	}
 	
 }
+
 void 
-CFileLockResolver::Resolve(LPCTSTR szFileName)
+CFileLockResolver::Resolve(LPCTSTR /*szFileName*/)
 {
 	
 }

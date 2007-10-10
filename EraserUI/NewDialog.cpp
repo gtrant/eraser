@@ -100,7 +100,7 @@ HCURSOR CNewDialog::OnQueryDragIcon()
 	return (HCURSOR) m_hIcon;
 }
 
-void CNewDialog::OnTvnSelchangedTree1(NMHDR *pNMHDR, LRESULT *pResult)
+void CNewDialog::OnTvnSelchangedTree1(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	//LPNMTREEVIEW pNMTreeView = reinterpret_cast<LPNMTREEVIEW>(pNMHDR);
 	// TODO: Add your control notification handler code here

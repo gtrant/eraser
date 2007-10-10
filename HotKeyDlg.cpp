@@ -148,7 +148,7 @@ void CHotKeyDlg::LoadValuesFromRegistry()
 			} else {
 				DWORD count = 0;
 				kReg.GetValue(count, "__count", 0);
-				for (int i = 0; i < count; i++) {
+				for (DWORD i = 0; i < count; i++) {
 					CString temp, key, value;
 					temp.Format("__key_%ld", i);
 					kReg.GetValue(key, temp, "");
@@ -241,7 +241,7 @@ void CHotKeyDlg::saveListToRegistry()
 // CHotKeyDlg dialog
 
 IMPLEMENT_DYNAMIC(CHotKeyDlg, CDialog)
-CHotKeyDlg::CHotKeyDlg(CWnd* pParent /*=NULL*/, int iValCnt)
+CHotKeyDlg::CHotKeyDlg(CWnd* pParent /*=NULL*/)
 : CDialog(CHotKeyDlg::IDD, pParent),m_arKeyValues(),m_lcHotKeys()
 {	
 }
@@ -312,7 +312,7 @@ void CHotKeyDlg::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 
 
 
-void CHotKeyDlg::OnNMClickListHotkeys(NMHDR *pNMHDR, LRESULT *pResult)
+void CHotKeyDlg::OnNMClickListHotkeys(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	// TODO: Add your control notification handler code here
 	if (m_lcHotKeys.GetFirstSelectedItemPosition() != NULL)

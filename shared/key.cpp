@@ -368,7 +368,7 @@ CIniKey::CIniKey() {
 CIniKey::~CIniKey() {
 }
 
-BOOL CIniKey::Open(HKEY hKey, LPCTSTR lpszKeyName, BOOL bCreate) {
+BOOL CIniKey::Open(HKEY /*hKey*/, LPCTSTR lpszKeyName, BOOL /*bCreate*/) {
 	section = lpszKeyName;
 	section.Replace('/', '\\');
 	int i = section.ReverseFind('\\');
@@ -448,7 +448,7 @@ BOOL CIniKey::GetValue(LPVOID data, LPCTSTR lpszValueName) {
 	return ret;
 }
 
-BOOL CIniKey::DeleteValue(LPCTSTR lpszValueName) {
+BOOL CIniKey::DeleteValue(LPCTSTR /*lpszValueName*/) {
 	return false;
 }
 
@@ -468,7 +468,7 @@ DWORD CIniKey::GetValueSize(LPCTSTR lpszValueName) {
 	return bytes;
 }
 
-BOOL CIniKey::GetNextValueName(CString& strValName, DWORD index, LPDWORD valType) {
+BOOL CIniKey::GetNextValueName(CString& strValName, DWORD /*index*/, LPDWORD /*valType*/) {
 	assert(("CIniKey::GetNextValueName() not implemented!", false));
 	strValName = "";
 	return false;

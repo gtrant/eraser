@@ -84,7 +84,7 @@ BEGIN_MESSAGE_MAP(CTaskPropertySheet, CPropertySheet)
 		ON_MESSAGE(WM_KICKIDLE,OnKickIdle)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-LRESULT CTaskPropertySheet::OnKickIdle(WPARAM wp, LPARAM lp)
+LRESULT CTaskPropertySheet::OnKickIdle(WPARAM /*wp*/, LPARAM /*lp*/)
 {
 	ASSERT_VALID(this);
 	
