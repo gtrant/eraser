@@ -2,6 +2,7 @@
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2007 The Eraser Project
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -263,7 +264,7 @@ BOOL CSchedulerPreferencesPage::OnInitDialog()
     pCheck->EnableWindow(m_bLog);
     GetDlgItem(IDC_STATIC_KB)->EnableWindow(m_bLog);
 
-    if (!m_bNoTrayIcon)
+    if (m_bNoTrayIcon)
     {
         m_bHideOnMinimize = FALSE;
         GetDlgItem(IDC_CHECK_HIDEONMINIMIZE)->EnableWindow(FALSE);
@@ -323,7 +324,7 @@ void CEraserPreferencesPage::OnCheckResultsForFiles()
 void CSchedulerPreferencesPage::OnCheckNotrayicon() 
 {
 	UpdateData(TRUE);
-    GetDlgItem(IDC_CHECK_HIDEONMINIMIZE)->EnableWindow(m_bNoTrayIcon);
+    GetDlgItem(IDC_CHECK_HIDEONMINIMIZE)->EnableWindow(!m_bNoTrayIcon);
 }
 
 void CEraserPreferencesPage::OnBnClickedButtonProtection()
