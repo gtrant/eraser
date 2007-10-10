@@ -1,4 +1,5 @@
 // EraserView.cpp
+// $Id$
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).

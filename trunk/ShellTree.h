@@ -1,4 +1,5 @@
 // ShellTree.h
+// $Id$
 //
 // Originally based on CShellTree version 1.02 by Selom Ofori.
 // Heavily altered since then...

@@ -1,7 +1,9 @@
 // SchedulerView.cpp
+// $Id$
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2007 The Eraser Project
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
