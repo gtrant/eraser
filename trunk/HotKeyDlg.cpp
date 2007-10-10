@@ -1,5 +1,25 @@
-// HotKeyDlg.cpp : implementation file
+// HotKeyDlg.cpp
+// $Id$
 //
+// Eraser. Secure data removal. For Windows.
+// Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2001-2006  Garrett Trant (support@heidi.ie).
+// Copyright © 2007 The Eraser Project
+//
+// This program is free software; you can redistribute it and/or
+// modify it under the terms of the GNU General Public License
+// as published by the Free Software Foundation; either version 2
+// of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+// 02111-1307, USA.
 
 #include "stdafx.h"
 #include "Eraser.h"
@@ -20,7 +40,7 @@ static const LPTSTR szDefAccelerKeys[] =
 {
 	"E",
 	"M",
-    "U"
+	"U"
 };
 
 static int iColumnWidths[] =
@@ -33,7 +53,7 @@ static LPCTSTR szCommandNames[] =
 {
 	"Erase",
 	"Eraser Secure Move",
-    "Erase Unused Space"
+	"Erase Unused Space"
 };
 
 static void CreateList(CListCtrl& lcHKey)
@@ -54,7 +74,7 @@ static void CreateList(CListCtrl& lcHKey)
 	lvc.cx          = iColumnWidths[1];
 	lvc.iSubItem    = 1;
 	lcHKey.InsertColumn(1, &lvc);
-	
+
 	lcHKey.SetExtendedStyle(LVS_EX_HEADERDRAGDROP | LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 }
 
@@ -67,7 +87,7 @@ void InitRegistry()
 	CKey &kReg = no_registry ? kReg_ini : kReg_reg;
 	CString strPath = _T("");
 	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
-	
+
 	if (!no_registry) {
 		if (!kReg.Open(HKEY_CURRENT_USER, strPath, FALSE))
 		{
@@ -105,7 +125,7 @@ void CHotKeyDlg::LoadValuesFromRegistry()
 	CString	strPath =_T("");
 	CString strValueName=_T("");
 	CString strValue=_T("");
-	
+
 	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
 	InitRegistry();
 
@@ -149,14 +169,13 @@ void CHotKeyDlg::LoadValuesFromRegistry()
 
 void CHotKeyDlg::UpdateHotKeyList(CListCtrl& lcHKey)
 {
-	
 	lcHKey.SetRedraw(FALSE);
-	
+
 	LV_ITEM         lvi;
 	POSITION		pos;
 	CString			strKey = _T("");
 	CString			strCommand =_T("");
-		
+
 	ZeroMemory(&lvi, sizeof(LV_ITEM));
 	try
 	{
@@ -165,13 +184,13 @@ void CHotKeyDlg::UpdateHotKeyList(CListCtrl& lcHKey)
 		for (pos = m_arKeyValues.GetStartPosition(); pos != NULL; nItem++) 
 		{
 			m_arKeyValues.GetNextAssoc(pos,strCommand,strKey);
-				
+
 			lvi.mask        = LVIF_TEXT ;
 			lvi.iItem       = nItem;
 			lvi.iSubItem    = 0;
 			lvi.pszText     = strCommand.GetBuffer(strCommand.GetLength());
 			lvi.iItem       = lcHKey.InsertItem(&lvi);
-											
+
 			lvi.mask        = LVIF_TEXT;
 			lvi.iSubItem    = 1;
 			lvi.pszText     = strKey.GetBuffer(strKey.GetLength()); //strCommandKey.GetBuffer(strTmp.GetLength());
@@ -223,7 +242,7 @@ void CHotKeyDlg::saveListToRegistry()
 
 IMPLEMENT_DYNAMIC(CHotKeyDlg, CDialog)
 CHotKeyDlg::CHotKeyDlg(CWnd* pParent /*=NULL*/, int iValCnt)
-	: CDialog(CHotKeyDlg::IDD, pParent),m_arKeyValues(),m_lcHotKeys()
+: CDialog(CHotKeyDlg::IDD, pParent),m_arKeyValues(),m_lcHotKeys()
 {	
 }
 
@@ -287,7 +306,7 @@ void CHotKeyDlg::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 	CDialog::OnActivate(nState, pWndOther, bMinimized);
 
 	// TODO: Add your message handler code here
-    UpdateHotKeyList(m_lcHotKeys);
+	UpdateHotKeyList(m_lcHotKeys);
 	GetDlgItem(IDCHANGE)->EnableWindow(FALSE);
 }
 
@@ -297,7 +316,7 @@ void CHotKeyDlg::OnNMClickListHotkeys(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	// TODO: Add your control notification handler code here
 	if (m_lcHotKeys.GetFirstSelectedItemPosition() != NULL)
-        GetDlgItem(IDCHANGE)->EnableWindow(TRUE);
+		GetDlgItem(IDCHANGE)->EnableWindow(TRUE);
 	else 
 		GetDlgItem(IDCHANGE)->EnableWindow(FALSE);
 	*pResult = 0;
@@ -305,6 +324,6 @@ void CHotKeyDlg::OnNMClickListHotkeys(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CHotKeyDlg::OnBnClickedButtonOk()
 {
-    saveListToRegistry();	
+	saveListToRegistry();	
 	this->OnOK();
 }
