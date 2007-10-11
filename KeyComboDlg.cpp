@@ -25,7 +25,7 @@
 #include "Eraser.h"
 #include "KeyComboDlg.h"
 #include <shared/key.h>
-#include <commctrl.h>
+
 
 const LPCTSTR szAccelerKey = "Acceler";
 // CKeyComboDlg dialog
@@ -91,36 +91,20 @@ void CKeyComboDlg::OnEnChangeEdittmp()
 	// send this notification unless you override the CDialog::OnInitDialog()
 	// function and call CRichEditCtrl().SetEventMask()
 	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+	//char cLine[10];
 	char ch[10];
 	m_eKey.GetLine(0,ch,1);
 	CString strLine(ch);
-	static bool busy = false;
-	if (busy)
-		return;
-	busy = true;
-
-	if (!strLine.Trim().IsEmpty())
+	if (!strLine.IsEmpty())
 	{
 		CString strTmp(m_strRegKey.MakeUpper());
 		strLine.MakeUpper();
-		if (strTmp.Find(strLine[0]) == -1) {
-			//Invalid selection, clear the entry
-			m_eKey.SetWindowText("m");
-
-			//TODO: This works only with XP/Vista. What about others?
-			EDITBALLOONTIP ebtt;
-			ZeroMemory(&ebtt, sizeof(ebtt));
-			ebtt.cbStruct = sizeof(ebtt);
-			ebtt.pszTitle = L"Invalid shortcut";
-			ebtt.ttiIcon = TTI_ERROR;
-
-			strTmp = "The shortcut value must be one of the characters " + strTmp;
-			ebtt.pszText = new wchar_t[strTmp.GetLength() + 1];
-			mbstowcs((wchar_t*)ebtt.pszText, strTmp.GetBuffer(), strTmp.GetLength() + 1);
-			
-			m_eKey.SendMessage(EM_SHOWBALLOONTIP, 0, (LPARAM)&ebtt);
-			delete[] ebtt.pszText;
+		if (strTmp.Find(strLine[0]) ==-1 ) {
+			m_eKey.Undo();
+			m_eKey.SetWindowText("");
 		}
 	}
-	busy = false;
+
 }
