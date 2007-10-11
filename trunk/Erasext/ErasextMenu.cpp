@@ -1,7 +1,9 @@
 // ErasextMenu.cpp
+// $Id$
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2007 The Eraser Project.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -191,78 +193,70 @@ CString setShortcut(CString str)
 
 STDMETHODIMP CErasextMenu::XMenuExt::QueryContextMenu(HMENU hMenu, UINT nIndex, UINT idCmdFirst, UINT /*idCmdLast*/, UINT uFlags)
 {
-    METHOD_PROLOGUE(CErasextMenu, MenuExt);
+	METHOD_PROLOGUE(CErasextMenu, MenuExt);
 
-    // do not show menu for shortcuts or when the shell
-    // wants only the default item, or if the user has disabled
-    // the shell extension
+	// do not show menu for shortcuts or when the shell
+	// wants only the default item, or if the user has disabled
+	// the shell extension
 
-    CKey kReg;
-    BOOL bEnabled = TRUE;
-	
-    if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
-    {
-        kReg.GetValue(bEnabled, ERASEXT_REGISTRY_ENABLED, TRUE);
-        kReg.Close();
-    }
+	CKey kReg;
+	BOOL bEnabled = TRUE;
 
-    if (bEnabled && (uFlags & CMF_VERBSONLY) == 0 && (uFlags & CMF_DEFAULTONLY) == 0)
-    {
-        CString str;
+	if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
+	{
+		kReg.GetValue(bEnabled, ERASEXT_REGISTRY_ENABLED, TRUE);
+		kReg.Close();
+	}
 
-        try
-        {
-            if (pThis->m_bDragMenu)
-            {
-                if (pThis->m_bUseFiles)
-                    str.LoadString(IDS_MENU_TEXT_DRAG);
-                else
-                    return ResultFromShort(0);
-            }
-            else
-            {
-                if (!pThis->m_bUseFiles)
-                    str.LoadString(IDS_MENU_TEXT_DRIVE);
-                else
-                    str.LoadString(IDS_MENU_TEXT_FILE);
-            }
+	if (bEnabled && (uFlags & CMF_VERBSONLY) == 0 && (uFlags & CMF_DEFAULTONLY) == 0)
+	{
+		CString str;
 
-			if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR| MF_BYPOSITION, idCmdFirst, ""))
+		try
+		{
+			UINT startIndex = nIndex;
+			if (!pThis->m_bDragMenu)
+			{
+				if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst , ""))
+					return ResultFromShort(0);
+
+				if (!pThis->m_bUseFiles)
+					str.LoadString(IDS_MENU_TEXT_DRIVE);
+				else
+					str.LoadString(IDS_MENU_TEXT_FILE);
+
+				str = setShortcut(str);
+				if (!InsertMenu(hMenu, nIndex++ , MF_STRING | MF_BYPOSITION, idCmdFirst + CMD_ERASE, str))
+					return ResultFromShort(0);
+			}
+
+			if (pThis->m_bUseFiles)
+			{
+				str.LoadString(IDS_MENU_TEXT_DRAG);
+				str = setShortcut(str);
+				if (!InsertMenu(hMenu, nIndex++ , MF_STRING | MF_BYPOSITION, idCmdFirst + CMD_MOVE, str))
+					return ResultFromShort(0);
+			}
+
+			if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst , ""))
 				return ResultFromShort(0);
 
-			
-			str = setShortcut(str);
-			if (!InsertMenu(hMenu, nIndex++ , MF_STRING | MF_BYPOSITION , idCmdFirst + CMD_ERASE, str))
-                return ResultFromShort(0);
+			return MAKE_HRESULT(SEVERITY_SUCCESS, 0, nIndex - startIndex);
+		}
+		catch (CException *e)
+		{
+			ASSERT(FALSE);
 
-			CString moveStr;
-			//ASSERT(moveStr.LoadString(IDS_MENU_TEXT_DRAG));
-			moveStr.LoadString(IDS_MENU_TEXT_DRAG);
-			
-			moveStr = setShortcut(moveStr);
-			if (!InsertMenu(hMenu, nIndex++, MF_STRING | MF_BYPOSITION, idCmdFirst + CMD_MOVE, moveStr))
-				return ResultFromShort(0);
+			e->ReportError(MB_ICONERROR);
+			e->Delete();
+		}
+		catch (...)
+		{
+			ASSERT(FALSE);
+		}
+	}
 
-
-			if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR| MF_BYPOSITION, idCmdFirst , ""))
-				return ResultFromShort(0);
-
-			return MAKE_HRESULT(SEVERITY_SUCCESS, 0, CMD_MOVE + 1);
-        }
-        catch (CException *e)
-        {
-            ASSERT(FALSE);
-
-            e->ReportError(MB_ICONERROR);
-            e->Delete();
-        }
-        catch (...)
-        {
-            ASSERT(FALSE);
-        }
-    }
-
-    return ResultFromShort(0);
+	return ResultFromShort(0);
 }
 
 BOOL GetFolder(HWND hParent, TCHAR* path)
