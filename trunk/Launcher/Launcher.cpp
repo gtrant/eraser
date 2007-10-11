@@ -23,13 +23,17 @@
 
 #include "stdafx.h"
 #include "..\EraserDll\EraserDll.h"
+#include "..\EraserDll\FileLockResolver.h"
 #include "..\EraserUI\DriveCombo.h"
+#include "..\EraserUI\VisualStyles.h"
 #include "..\shared\FileHelper.h"
 #include "..\shared\UserInfo.h"
-#include "..\EraserDll\FileLockResolver.h"
+#include "..\shared\Key.h"
+
 #include "Launcher.h"
 #include "ConfirmDialog.h"
 #include "LauncherDlg.h"
+
 #include <exception>
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -287,52 +291,52 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
 
 BOOL CLauncherApp::InitInstance()
 {
-    // Standard initialization
-    // If you are not using these features and wish to reduce the size
-    //  of your final executable, you should remove from the following
-    //  the specific initialization routines you do not need.
-    eraserInit();
+	// Standard initialization
+	// If you are not using these features and wish to reduce the size
+	//  of your final executable, you should remove from the following
+	//  the specific initialization routines you do not need.
+	eraserInit();
 
-    CString strCmdLine(m_lpCmdLine);
-    CString strCurrentParameter;
+	CString strCmdLine(m_lpCmdLine);
+	CString strCurrentParameter;
 
-    BOOL    bIncorrectParameter = FALSE;
-    BOOL    bSilent             = FALSE;
-    BOOL    bResults            = FALSE;
-    BOOL    bResultsOnError     = FALSE;
-    BOOL    bOptions            = FALSE;
-    BOOL    bQueue              = FALSE;
+	BOOL    bIncorrectParameter = FALSE;
+	BOOL    bSilent             = FALSE;
+	BOOL    bResults            = -1;
+	BOOL    bResultsOnError     = -1;
+	BOOL    bOptions            = FALSE;
+	BOOL    bQueue              = FALSE;
 
-    CString strData;
-    CStringArray saFiles;
-    BOOL    bFiles              = FALSE;
-    BOOL    bFolders            = FALSE;
-    BOOL    bSubFolders         = FALSE;
-    BOOL    bKeepFolder         = FALSE;
-    BOOL    bDrive              = FALSE;
-    BOOL    bRecycled           = FALSE;
+	CString strData;
+	CStringArray saFiles;
+	BOOL    bFiles              = FALSE;
+	BOOL    bFolders            = FALSE;
+	BOOL    bSubFolders         = FALSE;
+	BOOL    bKeepFolder         = FALSE;
+	BOOL    bDrive              = FALSE;
+	BOOL    bRecycled           = FALSE;
 	BOOL	bResolveLock		= FALSE;
 
-    ERASER_METHOD emMethod      = ERASER_METHOD_PSEUDORANDOM /*ERASER_METHOD_LIBRARY*/;
-    E_UINT16 uPasses            = 1;
+	ERASER_METHOD emMethod      = ERASER_METHOD_PSEUDORANDOM /*ERASER_METHOD_LIBRARY*/;
+	E_UINT16 uPasses            = 1;
 
-    if (!strCmdLine.IsEmpty())
-    {
-        while (GetNextParameter(strCmdLine, strCurrentParameter))
-        {
-            if (strCurrentParameter.CompareNoCase(szFile) == 0 &&
-                strData.IsEmpty())
-            {
-                // file
+	if (!strCmdLine.IsEmpty())
+	{
+		while (GetNextParameter(strCmdLine, strCurrentParameter))
+		{
+			if (strCurrentParameter.CompareNoCase(szFile) == 0 &&
+				strData.IsEmpty())
+			{
+				// file
 
-                if (!GetNextParameter(strCmdLine, strCurrentParameter))
-                    bIncorrectParameter = TRUE;
-                else
-                {
-                    strData = strCurrentParameter;
-                    bFiles = TRUE;
-                }
-            }
+				if (!GetNextParameter(strCmdLine, strCurrentParameter))
+					bIncorrectParameter = TRUE;
+				else
+				{
+					strData = strCurrentParameter;
+					bFiles = TRUE;
+				}
+			}
 			else if (strCurrentParameter.CompareNoCase(szResolveLock) == 0 &&
 				strData.IsEmpty())
 			{
@@ -344,147 +348,151 @@ BOOL CLauncherApp::InitInstance()
 					bResolveLock = TRUE;
 				}
 			}
-            else if (strCurrentParameter.CompareNoCase(szFolder) == 0 &&
-                     strData.IsEmpty())
-            {
-                // folder
+			else if (strCurrentParameter.CompareNoCase(szFolder) == 0 &&
+					 strData.IsEmpty())
+			{
+				// folder
 
-                if (!GetNextParameter(strCmdLine, strCurrentParameter))
-                    bIncorrectParameter = TRUE;
-                else
-                {
-                    strData = strCurrentParameter;
-                    bFiles = TRUE;
-                    bFolders = TRUE;
+				if (!GetNextParameter(strCmdLine, strCurrentParameter))
+					bIncorrectParameter = TRUE;
+				else
+				{
+					strData = strCurrentParameter;
+					bFiles = TRUE;
+					bFolders = TRUE;
 
-                    if (strData[strData.GetLength() - 1] != '\\')
-                        strData += "\\";
-                }
-            }
-            else if (strCurrentParameter.CompareNoCase(szDisk) == 0 &&
-                     strData.IsEmpty())
-            {
-                // unused disk space
+					if (strData[strData.GetLength() - 1] != '\\')
+						strData += "\\";
+				}
+			}
+			else if (strCurrentParameter.CompareNoCase(szDisk) == 0 &&
+					 strData.IsEmpty())
+			{
+				// unused disk space
 
-                if (!GetNextParameter(strCmdLine, strCurrentParameter))
-                    bIncorrectParameter = TRUE;
-                else
-                {
-                    bDrive = TRUE;
+				if (!GetNextParameter(strCmdLine, strCurrentParameter))
+					bIncorrectParameter = TRUE;
+				else
+				{
+					bDrive = TRUE;
 
-                    if (strCurrentParameter != szDiskAll)
-                        strData.Format("%c:\\", strCurrentParameter[0]);
-                    else
-                        strData = strCurrentParameter;
-                }
-            }
-            else if (strCurrentParameter.CompareNoCase(szRecycled) == 0)
-            {
-                bRecycled   = TRUE;
-                bFiles      = TRUE;
-                bFolders    = FALSE;
-            }
-            else if (strCurrentParameter.CompareNoCase(szMethod) == 0)
-            {
-                if (!GetNextParameter(strCmdLine, strCurrentParameter))
-                    bIncorrectParameter = TRUE;
-                else
-                {
-                    if (strCurrentParameter.CompareNoCase(szMethodLibrary) == 0)
-                        emMethod = ERASER_METHOD_LIBRARY;
-                    else if (strCurrentParameter.CompareNoCase(szMethodGutmann) == 0)
-                        emMethod = ERASER_METHOD_GUTMANN;
-                    else if (strCurrentParameter.CompareNoCase(szMethodDoD) == 0)
-                        emMethod = ERASER_METHOD_DOD;
-                    else if (strCurrentParameter.CompareNoCase(szMethodDoD_E) == 0)
-                        emMethod = ERASER_METHOD_DOD_E;
-                    else if (strCurrentParameter.CompareNoCase(szMethodFL2K) == 0)
-                        emMethod = ERASER_METHOD_FIRST_LAST_2KB;
-                    else if (strCurrentParameter.CompareNoCase(szSchneier) == 0)
-                        emMethod = ERASER_METHOD_SCHNEIER;
-                    else if (strCurrentParameter.CompareNoCase(szMethodRandom) == 0)
-                    {
-                        emMethod = ERASER_METHOD_PSEUDORANDOM;
+					if (strCurrentParameter != szDiskAll)
+						strData.Format("%c:\\", strCurrentParameter[0]);
+					else
+						strData = strCurrentParameter;
+				}
+			}
+			else if (strCurrentParameter.CompareNoCase(szRecycled) == 0)
+			{
+				bRecycled   = TRUE;
+				bFiles      = TRUE;
+				bFolders    = FALSE;
+			}
+			else if (strCurrentParameter.CompareNoCase(szMethod) == 0)
+			{
+				if (!GetNextParameter(strCmdLine, strCurrentParameter))
+					bIncorrectParameter = TRUE;
+				else
+				{
+					if (strCurrentParameter.CompareNoCase(szMethodLibrary) == 0)
+						emMethod = ERASER_METHOD_LIBRARY;
+					else if (strCurrentParameter.CompareNoCase(szMethodGutmann) == 0)
+						emMethod = ERASER_METHOD_GUTMANN;
+					else if (strCurrentParameter.CompareNoCase(szMethodDoD) == 0)
+						emMethod = ERASER_METHOD_DOD;
+					else if (strCurrentParameter.CompareNoCase(szMethodDoD_E) == 0)
+						emMethod = ERASER_METHOD_DOD_E;
+					else if (strCurrentParameter.CompareNoCase(szMethodFL2K) == 0)
+						emMethod = ERASER_METHOD_FIRST_LAST_2KB;
+					else if (strCurrentParameter.CompareNoCase(szSchneier) == 0)
+						emMethod = ERASER_METHOD_SCHNEIER;
+					else if (strCurrentParameter.CompareNoCase(szMethodRandom) == 0)
+					{
+						emMethod = ERASER_METHOD_PSEUDORANDOM;
 
-                        if (!GetNextParameter(strCmdLine, strCurrentParameter))
-                            bIncorrectParameter = TRUE;
-                        else
-                        {
-                            char *sztmp = 0;
-                            E_UINT32 uCurrentParameter = strtoul((LPCTSTR)strCurrentParameter, &sztmp, 10);
+						if (!GetNextParameter(strCmdLine, strCurrentParameter))
+							bIncorrectParameter = TRUE;
+						else
+						{
+							char *sztmp = 0;
+							E_UINT32 uCurrentParameter = strtoul((LPCTSTR)strCurrentParameter, &sztmp, 10);
 
-                            if (*sztmp != '\0' || uCurrentParameter > (E_UINT16)-1) {
-                                bIncorrectParameter = TRUE;
-                            } else {
-                                uPasses = (E_UINT16)uCurrentParameter;
-                            }
-                        }
-                    }
-                    else
-                        bIncorrectParameter = TRUE;
-                }
-            }
-            else if (strCurrentParameter.CompareNoCase(szSubFolders) == 0)
-                bSubFolders = TRUE;
-            else if (strCurrentParameter.CompareNoCase(szKeepFolder) == 0)
-                bKeepFolder = TRUE;
-            else if (strCurrentParameter.CompareNoCase(szSilent) == 0)
-                bSilent = TRUE;
-            else if (strCurrentParameter.CompareNoCase(szResults) == 0)
-                bResults = TRUE;
-            else if (strCurrentParameter.CompareNoCase(szResultsOnError) == 0)
-            {
-                bResults = TRUE;
-                bResultsOnError = TRUE;
-            }
-            else if (strCurrentParameter.CompareNoCase(szOptions) == 0)
-                bOptions = TRUE;
-            else if (strCurrentParameter.CompareNoCase(szQueue) == 0)
-                bQueue = TRUE;
-            else
-                bIncorrectParameter = TRUE;
-        }
-    }
-    else
-    {
-        bIncorrectParameter = TRUE;
-    }
+							if (*sztmp != '\0' || uCurrentParameter > (E_UINT16)-1) {
+								bIncorrectParameter = TRUE;
+							} else {
+								uPasses = (E_UINT16)uCurrentParameter;
+							}
+						}
+					}
+					else
+						bIncorrectParameter = TRUE;
+				}
+			}
+			else if (strCurrentParameter.CompareNoCase(szSubFolders) == 0)
+				bSubFolders = TRUE;
+			else if (strCurrentParameter.CompareNoCase(szKeepFolder) == 0)
+				bKeepFolder = TRUE;
+			else if (strCurrentParameter.CompareNoCase(szSilent) == 0)
+				bSilent = TRUE;
+			else if (strCurrentParameter.CompareNoCase(szResults) == 0)
+				bResults = TRUE;
+			else if (strCurrentParameter.CompareNoCase(szResultsOnError) == 0)
+			{
+				bResults = TRUE;
+				bResultsOnError = TRUE;
+			}
+			else if (strCurrentParameter.CompareNoCase(szOptions) == 0)
+				bOptions = TRUE;
+			else if (strCurrentParameter.CompareNoCase(szQueue) == 0)
+				bQueue = TRUE;
+			else
+				bIncorrectParameter = TRUE;
+		}
+	}
+	else
+	{
+		bIncorrectParameter = TRUE;
+	}
 
-    // conflicting command line parameters ?
+	// conflicting command line parameters ?
+	if (((!bOptions && !bRecycled) && strData.IsEmpty()) || // no data!
+		(!bFolders && bKeepFolder) ||                       // data not a folder
+		(bSilent && bResults) ||                            // no windows
+		(bOptions && bQueue) ||                             // why queue the options?
+		bIncorrectParameter)
+	{
+		AfxMessageBox(IDS_CMDLINE_INCORRECT, MB_ICONERROR, 0);
+		return FALSE;
+	}
 
-    if (((!bOptions && !bRecycled) && strData.IsEmpty()) || // no data!
-        (!bFolders && bKeepFolder) ||                       // data not a folder
-        (bSilent && bResults) ||                            // no windows
-        (bOptions && bQueue))                               // why queue the options?
-    {
-        bIncorrectParameter = TRUE;
-    }
+	//Now that the command line has been passed, check if we should display the
+	//results dialog (because it may not be overridde by the user)
+	CKey kReg;
+	kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE);
+	if (bResults == -1)
+		kReg.GetValue(bResults, ERASER_REGISTRY_RESULTS_FILES, TRUE);
+	if (bResultsOnError == -1)
+		kReg.GetValue(bResultsOnError, ERASER_REGISTRY_RESULTS_WHENFAILED, FALSE);
 
-    if (bIncorrectParameter)
-    {
-        AfxMessageBox(IDS_CMDLINE_INCORRECT, MB_ICONERROR, 0);
-        return FALSE;
-    }
+	try
+	{
+		m_pdlgEraser = new CLauncherDlg();
+		m_pMainWnd   = m_pdlgEraser;
 
-    try
-    {
-        m_pdlgEraser    = new CLauncherDlg();
-        m_pMainWnd      = m_pdlgEraser;
+		if (!m_pdlgEraser->Create(IDD_LAUNCHER_DIALOG))
+		{
+			AfxMessageBox(IDS_ERROR_DIALOG, MB_ICONERROR, 0);
+			return FALSE;
+		}
 
-        if (!m_pdlgEraser->Create(IDD_LAUNCHER_DIALOG))
-        {
-            AfxMessageBox(IDS_ERROR_DIALOG, MB_ICONERROR, 0);
-            return FALSE;
-        }
-
-        if (bOptions)
-        {
-            m_pdlgEraser->Options();
-            return FALSE;
-        }
-        else
-        {
-            HandleQueue(bQueue);
+		if (bOptions)
+		{
+			m_pdlgEraser->Options();
+			return FALSE;
+		}
+		else
+		{
+			HandleQueue(bQueue);
 			if (bResolveLock)
 			{
 				try
@@ -493,76 +501,75 @@ BOOL CLauncherApp::InitInstance()
 				}
 				catch (const std::exception& ee)
 				{
-					ee.what();
+					AfxMessageBox(ee.what(), MB_ICONERROR);
 				}
-				
 			}
 			
-            if (bFiles && !bFolders)
-            {
-                if (!bRecycled)
-                    findMatchingFiles(strData, saFiles, bSubFolders);
-                else
-                {
-                    LocateRecycledItems(saFiles, m_pdlgEraser->m_saFolders);
+			if (bFiles && !bFolders)
+			{
+				if (!bRecycled)
+					findMatchingFiles(strData, saFiles, bSubFolders);
+				else
+				{
+					LocateRecycledItems(saFiles, m_pdlgEraser->m_saFolders);
 
-                    if (saFiles.GetSize() > 0 && !bSilent)
-                    {
-                        CConfirmDialog cd(m_pdlgEraser);
+					if (saFiles.GetSize() > 0 && !bSilent)
+					{
+						CConfirmDialog cd(m_pdlgEraser);
 
-                        if (cd.DoModal() != IDOK)
-                            return FALSE;
-                    }
-                }
-            }
-            else
-            {
-                if (bDrive || GetFileAttributes((LPCTSTR)strData) != (DWORD)-1)
-                    saFiles.Add(strData);
-            }
+						if (cd.DoModal() != IDOK)
+							return FALSE;
+					}
+				}
+			}
+			else
+			{
+				if (bDrive || GetFileAttributes((LPCTSTR)strData) != (DWORD)-1)
+					saFiles.Add(strData);
+			}
 
-            if (saFiles.GetSize() > 0 || m_pdlgEraser->m_saFolders.GetSize() > 0)
-            {
-                if (!bSilent)
-                    m_pdlgEraser->ShowWindow(SW_SHOW);
-                else
-                    m_pdlgEraser->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
+			if (saFiles.GetSize() > 0 || m_pdlgEraser->m_saFolders.GetSize() > 0)
+			{
+				if (!bSilent)
+					m_pdlgEraser->ShowWindow(SW_SHOW);
+				else
+					m_pdlgEraser->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
 
-                m_pdlgEraser->m_saFiles.Copy(saFiles);
-                m_pdlgEraser->m_bResults        = bResults;
-                m_pdlgEraser->m_bResultsOnError = bResultsOnError;
-                m_pdlgEraser->m_bUseFiles       = bFiles || bResolveLock;
-                m_pdlgEraser->m_bUseEmptySpace  = bDrive;
-                m_pdlgEraser->m_bFolders        = bFolders;
-                m_pdlgEraser->m_bSubFolders     = bSubFolders;
-                m_pdlgEraser->m_bKeepFolder     = bKeepFolder;
-                m_pdlgEraser->m_bRecycled       = bRecycled;
-                m_pdlgEraser->m_emMethod        = emMethod;
-                m_pdlgEraser->m_uPasses         = uPasses;
+				m_pdlgEraser->m_saFiles.Copy(saFiles);
+				m_pdlgEraser->m_bResults        = bResults;
+				m_pdlgEraser->m_bResultsOnError = bResultsOnError;
+				m_pdlgEraser->m_bUseFiles       = bFiles || bResolveLock;
+				m_pdlgEraser->m_bUseEmptySpace  = bDrive;
+				m_pdlgEraser->m_bFolders        = bFolders;
+				m_pdlgEraser->m_bSubFolders     = bSubFolders;
+				m_pdlgEraser->m_bKeepFolder     = bKeepFolder;
+				m_pdlgEraser->m_bRecycled       = bRecycled;
+				m_pdlgEraser->m_emMethod        = emMethod;
+				m_pdlgEraser->m_uPasses         = uPasses;
 
-                return m_pdlgEraser->Erase();
-            }
-            else if (!bSilent)
-            {
-                if (bRecycled)
-                    AfxMessageBox("Recycle Bin is empty.", MB_ICONERROR);
-                else
-                    AfxMessageBox("File not found. Nothing to erase. (" + strData + ")", MB_ICONERROR);
-            }
-        }
-    }
-    catch (CException *e)
-    {
-        ASSERT(FALSE);
-        e->ReportError(MB_ICONERROR);
-        e->Delete();
-    }
-    catch (...)
-    {
-        ASSERT(FALSE);
-    }
+				return m_pdlgEraser->Erase();
+			}
+			else if (!bSilent)
+			{
+				if (bRecycled)
+					AfxMessageBox("Recycle Bin is empty.", MB_ICONERROR);
+				else
+					AfxMessageBox("File not found. Nothing to erase. (" + strData + ")", MB_ICONERROR);
+			}
+		}
+	}
+	catch (CException *e)
+	{
+		ASSERT(FALSE);
+		e->ReportError(MB_ICONERROR);
+		e->Delete();
+	}
+	catch (...)
+	{
+		ASSERT(FALSE);
+	}
 
-    return FALSE;
+	return FALSE;
 }
 
 BOOL CLauncherApp::GetNextParameter(CString& strCmdLine, CString& strNextParameter) const
