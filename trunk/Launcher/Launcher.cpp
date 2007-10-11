@@ -1,10 +1,10 @@
-//
-// -disk k:\ -method random 1 -results
-//
 // Launcher.cpp
+// $Id$
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2001-2006  Garrett Trant (support@heidi.ie).
+// Copyright © 2007 The Eraser Project.
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -465,14 +465,24 @@ BOOL CLauncherApp::InitInstance()
 		return FALSE;
 	}
 
+	// is the user naive enough to select the first/last 2KB pass with free space?
+	if (emMethod == ERASER_METHOD_FIRST_LAST_2KB && bDrive)
+	{
+		AfxMessageBox("The first/last 2KB erase cannot be used with Free Space erases.", MB_ICONERROR);
+		return FALSE;
+	}
+
 	//Now that the command line has been passed, check if we should display the
 	//results dialog (because it may not be overridde by the user)
 	CKey kReg;
-	kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE);
-	if (bResults == -1)
-		kReg.GetValue(bResults, ERASER_REGISTRY_RESULTS_FILES, TRUE);
-	if (bResultsOnError == -1)
-		kReg.GetValue(bResultsOnError, ERASER_REGISTRY_RESULTS_WHENFAILED, FALSE);
+	if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
+	{
+		if (bResults == -1)
+			kReg.GetValue(bResults, ERASER_REGISTRY_RESULTS_FILES, TRUE);
+		if (bResultsOnError == -1)
+			kReg.GetValue(bResultsOnError, ERASER_REGISTRY_RESULTS_WHENFAILED, FALSE);
+		kReg.Close();
+	}
 
 	try
 	{
