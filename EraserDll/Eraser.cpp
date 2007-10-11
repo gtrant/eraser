@@ -38,6 +38,7 @@
 #include "FreeSpace.h"
 #include "FAT.h"
 
+#include "..\EraserUI\VisualStyles.h"
 #include "..\shared\FileHelper.h"
 #include "..\shared\key.h"
 

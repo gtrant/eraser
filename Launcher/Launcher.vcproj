@@ -579,48 +579,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\shared\SeException.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="1"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="StdAfx.cpp"
 				>
 				<FileConfiguration
@@ -718,14 +676,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\EraserDll\EraserDll.h"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\FileHelper.h"
-				>
-			</File>
-			<File
 				RelativePath="Launcher.h"
 				>
 			</File>
@@ -738,15 +688,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\shared\SeException.h"
-				>
-			</File>
-			<File
 				RelativePath="StdAfx.h"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\UserInfo.h"
 				>
 			</File>
 			<File
