@@ -888,18 +888,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\shared\FileHelper.h"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\key.h"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\SeException.h"
-				>
-			</File>
-			<File
 				RelativePath="StdAfx.h"
 				>
 			</File>

@@ -23,6 +23,7 @@
 #include "Erasext.h"
 
 #include "..\EraserDll\eraserdll.h"
+#include "..\EraserUI\VisualStyles.h"
 #include "ConfirmDialog.h"
 #include "WipeProgDlg.h"
 

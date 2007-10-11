@@ -1558,10 +1558,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\shared\FileHelper.h"
-				>
-			</File>
-			<File
 				RelativePath=".\FileLockResolver.h"
 				>
 			</File>
@@ -1583,14 +1579,6 @@
 			</File>
 			<File
 				RelativePath=".\isaac.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\key.h"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\MemDC.h"
 				>
 			</File>
 			<File
@@ -1643,10 +1631,6 @@
 			</File>
 			<File
 				RelativePath=".\SecurityManager.h"
-				>
-			</File>
-			<File
-				RelativePath="..\shared\SeException.h"
 				>
 			</File>
 			<File
