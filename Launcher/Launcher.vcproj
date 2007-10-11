@@ -487,6 +487,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\shared\key.cpp"
+				>
+			</File>
+			<File
 				RelativePath="Launcher.cpp"
 				>
 				<FileConfiguration
