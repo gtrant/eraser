@@ -65,7 +65,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
-				DisableSpecificWarnings="4251"
+				DisableSpecificWarnings="4251;4275"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -160,7 +160,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4251"
+				DisableSpecificWarnings="4251;4275"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -255,7 +255,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4251"
+				DisableSpecificWarnings="4251;4275"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -351,7 +351,7 @@
 				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
-				DisableSpecificWarnings="4251"
+				DisableSpecificWarnings="4251;4275"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -1400,7 +1400,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						UsePrecompiledHeader="1"
 					/>
@@ -1410,7 +1409,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						UsePrecompiledHeader="1"
 					/>
@@ -1420,7 +1418,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="3"
 						PreprocessorDefinitions=""
 						UsePrecompiledHeader="1"
 					/>
@@ -1430,7 +1427,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="3"
 						PreprocessorDefinitions=""
 						UsePrecompiledHeader="1"
 					/>
