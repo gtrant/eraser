@@ -56,16 +56,16 @@ IDB_IMAGELIST_LARGE     BITMAP                  "res\\imageList.bmp"
 IDR_GFXMENU_TOOLBAR     BITMAP                  "res\\toolbar1.bmp"
 IDB_HEADER              BITMAP                  "res\\Header.bmp"
 IDB_GFX_MENUCHECK       BITMAP                  "res\\MenuCheck.bmp"
-IDB_GFX_MENUCHECK_SELECTED BITMAP               "res\\MenuCheckSelected.bmp"
+IDB_GFX_MENUCHECK_SELECTED BITMAP                  "res\\MenuCheckSelected.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Cursor
 //
 
-IDR_TREEFILECTRL_DROPCOPY CURSOR                "res\\tfdropcopy.cur"
-IDR_TREEFILECTRL_NO_DROPCOPY CURSOR             "res\\tfnodropcopy.cur"
-IDR_TREEFILECTRL_NO_DROPMOVE CURSOR             "res\\tfnodropmove.cur"
+IDR_TREEFILECTRL_DROPCOPY CURSOR                  "res\\tfdropcopy.cur"
+IDR_TREEFILECTRL_NO_DROPCOPY CURSOR                  "res\\tfnodropcopy.cur"
+IDR_TREEFILECTRL_NO_DROPMOVE CURSOR                  "res\\tfnodropmove.cur"
 IDC_DRAGGING            CURSOR                  "res\\dragging.cur"
 IDC_HANDCUR             CURSOR                  "res\\icr_hand.cur"
 IDC_NODRAGGING          CURSOR                  "res\\nodraggi.cur"
@@ -265,14 +265,14 @@ BEGIN
     LTEXT           "Copyright © 1997-2002 Sami Tolvanen.",IDC_STATIC,40,56,150,8
 END
 
-IDD_PROPPAGE_TASKDATA DIALOGEX 0, 0, 205, 246
-STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+IDD_PROPPAGE_TASKDATA DIALOGEX 0, 0, 205, 204
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "Data"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     CONTROL         "&Unused space on drive",IDC_RADIO_DISK,"Button",BS_AUTORADIOBUTTON,7,7,175,10
     COMBOBOX        IDC_COMBO_DRIVES,19,18,163,68,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Files on f&older",IDC_RADIO_FILES,"Button",BS_AUTORADIOBUTTON,7,37,175,10
+    CONTROL         "Files in f&older",IDC_RADIO_FILES,"Button",BS_AUTORADIOBUTTON,7,37,175,10
     EDITTEXT        IDC_EDIT_FOLDER,19,49,142,14,ES_AUTOHSCROLL | ES_READONLY
     PUSHBUTTON      "...",IDC_BUTTON_BROWSE,165,49,16,14
     CONTROL         "&Subfolders",IDC_CHECK_SUBFOLDERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,65,163,10
@@ -283,11 +283,9 @@ BEGIN
     PUSHBUTTON      "...",IDC_BUTTON_BROWSE_FILES,165,113,16,14
     CONTROL         "Use &wildcards",IDC_CHECK_WILDCARDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,129,163,10
     CONTROL         "&Include subfolders",IDC_CHECK_WILDCARDS_SF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,140,151,10
-    CONTROL         "&Keep task on the list",IDC_PERSISTENT_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,99,210,90,10
-    COMBOBOX        IDC_COMBO_WHENFINISH,7,209,81,180,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "When finished",IDC_STATIC,7,199,46,8
-    CONTROL         "Files on mask",IDC_RADIO_MASK,"Button",BS_AUTORADIOBUTTON,7,154,59,10
-    EDITTEXT        IDC_EDIT_MASK,19,166,142,14,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "&Keep task on the list",IDC_PERSISTENT_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,186,90,10
+    COMBOBOX        IDC_COMBO_WHENFINISH,7,169,81,180,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "When finished",IDC_STATIC,7,160,46,8
 END
 
 IDD_PROPPAGE_TASKSCHEDULE DIALOGEX 0, 0, 205, 178
@@ -447,7 +445,7 @@ BEGIN
         RIGHTMARGIN, 198
         VERTGUIDE, 161
         TOPMARGIN, 7
-        BOTTOMMARGIN, 238
+        BOTTOMMARGIN, 196
     END
 
     IDD_PROPPAGE_TASKSCHEDULE, DIALOG

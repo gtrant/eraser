@@ -311,8 +311,7 @@ void CEraserView::OnFileNewTask()
         {
             if (tps.m_pgData.m_strSelectedDrive.IsEmpty() &&
                 tps.m_pgData.m_strFolder.IsEmpty() &&
-                tps.m_pgData.m_strFile.IsEmpty() &&
-				tps.m_pgData.m_strMask.IsEmpty())
+                tps.m_pgData.m_strFile.IsEmpty())
             {
                 // no data
                 return;
@@ -338,9 +337,6 @@ void CEraserView::OnFileNewTask()
                 break;
             case Drive:
                 piItem->SetDrive(tps.m_pgData.m_strSelectedDrive);
-                break;
-			case Mask:
-				piItem->SetMask(tps.m_pgData.m_strMask);
                 break;
             default:
                 delete piItem;
@@ -573,9 +569,6 @@ void CEraserView::UpdateList()
                                   SHGFI_DISPLAYNAME);
                 }
                 break;
-			case Mask:
-				bExists = TRUE;
-				break;
             default:
                 NODEFAULT;
             }
@@ -771,9 +764,6 @@ void CEraserView::OnEditProperties()
                 case Drive:
                     piItem->GetData(tps.m_pgData.m_strSelectedDrive);
                     break;
-				case Mask:
-					piItem->GetData(tps.m_pgData.m_strMask);
-					break;
                 default:
                     return;
                 }
@@ -785,8 +775,7 @@ void CEraserView::OnEditProperties()
                 {
                     if (tps.m_pgData.m_strSelectedDrive.IsEmpty() &&
                         tps.m_pgData.m_strFolder.IsEmpty() &&
-                        tps.m_pgData.m_strFile.IsEmpty() &&
-						tps.m_pgData.m_strMask.IsEmpty())
+                        tps.m_pgData.m_strFile.IsEmpty())
                     {
                         // no data
                         return;
@@ -811,9 +800,6 @@ void CEraserView::OnEditProperties()
                     case Drive:
                         piItem->SetDrive(tps.m_pgData.m_strSelectedDrive);
                         break;
-					case Mask:
-						piItem->SetMask(tps.m_pgData.m_strMask);
-						break;
                     default:
                         return;
                     }
@@ -982,8 +968,7 @@ void CEraserView::OnProcessRun()
                             // that won't be removed after erasing
                             if (piItem->GetType() == Drive ||
                                 (piItem->GetType() == File && piItem->UseWildcards()) ||
-                                (piItem->GetType() == Folder && (!piItem->RemoveFolder() || piItem->OnlySubfolders())) ||
-								piItem->GetType() == Mask)
+                                (piItem->GetType() == Folder && (!piItem->RemoveFolder() || piItem->OnlySubfolders())))
                             {
                                 daRemovedIfComplete.Add(nIndex);
                             }

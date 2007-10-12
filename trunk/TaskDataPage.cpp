@@ -2,6 +2,7 @@
 //
 // Eraser. Secure data removal. For Windows.
 // Copyright © 1997-2001  Sami Tolvanen (sami@tolvanen.com).
+// Copyright © 2007 The Eraser Project
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +49,6 @@ m_bShowPersistent(FALSE)
     //{{AFX_DATA_INIT(CTaskDataPage)
     m_strFolder = _T("");
     m_strFile = _T("");
-	m_strMask = _T("");
     m_bRemoveOnlySub = FALSE;
     m_bSubfolders = FALSE;
     m_bRemoveFolder = FALSE;
@@ -56,8 +56,6 @@ m_bShowPersistent(FALSE)
     m_bUseWildCards = FALSE;
 	m_bWildCardsInSubfolders = FALSE;
 	//}}AFX_DATA_INIT
-
-//    m_psp.dwFlags &= (~PSP_HASHELP);
 }
 
 CTaskDataPage::~CTaskDataPage()
@@ -71,14 +69,12 @@ void CTaskDataPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_DRIVES, m_comboDrives);
 	DDX_Text(pDX, IDC_EDIT_FOLDER, m_strFolder);
 	DDX_Text(pDX, IDC_EDIT_FILE, m_strFile);
-	DDX_Text(pDX, IDC_EDIT_MASK, m_strMask);
 	DDX_Check(pDX, IDC_CHECK_ONLYSUB, m_bRemoveOnlySub);
 	DDX_Check(pDX, IDC_CHECK_SUBFOLDERS, m_bSubfolders);
 	DDX_Check(pDX, IDC_CHECK_FOLDER, m_bRemoveFolder);
 	DDX_Control(pDX, IDC_RADIO_DISK, m_buRadioDisk);
 	DDX_Control(pDX, IDC_RADIO_FILES, m_buRadioFiles);
 	DDX_Control(pDX, IDC_RADIO_FILE, m_buRadioFile);
-	DDX_Control(pDX, IDC_RADIO_MASK, m_buRadioMask);
 	DDX_Check(pDX, IDC_PERSISTENT_CHECK, m_bPersistent);
 	DDX_Check(pDX, IDC_CHECK_WILDCARDS, m_bUseWildCards);
 	DDX_Check(pDX, IDC_CHECK_WILDCARDS_SF, m_bWildCardsInSubfolders);
@@ -103,7 +99,6 @@ BEGIN_MESSAGE_MAP(CTaskDataPage, CPropertyPage)
     ON_BN_CLICKED(IDC_RADIO_DISK, OnRadioDisk)
     ON_BN_CLICKED(IDC_RADIO_FILES, OnRadioFiles)
     ON_BN_CLICKED(IDC_RADIO_FILE, OnRadioFile)
-	ON_BN_CLICKED(IDC_RADIO_MASK, OnRadioMask)
     ON_BN_CLICKED(IDC_CHECK_WILDCARDS, OnCheckWildcards)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -194,18 +189,10 @@ void CTaskDataPage::OnBrowse()
 void CTaskDataPage::OnBrowseFiles()
 {
     UpdateData(TRUE);
-
-    // Was CfileDialogEx now with MFC7 we can change back to MFC Class
-	/*CFileDialog fdlg(TRUE, NULL, NULL,
-                       OFN_PATHMUSTEXIST |OFN_ENABLESIZING | OFN_NODEREFERENCELINKS | OFN_FILEMUSTEXIST | OFN_SHOWHELP | OFN_OVERWRITEPROMPT,
-                       "All Files (*.*) | *.*||", this);*/
-	//CCustomFileDialog fdlg(TRUE, OFN_EXPLORER|OFN_PATHMUSTEXIST |OFN_ENABLESIZING |OFN_NODEREFERENCELINKS | OFN_FILEMUSTEXIST | OFN_SHOWHELP);
-	
-	//fdlg.m_ofn.lpstrTitle = "Select File to be Erased";
 	CNewDialog fdlg;
     if (fdlg.DoModal() == IDOK)
     {
-        m_strFile = fdlg.m_sPath;//fdlg.GetPathName();
+        m_strFile = fdlg.m_sPath;
         UpdateData(FALSE);
     }
 }
@@ -248,7 +235,6 @@ void CTaskDataPage::OnRadioDisk()
     GetDlgItem(IDC_EDIT_FILE)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHECK_WILDCARDS)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHECK_WILDCARDS_SF)->EnableWindow(FALSE);
-	((CEdit*)GetDlgItem(IDC_EDIT_MASK))->SetReadOnly(TRUE);
 }
 
 void CTaskDataPage::OnRadioFiles()
@@ -267,7 +253,6 @@ void CTaskDataPage::OnRadioFiles()
     GetDlgItem(IDC_EDIT_FILE)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHECK_WILDCARDS)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHECK_WILDCARDS_SF)->EnableWindow(FALSE);
-	((CEdit*)GetDlgItem(IDC_EDIT_MASK))->SetReadOnly(TRUE);
 }
 
 void CTaskDataPage::OnRadioFile()
@@ -281,33 +266,11 @@ void CTaskDataPage::OnRadioFile()
 
     // disable other sections
     GetDlgItem(IDC_COMBO_DRIVES)->EnableWindow(FALSE);
-	((CEdit*)GetDlgItem(IDC_EDIT_MASK))->SetReadOnly(TRUE);
     GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
     GetDlgItem(IDC_EDIT_FOLDER)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHECK_FOLDER)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHECK_SUBFOLDERS)->EnableWindow(FALSE);
     GetDlgItem(IDC_CHECK_ONLYSUB)->EnableWindow(FALSE);
-
-}
-
-#include "shared\FileHelper.h"
-void CTaskDataPage::OnRadioMask()
-{
-	
-	// enable file section
-	GetDlgItem(IDC_EDIT_MASK)->EnableWindow(TRUE);
-	((CEdit*)GetDlgItem(IDC_EDIT_MASK))->SetReadOnly(FALSE);
-	// disable other sections
-	GetDlgItem(IDC_COMBO_DRIVES)->EnableWindow(FALSE);
-
-	GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_FOLDER)->EnableWindow(FALSE);
-	GetDlgItem(IDC_EDIT_FILE)->EnableWindow(FALSE);
-	GetDlgItem(IDC_CHECK_WILDCARDS)->EnableWindow(FALSE);
-	GetDlgItem(IDC_CHECK_WILDCARDS_SF)->EnableWindow(FALSE);
-	GetDlgItem(IDC_CHECK_FOLDER)->EnableWindow(FALSE);
-	GetDlgItem(IDC_CHECK_SUBFOLDERS)->EnableWindow(FALSE);
-	GetDlgItem(IDC_CHECK_ONLYSUB)->EnableWindow(FALSE);
 
 }
 
@@ -318,7 +281,6 @@ void CTaskDataPage::OnCheckWildcards()
     GetDlgItem(IDC_CHECK_WILDCARDS_SF)->EnableWindow(m_bUseWildCards);
 }
 
-
 BOOL CTaskDataPage::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
@@ -326,7 +288,6 @@ BOOL CTaskDataPage::OnInitDialog()
     BOOL bDrive     = (m_tType == Drive);
     BOOL bFolder    = (m_tType == Folder);
     BOOL bFile      = (m_tType == File);
-	BOOL bMask		= (m_tType == Mask);
 
     m_comboDrives.FillDrives();
 
@@ -336,7 +297,6 @@ BOOL CTaskDataPage::OnInitDialog()
     m_buRadioDisk.SetCheck(bDrive);
     m_buRadioFiles.SetCheck(bFolder);
     m_buRadioFile.SetCheck(bFile);
-	m_buRadioMask.SetCheck(bMask);
 
     // drive
     GetDlgItem(IDC_COMBO_DRIVES)->EnableWindow(bDrive);
@@ -355,10 +315,6 @@ BOOL CTaskDataPage::OnInitDialog()
     GetDlgItem(IDC_CHECK_WILDCARDS)->EnableWindow(bFile);
     GetDlgItem(IDC_CHECK_WILDCARDS_SF)->EnableWindow(bFile && m_bUseWildCards);
 
-	//mask
-	GetDlgItem(IDC_EDIT_MASK)->EnableWindow(bMask);
-	((CEdit*)GetDlgItem(IDC_EDIT_MASK))->SetReadOnly(!bMask);
-	
     if (!m_bShowPersistent)
         GetDlgItem(IDC_PERSISTENT_CHECK)->ShowWindow(SW_HIDE);
 
@@ -385,10 +341,8 @@ void CTaskDataPage::OnOK()
         m_tType = Drive;
     else if (m_buRadioFiles.GetCheck())
         m_tType = Folder;
-    else if (m_buRadioMask.GetCheck()) m_tType = Mask;
-    else m_tType = File;
-	
-
+    else
+        m_tType = File;
 
     if (m_tType == Drive)
         m_comboDrives.GetSelectedDrive(m_strSelectedDrive);

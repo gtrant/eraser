@@ -27,7 +27,5 @@ parseDirectory(LPCTSTR szDirectory, CStringArray& strFiles, CStringArray& strDir
 
 void
 findMatchingFiles(CString strSearch, CStringArray& strFiles, BOOL bSubFolders = FALSE);
-BOOL 
-findMaskedElements(CString strMatch, CStringArray& saFiles, CStringArray& saDir);
 
 #endif

@@ -191,9 +191,6 @@ BOOL CEraserDlg::Initialize(CPtrArray *ppaTasks)
                     else
                         m_saDrives.Add(strData);
                     break;
-				case Mask:
-					findMaskedElements(strData, m_saFiles, m_saFolders);
-					break;
                 default:
                     NODEFAULT;
                 }
