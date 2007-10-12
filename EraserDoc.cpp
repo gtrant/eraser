@@ -133,17 +133,11 @@ m_smallImageList (NULL)
     // find executable location for logging
     try
     {
-
-       /* Removed GT 28/07/2007 for Vista
-	    GetModuleFileName(AfxGetInstanceHandle(),
-                          m_strExePath.GetBuffer(MAX_PATH), MAX_PATH);
-        m_strExePath.ReleaseBuffer();
-        m_strExePath = m_strExePath.Left(m_strExePath.ReverseFind('\\') + 1);
-
-	   */	
-		
-        m_strExePath.ReleaseBuffer();
-        m_strExePath = m_strExePath.Left(m_strExePath.ReverseFind('\\') + 1);
+		// Create the Application Data path to store the Default ers file
+		if (!SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, m_strAppDataPath.GetBuffer(MAX_PATH))))
+			AfxMessageBox("Could not determine path to Application Data", MB_ICONERROR);
+		m_strAppDataPath.ReleaseBuffer();
+		CreateDirectory((m_strAppDataPath += "\\") += szAppDataPath, NULL);
 
 		// read preferences
         if (!ReadPreferences())
@@ -158,18 +152,7 @@ m_smallImageList (NULL)
         m_stIcon.Create(NULL, WM_TRAY_NOTIFY, "Starting...",
                         AfxGetApp()->LoadIcon(IDI_ICON_TRAY),
                         IDR_MENU_TRAY, !m_bNoTrayIcon);
-		/*
-		m_stIcon.Create(NULL,                            // Let icon deal with its own messages
-                        WM_ICON_NOTIFY,                  // Icon notify message to use
-                        _T("Starting..."),  // tooltip
-                        AfxGetApp()->LoadIcon(IDI_ICON_TRAY),
-                        IDR_MENU_TRAY,                  // ID of tray icon
-                        FALSE,
-                        _T("Eraser Starting!"), // balloon tip
-                        _T("Eraser"),               // balloon title
-                        NIIF_WARNING,                    // balloon icon
-                        20 );                            // balloon timeout
-		*/
+		
         // create timers
         CalcNextAssignment();
         UpdateToolTip();
@@ -230,26 +213,24 @@ CEraserDoc::~CEraserDoc()
 
 BOOL CEraserDoc::OnNewDocument()
 {
-    TRACE("CEraserDoc::OnNewDocument\n");
+	TRACE("CEraserDoc::OnNewDocument\n");
 
-    try
-    {
-        if (!CDocument::OnNewDocument())
-            return FALSE;
+	try
+	{
+		if (!CDocument::OnNewDocument())
+			return FALSE;
 
-        CString strDefault = m_strExePath + szDefaultFile;
-        Import((LPCTSTR)strDefault, FALSE);
+		Import(m_strAppDataPath + szDefaultFile, FALSE);
+		return TRUE;
+	}
+	catch (CException *e)
+	{
+		ASSERT(FALSE);
+		REPORT_ERROR(e);
+		e->Delete();
+	}
 
-        return TRUE;
-    }
-    catch (CException *e)
-    {
-        ASSERT(FALSE);
-        REPORT_ERROR(e);
-        e->Delete();
-    }
-
-    return FALSE;
+	return FALSE;
 }
 
 
@@ -1385,8 +1366,7 @@ BOOL CEraserDoc::Import(LPCTSTR szFile, BOOL bErrors)
 
 BOOL CEraserDoc::SaveTasksToDefault()
 {
-    CString strDefault = m_strExePath + szDefaultFile;
-    return Export((LPCTSTR)strDefault);
+    return Export(m_strAppDataPath + szDefaultFile);
 }
 
 void CEraserDoc::OnCloseDocument()

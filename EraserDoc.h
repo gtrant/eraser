@@ -67,6 +67,7 @@ const LPCTSTR szFileFilter       = "Eraser Files (*.ers)|*.ers||";
 const LPCTSTR szExportTitle      = "Select Export File";
 const LPCTSTR szImportTitle      = "Select Import File";
 
+const LPCTSTR szAppDataPath      = "Eraser\\";
 const LPCTSTR szDefaultFile      = "default.ers";
 
 // definitions
@@ -135,6 +136,7 @@ public:
     CSystemTray m_stIcon;
 
     CString m_strNextAssignment;
+    CString m_strAppDataPath;
     CString m_strExePath;
 
 	//Setting. resolving file lock
