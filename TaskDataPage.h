@@ -49,14 +49,12 @@ public:
     CDriveCombo m_comboDrives;
     CString m_strFolder;
     CString m_strFile;
-	CString m_strMask;
     BOOL    m_bRemoveOnlySub;
     BOOL    m_bSubfolders;
     BOOL    m_bRemoveFolder;
     CButton m_buRadioDisk;
     CButton m_buRadioFiles;
     CButton m_buRadioFile;
-	CButton m_buRadioMask;
     BOOL    m_bPersistent;
     BOOL    m_bUseWildCards;
 	BOOL	m_bWildCardsInSubfolders;
@@ -83,7 +81,6 @@ protected:
     afx_msg void OnRadioDisk();
     afx_msg void OnRadioFiles();
     afx_msg void OnRadioFile();
-	afx_msg void OnRadioMask();
     virtual BOOL OnInitDialog();
     afx_msg void OnCheckWildcards();
     //}}AFX_MSG

@@ -48,8 +48,7 @@ enum Type
 {
     Drive,
     Folder,
-    File,
-	Mask
+    File
 };
 
 // schedule IDs
@@ -124,7 +123,6 @@ public:
     BOOL    SetFolder(const CString& str);
     BOOL    SetDrive(const CString&);
     BOOL    SetFile(const CString&);
-	BOOL	SetMask(const CString& str);
 
 	CString GetData() const                    { return m_strData; }
     void    GetData(CString& str) const        { str = m_strData; }

@@ -1409,15 +1409,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\tfdropcopy.cur"
+				>
+			</File>
+			<File
 				RelativePath=".\Verify\res\tfnodrop.cur"
 				>
 			</File>
 			<File
-				RelativePath=".\res\tfnodropcopy.cur"
+				RelativePath=".\Verify\res\tfnodropcopy.cur"
 				>
 			</File>
 			<File
-				RelativePath=".\Verify\res\tfnodropcopy.cur"
+				RelativePath=".\res\tfnodropcopy.cur"
 				>
 			</File>
 			<File

@@ -339,8 +339,7 @@ void CSchedulerView::OnFileNewTask()
         {
             if (tps.m_pgData.m_strSelectedDrive.IsEmpty() &&
                 tps.m_pgData.m_strFolder.IsEmpty() &&
-                tps.m_pgData.m_strFile.IsEmpty() &&
-				tps.m_pgData.m_strMask.IsEmpty())
+                tps.m_pgData.m_strFile.IsEmpty())
             {
                 // no data
                 return;
@@ -370,9 +369,6 @@ void CSchedulerView::OnFileNewTask()
                 case File:
                     strData = tps.m_pgData.m_strFile;
                     break;
-				case Mask:
-					strData = tps.m_pgData.m_strMask;
-					break;
                 default:
                     NODEFAULT;
                 };
@@ -400,9 +396,6 @@ void CSchedulerView::OnFileNewTask()
                 psiItem->UseWildcards(tps.m_pgData.m_bUseWildCards);
                 psiItem->WildcardsInSubfolders(tps.m_pgData.m_bWildCardsInSubfolders);
                 break;
-			case Mask:
-				psiItem->SetMask(tps.m_pgData.m_strMask);
-				break;
             default:
                 NODEFAULT;
             };
@@ -450,8 +443,6 @@ void CSchedulerView::OnFileNewTask()
 						strncat(buffer,Pathname,250);
 						strncpy(Pathname,buffer,260);
 						delete buffer;
-						
-						BOOL bNeed = TRUE;
 						m_strExePath = '"';
 						m_strExePath+=  CString(Pathname);
 						m_strExePath+= "Eraserl.exe";
@@ -475,13 +466,11 @@ void CSchedulerView::OnFileNewTask()
 								m_strExePath+= tps.m_pgData.m_strFile;
 								m_strExePath+= '"';
 								break;
-							case Mask:
-								bNeed = FALSE;
-								break;
+
 							default:
 								NODEFAULT;
 					    };
-						if (bNeed) kReg.SetValue(m_strExePath,psiItem->GetId());
+						kReg.SetValue(m_strExePath, psiItem->GetId());
 						m_strExePath.ReleaseBuffer();
 						kReg.Close();
 					}
@@ -670,9 +659,6 @@ void CSchedulerView::OnEditProperties()
                     case File:
                         tps.m_pgData.m_strFile = strData;
                         break;
-					case Mask:
-						tps.m_pgData.m_strMask = strData;
-						break;
                     default:
                         NODEFAULT;
                     };
@@ -685,8 +671,7 @@ void CSchedulerView::OnEditProperties()
                     {
                         if (tps.m_pgData.m_strSelectedDrive.IsEmpty() &&
                             tps.m_pgData.m_strFolder.IsEmpty() &&
-                            tps.m_pgData.m_strFile.IsEmpty() &&
-							tps.m_pgData.m_strMask.IsEmpty())
+                            tps.m_pgData.m_strFile.IsEmpty())
                         {
                             // no data
                             return;
@@ -722,9 +707,6 @@ void CSchedulerView::OnEditProperties()
                             psiItem->UseWildcards(tps.m_pgData.m_bUseWildCards);
                             psiItem->WildcardsInSubfolders(tps.m_pgData.m_bWildCardsInSubfolders);
                             break;
-						case Mask:
-							psiItem->SetMask(tps.m_pgData.m_strMask);
-							break;
                         default:
                             NODEFAULT;
                         };
@@ -777,7 +759,6 @@ void CSchedulerView::OnEditProperties()
 						strncat(buffer,Pathname,250);
 						strncpy(Pathname,buffer,260);
 						delete buffer;
-						BOOL bNeed = TRUE;	
 						m_strExePath = '"';
 						m_strExePath+=  CString(Pathname);
 						m_strExePath+= "Eraserl.exe";
@@ -802,13 +783,10 @@ void CSchedulerView::OnEditProperties()
 								m_strExePath+= tps.m_pgData.m_strFile;
 								m_strExePath+= '"';
 								break;
-							case Mask:
-								bNeed = FALSE;
-								break;
 							default:
 								NODEFAULT;
 					    };
-						if (bNeed) kReg.SetValue(m_strExePath,psiItem->GetId());
+						kReg.SetValue(m_strExePath,psiItem->GetId());
 						m_strExePath.ReleaseBuffer();
 						kReg.Close();
 					}
@@ -1131,34 +1109,6 @@ BOOL CSchedulerView::EraserWipeDone()
                             saFolders.RemoveAll();
                         }
                     }
-
-					//remove folders on mask clear
-					if (psiItem->GetType() == Mask)
-					{
-						CString strMask;
-						CStringArray saFiles, saFolders;
-
-						psiItem->GetData(strMask);
-
-						findMaskedElements(strMask,
-							saFiles,
-							saFolders);
-						
-						int iSize = saFolders.GetSize();
-						if (iSize > 0)
-						{
-							for (int i = 0; i < iSize; i++)
-							{
-								if (eraserOK(eraserRemoveFolder((LPVOID)(LPCTSTR)saFolders[i],
-									(E_UINT16)saFolders[i].GetLength(), ERASER_REMOVE_FOLDERONLY)))
-								{
-									SHChangeNotify(SHCNE_RMDIR, SHCNF_PATH, (LPCTSTR)saFolders[i], NULL);
-								}
-							}
-							saFiles.RemoveAll();
-							saFolders.RemoveAll();
-						}
-					}
 
                     uValue = 0;
                     eraserTerminated(psiItem->m_ehContext, &uValue);
@@ -1598,9 +1548,6 @@ void CSchedulerView::UpdateList()
                                   SHGFI_DISPLAYNAME);
                 }
                 break;
-			case Mask:
-				bExists = TRUE;
-				break;
             default:
                 NODEFAULT;
             }
@@ -2150,20 +2097,6 @@ BOOL CSchedulerView::RunScheduledTask(CScheduleItem *psiItem)
                         (LPVOID)(LPCTSTR)saData[i], (E_UINT16)saData[i].GetLength())));
                 }
                 break;
-			case Mask:
-				{
-					CWaitCursor wait;
-					CStringArray saFolders;
-					VERIFY(eraserOK(eraserSetDataType(psiItem->m_ehContext, ERASER_DATA_FILES)));
-					findMaskedElements(strData, saData, saFolders);
-					iSize = saData.GetSize();
-					for (i = 0; i < iSize; i++)
-					{
-						VERIFY(eraserOK(eraserAddItem(psiItem->m_ehContext,
-							(LPVOID)(LPCTSTR)saData[i], (E_UINT16)saData[i].GetLength())));
-					}					
-				}
-				break;
 			default:
                 NODEFAULT;
             };

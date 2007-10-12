@@ -113,12 +113,6 @@ BOOL CItem::SetFile(const CString& str)
 
     return TRUE;
 }
-BOOL CItem::SetMask(const CString& str)
-{
-	m_tType = Mask;
-	m_strData = str;
-	return TRUE;
-}
 
 void CItem::Serialize(CArchive& ar)
 {
