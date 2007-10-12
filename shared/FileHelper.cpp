@@ -219,7 +219,6 @@ CString findPattern(LPCTSTR szPath,CString& strBefore, CString& strAfter)
 	return strPattern;
 }
 
-
 bool PatternMatch(const char* s, const char* mask)
 {
 
@@ -232,58 +231,4 @@ bool PatternMatch(const char* s, const char* mask)
 		if (*mask==*s||*mask=='?') { mask++, s++; continue; }
 		mask=mp; s=cp++;
 	}
-}
-
-BOOL findMaskedElements(CString strMatch, CStringArray& saFiles, CStringArray& saDir)
-{
-	HANDLE hFind;
-	WIN32_FIND_DATAA wfdData;
-	CString strPattern(_T(""));
-	CString strBeforePattern(_T("")), strAfterPattern(_T(""));
-	CString strPath(_T(""));
-	CStringArray saTmpFiles;
-	CStringArray saTmpDirs;
-	TCHAR szFolder[_MAX_PATH];
-	CString strFName = _T("");
-
-	if (strPattern.IsEmpty()) {
-		if (GetCurrentDirectory(_MAX_PATH, szFolder) != 0) {
-			strPattern = szFolder;
-			if (strPattern[strPattern.GetLength() - 1] != '\\') {
-				strPattern += "\\";
-			}			
-		}
-	}	
-	strMatch.MakeUpper();
-	strPattern=findPattern(strMatch,strBeforePattern,strAfterPattern);
-	hFind = FindFirstFile(strBeforePattern+"*", &wfdData);
-	if (hFind != INVALID_HANDLE_VALUE) {
-		do {
-			if (ISNT_SUBFOLDER(wfdData.cFileName)) continue;
-			strFName = wfdData.cFileName;
-			strFName.MakeUpper();
-			if (PatternMatch(strFName,strPattern))
-			{
-				strPath = strBeforePattern + strFName;
-				if (bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_DIRECTORY)) 
-				{
-					if (strAfterPattern.IsEmpty()) saDir.Add(strPath+"\\");
-					CString strTmp;
-					if (strAfterPattern.IsEmpty()) strTmp="\\";
-					else strTmp=strAfterPattern;
-					findMaskedElements(strPath + strTmp , saTmpFiles, saTmpDirs);
-					if (!saTmpDirs.IsEmpty()) saDir.InsertAt(saDir.GetUpperBound()+1,&saTmpDirs);
-					saTmpDirs.RemoveAll();
-					if (!saTmpFiles.IsEmpty()) saFiles.InsertAt(saFiles.GetUpperBound()+1,&saTmpFiles);
-					saTmpFiles.RemoveAll();
-				}
-				if (strAfterPattern.IsEmpty()&&!bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_DIRECTORY))
-				{
-					saFiles.Add(strPath);					
-				}
-			}			
-		}while(FindNextFile(hFind, &wfdData));
-	}
-	FindClose(hFind);
-	return TRUE;
 }
