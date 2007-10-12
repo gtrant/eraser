@@ -1,10 +1,10 @@
 ----------------------------------------------------------------
-NOTE: This version uses the new installer. You Must remove versions 
-5.8 and below by executing a) unwise/unwise32.exe in the eraser directory
-or b) add/remove from the control panel.
+NOTE: This version uses a new installer system. You MUST remove
+ALL EARLIER VERSIONS before installing this Beta. When installing
+an earlier stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.84 (Aug 8th 2007)
+Eraser 5.85 Beta 2 (Oct 12th 2007)
 ----------------------------------------------------------------
 
 CONTENTS

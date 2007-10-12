@@ -512,6 +512,7 @@ BOOL CLauncherApp::InitInstance()
 				catch (const std::exception& ee)
 				{
 					AfxMessageBox(ee.what(), MB_ICONERROR);
+					return FALSE;
 				}
 			}
 			
