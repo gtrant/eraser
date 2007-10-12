@@ -22,6 +22,7 @@
 // 02111-1307, USA.
 #include "stdafx.h"
 #include "FileLockResolver.h"
+#include "..\Launcher\Launcher.h"
 #include <fstream>
 #include <string>
 #include <iterator>
@@ -123,19 +124,16 @@ void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int e
 		|| ERROR_LOCKED == dwErrorCode
 		|| ERROR_SHARING_VIOLATION == dwErrorCode)
 	{
-		bool needResolve = true;
-		if (TRUE == m_bAskUser )
+		if (TRUE == m_bAskUser)
 		{
-			 needResolve = (IDYES == AfxGetMainWnd()->MessageBox(CString("The file ") +
-				 szFileName + "is locked by another process. Do you want to Erase the file after " +
-				 "you restart your computer?", "File Access Denied", MB_YESNO | MB_ICONQUESTION));			
-		}
-
-		if (needResolve)
-		{
-			static PathHelper	path(m_strLockFileList);
-			std::ofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
-			os << FileData(szFileName, em, passes);
+			if (IDYES == AfxGetMainWnd()->MessageBox(CString("The file ") +
+				szFileName + "\nis locked by another process. Do you want to Erase the file after " +
+				"you restart your computer?", "File Access Denied", MB_YESNO | MB_ICONQUESTION))
+			{
+				static PathHelper path(m_strLockFileList);
+				std::ofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
+				os << FileData(szFileName, em, passes);
+			}
 		}
 	}
 }
@@ -174,10 +172,8 @@ void CFileLockResolver::Close()
 
 	CString strPath;
 	PathHelper(strPath, true);
-	strPath = CString("\"") + strPath ;
-	strPath += LAUNCHER;
-	strPath += "\" -rl \"";
-	strPath += m_strLockFileList + "\"";
+	strPath = CString("\"") + strPath + LAUNCHER + "\" " + szResolveLock;
+	strPath += " \"" + m_strLockFileList + "\"";
 
 	extern bool no_registry;
 	if (!no_registry)
