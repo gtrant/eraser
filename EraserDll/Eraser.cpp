@@ -458,7 +458,7 @@ E_UINT8 convEraseMethod(ERASER_METHOD mIn)
 			return SCHNEIER_METHOD_ID;
 			break;
 		default:
-			return mIn;
+			return (E_UINT8)mIn;
 	}
 }
 
