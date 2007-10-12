@@ -410,7 +410,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -420,7 +419,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -430,7 +428,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -439,7 +436,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -452,7 +448,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -462,7 +457,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -472,7 +466,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -481,7 +474,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -498,7 +490,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -508,7 +499,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -518,7 +508,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -527,7 +516,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -544,7 +532,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -554,7 +541,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -564,7 +550,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -573,7 +558,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -632,7 +616,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -642,7 +625,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="0"
 						PreprocessorDefinitions=""
 						BasicRuntimeChecks="3"
 					/>
@@ -652,7 +634,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
@@ -661,7 +642,6 @@
 					>
 					<Tool
 						Name="VCCLCompilerTool"
-						Optimization="1"
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>

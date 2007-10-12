@@ -87,7 +87,7 @@ void CReportDialog::OnSaveAs()
     {
         CString strFile = fd.GetPathName();
         CString strTemp;
-        DWORD uIndex, uSize;
+		INT_PTR uIndex, uSize;
         CStdioFile file;
 
         if (file.Open((LPCTSTR)strFile, CFile::modeCreate | CFile::modeWrite))
