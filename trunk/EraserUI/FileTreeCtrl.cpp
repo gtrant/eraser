@@ -3193,7 +3193,7 @@ void CTreeFileCtrl::SetMaxHistory(int nMaxHistory)
   m_nMaxHistory = nMaxHistory;
 
   //Shrink the prev array if necessary
-  int nCurItems = m_PrevItems.GetSize();
+  INT_PTR nCurItems = m_PrevItems.GetSize();
   if (nCurItems > m_nMaxHistory)
   {
     int nItemsToDelete = nCurItems - m_nMaxHistory;

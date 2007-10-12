@@ -813,7 +813,7 @@ CFlatHeaderCtrl::OnNcHitTest(CPoint point)
             m_bHotItemResizable = (hditemex.m_iMinWidth != hditemex.m_iMaxWidth);
     }
 
-    return CHeaderCtrl::OnNcHitTest(point);
+    return (UINT)CHeaderCtrl::OnNcHitTest(point);
 }
 
 

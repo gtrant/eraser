@@ -1223,7 +1223,7 @@ BOOL CSchedulerView::EraserWipeBegin()
         {
             CListCtrl&      lc          = GetListCtrl();
             int             iCount      = lc.GetItemCount();
-            int             iIndex      = 0;
+            DWORD_PTR       iIndex      = 0;
             CScheduleItem   *psiItem    = 0;
             CString         str;
             CString         strOld;

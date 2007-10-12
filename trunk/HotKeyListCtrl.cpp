@@ -48,7 +48,7 @@ END_MESSAGE_MAP()
 // CHotKeyListCtrl message handlers
 
 
-void CHotKeyListCtrl::OnLvnItemActivate(NMHDR *pNMHDR, LRESULT *pResult)
+void CHotKeyListCtrl::OnLvnItemActivate(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 {
 	// TODO: Add your control notification handler code here
 	*pResult = 0;
