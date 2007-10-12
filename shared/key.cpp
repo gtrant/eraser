@@ -44,8 +44,7 @@ void CKey::Close()
 {
     if (m_hKey != NULL)
     {
-        LONG lRes = RegCloseKey(m_hKey);
-        ASSERT(lRes == ERROR_SUCCESS);
+        VERIFY(RegCloseKey(m_hKey) == ERROR_SUCCESS);
         m_hKey = NULL;
     }
 }

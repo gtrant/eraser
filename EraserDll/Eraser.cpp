@@ -1670,8 +1670,9 @@ eraserShowReport(E_IN ERASER_HANDLE param1, E_IN HWND param2)
         CStringArray straFailures;
         CString strTemp;
         CString strUnit;
-        E_UINT32 uIndex, uSize;
+        E_UINT32 uIndex;
         E_UINT64 uTemp;
+        INT_PTR uSize;
         double dTime;
         CReportDialog rd;
 
