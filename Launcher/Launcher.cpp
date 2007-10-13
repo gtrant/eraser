@@ -152,13 +152,13 @@ struct VersionHelper
 
 		osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
 
-		if( !(bOsVersionInfoEx = GetVersionEx ((OSVERSIONINFO *) &osvi)) )
+		if ( (bOsVersionInfoEx = GetVersionEx((OSVERSIONINFO *) &osvi)) != TRUE )
 		{
 			osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
-			if (! GetVersionEx ( (OSVERSIONINFO *) &osvi) ) 
+			if ( !GetVersionEx ((OSVERSIONINFO *) &osvi) ) 
 				return ;
 		}
-		if (VER_PLATFORM_WIN32_NT  == osvi.dwPlatformId )
+		if ( VER_PLATFORM_WIN32_NT == osvi.dwPlatformId )
 		{
 			if ( osvi.dwMajorVersion == 6 && osvi.dwMinorVersion == 0 )
 			{

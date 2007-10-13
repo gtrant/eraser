@@ -136,7 +136,7 @@ BOOL CEraserApp::InitInstance()
 		::GetModuleFileName(NULL, temp, sizeof(temp));
 		::PathRemoveFileSpec(temp);
 		::PathAppend(temp, "eraser.ini");
-		m_pszProfileName = strdup(temp);
+		m_pszProfileName = _strdup(temp);
 	}
 
 	if (!CheckAccess())
@@ -220,7 +220,7 @@ BOOL CEraserApp::InitInstance()
 
 	EnableHtmlHelp();
 	int helpfilelen = strlen(m_pszHelpFilePath);
-	if((helpfilelen >= 4) && !stricmp(&m_pszHelpFilePath[helpfilelen - 4], ".hlp"))
+	if((helpfilelen >= 4) && !_stricmp(&m_pszHelpFilePath[helpfilelen - 4], ".hlp"))
 		strcpy((char *)&m_pszHelpFilePath[helpfilelen - 4], ".chm");
 
     // The one and only window has been initialized, so show and update it.

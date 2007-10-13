@@ -323,7 +323,7 @@ BOOL CTaskDataPage::OnInitDialog()
 	finish_action->SetItemDataPtr(selstr = finish_action->AddString("None"), NULL);
 	finish_action->SetItemData(finish_action->AddString("Shutdown system"), EWX_SHUTDOWN);
 	finish_action->SetItemData(finish_action->AddString("Restart"), EWX_REBOOT);
-	finish_action->SetItemData(finish_action->AddString("Sleep"), -1);
+	finish_action->SetItemData(finish_action->AddString("Sleep"), (DWORD_PTR)-1);
 
 	finish_action->SetCurSel(m_iFinishActionInd);
 	
