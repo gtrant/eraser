@@ -4,7 +4,7 @@ ALL EARLIER VERSIONS before installing this Beta. When installing
 an earlier stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.85 Beta 2 (Oct 12th 2007)
+Eraser 5.85 Beta 3 (Oct 13th 2007)
 ----------------------------------------------------------------
 
 CONTENTS
