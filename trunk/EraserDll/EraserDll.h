@@ -65,9 +65,9 @@ const LPCTSTR ERASER_REGISTRY_RESULTS_UNUSEDSPACE
 // URLs
 //
 const LPCTSTR ERASER_URL_HOMEPAGE
-    = "http://www.heidi.ie/eraser/";
+    = "http://eraser.sourceforge.net/";
 const LPCTSTR ERASER_URL_EMAIL
-    = "mailto:support@heidi.ie";
+    = "http://bbs.heidi.ie";
 
 #ifdef DMARS
 typedef unsigned __int64 ULONGLONG;
