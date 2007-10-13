@@ -44,7 +44,10 @@ private:
 	BOOL m_bAskUser;	
 	CString m_strLockFileList;
 	ERASER_HANDLE m_hHandle;
+	int m_iMethod;
+	unsigned m_iPasses;
 private:
+	static CString GetLockFilePath(bool path_only = false);
 	void HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int method, unsigned int passes);
 	static DWORD ErrorHandler(LPCTSTR szFileName, DWORD dwErrorCode, void* ctx, void* param);
 };
