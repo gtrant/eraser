@@ -696,7 +696,7 @@ BOOL CEraserDoc::LogAction(CString str)
                 // file under the maximum size
 
                 CString strTmp;
-                LONGLONG dwLen = dwMax - str.GetLength();
+                int dwLen = dwMax - str.GetLength();
 
                 sf.Seek(-1*dwLen, CFile::end);
                 sf.ReadString(strTmp);

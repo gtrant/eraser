@@ -616,7 +616,7 @@ findAlternateDataStreams(CEraserContext *context, LPCTSTR szFile, DataStreamArra
                         memcpy(wszStreamName, psi->Name, psi->NameLength);
                         wszStreamName[psi->NameLength / sizeof(WCHAR)] = 0;
 
-                        if (wcsicmp(wszStreamName, L"::$DATA")) {
+                        if (_wcsicmp(wszStreamName, L"::$DATA")) {
                             // name of the alternate data stream
                             unicodeToCString(wszStreamName, ads.m_strName);
                             ads.m_strName = szFile + ads.m_strName;

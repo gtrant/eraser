@@ -2473,7 +2473,7 @@ void makeWindowsSystemFile(LPTSTR filename) {
 			_tcscpy(newfilename, systemfiles[rand() % systemfiles.GetCount()]);
 			if (!file.Open(newfilename, CFile::modeRead | CFile::typeBinary))
 				continue;
-			unsigned int len = file.GetLength();
+			unsigned int len = (unsigned int)file.GetLength();
 			void *buffer = calloc(1, len);
 			try {
 				file.Read(buffer, len);

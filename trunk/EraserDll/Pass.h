@@ -232,8 +232,6 @@ const E_UINT8 nBuiltinMethods       = 6;
 #define DEFAULT_UDS_PASSES          PASSES_RND
 
 // global array of built-in methods
-#ifndef PASS_CPP
 extern const BMETHOD bmMethods[nBuiltinMethods];
-#endif
 
 #endif // PASS_H
