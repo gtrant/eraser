@@ -34,15 +34,21 @@
 #define LAUNCHER "Eraserl.exe"
 
 CFileLockResolver::CFileLockResolver(BOOL askUser)
-: m_bAskUser(askUser), m_hHandle(ERASER_INVALID_CONTEXT)
+: m_bAskUser(askUser), m_hHandle(ERASER_INVALID_CONTEXT),
+  m_iMethod(0), m_iPasses(0)
 {
 
 }
 
 CFileLockResolver::CFileLockResolver(ERASER_HANDLE h, BOOL askUser)
-: m_bAskUser(askUser)
+: m_bAskUser(askUser), m_iMethod(0), m_iPasses(0)
 {
 	SetHandle(h);
+}
+
+CFileLockResolver::~CFileLockResolver(void)
+{
+	Close();
 }
 
 void CFileLockResolver::SetHandle(ERASER_HANDLE h)
@@ -51,33 +57,27 @@ void CFileLockResolver::SetHandle(ERASER_HANDLE h)
 	eraserSetErrorHandler(h, ErrorHandler, this);
 }
 
-CFileLockResolver::~CFileLockResolver(void)
+CString CFileLockResolver::GetLockFilePath(bool path_only)
 {
-	Close();
+	// Retrieve the path to the current binary
+	char fullname[MAX_PATH];
+	GetModuleFileName(AfxGetInstanceHandle(), fullname, sizeof(fullname));
+
+	// Then separate the path into its constituent parts
+	char filename[MAX_PATH];
+	char extension[MAX_PATH];
+	char pathname[MAX_PATH];
+	char drive[10];
+	_splitpath(fullname, drive, pathname, filename, extension); 
+
+	// Then generate the path which we want
+	CString result;
+	if (path_only)
+		result.Format("%s%s", drive, pathname);
+	else
+		result.Format("%s%s%d.%s", drive, pathname, time(0), LOCKED_FILE_LIST_NAME);
+	return result;
 }
-
-struct PathHelper
-{
-	CString& m_strLockFile;
-	PathHelper(CString& lockFile, bool path_only = false)
-		:m_strLockFile(lockFile)
-	{
-		char fullname[MAX_PATH];
-		char filename[MAX_PATH];
-		char extension[MAX_PATH];
-		char pathname[MAX_PATH];
-		char drive[10];
-
-		GetModuleFileName(AfxGetInstanceHandle(),fullname,sizeof (fullname));
-		_splitpath(fullname,drive, pathname, filename, extension); 
-
-		m_strLockFile = drive;
-		m_strLockFile += pathname;
-		if (path_only )
-			return;
-		m_strLockFile.Format("%s%s%d.%s", drive, pathname, time(0), LOCKED_FILE_LIST_NAME);
-	}
-};
 
 struct FileData
 {
@@ -90,7 +90,7 @@ struct FileData
 	}
 
 	FileData(const std::string& fname, int m, unsigned int pass)
-		:name(fname), method(m), passes(pass)
+		: name(fname), method(m), passes(pass)
 	{
 	}
 
@@ -98,12 +98,13 @@ struct FileData
 	{
 		is >> std::noskipws;
 		std::getline(is, name);
+		is >> method >> passes;
 	}
 
 	void write(std::ostream& os) const
 	{
 		os << std::noskipws;
-		os << name << std::endl;
+		os << name << std::endl << method << passes;
 	}
 };
 
@@ -112,13 +113,14 @@ std::ostream& operator<< (std::ostream& os, const FileData& data)
 	data.write(os);
 	return os;
 }
+
 std::istream& operator>> (std::istream& is, FileData& data)
 {
 	data.read(is);
 	return is;
 }
 
-void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int em, unsigned int passes)
+void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int method, unsigned int passes)
 {
 	if (ERROR_LOCK_VIOLATION == dwErrorCode 
 		|| ERROR_DRIVE_LOCKED == dwErrorCode
@@ -127,13 +129,19 @@ void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int e
 	{
 		if (TRUE == m_bAskUser)
 		{
-			if (IDYES == AfxGetMainWnd()->MessageBox(CString("The file ") +
+			if (IDYES == AfxMessageBox(CString("The file ") +
 				szFileName + "\nis locked by another process. Do you want to Erase the file after " +
-				"you restart your computer?", "File Access Denied", MB_YESNO | MB_ICONQUESTION | MB_TASKMODAL))
+				"you restart your computer?", MB_YESNO | MB_ICONQUESTION))
 			{
-				static PathHelper path(m_strLockFileList);
+				if (m_strLockFileList.IsEmpty())
+					m_strLockFileList = GetLockFilePath();
 				std::ofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
-				os << FileData(szFileName, em, passes);
+				os << FileData(szFileName, method, passes);
+
+				ASSERT(m_iMethod == 0 || m_iMethod == method);
+				ASSERT(m_iPasses == 0 || m_iPasses == passes);
+				m_iMethod = method;
+				m_iPasses = passes;
 			}
 		}
 	}
@@ -167,14 +175,35 @@ DWORD CFileLockResolver::ErrorHandler(LPCTSTR szFileName, DWORD dwErrorCode, voi
 void CFileLockResolver::Close()
 {
 	eraserSetErrorHandler(m_hHandle, NULL, NULL);
-
 	if (m_strLockFileList.IsEmpty())
 		return;
 
-	CString strPath;
-	PathHelper(strPath, true);
-	strPath = CString("\"") + strPath + LAUNCHER + "\" " + szResolveLock;
-	strPath += " \"" + m_strLockFileList + "\"";
+	//Using the method and the passes, generate a command line that will do the same thing as it does now.
+	CString method;
+	switch (m_iMethod)
+	{
+	case GUTMANN_METHOD_ID:
+		method = "Gutmann";
+		break;
+	case DOD_METHOD_ID:
+		method = "DoD";
+		break;
+	case DOD_E_METHOD_ID:
+		method = "DoD_E";
+		break;
+	case RANDOM_METHOD_ID:
+		method.Format("Random %d", m_iPasses);
+		break;
+	case FL2KB_METHOD_ID:
+		method = "First_Last2k";
+		break;
+	case SCHNEIER_METHOD_ID:
+		method = "Schneider";
+		break;
+	}
+
+	CString strPath(CString("\"") + LAUNCHER + "\" " + szResolveLock + " \"" +
+		m_strLockFileList + "\" -method " + method);
 
 	extern bool no_registry;
 	if (!no_registry)
@@ -184,6 +213,8 @@ void CFileLockResolver::Close()
 		{
 			key.SetStringValue(LAUNCHER, strPath);
 			m_strLockFileList = "";
+			m_iMethod = 0;
+			m_iPasses = 0;
 		}
 	}
 }
