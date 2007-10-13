@@ -791,7 +791,7 @@ void CFlatHeaderCtrl::OnPaint()
         DrawCtrl(&dc);*/
 }
 
-UINT
+LRESULT
 CFlatHeaderCtrl::OnNcHitTest(CPoint point)
 {
     m_hdhtiHotItem.pt = point;

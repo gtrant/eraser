@@ -473,7 +473,7 @@ loadDependenciesNT()
                                  NULL, szValue, &uSize);
 
         if (status == ERROR_SUCCESS &&
-            stricmp((const char*)szValue, RANDOM_NTWORKSTATION_TOKEN)) {
+            _stricmp((const char*)szValue, RANDOM_NTWORKSTATION_TOKEN)) {
             isNTWorkstation = false;
         }
 

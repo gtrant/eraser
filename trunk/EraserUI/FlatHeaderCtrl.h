@@ -132,7 +132,7 @@ protected:
     afx_msg LRESULT OnDeleteItem(WPARAM wparam, LPARAM lparam);
     afx_msg LRESULT OnSetHotDivider(WPARAM wparam, LPARAM lparam);
     afx_msg LRESULT OnLayout(WPARAM wparam, LPARAM lparam);
-    afx_msg UINT OnNcHitTest(CPoint point);
+    afx_msg LRESULT OnNcHitTest(CPoint point);
     afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
