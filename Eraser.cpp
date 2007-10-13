@@ -185,7 +185,7 @@ BOOL CEraserApp::InitInstance()
     //  the specific initialization routines you do not need.
     // Change the registry key under which our settings are stored.
 	if (!no_registry)
-	    SetRegistryKey(_T("Heidi Computers Ltd\\Eraser\\5.5"));
+	    SetRegistryKey(_T("Heidi Computers Ltd\\Eraser\\5.8"));
 
     LoadStdProfileSettings(0);  // Load standard INI file options (including MRU)
 
