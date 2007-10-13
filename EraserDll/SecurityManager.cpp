@@ -24,7 +24,6 @@
 
 #include <vector>
 #include <atlbase.h>
-#include <atlcrypt.h>
 #include <atlsecurity.h>
 #define REG_PROTECT_KEY "Software\\Heidi Computers Ltd\\Eraser\\PROTECT"
 #define REG_PRODUCT_KEY "Software\\Heidi Computers Ltd\\Eraser"
