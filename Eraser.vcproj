@@ -212,7 +212,7 @@
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="1"
+			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -245,7 +245,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_WIN32_IE=0x600;_WIN32_WINNT=0x600"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
@@ -309,7 +309,7 @@
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
-			UseOfMFC="1"
+			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -342,7 +342,7 @@
 				PreprocessorDefinitions="NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;_WIN32_IE=0x600;_WIN32_WINNT=0x600"
 				StringPooling="true"
 				ExceptionHandling="2"
-				RuntimeLibrary="0"
+				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="stdafx.h"
@@ -1329,11 +1329,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Verify\res\tfdropcopy.cur"
+				RelativePath=".\res\tfdropcopy.cur"
 				>
 			</File>
 			<File
-				RelativePath=".\res\tfdropcopy.cur"
+				RelativePath=".\Verify\res\tfdropcopy.cur"
 				>
 			</File>
 			<File
@@ -1349,11 +1349,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Verify\res\tfnodropmove.cur"
+				RelativePath=".\res\tfnodropmove.cur"
 				>
 			</File>
 			<File
-				RelativePath=".\res\tfnodropmove.cur"
+				RelativePath=".\Verify\res\tfnodropmove.cur"
 				>
 			</File>
 			<File
