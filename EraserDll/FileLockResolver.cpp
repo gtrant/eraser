@@ -20,6 +20,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 // 02111-1307, USA.
+
 #include "stdafx.h"
 #include "FileLockResolver.h"
 #include "..\Launcher\Launcher.h"
@@ -128,7 +129,7 @@ void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int e
 		{
 			if (IDYES == AfxGetMainWnd()->MessageBox(CString("The file ") +
 				szFileName + "\nis locked by another process. Do you want to Erase the file after " +
-				"you restart your computer?", "File Access Denied", MB_YESNO | MB_ICONQUESTION))
+				"you restart your computer?", "File Access Denied", MB_YESNO | MB_ICONQUESTION | MB_TASKMODAL))
 			{
 				static PathHelper path(m_strLockFileList);
 				std::ofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
