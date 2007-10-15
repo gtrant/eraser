@@ -198,7 +198,7 @@ void CFileLockResolver::Close()
 		method = "First_Last2k";
 		break;
 	case SCHNEIER_METHOD_ID:
-		method = "Schneider";
+		method = "Schneier";
 		break;
 	}
 
