@@ -288,13 +288,6 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
 
 /////////////////////////////////////////////////////////////////////////////
 // CLauncherApp initialization
-void ShowHelp(const CString& message = "")
-{
-	CString msg;
-	msg.LoadString(AfxGetInstanceHandle(), IDS_CMDLINE_INCORRECT);
-	AfxMessageBox(message + msg, MB_ICONERROR, 0);
-}
-
 BOOL CLauncherApp::InitInstance()
 {
 	// Standard initialization
@@ -345,7 +338,7 @@ BOOL CLauncherApp::InitInstance()
 			if (!chrBuf)
 			{
 				CString msg = Message;
-				chrBuf = new char[msg.GetLength()];
+				chrBuf = new char[msg.GetLength() + 1];
 				strcpy(chrBuf, msg.GetBuffer());
 				msg.ReleaseBuffer();
 			}
@@ -605,7 +598,9 @@ BOOL CLauncherApp::InitInstance()
 	}
 	catch (InvalidCommandLineException& e)
 	{
-		ShowHelp(CString(e.what()) + "\n\n");
+		CString msg;
+		msg.LoadString(AfxGetInstanceHandle(), IDS_CMDLINE_INCORRECT);
+		AfxMessageBox(CString(e.what()) + "\n\n" + msg, MB_ICONERROR);
 	}
 	catch (CException *e)
 	{
