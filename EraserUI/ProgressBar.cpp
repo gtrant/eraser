@@ -188,7 +188,7 @@ COLORREF CProgressBar::SetBkColour(COLORREF clrBk)
     if (!IsWindow(GetSafeHwnd()))
         return CLR_DEFAULT;
 
-    return SendMessage(PBM_SETBKCOLOR, 0, (LPARAM) clrBk);
+    return (COLORREF)SendMessage(PBM_SETBKCOLOR, 0, (LPARAM) clrBk);
 #else
     UNUSED(clrBk);
     return CLR_DEFAULT;

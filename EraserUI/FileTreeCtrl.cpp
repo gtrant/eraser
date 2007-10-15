@@ -1711,7 +1711,7 @@ BOOL CTreeFileCtrl::OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult)
       sTo += szExt;
       sToRelative += szExt;
     }
-    int nToLength = _tcslen(sTo);
+    size_t nToLength = _tcslen(sTo);
     TCHAR* pszTo = new TCHAR[nToLength + 2];
     _tcscpy(pszTo, sTo);
     pszTo[nToLength+1] = _T('\0');
