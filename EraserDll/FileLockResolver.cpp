@@ -202,8 +202,8 @@ void CFileLockResolver::Close()
 		break;
 	}
 
-	CString strPath(CString("\"") + LAUNCHER + "\" " + szResolveLock + " \"" +
-		m_strLockFileList + "\" -method " + method);
+	CString cmdLine(CString("\"") + LAUNCHER + "\" " + szResolveLock + " \"" +
+		m_strLockFileList + "\" -method " + method + " -queue");
 
 	extern bool no_registry;
 	if (!no_registry)
@@ -211,7 +211,17 @@ void CFileLockResolver::Close()
 		CRegKey key;
 		if (ERROR_SUCCESS == key.Open(HKEY_LOCAL_MACHINE, RUNONCE))
 		{
-			key.SetStringValue(LAUNCHER, strPath);
+			// Find an unused eraser launcher ID
+			int i = 0;
+			ULONG bufSiz = 0;
+			const char* KeyName = "EraserRestartErase (%i)";
+			char KeyNameBuf[64];
+			do
+				sprintf(KeyNameBuf, KeyName, ++i);
+			while (key.QueryStringValue(KeyNameBuf, NULL, &bufSiz) == ERROR_SUCCESS);
+
+			// Then save to registry
+			key.SetStringValue(KeyNameBuf, cmdLine);
 			m_strLockFileList = "";
 			m_iMethod = 0;
 			m_iPasses = 0;
