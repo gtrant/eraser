@@ -288,19 +288,24 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
 
 /////////////////////////////////////////////////////////////////////////////
 // CLauncherApp initialization
+void ShowHelp(const CString& message = "")
+{
+	CString msg;
+	msg.LoadString(AfxGetInstanceHandle(), IDS_CMDLINE_INCORRECT);
+	AfxMessageBox(message + msg, MB_ICONERROR, 0);
+}
 
 BOOL CLauncherApp::InitInstance()
 {
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
-	//  of your final executable, you should remove from the following
-	//  the specific initialization routines you do not need.
+	// of your final executable, you should remove from the following
+	// the specific initialization routines you do not need.
 	eraserInit();
 
 	CString strCmdLine(m_lpCmdLine);
 	CString strCurrentParameter;
 
-	BOOL    bIncorrectParameter = FALSE;
 	BOOL    bSilent             = FALSE;
 	BOOL    bResults            = -1;
 	BOOL    bResultsOnError     = -1;
@@ -320,172 +325,201 @@ BOOL CLauncherApp::InitInstance()
 	ERASER_METHOD emMethod      = ERASER_METHOD_PSEUDORANDOM /*ERASER_METHOD_LIBRARY*/;
 	E_UINT16 uPasses            = 1;
 
-	if (!strCmdLine.IsEmpty())
+	// Declare an "Invalid command line" exception
+	class InvalidCommandLineException : public std::exception
 	{
-		while (GetNextParameter(strCmdLine, strCurrentParameter))
+	public:
+		InvalidCommandLineException(const CString& msg)
+			: Message(msg)
 		{
-			if (strCurrentParameter.CompareNoCase(szFile) == 0 &&
-				strData.IsEmpty())
-			{
-				// file
-
-				if (!GetNextParameter(strCmdLine, strCurrentParameter))
-					bIncorrectParameter = TRUE;
-				else
-				{
-					strData = strCurrentParameter;
-					bFiles = TRUE;
-				}
-			}
-			else if (strCurrentParameter.CompareNoCase(szResolveLock) == 0 &&
-				strData.IsEmpty())
-			{
-				if (!GetNextParameter(strCmdLine, strCurrentParameter))
-					bIncorrectParameter = TRUE;
-				else
-				{
-					strData = strCurrentParameter;
-					bResolveLock = TRUE;
-				}
-			}
-			else if (strCurrentParameter.CompareNoCase(szFolder) == 0 &&
-					 strData.IsEmpty())
-			{
-				// folder
-
-				if (!GetNextParameter(strCmdLine, strCurrentParameter))
-					bIncorrectParameter = TRUE;
-				else
-				{
-					strData = strCurrentParameter;
-					bFiles = TRUE;
-					bFolders = TRUE;
-
-					if (strData[strData.GetLength() - 1] != '\\')
-						strData += "\\";
-				}
-			}
-			else if (strCurrentParameter.CompareNoCase(szDisk) == 0 &&
-					 strData.IsEmpty())
-			{
-				// unused disk space
-
-				if (!GetNextParameter(strCmdLine, strCurrentParameter))
-					bIncorrectParameter = TRUE;
-				else
-				{
-					bDrive = TRUE;
-
-					if (strCurrentParameter != szDiskAll)
-						strData.Format("%c:\\", strCurrentParameter[0]);
-					else
-						strData = strCurrentParameter;
-				}
-			}
-			else if (strCurrentParameter.CompareNoCase(szRecycled) == 0)
-			{
-				bRecycled   = TRUE;
-				bFiles      = TRUE;
-				bFolders    = FALSE;
-			}
-			else if (strCurrentParameter.CompareNoCase(szMethod) == 0)
-			{
-				if (!GetNextParameter(strCmdLine, strCurrentParameter))
-					bIncorrectParameter = TRUE;
-				else
-				{
-					if (strCurrentParameter.CompareNoCase(szMethodLibrary) == 0)
-						emMethod = ERASER_METHOD_LIBRARY;
-					else if (strCurrentParameter.CompareNoCase(szMethodGutmann) == 0)
-						emMethod = ERASER_METHOD_GUTMANN;
-					else if (strCurrentParameter.CompareNoCase(szMethodDoD) == 0)
-						emMethod = ERASER_METHOD_DOD;
-					else if (strCurrentParameter.CompareNoCase(szMethodDoD_E) == 0)
-						emMethod = ERASER_METHOD_DOD_E;
-					else if (strCurrentParameter.CompareNoCase(szMethodFL2K) == 0)
-						emMethod = ERASER_METHOD_FIRST_LAST_2KB;
-					else if (strCurrentParameter.CompareNoCase(szSchneier) == 0)
-						emMethod = ERASER_METHOD_SCHNEIER;
-					else if (strCurrentParameter.CompareNoCase(szMethodRandom) == 0)
-					{
-						emMethod = ERASER_METHOD_PSEUDORANDOM;
-
-						if (!GetNextParameter(strCmdLine, strCurrentParameter))
-							bIncorrectParameter = TRUE;
-						else
-						{
-							char *sztmp = 0;
-							E_UINT32 uCurrentParameter = strtoul((LPCTSTR)strCurrentParameter, &sztmp, 10);
-
-							if (*sztmp != '\0' || uCurrentParameter > (E_UINT16)-1) {
-								bIncorrectParameter = TRUE;
-							} else {
-								uPasses = (E_UINT16)uCurrentParameter;
-							}
-						}
-					}
-					else
-						bIncorrectParameter = TRUE;
-				}
-			}
-			else if (strCurrentParameter.CompareNoCase(szSubFolders) == 0)
-				bSubFolders = TRUE;
-			else if (strCurrentParameter.CompareNoCase(szKeepFolder) == 0)
-				bKeepFolder = TRUE;
-			else if (strCurrentParameter.CompareNoCase(szSilent) == 0)
-				bSilent = TRUE;
-			else if (strCurrentParameter.CompareNoCase(szResults) == 0)
-				bResults = TRUE;
-			else if (strCurrentParameter.CompareNoCase(szResultsOnError) == 0)
-			{
-				bResults = TRUE;
-				bResultsOnError = TRUE;
-			}
-			else if (strCurrentParameter.CompareNoCase(szOptions) == 0)
-				bOptions = TRUE;
-			else if (strCurrentParameter.CompareNoCase(szQueue) == 0)
-				bQueue = TRUE;
-			else
-				bIncorrectParameter = TRUE;
+			chrBuf = NULL;
 		}
-	}
-	else
-	{
-		bIncorrectParameter = TRUE;
-	}
 
-	// conflicting command line parameters ?
-	if (((!bOptions && !bRecycled) && strData.IsEmpty()) || // no data!
-		(!bFolders && bKeepFolder) ||                       // data not a folder
-		(bSilent && bResults) ||                            // no windows
-		(bOptions && bQueue) ||                             // why queue the options?
-		bIncorrectParameter)
-	{
-		AfxMessageBox(IDS_CMDLINE_INCORRECT, MB_ICONERROR, 0);
-		return FALSE;
-	}
+		~InvalidCommandLineException()
+		{
+			delete[] chrBuf;
+		}
 
-	// is the user naive enough to select the first/last 2KB pass with free space?
-	if (emMethod == ERASER_METHOD_FIRST_LAST_2KB && bDrive)
-	{
-		AfxMessageBox("The first/last 2KB erase cannot be used with Free Space erases.", MB_ICONERROR);
-		return FALSE;
-	}
+		virtual const char* what() const
+		{
+			if (!chrBuf)
+			{
+				CString msg = Message;
+				chrBuf = new char[msg.GetLength()];
+				strcpy(chrBuf, msg.GetBuffer());
+				msg.ReleaseBuffer();
+			}
+			return chrBuf;
+		}
 
-	//Now that the command line has been passed, check if we should display the
-	//results dialog (because it may not be overridde by the user)
-	CKey kReg;
-	if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
-	{
-		if (bResults == -1)
-			kReg.GetValue(bResults, ERASER_REGISTRY_RESULTS_FILES, TRUE);
-		if (bResultsOnError == -1)
-			kReg.GetValue(bResultsOnError, ERASER_REGISTRY_RESULTS_WHENFAILED, FALSE);
-		kReg.Close();
-	}
+	private:
+		mutable char* chrBuf;
+		CString Message;
+	};
 
 	try
 	{
+		if (!strCmdLine.IsEmpty())
+		{
+			while (GetNextParameter(strCmdLine, strCurrentParameter))
+			{
+				if (strCurrentParameter.CompareNoCase(szFile) == 0 &&
+					strData.IsEmpty())
+				{
+					// file
+					if (!GetNextParameter(strCmdLine, strCurrentParameter))
+						throw InvalidCommandLineException("-file was specified but no file name was given.");
+					else
+					{
+						strData = strCurrentParameter;
+						bFiles = TRUE;
+					}
+				}
+				else if (strCurrentParameter.CompareNoCase(szResolveLock) == 0 &&
+					strData.IsEmpty())
+				{
+					// resolve locked files
+					if (!GetNextParameter(strCmdLine, strCurrentParameter))
+						throw InvalidCommandLineException("-rl was specified but no file name was given.");
+					else
+					{
+						strData = strCurrentParameter;
+						bResolveLock = TRUE;
+					}
+				}
+				else if (strCurrentParameter.CompareNoCase(szFolder) == 0 &&
+						 strData.IsEmpty())
+				{
+					// folder
+					if (!GetNextParameter(strCmdLine, strCurrentParameter))
+						throw InvalidCommandLineException("-folder was specified but no folder name was given.");
+					else
+					{
+						strData = strCurrentParameter;
+						bFiles = TRUE;
+						bFolders = TRUE;
+
+						if (strData[strData.GetLength() - 1] != '\\')
+							strData += "\\";
+					}
+				}
+				else if (strCurrentParameter.CompareNoCase(szDisk) == 0 &&
+						 strData.IsEmpty())
+				{
+					// unused disk space
+					if (!GetNextParameter(strCmdLine, strCurrentParameter))
+						throw InvalidCommandLineException("-disk was specified but no file name was given.");
+					else
+					{
+						bDrive = TRUE;
+
+						if (strCurrentParameter != szDiskAll)
+							strData.Format("%c:\\", strCurrentParameter[0]);
+						else
+							strData = strCurrentParameter;
+					}
+				}
+				else if (strCurrentParameter.CompareNoCase(szRecycled) == 0)
+				{
+					bRecycled   = TRUE;
+					bFiles      = TRUE;
+					bFolders    = FALSE;
+				}
+				else if (strCurrentParameter.CompareNoCase(szMethod) == 0)
+				{
+					if (!GetNextParameter(strCmdLine, strCurrentParameter))
+						throw InvalidCommandLineException("-method was specified but no method name was given.");
+					else
+					{
+						if (strCurrentParameter.CompareNoCase(szMethodLibrary) == 0)
+							emMethod = ERASER_METHOD_LIBRARY;
+						else if (strCurrentParameter.CompareNoCase(szMethodGutmann) == 0)
+							emMethod = ERASER_METHOD_GUTMANN;
+						else if (strCurrentParameter.CompareNoCase(szMethodDoD) == 0)
+							emMethod = ERASER_METHOD_DOD;
+						else if (strCurrentParameter.CompareNoCase(szMethodDoD_E) == 0)
+							emMethod = ERASER_METHOD_DOD_E;
+						else if (strCurrentParameter.CompareNoCase(szMethodFL2K) == 0)
+							emMethod = ERASER_METHOD_FIRST_LAST_2KB;
+						else if (strCurrentParameter.CompareNoCase(szSchneier) == 0)
+							emMethod = ERASER_METHOD_SCHNEIER;
+						else if (strCurrentParameter.CompareNoCase(szMethodRandom) == 0)
+						{
+							emMethod = ERASER_METHOD_PSEUDORANDOM;
+
+							if (!GetNextParameter(strCmdLine, strCurrentParameter))
+								throw InvalidCommandLineException("-method Random was specified but no number of passes was specified.");
+							else
+							{
+								char *sztmp = 0;
+								E_UINT32 uCurrentParameter = strtoul((LPCTSTR)strCurrentParameter, &sztmp, 10);
+
+								if (*sztmp != '\0' || uCurrentParameter > (E_UINT16)-1) {
+									throw InvalidCommandLineException("-method Random was specified an invalid number of passes was specified.");
+								} else {
+									uPasses = (E_UINT16)uCurrentParameter;
+								}
+							}
+						}
+						else
+							throw InvalidCommandLineException("Unrecognized method name '" + strCurrentParameter + "'");
+					}
+				}
+				else if (strCurrentParameter.CompareNoCase(szSubFolders) == 0)
+					bSubFolders = TRUE;
+				else if (strCurrentParameter.CompareNoCase(szKeepFolder) == 0)
+					bKeepFolder = TRUE;
+				else if (strCurrentParameter.CompareNoCase(szSilent) == 0)
+					bSilent = TRUE;
+				else if (strCurrentParameter.CompareNoCase(szResults) == 0)
+					bResults = TRUE;
+				else if (strCurrentParameter.CompareNoCase(szResultsOnError) == 0)
+				{
+					bResults = TRUE;
+					bResultsOnError = TRUE;
+				}
+				else if (strCurrentParameter.CompareNoCase(szOptions) == 0)
+					bOptions = TRUE;
+				else if (strCurrentParameter.CompareNoCase(szQueue) == 0)
+					bQueue = TRUE;
+				else
+					throw InvalidCommandLineException("Unrecognized parameter '" + strCurrentParameter + "'");
+			}
+		}
+		else
+		{
+			throw InvalidCommandLineException("Invalid command line.");
+		}
+
+		// conflicting command line parameters ?
+		if (((!bOptions && !bRecycled) && strData.IsEmpty()))
+			throw InvalidCommandLineException("No data to erase.");
+		if (!bFolders && bKeepFolder)
+			throw InvalidCommandLineException("Data to erase is not a folder, -keepfolder has no effect.");
+		if (bSilent && bResults)
+			throw InvalidCommandLineException("-silent and -results are mutually exclusive.");
+		if (bOptions && bQueue)
+			throw InvalidCommandLineException("The help command cannot be queued.");
+
+		// is the user naive enough to select the first/last 2KB pass with free space?
+		if (emMethod == ERASER_METHOD_FIRST_LAST_2KB && bDrive)
+		{
+			AfxMessageBox("The first/last 2KB erase cannot be used with Free Space erases.", MB_ICONERROR);
+			return FALSE;
+		}
+
+		//Now that the command line has been passed, check if we should display the
+		//results dialog (because it may not be overridde by the user)
+		CKey kReg;
+		if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
+		{
+			if (bResults == -1)
+				kReg.GetValue(bResults, ERASER_REGISTRY_RESULTS_FILES, TRUE);
+			if (bResultsOnError == -1)
+				kReg.GetValue(bResultsOnError, ERASER_REGISTRY_RESULTS_WHENFAILED, FALSE);
+			kReg.Close();
+		}
+
 		m_pdlgEraser = new CLauncherDlg();
 		m_pMainWnd   = m_pdlgEraser;
 
@@ -568,6 +602,10 @@ BOOL CLauncherApp::InitInstance()
 					AfxMessageBox("File not found. Nothing to erase. (" + strData + ")", MB_ICONERROR);
 			}
 		}
+	}
+	catch (InvalidCommandLineException& e)
+	{
+		ShowHelp(CString(e.what()) + "\n\n");
 	}
 	catch (CException *e)
 	{
