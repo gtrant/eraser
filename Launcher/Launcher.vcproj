@@ -77,7 +77,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="EraserUI.lib"
+				AdditionalDependencies="EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Eraserl.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
@@ -166,7 +166,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="EraserUI.lib"
+				AdditionalDependencies="EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Eraserl.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
@@ -256,7 +256,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="EraserUI.lib"
+				AdditionalDependencies="EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Eraserl.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -347,7 +347,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="EraserUI.lib"
+				AdditionalDependencies="EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Eraserl.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -423,48 +423,6 @@
 						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\shared\FileHelper.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\shared\key.cpp"
-				>
 			</File>
 			<File
 				RelativePath="Launcher.cpp"
@@ -547,10 +505,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\shared\SeException.cpp"
-				>
-			</File>
-			<File
 				RelativePath="StdAfx.cpp"
 				>
 				<FileConfiguration
@@ -589,44 +543,6 @@
 						Name="VCCLCompilerTool"
 						PreprocessorDefinitions=""
 						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="..\shared\UserInfo.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|x64"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						PreprocessorDefinitions=""
 					/>
 				</FileConfiguration>
 			</File>

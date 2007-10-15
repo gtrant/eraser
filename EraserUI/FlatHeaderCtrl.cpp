@@ -791,7 +791,11 @@ void CFlatHeaderCtrl::OnPaint()
         DrawCtrl(&dc);*/
 }
 
+#if _MFC_VER <= 0x800
+UINT
+#else
 LRESULT
+#endif
 CFlatHeaderCtrl::OnNcHitTest(CPoint point)
 {
     m_hdhtiHotItem.pt = point;
