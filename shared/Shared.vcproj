@@ -280,19 +280,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\FileHelper.cpp"
+				RelativePath="FileHelper.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\key.cpp"
+				RelativePath="key.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\SeException.cpp"
+				RelativePath="SeException.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -328,11 +328,11 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\UserInfo.cpp"
+				RelativePath="UserInfo.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Utils.cpp"
+				RelativePath="Utils.cpp"
 				>
 			</File>
 		</Filter>
@@ -342,31 +342,31 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\FileHelper.h"
+				RelativePath="FileHelper.h"
 				>
 			</File>
 			<File
-				RelativePath=".\key.h"
+				RelativePath="key.h"
 				>
 			</File>
 			<File
-				RelativePath=".\SeException.h"
+				RelativePath="SeException.h"
 				>
 			</File>
 			<File
-				RelativePath=".\SortedArray.h"
+				RelativePath="SortedArray.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\UserInfo.h"
+				RelativePath="UserInfo.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Utils.h"
+				RelativePath="Utils.h"
 				>
 			</File>
 		</Filter>

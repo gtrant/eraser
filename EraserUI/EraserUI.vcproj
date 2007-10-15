@@ -286,91 +286,91 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\AlphaImageList.cpp"
+				RelativePath="AlphaImageList.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\AlphaToolBar.cpp"
+				RelativePath="AlphaToolBar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DirDialog.cpp"
+				RelativePath="DirDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DriveCombo.cpp"
+				RelativePath="DriveCombo.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FileDialogEx.cpp"
+				RelativePath="FileDialogEx.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FileTreeCtrl.cpp"
+				RelativePath="FileTreeCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FitFileNameToScrn.cpp"
+				RelativePath="FitFileNameToScrn.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FlatHeaderCtrl.cpp"
+				RelativePath="FlatHeaderCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FlatListCtrl.cpp"
+				RelativePath="FlatListCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FlatListView.cpp"
+				RelativePath="FlatListView.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxGroupEdit.cpp"
+				RelativePath="GfxGroupEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxOutBarCtrl.cpp"
+				RelativePath="GfxOutBarCtrl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxPopupMenu.cpp"
+				RelativePath="GfxPopupMenu.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxSplitterWnd.cpp"
+				RelativePath="GfxSplitterWnd.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\HyperLink.cpp"
+				RelativePath="HyperLink.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\InfoBar.cpp"
+				RelativePath="InfoBar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\InPlaceEdit.cpp"
+				RelativePath="InPlaceEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Masked.cpp"
+				RelativePath="Masked.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\NewDialog.cpp"
+				RelativePath="NewDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ProgressBar.cpp"
+				RelativePath="ProgressBar.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\ShellPidl.cpp"
+				RelativePath="ShellPidl.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
+				RelativePath="stdafx.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -406,7 +406,7 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\TimeOutMessageBox.cpp"
+				RelativePath="TimeOutMessageBox.cpp"
 				>
 			</File>
 		</Filter>
@@ -416,103 +416,103 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\AlphaImageList.h"
+				RelativePath="AlphaImageList.h"
 				>
 			</File>
 			<File
-				RelativePath=".\AlphaToolBar.h"
+				RelativePath="AlphaToolBar.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DirDialog.h"
+				RelativePath="DirDialog.h"
 				>
 			</File>
 			<File
-				RelativePath=".\DriveCombo.h"
+				RelativePath="DriveCombo.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FileDialogEx.h"
+				RelativePath="FileDialogEx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FileTreeCtrl.h"
+				RelativePath="FileTreeCtrl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FitFileNameToScrn.h"
+				RelativePath="FitFileNameToScrn.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FlatHeaderCtrl.h"
+				RelativePath="FlatHeaderCtrl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FlatListCtrl.h"
+				RelativePath="FlatListCtrl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\FlatListView.h"
+				RelativePath="FlatListView.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxGroupEdit.h"
+				RelativePath="GfxGroupEdit.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxOutBarCtrl.h"
+				RelativePath="GfxOutBarCtrl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxPopupMenu.h"
+				RelativePath="GfxPopupMenu.h"
 				>
 			</File>
 			<File
-				RelativePath=".\GfxSplitterWnd.h"
+				RelativePath="GfxSplitterWnd.h"
 				>
 			</File>
 			<File
-				RelativePath=".\HyperLink.h"
+				RelativePath="HyperLink.h"
 				>
 			</File>
 			<File
-				RelativePath=".\InfoBar.h"
+				RelativePath="InfoBar.h"
 				>
 			</File>
 			<File
-				RelativePath=".\InPlaceEdit.h"
+				RelativePath="InPlaceEdit.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Masked.h"
+				RelativePath="Masked.h"
 				>
 			</File>
 			<File
-				RelativePath=".\MemDC.h"
+				RelativePath="MemDC.h"
 				>
 			</File>
 			<File
-				RelativePath=".\NewDialog.h"
+				RelativePath="NewDialog.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ProgressBar.h"
+				RelativePath="ProgressBar.h"
 				>
 			</File>
 			<File
-				RelativePath=".\ShellPidl.h"
+				RelativePath="ShellPidl.h"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.h"
+				RelativePath="stdafx.h"
 				>
 			</File>
 			<File
-				RelativePath=".\TimeOutMessageBox.h"
+				RelativePath="TimeOutMessageBox.h"
 				>
 			</File>
 			<File
-				RelativePath=".\VisualStyles.h"
+				RelativePath="VisualStyles.h"
 				>
 			</File>
 		</Filter>
