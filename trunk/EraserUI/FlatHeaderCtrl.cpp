@@ -797,7 +797,7 @@ CFlatHeaderCtrl::OnNcHitTest(CPoint point)
     m_hdhtiHotItem.pt = point;
     ScreenToClient(&m_hdhtiHotItem.pt);
 
-    m_iHotIndex = SendMessage(HDM_HITTEST, 0, (LPARAM)(&m_hdhtiHotItem));
+    m_iHotIndex = (int)SendMessage(HDM_HITTEST, 0, (LPARAM)(&m_hdhtiHotItem));
 
     if (m_iHotIndex >= 0)
     {
@@ -1051,7 +1051,7 @@ void CFlatHeaderCtrl::OnMouseMove(UINT nFlags, CPoint point)
                     hdhti.pt.y = point.y;
 
                     INT iHotOrder = -1;
-                    INT iHotIndex = SendMessage(HDM_HITTEST, 0, (LPARAM)(&hdhti));
+                    INT iHotIndex = (INT)SendMessage(HDM_HITTEST, 0, (LPARAM)(&hdhti));
 
                     if (iHotIndex >= 0)
                     {
