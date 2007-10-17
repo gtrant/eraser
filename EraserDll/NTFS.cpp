@@ -224,7 +224,8 @@ wipeCompressedFile(CEraserContext *context)
         context->m_hFile = CreateFile((LPCTSTR)context->m_strData, GENERIC_READ,
                                       (context->m_uTestMode) ?
                                         FILE_SHARE_READ | FILE_SHARE_WRITE : 0,
-                                      NULL, OPEN_EXISTING, 0, NULL);
+                                      NULL, OPEN_EXISTING,
+                                      FILE_FLAG_WRITE_THROUGH | FILE_FLAG_NO_BUFFERING, NULL);
 
         if (context->m_hFile != INVALID_HANDLE_VALUE) {
             try {
