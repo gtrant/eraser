@@ -203,7 +203,7 @@ void CFileLockResolver::Close()
 	}
 
 	CString cmdLine(CString("\"") + LAUNCHER + "\" " + szResolveLock + " \"" +
-		m_strLockFileList + "\" -method " + method + " -queue");
+		m_strLockFileList + "\" -method " + method);
 
 	extern bool no_registry;
 	if (!no_registry)
