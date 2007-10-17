@@ -96,14 +96,13 @@ wipeDataStreams(CEraserContext *context, DataStreamArray& streams)
                                       (context->m_uTestMode) ? FILE_SHARE_READ | FILE_SHARE_WRITE : 0,
                                       NULL,
                                       OPEN_EXISTING,
-                                      FILE_ATTRIBUTE_NORMAL | FILE_FLAG_NO_BUFFERING,
+                                      FILE_FLAG_NO_BUFFERING | FILE_FLAG_WRITE_THROUGH,
                                       NULL);
 
         bResult = (context->m_hFile != INVALID_HANDLE_VALUE);
-		if (!bResult)
-			context->HandleError(static_cast<LPCTSTR>(streams[i].m_strName));
-
-        if (bResult) {
+        if (!bResult)
+            context->HandleError(static_cast<LPCTSTR>(streams[i].m_strName));
+        else {
             try {
                 // set display name
                 eraserSafeAssign(context, context->m_strData, streams[i].m_strName);
