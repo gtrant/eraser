@@ -195,16 +195,16 @@ IDR_MENU_TRAY MENU
 BEGIN
     POPUP "_POPUP_"
     BEGIN
-        MENUITEM "&Open...",                    ID_TRAY_SHOW_WINDOW
-        MENUITEM "&Enabled",                    ID_TRAY_ENABLE
+        MENUITEM "&Open Eraser",                ID_TRAY_SHOW_WINDOW
+        MENUITEM "&Enable Scheduler",           ID_TRAY_ENABLE
         MENUITEM SEPARATOR
         POPUP "&Preferences"
         BEGIN
-            MENUITEM "&General...",                 ID_EDIT_PREFERENCES_GENERAL
-            MENUITEM "&Erasing...",                 ID_EDIT_PREFERENCES_ERASER
+            MENUITEM "&General...",             ID_EDIT_PREFERENCES_GENERAL
+            MENUITEM "&Erasing...",             ID_EDIT_PREFERENCES_ERASER
         END
         MENUITEM SEPARATOR
-        MENUITEM "&Exit",                       ID_APP_EXIT
+        MENUITEM "E&xit",                       ID_APP_EXIT
     END
 END
 

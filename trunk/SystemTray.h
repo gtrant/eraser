@@ -1,7 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // SystemTray.h : header file
 //
-// Written by Chris Maunder (chrismaunder@codeguru.com)
+// Written by Chris Maunder (cmaunder@mail.com)
 // Copyright (c) 1998.
 //
 // This code may be used in compiled form in any way you desire. This
@@ -13,9 +13,6 @@
 // (in whatever form you wish).
 //
 // This file is provided "as is" with no expressed or implied warranty.
-// The author accepts no liability if it causes any damage to your
-// computer, causes your pet cat to fall ill, increases baldness or
-// makes you car start emitting strange noises when you start it up.
 //
 // Expect bugs.
 // 
@@ -26,10 +23,17 @@
 #ifndef _INCLUDED_SYSTEMTRAY_H_
 #define _INCLUDED_SYSTEMTRAY_H_
 
+#ifdef NOTIFYICONDATA_V1_SIZE   // If NOTIFYICONDATA_V1_SIZE, then we can use fun stuff
+#define SYSTEMTRAY_USEW2K
+#else
+#define NIIF_NONE 0
+#endif
+
+// #include <afxwin.h>
 #include <afxtempl.h>
-
-#define WM_TRAY_NOTIFY  (WM_USER + 100)
-
+#include <afxdisp.h>    // COleDateTime
+#define WM_TRAY_NOTIFY			(WM_APP + 11)
+#define WM_ICON_NOTIFY			(WM_APP + 10)
 /////////////////////////////////////////////////////////////////////////////
 // CSystemTray window
 
@@ -38,7 +42,10 @@ class CSystemTray : public CWnd
 // Construction/destruction
 public:
     CSystemTray();
-    CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID);
+    CSystemTray(CWnd* pWnd, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID, 
+                BOOL bhidden = FALSE,
+                LPCTSTR szBalloonTip = NULL, LPCTSTR szBalloonTitle = NULL, 
+                DWORD dwBalloonIcon = NIIF_NONE, UINT uBalloonTimeout = 10);
     virtual ~CSystemTray();
 
     DECLARE_DYNAMIC(CSystemTray)
@@ -49,7 +56,10 @@ public:
     BOOL Visible() { return !m_bHidden; }
 
     // Create the tray icon
-    int Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID, BOOL bInitialShow = TRUE);
+    BOOL Create(CWnd* pParent, UINT uCallbackMessage, LPCTSTR szTip, HICON icon, UINT uID,
+                BOOL bHidden = FALSE,
+                LPCTSTR szBalloonTip = NULL, LPCTSTR szBalloonTitle = NULL, 
+                DWORD dwBalloonIcon = NIIF_NONE, UINT uBalloonTimeout = 10);
 
     // Change or retrieve the Tooltip text
     BOOL    SetTooltipText(LPCTSTR pszTooltipText);
@@ -63,10 +73,16 @@ public:
     BOOL  SetStandardIcon(LPCTSTR lpIconName);
     BOOL  SetStandardIcon(UINT nIDResource);
     HICON GetIcon() const;
-    void  HideIcon();
-    void  ShowIcon();
-    void  RemoveIcon();
-    void  MoveToRight();
+
+    void  SetFocus();
+    BOOL  HideIcon();
+    BOOL  ShowIcon();
+    BOOL  AddIcon();
+    BOOL  RemoveIcon();
+    BOOL  MoveToRight();
+
+    BOOL ShowBalloon(LPCTSTR szText, LPCTSTR szTitle = NULL,
+                     DWORD dwIcon = NIIF_NONE, UINT uTimeout = 10);
 
     // For icon animation
     BOOL  SetIconList(UINT uFirstIconID, UINT uLastIconID); 
@@ -79,21 +95,26 @@ public:
     void GetMenuDefaultItem(UINT& uItem, BOOL& bByPos);
     BOOL SetMenuDefaultItem(UINT uItem, BOOL bByPos);
 
-    // Add menu item to be deleted before showing
-    void DeleteItem(UINT uItem);
-    // check items
-    void CheckItem(UINT uItem);
-    // disable items
-    void DisableItem(UINT uItem);
-
-    void CleanCheckList();
-    void CleanDisableList();
-    void CleanDeleteList();
-
     // Change or retrieve the window to send notification messages to
     BOOL  SetNotificationWnd(CWnd* pNotifyWnd);
     CWnd* GetNotificationWnd() const;
 
+    // Change or retrieve the window to send menu commands to
+    BOOL  SetTargetWnd(CWnd* pTargetWnd);
+    CWnd* GetTargetWnd() const;
+
+    // Change or retrieve  notification messages sent to the window
+    BOOL  SetCallbackMessage(UINT uCallbackMessage);
+    UINT  GetCallbackMessage() const;
+
+    UINT_PTR GetTimerID() const   { return m_nTimerID; }
+
+// Static functions
+public:
+    static void MinimiseToTray(CWnd* pWnd, BOOL bForceAnimation = FALSE);
+    static void MaximiseFromTray(CWnd* pWnd, BOOL bForceAnimation = FALSE);
+
+public:
     // Default handler for tray notification message
     virtual LRESULT OnTrayNotification(WPARAM uID, LPARAM lEvent);
 
@@ -107,31 +128,54 @@ public:
 // Implementation
 protected:
     void Initialise();
+    void InstallIconPending();
 
-    BOOL            m_bEnabled;   // does O/S support tray icon?
-    BOOL            m_bHidden;    // Has the icon been hidden?
+	virtual void CustomizeMenu(CMenu*) {}	// Used for customizing the menu
+
+// Implementation
+protected:
     NOTIFYICONDATA  m_tnd;
-
-    CUIntArray   m_ItemsToDelete;
-    CUIntArray   m_ItemsToCheck;
-    CUIntArray   m_ItemsToDisable;
+    BOOL            m_bEnabled;         // does O/S support tray icon?
+    BOOL            m_bHidden;          // Has the icon been hidden?
+    BOOL            m_bRemoved;         // Has the icon been removed?
+    BOOL            m_bShowIconPending; // Show the icon once tha taskbar has been created
+    BOOL            m_bWin2K;           // Use new W2K features?
+	CWnd*           m_pTargetWnd;       // Window that menu commands are sent
 
     CArray<HICON, HICON> m_IconList;
-    static UINT  m_nIDEvent;
-    UINT         m_uIDTimer;
-    int          m_nCurrentIcon;
+    UINT_PTR     m_uIDTimer;
+    INT_PTR      m_nCurrentIcon;
     COleDateTime m_StartTime;
-    int          m_nAnimationPeriod;
+    UINT         m_nAnimationPeriod;
     HICON        m_hSavedIcon;
     UINT         m_DefaultMenuItemID;
     BOOL         m_DefaultMenuItemByPos;
+	UINT         m_uCreationFlags;
+
+// Static data
+protected:
+    static BOOL RemoveTaskbarIcon(CWnd* pWnd);
+
+    static const UINT m_nTimerID;
+    static UINT  m_nMaxTooltipLength;
+    static const UINT m_nTaskbarCreatedMsg;
+    static CWnd  m_wndInvisible;
+
+    static BOOL GetW2K();
+#ifndef _WIN32_WCE
+    static void GetTrayWndRect(LPRECT lprect);
+    static BOOL GetDoWndAnimation();
+#endif
 
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CSystemTray)
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	//}}AFX_MSG
-
+#ifndef _WIN32_WCE
+	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+#endif
+    LRESULT OnTaskbarCreated(WPARAM wParam, LPARAM lParam);
     DECLARE_MESSAGE_MAP()
 };
 

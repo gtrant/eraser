@@ -152,7 +152,7 @@ m_smallImageList (NULL)
         // create task bar tray icon
         m_stIcon.Create(NULL, WM_TRAY_NOTIFY, "Starting...",
                         AfxGetApp()->LoadIcon(IDI_ICON_TRAY),
-                        IDR_MENU_TRAY, !m_bNoTrayIcon);
+                        IDR_MENU_TRAY, m_bNoTrayIcon);
 		
         // create timers
         CalcNextAssignment();
