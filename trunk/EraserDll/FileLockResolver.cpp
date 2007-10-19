@@ -96,7 +96,6 @@ struct FileData
 
 	void read(std::istream& is)
 	{
-		is >> std::noskipws;
 		std::getline(is, name);
 		is >> method >> passes;
 	}
@@ -104,7 +103,7 @@ struct FileData
 	void write(std::ostream& os) const
 	{
 		os << std::noskipws;
-		os << name << std::endl << method << passes;
+		os << name << std::endl << method << std::endl << passes;
 	}
 };
 
