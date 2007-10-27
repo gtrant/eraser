@@ -93,8 +93,6 @@ Root: HKCR; SubKey: Eraser.Document\shell\printto\command; ValueType: string; Va
 Root: HKCR; SubKey: ErasextMenu; ValueType: string; ValueName: ; ValueData: ErasextMenu; Flags: uninsdeletekey
 Root: HKCR; SubKey: ErasextMenu\CLSID; ValueType: string; ValueName: ; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext; ValueType: string; ValueData: Erase Recycle Bin; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext1; ValueType: string; ValueData: Erase Recycle Bin (35-Pass &Gutmann); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext1\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method Gutmann"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext2; ValueType: string; ValueData: Erase Recycle Bin (7-Pass &Schneier); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
