@@ -207,21 +207,19 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
         {
             if (_stricmp(szFS, "NTFS") == 0)
             {
-				straDrives.Add(lstraDrives[iSize]+ "RECYCLER\\NPROTECT");
-                straDrives.Add(lstraDrives[iSize] + "$Recycle.Bin\\");
-                straDrives.Add(lstraDrives[iSize] + "$Recycle.Bin\\NPROTECT");
+                straDrives.Add(lstraDrives[iSize]+ "RECYCLER\\NPROTECT");
                 if (!strSID.IsEmpty())
-				{
-                    //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLER\\" + strSID);					
+                {
+                    //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLER\\" + strSID);
                     straDrives.Add(lstraDrives[iSize] + "RECYCLER\\" + strSID);		
                     straDrives.Add(lstraDrives[iSize] + "$Recycle.Bin\\" + strSID);
-				}
+                }
                 else
-				{
+                {
                     //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLER");
                     straDrives.Add(lstraDrives[iSize] + "RECYCLER");
                     straDrives.Add(lstraDrives[iSize] + "$Recycle.Bin\\");
-				}
+                }
             }
             else
                 //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLED");
@@ -256,10 +254,8 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
         strTemp = straDrives[iSize];
         dwAttributes = GetFileAttributes((LPCTSTR)straDrives[iSize]);
 
-        if (dwAttributes != (DWORD) -1 && dwAttributes & FILE_ATTRIBUTE_SYSTEM)
+        if (dwAttributes != (DWORD) -1 && (dwAttributes & FILE_ATTRIBUTE_SYSTEM))
         {
-            strTemp = straDrives[iSize];
-
             ParseRecycledDirectory(strTemp,
                saRecycled,
                saRecycledDirectories,
