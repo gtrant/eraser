@@ -177,7 +177,8 @@ wipeClusters(NTFSContext& ntc, CEraserContext *context, bool& bCompressed)
                                   FILEMAPSIZE * sizeof(E_UINT64));
     }
 
-    if (status != STATUS_SUCCESS && status != STATUS_INVALID_PARAMETER) {
+    if (status != STATUS_SUCCESS && status != STATUS_INVALID_PARAMETER &&
+		ntc.RtlNtStatusToDosError(status) != ERROR_HANDLE_EOF) {
         context->m_saError.Add(formatNTError(ntc, status));
     }
 
@@ -185,7 +186,7 @@ wipeClusters(NTFSContext& ntc, CEraserContext *context, bool& bCompressed)
     context->m_hFile = hFile;
 
     // if we made through with no errors we've overwritten all the file's clusters.
-    return NT_SUCCESS(status);
+    return NT_SUCCESS(status) || ntc.RtlNtStatusToDosError(status) == ERROR_HANDLE_EOF;
 }
 
 static bool
