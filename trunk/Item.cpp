@@ -391,12 +391,9 @@ BOOL CScheduleItem::GetNextTime(CString& str) const
 
 BOOL CScheduleItem::SetNextTime(CString& str)
 {
-    BOOL bResult;
-
     try
     {
-        bResult =
-            m_odtNext.ParseDateTime((LPCTSTR) str);
+        return m_odtNext.ParseDateTime((LPCTSTR) str);
     }
     catch (CException *e)
     {
@@ -404,14 +401,13 @@ BOOL CScheduleItem::SetNextTime(CString& str)
         REPORT_ERROR(e);
         e->Delete();
 
-        bResult = FALSE;
+        return FALSE;
     }
     catch (...)
     {
         ASSERT(FALSE);
+		return FALSE;
     }
-
-    return bResult;
 }
 
 CScheduleItem& CScheduleItem::operator=(const CScheduleItem& op)
