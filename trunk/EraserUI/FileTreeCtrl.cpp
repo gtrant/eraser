@@ -1243,7 +1243,7 @@ void CTreeFileCtrl::OnUpdateDelete(CCmdUI* pCmdUI)
 void CTreeFileCtrl::OnContextMenu(CWnd*, CPoint point)
 {
 	CMenu menu;
-  VERIFY(menu.LoadMenu(IDR_TREEFILECTRL_POPUP));
+	VERIFY(menu.LoadMenu(IDR_TREEFILECTRL_POPUP));
 	CMenu* pPopup = menu.GetSubMenu(0);
 	ASSERT(pPopup != NULL);
 	pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y,	this);
@@ -3414,7 +3414,7 @@ void CTreeFileCtrl::PreSubclassWindow()
   VERIFY(m_DropMoveCursor);
 
   //Load up the bitmaps used to supplement the system image list
-  VERIFY(m_ilNetwork.Create(IDB_FILETREECTRL_NETWORK, 16, 1, RGB(255, 0, 255)));
+  VERIFY(m_ilNetwork.Create(IDB_TREEFILECTRL_NETWORK, 16, 1, RGB(255, 0, 255)));
 }
 
 BOOL CTreeFileCtrl::OnDeleteItem(NMHDR* pNMHDR, LRESULT* pResult) 

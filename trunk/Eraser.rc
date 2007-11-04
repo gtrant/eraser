@@ -49,26 +49,10 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Bitmap
 //
 
-IDB_FILETREECTRL_NETWORK BITMAP                  "res\\ftnetwork.bmp"
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
 IDB_IMAGELIST_SMALL     BITMAP                  "res\\treeImageList.bmp"
 IDB_IMAGELIST_LARGE     BITMAP                  "res\\imageList.bmp"
-IDR_GFXMENU_TOOLBAR     BITMAP                  "res\\toolbar1.bmp"
 IDB_HEADER              BITMAP                  "res\\Header.bmp"
-IDB_GFX_MENUCHECK       BITMAP                  "res\\MenuCheck.bmp"
-IDB_GFX_MENUCHECK_SELECTED BITMAP                  "res\\MenuCheckSelected.bmp"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Cursor
-//
-
-IDR_TREEFILECTRL_DROPCOPY CURSOR                  "res\\tfdropcopy.cur"
-IDR_TREEFILECTRL_NO_DROPCOPY CURSOR                  "res\\tfnodropcopy.cur"
-IDR_TREEFILECTRL_NO_DROPMOVE CURSOR                  "res\\tfnodropmove.cur"
-IDC_DRAGGING            CURSOR                  "res\\dragging.cur"
-IDC_HANDCUR             CURSOR                  "res\\icr_hand.cur"
-IDC_NODRAGGING          CURSOR                  "res\\nodraggi.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -101,12 +85,6 @@ BEGIN
     SEPARATOR
     BUTTON      ID_APP_ABOUT
     BUTTON      ID_CONTEXT_HELP
-END
-
-IDR_GFXMENU_TOOLBAR TOOLBAR  16, 15
-BEGIN
-    BUTTON      ID_GFX_LARGEICON
-    BUTTON      ID_GFX_SMALLICON
 END
 
 
@@ -389,16 +367,6 @@ BEGIN
     CONTROL         "Ask user",IDC_CHECK_RESOLVE_ASK_USR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,202,43,10
     PUSHBUTTON      "Protection...",IDC_BUTTON_PROTECTION,7,221,70,14
     PUSHBUTTON      "Shortcuts",IDC_BUTTON_HOTKEYS,157,82,44,14
-END
-
-IDD_DLGNEW_DIALOG DIALOGEX 0, 0, 267, 226
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-EXSTYLE WS_EX_APPWINDOW
-CAPTION "Choose File/Folder"
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,210,205,50,14
-    CONTROL         "Tree1",IDC_TREE1,"SysTreeView32",WS_BORDER | WS_TABSTOP,7,7,253,187
 END
 
 IDD_DIALOG_HOTKEYS DIALOGEX 0, 0, 295, 89

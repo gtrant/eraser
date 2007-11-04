@@ -3,6 +3,7 @@
 //
 
 #include "..\version.h"
+#include "..\EraserUI\EraserUI.rc"
 
 #ifdef APSTUDIO_INVOKED
     #error this file is not editable by Microsoft Visual C++
