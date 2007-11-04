@@ -1995,7 +1995,7 @@ BOOL CSchedulerView::TerminateThread(CScheduleItem *psiItem)
 }
 E_UINT8 getMetodId(E_UINT8 old)
 {
-	E_UINT8 res;
+	E_UINT8 res = 0;
 	old ^= 0x80;
 	for(E_UINT8 i = 0; i < 5; i++)
 		if (1 << i == old)
