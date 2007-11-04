@@ -2,34 +2,23 @@
 // Microsoft Visual C++ generated include file.
 // Used by Eraser.rc
 //
-#define IDD_DLGNEW_DIALOG               93
-#define IDR_TREEFILECTRL_NO_DROPCOPY    94
-#define IDR_TREEFILECTRL_DROPCOPY       96
-#define IDB_FILETREECTRL_NETWORK        97
-#define IDC_TREE1                       98
 #define IDD_ABOUTBOX                    100
 #define IDS_PREFERENCES_PROPSHT_CAPTION 104
 #define IDD_PROPPAGE_ERASER             105
 #define IDD_PROPPAGE_SCHEDULER          106
 #define IDW_INFO_BAR                    107
 #define IDR_ERASEREXPLORER              109
-#define ID_GFX_ANIMATION                110
-#define IDR_TREEFILECTRL_POPUP          111
 #define IDR_MAINFRAME                   128
 #define IDR_ERASERTYPE                  129
 #define IDS_PROPSHT_CAPTION             129
-#define IDC_DRAGGING                    130
 #define IDS_ERROR_NEW_TASK              130
-#define IDC_HANDCUR                     131
 #define IDS_QUESTION_CONFIRMATION       131
-#define IDC_NODRAGGING                  132
 #define IDS_WARNING_NODATA              132
 #define IDS_QUESTION_RUNALL             132
 #define IDB_IMAGELIST_SMALL             133
 #define IDS_ACTION_QUIT                 133
 #define IDB_IMAGELIST_LARGE             134
 #define IDS_ACTION_START                134
-#define IDR_GFXMENU_TOOLBAR             135
 #define IDS_ACTION_RUN                  135
 #define IDR_MENU_ERASERVIEW             136
 #define IDS_ACTION_STOP                 136
@@ -61,10 +50,8 @@
 #define IDS_INFO_RUNNING                150
 #define IDS_ERROR_PREFERENCES_READ      151
 #define IDS_ACTION_ENABLED              152
-#define IDB_GFX_MENUCHECK               152
 #define IDS_ACTION_DISABLED             153
 #define IDS_INFO_NOLOG                  154
-#define IDB_GFX_MENUCHECK_SELECTED      154
 #define IDS_ERROR_VIEWLOG               155
 #define IDS_ERROR_PREFERENCES_SAVE      156
 #define IDS_QUESTION_INTERRUPT          157
@@ -74,7 +61,6 @@
 #define IDR_RT_RCDATA2                  160
 #define IDD_DIALOG_HOTKEYS              171
 #define IDD_DIALOG_KEYCOMBO             174
-#define IDR_TREEFILECTRL_NO_DROPMOVE    194
 #define IDC_STATIC_VERSION              1000
 #define IDC_HYPERLINK                   1001
 #define IDC_HYPERLINK_MAIL              1002
@@ -151,12 +137,9 @@
 #define IDC_EDITTMP                     1066
 #define IDC_BUTTON_OK                   1067
 #define IDC_BUTTON_OKCHANGE             1068
-#define ID_TREEFILECTRL_FORWARD         32770
 #define ID_GFX_LARGEICON                32771
 #define ID_GFX_SMALLICON                32772
-#define ID_GFX_REMOVEITEM               32773
 #define ID_FILE_EXPORT                  32774
-#define ID_GFX_RENAMEITEM               32775
 #define ID_FILE_IMPORT                  32776
 #define ID_VIEW_INFO_BAR                32777
 #define ID_FILE_NEW_TASK                32778
@@ -174,14 +157,7 @@
 #define ID_DRAG_MOVE                    32790
 #define ID_DRAG_COPY                    32791
 #define ID_DRAG_CANCEL                  32792
-#define ID_TREEFILECTRL_UPONELEVEL      32793
 #define ID_PROCESS_RUNALL               32793
-#define ID_TREEFILECTRL_OPEN            32794
-#define ID_TREEFILECTRL_DELETE          32795
-#define ID_TREEFILECTRL_RENAME          32796
-#define ID_TREEFILECTRL_PROPERTIES      32797
-#define ID_TREEFILECTRL_REFRESH         32798
-#define ID_TREEFILECTRL_BACK            32799
 #define ID_INDICATOR_ITEMS              59142
 
 // Next default values for new objects
