@@ -167,7 +167,7 @@ STDMETHODIMP_(ULONG) CErasextMenu::XMenuExt::Release(void)
 CString setShortcut(CString str)
 {
 	CKey kReg;
-	CString strPath(""), strKey(""), strRes("");
+	CString strPath(""), strKey(""), strRes(str);
 	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
 	int iPos;
 	if (kReg.Open(HKEY_CURRENT_USER, strPath,FALSE))
@@ -184,9 +184,6 @@ CString setShortcut(CString str)
 			strRes = str.Left(iPos)+"&"+str.Right(str.GetLength()-iPos);
 		}
 		kReg.Close();
-	}	
-	else{
-		strRes = str;
 	}
     return strRes;
 }
