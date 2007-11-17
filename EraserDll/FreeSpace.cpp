@@ -213,6 +213,34 @@ getPartitionInformation(CEraserContext *context, TCHAR cDrive)
     return context->m_piCurrent.m_bLastSuccess;
 }
 
+bool hasPrivileges(CEraserContext *context)
+{
+	// under Vista if the user is not elevated write an error to the log and return
+	OSVERSIONINFO verInfo;
+	::ZeroMemory(&verInfo, sizeof(verInfo));
+	verInfo.dwOSVersionInfoSize = sizeof(verInfo);
+	if (GetVersionEx(&verInfo) && verInfo.dwMajorVersion >= 6)
+	{
+		HANDLE hToken;
+		TOKEN_ELEVATION_TYPE elevationType;
+		DWORD returnSize;
+		OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken);
+
+		if (hToken)
+		{
+			GetTokenInformation(hToken, TokenElevationType,
+				&elevationType, sizeof(elevationType), &returnSize);
+			CloseHandle(hToken);
+			if (elevationType == TokenElevationTypeLimited) {
+				context->m_saError.Add("Erasing the Free Space of a drive requires elevation");
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 void
 countFilesOnDrive(CEraserContext *context, const CString& strDrive, E_UINT32& uFiles, E_UINT32& uFolders)
 {
@@ -435,6 +463,9 @@ wipeClusterTipsRecursive(CEraserContext *context, SFCISFILEPROTECTED pSfcIsFileP
 bool
 wipeClusterTips(CEraserContext *context)
 {
+	if (!hasPrivileges(context))
+		return false;
+
     bool               bReturn = false;
     SFCISFILEPROTECTED pSfcIsFileProtected = 0;
     HINSTANCE          hInst = AfxLoadLibrary(ERASER_MODULENAME_SFC);
@@ -465,6 +496,9 @@ wipeClusterTips(CEraserContext *context)
 bool
 wipeFreeSpace(CEraserContext *context)
 {
+	if (!hasPrivileges(context))
+		return false;
+
     CString strFolder;
 
     try {
