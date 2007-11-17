@@ -64,7 +64,7 @@ Source: x64\release\Verify.exe; DestDir: {app}; Flags: ignoreversion restartrepl
 Source: vcredist_x64.exe; DestDir: {tmp}; DestName: vcredist.exe; Flags: deleteafterinstall; Components: arch64Bit
 
 [Components]
-Name: arch32Bit; Description: Eraser Core Program Files; Types: full custom compact; Flags: fixed checkablealone; Check: IsWin32
+Name: arch32Bit; Description: Eraser Core Program Files; Types: full custom compact; Flags: fixed checkablealone
 Name: arch32Bit\RecycleBin; Description: Add Eraser to the Recycle Bin Context Menu; Types: full compact
 Name: arch64Bit; Description: Eraser Core Program Files; Types: full custom compact; Flags: fixed checkablealone; Check: IsWin64
 Name: arch64Bit\RecycleBin; Description: Add Eraser to the Recycle Bin Context Menu; Types: full compact
