@@ -465,6 +465,8 @@ wipeClusterTips(CEraserContext *context)
 {
 	if (!hasPrivileges(context))
 		return false;
+	if (context->m_lpmMethod->m_nMethodID == FL2KB_METHOD_ID)
+		return false;
 
     bool               bReturn = false;
     SFCISFILEPROTECTED pSfcIsFileProtected = 0;
@@ -497,6 +499,8 @@ bool
 wipeFreeSpace(CEraserContext *context)
 {
 	if (!hasPrivileges(context))
+		return false;
+	if (context->m_lpmMethod->m_nMethodID == FL2KB_METHOD_ID)
 		return false;
 
     CString strFolder;
