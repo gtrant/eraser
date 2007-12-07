@@ -31,6 +31,7 @@
 #include "FreeSpace.h"
 #include <winioctl.h>
 
+
 // Windows 98 - Q188074
 static const LPCTSTR ERASER_REGISTRY_FILESYSTEM
     = "System\\CurrentControlSet\\Control\\FileSystem";
