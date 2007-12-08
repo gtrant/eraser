@@ -46,6 +46,8 @@ EnableISX=true:
 
 [Files]
 ;Source: Eraser\eraser.url; DestDir: {app}; Flags: overwritereadonly ignoreversion
+Source: Eraser.chm; DestDir: {app}; Flags: overwritereadonly 32bit; Components: arch32Bit
+Source: Eraser.chm; DestDir: {app}; Flags: overwritereadonly 64bit; Components: arch64Bit
 Source: ..\README.txt; DestDir: {app}; Flags: overwritereadonly
 Source: ..\COPYING.txt; DestDir: {app}; Flags: overwritereadonly
 
