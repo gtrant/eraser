@@ -485,7 +485,7 @@ BOOL CLauncherApp::InitInstance()
 			throw InvalidCommandLineException("No data to erase.");
 		if (!bFolders && bKeepFolder)
 			throw InvalidCommandLineException("Data to erase is not a folder, -keepfolder has no effect.");
-		if (bSilent && bResults)
+		if (bSilent && bResults == TRUE)
 			throw InvalidCommandLineException("-silent and -results are mutually exclusive.");
 		if (bOptions && bQueue)
 			throw InvalidCommandLineException("The help command cannot be queued.");
@@ -503,7 +503,10 @@ BOOL CLauncherApp::InitInstance()
 		if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
 		{
 			if (bResults == -1)
-				kReg.GetValue(bResults, ERASER_REGISTRY_RESULTS_FILES, TRUE);
+				if (!bSilent)
+					kReg.GetValue(bResults, ERASER_REGISTRY_RESULTS_FILES, TRUE);
+				else
+					bResults = FALSE;
 			if (bResultsOnError == -1)
 				kReg.GetValue(bResultsOnError, ERASER_REGISTRY_RESULTS_WHENFAILED, FALSE);
 			kReg.Close();
