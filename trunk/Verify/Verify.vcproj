@@ -80,7 +80,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="EraserUI.lib"
-				OutputFile="$(OutDir)\Verify.exe"
+				OutputFile="$(OutDir)\ErsChk.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
@@ -175,7 +175,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="EraserUI.lib"
-				OutputFile="$(OutDir)\Verify.exe"
+				OutputFile="$(OutDir)\ErsChk.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
@@ -269,7 +269,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="EraserUI.lib"
-				OutputFile="$(OutDir)\Verify.exe"
+				OutputFile="$(OutDir)\ErsChk.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
 				GenerateDebugInformation="true"
@@ -359,7 +359,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="EraserUI.lib"
-				OutputFile="$(OutDir)\Verify.exe"
+				OutputFile="$(OutDir)\ErsChk.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
 				GenerateDebugInformation="true"
