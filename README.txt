@@ -1,10 +1,9 @@
 ----------------------------------------------------------------
 NOTE: This version uses a new installer system. You MUST remove
-ALL EARLIER VERSIONS before installing this Beta. When installing
-an earlier stable build, UNINSTALL the Beta first.
+ALL VERSIONS EARLIER THAN 5.85 before installing this version.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.85 Beta 3 (Oct 13th 2007)
+Eraser 5.86 re-release 1 (Dec 17th 2007)
 ----------------------------------------------------------------
 
 CONTENTS
