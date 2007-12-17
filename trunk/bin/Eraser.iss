@@ -56,14 +56,14 @@ Source: win32\release\Eraserl.exe; DestDir: {sys}; Flags: ignoreversion restartr
 Source: win32\release\Eraser.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
 Source: win32\release\Erasext.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
 Source: win32\release\Verify.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
-Source: vcredist_x86.exe; DestDir: {tmp}; DestName: vcredist.exe; Flags: deleteafterinstall; Components: arch32Bit
+Source: vcredist_x86.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
 
 Source: x64\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Verify.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
-Source: vcredist_x64.exe; DestDir: {tmp}; DestName: vcredist.exe; Flags: deleteafterinstall; Components: arch64Bit
+Source: vcredist_x64.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
 
 [Components]
 Name: arch32Bit; Description: Eraser Core Program Files (32-bit); Types: full custom compact; Flags: fixed checkablealone
@@ -128,7 +128,8 @@ Name: {app}\*.*; Type: filesandordirs
 
 [Run]
 Filename: {app}\eraser.exe; WorkingDir: {app}; Flags: postinstall nowait skipifsilent; Description: Run Eraser
-Filename: {tmp}\vcredist.exe; StatusMsg: Installing Visual C++ 2005 Runtime...
+Filename: {tmp}\vcredist_x86.exe; StatusMsg: Installing Visual C++ 2005 Runtime...; Flags: 32bit; Components: arch32Bit
+Filename: {tmp}\vcredist_x64.exe; StatusMsg: Installing Visual C++ 2005 Runtime...; Flags: 64bit; Components: arch64Bit
 
 [Code]
 function IsWin32: Boolean;
