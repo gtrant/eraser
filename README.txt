@@ -1,9 +1,10 @@
 ----------------------------------------------------------------
 NOTE: This version uses a new installer system. You MUST remove
-ALL VERSIONS EARLIER THAN 5.85 before installing this version.
+ALL EARLIER VERSIONS before installing this Beta. When installing
+an earlier stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.86 re-release 1 (Dec 17th 2007)
+Eraser 5.86 (Dec 8th 2007)
 ----------------------------------------------------------------
 
 CONTENTS
@@ -27,7 +28,7 @@ CONTENTS
 
    1.1. Copyright
 
-        Eraser Copyright © 2007 by the Eraser Project. All rights
+        Eraser Copyright © 2007-2008 by the Eraser Project. All rights
         reserved.
         Eraser Copyright © 2002-2006 by Garrett Trant. All rights
         reserved.

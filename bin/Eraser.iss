@@ -21,8 +21,8 @@ DisableStartupPrompt=true
 PrivilegesRequired=admin
 InfoBeforeFile=..\README.txt
 LicenseFile=..\COPYING.txt
-WizardImageFile=C:\Program Files\Inno Setup 5\Inno Setup Wizard Images\Modern\SecurityModern13.bmp
-WizardSmallImageFile=C:\Program Files\Inno Setup 5\Inno Setup Wizard Images\Modern\Small\SecurityModernSmall16.bmp
+WizardImageFile=F:\Program Files (x86)\Inno Setup 5\WizModernImage.bmp
+WizardSmallImageFile=F:\Program Files (x86)\Inno Setup 5\WizModernSmallImage.bmp
 InternalCompressLevel=ultra
 SolidCompression=true
 VersionInfoVersion={#VERSION_NUMBER_STRING}
@@ -52,16 +52,16 @@ Source: ..\README.txt; DestDir: {app}; Flags: overwritereadonly
 Source: ..\COPYING.txt; DestDir: {app}; Flags: overwritereadonly
 
 Source: win32\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Eraserl.exe; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Eraser.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Erasext.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
+Source: win32\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
+Source: win32\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
+Source: win32\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
 Source: win32\release\Verify.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
 Source: vcredist_x86.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
 
 Source: x64\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
+Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
+Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
+Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Verify.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
 Source: vcredist_x64.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
 
@@ -136,3 +136,7 @@ function IsWin32: Boolean;
 begin
   Result := not IsWin64;
 end;
+[_ISToolPreCompile]
+Name: C:\CodeSign\sEraser.bat; Parameters: 
+[_ISToolPostCompile]
+Name: c:\codesign\eraserinstall.bat; Parameters: 
