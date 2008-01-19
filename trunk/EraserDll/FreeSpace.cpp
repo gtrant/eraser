@@ -224,18 +224,21 @@ bool hasPrivileges(CEraserContext *context)
 	{
 		HANDLE hToken;
 		TOKEN_ELEVATION_TYPE elevationType;
-		DWORD returnSize;
+		DWORD returnSize = 0;
 		OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken);
 
 		if (hToken)
 		{
-			GetTokenInformation(hToken, TokenElevationType,
-				&elevationType, sizeof(elevationType), &returnSize);
-			CloseHandle(hToken);
-			if (elevationType == TokenElevationTypeLimited) {
-				context->m_saError.Add("Erasing the Free Space of a drive requires elevation");
-				return false;
+			if (GetTokenInformation(hToken, TokenElevationType,
+				&elevationType, sizeof(elevationType), &returnSize))
+			{
+				if (elevationType == TokenElevationTypeLimited)
+				{
+					context->m_saError.Add("Erasing the Free Space of a drive requires elevation");
+					return false;
+				}
 			}
+			CloseHandle(hToken);
 		}
 	}
 
