@@ -673,11 +673,8 @@ BOOL CEraserDoc::LogAction(CString str)
     TRACE("CEraserDoc::LogAction(CString)\n");
 
     BOOL bResult = FALSE;
-    CString strDate, strPath;
-
+    CString strDate, strPath(m_strAppDataPath + szLogFile);
     CStdioFile sf;
-
-    strPath = m_strExePath + szLogFile;
 
     if (sf.Open(strPath, CFile::modeReadWrite | CFile::modeCreate | CFile::modeNoTruncate | CFile::typeText))
     {
@@ -1200,7 +1197,7 @@ void CEraserDoc::OnFileViewLog()
     TRACE("CEraserDoc::OnFileViewLog\n");
 
     CFileStatus fs;
-    CString strPath = m_strExePath + szLogFile;
+    CString strPath = m_strAppDataPath + szLogFile;
 
     if (CFile::GetStatus((LPCTSTR)strPath, fs))
     {
