@@ -321,10 +321,20 @@ BOOL CTaskDataPage::OnInitDialog()
 	CComboBox* finish_action  = (CComboBox*)GetDlgItem(IDC_COMBO_WHENFINISH);
 	int selstr;
 	finish_action->SetItemDataPtr(selstr = finish_action->AddString("None"), NULL);
-	finish_action->SetItemData(finish_action->AddString("Shutdown system"), EWX_SHUTDOWN);
+	finish_action->SetItemData(finish_action->AddString("Shutdown system"), EWX_POWEROFF);
 	finish_action->SetItemData(finish_action->AddString("Restart"), EWX_REBOOT);
 	finish_action->SetItemData(finish_action->AddString("Sleep"), (DWORD_PTR)-1);
 
+	OSVERSIONINFO version;
+	::ZeroMemory(&version, sizeof(version));
+	version.dwOSVersionInfoSize = sizeof(version);
+	if (GetVersionEx(&version) && (
+		version.dwPlatformId != VER_PLATFORM_WIN32_NT ||
+		version.dwMajorVersion < 5))
+	{
+		m_iFinishActionInd = 0;
+		finish_action->EnableWindow(false);
+	}
 	finish_action->SetCurSel(m_iFinishActionInd);
 	
 
