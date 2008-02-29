@@ -4,9 +4,20 @@ ALL EARLIER VERSIONS before installing this Beta. When installing
 an earlier stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.86 (Dec 8th 2007)
+Eraser 5.87 beta 1: Latest changes
 ----------------------------------------------------------------
+- Schedlog.txt will always be kept in the local Application Data
+  folder.
+- Fixed shutdown issues after erase for NT-based computers.
+- Fixed erasure of recycle bin contents when the erase was cancelled.
+- Fixed Windows 98 compatibility.
+- Fixed error checking when querying for elevation.
+- Renamed Verify.exe to Erschk.exe. Resolved #418558.
+- Fixed the VC2005 redistributable being extracted over each other.
+  when both x86 and x64 builds are selected for install.
+- Fixed command line error when -silent was passed to EraserL.
 
+=================================================================
 CONTENTS
 1. LEGAL
    1.1. Copyright

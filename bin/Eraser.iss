@@ -21,8 +21,8 @@ DisableStartupPrompt=true
 PrivilegesRequired=admin
 InfoBeforeFile=..\README.txt
 LicenseFile=..\COPYING.txt
-WizardImageFile=F:\Program Files (x86)\Inno Setup 5\WizModernImage.bmp
-WizardSmallImageFile=F:\Program Files (x86)\Inno Setup 5\WizModernSmallImage.bmp
+WizardImageFile=C:\Program Files\Inno Setup 5\WizModernImage.bmp
+WizardSmallImageFile=C:\Program Files\Inno Setup 5\WizModernSmallImage.bmp
 InternalCompressLevel=ultra
 SolidCompression=true
 VersionInfoVersion={#VERSION_NUMBER_STRING}
@@ -136,7 +136,3 @@ function IsWin32: Boolean;
 begin
   Result := not IsWin64;
 end;
-[_ISToolPreCompile]
-Name: C:\CodeSign\sEraser.bat; Parameters: 
-[_ISToolPostCompile]
-Name: c:\codesign\eraserinstall.bat; Parameters: 
