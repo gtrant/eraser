@@ -78,7 +78,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Version.lib EraserUI.lib Shared.lib"
+				AdditionalDependencies="SHFolder.lib Version.lib EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Eraser.exe"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
@@ -259,7 +259,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Version.lib EraserUI.lib Shared.lib"
+				AdditionalDependencies="SHFolder.lib Version.lib EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Eraser.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
