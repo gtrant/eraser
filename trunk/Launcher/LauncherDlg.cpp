@@ -416,11 +416,9 @@ BOOL CLauncherDlg::EraserWipeDone()
         m_saFolders.RemoveAll();
     }
 
-    E_UINT8 uTerminated = 0;
-    BOOL bTerminated = eraserOK(eraserTerminated(m_ehContext, &uTerminated)) && uTerminated;
-
     // empty recycle bin
-    if (!bTerminated && m_bRecycled)
+    E_UINT8 uTerminated = 0;
+    if (eraserOK(eraserCompleted(m_ehContext, &uTerminated)) && m_bRecycled)
     {
         HINSTANCE hShell = AfxLoadLibrary(szShell32);
 
