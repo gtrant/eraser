@@ -29,14 +29,14 @@
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CEraserApp
+// CEraserDll
 // See Eraser.cpp for the implementation of this class
 //
 
-class CEraserApp : public CWinApp
+class CEraserDll : public CWinApp
 {
 public:
-    CEraserApp();
+    CEraserDll();
 
 // Overrides
     // ClassWizard generated virtual function overrides
