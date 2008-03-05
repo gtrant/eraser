@@ -55,7 +55,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CEraserApp
 
-BEGIN_MESSAGE_MAP(CEraserApp, CWinApp)
+BEGIN_MESSAGE_MAP(CEraserDll, CWinApp)
     //{{AFX_MSG_MAP(CEraserApp)
         // NOTE - the ClassWizard will add and remove mapping macros here.
         //    DO NOT EDIT what you see in these blocks of generated code!
@@ -65,12 +65,12 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CEraserApp construction
 
-CEraserApp::CEraserApp()
+CEraserDll::CEraserDll()
 {
     _set_se_translator(SeTranslator);
 }
 
-BOOL CEraserApp::InitInstance()
+BOOL CEraserDll::InitInstance()
 {
     // determine the operating system
     OSVERSIONINFO ov;
@@ -92,7 +92,7 @@ BOOL CEraserApp::InitInstance()
     return CWinApp::InitInstance();
 }
 
-int CEraserApp::ExitInstance()
+int CEraserDll::ExitInstance()
 {
     // clean up
     eraserLibraryUnlock();
@@ -105,7 +105,7 @@ int CEraserApp::ExitInstance()
 /////////////////////////////////////////////////////////////////////////////
 // The one and only CEraserApp object
 
-CEraserApp theApp;
+CEraserDll theApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // definitions
