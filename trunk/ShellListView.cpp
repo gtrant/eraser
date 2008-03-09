@@ -469,7 +469,7 @@ void CShellListView::GetContextMenu()
     if (ppidlArray)
     {
         // fill the array
-
+        lplvid = NULL;
         while (pos != NULL)
         {
             iItem = lc.GetNextSelectedItem(pos);
@@ -600,7 +600,7 @@ void CShellListView::OnDragDrop(NMHDR* /*pNMHDR*/, LRESULT* pResult)
     if (ppidlArray)
     {
         // fill the array
-
+        lplvid = NULL;
         while (pos != NULL)
         {
             iItem = lc.GetNextSelectedItem(pos);
