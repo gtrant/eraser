@@ -135,10 +135,26 @@ m_smallImageList (NULL)
     try
     {
 		// Create the Application Data path to store the Default ers file
+#ifndef ERASER_STANDALONE
 		if (!SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, m_strAppDataPath.GetBuffer(MAX_PATH))))
 			AfxMessageBox("Could not determine path to Application Data", MB_ICONERROR);
 		m_strAppDataPath.ReleaseBuffer();
 		CreateDirectory((m_strAppDataPath += "\\") += szAppDataPath, NULL);
+#else
+		TCHAR moduleName[MAX_PATH];
+		SetLastError(0);
+		DWORD charsWritten = GetModuleFileName(AfxGetInstanceHandle(), moduleName, MAX_PATH);
+		if (!charsWritten || GetLastError() != 0)
+			AfxMessageBox("Could not determine path to Application Data", MB_ICONERROR);
+
+		TCHAR drive[5];
+		TCHAR dir[MAX_PATH];
+		TCHAR ext[MAX_PATH];
+		TCHAR filename[MAX_PATH];
+		_splitpath(moduleName, drive, dir, filename, ext);
+		m_strAppDataPath = drive;
+		m_strAppDataPath += dir;
+#endif
 
 		// read preferences
         if (!ReadPreferences())
