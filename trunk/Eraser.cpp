@@ -111,6 +111,7 @@ BOOL CEraserApp::InitInstance()
     // then activate it and return FALSE from InitInstance to
     // end the execution of this instance.
 
+#ifndef ERASER_STANDALONE
 	{
 		char temp[512];
 		::GetModuleFileName(NULL, temp, sizeof(temp));
@@ -130,7 +131,10 @@ BOOL CEraserApp::InitInstance()
 			break;
 		}
 	}
-//	no_registry = true;
+#else
+	no_registry = true;
+#endif
+
 	if (no_registry) {
 		char temp[512];
 		::GetModuleFileName(NULL, temp, sizeof(temp));
