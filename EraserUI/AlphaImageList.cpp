@@ -98,6 +98,8 @@ BOOL CAlphaImageList::Create(int nWidth, int nHeight, int nStyle, int nCnt)
 }
 
 
+#pragma warning(push)
+#pragma warning(disable: 4310)
 BOOL CAlphaImageList::AddBitmap(UINT nID)
 {
 	if (m_szImg.cx <= 0)
@@ -283,6 +285,7 @@ BOOL CAlphaImageList::AddBitmap(UINT nID)
 
 	return TRUE;
 }
+#pragma warning(pop)
 
 
 BOOL CAlphaImageList::Draw(CDC* pDC, CPoint ptPos, int nImgList, int nIndex)
