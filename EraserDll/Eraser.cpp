@@ -141,7 +141,8 @@ overwriteFileName(LPCTSTR szFile, LPTSTR szLastFileName)
 {
     TCHAR szNewName[MAX_PATH];
     PTCHAR pszLastSlash;
-    E_UINT32 i, j, index, length;
+    E_UINT32 i, j, length;
+    size_t index;
 
     try {
         strncpy(szLastFileName, szFile, MAX_PATH);

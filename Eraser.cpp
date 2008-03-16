@@ -222,10 +222,10 @@ BOOL CEraserApp::InitInstance()
     if (!ProcessShellCommand(cmdInfo))
         return FALSE;
 
-	EnableHtmlHelp();
-	int helpfilelen = strlen(m_pszHelpFilePath);
-	if((helpfilelen >= 4) && !_stricmp(&m_pszHelpFilePath[helpfilelen - 4], ".hlp"))
-		strcpy((char *)&m_pszHelpFilePath[helpfilelen - 4], ".chm");
+    EnableHtmlHelp();
+    size_t helpfilelen = strlen(m_pszHelpFilePath);
+    if((helpfilelen >= 4) && !_stricmp(&m_pszHelpFilePath[helpfilelen - 4], ".hlp"))
+        strcpy((char *)&m_pszHelpFilePath[helpfilelen - 4], ".chm");
 
     // The one and only window has been initialized, so show and update it.
 

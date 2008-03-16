@@ -454,7 +454,7 @@ void CEraserView::UpdateList()
         lc.DeleteAllItems();
 
         CItem           *piItem = 0;
-        int             iSize   = 0;
+        INT_PTR         iSize   = 0;
         int             iItem   = 0;
 
         // item information
@@ -736,8 +736,8 @@ void CEraserView::OnEditProperties()
 
         POSITION pos = lc.GetFirstSelectedItemPosition();
 
-        int nItem  = lc.GetNextSelectedItem(pos);
-        int nIndex = lc.GetItemData(nItem);
+        int       nItem  = lc.GetNextSelectedItem(pos);
+        DWORD_PTR nIndex = lc.GetItemData(nItem);
 
         if (nIndex >= 0 && nIndex < pDoc->m_paTasks.GetSize())
         {
@@ -833,10 +833,10 @@ void CEraserView::OnEditDeleteTask()
         CEraserDoc *pDoc = static_cast<CEraserDoc*>(GetDocument());
         ASSERT(AfxIsValidAddress(pDoc, sizeof(CEraserDoc)));
 
-        int     nItem;
-        int     nIndex;
-        int     iSize   = pDoc->m_paTasks.GetSize();
-        CItem   *piItem = 0;
+        int       nItem;
+        DWORD_PTR nIndex;
+        INT_PTR   iSize   = pDoc->m_paTasks.GetSize();
+        CItem     *piItem = 0;
 
         POSITION pos = lc.GetFirstSelectedItemPosition();
 
@@ -943,8 +943,8 @@ void CEraserView::OnProcessRun()
             CDWordArray daRemovedIfComplete;
             CItem       *piItem = 0;
             int         nItem = -1;
-            int         nIndex = 0;
-            int         iSize = pDoc->m_paTasks.GetSize();
+            DWORD_PTR   nIndex = 0;
+            INT_PTR     iSize = pDoc->m_paTasks.GetSize();
             POSITION    pos = lc.GetFirstSelectedItemPosition();
 
             // see below - need to remove items whose existence won't
@@ -990,7 +990,7 @@ void CEraserView::OnProcessRun()
                         // unless the task is persistent - UpdateList will take care
                         // of everything else
 
-                        int iSize = daRemovedIfComplete.GetSize(), nIndex;
+                        INT_PTR iSize = daRemovedIfComplete.GetSize(), nIndex;
                         CItem *piItem = 0;
 
                         while (iSize--)

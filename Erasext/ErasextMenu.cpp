@@ -319,7 +319,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpici)
                 if (pThis->m_bDragMenu)
                 {
                     CString strSourceFolder;
-                    int iSize = pThis->m_saData.GetSize(), i;
+                    INT_PTR iSize = pThis->m_saData.GetSize(), i;
 
                     for (i = 0; i < iSize; i++)
                     {
@@ -351,7 +351,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpici)
                 if (pThis->m_dwDirectories > 0)
                 {
                     CStringArray saSubfolders;
-                    int iSize = pThis->m_saFolders.GetSize(), i;
+                    INT_PTR iSize = pThis->m_saFolders.GetSize(), i;
 
                     // parseDirectory will recount all directories for us
                     pThis->m_dwDirectories = 0;
@@ -461,7 +461,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpici)
                         {
                             // if there are (empty) directories to remove
 
-                            int iSize = pThis->m_saFolders.GetSize(), i;
+                            INT_PTR iSize = pThis->m_saFolders.GetSize(), i;
                             for (i = 0; i < iSize; i++)
                             {
                                 if (eraserOK(eraserRemoveFolder((LPVOID)(LPCTSTR)pThis->m_saFolders[i],
@@ -770,7 +770,7 @@ BOOL CErasextMenu::MoveFileList(CWnd *pParent, CStringArray& saList, CStringArra
     CString strTemp;
     BOOL    bFailed = FALSE;
     BOOL    bNoToAll = FALSE, bYesToAll = FALSE;
-    int     iSize, i;
+    INT_PTR iSize, i;
 
     if (strDestination.IsEmpty() || strlSource.IsEmpty())
         return FALSE;

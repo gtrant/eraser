@@ -162,7 +162,7 @@ BOOL CReportDialog::OnInitDialog()
     // fill list
     if (AfxIsValidAddress(m_pstraErrorArray, sizeof(CStringArray)))
     {
-        int iSize = m_pstraErrorArray->GetSize();
+        INT_PTR iSize = m_pstraErrorArray->GetSize();
 
         if (iSize > 0)
         {

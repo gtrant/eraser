@@ -88,7 +88,7 @@ wipeDataStreams(CEraserContext *context, DataStreamArray& streams)
 {
     bool bResult = false;
     E_INT32 lHigh = 0;
-    E_INT32 iSize = streams.GetSize();
+    INT_PTR iSize = streams.GetSize();
 
     for (E_INT32 i = 0; i < iSize; i++) {
         context->m_hFile = CreateFile((LPCTSTR)streams[i].m_strName,
