@@ -521,7 +521,9 @@ void CSchedulerView::OnEditDeleteTask()
 
         if (lc.GetSelectedCount() > 0)
         {
-            int nItem, nIndex, iSize = pDoc->m_paScheduledTasks.GetSize();
+            int nItem;
+            INT_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
+            DWORD_PTR nIndex;
             CScheduleItem *psiItem = 0;
 
             POSITION pos = lc.GetFirstSelectedItemPosition();
@@ -607,7 +609,7 @@ void CSchedulerView::OnEditProperties()
             POSITION pos = lc.GetFirstSelectedItemPosition();
 
             int nItem = lc.GetNextSelectedItem(pos);
-            int nIndex = lc.GetItemData(nItem);
+            DWORD_PTR nIndex = lc.GetItemData(nItem);
 
             if (nIndex >= 0 && nIndex < pDoc->m_paScheduledTasks.GetSize())
             {
@@ -831,7 +833,7 @@ void CSchedulerView::OnTimer(UINT_PTR nIDEvent)
 
     try
     {
-        int iSize = pDoc->m_paScheduledTasks.GetSize();
+        INT_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
         CScheduleItem *psiItem = 0;
 
         while (iSize--)
@@ -967,7 +969,7 @@ BOOL CSchedulerView::EraserWipeDone()
 
     try
     {
-        int iSize = pDoc->m_paScheduledTasks.GetSize();
+        INT_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
         CScheduleItem *psiItem = 0;
 
         while (iSize--)
@@ -1094,7 +1096,7 @@ BOOL CSchedulerView::EraserWipeDone()
                                 saFolders.SetSize(saFolders.GetSize() - 1);
                         }
 
-                        int iSize = saFolders.GetSize();
+                        INT_PTR iSize = saFolders.GetSize();
                         if (iSize > 0)
                         {
                             for (int i = 0; i < iSize; i++)
@@ -1244,7 +1246,7 @@ BOOL CSchedulerView::EraserWipeUpdate()
         SetRedraw(FALSE);
 
         int             iCount      = lc.GetItemCount();
-        int             iIndex      = 0;
+        DWORD_PTR       iIndex      = 0;
         CScheduleItem   *psiItem    = 0;
         CString         str;
         CString         strOld;
@@ -1358,7 +1360,7 @@ void CSchedulerView::OnDestroy()
         try
         {
             CScheduleItem *psiItem = 0;
-            int iSize = pDoc->m_paScheduledTasks.GetSize();
+            INT_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
 
             while (iSize--)
             {
@@ -1391,7 +1393,7 @@ BOOL CSchedulerView::SetTimers()
     try
     {
         CScheduleItem *psiItem = 0;
-        int iSize = pDoc->m_paScheduledTasks.GetSize();
+        INT_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
 
         while (iSize--)
         {
@@ -1460,7 +1462,7 @@ void CSchedulerView::UpdateList()
         lc.DeleteAllItems();
 
         CScheduleItem *psiItem = 0;
-        int iSize = 0;
+        INT_PTR iSize = 0;
         int iItem = 0;
 
         // item information
@@ -1722,8 +1724,9 @@ void CSchedulerView::OnProcessRun()
 
         if (lc.GetSelectedCount() > 0)
         {
+            int nItem;
+            INT_PTR nIndex;
             POSITION pos = lc.GetFirstSelectedItemPosition();
-            int nItem, nIndex;
             BOOL bQueued = FALSE;
             CScheduleItem *psiItem = 0;
 
@@ -1817,8 +1820,8 @@ void CSchedulerView::OnUpdateProcessStop(CCmdUI* pCmdUI)
         {
             POSITION pos = lc.GetFirstSelectedItemPosition();
 
-            int nItem = lc.GetNextSelectedItem(pos);
-            int nIndex = lc.GetItemData(nItem);
+            int       nItem = lc.GetNextSelectedItem(pos);
+            DWORD_PTR nIndex = lc.GetItemData(nItem);
 
             if (nIndex >= 0 && nIndex < pDoc->m_paScheduledTasks.GetSize())
             {
@@ -1860,7 +1863,7 @@ void CSchedulerView::OnProcessStop()
             POSITION pos = lc.GetFirstSelectedItemPosition();
 
             int nItem = lc.GetNextSelectedItem(pos);
-            int nIndex = lc.GetItemData(nItem);
+            INT_PTR nIndex = lc.GetItemData(nItem);
 
             if (nIndex >= 0 && nIndex < pDoc->m_paScheduledTasks.GetSize())
             {
@@ -2014,7 +2017,7 @@ BOOL CSchedulerView::RunScheduledTask(CScheduleItem *psiItem)
     {
         CString strData;
         CStringArray saData;
-        int iSize = 0, i;
+        INT_PTR iSize = 0, i;
         BOOL bResult = FALSE;
 
         // stop the timer
@@ -2270,7 +2273,7 @@ void CSchedulerView::RemoveTaskFromQueue(CScheduleItem *psiItem)
             psiItem->SetQueued(FALSE);
 
             CScheduleItem *psiCurrentItem = 0;
-            int iSize = pDoc->m_paQueuedTasks.GetSize();
+            INT_PTR iSize = pDoc->m_paQueuedTasks.GetSize();
 
             while (iSize--)
             {

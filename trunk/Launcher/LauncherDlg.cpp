@@ -193,7 +193,7 @@ BOOL CLauncherDlg::Erase()
                     GetLocalHardDrives(m_saFiles);
             }
 
-            int iSize = m_saFiles.GetSize();
+            INT_PTR iSize = m_saFiles.GetSize();
 
             if (iSize > 0)
             {
@@ -401,7 +401,7 @@ BOOL CLauncherDlg::EraserWipeDone()
     UpdateData(FALSE);
 
     // remove folders
-    int iSize = m_saFolders.GetSize();
+    INT_PTR iSize = m_saFolders.GetSize();
     if (iSize > 0)
     {
         for (int i = 0; i < iSize; i++)

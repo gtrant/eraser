@@ -134,7 +134,7 @@ BOOL CEraserDlg::Initialize(CPtrArray *ppaTasks)
             CItem   *piItem = 0;
             CString strData;
 
-            int iSize = ppaTasks->GetSize();
+            INT_PTR iSize = ppaTasks->GetSize();
 
             while (iSize--)
             {
@@ -247,7 +247,7 @@ BOOL CEraserDlg::Erase()
 
         VERIFY(eraserOK(eraserSetDataType(m_ehContext, ERASER_DATA_FILES)));
 
-        int iSize = m_saFiles.GetSize();
+        INT_PTR iSize = m_saFiles.GetSize();
         for (int i = 0; i < iSize; i++)
         {
             VERIFY(eraserOK(eraserAddItem(m_ehContext,
@@ -264,7 +264,7 @@ BOOL CEraserDlg::Erase()
 
         VERIFY(eraserOK(eraserSetDataType(m_ehContext, ERASER_DATA_DRIVES)));
 
-        int iSize = m_saDrives.GetSize();
+        INT_PTR iSize = m_saDrives.GetSize();
         for (int i = 0; i < iSize; i++)
         {
             VERIFY(eraserOK(eraserAddItem(m_ehContext,
@@ -435,7 +435,7 @@ BOOL CEraserDlg::EraserWipeDone()
 
 	
     // remove folders
-    int iSize = m_saFolders.GetSize();
+    INT_PTR iSize = m_saFolders.GetSize();
     if (iSize > 0)
     {
         for (int i = 0; i < iSize; i++)

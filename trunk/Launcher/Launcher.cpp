@@ -180,7 +180,7 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
     TCHAR           szFS[MAX_PATH];
     DWORD           dwFileSystem;
     DWORD           dwAttributes;
-    int             iSize;
+    INT_PTR         iSize;
     CString         strSID;
 	static VersionHelper version;
 

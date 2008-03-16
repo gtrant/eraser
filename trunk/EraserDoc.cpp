@@ -264,7 +264,7 @@ void CEraserDoc::Serialize(CArchive& ar)
 
     if (ar.IsStoring())
     {
-        int iSize;
+        INT_PTR iSize;
 
         // remove invalid items
         CleanList(m_paTasks, sizeof(CItem));
@@ -472,7 +472,7 @@ void CEraserDoc::FreeTasks()
     {
         CItem         *piItem  = 0;
         CScheduleItem *psiItem = 0;
-        int           iSize    = 0;
+        INT_PTR       iSize    = 0;
 
         // tasks of type CItem
         iSize = m_paTasks.GetSize();
@@ -523,7 +523,7 @@ BOOL CEraserDoc::AddTask(CItem *piItem)
             piItem->GetData(strNew);
 
             CItem   *piCurrent  = 0;
-            int     iSize       = m_paTasks.GetSize();
+            INT_PTR iSize       = m_paTasks.GetSize();
 
             // duplicates are not accepted for on-demand eraser
 
@@ -804,7 +804,7 @@ void CEraserDoc::CalcNextAssignment()
 
     try
     {
-        int iSize = m_paScheduledTasks.GetSize();
+        INT_PTR iSize = m_paScheduledTasks.GetSize();
 
         if (iSize > 0)
         {
@@ -1408,7 +1408,7 @@ void CEraserDoc::OnCloseDocument()
 
 void CEraserDoc::CleanList(CPtrArray& rList, int iItemSize)
 {
-    int iSize = rList.GetSize();
+    INT_PTR iSize = rList.GetSize();
     while (iSize--)
     {
         if (!AfxIsValidAddress(rList[iSize], iItemSize))

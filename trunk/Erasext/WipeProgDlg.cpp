@@ -155,7 +155,7 @@ void CEraserDlg::Erase()
             else
                 VERIFY(eraserOK(eraserSetDataType(m_ehContext, ERASER_DATA_DRIVES)));
 
-            int iSize = m_saData.GetSize();
+            INT_PTR iSize = m_saData.GetSize();
             for (int i = 0; i < iSize; i++)
             {
                 VERIFY(eraserOK(eraserAddItem(m_ehContext,

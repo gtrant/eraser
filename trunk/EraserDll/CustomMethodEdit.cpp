@@ -159,7 +159,7 @@ void CCustomMethodEdit::OnButtonAdd()
         setPassOne(passNew, 0);
 
         // array index can be used as list index as the list won't be sorted
-        int iItem = m_aPasses.Add(passNew);
+        INT_PTR iItem = m_aPasses.Add(passNew);
 
         UpdateList();
         m_lcPasses.SetItemState(iItem, LVIS_SELECTED, LVIS_SELECTED);
