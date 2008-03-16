@@ -819,12 +819,6 @@ LRESULT CSystemTray::OnTaskbarCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 void CSystemTray::OnSettingChange(UINT uFlags, LPCTSTR lpszSection) 
 {
 	CWnd::OnSettingChange(uFlags, lpszSection);
-
-    if (uFlags == SPI_SETWORKAREA)
-    {
-        m_bShowIconPending = !m_bHidden;
-        InstallIconPending();	
-    }
 }
 #endif
 
