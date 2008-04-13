@@ -53,29 +53,30 @@ Source: ..\COPYING.txt; DestDir: {app}; Flags: overwritereadonly
 
 Source: win32\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
 Source: win32\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Verify.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
+Source: win32\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
+Source: win32\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
+Source: win32\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
 Source: vcredist_x86.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
 
 Source: x64\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\Verify.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
+Source: x64\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
 Source: vcredist_x64.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
 
 [Components]
-Name: arch32Bit; Description: Eraser Core Program Files (32-bit); Types: full custom compact; Flags: fixed checkablealone
+Name: arch32Bit; Description: Eraser Core Program Files (32-bit); Types: full custom compact; Flags: fixed checkablealone; Check: IsWin32
 Name: arch32Bit\RecycleBin; Description: Add Eraser to the Recycle Bin Context Menu; Types: full compact
+Name: archWoW; Description: Eraser Core Program Files (32-bit, WoW); Types: full custom compact; Check: IsWin64
 Name: arch64Bit; Description: Eraser Core Program Files (64-bit); Types: full custom compact; Flags: fixed checkablealone; Check: IsWin64
 Name: arch64Bit\RecycleBin; Description: Add Eraser to the Recycle Bin Context Menu; Types: full compact
 Name: Verify; Description: Eraser Verifier; Types: full
 
 [Icons]
 Name: {group}\Eraser; Filename: {app}\eraser.exe
-Name: {group}\Eraser Verify; Filename: {app}\verify.exe; Components: Verify
-Name: {group}\Eraser Website; Filename: http://heidi.ie/eraser/; Components: 
+Name: {group}\Eraser Verify; Filename: {app}\ErsChk.exe; Components: Verify
+Name: {group}\Eraser Website; Filename: http://heidi.ie/eraser/
 
 [Registry]
 Root: HKCR; SubKey: *\shellex\ContextMenuHandlers\Erasext; ValueType: string; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
