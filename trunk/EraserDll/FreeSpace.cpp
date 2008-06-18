@@ -30,7 +30,10 @@
 #include "NTFS.h"
 #include "FreeSpace.h"
 #include <winioctl.h>
-
+#include <windows.h>
+#include <stdio.h> 
+#include <winbase.h>
+#include <winnt.h>
 
 // Windows 98 - Q188074
 static const LPCTSTR ERASER_REGISTRY_FILESYSTEM
