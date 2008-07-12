@@ -93,6 +93,7 @@ Global
 		{D4750DE4-A865-494B-B5AD-84DF59ADFC05}.Release|x64.ActiveCfg = Release|x64
 		{D4750DE4-A865-494B-B5AD-84DF59ADFC05}.Release|x64.Build.0 = Release|x64
 		{D4750DE4-A865-494B-B5AD-84DF59ADFC05}.Standalone Release|Win32.ActiveCfg = Standalone Release|Win32
+		{D4750DE4-A865-494B-B5AD-84DF59ADFC05}.Standalone Release|Win32.Build.0 = Standalone Release|Win32
 		{D4750DE4-A865-494B-B5AD-84DF59ADFC05}.Standalone Release|x64.ActiveCfg = Standalone Release|x64
 		{D4750DE4-A865-494B-B5AD-84DF59ADFC05}.Standalone Release|x64.Build.0 = Standalone Release|x64
 		{870168AC-012D-4E78-AB70-CC20D02C0EBE}.Debug|Win32.ActiveCfg = Debug|Win32
