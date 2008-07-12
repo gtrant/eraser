@@ -185,8 +185,8 @@ BOOL CEraserApp::InitInstance()
 
     // Standard initialization
     // If you are not using these features and wish to reduce the size
-    //  of your final executable, you should remove from the following
-    //  the specific initialization routines you do not need.
+    // of your final executable, you should remove from the following
+    // the specific initialization routines you do not need.
     // Change the registry key under which our settings are stored.
 	if (!no_registry)
 	    SetRegistryKey(_T("Heidi Computers Ltd\\Eraser\\5.8"));
@@ -195,7 +195,6 @@ BOOL CEraserApp::InitInstance()
 
     // Register the application's document templates.  Document templates
     //  serve as the connection between documents, frame windows and views.
-
     CSingleDocTemplate* pDocTemplate;
     pDocTemplate = new CSingleDocTemplate(
         IDR_MAINFRAME,
@@ -204,9 +203,11 @@ BOOL CEraserApp::InitInstance()
         NULL);  // we create views by ourselves; no default view here
     AddDocTemplate(pDocTemplate);
 
+#ifndef ERASER_STANDALONE
     // Enable DDE Execute open
     EnableShellOpen();
     RegisterShellFileTypes(TRUE);
+#endif
 
     CString str(m_lpCmdLine);
     BOOL bHide = (str.Find(NOWINDOW_PARAMETER) != -1);
@@ -228,7 +229,6 @@ BOOL CEraserApp::InitInstance()
         strcpy((char *)&m_pszHelpFilePath[helpfilelen - 4], ".chm");
 
     // The one and only window has been initialized, so show and update it.
-
     m_pMainWnd->ShowWindow((bHide) ? SW_HIDE : SW_SHOW);
     m_pMainWnd->UpdateWindow();
 
