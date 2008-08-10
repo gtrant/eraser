@@ -2050,6 +2050,34 @@ eraserTestContinueProcess(E_IN ERASER_HANDLE param1)
 UINT
 eraserThread(LPVOID param1)
 {
+	// prevent the computer from going to sleep, since users tend to leave the computer
+	// on overnight to complete a task.
+	typedef EXECUTION_STATE (*WINAPI pSetThreadExecutionState)(EXECUTION_STATE esFlags);
+	static pSetThreadExecutionState SetThreadExecutionState = NULL;
+	if (!SetThreadExecutionState)
+	{
+		HMODULE kernel32 = LoadLibrary("kernel32.dll");
+		SetThreadExecutionState = reinterpret_cast<pSetThreadExecutionState>(
+			GetProcAddress(kernel32, "_SetThreadExecutionState"));
+	}
+	class PreventComputerSleep
+	{
+	public:
+		PreventComputerSleep()
+		{
+			if (!SetThreadExecutionState)
+				return;
+			SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED);
+		}
+
+		~PreventComputerSleep()
+		{
+			if (!SetThreadExecutionState)
+				return;
+			SetThreadExecutionState(ES_CONTINUOUS);
+		}
+	} SleepDeny;
+
     AFX_MANAGE_STATE(AfxGetStaticModuleState());
     eraserTraceBase("eraserThread\n");
     ASSERT(AfxIsValidAddress(param1, sizeof(CEraserContext)));
