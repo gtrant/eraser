@@ -154,7 +154,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_MENU_TEXT_FILE      "&Erase"
-    IDS_MENU_TEXT_DRIVE     "Erase Unused Space"
+	IDS_MENU_TEXT_DRIVE     "&Erase Unused Space"
     IDS_COMMAND_STRING_FILE "Erase file(s)"
     IDS_COMMAND_STRING_DRIVE "Erase unused disk space"
     IDS_CONFIRM_FILES       "these %d files?"
@@ -162,7 +162,7 @@ BEGIN
     IDS_COMMAND_STRING_DIRECTORIES "Erase file(s), folder(s) and subfolder(s)"
     IDS_CONFIRM_FILES_AND_FOLDERS "these %d files and %d folders?"
     IDS_CONFIRM             "Are you sure you want to erase "
-    IDS_MENU_TEXT_DRAG      "Eraser Secure &Move"
+    IDS_MENU_TEXT_DRAG      "Eraser Secure Mo&ve"
     IDS_CONFIRM_MOVE        "Are you sure you want to move "
     IDS_CONFIRM_MOVE_FILES  "these %d files to "
     IDS_CONFIRM_MOVE_FILES_AND_FOLDERS "these %d files and %d folders to "
