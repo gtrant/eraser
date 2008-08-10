@@ -2372,32 +2372,33 @@ eraserThread(LPVOID param1)
             context->m_evDone.SetEvent();
         }
 
-        // do the post-erase task
-		if (0 != context->m_dwFinishAction) 
-		{
-			if (context->m_dwFinishAction != -1)
-			{
-				// Get this process' token
-				HANDLE processToken;
-				if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
-					&processToken))
-				{
-					// Get the shut down privilege LUID
-					TOKEN_PRIVILEGES privilegeToken;
-					LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &privilegeToken.Privileges[0].Luid);
-					privilegeToken.PrivilegeCount = 1;
-					privilegeToken.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-
-					// Get the privilege to shut down the computer
-					AdjustTokenPrivileges(processToken, FALSE, &privilegeToken, 0, NULL, 0); 
-					ExitWindowsEx(context->m_dwFinishAction, SHTDN_REASON_MAJOR_OPERATINGSYSTEM | SHTDN_REASON_FLAG_PLANNED);
-				}
-			}
-			else
-				SetSystemPowerState(true, false);
-		}
         if (eraserInternalCompleted(context)) {
             eraserEndThread(context, EXIT_SUCCESS);
+
+			// do the post-erase task
+			if (0 != context->m_dwFinishAction) 
+			{
+				if (context->m_dwFinishAction != -1)
+				{
+					// Get this process' token
+					HANDLE processToken;
+					if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY,
+						&processToken))
+					{
+						// Get the shut down privilege LUID
+						TOKEN_PRIVILEGES privilegeToken;
+						LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &privilegeToken.Privileges[0].Luid);
+						privilegeToken.PrivilegeCount = 1;
+						privilegeToken.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+						// Get the privilege to shut down the computer
+						AdjustTokenPrivileges(processToken, FALSE, &privilegeToken, 0, NULL, 0); 
+						ExitWindowsEx(context->m_dwFinishAction, SHTDN_REASON_MAJOR_OPERATINGSYSTEM | SHTDN_REASON_FLAG_PLANNED);
+					}
+				}
+				else
+					SetSystemPowerState(true, false);
+			}
         } else {
             eraserEndThread(context, EXIT_FAILURE);
         }
