@@ -444,7 +444,7 @@ void CSchedulerView::OnFileNewTask()
 						strncpy(Pathname,buffer,260);
 						delete buffer;
 						m_strExePath = '"';
-						m_strExePath+=  CString(Pathname);
+						//gt m_strExePath+=  CString(Pathname);
 						m_strExePath+= "Eraserl.exe";
 						m_strExePath+= '"';
 						switch (tps.m_pgData.m_tType)
@@ -762,7 +762,7 @@ void CSchedulerView::OnEditProperties()
 						strncpy(Pathname,buffer,260);
 						delete buffer;
 						m_strExePath = '"';
-						m_strExePath+=  CString(Pathname);
+						//gt m_strExePath+=  CString(Pathname);
 						m_strExePath+= "Eraserl.exe";
 						m_strExePath+= '"';
 						
