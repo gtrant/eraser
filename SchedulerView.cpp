@@ -776,8 +776,8 @@ void CSchedulerView::OnEditProperties()
 								m_strExePath+= '"';
 								m_strExePath+= tps.m_pgData.m_strFolder;
 								m_strExePath+= '"';
-								if (tps.m_pgData.m_bRemoveFolder==FALSE) {m_strExePath+= "-keepfolder ";}
-								if (tps.m_pgData.m_bSubfolders) {m_strExePath+= "-subfolders ";}
+								if (tps.m_pgData.m_bRemoveFolder==FALSE) {m_strExePath+= " -keepfolder ";}
+								if (tps.m_pgData.m_bSubfolders) {m_strExePath+= " -subfolders ";}
 								break;
 							case File:
 								m_strExePath+= " -file ";
