@@ -375,8 +375,8 @@ wipeMFTRecords(CEraserContext *context)
         eraserProgressSetMessage(context, ERASER_MESSAGE_REMOVING);
         eraserUpdateNotify(context);
 
-        E_INT32 iSize = saList.GetSize();
-        for (E_INT32 i = 0; i < iSize; i++) {
+        INT_PTR iSize = saList.GetSize();
+        for (INT_PTR i = 0; i < iSize; i++) {
             eraserSafeAssign(context, context->m_uProgressPercent, (E_UINT8)((i * 100) / iSize));
             eraserUpdateNotify(context);
 
