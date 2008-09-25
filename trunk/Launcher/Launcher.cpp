@@ -173,6 +173,7 @@ struct VersionHelper
 		}
 	}
 };
+
 static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycledDirectories)
 {
     CStringArray    straDrives;
@@ -281,6 +282,8 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
 #endif
 }
 
+//Prevents using the registry to store information (good for standalone builds)
+__declspec(dllimport) bool no_registry;
 
 /////////////////////////////////////////////////////////////////////////////
 // CLauncherApp initialization
@@ -499,7 +502,12 @@ BOOL CLauncherApp::InitInstance()
 
 		//Now that the command line has been passed, check if we should display the
 		//results dialog (because it may not be overridde by the user)
+#ifdef ERASER_STANDALONE
+		CIniKey kReg;
+		no_registry = true;
+#else
 		CKey kReg;
+#endif
 		if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
 		{
 			if (bResults == -1)
