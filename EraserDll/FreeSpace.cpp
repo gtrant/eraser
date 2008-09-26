@@ -217,7 +217,7 @@ getPartitionInformation(CEraserContext *context, TCHAR cDrive)
     return context->m_piCurrent.m_bLastSuccess;
 }
 
-bool hasPrivileges(CEraserContext *context)
+__declspec(dllexport) bool IsProcessElevated(HANDLE process)
 {
 	// under Vista if the user is not elevated write an error to the log and return
 	OSVERSIONINFO verInfo;
@@ -225,24 +225,31 @@ bool hasPrivileges(CEraserContext *context)
 	verInfo.dwOSVersionInfoSize = sizeof(verInfo);
 	if (GetVersionEx(&verInfo) && verInfo.dwMajorVersion >= 6)
 	{
-		HANDLE hToken;
+		HANDLE hToken = 0;
 		TOKEN_ELEVATION_TYPE elevationType;
 		DWORD returnSize = 0;
-		OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken);
+		OpenProcessToken(process, TOKEN_QUERY, &hToken);
 
 		if (hToken)
 		{
-			if (GetTokenInformation(hToken, TokenElevationType,
-				&elevationType, sizeof(elevationType), &returnSize))
-			{
-				if (elevationType == TokenElevationTypeLimited)
-				{
-					context->m_saError.Add("Erasing the Free Space of a drive requires elevation");
-					return false;
-				}
-			}
+			bool infoResult = GetTokenInformation(hToken, TokenElevationType,
+				&elevationType, sizeof(elevationType), &returnSize) != FALSE;
 			CloseHandle(hToken);
+
+			if (infoResult && elevationType == TokenElevationTypeLimited)	
+				return false;
 		}
+	}
+
+	return true;
+}
+
+static bool hasPrivileges(CEraserContext *context)
+{
+	if (!IsProcessElevated(GetCurrentProcess()))
+	{
+		context->m_saError.Add("Erasing the Free Space of a drive requires elevation");
+		return false;
 	}
 
 	return true;
