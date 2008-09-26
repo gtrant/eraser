@@ -4,7 +4,29 @@ ALL EARLIER VERSIONS before installing this Beta. When installing
 an earlier stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.87 beta 1: Latest changes
+Eraser 5.87 beta 3: Latest changes
+----------------------------------------------------------------
+- Fixed command line error when selecting subfolders to be erased
+  with the parent folder
+- Fixed a few issues with EraserL creating a registry key after an
+  erase
+- Fixed the weird bug of right-clicking the various erase methods
+  and Eraser hangs. Hopefully this resolves the problem of the
+  file/folder selection dialog blinking and resetting the selections.
+- Implemented NTFS EFS file erasure (EXPERIMENTAL!)
+- Further complicate forensics: Set MACE to invalid values (NTFS only)
+- Fixed #6: Incorrect 'When Finished' option
+- Implemented #37: Eraser should not allow system to hibernate or
+  standby when running
+- Fixed #36: Eraser overriding Windows hotkeys in context menu
+- Fixed #48: Inaccurate determination of process elevation
+
+Beta 2 Changes
+----------------------------------------------------------------
+- Do not create "New Eraser Document" in the New context menu of
+  Explorer when using a Portable version
+
+Beta 1 changes
 ----------------------------------------------------------------
 - Schedlog.txt will always be kept in the local Application Data
   folder.
@@ -162,7 +184,7 @@ CONTENTS
   
    Sami Tolvanen, the original author of this software is a 
    student in the university of technology in Finland. For 
-   more information,visit his home page at 
+   more information, visit his home page at 
    http://www.tolvanen.com/sami/.
 
    5.1. Web site
