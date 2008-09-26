@@ -2052,7 +2052,7 @@ eraserThread(LPVOID param1)
 {
 	// prevent the computer from going to sleep, since users tend to leave the computer
 	// on overnight to complete a task.
-	typedef EXECUTION_STATE (*WINAPI pSetThreadExecutionState)(EXECUTION_STATE esFlags);
+	typedef EXECUTION_STATE (WINAPI *pSetThreadExecutionState)(EXECUTION_STATE esFlags);
 	static pSetThreadExecutionState SetThreadExecutionState = NULL;
 	if (!SetThreadExecutionState)
 	{
