@@ -738,6 +738,9 @@ fileSizeToArea(CEraserContext *context, const E_UINT64& uFileSize)
 {
     E_UINT64 uBlockSize = max(context->m_piCurrent.m_uCluster,
         max(context->m_piCurrent.m_uSector, DEFAULT_SECTOR_SIZE));
+
+    if (uFileSize % uBlockSize == 0)
+        return uFileSize;
     return roundUp(uFileSize, uBlockSize);
 }
 
