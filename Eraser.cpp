@@ -75,15 +75,43 @@ CEraserApp theApp;
 // Add a static BOOL that indicates whether the class was
 // registered so that we can unregister it in ExitInstance
 static BOOL bClassRegistered = FALSE;
+__declspec(dllimport) bool IsProcessElevated(HANDLE process);
 
 BOOL CEraserApp::FirstInstance()
 {
-    CWnd *pWndPrev = CWnd::FindWindow(szEraserClassName, NULL);
+	CWnd *pWndPrev = CWnd::FindWindow(szEraserClassName, NULL);
     CWnd *pWndChild;
 
     // Determine if another window with our class name exists...
     if (pWndPrev)
     {
+		// Determine the elevation status of both processes.
+		unsigned elevationStatus = 0;
+		{
+			DWORD pid = 0;
+			GetWindowThreadProcessId(pWndPrev->m_hWnd, &pid);
+			HANDLE process = OpenProcess(PROCESS_QUERY_INFORMATION, false, pid);
+			if (IsProcessElevated(process))
+				elevationStatus |= 2;
+			if (IsProcessElevated(GetCurrentProcess()))
+				elevationStatus |= 1;
+		}
+
+		if (!(elevationStatus & 2) && (elevationStatus & 1))
+		{
+			switch (AfxMessageBox("Another instance of Eraser is still running, but this "
+				"new instance is running at a higher privilege level than the other.\n\n"
+				"Do you want to close the previous instance? "
+				"All active erasing tasks will be terminated", MB_YESNO))
+			{
+			case IDYES:
+				pWndPrev->SendMessage(WM_CLOSE);
+				break;
+			}
+
+			return TRUE;
+		}
+
         // if so, does it have any popups?
         pWndChild = pWndPrev->GetLastActivePopup();
 
