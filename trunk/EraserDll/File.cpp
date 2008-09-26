@@ -60,6 +60,181 @@ formatError(CString& strError)
     }
 }
 
+/* returns 0 on error, 1 on success. this function set the MACE values based on 
+the input from the FILE_BASIC_INFORMATION structure */
+DWORD SetFileMACE(HANDLE file, FILE_BASIC_INFORMATION fbi) {
+
+	HMODULE ntdll = NULL;
+	IO_STATUS_BLOCK iostatus;
+	pNtSetInformationFile NtSetInformationFile = NULL;
+
+	ntdll = LoadLibrary("ntdll.dll");
+	if (ntdll == NULL) {
+		return 0;
+	}
+
+	NtSetInformationFile = (pNtSetInformationFile)GetProcAddress(ntdll, "NtSetInformationFile");
+	if (NtSetInformationFile == NULL) {
+		return 0;
+	}
+
+	if (NtSetInformationFile(file, &iostatus, &fbi, sizeof(FILE_BASIC_INFORMATION), FileBasicInformation) < 0) {
+		return 0;
+	}
+	
+	/* clean up */
+	FreeLibrary(ntdll);
+
+	return 1;
+}
+
+/* returns the handle on success or NULL on failure. this function opens a file and returns
+the FILE_BASIC_INFORMATION on it. */
+HANDLE RetrieveFileBasicInformation(char *filename, FILE_BASIC_INFORMATION *fbi) {
+	
+	HANDLE file = NULL;
+	HMODULE ntdll = NULL;
+	pNtQueryInformationFile NtQueryInformationFile = NULL;
+	IO_STATUS_BLOCK iostatus;
+	
+	file = CreateFile(filename, FILE_READ_ATTRIBUTES | FILE_WRITE_ATTRIBUTES, 0, NULL, OPEN_EXISTING, 0, NULL);
+	if (file == INVALID_HANDLE_VALUE) {
+		return 0;
+	}
+
+	/* load ntdll and retrieve function pointer */
+	ntdll = LoadLibrary("ntdll.dll");
+	if (ntdll == NULL) {
+		CloseHandle(file);
+		return 0;
+	}
+
+	/* retrieve current timestamps including file attributes which we want to preserve */
+	NtQueryInformationFile = (pNtQueryInformationFile)GetProcAddress(ntdll, "NtQueryInformationFile");
+	if (NtQueryInformationFile == NULL) {
+		CloseHandle(file);
+		return 0;
+	}
+
+	/* obtain the current file information including attributes */
+	if (NtQueryInformationFile(file, &iostatus, fbi, sizeof(FILE_BASIC_INFORMATION), FileBasicInformation) < 0) {
+		CloseHandle(file);
+		return 0;
+	}
+
+	/* clean up */
+	FreeLibrary(ntdll);
+
+	return file;
+}
+
+static int RetrieveFileBasicInformationFromHandle(HANDLE file, FILE_BASIC_INFORMATION *fbi) {
+	
+	HMODULE ntdll = NULL;
+	pNtQueryInformationFile NtQueryInformationFile = NULL;
+	IO_STATUS_BLOCK iostatus;
+	
+	/* load ntdll and retrieve function pointer */
+	ntdll = LoadLibrary("ntdll.dll");
+	if (ntdll == NULL) {
+		return 0;
+	}
+
+	/* retrieve current timestamps including file attributes which we want to preserve */
+	NtQueryInformationFile = (pNtQueryInformationFile)GetProcAddress(ntdll, "NtQueryInformationFile");
+	if (NtQueryInformationFile == NULL) {
+		return 0;
+	}
+
+	/* obtain the current file information including attributes */
+	if (NtQueryInformationFile(file, &iostatus, fbi, sizeof(FILE_BASIC_INFORMATION), FileBasicInformation) < 0) {
+		return 0;
+	}
+
+	/* clean up */
+	FreeLibrary(ntdll);
+
+	return 0;
+}
+
+
+// returns 0 on error, 1 on success. this function converts a SYSTEMTIME structure to a LARGE_INTEGER
+DWORD ConvertLocalTimeToLargeInteger(SYSTEMTIME localsystemtime, LARGE_INTEGER *largeinteger) {
+
+	// the local time is stored in the system time structure argument which should be from the user
+	// input. the user inputs the times in local time which is then converted to utc system time because
+	// ntfs stores all timestamps in utc, which is then converted to a large integer
+	
+	// MSDN recommends converting SYSTEMTIME to FILETIME via SystemTimeToFileTime() and
+	// then copying the values in FILETIME to a ULARGE_INTEGER structure.
+
+	FILETIME filetime;
+	FILETIME utcfiletime;
+
+	// convert the SYSTEMTIME structure to a FILETIME structure
+    if (SystemTimeToFileTime(&localsystemtime, &filetime) == 0) {
+		return 0;
+	}
+
+	// convert the local file time to UTC
+	if (LocalFileTimeToFileTime(&filetime, &utcfiletime) == 0) {
+		return 0;
+	}
+
+	/* copying lowpart from a DWORD to DWORD, and copying highpart from a DWORD to a LONG.
+	potential data loss of upper values 2^16, but acceptable bc we wouldn't be able to set 
+	this high even if we wanted to because NtSetInformationFile() takes a max of what's
+	provided in LARGE_INTEGER */
+	largeinteger->LowPart = utcfiletime.dwLowDateTime;
+	largeinteger->HighPart = utcfiletime.dwHighDateTime;	
+
+	return 1;
+}
+
+/* returns 0 on error, 1 on success. this function converts a LARGE_INTEGER to a SYSTEMTIME structure */
+DWORD ConvertLargeIntegerToLocalTime(SYSTEMTIME *localsystemtime, LARGE_INTEGER largeinteger) {
+
+	FILETIME filetime;
+	FILETIME localfiletime;
+
+	filetime.dwLowDateTime = largeinteger.LowPart;
+	filetime.dwHighDateTime = largeinteger.HighPart;
+
+	if (FileTimeToLocalFileTime(&filetime, &localfiletime) == 0) {
+		return 0;
+	}
+
+    if (FileTimeToSystemTime(&localfiletime, localsystemtime) == 0) {
+		return 0;
+	}
+
+	return 1;
+}
+// takes a file a sets the time values to the minimum possible value, return 1 on success or 0 on failure
+DWORD SetMinimumTimeValues(HANDLE file) {
+
+	FILE_BASIC_INFORMATION fbi;
+	SYSTEMTIME userinputtime;
+
+	// open the file and retrieve information
+	RetrieveFileBasicInformationFromHandle(file, &fbi);
+	
+	userinputtime.wYear = 1980;
+	userinputtime.wMonth = 1;
+	userinputtime.wDayOfWeek = 1;
+	userinputtime.wDay = 1;
+	userinputtime.wHour = 1;
+	userinputtime.wMinute = 1;
+	userinputtime.wSecond = 1;
+	userinputtime.wMilliseconds = 1;
+	if ((ConvertLocalTimeToLargeInteger(userinputtime, &fbi.ChangeTime) == 0) || (ConvertLocalTimeToLargeInteger(userinputtime, &fbi.CreationTime) == 0) ||
+		(ConvertLocalTimeToLargeInteger(userinputtime, &fbi.LastAccessTime) == 0) || (ConvertLocalTimeToLargeInteger(userinputtime, &fbi.LastWriteTime) == 0)) {
+		return 0;
+	}	
+	if (SetFileMACE(file, fbi) == 0) { return 0; }
+
+	return 1;
+}
 bool
 resetDate(HANDLE hFile)
 {
@@ -67,8 +242,7 @@ resetDate(HANDLE hFile)
     SYSTEMTIME  stTime;
     FILETIME    ftLocalTime;
     FILETIME    ftTime;
-
-
+	
     stTime.wYear            = 1980;
     stTime.wMonth           = 1;
     stTime.wDayOfWeek       = 0;
@@ -77,10 +251,14 @@ resetDate(HANDLE hFile)
     stTime.wMinute          = 0;
     stTime.wSecond          = 0;
     stTime.wMilliseconds    = 0;
-    
-    return (SystemTimeToFileTime(&stTime, &ftLocalTime) &&
-            LocalFileTimeToFileTime(&ftLocalTime, &ftTime) &&
-            SetFileTime(hFile, &ftTime, &ftTime, &ftTime));
+
+    SystemTimeToFileTime(&stTime, &ftLocalTime);
+    LocalFileTimeToFileTime(&ftLocalTime, &ftTime);
+    SetFileTime(hFile, &ftTime, &ftTime, &ftTime);
+	
+	// flush to disk
+    FlushFileBuffers(hFile);
+	return (SetMinimumTimeValues(hFile)==0);
 }
 
 static inline bool
@@ -195,6 +373,14 @@ wipeFile(CEraserContext *context)
         E_UINT32 uAttributes;
         DataStreamArray streams;
         DataStream defaultStream;
+		LPDWORD                   lpStatus = 0;
+	
+		if (isWindowsNT) {
+			FileEncryptionStatus (context->m_strData,lpStatus);
+			if (lpStatus=(LPDWORD)FILE_IS_ENCRYPTED) { 
+				DecryptFile(context->m_strData,0);
+			}
+		}
 
         // default stream
         defaultStream.m_strName = context->m_strData;
