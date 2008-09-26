@@ -238,6 +238,27 @@ typedef enum _FILE_INFORMATION_CLASS {
 } FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 
+// #######################################################################
+// ############ DEFINITIONS
+// #######################################################################
+#define OBJ_EXCLUSIVE           0x00000020L
+#define OBJ_KERNEL_HANDLE       0x00000200L
+#define FILE_NON_DIRECTORY_FILE 0x00000040
+
+typedef LONG NTSTATUS;
+
+typedef struct _FILE_BASIC_INFORMATION {                    
+    LARGE_INTEGER CreationTime;							// Created             
+    LARGE_INTEGER LastAccessTime;                       // Accessed    
+    LARGE_INTEGER LastWriteTime;                        // Modifed
+    LARGE_INTEGER ChangeTime;                           // Entry Modified
+    ULONG FileAttributes;                                   
+} FILE_BASIC_INFORMATION, *PFILE_BASIC_INFORMATION;
+
+typedef NTSTATUS (WINAPI *pNtQueryInformationFile)(HANDLE, PIO_STATUS_BLOCK, PVOID, ULONG, FILE_INFORMATION_CLASS);
+typedef NTSTATUS (WINAPI *pNtSetInformationFile)(HANDLE, PIO_STATUS_BLOCK, PVOID, ULONG, FILE_INFORMATION_CLASS);
+
+
 typedef NTSTATUS (__stdcall *NTQUERYINFORMATIONFILE)(
             IN HANDLE FileHandle,
             OUT PIO_STATUS_BLOCK IoStatusBlock,
