@@ -91,7 +91,7 @@ wipeClusters(NTFSContext& ntc, CEraserContext *context, bool& bCompressed)
     PGET_RETRIEVAL_DESCRIPTOR fileMappings;
     E_UINT64                  fileMap[FILEMAPSIZE];
     HANDLE                    hFile;
-
+	
     // set the handle passed to the wipe function
     hFile = context->m_hFile;
     context->m_hFile = ntc.m_hVolume;
