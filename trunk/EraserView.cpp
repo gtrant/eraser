@@ -828,7 +828,8 @@ void CEraserView::OnEditDeleteTask()
 
     CListCtrl& lc = GetListCtrl();
 
-    if (lc.GetSelectedCount() > 0)
+	if (lc.GetSelectedCount() > 0 && AfxMessageBox("Are you sure you want to "
+		"delete the selected tasks?", MB_YESNO | MB_ICONQUESTION) == IDYES)
     {
         CEraserDoc *pDoc = static_cast<CEraserDoc*>(GetDocument());
         ASSERT(AfxIsValidAddress(pDoc, sizeof(CEraserDoc)));
