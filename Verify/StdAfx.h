@@ -16,21 +16,21 @@
 // Modify the following defines if you have to target an OS before the ones
 // specified in the following code. See MSDN for the latest information
 // about corresponding values for different operating systems.
-#ifndef WINVER		// Permit use of features specific to Windows 95 and Windows NT 4.0 or later.
-#define WINVER 0x0400	// Change this to the appropriate value to target
-#endif                     // Windows 98 and Windows 2000 or later.
+#ifndef WINVER
+#define WINVER 0x0501  //Windows XP and later
+#endif
 
-#ifndef _WIN32_WINNT	// Permit use of features specific to Windows NT 4.0 or later.
-#define _WIN32_WINNT 0x0400	// Change this to the appropriate value to target
-#endif		         // Windows 98 and Windows 2000 or later.
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0501	 // Windows XP and later
+#endif
 
-#ifndef _WIN32_WINDOWS	      // Permit use of features specific to Windows 98 or later.
-#define _WIN32_WINDOWS 0x0410    // Change this to the appropriate value to target
-#endif			      // Windows Millennium Edition or later.
+#ifndef _WIN32_WINDOWS
+#define _WIN32_WINDOWS 0x0501    // Windows XP and later
+#endif
 
-#ifndef _WIN32_IE		// Permit use of features specific to Internet Explorer 4.0 or later.
-#define _WIN32_IE 0x0400   // Change this to the appropriate value to target
-#endif			// Internet Explorer 5.0 or later.
+#ifndef _WIN32_IE
+#define _WIN32_IE 0x0600   // IE6+
+#endif
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // Some CString constructors will be explicit.
 
