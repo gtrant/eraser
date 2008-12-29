@@ -1578,28 +1578,30 @@ BOOL CTreeFileCtrl::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
           dc.Attach(pCustomDraw->nmcd.hdc);
 
           //First work out the position of the icon
-					CRect rItemRect;
-					GetItemRect(hItem, rItemRect, TRUE);
-          CPoint point(rItemRect.left, rItemRect.top);
-          UINT nFlags = 0;
-          CPoint testPoint(pCustomDraw->nmcd.rc.left, rItemRect.top+2);
-          BOOL bFound = FALSE;
-          do
-          {
-            HitTest(testPoint, &nFlags);  
+          CRect rItemRect;
+          if (GetItemRect(hItem, rItemRect, FALSE))
+		  {
+            CPoint point(rItemRect.left, rItemRect.top);
+            UINT nFlags = 0;
+            CPoint testPoint(pCustomDraw->nmcd.rc.left, rItemRect.top+2);
+            BOOL bFound = FALSE;
+            do
+            {
+              HitTest(testPoint, &nFlags);  
 
-            //Prepare for the next time around
-            bFound  = (nFlags & TVHT_ONITEMICON) || (nFlags & TVHT_ONITEMSTATEICON);
-            if (!bFound)
-              testPoint.x++;
-          }
-          while (!bFound);
-          point.x = testPoint.x;
-          CRect r(point.x, point.y, point.x+16, point.y+16);
+              //Prepare for the next time around
+              bFound  = (nFlags & TVHT_ONITEMICON) || (nFlags & TVHT_ONITEMSTATEICON);
+              if (!bFound)
+                testPoint.x++;
+            }
+            while (!bFound);
+            point.x = testPoint.x;
+            CRect r(point.x, point.y, point.x+16, point.y+16);
 
-          //Draw it using the IL
-          dc.FillSolidRect(&r, RGB(255, 255, 255));
-          m_ilNetwork.Draw(&dc, nIndexToDraw, point, ILD_NORMAL);
+            //Draw it using the IL
+            dc.FillSolidRect(&r, RGB(255, 255, 255));
+            m_ilNetwork.Draw(&dc, nIndexToDraw, point, ILD_NORMAL);
+		  }
 
           //Release the DC
           dc.Detach();
