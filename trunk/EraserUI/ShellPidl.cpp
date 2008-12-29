@@ -314,7 +314,7 @@ BOOL CShellPidl::DoTheMenuThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
 
                         if (SUCCEEDED(hr))
                             bSuccess = TRUE;
-                        else
+                        else if (HRESULT_FACILITY(hr) != FACILITY_WIN32 || HRESULT_CODE(hr) != ERROR_CANCELLED)
                         {
                             CString strError;
                             strError.Format("InvokeCommand failed. hr = %lx", hr);
@@ -403,7 +403,7 @@ BOOL CShellPidl::DoTheDefaultThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
 
                         if (SUCCEEDED(hr))
                             bSuccess = TRUE;
-                        else
+                        else if (HRESULT_FACILITY(hr) != FACILITY_WIN32 || HRESULT_CODE(hr) != ERROR_CANCELLED)
                         {
                             CString strError;
                             strError.Format("InvokeCommand failed. hr = %lx", hr);
