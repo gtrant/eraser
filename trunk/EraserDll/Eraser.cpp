@@ -2264,9 +2264,6 @@ eraserThread(LPVOID param1)
 
                     context->m_pstrlDirectories = 0;
                 }
-            } else {
-                // no files to wipe !?
-                eraserAddError(context, IDS_ERROR_NODATA);
             }
         } else {
             // unused space on drive(s)
