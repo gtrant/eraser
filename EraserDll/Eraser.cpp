@@ -2426,9 +2426,9 @@ eraserThread(LPVOID param1)
 				}
 				else
 					SetSystemPowerState(true, false);
-
-				eraserEndThread(context, EXIT_SUCCESS);
 			}
+
+			eraserEndThread(context, EXIT_SUCCESS);
         } else {
             eraserEndThread(context, EXIT_FAILURE);
         }
