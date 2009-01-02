@@ -210,8 +210,8 @@ public:
     void            UpdateStatistics();
 
     void            Serialize(CArchive&);
-	void			Serialize41(CArchive& ar);
 #ifdef SCHEDULER_IMPORT_COMPATIBLE
+	void			Serialize41(CArchive& ar);
     void            Serialize40(CArchive&);     // Eraser 3.5 - 4.0 load support
     void            Serialize30(CArchive&);     // Eraser 3.0 load support
     void            Serialize21(CArchive&);     // Eraser Scheduler 2.1 load support
@@ -235,13 +235,15 @@ public:
 
 
 protected:
-    void            Copy(const CScheduleItem&);
+	void            Copy(const CScheduleItem&);
 
+	static UINT     LastID;
     COleDateTime    m_odtNext;
     COleDateTime    m_odtLast;
     Schedule        m_scWhen;
     DWORD           m_dwTime;
     TASKSTATISTICS  m_tsStatistics;
+	CString         m_strID;
 
     BOOL            m_bQueued;  // not serialized!
 };

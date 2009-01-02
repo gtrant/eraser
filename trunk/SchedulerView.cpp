@@ -419,23 +419,24 @@ void CSchedulerView::OnFileNewTask()
                         pDoc->LogAction(IDS_ERROR_TIMER);
                 }
             }
-// Here we just add it to the bootup sequence if it is on boot
+
+				// Here we just add it to the bootup sequence if it is on boot
 				if (scWhen == Reboot) 
 				{
 				//Here we are setting the appropriate entry into the Registry Key :
-  				//HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run
+  				//HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run
 				//The entry should be in Name - Data pair, where Name is the name of the application and Data is the path of the executable
 					CKey kReg;
 					CString m_strExePath;
 					CString m_strName;
 					char Fullname[260];
-	      		    char Filename[260];
+					char Filename[260];
 					char Extension[5];
 					char Pathname[260];
 					char myDrive[10];
 					char *buffer = new char[260];
 
-					if (kReg.Open(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
+					if (kReg.Open(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
 					{
 						 GetModuleFileName(AfxGetInstanceHandle(),Fullname,sizeof Fullname);
 					    _splitpath(Fullname,myDrive,Pathname,Filename,Extension); 
@@ -469,13 +470,13 @@ void CSchedulerView::OnFileNewTask()
 
 							default:
 								NODEFAULT;
-					    };
+						};
 						kReg.SetValue(m_strExePath, psiItem->GetId());
 						m_strExePath.ReleaseBuffer();
 						kReg.Close();
 					}
 				}
-            UpdateList();
+			UpdateList();
 			
 			LibrarySettings* plsTmp1 = tps.m_pPageFileMethodOptions->GetLibSettings();
 			psiItem->m_bMethod = plsTmp1->m_nFileMethodID;
@@ -487,11 +488,8 @@ void CSchedulerView::OnFileNewTask()
 			saveLibrarySettings(plsTmp1);		
 			
 			pDoc->CalcNextAssignment();
-            pDoc->UpdateToolTip();
-            pDoc->SaveTasksToDefault();
-			
-			
-					
+			pDoc->UpdateToolTip();
+			pDoc->SaveTasksToDefault();
         }
     }
     catch (CException *e)
@@ -554,14 +552,14 @@ void CSchedulerView::OnEditDeleteTask()
                         // turn off the thread just in case it is running
                         TerminateThread(psiItem);
 						if (psiItem->GetSchedule() == Reboot) 
-								{
-									CKey kReg;
-									if (kReg.Open(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
-									{
-										kReg.DeleteValue(psiItem->GetId());
-									kReg.Close();
-									}
-								}
+						{
+							CKey kReg;
+							if (kReg.Open(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
+							{
+								kReg.DeleteValue(psiItem->GetId());
+								kReg.Close();
+							}
+						}
                             
                         // remove it from the queue just in case it happens to be there
                         RemoveTaskFromQueue(psiItem);
@@ -738,11 +736,12 @@ void CSchedulerView::OnEditProperties()
                             if (pDoc->m_bLog)
                                 pDoc->LogAction(IDS_ERROR_TIMER);
                         }
-//Update Reboot Part
+
+				//Update Reboot Part
 				if (tps.m_pgSchedule.m_iWhen == Reboot) 
 				{
 				//Here we are setting the appropriate entry into the Registry Key :
-  				//HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run
+  				//HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run
 				//The entry should be in Name - Data pair, where Name is the name of the application and Data is the path of the executable
 					CKey kReg;
 					CString m_strExePath;
@@ -754,7 +753,7 @@ void CSchedulerView::OnEditProperties()
 					char myDrive[10];
 					char *buffer = new char[260];
 
-					if (kReg.Open(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
+					if (kReg.Open(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
 					{
 						 GetModuleFileName(AfxGetInstanceHandle(),Fullname,sizeof Fullname);
 					    _splitpath(Fullname,myDrive,Pathname,Filename,Extension); 
