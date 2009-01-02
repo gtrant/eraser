@@ -4,7 +4,31 @@ ALL EARLIER VERSIONS before installing this Beta. When installing
 an earlier stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.87 beta 3: Latest changes
+Eraser 5.87 beta 4: Latest changes
+----------------------------------------------------------------
+- Fixed error message when user deletes files and cancels in the
+  Eraser Explorer.
+- Deleting tasks now require confirmation (as per Windows)
+- Fixed a hang when users expanded the Network bit of the file
+  data selection dialog (now only affects Verifier)
+- Run the post-task operation when it is complete.
+- Replaced the custom file/folder selection dialog with the Windows
+  built-in ones.
+- The "no files to erase" error no longer appears for file/folder
+  erasures.
+- Fixed the Hotkey selection dialog in General Preferences
+- System passwords must be specified for it to be active. Throw
+  an error if the user wanted a password but didn't set one
+- x64 compatibility fixes (NTAPI call)
+- The scheduler log size must be positive, the dialog enforces it
+  now.
+- Allow users to tell Eraser to remember the resolve locked files
+  setting for the current erase. Like a No to All or Yes to All
+  button.
+- Implemented the deletion of run-at-reboot scheduled tasks.
+- Compile everything using VS 2008.
+
+Beta 3 Changes
 ----------------------------------------------------------------
 - Fixed command line error when selecting subfolders to be erased
   with the parent folder

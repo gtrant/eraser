@@ -21,8 +21,8 @@ DisableStartupPrompt=true
 PrivilegesRequired=admin
 InfoBeforeFile=..\README.txt
 LicenseFile=..\COPYING.txt
-WizardImageFile=C:\Program Files\Inno Setup 5\WizModernImage.bmp
-WizardSmallImageFile=C:\Program Files\Inno Setup 5\WizModernSmallImage.bmp
+WizardImageFile=C:\Program Files (x86)\Inno Setup 5\WizModernImage.bmp
+WizardSmallImageFile=C:\Program Files (x86)\Inno Setup 5\WizModernSmallImage.bmp
 InternalCompressLevel=ultra
 SolidCompression=true
 VersionInfoVersion={#SAFE_VERSION_NUMBER_STRING}
@@ -56,14 +56,16 @@ Source: win32\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsre
 Source: win32\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
 Source: win32\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
 Source: win32\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
-Source: vcredist_x86.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
+Source: vcredist_x86.cab; DestName: vc_red.cab; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
+Source: vcredist_x86.msi; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
 
 Source: x64\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
-Source: vcredist_x64.exe; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
+Source: vcredist_x64.cab; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
+Source: vcredist_x64.msi; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
 
 [Components]
 Name: arch32Bit; Description: Eraser Core Program Files (32-bit); Types: full custom compact; Flags: fixed checkablealone; Check: IsWin32
@@ -129,8 +131,7 @@ Name: {app}\*.*; Type: filesandordirs
 
 [Run]
 Filename: {app}\eraser.exe; WorkingDir: {app}; Flags: postinstall nowait skipifsilent; Description: Run Eraser
-Filename: {tmp}\vcredist_x86.exe; StatusMsg: Installing Visual C++ 2008 Runtime...; Flags: 32bit; Components: arch32Bit
-Filename: {tmp}\vcredist_x64.exe; StatusMsg: Installing Visual C++ 2008 Runtime...; Flags: 64bit; Components: arch64Bit
+Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime...; Parameters: "/i ""{tmp}\vc_red.msi"""
 
 [Code]
 function IsWin32: Boolean;
