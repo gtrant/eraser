@@ -71,9 +71,14 @@ BOOL CKeyComboDlg::OnInitDialog()
 
 void CKeyComboDlg::OnBnClickedOk()
 {
-	char ch[10];	
-	m_eKey.GetLine(0,ch,1);
-	m_strValue = ch;
+	char ch[8];	
+	memset(ch, 0, sizeof(ch));
+	if (m_eKey.GetLine(0, ch, sizeof(ch)))
+	{
+		m_strValue = ch[0];
+		m_strValue.MakeUpper();
+	}
+
 	OnOK();
 }
 
@@ -81,7 +86,6 @@ void CKeyComboDlg::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 {
 	CDialog::OnActivate(nState, pWndOther, bMinimized);
 	m_eKey.SetFocus();
-	// TODO: Add your message handler code here
 }
 
 
@@ -91,21 +95,26 @@ void CKeyComboDlg::OnEnChangeEdittmp()
 	// send this notification unless you override the CDialog::OnInitDialog()
 	// function and call CRichEditCtrl().SetEventMask()
 	// with the ENM_CHANGE flag ORed into the mask.
-	char ch[10];
-	m_eKey.GetLine(0,ch,1);
-	CString strLine(ch);
+
+	//Recursion guard
 	static bool busy = false;
 	if (busy)
 		return;
 	busy = true;
 
+	char ch[8];
+	memset(ch, 0, sizeof(ch));
+	if (!m_eKey.GetLine(0, ch, sizeof(ch)))
+		return;
+
+	CString strLine(ch);
+	strLine.MakeUpper();
 	if (!strLine.Trim().IsEmpty())
 	{
 		CString strTmp(m_strRegKey.MakeUpper());
-		strLine.MakeUpper();
 		if (strTmp.Find(strLine[0]) == -1) {
 			//Invalid selection, clear the entry
-			m_eKey.SetWindowText("m");
+			m_eKey.Undo();
 
 			//TODO: This works only with XP/Vista. What about others?
 			EDITBALLOONTIP ebtt;
