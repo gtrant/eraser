@@ -319,7 +319,6 @@ void CEraserView::OnFileNewTask()
 
             CItem *piItem = new CItem();
 			piItem->FinishAction(tps.m_pgData.m_dwFinishAction);
-			piItem->FinishActionInd(tps.m_pgData.m_iFinishActionInd);
 			//saveLibrarySettings(tps.m_pPageFileMethodOptions->GetLibSettings());
 
             switch (tps.m_pgData.m_tType)
@@ -768,7 +767,7 @@ void CEraserView::OnEditProperties()
                     return;
                 }
 
-				tps.m_pgData.m_iFinishActionInd = piItem->FinishActionInd();
+				tps.m_pgData.m_dwFinishAction = piItem->FinishAction();
                 tps.m_pgData.m_bPersistent = piItem->IsPersistent();
 
                 if (tps.DoModal() == IDOK)
@@ -782,7 +781,6 @@ void CEraserView::OnEditProperties()
                     }
 					
 					piItem->FinishAction(tps.m_pgData.m_dwFinishAction);
-					piItem->FinishActionInd(tps.m_pgData.m_iFinishActionInd);
 
                     switch (tps.m_pgData.m_tType)
                     {
