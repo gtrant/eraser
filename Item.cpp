@@ -43,7 +43,6 @@ m_bRemoveOnlySub(FALSE),
 m_tType(Drive),
 m_bPersistent(FALSE)
 {
-
 }
 
 CItem::CItem(const CItem& op)
@@ -185,6 +184,8 @@ void CItem::Serialize30(CArchive& ar)
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+UINT CScheduleItem::LastID = 1;
+
 CScheduleItem::CScheduleItem() :
 CItem(),
 m_dwTime(0),
@@ -194,6 +195,7 @@ m_bQueued(FALSE),
 m_ehContext(ERASER_INVALID_CONTEXT),
 m_bMethod(0)
 {
+	m_strID.Format("Eraser%d.%d", time(NULL), ++LastID);
     m_odtNext = GetTimeTimeZoneBased();
     m_odtLast.SetStatus(COleDateTime::null);
 }
@@ -225,6 +227,7 @@ void CScheduleItem::Copy(const CScheduleItem& op)
     m_scWhen       = op.m_scWhen;
     m_uTimerID     = op.m_uTimerID;
     m_tsStatistics = op.m_tsStatistics;
+	m_strID        = op.m_strID;
 }
 UINT CScheduleItem::GetTimeSpan(const COleDateTime& odt) const
 {
@@ -367,12 +370,12 @@ BOOL CScheduleItem::SetTime(DWORD dwTime)
 {
     return SetTime(LOWORD(dwTime), HIWORD(dwTime));
 }
-CString		CScheduleItem::GetId() const
-{ 
-	CString m_strId;
-	m_strId.Format("%d",m_uTimerID);
-	return  "Eraser"+m_strId;
+
+CString CScheduleItem::GetId() const
+{
+	return m_strID;
 }
+
 WORD CScheduleItem::GetHour() const
 {
     return LOWORD(m_dwTime);
@@ -430,7 +433,7 @@ void CScheduleItem::Serialize(CArchive& ar)
 		ar << m_bMethod;
 		ar << m_nRndPass;
 		ar << m_uEraseItems;
-		
+		ar << m_strID;
     }
     else
     {
@@ -445,7 +448,8 @@ void CScheduleItem::Serialize(CArchive& ar)
 		ar >> m_bMethod;
 		ar >> m_nRndPass;
 		ar >> m_uEraseItems;
-						
+		ar >> m_strID;
+
         m_uTimerID = 0;
         m_ehContext = ERASER_INVALID_CONTEXT;
     }
@@ -453,6 +457,7 @@ void CScheduleItem::Serialize(CArchive& ar)
     CItem::Serialize(ar);
 }
 
+#ifdef SCHEDULER_IMPORT_COMPATIBLE
 void CScheduleItem::Serialize41(CArchive& ar)
 {
 	if (ar.IsStoring())
@@ -479,7 +484,6 @@ void CScheduleItem::Serialize41(CArchive& ar)
 	CItem::Serialize(ar);
 }
 
-#ifdef SCHEDULER_IMPORT_COMPATIBLE
 void CScheduleItem::Serialize40(CArchive& ar)
 {
     // support for loading only the old format used in
