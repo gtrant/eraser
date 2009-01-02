@@ -26,26 +26,30 @@
 class ERASER_API CFileLockResolver
 {
 public:
-	
 	CFileLockResolver(BOOL = FALSE);
 	~CFileLockResolver(void);
 	void Close();
+
 private:
-	
 	CFileLockResolver(ERASER_HANDLE, BOOL);
 	inline void AskUser(BOOL val)
 	{
 		m_bAskUser = val;
 	}
+
 public:
 	void SetHandle(ERASER_HANDLE);
 	static void Resolve(LPCTSTR szFileName, CStringArray&);
+
 private:
 	BOOL m_bAskUser;	
 	CString m_strLockFileList;
 	ERASER_HANDLE m_hHandle;
+
 	int m_iMethod;
+	int m_defaultAction;
 	unsigned m_iPasses;
+
 private:
 	static CString GetLockFilePath(bool path_only = false);
 	void HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int method, unsigned int passes);

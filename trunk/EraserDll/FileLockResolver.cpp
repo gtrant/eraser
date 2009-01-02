@@ -35,7 +35,7 @@
 
 CFileLockResolver::CFileLockResolver(BOOL askUser)
 : m_bAskUser(askUser), m_hHandle(ERASER_INVALID_CONTEXT),
-  m_iMethod(0), m_iPasses(0)
+  m_iMethod(0), m_defaultAction(-1), m_iPasses(0)
 {
 
 }
@@ -126,22 +126,32 @@ void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int m
 		|| ERROR_LOCKED == dwErrorCode
 		|| ERROR_SHARING_VIOLATION == dwErrorCode)
 	{
-		if (TRUE == m_bAskUser)
+		int eraseOnRestart = !m_bAskUser || m_defaultAction == 1;
+		if (m_bAskUser && m_defaultAction == -1)
 		{
-			if (IDYES == AfxMessageBox(CString("The file ") +
-				szFileName + "\nis locked by another process. Do you want to Erase the file after " +
-				"you restart your computer?", MB_YESNO | MB_ICONQUESTION))
-			{
-				if (m_strLockFileList.IsEmpty())
-					m_strLockFileList = GetLockFilePath();
-				std::ofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
-				os << FileData(szFileName, method, passes);
+			int dlgCode = AfxMessageBox(CString("The file ") + szFileName +
+				"\nis locked by another process. Do you want to Erase the file "
+				"after you restart your computer?", MB_YESNO | MB_ICONQUESTION);
 
-				ASSERT(m_iMethod == 0 || m_iMethod == method);
-				ASSERT(m_iPasses == 0 || m_iPasses == passes);
-				m_iMethod = method;
-				m_iPasses = passes;
+			eraseOnRestart = dlgCode == IDYES;
+			if (AfxMessageBox("Remember this decision for the rest of this erase?",
+				MB_YESNO | MB_ICONQUESTION) == IDYES)
+			{
+				m_defaultAction = eraseOnRestart;
 			}
+		}
+
+		if (eraseOnRestart)
+		{
+			if (m_strLockFileList.IsEmpty())
+				m_strLockFileList = GetLockFilePath();
+			std::ofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
+			os << FileData(szFileName, method, passes);
+
+			ASSERT(m_iMethod == 0 || m_iMethod == method);
+			ASSERT(m_iPasses == 0 || m_iPasses == passes);
+			m_iMethod = method;
+			m_iPasses = passes;
 		}
 	}
 }
