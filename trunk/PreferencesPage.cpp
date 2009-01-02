@@ -131,6 +131,8 @@ void CSchedulerPreferencesPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_ENABLE, m_bEnabled);
 	DDX_Check(pDX, IDC_CHECK_HIDEONMINIMIZE, m_bHideOnMinimize);
 	//}}AFX_DATA_MAP
+
+	DDV_MinMaxInt(pDX, static_cast<int>(m_dwMaxLogSize), 0, 0x7FFFFFFF);
 }
 
 
