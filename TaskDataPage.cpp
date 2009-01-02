@@ -166,13 +166,10 @@ void CTaskDataPage::OnBrowse()
 {
     UpdateData(TRUE);
 
-	//CDirectoryDialog dd;
-    //dd.DoModal(m_strFolder, "Select Folder to be Erased.");
-
-    CNewDialog dd;
-	if (dd.DoModal() == IDOK) {
-        m_strFolder = dd.m_sPath;
-	}
+	CDirectoryDialog dd;
+	CString tempPath(m_strFolder);
+    if (dd.DoModal(tempPath, "Select the Folder to be erased."))
+		m_strFolder = tempPath;
     
     UpdateData(FALSE);
 }
@@ -180,12 +177,12 @@ void CTaskDataPage::OnBrowse()
 void CTaskDataPage::OnBrowseFiles()
 {
     UpdateData(TRUE);
-	CNewDialog fdlg;
-    if (fdlg.DoModal() == IDOK)
-    {
-        m_strFile = fdlg.m_sPath;
-        UpdateData(FALSE);
-    }
+
+	CFileDialog fd(TRUE, NULL, m_strFile, 4 | 2, NULL, this, 0, true);
+	if (fd.DoModal() == IDOK)
+		m_strFile = fd.GetPathName();
+
+    UpdateData(FALSE);
 }
 
 void CTaskDataPage::OnRemoveFolder()
