@@ -6,6 +6,7 @@
 #define IDS_PROPSHT_CAPTION             105
 #define IDS_PASSWDNOTMATCH              106
 #define IDD_PAGE_FILES                  107
+#define IDS_PASSWDEMPTY                 107
 #define IDD_PAGE_FREESPACE              108
 #define IDS_ERROR_CLUSTER               113
 #define IDS_ERROR_MEMORY                114
