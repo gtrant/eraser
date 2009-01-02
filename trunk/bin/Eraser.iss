@@ -129,8 +129,8 @@ Name: {app}\*.*; Type: filesandordirs
 
 [Run]
 Filename: {app}\eraser.exe; WorkingDir: {app}; Flags: postinstall nowait skipifsilent; Description: Run Eraser
-Filename: {tmp}\vcredist_x86.exe; StatusMsg: Installing Visual C++ 2005 Runtime...; Flags: 32bit; Components: arch32Bit
-Filename: {tmp}\vcredist_x64.exe; StatusMsg: Installing Visual C++ 2005 Runtime...; Flags: 64bit; Components: arch64Bit
+Filename: {tmp}\vcredist_x86.exe; StatusMsg: Installing Visual C++ 2008 Runtime...; Flags: 32bit; Components: arch32Bit
+Filename: {tmp}\vcredist_x64.exe; StatusMsg: Installing Visual C++ 2008 Runtime...; Flags: 64bit; Components: arch64Bit
 
 [Code]
 function IsWin32: Boolean;
