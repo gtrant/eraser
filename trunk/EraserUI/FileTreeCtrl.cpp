@@ -252,7 +252,7 @@ CSystemImageList::CSystemImageList()
   VERIFY(GetTempPath(_MAX_PATH, pszTempDir));
   TCHAR pszDrive[_MAX_DRIVE + 1];
   _tsplitpath(pszTempDir, pszDrive, NULL, NULL, NULL);
-  int nLen = _tcslen(pszDrive);
+  size_t nLen = _tcslen(pszDrive);
   if (pszDrive[nLen-1] != _T('\\'))
     _tcscat(pszDrive, _T("\\"));
 
