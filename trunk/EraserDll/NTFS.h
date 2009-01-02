@@ -152,7 +152,7 @@ typedef struct {
 //
 typedef struct _IO_STATUS_BLOCK {
     NTSTATUS Status;
-    ULONG Information;
+    ULONG_PTR Information;
 } IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
 
 
