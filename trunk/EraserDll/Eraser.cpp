@@ -2401,12 +2401,11 @@ eraserThread(LPVOID param1)
         }
 
         if (eraserInternalCompleted(context)) {
-            eraserEndThread(context, EXIT_SUCCESS);
-
-			// do the post-erase task
-			if (0 != context->m_dwFinishAction) 
+            // do the post-erase task
+			ASSERT(context->m_dwFinishAction >= 0);
+			if (0 != context->m_dwFinishAction)
 			{
-				if (context->m_dwFinishAction != -1)
+				if (context->m_dwFinishAction != 3)
 				{
 					// Get this process' token
 					HANDLE processToken;
@@ -2421,11 +2420,14 @@ eraserThread(LPVOID param1)
 
 						// Get the privilege to shut down the computer
 						AdjustTokenPrivileges(processToken, FALSE, &privilegeToken, 0, NULL, 0); 
-						ExitWindowsEx(context->m_dwFinishAction, SHTDN_REASON_MAJOR_OPERATINGSYSTEM | SHTDN_REASON_FLAG_PLANNED);
+						ExitWindowsEx(context->m_dwFinishAction == 1 ? EWX_REBOOT : EWX_POWEROFF,
+							SHTDN_REASON_MAJOR_OPERATINGSYSTEM | SHTDN_REASON_FLAG_PLANNED);
 					}
 				}
 				else
 					SetSystemPowerState(true, false);
+
+				eraserEndThread(context, EXIT_SUCCESS);
 			}
         } else {
             eraserEndThread(context, EXIT_FAILURE);

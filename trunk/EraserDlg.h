@@ -43,7 +43,7 @@ public:
     BOOL    m_bResultsForFiles;
     BOOL    m_bResultsForUnusedSpace;
     BOOL    m_bResultsOnlyWhenFailed;
-	DWORD   m_dwFinishAction;
+	int     m_dwFinishAction;
 
 // Dialog Data
     //{{AFX_DATA(CEraserDlg)

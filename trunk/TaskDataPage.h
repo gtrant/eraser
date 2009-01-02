@@ -58,7 +58,7 @@ public:
     BOOL    m_bPersistent;
     BOOL    m_bUseWildCards;
 	BOOL	m_bWildCardsInSubfolders;
-	
+	int		m_dwFinishAction;
 	//}}AFX_DATA
 
 
@@ -85,10 +85,6 @@ protected:
     afx_msg void OnCheckWildcards();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
-
-public:
-	DWORD m_dwFinishAction;
-	int m_iFinishActionInd;
 //	afx_msg void OnBnClickedRadio1();
 };
 

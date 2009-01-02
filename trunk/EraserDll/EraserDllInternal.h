@@ -275,7 +275,8 @@ public:
     m_evDone(TRUE, TRUE),           // signaled, manual
     m_evKillThread(FALSE, TRUE),    // non-signaled, manual
     m_evThreadKilled(TRUE, TRUE),   // signaled, manual
-    m_evTestContinue(FALSE, TRUE), m_dwFinishAction(0) { // non-signaled, manual
+    m_evTestContinue(FALSE, TRUE),  // non-signaled, manual
+	m_dwFinishAction(0) {
         clear();
     }
 

@@ -145,8 +145,6 @@ public:
     BOOL    OnlySubfolders() const             { return m_bRemoveOnlySub; }
 	inline int FinishAction() const			   { return m_iFinishAction; }
 	inline void FinishAction(DWORD iAct)          {m_iFinishAction = iAct;}  
-	inline int FinishActionInd() const			   { return m_iFinishActionInd; }
-	inline void FinishActionInd(int iAct)          {m_iFinishActionInd = iAct;} 
 
     void    Serialize(CArchive& ar);
 #ifdef SCHEDULER_IMPORT_COMPATIBLE
@@ -166,8 +164,7 @@ protected:
     BOOL    m_bRemoveFolder;
     BOOL    m_bRemoveOnlySub;
     BOOL    m_bSubfolders;
-	DWORD	m_iFinishAction;
-	int		m_iFinishActionInd;
+	int		m_iFinishAction;
 };
 
 // the scheduler item

@@ -42,9 +42,8 @@ IMPLEMENT_DYNCREATE(CTaskStatisticsPage, CPropertyPage)
 CTaskDataPage::CTaskDataPage() :
 CPropertyPage(CTaskDataPage::IDD),
 m_tType(Drive),
-m_bShowPersistent(FALSE)
-, m_dwFinishAction(0)
-,m_iFinishActionInd(0)
+m_bShowPersistent(FALSE),
+m_dwFinishAction(0)
 {
     //{{AFX_DATA_INIT(CTaskDataPage)
     m_strFolder = _T("");
@@ -78,16 +77,8 @@ void CTaskDataPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_PERSISTENT_CHECK, m_bPersistent);
 	DDX_Check(pDX, IDC_CHECK_WILDCARDS, m_bUseWildCards);
 	DDX_Check(pDX, IDC_CHECK_WILDCARDS_SF, m_bWildCardsInSubfolders);
+	DDX_CBIndex(pDX, IDC_COMBO_WHENFINISH, m_dwFinishAction);
 	//}}AFX_DATA_MAP
-	
-	DDX_CBIndex(pDX, IDC_COMBO_WHENFINISH, m_iFinishActionInd);
-	if (-1 !=m_iFinishActionInd && pDX->m_bSaveAndValidate)
-	{
-
-		CComboBox* finish_action  = (CComboBox* )GetDlgItem(IDC_COMBO_WHENFINISH);
-		m_dwFinishAction = finish_action->GetItemData(m_iFinishActionInd) ;
-		
-	}
 }
 
 
@@ -332,10 +323,9 @@ BOOL CTaskDataPage::OnInitDialog()
 		version.dwPlatformId != VER_PLATFORM_WIN32_NT ||
 		version.dwMajorVersion < 5))
 	{
-		m_iFinishActionInd = 0;
 		finish_action->EnableWindow(false);
 	}
-	finish_action->SetCurSel(m_iFinishActionInd);
+	finish_action->SetCurSel(m_dwFinishAction);
 	
 
     UpdateData(FALSE);
