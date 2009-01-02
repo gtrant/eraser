@@ -331,21 +331,15 @@ void CSchedulerPreferencesPage::OnCheckNotrayicon()
 void CEraserPreferencesPage::OnBnClickedButtonProtection()
 {
 	bool res;
-	CString strButtonTitle;
-
 	if (CSecurityManager::IsProtected())
-	{
 		res = ClearProtection();
-		strButtonTitle.LoadString(IDS_SET_PROTECTION);
-	}
 	else
-	{
 		res = SetProtection();
-		strButtonTitle.LoadString(IDS_CLEAR_PROTECTION);
-	}
 
 	if (res)
 	{
+		CString strButtonTitle;
+		strButtonTitle.LoadString(CSecurityManager::IsProtected() ? IDS_CLEAR_PROTECTION : IDS_SET_PROTECTION);
 		GetDlgItem(IDC_BUTTON_PROTECTION)->SetWindowText(strButtonTitle);
 	}
 }

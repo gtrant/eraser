@@ -43,13 +43,19 @@ void CSecManDlg::OnOK()
 	UpdateData();
 	if (SETUP == m_mMode && m_Password != m_PasswordConfirm)
 	{
-		this->MessageBox(CString(MAKEINTRESOURCE(IDS_PASSWDNOTMATCH)), "Error", MB_OK | MB_ICONERROR);
 		Clear();
 		UpdateData(FALSE);
+		this->MessageBox(CString(MAKEINTRESOURCE(IDS_PASSWDNOTMATCH)), "Error", MB_OK | MB_ICONERROR);
 		GetDlgItem(IDC_EDIT_SECMAN_PASSWD)->SetFocus();		
-		return;
 	}
-	CDialog::OnOK();
+	else if (m_Password.IsEmpty())
+	{
+		UpdateData(FALSE);
+		MessageBox(CString(MAKEINTRESOURCE(IDS_PASSWDEMPTY)), "Error", MB_OK | MB_ICONERROR);
+		GetDlgItem(IDC_EDIT_SECMAN_PASSWD)->SetFocus();		
+	}
+	else
+		CDialog::OnOK();
 	
 }
 

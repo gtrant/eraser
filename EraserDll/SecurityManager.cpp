@@ -77,30 +77,26 @@ CSecurityManager::Protect(const char* szSecret )
 
 	CRegKey protect;		
 	SetLastError(0);
-	DWORD dwErrorCode = 0;
-
-	if (ERROR_SUCCESS != protect.Create(HKEY_LOCAL_MACHINE, REG_PRODUCT_KEY ))
+	DWORD dwErrorCode = protect.Create(HKEY_LOCAL_MACHINE, REG_PRODUCT_KEY);
+	if (dwErrorCode != ERROR_SUCCESS)
+	{
+		SetLastError(dwErrorCode);
 		throw std::runtime_error("Unable to create key");
-
+	}
 
 	CSecurityAttributes sa;
 	init_sa(sa);
 
 	dwErrorCode = protect.Create(HKEY_LOCAL_MACHINE, 
-		REG_PROTECT_KEY
-		, REG_NONE
-		, REG_OPTION_NON_VOLATILE
-		, KEY_READ | KEY_WRITE
-		, &sa);
-
+		REG_PROTECT_KEY, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_READ | KEY_WRITE, &sa);
 
 	if (ERROR_SUCCESS != dwErrorCode)
 	{
+		SetLastError(dwErrorCode);
 		if (ERROR_ACCESS_DENIED == dwErrorCode)
 			throw std::runtime_error("Access denied");			
 		throw std::runtime_error("Unable to create key");
 	}
-
 
 	DATA_BLOB data_in;
 	data_in.cbData = static_cast<DWORD>(strlen(szSecret) + 1);
@@ -115,11 +111,10 @@ CSecurityManager::Protect(const char* szSecret )
 
 	if(!CryptProtectData(
 		&data_in,
-		L"Eraser's protection",// A description string. 
-		&data_entropy ,                               // Optional entropy
-
-		NULL,                               // Reserved.
-		&promt,                      // Pass a PromptStruct.
+		L"Eraser's protection",	// A description string. 
+		&data_entropy,			// Optional entropy
+		NULL,					// Reserved.
+		&promt,					// Pass a PromptStruct.
 		0,
 		&data_out))
 	{
@@ -295,38 +290,49 @@ bool CheckAccess(DWORD dwMaxError /*= 3*/)
 
 bool SetProtection()
 {
-	bool is_ok(false);
 	try
 	{	
 		if (!CheckAccess(1))
 			return false;
 
-		AFX_MANAGE_STATE(AfxGetStaticModuleState( ))
+		AFX_MANAGE_STATE(AfxGetStaticModuleState())
 
 		CSecManDlg dlg;
 		dlg.SetMode(CSecManDlg::SETUP);
-		if (IDOK  != dlg.DoModal())
+		if (IDOK != dlg.DoModal())
 			return false;
 
 		CSecurityManager::Protect(dlg.GetSecret());
-		is_ok = true;
+		return true;
 	}
-	catch (const CAtlException& )
+	catch (const CAtlException&)
 	{
-		is_ok = false;
 	}
 	catch (CException* ee)
 	{
 		ee->ReportError();
 		ee->Delete();
-		is_ok = false;
 	}
 	catch (const std::exception& e)
 	{
-		AfxGetApp()->GetMainWnd()->MessageBox(e.what(), "Security error", MB_OK|MB_ICONERROR);
-		is_ok = false;
+		CString message(e.what());
+		switch (GetLastError())
+		{
+		case ERROR_ACCESS_DENIED:
+			{
+				message = "Setting password protection requires your user account to be an Administrator";
+				OSVERSIONINFO info;
+				info.dwOSVersionInfoSize = sizeof(info);
+				if (GetVersionEx(&info) && info.dwMajorVersion >= 6)
+					message += " and for Eraser to be elevated";
+				message += ".";
+			}
+		}
+
+		AfxGetApp()->GetMainWnd()->MessageBox(message, "Security error", MB_OK | MB_ICONERROR);
 	}
-	return is_ok;
+
+	return false;
 }
 
 bool ClearProtection()
