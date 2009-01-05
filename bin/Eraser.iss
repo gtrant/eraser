@@ -52,9 +52,9 @@ Source: ..\README.txt; DestDir: {app}; Flags: overwritereadonly
 Source: ..\COPYING.txt; DestDir: {app}; Flags: overwritereadonly
 
 Source: win32\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
-Source: win32\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
+Source: win32\release\Eraserl.exe; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
+Source: win32\release\Eraser.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
+Source: win32\release\Erasext.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
 Source: win32\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
 Source: vcredist_x86.cab; DestName: vc_red.cab; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
 Source: vcredist_x86.msi; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
@@ -64,7 +64,7 @@ Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrest
 Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
-Source: vcredist_x64.cab; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
+Source: vcredist_x64.cab; DestName: vc_red.cab; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
 Source: vcredist_x64.msi; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
 
 [Components]
@@ -99,22 +99,22 @@ Root: HKCR; SubKey: ErasextMenu; ValueType: string; ValueName: ; ValueData: Eras
 Root: HKCR; SubKey: ErasextMenu\CLSID; ValueType: string; ValueName: ; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext1; ValueType: string; ValueData: Erase Recycle Bin (35-Pass &Gutmann); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext1\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method Gutmann"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
+Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext1\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method Gutmann"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext2; ValueType: string; ValueData: Erase Recycle Bin (7-Pass &Schneier); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext2\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method Schneier"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
+Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext2\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method Schneier"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext3; ValueType: string; ValueData: Erase Recycle Bin (7-Pass &DoD); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext3\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method DoD"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
+Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext3\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method DoD"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext4; ValueType: string; ValueData: Erase Recycle Bin (3-Pass DoD &E); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext4\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method DoD_E"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
+Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext4\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method DoD_E"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext5; ValueType: string; ValueData: Erase Recycle Bin (1-Pass First-last &2k); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext5\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method First_Last2k"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
+Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext5\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method First_Last2k"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext6; ValueType: string; ValueData: Erase Recycle Bin (1-Pass &Pseudorandom Data); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext6\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method Random 1"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
+Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext6\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method Random 1"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext7; ValueType: string; ValueData: Erase Recycle Bin (&Library); Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
-Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext7\command; ValueType: string; ValueData: """{sys}\eraserl.exe"" -recycled -method Library"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
+Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext7\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method Library"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 
 Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}; ValueType: string; ValueName: ; ValueData: Eraser Shell Extension; Flags: uninsdeletekey
-Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\InProcServer32; ValueType: string; ValueData: {sys}\erasext.dll; Flags: uninsdeletekey
+Root: HKCC; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\InProcServer32; ValueType: string; ValueData: """{win}\System32\erasext.dll"""; Flags: uninsdeletekey
 Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey
 Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\ProgID; ValueType: string; ValueName: ; ValueData: ErasextMenu; Flags: uninsdeletekey
 
