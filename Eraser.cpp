@@ -61,6 +61,7 @@ END_MESSAGE_MAP()
 CEraserApp::CEraserApp() :
 m_pDoc(0)
 {
+    setlocale(LC_ALL, "");
     _set_se_translator(SeTranslator);
 }
 
