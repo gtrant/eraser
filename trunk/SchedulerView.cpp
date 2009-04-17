@@ -379,6 +379,7 @@ void CSchedulerView::OnFileNewTask()
 			CScheduleItem *psiItem = new CScheduleItem();
             psiItem->SetSchedule(scWhen);
             psiItem->SetTime((WORD)odtTime.GetHour(), (WORD)odtTime.GetMinute());
+            psiItem->FinishAction(tps.m_pgData.m_dwFinishAction);
 
             switch (tps.m_pgData.m_tType)
             {
@@ -646,6 +647,7 @@ void CSchedulerView::OnEditProperties()
                     tps.m_pgData.m_bRemoveOnlySub = psiItem->OnlySubfolders();
                     tps.m_pgData.m_bUseWildCards = psiItem->UseWildcards();
                     tps.m_pgData.m_bWildCardsInSubfolders = psiItem->WildcardsInSubfolders();
+                    tps.m_pgData.m_dwFinishAction = psiItem->FinishAction();
 
                     psiItem->GetData(strData);
 
@@ -691,6 +693,7 @@ void CSchedulerView::OnEditProperties()
                         psiItem->SetSchedule(static_cast<Schedule>(tps.m_pgSchedule.m_iWhen));
                         psiItem->SetTime((WORD)tps.m_pgSchedule.m_odtTime.GetHour(),
                             (WORD)tps.m_pgSchedule.m_odtTime.GetMinute());
+                        psiItem->FinishAction(tps.m_pgData.m_dwFinishAction);
 
                         switch (tps.m_pgData.m_tType)
                         {

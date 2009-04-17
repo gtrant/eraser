@@ -40,6 +40,7 @@ m_bUseWildcards(FALSE),
 m_bRemoveFolder(FALSE),
 m_bSubfolders(TRUE),
 m_bRemoveOnlySub(FALSE),
+m_iFinishAction(0),
 m_tType(Drive),
 m_bPersistent(FALSE)
 {
