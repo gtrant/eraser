@@ -1603,7 +1603,7 @@ void CSchedulerView::UpdateList()
             odtLast = psiItem->GetLastTime();
 
             if (odtLast.GetStatus() == COleDateTime::valid)
-                strData = odtLast.Format();
+                strData = odtLast.Format("%c");
             else
                 strData.Empty();
 
@@ -1652,7 +1652,7 @@ void CSchedulerView::UpdateList()
             }
             else
             {
-                strData = psiItem->GetNextTime().Format();
+                strData = psiItem->GetNextTime().Format("%c");
             }
 
             lvi.pszText = strData.GetBuffer(strData.GetLength());

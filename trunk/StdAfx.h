@@ -47,6 +47,8 @@
 #define _WIN32_IE 0x0600   // IE6+
 #endif
 
+#include <locale.h>
+
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS  // Some CString constructors will be explicit.
 
 // Turns off MFC feature that hides of some common warning messages
