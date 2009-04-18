@@ -141,8 +141,7 @@ overwriteFileName(LPCTSTR szFile, LPTSTR szLastFileName)
 {
     TCHAR szNewName[MAX_PATH];
     PTCHAR pszLastSlash;
-    E_UINT32 i, j, length;
-    size_t index;
+    size_t index, i, j, length;
 
     try {
         strncpy(szLastFileName, szFile, MAX_PATH);
@@ -2166,7 +2165,7 @@ eraserThread(LPVOID param1)
             // files
 
             // number of files to process
-            context->m_uProgressWipedFiles = 0;
+            context->m_uProgressWipedFiles = 0u;
             context->m_uProgressFiles = context->m_saData.GetSize();
 
             if (context->m_uProgressFiles > 0) {

@@ -102,7 +102,7 @@ static E_PUINT8 outputBuffer = 0;
 static E_INT32 randomQuality = 0;
 static E_INT32 poolMixes = 0;
 
-static E_UINT32 isaacOutputPosition = 0;
+static UINT_PTR isaacOutputPosition = 0;
 static LARGE_INTEGER lastCall;
 
 /*
@@ -486,7 +486,7 @@ loadDependenciesNT()
 */
 
 static void
-clearBuffer(E_PUINT8 buffer, E_UINT32 size)
+clearBuffer(E_PUINT8 buffer, UINT_PTR size)
 {
     if (size == 0) {
         return;
@@ -1810,7 +1810,7 @@ isaacSeed()
 }
 
 bool
-isaacFill(E_PUINT8 puBuffer, E_UINT32 uSize)
+isaacFill(E_PUINT8 puBuffer, UINT_PTR uSize)
 {
     if (!AfxIsValidAddress(puBuffer, uSize)) {
         return false;
@@ -1820,7 +1820,7 @@ isaacFill(E_PUINT8 puBuffer, E_UINT32 uSize)
     EnterCriticalSection(&pageLock);
 
     try {
-        E_UINT32 uAvailableData, uPosition = 0;
+        UINT_PTR uAvailableData, uPosition = 0;
         E_PUINT8 puRandom = (E_PUINT8)isaacOutput;
         while (uPosition < uSize) {
             /*

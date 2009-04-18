@@ -373,11 +373,11 @@ wipeFile(CEraserContext *context)
         E_UINT32 uAttributes;
         DataStreamArray streams;
         DataStream defaultStream;
-		LPDWORD                   lpStatus = 0;
-	
+
 		if (isWindowsNT) {
-			FileEncryptionStatus (context->m_strData,lpStatus);
-			if (lpStatus=(LPDWORD)FILE_IS_ENCRYPTED) { 
+			DWORD cryptStatus = 0;
+			FileEncryptionStatus (context->m_strData, &cryptStatus);
+			if (cryptStatus == FILE_IS_ENCRYPTED) { 
 				DecryptFile(context->m_strData,0);
 			}
 		}

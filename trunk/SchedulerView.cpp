@@ -522,7 +522,7 @@ void CSchedulerView::OnEditDeleteTask()
 			"delete the selected tasks?", MB_YESNO | MB_ICONQUESTION) == IDYES)
         {
             int nItem;
-            INT_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
+            DWORD_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
             DWORD_PTR nIndex;
             CScheduleItem *psiItem = 0;
 
