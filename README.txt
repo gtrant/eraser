@@ -4,7 +4,21 @@ ALL EARLIER VERSIONS before installing this Beta. When installing
 an earlier stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.87 beta 4: Latest changes
+Eraser 5.87 beta 5: Latest changes
+----------------------------------------------------------------
+- Timestamp all binaries on top of signing with the beta certificate
+- Fixed dragged-and-dropped tasks to the On-Demand pane. The computer
+  will shut down when done
+- Fixed scheduled tasks' completion action
+- Display the time when scheduled tasks are to run at midnight
+- Fixed a 64-bit problem for ISAAC buffer fills (semantic, not
+  really serious)
+- Fixed a wrong use of the equality operator leading to files being
+  detected as encrypted when they are not
+- Fixed the missing shell extension
+- Fixed 64-bit installs (VC runtime complained of lack of cabinet)
+
+Beta 4 Changes
 ----------------------------------------------------------------
 - Fixed error message when user deletes files and cancels in the
   Eraser Explorer.
