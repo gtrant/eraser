@@ -56,16 +56,16 @@ Source: win32\release\Eraserl.exe; DestDir: {syswow64}; Flags: restartreplace un
 Source: win32\release\Eraser.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
 Source: win32\release\Erasext.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
 Source: win32\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
-Source: vcredist_x86.cab; DestName: vc_red.cab; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
-Source: vcredist_x86.msi; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch32Bit
+Source: vcredist_x86.cab; DestName: vc_red.cab; DestDir: {tmp}\vcredist_x86; Flags: deleteafterinstall; Components: arch32Bit archWoW
+Source: vcredist_x86.msi; DestName: vc_red.msi; DestDir: {tmp}\vcredist_x86; Flags: deleteafterinstall; Components: arch32Bit archWoW
 
 Source: x64\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: x64\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
-Source: vcredist_x64.cab; DestName: vc_red.cab; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
-Source: vcredist_x64.msi; DestName: vc_red.msi; DestDir: {tmp}; Flags: deleteafterinstall; Components: arch64Bit
+Source: vcredist_x64.cab; DestName: vc_red.cab; DestDir: {tmp}\vcredist_x64; Flags: deleteafterinstall; Components: arch64Bit
+Source: vcredist_x64.msi; DestName: vc_red.msi; DestDir: {tmp}\vcredist_x64; Flags: deleteafterinstall; Components: arch64Bit
 
 [Components]
 Name: arch32Bit; Description: Eraser Core Program Files (32-bit); Types: full custom compact; Flags: fixed checkablealone; Check: IsWin32
@@ -122,16 +122,17 @@ Root: HKCR; SubKey: Drive\shellex\DragDropHandlers\Erasext; ValueType: string; V
 Root: HKCR; SubKey: Folder\shellex\ContextMenuHandlers\Erasext; ValueType: string; ValueName: ; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 Root: HKCR; SubKey: Folder\shellex\DragDropHandlers\Erasext; ValueType: string; ValueName: ; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 Root: HKCR; SubKey: lnkfile\shellex\ContextMenuHandlers\Erasext; ValueType: string; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
+Root: HKLM; SubKey: Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved; ValueType: string; ValueName: {{8BE13461-936F-11D1-A87D-444553540000}; ValueData: Eraser Shell Extension; Flags: uninsdeletekey
 
 Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: Eraser; ValueData: {app}\eraser.exe -hide; Flags: dontcreatekey uninsdeletevalue
-Root: HKLM; SubKey: Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved; ValueType: string; ValueName: {{8BE13461-936F-11D1-A87D-444553540000}; ValueData: Eraser Shell Extension; Flags: uninsdeletekey
 
 [UninstallDelete]
 Name: {app}\*.*; Type: filesandordirs
 
 [Run]
 Filename: {app}\eraser.exe; WorkingDir: {app}; Flags: postinstall nowait skipifsilent; Description: Run Eraser
-Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime...; Parameters: "/i ""{tmp}\vc_red.msi"""
+Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime... (32-bit); Parameters: "/i ""{tmp}\vcredist_x86\vc_red.msi"""; Components: arch32Bit archWoW
+Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime... (64-bit); Parameters: "/i ""{tmp}\vcredist_x64\vc_red.msi"""; Components: arch64Bit
 
 [Code]
 function IsWin32: Boolean;
