@@ -6,13 +6,13 @@ enum
 {
 	SCHNEIER_PASS_COUNT = 7
 };
-typedef bool (*PFPassFillStrategy)(E_PUINT8, E_UINT32);
-static bool oneFill(E_PUINT8 pBuffer, E_UINT32 bufferSize)
+typedef bool (*PFPassFillStrategy)(E_PUINT8, UINT_PTR);
+static bool oneFill(E_PUINT8 pBuffer, UINT_PTR bufferSize)
 {
 	memset(pBuffer, 1, bufferSize);
 	return true;
 }
-static bool zeroFill(E_PUINT8 pBuffer, E_UINT32 bufferSize)
+static bool zeroFill(E_PUINT8 pBuffer, UINT_PTR bufferSize)
 {
 	memset(pBuffer, 0, bufferSize);
 	return true;

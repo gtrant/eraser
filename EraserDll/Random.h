@@ -239,6 +239,6 @@ randomFill(E_PUINT8, E_UINT32);
 void
 isaacSeed();
 bool
-isaacFill(E_PUINT8, E_UINT32);
+isaacFill(E_PUINT8, UINT_PTR);
 
 #endif
