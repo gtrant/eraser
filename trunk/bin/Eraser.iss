@@ -82,7 +82,6 @@ Name: {group}\Eraser Website; Filename: http://heidi.ie/eraser/
 
 [Registry]
 Root: HKCR; SubKey: *\shellex\ContextMenuHandlers\Erasext; ValueType: string; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
-Root: HKCR; SubKey: lnkfile\shellex\ContextMenuHandlers\Erasext; ValueType: string; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 Root: HKCR; SubKey: .ers; ValueType: string; ValueName: ; ValueData: Eraser.Document; Flags: uninsdeletekey
 Root: HKCR; SubKey: .ers\ShellNew; ValueType: string; ValueName: NullFile; ValueData: ; Flags: uninsdeletekey
 
@@ -114,7 +113,7 @@ Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext7
 Root: HKCR; SubKey: CLSID\{{645FF040-5081-101B-9F08-00AA002F954E}\Shell\Erasext7\command; ValueType: string; ValueData: """{win}\System32\eraserl.exe"" -recycled -method Library"; Flags: uninsdeletekey; Components: arch32bit\RecycleBin arch64bit\RecycleBin
 
 Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}; ValueType: string; ValueName: ; ValueData: Eraser Shell Extension; Flags: uninsdeletekey
-Root: HKCC; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\InProcServer32; ValueType: string; ValueData: """{win}\System32\erasext.dll"""; Flags: uninsdeletekey
+Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\InProcServer32; ValueType: string; ValueData: """{win}\System32\erasext.dll"""; Flags: uninsdeletekey
 Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\InProcServer32; ValueType: string; ValueName: ThreadingModel; ValueData: Apartment; Flags: uninsdeletekey
 Root: HKCR; SubKey: CLSID\{{8BE13461-936F-11D1-A87D-444553540000}\ProgID; ValueType: string; ValueName: ; ValueData: ErasextMenu; Flags: uninsdeletekey
 
@@ -122,6 +121,7 @@ Root: HKCR; SubKey: Drive\shellex\ContextMenuHandlers\Erasext; ValueType: string
 Root: HKCR; SubKey: Drive\shellex\DragDropHandlers\Erasext; ValueType: string; ValueName: ; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 Root: HKCR; SubKey: Folder\shellex\ContextMenuHandlers\Erasext; ValueType: string; ValueName: ; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 Root: HKCR; SubKey: Folder\shellex\DragDropHandlers\Erasext; ValueType: string; ValueName: ; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
+Root: HKCR; SubKey: lnkfile\shellex\ContextMenuHandlers\Erasext; ValueType: string; ValueData: {{8BE13461-936F-11D1-A87D-444553540000}; Flags: uninsdeletekey
 
 Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: Eraser; ValueData: {app}\eraser.exe -hide; Flags: dontcreatekey uninsdeletevalue
 Root: HKLM; SubKey: Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved; ValueType: string; ValueName: {{8BE13461-936F-11D1-A87D-444553540000}; ValueData: Eraser Shell Extension; Flags: uninsdeletekey
