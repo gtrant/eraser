@@ -42,7 +42,7 @@ Compression=lzma/ultra
 OutputDir=./
 
 [_ISTool]
-EnableISX=true:
+EnableISX=true
 
 [Files]
 ;Source: Eraser\eraser.url; DestDir: {app}; Flags: overwritereadonly ignoreversion
@@ -126,9 +126,6 @@ Root: HKLM; SubKey: Software\Microsoft\Windows\CurrentVersion\Shell Extensions\A
 
 Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: string; ValueName: Eraser; ValueData: {app}\eraser.exe -hide; Flags: dontcreatekey uninsdeletevalue
 
-[UninstallDelete]
-Name: {app}\*.*; Type: filesandordirs
-
 [Run]
 Filename: {app}\eraser.exe; WorkingDir: {app}; Flags: postinstall nowait skipifsilent; Description: Run Eraser
 Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime... (32-bit); Parameters: "/i ""{tmp}\vcredist_x86\vc_red.msi"""; Components: arch32Bit archWoW
@@ -137,5 +134,29 @@ Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime... (64-bit); Pa
 [Code]
 function IsWin32: Boolean;
 begin
-  Result := not IsWin64;
+	Result := not IsWin64;
+end;
+
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+	DeletedAppData: Boolean;
+	DeletedRegKeys: Boolean;
+	EraserAppDataPath: String;
+	EraserRegistryPath: String;
+begin
+	if (CurUninstallStep = usUninstall) then
+	begin
+		EraserAppDataPath := ExpandConstant('{localappdata}') + '\Eraser';
+		EraserRegistryPath := 'Software\Heidi Computers Ltd';
+		if (MsgBox('Do you want to delete Eraser''s configuration files?' + #13#13 +
+			'Do not do this if you intend to reinstall Eraser.' , mbConfirmation, MB_YESNO or MB_DEFBUTTON2) = IDYES) then
+		begin
+			DeletedAppData := (not FileExists(EraserAppDataPath)) or DelTree(EraserAppDataPath, True, True, True);
+			DeletedRegKeys := (not RegKeyExists(HKEY_CURRENT_USER, EraserRegistryPath)) or RegDeleteKeyIncludingSubkeys(HKEY_CURRENT_USER, EraserRegistryPath);
+			if not (DeletedAppData and DeletedRegKeys) then
+			begin
+				MsgBox('Could not delete user configuraion files and entries:' #13#13 + SysErrorMessage(DLLGetLastError), mbError, MB_OK);
+			end;
+		end;
+	end;
 end;
