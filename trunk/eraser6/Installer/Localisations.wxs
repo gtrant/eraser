@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * $Id$
+ * Copyright 2008 The Eraser Project
+ * Original Author: Joel Low <lowjoel@users.sourceforge.net>
+ * Modified By:
+ *
+ * This file is part of Eraser.
+ *
+ * Eraser is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * A copy of the GNU General Public License can be found at
+ * <http://www.gnu.org/licenses/>.
+-->
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment Id="EraserLocalisationsFragment">
+		<DirectoryRef Id="INSTALLLOCATION">
+			<Directory Id="EraserLangNlDir" Name="nl">
+				<Component Id="EraserLangNl" Guid="A404FC89-2216-4e14-96D5-30F54D120FBB">
+					<File Id="EraserNl" Name="Eraser.resources.dll"
+						Source="..\bin\Release\nl\Eraser.resources.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserManagerNl" Name="Eraser.Manager.resources.dll"
+						Source="..\bin\Release\nl\Eraser.Manager.resources.dll"
+						ProcessorArchitecture="msil" />
+				</Component>
+			</Directory>
+		</DirectoryRef>
+		<DirectoryRef Id="EraserPluginsDir">
+			<Directory Id="EraserPluginsLangNlDir" Name="nl">
+				<Component Id="EraserPluginsLangNl" Guid="CD85AC3F-2B4E-4ac8-8FF9-6BD3BC90BD3D">
+					<File Id="EraserDefaultPluginsNl" Name="Eraser.DefaultPlugins.resources.dll"
+						Source="..\bin\Release\Plugins\nl\Eraser.DefaultPlugins.resources.dll"
+						ProcessorArchitecture="msil" />
+				</Component>
+			</Directory>
+		</DirectoryRef>
+
+		<!-- Reference all languages in Localisations.wxs -->
+		<Feature Id="EraserLanguages" Title="Alternative Languages"
+				Description="Alternative localised version of Eraser." Level="10"
+				Display="expand">
+			<Feature Id="EraserLanguagesNl" Title="Dutch" Description="Dutch localisation" Level="10">
+				<ComponentRef Id="EraserLangNl" />
+				<ComponentRef Id="EraserPluginsLangNl" />
+			</Feature>
+		</Feature>
+	</Fragment>
+</Wix>

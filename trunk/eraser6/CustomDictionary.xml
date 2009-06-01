@@ -1,0 +1,40 @@
+<Dictionary>
+	<Words>
+		<Unrecognized>
+			<Word></Word>
+		</Unrecognized>
+		<Recognized>
+			<Word>Plugin</Word>
+			<Word>Poller</Word>
+			<Word>Plugins</Word>
+			<Word>Unqueue</Word>
+			<Word>PRNGs</Word>
+			<Word>Prng</Word>
+			<Word>Rng</Word>
+			
+			<!-- Proper nouns -->
+			<Word>Gutmann</Word>
+			<Word>Lith</Word>
+			<Word>Schneier</Word>
+			<Word>Schneier's</Word>
+			<Word>Kasra</Word>
+			<Word>Nassiri</Word>
+			<Word>Verschlusssachen</Word>
+			<Word>IT-Richtlinien</Word>
+			<Word>Lite</Word>
+			<Word>Trant</Word>
+			<Word>Tolvanen</Word>
+			<Word>SourceForge</Word>
+		</Recognized>
+		<Deprecated>
+			<Term PreferredAlternate=""></Term>
+		</Deprecated>
+	</Words>
+	<Acronyms>
+		<CasingExceptions>
+			<Acronym>PRNG</Acronym>
+			<Acronym>PRNGs</Acronym>
+			<Acronym>RNG</Acronym>
+		</CasingExceptions>
+	</Acronyms>
+</Dictionary>

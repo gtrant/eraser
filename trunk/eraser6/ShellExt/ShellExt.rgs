@@ -1,0 +1,88 @@
+HKCR
+{
+	NoRemove *
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+		}
+	}
+	NoRemove Directory
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+			NoRemove DragDropHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+		}
+	}
+	NoRemove Drive
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+			NoRemove DragDropHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+		}
+	}
+	NoRemove Folder
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+			NoRemove DragDropHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+		}
+	}
+	NoRemove InternetShortcut
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+		}
+	}
+
+	EraserShellExt.ShellExt.1 = s 'Eraser Shell Extension'
+	{
+		CLSID = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+	}
+	EraserShellExt.ShellExt = s 'Eraser Shell Extension'
+	{
+		CLSID = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+		CurVer = s 'EraserShellExt.ShellExt.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BC9B776A-90D7-4476-A791-79D835F30650} = s 'Eraser Shell Extension'
+		{
+			ProgID = s 'EraserShellExt.ShellExt.1'
+			VersionIndependentProgID = s 'EraserShellExt.ShellExt'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{BBAA6A86-48FB-4F7B-B06F-7FACD6AFBD25}'
+		}
+	}
+}

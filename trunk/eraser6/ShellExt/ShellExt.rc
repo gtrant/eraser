@@ -1,0 +1,198 @@
+/* 
+ * $Id$
+ * Copyright 2008 The Eraser Project
+ * Original Author: Kasra Nassiri <cjax@users.sourceforge.net>
+ * Modified By: Joel Low <lowjoel@users.sourceforge.net>
+ * 
+ * This file is part of Eraser.
+ * 
+ * Eraser is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * A copy of the GNU General Public License can be found at
+ * <http://www.gnu.org/licenses/>.
+ */
+
+#include "resource.h"
+#include "../Version.rc"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "1 TYPELIB ""ShellExt.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION ERASER_FILE_VERSION
+ PRODUCTVERSION ERASER_PRODUCT_VERSION
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "The Eraser Project"
+            VALUE "FileDescription", "Eraser Shell Extension"
+            VALUE "FileVersion", ERASER_STRING_FILE_VERSION
+            VALUE "LegalCopyright", "(c) 2008 The Eraser Project"
+            VALUE "InternalName", "ShellExt"
+            VALUE "OriginalFilename", "ShellExt.dll"
+            VALUE "ProductName", "Eraser"
+            VALUE "ProductVersion", ERASER_STRING_PRODUCT_VERSION
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_ERASERSHELLEXT      REGISTRY                "ShellExt.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROJNAME            "EraserShellExt"
+    IDS_ERASER              "Eraser"
+    IDS_ERASERSHELLEXT      "Eraser Shell Extension"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_UNKNOWNACTION "An invalid command with the ID %d was requested.\n\nEraser is unable to process the request."
+    IDS_ERROR_CANNOTFINDERASER 
+                            "The Eraser application could not be started. Ensure that your installation of Eraser is not corrupted: try running the Eraser Setup again to Repair the install."
+    IDS_ERROR_UNKNOWN       "An unknown error has occurred."
+    IDS_ERROR_ACCESSDENIED  "Access has been denied to Eraser. This may be due to you not having administrator permissions, or if you cancelled a request to elevate."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_HELPSTRING_ERASE    "Erases the selected items."
+    IDS_HELPSTRING_ERASEONRESTART 
+                            "Erases the selected items when the computer is next restarted."
+    IDS_HELPSTRING_ERASEUNUSEDSPACE 
+                            "Erases the unused space of the selected drives."
+    IDS_HELPSTRING_SECUREMOVE 
+                            "Securely moves the selected items to a new location."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ACTION_ERASE        "&Erase"
+    IDS_ACTION_ERASERESTART "Erase on &Restart"
+    IDS_ACTION_ERASEUNUSEDSPACE "Erase &Unused Space"
+    IDS_ACTION_SECUREMOVE   "Secure &Move"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Neutral (Sys. Default) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_NEUSD)
+#ifdef _WIN32
+LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+ERASER                  ICON                    "..\\Resources\\Eraser.ico"
+ERASER_DOCUMENT         ICON                    "..\\Resources\\EraserTaskList.ico"
+#endif    // Neutral (Sys. Default) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "ShellExt.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

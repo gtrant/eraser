@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="saveSettings.Error" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="saveSettings.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="saveSettings.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="saveSettings.Location" type="System.Drawing.Point, System.Drawing">
+    <value>599, 27</value>
+  </data>
+  <data name="saveSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 23</value>
+  </data>
+  <data name="saveSettings.Text" xml:space="preserve">
+    <value>Bewaar instellingen</value>
+  </data>
+  <data name="$this.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="$this.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="titleIcon.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="titleIcon.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="schedulerClearCompleted.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="schedulerClearCompleted.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <data name="schedulerClearCompleted.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="plausibleDeniabilityFilesAddFolder.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="plausibleDeniabilityFilesAddFolder.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="plausibleDeniabilityFilesRemove.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="plausibleDeniabilityFilesRemove.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="plausibleDeniabilityFilesAddFile.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="plausibleDeniabilityFilesAddFile.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="plausibleDeniabilityFiles.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="plausibleDeniabilityFiles.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="uiLanguage.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="uiLanguage.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="uiLanguageLbl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="uiLanguageLbl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="uiLanguageLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 13</value>
+  </data>
+  <data name="uiLanguageLbl.Text" xml:space="preserve">
+    <value>Gebruikers interface taal:</value>
+  </data>
+  <data name="plausibleDeniability.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="plausibleDeniability.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="erasePRNG.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="erasePRNG.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="erasePRNGLbl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="erasePRNGLbl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="erasePRNGLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 13</value>
+  </data>
+  <data name="erasePRNGLbl.Text" xml:space="preserve">
+    <value>Willekeurige data bron:</value>
+  </data>
+  <data name="schedulerMissedIgnore.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="schedulerMissedIgnore.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="schedulerMissedIgnore.Size" type="System.Drawing.Size, System.Drawing">
+    <value>310, 17</value>
+  </data>
+  <data name="schedulerMissedIgnore.Text" xml:space="preserve">
+    <value>De herhaalde taak en doorgaan met volgende taak in de lijst</value>
+  </data>
+  <data name="schedulerMissedImmediate.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="schedulerMissedImmediate.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="schedulerMissedImmediate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>246, 17</value>
+  </data>
+  <data name="schedulerMissedImmediate.Text" xml:space="preserve">
+    <value>Taak uitvoeren bij Eraser's eerst volgende start</value>
+  </data>
+  <data name="schedulerMissed.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="schedulerMissed.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="schedulerMissed.Size" type="System.Drawing.Size, System.Drawing">
+    <value>246, 13</value>
+  </data>
+  <data name="schedulerMissed.Text" xml:space="preserve">
+    <value>Waneer herhaalde taak is gemist, start vooralsnog,</value>
+  </data>
+  <data name="scheduler.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="scheduler.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="scheduler.Label" xml:space="preserve">
+    <value>Planner instellingen</value>
+  </data>
+  <data name="pluginsManagerColName.Text" xml:space="preserve">
+    <value>Naam</value>
+  </data>
+  <data name="pluginsManagerColAuthor.Text" xml:space="preserve">
+    <value>Auteur</value>
+  </data>
+  <data name="pluginsManagerColVersion.Text" xml:space="preserve">
+    <value>Versie</value>
+  </data>
+  <data name="pluginsManagerColPath.Text" xml:space="preserve">
+    <value>Bestandsnaam</value>
+  </data>
+  <data name="pluginsMenu.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pluginsMenu.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="pluginsManager.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="pluginsManager.Groups" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
+        ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
+        AwAAAAxDb3JlIHBsdWdpbnMF/P///yhTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25t
+        ZW50AQAAAAd2YWx1ZV9fAAgCAAAAAAAAAAoGBQAAABVwbHVnaW5zTWFuYWdlckdycENvcmUL
+</value>
+  </data>
+  <data name="pluginsManager.Groups1" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
+        ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
+        AwAAAA1PdGhlciBwbHVnaW5zBfz///8oU3lzdGVtLldpbmRvd3MuRm9ybXMuSG9yaXpvbnRhbEFsaWdu
+        bWVudAEAAAAHdmFsdWVfXwAIAgAAAAAAAAAKBgUAAAAZcGx1Z2luc01hbmFnZXJHcnBFeHRlcm5hbAs=
+</value>
+  </data>
+  <data name="pluginsManager.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="pluginsManagerImageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACE
+        AwAAAk1TRnQBSQFMAwEBAAEEAQABBAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
+        ARADAAEBAQABIAYAARAuAAM/AW0BLgFLAXoB/wM6AWL0AAEjAXoBxwH/AUQBzQH8Af8BNgFbAYcB//QA
+        ASMBegHHAf8BPQGgAdIB/wNEAXn0AAEjAXoBxwH/AUYB0QH8Af8BNgFbAYcB//QAASMBegHHAf8BPwGh
+        AdEB/wNEAXn0AAEjAXoBxwH/AVAB4gH9Af8BNwFXAYAB//QAASMBegHHAf8BVwHXAfwB/wE3AVcBgAH/
+        8AADLQFGASMBegHHAf8BbQHeAfwB/wE3AVcBgAH/AyQBNegAAzUBVgEwAYcBxwH/AVoBwAHwAf8BTwHL
+        Af4B/wFQAbMB3QH/ATsBTAFlAf8DKgFB4AADMQFNATABhwHIAf8BUQG6AfcB/wFTAcIB+QH/AUkBtwH5
+        Af8BZwHWAfsB/wFEAaYB6AH/ATsBSwFjAf8DJAE23AABUQFqAYIB4QFTAcEB+QH/AU8BtwH5Af8BkwHu
+        Af4B/wGPAewB/gH/AVEBtAHzAf8BjQHjAf4B/wFOAboB4gH/AVQBWgFiAdrcAAE5AXwBswH8AVgBxgH5
+        Af8BaAGKAawB/wFoAYoBrAH/AWgBigGsAf8BaAGKAawB/wFoAYoBrAH/AWEB1QH6Af8BNwFJAWcB/NwA
+        AU8BcQGKAecBWwHSAfoB/wFJAWMBhAH/DAABTAGQAcEB/wFSAbsB4QH/AVEBVwFgAd/cAAFMAU0BTgGS
+        AUUBnQHQAf8BeQHjAfoB/wFJAYUBngH/AVABYwGHAf8BUAF1AZwB/wFbAYQBlwHhAUcBjAGqAf8DSAGF
+        3AADEgEYAVMBWAFZAawBRQGaAc0B/wFtAdUB9QH/AXAB6QH+Af8BbAHUAfMB/wFJAZIBsgH/AU8CUQGc
+        AxcBIOAAAxIBGANHAYIBVgFhAWgBxwFDAYcBqwH7AVUBagF7AdsDRwGCAxcBINAAAUIBTQE+BwABPgMA
+        ASgDAAFAAwABEAMAAQEBAAEBBQABgBcAA/8BAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+
+        AT8GAAH+AT8GAAH8AR8GAAH4AQ8GAAHwAQcGAAHwAQcGAAHwAQcGAAHxAccGAAHwAQcGAAHwAQcGAAH4
+        AQ8GAAs=
+</value>
+  </data>
+  <data name="plugins.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="plugins.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="eraseUnusedMethod.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="eraseUnusedMethod.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="eraseFilesMethod.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="eraseFilesMethod.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="eraseUnusedMethodLbl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="eraseUnusedMethodLbl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="eraseUnusedMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>211, 13</value>
+  </data>
+  <data name="eraseUnusedMethodLbl.Text" xml:space="preserve">
+    <value>Standaard ongebruikte ruimte wis methode:</value>
+  </data>
+  <data name="eraseFilesMethodLbl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="eraseFilesMethodLbl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="eraseFilesMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>183, 13</value>
+  </data>
+  <data name="eraseFilesMethodLbl.Text" xml:space="preserve">
+    <value>Standard bestand verwijder methode:</value>
+  </data>
+  <data name="erase.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="erase.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="erase.Label" xml:space="preserve">
+    <value>Wis instellingen</value>
+  </data>
+  <data name="lockedConfirm.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lockedConfirm.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lockedConfirm.Size" type="System.Drawing.Size, System.Drawing">
+    <value>181, 17</value>
+  </data>
+  <data name="lockedConfirm.Text" xml:space="preserve">
+    <value>Mij waarschuwen voor uitvoering</value>
+  </data>
+  <data name="lockedAllow.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="lockedAllow.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lockedAllow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>282, 17</value>
+  </data>
+  <data name="lockedAllow.Text" xml:space="preserve">
+    <value>Wissen van bestanden bij opnieuw opstarten toestaan</value>
+  </data>
+  <data name="uiContextMenu.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="uiContextMenu.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="uiContextMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 17</value>
+  </data>
+  <data name="uiContextMenu.Text" xml:space="preserve">
+    <value>Integreer Eraser in Windows Explorer</value>
+  </data>
+  <data name="ui.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ui.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ui.Label" xml:space="preserve">
+    <value>Shell integratie</value>
+  </data>
+  <data name="content.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="content.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="titleLbl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="titleLbl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="titleLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 32</value>
+  </data>
+  <data name="titleLbl.Text" xml:space="preserve">
+    <value>Instellingen</value>
+  </data>
+</root>

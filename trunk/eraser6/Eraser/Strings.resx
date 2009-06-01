@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Eraser is an advanced security tool for Windows, which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Eraser is Free software and its source code is released under GNU General Public License.\r\n\r\nErasure Method Credits:\r\nGutmann (35 Pass):	 	Copyright Peter Gutmann &amp; Colin Plumb\r\nGutmann Lite (10 pass): 		Copyright Peter Gutmann &amp; Colin Plumb\r\nUS DoD (7 pass):			Copyright United States Department of\r\n				Defense\r\nUS DoD (3 pass):			Copyright United States Department of\r\n				Defense\r\nUS Air Force 5020 (3 pass):	Copyright United States Department of\r\n				Defense\r\nUS Army AR380-19 (3 pass):	Copyright United States Department of\r\n				Defense\r\nRCMP TSSIT OPS-II (7 pass):	Copyright Government of Canada,\r\n				Royal Canadian Mounted Police\r\nSchneier's Method (7 pass):	Copyright Bruce Schneier\r\nGerman VSITR (7 pass):		Copyright Germany BSI Verschlusssachen\r\n				-IT-Richtlinien\r\nBritish HMG IS5 (3 pass):		Copyright British Government\r\nBritish HMG IS5 (1 pass):		Copyright British Government\r\nRussian GOST P50739-95 (2 pass):	Copyright Government of the Soviet\r\n				Union \r\nPseudorandom data (1 pass):	Public Domain\r\nFirst/Last 16Kb:			Copyright The Eraser Project\r\n\r\nEraser Copyright © The Eraser Project\r\n\r\nEraser Project Members:\r\n• Sami Tolvanen:		Mentor/Initiator\r\n• Garrett Trant:		Mentor/Researcher\r\n• Joel Low:		Lead Developer\r\n• Kasra Nassiri:		Developer/Security Researcher\r\n• Dennis van Lith:		Designer" xml:space="preserve">
+    <value>Eraser is an advanced security tool for Windows, which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Eraser is Free software and its source code is released under GNU General Public License.\r\n\r\nErasure Method Credits:\r\nGutmann (35 Pass):	 	Copyright Peter Gutmann &amp; Colin Plumb\r\nGutmann Lite (10 pass): 		Copyright Peter Gutmann &amp; Colin Plumb\r\nUS DoD (7 pass):			Copyright United States Department of\r\n				Defense\r\nUS DoD (3 pass):			Copyright United States Department of\r\n				Defense\r\nUS Air Force 5020 (3 pass):	Copyright United States Department of\r\n				Defense\r\nUS Army AR380-19 (3 pass):	Copyright United States Department of\r\n				Defense\r\nRCMP TSSIT OPS-II (7 pass):	Copyright Government of Canada,\r\n				Royal Canadian Mounted Police\r\nSchneier's Method (7 pass):	Copyright Bruce Schneier\r\nGerman VSITR (7 pass):		Copyright Germany BSI Verschlusssachen\r\n				-IT-Richtlinien\r\nBritish HMG IS5 (3 pass):		Copyright British Government\r\nBritish HMG IS5 (1 pass):		Copyright British Government\r\nRussian GOST P50739-95 (2 pass):	Copyright Government of the Soviet\r\n				Union \r\nPseudorandom data (1 pass):	Public Domain\r\nFirst/Last 16Kb:			Copyright The Eraser Project\r\n\r\nEraser Copyright © The Eraser Project\r\n\r\nEraser Project Members:\r\n• Sami Tolvanen:		Mentor/Initiator\r\n• Garrett Trant:		Mentor/Researcher\r\n• Joel Low:		Lead Developer\r\n• Kasra Nassiri:		Developer/Security Researcher\r\n• Dennis van Lith:		Designer</value>
+  </data>
+  <data name="Eraser" xml:space="preserve">
+    <value>Eraser</value>
+  </data>
+  <data name="{0} (Built: {1:F})" xml:space="preserve">
+    <value>{0} (Built: {1:F})</value>
+  </data>
+  <data name="copyright © 2008 The Eraser Project" xml:space="preserve">
+    <value>copyright © 2008 The Eraser Project</value>
+  </data>
+  <data name="Eraser is free open-source software!" xml:space="preserve">
+    <value>Eraser is free open-source software!</value>
+  </data>
+  <data name="Please help us to continue developing Eraser - donate some coffee!" xml:space="preserve">
+    <value>Please help us to continue developing Eraser - donate some coffee!</value>
+  </data>
+  <data name="Session: {0:F}" xml:space="preserve">
+    <value>Session: {0:F}</value>
+  </data>
+  <data name="Processing:" xml:space="preserve">
+    <value>Processing:</value>
+  </data>
+  <data name="Could not load task list. All task entries have been lost. The error returned was: {0}" xml:space="preserve">
+    <value>Could not load task list. All task entries have been lost. The error returned was: {0}</value>
+  </data>
+  <data name="Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit." xml:space="preserve">
+    <value>Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit.</value>
+  </data>
+  <data name="Could not load the setting {0} for plugin {1}. The setting has been lost." xml:space="preserve">
+    <value>Could not load the setting {0} for plugin {1}. The setting has been lost.</value>
+  </data>
+  <data name="{0} out of {1}" xml:space="preserve">
+    <value>{0} out of {1}</value>
+  </data>
+  <data name="About {0:T} left" xml:space="preserve">
+    <value>About {0:T} left</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="Total: {0,2:#0.00%}" xml:space="preserve">
+    <value>Total: {0,2:#0.00%}</value>
+  </data>
+  <data name="Completed with warnings" xml:space="preserve">
+    <value>Completed with warnings</value>
+  </data>
+  <data name="Completed with errors" xml:space="preserve">
+    <value>Completed with errors</value>
+  </data>
+  <data name="Not completed" xml:space="preserve">
+    <value>Not completed</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Queued for execution" xml:space="preserve">
+    <value>Queued for execution</value>
+  </data>
+  <data name="Not queued" xml:space="preserve">
+    <value>Not queued</value>
+  </data>
+  <data name="New task added" xml:space="preserve">
+    <value>New task added</value>
+  </data>
+  <data name="{0} has just been added to the list of tasks." xml:space="preserve">
+    <value>{0} has just been added to the list of tasks.</value>
+  </data>
+  <data name="Running..." xml:space="preserve">
+    <value>Running...</value>
+  </data>
+  <data name="The task {0} has completed with warnings." xml:space="preserve">
+    <value>The task {0} has completed with warnings.</value>
+  </data>
+  <data name="The task {0} has completed with errors." xml:space="preserve">
+    <value>The task {0} has completed with errors.</value>
+  </data>
+  <data name="The task {0} did not complete." xml:space="preserve">
+    <value>The task {0} did not complete.</value>
+  </data>
+  <data name="The task {0} has completed." xml:space="preserve">
+    <value>The task {0} has completed.</value>
+  </data>
+  <data name="Task executed" xml:space="preserve">
+    <value>Task executed</value>
+  </data>
+  <data name="Import tasks from {0}" xml:space="preserve">
+    <value>Import tasks from {0}</value>
+  </data>
+  <data name="Erase {0}" xml:space="preserve">
+    <value>Erase {0}</value>
+  </data>
+  <data name="Could not import task list from {0}. The error returned was: {1}" xml:space="preserve">
+    <value>Could not import task list from {0}. The error returned was: {1}</value>
+  </data>
+  <data name="Are you sure you want to delete the selected tasks?" xml:space="preserve">
+    <value>Are you sure you want to delete the selected tasks?</value>
+  </data>
+  <data name="User interface language" xml:space="preserve">
+    <value>User interface language</value>
+  </data>
+  <data name="Default file erasure method" xml:space="preserve">
+    <value>Default file erasure method</value>
+  </data>
+  <data name="Default unused space erasure method" xml:space="preserve">
+    <value>Default unused space erasure method</value>
+  </data>
+  <data name="Randomness data source" xml:space="preserve">
+    <value>Randomness data source</value>
+  </data>
+  <data name="The following settings held invalid values:\n\n{0}\nThese settings have now been set to naive defaults.\n\nPlease check that the new settings suit your required level of security." xml:space="preserve">
+    <value>The following settings held invalid values:\n\n{0}\nThese settings have now been set to naive defaults.\n\nPlease check that the new settings suit your required level of security.</value>
+  </data>
+  <data name="The path you selected is invalid." xml:space="preserve">
+    <value>The path you selected is invalid.</value>
+  </data>
+  <data name="Plugins which have just been approved will only be loaded the next time Eraser is started." xml:space="preserve">
+    <value>Plugins which have just been approved will only be loaded the next time Eraser is started.</value>
+  </data>
+  <data name="An invalid language was selected." xml:space="preserve">
+    <value>An invalid language was selected.</value>
+  </data>
+  <data name="An invalid file erasure method was selected." xml:space="preserve">
+    <value>An invalid file erasure method was selected.</value>
+  </data>
+  <data name="An invalid unused disk space erasure method was selected." xml:space="preserve">
+    <value>An invalid unused disk space erasure method was selected.</value>
+  </data>
+  <data name="An invalid randomness data source was selected." xml:space="preserve">
+    <value>An invalid randomness data source was selected.</value>
+  </data>
+  <data name="Erasures with plausible deniability was selected, but no files were selected to be used as decoys." xml:space="preserve">
+    <value>Erasures with plausible deniability was selected, but no files were selected to be used as decoys.</value>
+  </data>
+  <data name="The new UI language will take only effect when Eraser is restarted." xml:space="preserve">
+    <value>The new UI language will take only effect when Eraser is restarted.</value>
+  </data>
+  <data name="The new randomness data source will only be used when the next task is run.\nCurrently running tasks will use the old source." xml:space="preserve">
+    <value>The new randomness data source will only be used when the next task is run.\nCurrently running tasks will use the old source.</value>
+  </data>
+  <data name="The erasure method selected does not support unused disk space erasures." xml:space="preserve">
+    <value>The erasure method selected does not support unused disk space erasures.</value>
+  </data>
+  <data name="Invalid file path" xml:space="preserve">
+    <value>Invalid file path</value>
+  </data>
+  <data name="Invalid folder path" xml:space="preserve">
+    <value>Invalid folder path</value>
+  </data>
+  <data name="(default)" xml:space="preserve">
+    <value>(default)</value>
+  </data>
+  <data name="The task has no data to erase." xml:space="preserve">
+    <value>The task has no data to erase.</value>
+  </data>
+  <data name="The task needs to run on at least one day a week" xml:space="preserve">
+    <value>The task needs to run on at least one day a week</value>
+  </data>
+  <data name="Processing update list..." xml:space="preserve">
+    <value>Processing update list...</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Updates</value>
+  </data>
+  <data name="Plugins" xml:space="preserve">
+    <value>Plugins</value>
+  </data>
+  <data name="There are no new updates or plugins available for Eraser." xml:space="preserve">
+    <value>There are no new updates or plugins available for Eraser.</value>
+  </data>
+  <data name="Install" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Downloaded" xml:space="preserve">
+    <value>Downloaded</value>
+  </data>
+  <data name="Overall progress: {0} left" xml:space="preserve">
+    <value>Overall progress: {0} left</value>
+  </data>
+  <data name="Error: {0}" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="{0} of {1} downloaded" xml:space="preserve">
+    <value>{0} of {1} downloaded</value>
+  </data>
+  <data name="Downloading: {0}" xml:space="preserve">
+    <value>Downloading: {0}</value>
+  </data>
+  <data name="Downloaded: {0}" xml:space="preserve">
+    <value>Downloaded: {0}</value>
+  </data>
+  <data name="Error downloading {0}: {1}" xml:space="preserve">
+    <value>Error downloading {0}: {1}</value>
+  </data>
+  <data name="Installing {0}" xml:space="preserve">
+    <value>Installing {0}</value>
+  </data>
+  <data name="Installed {0}" xml:space="preserve">
+    <value>Installed {0}</value>
+  </data>
+  <data name="Error installing {0}" xml:space="preserve">
+    <value>Error installing {0}</value>
+  </data>
+  <data name="The installer exited with an error code {0}" xml:space="preserve">
+    <value>The installer exited with an error code {0}</value>
+  </data>
+  <data name="Unknown mirror selected." xml:space="preserve">
+    <value>Unknown mirror selected.</value>
+  </data>
+</root>

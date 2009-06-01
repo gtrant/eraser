@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="cancel.Text" xml:space="preserve">
+    <value>Annuleer</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="typeRestart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 71</value>
+  </data>
+  <data name="typeRestart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 19</value>
+  </data>
+  <data name="typeRestart.Text" xml:space="preserve">
+    <value>Uitvoeren na herstart</value>
+  </data>
+  <data name="name.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 6</value>
+  </data>
+  <data name="name.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 23</value>
+  </data>
+  <data name="typeLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 15</value>
+  </data>
+  <data name="typeLbl.Text" xml:space="preserve">
+    <value>Type Taak:</value>
+  </data>
+  <data name="typeImmediate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 35</value>
+  </data>
+  <data name="typeImmediate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>109, 19</value>
+  </data>
+  <data name="typeImmediate.Text" xml:space="preserve">
+    <value>Direct uitvoeren</value>
+  </data>
+  <data name="typeRecurring.Location" type="System.Drawing.Point, System.Drawing">
+    <value>162, 53</value>
+  </data>
+  <data name="typeRecurring.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 19</value>
+  </data>
+  <data name="typeRecurring.Text" xml:space="preserve">
+    <value>Herhalen</value>
+  </data>
+  <data name="eraseLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 15</value>
+  </data>
+  <data name="eraseLbl.Text" xml:space="preserve">
+    <value>Data om te wissen:</value>
+  </data>
+  <data name="dataColData.Text" xml:space="preserve">
+    <value>Data set</value>
+  </data>
+  <data name="dataColMethod.Text" xml:space="preserve">
+    <value>Wis methode</value>
+  </data>
+  <data name="dataAdd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>114, 23</value>
+  </data>
+  <data name="dataAdd.Text" xml:space="preserve">
+    <value>Data toevoegen</value>
+  </data>
+  <data name="containerTask.Text" xml:space="preserve">
+    <value>Taak</value>
+  </data>
+  <data name="scheduleMonthlyLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>23, 239</value>
+  </data>
+  <data name="scheduleMonthlyLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 15</value>
+  </data>
+  <data name="scheduleMonthlyLbl.Text" xml:space="preserve">
+    <value>Op dag</value>
+  </data>
+  <data name="scheduleMonthlyDayNumber.Location" type="System.Drawing.Point, System.Drawing">
+    <value>74, 237</value>
+  </data>
+  <data name="scheduleMonthlyFreq.Location" type="System.Drawing.Point, System.Drawing">
+    <value>178, 237</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>227, 239</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 15</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.Text" xml:space="preserve">
+    <value>Maand(en)</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>123, 239</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 15</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.Text" xml:space="preserve">
+    <value>of elke</value>
+  </data>
+  <data name="scheduleDaily.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 19</value>
+  </data>
+  <data name="scheduleDaily.Text" xml:space="preserve">
+    <value>Dagelijks</value>
+  </data>
+  <data name="scheduleDailyByDay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>46, 19</value>
+  </data>
+  <data name="scheduleDailyByDay.Text" xml:space="preserve">
+    <value>Elke</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 15</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.Text" xml:space="preserve">
+    <value>dag(en),</value>
+  </data>
+  <data name="scheduleDailyByWeekday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 19</value>
+  </data>
+  <data name="scheduleDailyByWeekday.Text" xml:space="preserve">
+    <value>Elke werkdag</value>
+  </data>
+  <data name="scheduleWeeklyMonday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 19</value>
+  </data>
+  <data name="scheduleWeeklyMonday.Text" xml:space="preserve">
+    <value>Maandag</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>85, 3</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 19</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.Text" xml:space="preserve">
+    <value>Dinsdag</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>160, 3</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 19</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.Text" xml:space="preserve">
+    <value>Woensdag</value>
+  </data>
+  <data name="scheduleWeeklyThursday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 19</value>
+  </data>
+  <data name="scheduleWeeklyThursday.Text" xml:space="preserve">
+    <value>Donderdag</value>
+  </data>
+  <data name="scheduleWeeklyFriday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>94, 28</value>
+  </data>
+  <data name="scheduleWeeklyFriday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 19</value>
+  </data>
+  <data name="scheduleWeeklyFriday.Text" xml:space="preserve">
+    <value>Vrijdag</value>
+  </data>
+  <data name="scheduleWeeklySaturday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>163, 28</value>
+  </data>
+  <data name="scheduleWeeklySaturday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 19</value>
+  </data>
+  <data name="scheduleWeeklySaturday.Text" xml:space="preserve">
+    <value>Zaterdag</value>
+  </data>
+  <data name="scheduleWeeklySunday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 53</value>
+  </data>
+  <data name="scheduleWeeklySunday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 19</value>
+  </data>
+  <data name="scheduleWeeklySunday.Text" xml:space="preserve">
+    <value>Zondag</value>
+  </data>
+  <data name="scheduleWeeklyDays.Size" type="System.Drawing.Size, System.Drawing">
+    <value>304, 72</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>200, 15</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.Text" xml:space="preserve">
+    <value>week/weken, op de volgende dagen:</value>
+  </data>
+  <data name="scheduleWeeklyLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 15</value>
+  </data>
+  <data name="scheduleWeeklyLbl.Text" xml:space="preserve">
+    <value>Elke</value>
+  </data>
+  <data name="scheduleWeekly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 19</value>
+  </data>
+  <data name="scheduleWeekly.Text" xml:space="preserve">
+    <value>Wekelijks</value>
+  </data>
+  <data name="scheduleMonthly.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 213</value>
+  </data>
+  <data name="scheduleMonthly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>88, 19</value>
+  </data>
+  <data name="scheduleMonthly.Text" xml:space="preserve">
+    <value>Maandelijks</value>
+  </data>
+  <data name="schedulePattern.Text" xml:space="preserve">
+    <value>Herhalingspatroon</value>
+  </data>
+  <data name="nonRecurringLbl.Text" xml:space="preserve">
+    <value>De taak is geen herhaalderlijke taak, geen van deze instellingen op deze pagina zijn toegepast.</value>
+  </data>
+  <data name="scheduleTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 3</value>
+  </data>
+  <data name="scheduleTimeLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>120, 15</value>
+  </data>
+  <data name="scheduleTimeLbl.Text" xml:space="preserve">
+    <value>Voer deze taak uit op:</value>
+  </data>
+  <data name="containerSchedule.Text" xml:space="preserve">
+    <value>Planner</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Taak Instellingen</value>
+  </data>
+  <data name="nameLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 15</value>
+  </data>
+  <data name="nameLbl.Text" xml:space="preserve">
+    <value>Naam van taak (optioneel):</value>
+  </data>
+</root>
