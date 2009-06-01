@@ -599,22 +599,26 @@ namespace Eraser.Manager
 		private FileInfo[] GetFiles(DirectoryInfo info)
 		{
 			List<FileInfo> result = new List<FileInfo>();
-			foreach (DirectoryInfo dir in info.GetDirectories())
-				try
-				{
-					result.AddRange(GetFiles(dir));
-				}
-				catch (Exception e)
-				{
-					//Ignore, but log.
-					Task.Log.LastSessionEntries.Add(new LogEntry(S._("Could not erase {0} because {1}",
-						dir.FullName, e.Message), LogLevel.Error));
-				}
+			if (info.Exists)
+			{
+				foreach (DirectoryInfo dir in info.GetDirectories())
+					try
+					{
+						result.AddRange(GetFiles(dir));
+					}
+					catch (Exception e)
+					{
+						//Ignore, but log.
+						Task.Log.LastSessionEntries.Add(new LogEntry(S._("Could not erase {0} because {1}",
+							dir.FullName, e.Message), LogLevel.Error));
+					}
 
-			if (includeMask.Length == 0)
-				result.AddRange(info.GetFiles());
-			else
-				result.AddRange(info.GetFiles(includeMask, SearchOption.TopDirectoryOnly));
+				if (includeMask.Length == 0)
+					result.AddRange(info.GetFiles());
+				else
+					result.AddRange(info.GetFiles(includeMask, SearchOption.TopDirectoryOnly));
+			}
+
 			return result.ToArray();
 		}
 
