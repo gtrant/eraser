@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * $Id$
+ * Copyright 2008 The Eraser Project
+ * Original Author: Joel Low <lowjoel@users.sourceforge.net>
+ * Modified By:
+ *
+ * This file is part of Eraser.
+ *
+ * Eraser is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *
+ * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ *
+ * A copy of the GNU General Public License can be found at
+ * <http://www.gnu.org/licenses/>.
+-->
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment Id="EraserDirectoryFragment">
+		<DirectoryRef Id="PFFolder">
+			<Directory Id="INSTALLLOCATION" Name="Eraser">
+				<!-- Dependencies (of Eraser.Shell.Dll) -->
+				<?if $(sys.BUILDARCH) = "x64"?>
+					<Merge Id="VCRedist" SourceFile="Merge Modules\Microsoft_VC90_CRT_x86_x64.msm"
+						DiskId="1" Language="0"/>
+					<Merge Id="VCAtlRedist" SourceFile="Merge Modules\Microsoft_VC90_ATL_x86_x64.msm"
+						DiskId="1" Language="0"/>
+					<Merge Id="VCMfcRedist" SourceFile="Merge Modules\Microsoft_VC90_MFC_x86_x64.msm"
+						DiskId="1" Language="0"/>
+				<?else?>
+					<Merge Id="VCRedist" SourceFile="Merge Modules\Microsoft_VC90_CRT_x86.msm"
+						DiskId="1" Language="0"/>
+					<Merge Id="VCAtlRedist" SourceFile="Merge Modules\Microsoft_VC90_ATL_x86.msm"
+						DiskId="1" Language="0"/>
+					<Merge Id="VCMfcRedist" SourceFile="Merge Modules\Microsoft_VC90_MFC_x86.msm"
+						DiskId="1" Language="0"/>
+				<?endif?>
+				
+				
+				<Component Id="EraserMain" Guid="D9D7F28B-1F5E-4da4-8FF2-4F8DC031E472">
+					<File Id="EraserExe" Name="Eraser.exe" Source="..\bin\Release\Eraser.exe"
+							ProcessorArchitecture="msil" KeyPath="yes">
+						<Shortcut Advertise="yes" Id="EraserExeProgramMenuShortcut" Directory="ProgramMenuFolder"
+							Name="Eraser" Icon="Eraser.exe" IconIndex="0" />
+						<Shortcut Advertise="yes" Id="EraserExeDesktopShortcut" Directory="DesktopFolder"
+							Name="Eraser" Icon="Eraser.exe" IconIndex="0" />
+					</File>
+					<File Id="BevelLine" Name="BevelLine.dll" Source="..\bin\Release\BevelLine.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="DragDropLib" Name="DragDropLib.dll" Source="..\bin\Release\DragDropLib.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserManager" Name="Eraser.Manager.dll"
+						Source="..\bin\Release\Eraser.Manager.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserUtil" Name="Eraser.Util.dll"
+						Source="..\bin\Release\Eraser.Util.dll" ProcessorArchitecture="msil" />
+					<?if $(sys.BUILDARCH) = "x64"?>
+					<File Id="EraserUnlocker" Name="Eraser.Unlocker.dll"
+						Source="..\Bin\Release\x64\Eraser.Unlocker.dll"
+						ProcessorArchitecture="x64" />
+					<?else?>
+					<File Id="EraserUnlocker" Name="Eraser.Unlocker.dll"
+						Source="..\Bin\Release\Win32\Eraser.Unlocker.dll"
+						ProcessorArchitecture="x86" />
+					<?endif?>
+
+					<!-- Start Eraser when Windows starts -->
+					<RegistryValue Id="EraserStartup" Root="HKLM"
+						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="Eraser"
+						Value="&quot;[!EraserExe]&quot; --atRestart" Type="string" />
+					
+					<!-- Register the ersx extension with Eraser -->
+					<RegistryValue Id="EraserErsxFileExtension" Root="HKCR"
+						Key=".ersx" Value="Eraser.Ersx" Type="string" />
+					<RegistryValue Id="EraserErsxFileType" Root="HKCR" Key="Eraser.Ersx"
+						Value="Eraser 6 Task List" Type="string" />
+					<RegistryValue Id="EraserErsxFileIcon" Root="HKCR"
+						Key="Eraser.Ersx\DefaultIcon" Value="[!EraserShellDll],1"
+						Type="string" />
+					<RegistryValue Id="EraserErsxFileOpenAction" Root="HKCR"
+						Key="Eraser.Ersx\shell\open\command"
+						Value="&quot;[!EraserExe]&quot; importtasklist --quiet &quot;%1&quot;"
+						Type="string" />
+				</Component>
+				<Component Id="EraserShell" Guid="4C446C7E-BCBC-4561-B8F6-D406516D356F">
+					<?if $(sys.BUILDARCH) = "x64"?>
+						<File Id="EraserShellDll" Name="Eraser.Shell.dll"
+							Source="..\Bin\Release\x64\Eraser.Shell.dll"
+							ProcessorArchitecture="x64" />
+					<?else?>
+						<File Id="EraserShellDll" Name="Eraser.Shell.dll"
+							Source="..\Bin\Release\Win32\Eraser.Shell.dll"
+							ProcessorArchitecture="x86" />
+					<?endif?>
+
+					<!-- All files -->
+					<RegistryValue Id="EraserShellHKCRAll" Root="HKCR"
+						Key="*\shellex\ContextMenuHandlers\Eraser"
+						Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+						Type="string" />
+					<!-- Directories -->
+					<RegistryKey Root="HKCR" Key="Directory\shellex">
+						<RegistryValue Id="EraserShellHKCRDirectoryCtxMenu"
+							Key="ContextMenuHandlers\Eraser"
+							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+						<RegistryValue Id="EraserShellHKCRDirectoryDragDrop"
+							Key="DragDropHandlers\Eraser"
+							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+					</RegistryKey>
+					<!-- Drives -->
+					<RegistryKey Root="HKCR" Key="Drive\shellex">
+						<RegistryValue Id="EraserShellHKCRDriveCtxMenu"
+							Key="ContextMenuHandlers\Eraser"
+							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+						<RegistryValue Id="EraserShellHKCRDriveDragDrop"
+							Key="DragDropHandlers\Eraser"
+							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+					</RegistryKey>
+					<!-- Folders -->
+					<RegistryKey Root="HKCR" Key="Folder\shellex">
+						<RegistryValue Id="EraserShellHKCRFolderCtxMenu"
+							Key="ContextMenuHandlers\Eraser"
+							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+						<RegistryValue Id="EraserShellHKCRFolderDragDrop"
+							Key="DragDropHandlers\Eraser"
+							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+					</RegistryKey>
+					<!-- URL shortcuts -->
+					<RegistryValue Id="EraserShellHKCRUrl" Root="HKCR"
+						Key="InternetShortcut\shellex\ContextMenuHandlers\Eraser"
+						Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+						Type="string" />
+					<!-- Recycle Bin -->
+					<RegistryValue Id="EraserShellHKCRRecycleBin" Root="HKCR"
+						Key="CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\ContextMenuHandlers\{BC9B776A-90D7-4476-A791-79D835F30650}"
+						Value="" Type="string" />
+
+					<!-- CLSID registration -->
+					<RegistryKey Root="HKCR" Key="EraserShellExt.ShellExt.1">
+						<RegistryValue Id="EraserShellHKCDEraserShellExt1DefaultValue"
+							Value="Eraser Shell Extension" Type="string" />
+						<RegistryValue Id="EraserShellHKCDEraserShellExt1Clsid"
+							Name="CLSID" Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+					</RegistryKey>
+					<RegistryKey Root="HKCR" Key="EraserShellExt.ShellExt">
+						<RegistryValue Id="EraserShellHKCDEraserShellExtDefaultValue"
+							Value="Eraser Shell Extension" Type="string" />
+						<RegistryValue Id="EraserShellHKCDEraserShellExtClsid"
+							Name="CLSID" Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+						<RegistryValue Id="EraserShellHKCDEraserShellExtCurVer"
+							Name="CurVer" Value="EraserShellExt.ShellExt.1" Type="string" />
+					</RegistryKey>
+					<RegistryKey Root="HKCR" Key="CLSID\{BC9B776A-90D7-4476-A791-79D835F30650}">
+						<RegistryValue Id="EraserShellHKCRClsidDefaultValue"
+							Value="Eraser Shell Extension" Type="string" />
+						<RegistryKey Key="InprocServer32">
+							<RegistryValue Id="EraserShellHKCRClsidInprocServer32DefaultValue"
+								Value="&quot;[!EraserShellDll]&quot;" Type="string" />
+							<RegistryValue Id="EraserShellHKCRClsidInprocServer32ThreadingModel"
+								Name="ThreadingModel" Value="Apartment" Type="string" />
+						</RegistryKey>
+
+						<RegistryValue Id="EraserShellHKCRClsidProgID" Key="ProgID"
+							Value="EraserShellExt.ShellExt.1" Type="string" />
+						<RegistryValue Id="EraserShellHKCRClsidTypeLib" Key="TypeLib"
+							Value="{BBAA6A86-48FB-4F7B-B06F-7FACD6AFBD25}" Type="string" />
+						<RegistryValue Id="EraserShellHKCRClsidVersionIndependentProgID"
+							Key="VersionIndependentProgID"
+							Value="EraserShellExt.ShellExt" Type="string" />
+					</RegistryKey>
+					
+					<!-- Approved plugins -->
+					<RegistryValue Id="EraserShellHKLMApprovedPlugin" Root="HKLM"
+						Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved"
+						Name="Eraser Shell Extension" Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+						Type="string" />
+				</Component>
+
+				<Directory Id="EraserLangEnDir" Name="en">
+					<Component Id="EraserLangEn" Guid="5BB2BEF6-1271-4786-9A40-552DD6223B1F">
+						<File Id="EraserEn" Name="Eraser.resources.dll"
+							Source="..\bin\Release\en\Eraser.resources.dll"
+							ProcessorArchitecture="msil" />
+						<File Id="EraserManagerEn" Name="Eraser.Manager.resources.dll"
+							Source="..\bin\Release\en\Eraser.Manager.resources.dll"
+							ProcessorArchitecture="msil" />
+					</Component>
+				</Directory>
+
+				<Directory Id="EraserPluginsDir" Name="Plugins">
+					<Component Id="EraserPlugins" Guid="39A307BD-4244-4972-BC12-A5F5A76E684A">
+						<File Id="DefaultPlugins" Name="Eraser.DefaultPlugins.dll"
+							Source="..\bin\Release\Plugins\Eraser.DefaultPlugins.dll"
+							ProcessorArchitecture="msil" />
+					</Component>
+
+					<Directory Id="EraserPluginsLangEnDir" Name="en">
+						<Component Id="EraserPluginsLangEn" Guid="23B2B7DD-C518-4dde-A229-94CA9122B995">
+							<File Id="EraserDefaultPluginsEn" Name="Eraser.DefaultPlugins.resources.dll"
+								Source="..\bin\Release\Plugins\en\Eraser.DefaultPlugins.resources.dll"
+								ProcessorArchitecture="msil" />
+						</Component>
+					</Directory>
+				</Directory>
+			</Directory>
+		</DirectoryRef>
+	</Fragment>
+</Wix>

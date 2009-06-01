@@ -1,0 +1,81 @@
+we have eraser shell scripts (.eshlls) where we use them
+to generate shell extention menus dynamically.
+the syntax is simple.
+This project should be aimed at the 6.1 release.
+
+BEGIN @MENU : POSITION($INDEX)
+[ICON="PATH"]
+[TEXT="DISPLAY_TEXT"]
+
+[FLAGS=MIIM_*]			
+//MIIM_BITMAP
+//MIIM_CHECKMARKS
+//MIIM_DATA
+//MIIM_FTYPE
+//MIIM_ID
+//MIIM_STATE
+//MIIM_STRING
+//MIIM_SUBMENU
+//MIIM_TYPE
+
+[TYPE=MF_*]
+//MF_APPEND,
+//MF_BITMAP,
+//MF_BYCOMMAND,
+//MF_BYPOSITION
+//MF_CHECKED
+//MF_DEFAULT
+//MF_DELETE
+//MF_DISABLED
+//MF_ENABLED
+//MF_END
+//MF_GRAYED
+//MF_HELP
+//MF_HILITE
+//MF_INSERT
+//MF_MENUBARBREAK
+//MF_MENUBREAK
+//MF_MOUSESELECT
+//MF_OWNERDRAW
+//MF_POPUP
+//MF_POPUP
+//MF_REMOVE,
+//MF_RIGHTJUSTIFY,
+//MF_SEPARATOR,
+//MF_STRING,
+//MF_SYSMENU,
+//MF_UNCHECKED,
+//MF_UNHILITE
+//MF_USECHECKBITMAPS
+END
+
+// Desirable to have bitmaps cached
+@MENU 
+{
+BITMAP = "FILE";
+TEXT="Eraser";
+BITMAP CHECKED="FILE";
+BITMAP UNCHECKED="FILE";
+
+// submenu creation
+@MENU 
+{
+@CHECKBOX 
+{
+}
+@SEPERATOR
+}
+}
+
+UINT     cbSize;
+UINT     fMask;
+UINT     fType;         // used if MIIM_TYPE (4.0) or MIIM_FTYPE (>4.0)
+UINT     fState;        // used if MIIM_STATE
+UINT     wID;           // used if MIIM_ID
+HMENU    hSubMenu;      // used if MIIM_SUBMENU
+HBITMAP  hbmpChecked;   // used if MIIM_CHECKMARKS
+HBITMAP  hbmpUnchecked; // used if MIIM_CHECKMARKS
+ULONG_PTR dwItemData;   // used if MIIM_DATA
+__field_ecount_opt(cch) LPSTR    dwTypeData;    // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
+UINT     cch;           // used if MIIM_TYPE (4.0) or MIIM_STRING (>4.0)
+HBITMAP  hbmpItem;      // used if MIIM_BITMAP
