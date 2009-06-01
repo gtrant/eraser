@@ -906,7 +906,7 @@ namespace Eraser.Manager
 
 					//If the folder is a mount point, then don't delete it. If it isn't,
 					//search for files under the folder to see if it is empty.
-					if (!isVolumeRoot && info.GetFiles("*", SearchOption.AllDirectories).Length == 0)
+					if (!isVolumeRoot && info.Exists && info.GetFiles("*", SearchOption.AllDirectories).Length == 0)
 					{
 						FileSystem fsManager = FileSystem.Get(VolumeInfo.FromMountpoint(fldr.Path));
 						fsManager.DeleteFolder(info);
