@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="Title" -->
+<title>Eraser :: Announcements :: December 1, 2008</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts.js"></script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+<!-- InstanceParam name="ArticlePoster" type="boolean" value="true" -->
+</head>
+
+<body onload="MM_preloadImages('../images/btn_home_hov.gif', '../images/btn_download_hov.gif', '../images/btn_forum_hov.gif', '../images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="../index.php"><img src="../images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- InstanceBeginRepeat name="LeftContent" --><!-- InstanceBeginRepeatEntry -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" -->Eraser 6-rc1 released!<!-- InstanceEndEditable --></h2>
+						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted by: Joel, 1 December 2008, 12:00pm, +0800 GMT<!-- InstanceEndEditable --></div>
+					</div>
+				</div>
+
+				<!-- InstanceBeginEditable name="LeftContentEdit" --> 
+				<p>The long-awaited public beta for Eraser 6 has been released! Eraser 6 sports a completely revamped user interface, and Windows XP/Vista support out of the box. We've recruited <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a> to be in charge of UX (User eXperience) and aesthetic appeal for Version 6; here are a few screenshots:</p>
+				<p><img src="../images/template_v1.png" alt="Eraser v6 About dialog" /></p>
+				<p><img src="../images/template_v2.png" alt="Eraser v6 About dialog" /></p>
+				
+				<p>
+					I must admit: paradoxically, not all features of Version 5 has made it into this release, although new features have been added:
+					<ul>
+						<li>Added a more flexible Task Scheduler (roughly as customisable as Outlook recurring appointments!)</li>
+						<li>Unified Task List (no more separate On-Demand/Scheduled tasks: they are now all together)</li>
+						<li>Tasks can now contain multiple <em>targets</em> (running a task may have a few things erased at one go; somewhat like a grouping mechanism)</li>
+						<li>8 new erasure methods (above Version 5's five)</li>
+						<li>Customisable PRNGs (some complaints about ISAAC should be resolved with the new default of the RNGCryptoServiceProvider, which is a Windows CSPRNG); ISAAC is still selectable for those who prefer speed over security.</li>
+						<li>Plugin support (currently quite immature, but the foundations are there)</li>
+						<li>Built-in updater</li>
+						<li>EraserL has been replaced by... Eraser. The same Eraser.exe can do both GUI and command line</li>
+					</ul>
+				</p>
+				<p>
+					Features removed:
+					<ul>
+						<li>Erasures of Encrypted/Compressed/Sparse NTFS files (unlikely to be implemented, low-level undocumented APIs required)</li>
+						<li>FAT32 FAT erasures (to be done in the rc-1/final period: you'll get an error for this)</li>
+						<li>Shell Context menus (not completely implemented <em>yet</em>)</li>
+					</ul>
+				</p>
+				<p>These are certainly just the tip of the iceberg. You'll find out more when you use the program: trust me, you most definitely will enjoy the new Experience.</p>
+				<p><strong>Disclaimer: The security of the erasures has not been verified by internal or external entities. The code is still of <em>beta quality</em> and may not remove all traces of files with the confidence of Version 5. If you have security concerns, do use Version 5 while the security aspects of Version 6 are ironed out.</strong> It is however noteworthy that v6 uses only <em>documented APIs</em> for erasure and therefore the risk of corrupting your drives is lower than Version 5.</p>
+				<p>Unfazed, ye brave Software Warrior? Follow the instructions about <strong><a href="../trac/wiki/InstallingBetas">installing betas</a></strong> then <strong><a href="../download.php?id=3">Download it now.</a></strong></p>
+				<!-- InstanceEndEditable -->
+			</div>
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="../index.php"><img src="../images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','../images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="../index.php#download"><img src="../images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', '../images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="http://bbs.heidi.ie/viewforum.php?f=30" target="_blank"><img src="../images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', '../images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="../trac/"><img src="../images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', '../images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 5.8.7-beta5 released!</h2>
+					<div class="posted">Posted by: Joel, 18 April 2009, 11.36am, +800 GMT</div>
+					<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. <a href="20090418.html">See the full announcement.</a></p>
+					<h2>Eraser 6-rc4 released!</h2>
+					<div class="posted">Posted by: Joel, 8 January 2008, 2.45pm, +800 GMT</div>
+					<p>Hello again! I wish everyone's been enjoying the new rc3, but while you're at it, I felt it wasn't good enough. So here's <strong>rc4</strong> with more bugfixes than the previous release and with all the v6 goodness. <a href="20090108.html">See the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- InstanceBeginRepeat name="RightContent" --><!-- InstanceEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+<!-- InstanceEnd --></html>
