@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="Title" -->
+<title>Eraser :: Announcements :: December 13, 2008</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+table.changelog {
+	width: 100%;
+}
+
+table.changelog td {
+	vertical-align: top;
+}
+</style>
+<!-- InstanceEndEditable -->
+<!-- InstanceParam name="ArticlePoster" type="boolean" value="false" -->
+</head>
+
+<body onload="MM_preloadImages('../images/btn_home_hov.gif', '../images/btn_download_hov.gif', '../images/btn_forum_hov.gif', '../images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="../index.php"><img src="../images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- InstanceBeginRepeat name="LeftContent" --><!-- InstanceBeginRepeatEntry -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser 6-rc2 released! </a><!-- InstanceEndEditable --></h2>
+						
+					</div>
+				</div>
+
+				<!-- InstanceBeginEditable name="LeftContentEdit" --> 
+				<p>Eraser 6 Release Candidate 2 is released, bringing with it about a dozen fixes (a few of them major!)</p>
+				<p>The list of changes:</p>
+				<table class="changelog">
+					<tr>
+						<th>Revision</th>
+						<th>Description</th>
+						<th>Author</th>
+					</tr>
+					<tr>
+					  <td>672</td>
+					  <td>Authenticode certificate validation<br />
+				      The Authenticode certificate should be checked alone and not traced to the root certificate to allow for revocation</td>
+					  <td>Joel</td>
+				  </tr>
+					<tr>
+					  <td>677-736</td>
+					  <td>Implemented an Explorer context menu<br />
+					    Shell integration allows for the queuing of tasks in the Eraser Task List.</td>
+					  <td>Kaz/Joel</td>
+				  </tr>
+					<tr>
+					  <td><p>737-741<br />
+					    743-757<br />
+					    759-764<br />
+					    767-773</p>
+					    </td>
+					  <td>Implemented remote task creation <br />
+				      Other Eraser instances can now communicate with the main instance, giving more tasks to complete so that tasks can be controlled from one interface </td>
+					  <td>Kaz/Joel</td>
+				  </tr>
+					<tr>
+					  <td>766</td>
+					  <td>Eraser now starts up together with the system.<br />
+					    This allows tasks to be marked Run on Restart </td>
+					  <td>Joel</td>
+				  </tr>
+					<tr>
+					  <td>777</td>
+					  <td>Slightly better error logging </td>
+					  <td>Joel</td>
+				  </tr>
+					<tr>
+					  <td>781</td>
+					  <td>Single-instance Eraser <br />
+					    Further work to allow a single instance of Eraser. This brings with it a few Vista UAC changes as well </td>
+					  <td>Joel</td>
+				  </tr>
+					<tr>
+					  <td>792</td>
+					  <td>Bootstrapper progress bar<br />
+					    The bootstrapper progress bar usually remained at zero </td>
+					  <td>Joel</td>
+				  </tr>
+					<tr>
+					  <td>793</td>
+					  <td>Create standard Windows Shortcuts for Eraser so Run as Administrator can be accessed. </td>
+					  <td>Joel</td>
+				  </tr>
+					<tr>
+					  <td>795-802</td>
+					  <td>Implemented NTFS MFT record erasure<br />
+					    The old code erroneously erased resident MFT records without erasing old entries.</td>
+					  <td>Joel</td>
+				  </tr>
+					<tr>
+					  <td>806</td>
+					  <td>Erase all files in folder to ignore inaccessible files<br />
+					    The old code would completely stumble when a file or folder was inaccessible. The behaviour now is to just ignore the file/folder </td>
+					  <td>Joel</td>
+				    <tr>
+				      <td>807</td>
+				      <td>Allow cancellation of cluster tip erasures </td>
+				      <td>Joel/Kaz</td>
+			      <tr>
+				      <td>809</td>
+				      <td>Unused space erasures now include erasing the cluster tips of files outside the working directory of Eraser if the drive Eraser was on was being erased. </td>
+				      <td>Joel</td>
+		          <tr>
+		            <td>811</td>
+		            <td>Time estimates are now based on a 15-second average </td>
+		            <td>Joel</td>
+                </table>
+				<p>Of course, some of the old features missing still have not been implemented in rc2 are:</p>
+				<ul>
+					<li>Erasures of Encrypted/Compressed/Sparse NTFS files (unlikely to be implemented, low-level undocumented APIs required)</li>
+					<li>FAT32 FAT erasures (unlikely to be implemented, low-level APIs required)</li>
+				</ul>
+				<p>The main reason both are not done is because the method employed in v5 to erase such files will not work on Vista (even with UAC disabled). Until a solution to erase these on Vista (with/without UAC on) surfaces these will not be implemented (for safety reasons: we don't want to corrupt drives.)</p>
+				<p>I'm certain the rc-1 beta testers were generally happy with it (thank you for helping, all <strong>2393</strong> of you!) and I wish all rc-2 testers the same! If you currently hold onto rc-1, the above list should give you even more reason to upgrade (it's free and painless, anyway.)</p>
+				<p><strong>Disclaimer: The security of the erasures has not been verified by internal or external entities. The code is still of <em>beta quality</em> and may not remove all traces of files with the confidence of Version 5. If you have security concerns, do use Version 5 while the security aspects of Version 6 are ironed out.</strong> It is however noteworthy that v6 uses only <em>documented APIs</em> for erasure and therefore the risk of corrupting your drives is lower than Version 5.</p>
+				<p>If you have read the disclaimer, follow the instructions about <strong><a href="../trac/wiki/InstallingBetas">installing betas</a></strong> then <strong><a href="../download.php?id=5">Download it now.</a></strong></p>
+				<!-- InstanceEndEditable -->
+			</div>
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="../index.php"><img src="../images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','../images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="../index.php#download"><img src="../images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', '../images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="http://bbs.heidi.ie/viewforum.php?f=30" target="_blank"><img src="../images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', '../images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="../trac/"><img src="../images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', '../images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 5.8.7-beta5 released!</h2>
+					<div class="posted">Posted by: Joel, 18 April 2009, 11.36am, +800 GMT</div>
+					<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. <a href="20090418.html">See the full announcement.</a></p>
+					<h2>Eraser 6-rc4 released!</h2>
+					<div class="posted">Posted by: Joel, 8 January 2008, 2.45pm, +800 GMT</div>
+					<p>Hello again! I wish everyone's been enjoying the new rc3, but while you're at it, I felt it wasn't good enough. So here's <strong>rc4</strong> with more bugfixes than the previous release and with all the v6 goodness. <a href="20090108.html">See the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- InstanceBeginRepeat name="RightContent" --><!-- InstanceEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+<!-- InstanceEnd --></html>

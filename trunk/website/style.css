@@ -1,0 +1,381 @@
+/* Free standard-compliant open source XHTML/CSS template provided by Eatlon.com */
+
+body {
+	background-image:  url("images/bg.gif");
+	background-attachment: fixed;
+	background-color: #111;
+	font-family: arial, sans-serif;
+	font-size: .8em;
+	color: #808080;
+	padding: 0;
+	margin: 0;
+}
+
+a {
+	color: #BD3738;
+	text-decoration: none;
+}
+a:hover { color: #808080; text-decoration: none; outline: 0; }
+
+img { border: 0; }
+
+p { margin: 10px 0 0 0; }
+
+h1 {
+	font-family: tahoma, serif;
+	font-size: 5.5em;
+	color: #fff;
+	font-weight: 300;
+	line-height: 61px;
+	padding: 0;
+	margin: 0;
+}
+
+h2 {
+	font-family: tahoma;
+	font-size: 1.7em;
+	font-weight: bold;
+	line-height: 21px;
+	color: #BD3738;
+	margin: 0 0 2px 0;
+	padding: 5px 0 0 0;
+}
+
+h3 {
+	height: 30px;
+	background-image:  url("images/h3_bg.gif");
+	background-repeat: repeat-x;
+	background-position: top center;
+	font-family: tahoma;
+	font-size: 1.1em;
+	font-weight: bold;
+	color: #808080;
+	padding: 4px 0 0 4px;
+	margin: 0;
+}
+
+h4 {
+	font-size: 1.0em;
+	font-weight: bold;
+	color: #808080;
+	
+	margin-top: 0.25em;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+#top { margin: 0; padding: 0; height: 0px; }
+#top h1 a, #top p { display : none; line-height: 0; padding: 0; margin: 0; } 
+
+
+#wrap {
+	width: 900px;
+	min-height: 500px;
+	height: auto !important;
+	height: 500px;
+	margin: 0 auto;
+	background-color: #fff;
+}
+
+#banner {
+	width: 100%;
+	height: 209px;
+	background-image:   url("images/header_bg.jpg");
+	background-repeat: no-repeat;
+	background-position: top center;
+}
+
+	.banner_img {
+		border: 0;
+	}
+
+	.menu {
+		padding: 152px 0 0 10px;
+		color: #fff;
+	}
+
+		.menu ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.menu li {
+			float: left;
+			margin: 0 20px 0 0;
+			padding: 0;
+		}
+
+#content {
+	padding: 0 20px 0 20px;
+	font-size: .9em;
+	line-height: 1.7em;
+	text-align: justify;
+	border-left: 2px solid #4c4c4c;
+	border-right: 2px solid #4c4c4c;
+}
+
+	.left {
+		float: left;
+		width: 440px;
+		padding: 0 18px 0 0;
+		margin: 20px 0 0 0;
+	}
+
+		.left img { border: 1px solid #cccccc; }
+		.left a:hover img { border: 1px solid #ff006c; padding: 0; margin: 0; }
+
+
+		.article {
+			margin: 0 0 45px 0;
+		}
+
+			.article_head {
+				margin: 0 0 15px 0;
+			}
+
+				.date {
+					float: left;
+					line-height: 1.1em;
+					text-align: center;
+					border-right: 1px solid #cccccc;
+					padding: 6px 7px 5px 5px;
+					margin: 0 8px 0 0;
+				}
+
+					.digit {
+						font-size: 150%;
+						font-weight: bold;
+						padding: 0 0 5px 0;
+					}
+
+					.month {
+						font-size: 116%;
+						font-variant: small-caps;
+					}
+
+
+				.title {
+				}
+
+					.posted {
+						font-size: 92%;
+						text-indent: 1px;
+					}
+
+
+	.right {
+	float: right;
+	width: 370px;
+	text-align: left;
+	}
+
+		.right ul {
+			font-size: 95%;
+			list-style-type: none;
+			padding: 0;
+			margin: 0 0 20px 0;
+		}
+
+			.right li {
+				line-height: 2em;
+				border-bottom: 1px solid #eeeeee;
+				padding: 0 3px 0 4px;
+				margin: 0;
+			}
+
+		.right_nav {
+			padding: 0;
+			margin: 0 0 0 0;
+		}
+
+			.right_nav ul {
+	font-size: 97%;
+	list-style-type: none;
+	margin: 0;
+	padding-top: 0;
+	padding-right: 0;
+	padding-bottom: 0;
+	padding-left: 0px;
+			}
+
+				.right_nav li {
+	float: left;
+	padding: 0;
+	margin: 0 15px 0 0;
+	border: 0;
+				}
+
+			.right_nav h3 {
+				height: 30px;
+				background-image:  url("images/nav_h3.gif");
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 15px 0 0 4px;
+				margin: 0;
+			}
+
+			.right_nav_bg {
+	min-height: 25px;
+	height: auto !important;
+	height: 25px;
+	background-repeat: no-repeat;
+	background-position: top center;
+	padding: 5px 0 0 0;
+			}
+
+			.right_nav p {
+				font-size: 95%;
+				padding: 0 4px 0 4px;
+				margin: 0;
+			}
+
+
+		.right_news {
+			padding: 0;
+			margin: 0 0 20px 0;
+		}
+
+			.right_news h3 {
+				height: 30px;
+				background-image:  url("images/news_h3.gif");
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 15px 0 0 4px;
+				margin: 0;
+			}
+
+			.right_news_bg {
+				min-height: 25px;
+				height: auto !important;
+				height: 25px;
+				background-image:  url("images/news_bg.gif");
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 15px 0 0 4px;
+			}
+
+			.right_news p {
+				font-size: 95%;
+				padding: 0 4px 0 4px;
+				margin: 0;
+			}
+
+
+		.right_doyouknow {
+			padding: 0;
+			margin: 0 0 20px 0;
+		}
+
+			.right_doyouknow h3 {
+				height: 30px;
+				background-image:  url("images/doyouknow_h3.gif");
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 15px 0 0 4px;
+				margin: 0;
+			}
+
+			.right_doyouknow_bg {
+				min-height: 25px;
+				height: auto !important;
+				height: 25px;
+				font-size: 95%;
+				background-image:  url("images/doyouknow_bg.gif");
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 5px 0 0 0;
+			}
+
+			.right_doyouknow p {
+				padding: 0 4px 0 4px;
+				margin: 0;
+			}
+
+
+
+		.right_readings {
+			clear: both;
+			padding: 3px 0 0 0;
+			margin: 0 0 30px 0;
+		}
+
+			.right_readings h3 {
+				height: 30px;
+				background-image:  url("images/readings_h3.gif");
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 15px 0 0 4px;
+				margin: 0;
+			}
+
+			.right_readings_bg {
+				min-height: 25px;
+				height: auto !important;
+				height: 25px;
+				background-image:  url("images/readings_bg.gif");
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 5px 0 0 0;
+			}
+
+			.right_readings p {
+				font-size: 95%;
+				padding: 0 4px 0 4px;
+				margin: 0;
+			}
+
+		.right_l {
+			float: left;
+			width: 47%;
+			padding: 0;
+			margin: 0;
+		}
+
+		.right_r {
+			float: right;
+			width: 47%;
+			margin: 0;
+			padding: 0;
+		}
+
+
+#footer {
+	clear: both;
+	height: 205px;
+	background-image:  url("images/footer_bg.jpg");
+	background-repeat: no-repeat;
+	background-position: top center;
+	padding: 35px 0 0 0;
+	margin: 0;
+}
+
+	#footer a, a:hover {
+	color: #808080;
+	text-decoration: none;
+}
+	#footer a:hover { color: #808080; text-decoration: underline; }
+
+	#footer p {
+		line-height: 1.5em;
+		padding: 0;
+		margin: 0;
+	}
+
+	.footer {
+		font-size: 85%;
+		border-top: 1px solid #dcdcdc;
+		margin: 0 20px 0 20px;
+		padding: 12px 0 0 0;
+	}
+
+		.footer_l {
+			float: left;
+			width: 60%;
+		}
+
+		.footer_r {
+			float: right;
+			width: 35%;
+			text-align: right;
+		}

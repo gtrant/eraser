@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="Title" -->
+<title>Eraser :: Announcements :: January 8, 2009</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+table.changelog {
+	width: 100%;
+}
+
+table.changelog td {
+	vertical-align: top;
+}
+
+td.author {
+	padding-left: 1.0em;
+	text-align: right;
+}
+</style>
+<!-- InstanceEndEditable -->
+<!-- InstanceParam name="ArticlePoster" type="boolean" value="true" -->
+</head>
+
+<body onload="MM_preloadImages('../images/btn_home_hov.gif', '../images/btn_download_hov.gif', '../images/btn_forum_hov.gif', '../images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="../index.php"><img src="../images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- InstanceBeginRepeat name="LeftContent" --><!-- InstanceBeginRepeatEntry -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 6-rc4 released!<!-- InstanceEndEditable --></h2>
+						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted by: Joel, 8 January 2009, 2.45pm, +800GMT<!-- InstanceEndEditable --></div>
+					</div>
+				</div>
+
+				<!-- InstanceBeginEditable name="LeftContentEdit" -->
+				<p>Hello again! I hope everyone's been enjoying the new rc3, but while you're at it, I felt it wasn't good enough. So here's <strong>rc4</strong> with more bugfixes than the previous release and with all the v6 goodness.</p>
+				<h2>Changelog</h2>
+				<table class="changelog">
+					<tr>
+						<th>Revision</th>
+						<th>Description</th>
+						<th>Author</th>
+					</tr>
+					<tr>
+						<td>850</td>
+						<td>Empty recycle bin after we are done with erasures so the icon is updated.</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>850</td>
+						<td>Erase only the recycle bin for the current user</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>851</td>
+						<td>Don't show secure move entry (currently unimplemented)</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>852</td>
+						<td>Fixed grammatical error in about text</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>853</td>
+						<td>About dialog links to our new site</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>854</td>
+						<td>Allow users to create new tasks by right-clicking empty portions of the scheduler</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>854</td>
+						<td>Removed unused entries from the Scheduler toolbar menu</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>855</td>
+						<td>Folders in the plausible deniability list are now properly utilised</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>856</td>
+						<td>Faster about box drawing algorithm</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>858-859</td>
+						<td> Allow one-time tasks to be automatically removed upon successful completion</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>859</td>
+						<td>Fixed another grammatical error in the scheduler</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>860</td>
+						<td>Fixed the bootstrapper for 64-bit architectures. Also fixes the Shell extension for 64-bit Windows</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>861-862</td>
+						<td>Fixed Vista shell extension icons. We lost the alpha channel using the old conversion method</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>863</td>
+						<td> Task deletions will now require user confirmation (as per Windows and v5)</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>864</td>
+						<td>Inform the user that there are no updates or plugins to download when the user invokes the updater</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>865</td>
+						<td>Don't allow the user to select invalid folder paths, eg. the Printers folder in remote network shares</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>866</td>
+						<td> Fixed spurious crash upon adding tasks using the shell extension</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+					  <td>867</td>
+						<td>Implemented automatic elevation when unused free space erasures are requested from the shell extension. <strong>A quick note</strong>: what this does is the request for unused space erasures automatically elevate themselves. However, since the erasures are still done by the running Eraser instance which may not have been elevated, the erasures may still fail. The behaviour is however different when there is no Eraser instance running: the spawned instance of Eraser will automatically be elevated.</td>
+					  <td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>868</td>
+						<td>Show an error message when the user cancels the elevation request, instead of throwing out an &quot;unknown error&quot;</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>870</td>
+						<td>All binaries are now timestamped on top of being signed</td>
+						<td class="author">Joel</td>
+					</tr>
+					<tr>
+						<td>871</td>
+						<td>Error codes should be better dealt with now, we use the Marshaler which is built into .NET for error handling</td>
+						<td class="author">Joel</td>
+					</tr>
+				</table>
+				<p>FAT erasures and compressed/encrypted NTFS file erasures have not been implemented, for reasons outlined in this <a href="http://bbs.heidi.ie/viewtopic.php?p=14484#p14484">forum post</a>. Lastly, I'd like to once again thank the community for your support through the entire development process of v6. It is very greatly appreciated.</p>
+				<p><strong>Disclaimer: The security of the erasures has not been verified by internal or external entities. The code is still of <em>beta quality</em> and may not remove all traces of files with the confidence of Version 5. If you have security concerns, do use Version 5 while the security aspects of Version 6 are ironed out.</strong> It is however noteworthy that v6 uses only <em>documented API's</em> for erasure and therefore the risk of corrupting your drives is lower than Version 5. </p>
+				<p>If you have read the disclaimer, follow the instructions about <strong><a href="../trac/wiki/InstallingBetas">installing betas</a></strong> then <strong><a href="../download.php?id=9">Download it now.</a></strong> </p>
+				<p>File hashes:</p>
+				<ul>
+					<li>SHA-1: 8f8e5bbc19b83e0e5ee4243d86aecd2ccae1ccca</li>
+					<li>SHA-256: 97202f560c3e774936ad9a0b523bad51fb367a2667068b<br />1e50924fb1b1591c10</li>
+					<li>Whirlpool: 917649025132e156cff249daca37e7e1b9085b0a8030d<br />4dfa857db1f5b64f5888549c68fd3c9653b785cd993f664fb9e4bb4aa<br />62b690dda19f26b3d6f5c391ab</li>
+				</ul>
+				<!-- InstanceEndEditable -->
+			</div>
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="../index.php"><img src="../images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','../images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="../index.php#download"><img src="../images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', '../images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="http://bbs.heidi.ie/viewforum.php?f=30" target="_blank"><img src="../images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', '../images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="../trac/"><img src="../images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', '../images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 5.8.7-beta5 released!</h2>
+					<div class="posted">Posted by: Joel, 18 April 2009, 11.36am, +800 GMT</div>
+					<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. <a href="20090418.html">See the full announcement.</a></p>
+					<h2>Eraser 6-rc4 released!</h2>
+					<div class="posted">Posted by: Joel, 8 January 2008, 2.45pm, +800 GMT</div>
+					<p>Hello again! I wish everyone's been enjoying the new rc3, but while you're at it, I felt it wasn't good enough. So here's <strong>rc4</strong> with more bugfixes than the previous release and with all the v6 goodness. <a href="20090108.html">See the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- InstanceBeginRepeat name="RightContent" --><!-- InstanceEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+<!-- InstanceEnd --></html>

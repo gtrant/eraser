@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<!-- TemplateBeginEditable name="Title" -->
+<title>Eraser ::</title>
+<!-- TemplateEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts.js"></script>
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+<!-- TemplateParam name="ArticlePoster" type="boolean" value="false" -->
+</head>
+
+<body onload="MM_preloadImages('../images/btn_home_hov.gif', '../images/btn_download_hov.gif', '../images/btn_forum_hov.gif', '../images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="../index.php"><img src="../images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- TemplateBeginRepeat name="LeftContent" -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- TemplateBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a><!-- TemplateEndEditable --></h2>
+						<!-- TemplateBeginIf cond="ArticlePoster" --><div class="posted"><!-- TemplateBeginEditable name="LeftContentEditPoster" --><!-- TemplateEndEditable --></div><!-- TemplateEndIf -->
+					</div>
+				</div>
+
+				<!-- TemplateBeginEditable name="LeftContentEdit" -->
+				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis et diam. Praesent pulvinar enim vulputate mauris. Curabitur ipsum justo, tincidunt at, interdum nec, semper id, felis. Ut eget lectus. Suspendisse sollicitudin luctus odio. Mauris massa tellus, dictum viverra, facilisis iaculis, consectetuer at, augue. Pellentesque pulvinar placerat risus. Proin ullamcorper, urna vel vulputate aliquam, ipsum est fringilla turpis, ut dignissim lorem massa in libero. Aliquam erat volutpat. Suspendisse potenti. Nam nunc nulla, accumsan at, congue in, gravida id, enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla eleifend, felis quis porttitor tincidunt, massa pede malesuada ante, in pharetra risus urna ac tortor. In hac habitasse platea dictumst. Maecenas lorem. Nam interdum.</p>
+				<p>Vivamus ut velit. Maecenas molestie sodales ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In et tellus vel leo dignissim blandit. Sed purus dui, porta ac, sollicitudin sit amet, euismod eget, nulla. Suspendisse quis velit. Maecenas eu sapien eget metus semper dapibus. Morbi diam sapien, pharetra ut, iaculis at, commodo vel, metus. Donec sed diam. Phasellus mattis congue nulla.</p>
+				<p>Nulla vestibulum feugiat massa. Nulla enim diam, eleifend eget, varius pellentesque, consequat lobortis, nisl. Phasellus posuere mi. Sed ut ipsum. Etiam vitae lectus. Donec accumsan nisi vel augue. Vivamus erat risus, viverra vel, mattis ac, suscipit ut, arcu. Nullam nec mauris quis ante lobortis venenatis. Vivamus orci felis, luctus sed, lacinia quis, sollicitudin a, magna. Praesent rhoncus ante in pede. Quisque congue fringilla dui. Ut viverra porttitor purus. Donec massa lorem, condimentum ut, dapibus id, dignissim in, metus. Cras laoreet nisi ut purus. Maecenas ligula eros, aliquet malesuada, tincidunt in, faucibus varius, lorem. Ut arcu turpis, gravida vitae, dignissim at, facilisis eget, ante.</p>
+				<p>Nullam gravida mi. Pellentesque pede quam, mattis at, tincidunt vitae, malesuada in, nulla. Etiam porttitor. Fusce dapibus adipiscing erat. Aliquam pretium nisi. Morbi urna. Pellentesque in purus ac metus pharetra suscipit. Aliquam erat volutpat. Suspendisse eu est. Donec ipsum est, blandit vitae, molestie et, tempus et, leo.</p>
+				<p>Nunc feugiat sem tincidunt erat. Phasellus et nisi. Integer a orci vel est vehicula molestie. Donec pretium leo vitae quam. Suspendisse potenti. Vivamus sodales placerat eros. Pellentesque lobortis. Praesent tortor. Curabitur non lacus pharetra nunc dapibus interdum. Vivamus facilisis tincidunt urna. Phasellus volutpat quam at libero.</p>
+				<!-- TemplateEndEditable -->
+			</div>
+			<!-- TemplateEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="../index.php"><img src="../images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','../images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="../index.php#download"><img src="../images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', '../images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="http://bbs.heidi.ie/viewforum.php?f=30" target="_blank"><img src="../images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', '../images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="../trac/"><img src="../images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', '../images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 5.8.7-beta5 released!</h2>
+					<div class="posted">Posted by: Joel, 18 April 2009, 11.36am, +800 GMT</div>
+					<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. <a href="../announcements/20090418.html">See the full announcement.</a></p>
+					<h2>Eraser 6-rc4 released!</h2>
+					<div class="posted">Posted by: Joel, 8 January 2008, 2.45pm, +800 GMT</div>
+					<p>Hello again! I wish everyone's been enjoying the new rc3, but while you're at it, I felt it wasn't good enough. So here's <strong>rc4</strong> with more bugfixes than the previous release and with all the v6 goodness. <a href="../announcements/20090108.html">See the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- TemplateBeginRepeat name="RightContent" -->
+			<!-- TemplateBeginEditable name="RightContentEdit" -->
+			<div class="right_intro">
+				<h3>Pane Summary</h3>
+				<div class="right_intro_bg">
+					<h2>Item Title</h2>
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi aliquet augue ultricies leo. Ut tempor turpis a tortor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam semper commodo urna. Morbi mi. Aliquam id quam sed tortor imperdiet imperdiet. Aliquam auctor tortor sit amet nibh. In pellentesque porttitor nunc. Pellentesque turpis massa, ultrices sit amet, luctus eget, ultrices sollicitudin, metus. Cras eget diam nec leo ultricies imperdiet. In hac habitasse platea dictumst. Mauris non mi at libero facilisis interdum. Duis auctor nibh at sem ullamcorper dictum. Curabitur porta, metus id mollis tristique, nunc felis malesuada dolor, a bibendum nisl massa in diam. Morbi magna sem, imperdiet nec, varius eu, rutrum nec, metus. Nunc aliquet dui auctor elit. Phasellus scelerisque, dui sed interdum vulputate, nulla sapien mattis turpis, et fringilla dolor ipsum non libero. Integer et erat eget velit luctus pharetra. Vestibulum eu urna sed nisi fermentum ultricies. Mauris nulla.</p>
+			    </div>
+			</div>
+			<!-- TemplateEndEditable -->
+			<!-- TemplateEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+</html>
