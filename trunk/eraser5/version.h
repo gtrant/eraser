@@ -1,0 +1,10 @@
+// version.h
+#define MAJOR_NUMBER 5
+#define MINOR_NUMBER 8
+#define BUILD_NUMBER 7
+#define VERSION_NUMBER_STRING "5.8.7-beta5"
+#define FULL_VERSION_NUMBER_STRING "5.8.7-beta5"
+
+#define SAFE_VERSION_NUMBER_STRING "5.8.7"
+#define SAFE_FULL_VERSION_NUMBER_STRING "5.8.7"
+#define COMPANY_NAME "The Eraser Project"

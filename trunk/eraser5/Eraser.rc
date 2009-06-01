@@ -1,0 +1,747 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_IMAGELIST_SMALL     BITMAP                  "res\\treeImageList.bmp"
+IDB_IMAGELIST_LARGE     BITMAP                  "res\\imageList.bmp"
+IDB_HEADER              BITMAP                  "res\\Header.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\Eraser.ico"
+IDR_ERASERTYPE          ICON                    "res\\EraserDoc.ico"
+IDI_ICON_TRAY           ICON                    "res\\icon_tra.ico"
+IDI_ICON_TRAY_RUNNING   ICON                    "res\\ico00001.ico"
+IDI_ICON_TRAY_DISABLED  ICON                    "res\\ico00002.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW_TASK
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_EDIT_PROPERTIES
+    BUTTON      ID_EDIT_DELETE_TASK
+    SEPARATOR
+    BUTTON      ID_PROCESS_RUN
+    BUTTON      ID_PROCESS_STOP
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+    BUTTON      ID_CONTEXT_HELP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New Task...\tCtrl+N",        ID_FILE_NEW_TASK
+        MENUITEM "View &Log\tCtrl+L",           ID_FILE_VIEW_LOG
+        MENUITEM SEPARATOR
+        MENUITEM "&Import...",                  ID_FILE_IMPORT
+        MENUITEM "&Export...",                  ID_FILE_EXPORT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM "Select &All\tCtrl+A",         ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Delete\tDel",                ID_EDIT_DELETE_TASK
+        MENUITEM "P&roperties...\tAlt+Enter",   ID_EDIT_PROPERTIES
+        MENUITEM SEPARATOR
+        POPUP "Pr&eferences"
+        BEGIN
+            MENUITEM "&General...\tCtrl+P",         ID_EDIT_PREFERENCES_GENERAL
+            MENUITEM "&Erasing...\tCtrl+E",         ID_EDIT_PREFERENCES_ERASER
+        END
+        MENUITEM "&Refresh...\tF5",             ID_EDIT_REFRESH
+    END
+    POPUP "&Task"
+    BEGIN
+        MENUITEM "&Run...\tCtrl+R",             ID_PROCESS_RUN
+        MENUITEM "Run &All\tCtrl+Alt+R",        ID_PROCESS_RUNALL
+        MENUITEM "&Stop\tCtrl+S",               ID_PROCESS_STOP
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "&Information Bar",            ID_VIEW_INFO_BAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help Topics",                ID_HELP_FINDER
+        MENUITEM SEPARATOR
+        MENUITEM "&About Eraser...",            ID_APP_ABOUT
+    END
+END
+
+IDR_MENU_ERASERVIEW MENU 
+BEGIN
+    POPUP "_POPUP_"
+    BEGIN
+        MENUITEM "&Properties...\tAlt+Enter",   ID_EDIT_PROPERTIES
+        MENUITEM "&Delete\tDel",                ID_EDIT_DELETE_TASK
+        MENUITEM SEPARATOR
+        MENUITEM "&Run...\tCtrl+R",             ID_PROCESS_RUN
+        MENUITEM "Run &All\tCtrl+Alt+R",        ID_PROCESS_RUNALL
+        MENUITEM SEPARATOR
+        MENUITEM "&New Task...\tCtrl+N",        ID_FILE_NEW_TASK, INACTIVE
+    END
+END
+
+IDR_MENU_SCHEDULERVIEW MENU 
+BEGIN
+    POPUP "_POPUP_"
+    BEGIN
+        MENUITEM "&Properties...\tAlt+Enter",   ID_EDIT_PROPERTIES
+        MENUITEM "&Delete\tDel",                ID_EDIT_DELETE_TASK
+        MENUITEM SEPARATOR
+        MENUITEM "&Run...\tCtrl+R",             ID_PROCESS_RUN
+        MENUITEM "Run &All\tCtrl+Alt+R",        ID_PROCESS_RUNALL
+        MENUITEM "&Stop\tCtrl+S",               ID_PROCESS_STOP
+        MENUITEM SEPARATOR
+        MENUITEM "&New Task...\tCtrl+N",        ID_FILE_NEW_TASK, INACTIVE
+    END
+END
+
+IDR_MENU_TRAY MENU 
+BEGIN
+    POPUP "_POPUP_"
+    BEGIN
+        MENUITEM "&Open Eraser",                ID_TRAY_SHOW_WINDOW
+        MENUITEM "&Enable Scheduler",           ID_TRAY_ENABLE
+        MENUITEM SEPARATOR
+        POPUP "&Preferences"
+        BEGIN
+            MENUITEM "&General...",             ID_EDIT_PREFERENCES_GENERAL
+            MENUITEM "&Erasing...",             ID_EDIT_PREFERENCES_ERASER
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+END
+
+IDR_MENU_RDROP MENU 
+BEGIN
+    POPUP "_DRAG_"
+    BEGIN
+        MENUITEM "&Move Here",                  ID_DRAG_MOVE
+        MENUITEM "&Copy Here",                  ID_DRAG_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "Cancel",                      ID_DRAG_CANCEL
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "A",            ID_EDIT_SELECT_ALL,     VIRTKEY, CONTROL, NOINVERT
+    "E",            ID_EDIT_PREFERENCES_ERASER, VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_FILE_VIEW_LOG,       VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW_TASK,       VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_EDIT_PREFERENCES_GENERAL, VIRTKEY, CONTROL, NOINVERT
+    "R",            ID_PROCESS_RUN,         VIRTKEY, CONTROL, NOINVERT
+    "R",            ID_PROCESS_RUNALL,      VIRTKEY, CONTROL, ALT, NOINVERT
+    "S",            ID_PROCESS_STOP,        VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_DELETE_TASK,    VIRTKEY, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
+    VK_F5,          ID_EDIT_REFRESH,        VIRTKEY, NOINVERT
+    VK_RETURN,      ID_EDIT_PROPERTIES,     VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 252, 103
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Eraser"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
+    LTEXT           "",IDC_STATIC_VERSION,40,14,198,8,SS_NOPREFIX
+    DEFPUSHBUTTON   "OK",IDOK,195,82,50,14,WS_GROUP
+    LTEXT           "",IDC_HYPERLINK,40,35,198,8,SS_NOPREFIX
+    LTEXT           "Free Software.",IDC_STATIC,40,24,197,8,SS_NOPREFIX
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,40,47,204,1
+    LTEXT           "Copyright © 1997-2002 Sami Tolvanen.",IDC_STATIC,40,56,150,8
+    LTEXT           "Copyright © 2002-2007 Garrett Trant.",IDC_STATIC,40,66,150,8
+    LTEXT           "Copyright © 2007 The Eraser Project.",IDC_STATIC,40,75,150,8
+    LTEXT           "http://bbs.heidi.ie/",IDC_HYPERLINK_MAIL,40,86,150,8
+END
+
+IDD_PROPPAGE_TASKDATA DIALOGEX 0, 0, 205, 204
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Data"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "&Unused space on drive",IDC_RADIO_DISK,"Button",BS_AUTORADIOBUTTON,7,7,175,10
+    COMBOBOX        IDC_COMBO_DRIVES,19,18,163,68,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Files in f&older",IDC_RADIO_FILES,"Button",BS_AUTORADIOBUTTON,7,37,175,10
+    EDITTEXT        IDC_EDIT_FOLDER,19,49,142,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_BUTTON_BROWSE,165,49,16,14
+    CONTROL         "&Subfolders",IDC_CHECK_SUBFOLDERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,65,163,10
+    CONTROL         "&Remove folder(s)",IDC_CHECK_FOLDER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,76,163,10
+    CONTROL         "Only su&bfolders",IDC_CHECK_ONLYSUB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,87,151,10
+    CONTROL         "&File",IDC_RADIO_FILE,"Button",BS_AUTORADIOBUTTON,7,100,175,10
+    EDITTEXT        IDC_EDIT_FILE,19,113,142,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "...",IDC_BUTTON_BROWSE_FILES,165,113,16,14
+    CONTROL         "Use &wildcards",IDC_CHECK_WILDCARDS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,19,129,163,10
+    CONTROL         "&Include subfolders",IDC_CHECK_WILDCARDS_SF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,31,140,151,10
+    CONTROL         "&Keep task on the list",IDC_PERSISTENT_CHECK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,186,90,10
+    COMBOBOX        IDC_COMBO_WHENFINISH,7,169,81,180,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "When finished",IDC_STATIC,7,160,46,8
+END
+
+IDD_PROPPAGE_TASKSCHEDULE DIALOGEX 0, 0, 205, 178
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Schedule"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    COMBOBOX        IDC_COMBO_WHEN,45,21,92,62,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_EDIT_TIME,45,39,37,14,ES_AUTOHSCROLL
+    CONTROL         "&PM",IDC_CHECK_PM,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,85,40,36,10
+    LTEXT           "Every",IDC_STATIC,7,23,35,8
+    LTEXT           "At",IDC_STATIC,7,41,31,8
+    LTEXT           "Schedule task to be processed",IDC_STATIC,7,8,175,8
+END
+
+IDD_PROPPAGE_TASKSTATISTICS DIALOG  0, 0, 205, 178
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Statistics"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    PUSHBUTTON      "&Reset",IDC_BUTTON_RESET,148,156,50,14
+    EDITTEXT        IDC_EDIT_STATISTICS,7,18,191,131,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    LTEXT           "Statistics for the current configuration:",IDC_STATIC,7,7,175,8
+END
+
+IDD_DIALOG_ERASER DIALOG  0, 0, 243, 133
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION
+CAPTION "Eraser"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "&Stop",IDCANCEL,96,112,50,14
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH,7,58,201,12
+    LTEXT           "Erasing:",IDC_STATIC,7,7,37,8
+    LTEXT           "",IDC_STATIC_ERASING,48,7,188,8
+    LTEXT           "",IDC_STATIC_MESSAGE,48,16,188,8
+    LTEXT           "",IDC_STATIC_DATA,48,36,188,8,SS_NOPREFIX
+    LTEXT           "Item:",IDC_STATIC,7,36,37,8
+    LTEXT           "Pass:",IDC_STATIC,7,45,37,8
+    LTEXT           "",IDC_STATIC_PASS,48,45,54,8
+    LTEXT           "",IDC_STATIC_TIME,108,45,128,8
+    RTEXT           "",IDC_STATIC_PERCENT,211,58,25,8
+    CONTROL         "Progress1",IDC_PROGRESS_TOTAL,"msctls_progress32",PBS_SMOOTH,7,94,201,9
+    RTEXT           "",IDC_STATIC_PERCENT_TOTAL,211,94,25,8
+    LTEXT           "Total:",IDC_STATIC,7,82,37,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,30,229,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,8,76,228,1
+END
+
+IDD_PROPPAGE_SCHEDULER DIALOGEX 0, 0, 211, 185
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Scheduler"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "Enable running of scheduled tasks",IDC_CHECK_ENABLE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,15,190,10
+    CONTROL         "Queue overlapping tasks",IDC_CHECK_QUEUE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,26,190,10
+    CONTROL         "No visual error messages",IDC_CHECK_NOVISUALERRORS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,59,190,10
+    CONTROL         "No taskbar tray icon",IDC_CHECK_NOTRAYICON,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,70,190,10
+    CONTROL         "Hide main window when minimized",IDC_CHECK_HIDEONMINIMIZE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,81,176,10
+    CONTROL         "Log actions",IDC_CHECK_LOG,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,116,190,10
+    CONTROL         "Only error messages",IDC_CHECK_LOG_ONLYERRORS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,127,178,10
+    CONTROL         "Limit log file size to",IDC_CHECK_LOG_LIMITSIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,25,138,76,10
+    EDITTEXT        IDC_EDIT_LIMIT,101,138,45,14,ES_AUTOHSCROLL
+    CONTROL         "Spin1",IDC_SPIN_LIMIT,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,138,138,7,14
+    CONTROL         "Start Scheduler at Windows startup",IDC_CHECK_STARTUP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,167,196,10
+    LTEXT           "kB",IDC_STATIC_KB,148,138,34,8
+    GROUPBOX        "Appearance",IDC_STATIC,7,47,197,51
+    GROUPBOX        "Logging",IDC_STATIC,7,104,197,57
+    GROUPBOX        "Tasks",IDC_STATIC,7,3,197,40
+END
+
+IDD_PROPPAGE_ERASER DIALOGEX 0, 0, 211, 244
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "After erasing files",IDC_CHECK_RESULTS_FOR_FILES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,15,190,10
+    CONTROL         "After erasing unused disk space",IDC_CHECK_RESULTS_FOR_UNUSED_SPACE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,26,190,10
+    CONTROL         "Only in case of errors",IDC_CHECK_RESULTSONLYWHENFAILED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,40,190,10
+    CONTROL         "When using the shell extension",IDC_CHECK_SHELLEXT_RESULTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,50,190,10
+    CONTROL         "Enable clearing of paging file (swap) at shutdown",IDC_CHECK_CLEAR_SWAP,
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,13,156,189,10
+    GROUPBOX        "Erasing Report",IDC_STATIC,7,3,197,63
+    GROUPBOX        "Paging File",IDC_STATIC_PAGINGFILE,7,144,197,31
+    GROUPBOX        "Shell extension",IDC_STATIC,7,72,197,31
+    CONTROL         "Add menu item to Explorer context menu",IDC_CHECK_ERASEXT_ENABLE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,84,141,10
+    GROUPBOX        "Pseudorandom Number Generation",IDC_STATIC,7,108,197,31
+    CONTROL         "Enable background (slow) entropy polling",IDC_CHECK_PRNG_SLOWPOLL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,120,190,10
+    GROUPBOX        "Locked files",IDC_STATIC,7,181,197,34
+    CONTROL         "Enable resolving of file locking (try clearing after restart)",IDC_CHECK_RESOLVE_LOCK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,191,189,10
+    CONTROL         "Ask user",IDC_CHECK_RESOLVE_ASK_USR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,202,43,10
+    PUSHBUTTON      "Protection...",IDC_BUTTON_PROTECTION,7,221,70,14
+    PUSHBUTTON      "Shortcuts",IDC_BUTTON_HOTKEYS,157,82,44,14
+END
+
+IDD_DIALOG_HOTKEYS DIALOGEX 0, 0, 295, 89
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Menu shortcuts keys"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,238,39,50,14
+    CONTROL         "",IDC_LIST_HOTKEYS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,218,68
+    DEFPUSHBUTTON   "Change",IDCHANGE,238,7,50,14
+    PUSHBUTTON      "OK",IDC_BUTTON_OKCHANGE,238,23,50,14
+END
+
+IDD_DIALOG_KEYCOMBO DIALOGEX 0, 0, 177, 57
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Set Shortcut Key"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "OK",IDOK,120,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,120,24,50,14
+    EDITTEXT        IDC_EDITTMP,7,26,88,14,ES_AUTOHSCROLL
+    LTEXT           "Only symbols from current  menu command are acceptable ",IDC_STATIC,7,7,107,17
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_PROPPAGE_TASKDATA, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 198
+        VERTGUIDE, 161
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 196
+    END
+
+    IDD_PROPPAGE_TASKSCHEDULE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 198
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 170
+    END
+
+    IDD_PROPPAGE_TASKSTATISTICS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 198
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 170
+    END
+
+    IDD_DIALOG_ERASER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 126
+    END
+
+    IDD_PROPPAGE_SCHEDULER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 177
+    END
+
+    IDD_PROPPAGE_ERASER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 235
+    END
+
+    IDD_DIALOG_HOTKEYS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 288
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 82
+    END
+
+    IDD_DIALOG_KEYCOMBO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 170
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 50
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_PROPPAGE_TASKSCHEDULE DLGINIT
+BEGIN
+    IDC_COMBO_WHEN, 0x403, 4, 0
+0x6144, 0x0079, 
+    IDC_COMBO_WHEN, 0x403, 7, 0
+0x7553, 0x646e, 0x7961, "\000" 
+    IDC_COMBO_WHEN, 0x403, 7, 0
+0x6f4d, 0x646e, 0x7961, "\000" 
+    IDC_COMBO_WHEN, 0x403, 8, 0
+0x7554, 0x7365, 0x6164, 0x0079, 
+    IDC_COMBO_WHEN, 0x403, 10, 0
+0x6557, 0x6e64, 0x7365, 0x6164, 0x0079, 
+    IDC_COMBO_WHEN, 0x403, 9, 0
+0x6854, 0x7275, 0x6473, 0x7961, "\000" 
+    IDC_COMBO_WHEN, 0x403, 7, 0
+0x7246, 0x6469, 0x7961, "\000" 
+    IDC_COMBO_WHEN, 0x403, 9, 0
+0x6153, 0x7574, 0x6472, 0x7961, "\000" 
+    IDC_COMBO_WHEN, 0x403, 7, 0
+0x6552, 0x6f62, 0x746f, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "Eraser\n\nEraser\nEraser Files (*.ers)\n.ers\nEraser.Document\nEraser Task Document"
+    IDS_PROPSHT_CAPTION     "Task Properties"
+    IDS_ERROR_NEW_TASK      "Failed to create a new task.\n\nMake sure you were not trying to add\ndata which was already on the list."
+    IDS_QUESTION_CONFIRMATION 
+                            "You are about to erase all selected data on the list.\n\nFiles cannot be recovered after erasing, please make sure\nthat the list contains only the data that you wish to destroy.\n\nAre you sure you want to continue?"
+    IDS_QUESTION_RUNALL     "Are you sure you want to run all scheduled tasks?"
+    IDS_ACTION_QUIT         "Scheduler quitting."
+    IDS_ACTION_START        "Scheduler (%1) starting."
+    IDS_ACTION_RUN          "Running task (%1)."
+    IDS_ACTION_STOP         "Task interrupted (%1)."
+    IDS_ACTION_DONE         "Task finished (%1)."
+    IDS_ACTION_DELETE       "Removed a task (%1)."
+    IDS_ACTION_NEW          "New task created (%1)."
+    IDS_ACTION_ERROR        "Possible failure running task (%1)."
+    IDS_ACTION_ERROR_FILE   "Failed to erase file %1."
+    IDS_ACTION_ERROR_FOLDER "Failed to remove folder %1."
+    IDS_ACTION_ERROR_UNUSED "Failed to erase unused space on %1."
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Eraser"
+    AFX_IDS_IDLEMESSAGE     "For Help, press F1"
+    AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+    ID_INDICATOR_ITEMS      "XXXX Items"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application\nExit"
+    ID_HELP_INDEX           "Opens Help\nHelp Topics"
+    ID_HELP_FINDER          "List Help topics\nHelp Topics"
+    ID_HELP_USING           "Display instructions about how to use help\nHelp"
+    ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows\nHelp"
+    ID_HELP                 "Display help for current task or command\nHelp"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert files from Clipboard\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select all list items\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_GFX_LARGEICON        "Shows large icons"
+    ID_GFX_SMALLICON        "Shows small icons"
+    ID_FILE_EXPORT          "Exports tasks into a file\nExport"
+    ID_FILE_IMPORT          "Imports tasks from a file\nImport"
+    ID_VIEW_INFO_BAR        "Show or hide the information bar\nToggle InfoBar"
+    ID_FILE_NEW_TASK        "Create a new task\nNew Task"
+    ID_EDIT_PROPERTIES      "Edits task properties\nEdit Properties"
+    ID_EDIT_DELETE_TASK     "Removes selected task(s) from the list\nDelete Task"
+    ID_PROCESS_RUN          "Starts to erase the selected data\nRun"
+    ID_PROCESS_STOP         "Stops the selected process\nStop"
+    ID_EDIT_PREFERENCES_ERASER 
+                            "Edits erasing preferences\nErasing Preferences"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_PREFERENCES_GENERAL 
+                            "Edits general preferences\nGeneral Preferences"
+    ID_TRAY_SHOW_WINDOW     "Opens the main window\nOpen"
+    ID_TRAY_ENABLE          "Changes Scheduler status\nChange status"
+    ID_FILE_VIEW_LOG        "Opens the log file with associated viewer\nView Log"
+    ID_HELP_REWARD          "Reward\nReward"
+    ID_EDIT_REFRESH         "Refreshes task list\nRefresh"
+    ID_PROCESS_RUNALL       "Starts to erase all data on the list\nRun All"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_TIMER         "Failed to create timer.\nNo resources available."
+    IDS_TOOLTIP_WAITING     "Idle"
+    IDS_TOOLTIP_NEXT        "Next Task Scheduled at "
+    IDS_TOOLTIP_DISABLED    "Disabled"
+    IDS_TOOLTIP_PROCESSING  "Running %u Task(s)"
+    IDS_SET_PROTECTION      "Set protection..."
+    IDS_INFO_RUNNING        "Running Now..."
+    IDS_ERROR_PREFERENCES_READ "Failed to restore preferences."
+    IDS_ACTION_ENABLED      "Scheduler enabled."
+    IDS_ACTION_DISABLED     "Scheduler disabled."
+    IDS_INFO_NOLOG          "Unable to view the log file,\nit does not exist."
+    IDS_ERROR_VIEWLOG       "Failed to launch an application\nto view the log file."
+    IDS_ERROR_PREFERENCES_SAVE "Failed to save preferences."
+    IDS_QUESTION_INTERRUPT  "The task you wish to edit is running. To be able\nto change its properties, it must be stopped.\n\nIf you want to stop the running task and save\nits properties, press Yes.\n\nTo discard the changes you made and let the\ntask finish, press No."
+    IDS_INFO_QUEUED         "Queued..."
+    IDS_CLEAR_PROTECTION    "Clear protection..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PREFERENCES_PROPSHT_CAPTION "Preferences: General"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Finnish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)
+#ifdef _WIN32
+LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Eraser.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Finnish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\Eraser.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

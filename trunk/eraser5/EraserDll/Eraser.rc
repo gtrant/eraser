@@ -1,0 +1,353 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Russian resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_RUS)
+#ifdef _WIN32
+LANGUAGE LANG_RUSSIAN, SUBLANG_DEFAULT
+#pragma code_page(1251)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG_SEC_MAN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 86
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_SEC_MAN DIALOGEX 0, 0, 215, 93
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Security checking"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_SECMAN_PASSWD,75,21,123,14,ES_PASSWORD | ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SECMAN_PASSWDCONFIRM,75,43,124,14,ES_PASSWORD | ES_AUTOHSCROLL | NOT WS_VISIBLE
+    DEFPUSHBUTTON   "OK",IDOK,90,69,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,148,69,50,14
+    RTEXT           "&Password",IDC_STATIC,26,22,43,8
+    RTEXT           "Confirm password",IDC_STATIC_CONFIRM,11,47,58,8,NOT WS_VISIBLE
+    GROUPBOX        "",IDC_STATIC,7,4,201,82
+END
+
+#endif    // Russian resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_PAGE_FILES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 167
+    END
+
+    IDD_PAGE_FREESPACE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_DIALOG_METHODEDIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 282
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 235
+    END
+
+    IDD_DIALOG_PASSEDIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 181
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 105
+    END
+
+    IDD_DIALOG_REPORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 235
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PAGE_FILES DIALOGEX 0, 0, 303, 175
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Files"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LIST_METHOD,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_TABSTOP,14,20,239,80,WS_EX_STATICEDGE
+    PUSHBUTTON      "&New",IDC_BUTTON_NEW,260,20,37,14
+    PUSHBUTTON      "&Edit",IDC_BUTTON_EDIT,260,37,37,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE,260,54,37,14
+    LTEXT           "",IDC_STATIC_SELECTED,14,106,282,8,SS_NOPREFIX
+    LTEXT           "Erase with",IDC_STATIC,7,7,240,8
+    CONTROL         "Cluster Tip Area",IDC_CHECK_FILECLUSTERTIPS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,136,279,10
+    LTEXT           "Overwrite",IDC_STATIC,7,123,286,8
+    CONTROL         "File Names (File Names will always be cleared on NT/XP and above)",IDC_CHECK_FILENAMES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,146,279,10
+    CONTROL         "Alternate Data Streams",IDC_CHECK_ALTERNATESTREAMS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,156,279,10
+END
+
+IDD_PAGE_FREESPACE DIALOGEX 0, 0, 303, 175
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Unused Disk Space"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LIST_METHOD,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_TABSTOP,14,20,239,80,WS_EX_STATICEDGE
+    PUSHBUTTON      "&New",IDC_BUTTON_NEW,260,20,37,14
+    PUSHBUTTON      "&Edit",IDC_BUTTON_EDIT,260,37,37,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE,260,54,37,14
+    CONTROL         "Free Disk Space",IDC_CHECK_FREESPACE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,136,279,10
+    CONTROL         "Cluster Tip Area",IDC_CHECK_CLUSTERTIPS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,146,279,10
+    CONTROL         "Directory Entries",IDC_CHECK_DIRECTORYENTRIES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,156,279,10
+    LTEXT           "",IDC_STATIC_SELECTED,14,106,279,8,SS_NOPREFIX
+    LTEXT           "Erase with",IDC_STATIC,7,7,240,8
+    LTEXT           "Overwrite",IDC_STATIC,7,123,286,8
+END
+
+IDD_DIALOG_METHODEDIT DIALOGEX 0, 0, 289, 242
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Custom Method Editor"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_DESCRIPTION,14,17,268,14,ES_AUTOHSCROLL
+    CONTROL         "List1",IDC_LIST_PASSES,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_TABSTOP,14,53,218,83,WS_EX_STATICEDGE
+    PUSHBUTTON      "&Add",IDC_BUTTON_ADD,237,53,45,14
+    PUSHBUTTON      "&Delete",IDC_BUTTON_DELETE,237,70,45,14
+    PUSHBUTTON      "&Copy",IDC_BUTTON_COPY,237,87,45,14
+    PUSHBUTTON      "Move &Up",IDC_BUTTON_UP,237,104,45,14
+    PUSHBUTTON      "Move Do&wn",IDC_BUTTON_DOWN,237,121,45,14
+    EDITTEXT        IDC_EDIT_BYTE1,26,164,40,14,ES_AUTOHSCROLL
+    CONTROL         "Byte &2",IDC_CHECK_BYTE2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,76,153,39,10
+    EDITTEXT        IDC_EDIT_BYTE2,76,164,40,14,ES_AUTOHSCROLL
+    CONTROL         "Byte &3",IDC_CHECK_BYTE3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,126,153,39,10
+    EDITTEXT        IDC_EDIT_BYTE3,126,164,40,14,ES_AUTOHSCROLL
+    CONTROL         "Pseudo&random Data",IDC_RADIO_PSEUDORANDOM,"Button",BS_AUTORADIOBUTTON,14,183,268,10
+    CONTROL         "&Perform Passes In Random &Order",IDC_CHECK_SHUFFLE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,210,268,10
+    DEFPUSHBUTTON   "&Save",IDOK,177,222,50,14
+    PUSHBUTTON      "&D&iscard",IDCANCEL,232,222,50,14
+    LTEXT           "Description",IDC_STATIC,7,7,275,8
+    LTEXT           "Overwriting Passes",IDC_STATIC,7,43,275,8
+    CONTROL         "&Pattern",IDC_RADIO_PATTERN,"Button",BS_AUTORADIOBUTTON,14,142,268,10
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,14,205,268,1
+    LTEXT           "Byte 1",IDC_STATIC_BYTE1,26,153,38,8
+END
+
+IDD_DIALOG_PASSEDIT DIALOG  0, 0, 188, 112
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Passes"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,77,91,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,131,91,50,14
+    LTEXT           "The number of times data should be overwritten before deleting.",IDC_STATIC,7,7,174,21
+    EDITTEXT        IDC_EDIT_PASSES,68,51,46,14,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_PASSES,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,113,51,7,14
+    LTEXT           "Passes:",IDC_STATIC,68,42,26,8
+END
+
+IDD_DIALOG_REPORT DIALOG  0, 0, 253, 242
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Erasing Report"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDCANCEL,196,221,50,14
+    PUSHBUTTON      "&Save As...",IDC_BUTTON_SAVEAS,140,221,50,14
+    EDITTEXT        IDC_EDIT_STATISTICS,7,42,239,80,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+    CONTROL         "List1",IDC_LIST_ERRORS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,144,239,69
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,22,239,1
+    LTEXT           "Task completed.",IDC_STATIC_COMPLETION,7,7,239,14
+    LTEXT           "Information:",IDC_STATIC,7,30,38,8
+    LTEXT           "Failures:",IDC_STATIC_FAILURES_HEADER,7,132,239,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "..\\res\\Eraser.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROPSHT_CAPTION     "Preferences: Erasing"
+    IDS_PASSWDNOTMATCH      "Password does not match"
+    IDS_PASSWDEMPTY         "The password entered cannot be empty"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_CLUSTER       "Failed to determine cluster size from drive %1. Cluster tip area will not be erased."
+    IDS_ERROR_MEMORY        "Failed to allocate data buffer (out of memory). Try closing other applications or restarting Windows."
+    IDS_ERROR_INTERNAL      "Internal error, something way unexpected just happened."
+    IDS_ERROR_DIRECTORY     "Failed to create temporary directory to drive %1, maybe one exists already. Try again."
+    IDS_ERROR_FREESPACE     "Failed to determine free space available on drive %1. Free disk space (or at least some of it) could not be erased."
+    IDS_ERROR_DIRENTRIES    "Failed to erase file names from drive %1, don't know why exactly."
+    IDS_ERROR_DIRENTRIES_FS "Failed to erase file names from drive %1, this file system type is not supported."
+    IDS_ERROR_DIRENTRIES_FAT 
+                            "Failed to clean directory entries from drive %1, there was something not quite right with the file system. You may want to run ScanDisk."
+    IDS_ERROR_DIRENTRIES_MAXRESTARTS 
+                            "Failed to clean directory entries from drive %1, gave up after several attempts. You may want to try closing other applications and see if that helps."
+    IDS_ERROR_NODATA        "There was nothing to erase."
+    IDS_ERROR_DIRECTORY_REMOVE 
+                            "Failed to remove a temporary directory from drive %1, you may want to remove it manually to recover (possibly) lost disk space."
+    IDS_ERROR_DIRENTRIES_LOCK 
+                            "Failed to clean directory entry %1, could not prevent other programs from touching it."
+    IDS_ERROR_TEMPFILE      "Failed to create a temporary file or directory. Erasing was not completed."
+    IDS_ERROR_ADS           "Failed to erase all (alternate) data streams from file %1, it had more than one."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_METHOD_DELETE       "Are you sure you want to delete the selected method?"
+    IDS_METHOD_NOPASSES     "Method contains no overwriting passes. Do you want to discard the changes?"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Eraser"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Finnish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)
+#ifdef _WIN32
+LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Eraser.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Finnish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Eraser.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

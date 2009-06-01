@@ -1,0 +1,195 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "..\\res\\Eraser.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_CONFIRM DIALOGEX 0, 0, 273, 64
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Confirm Erasing of Recycle Bin"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "&No",IDCANCEL,213,43,53,14
+    PUSHBUTTON      "&Yes",IDOK,155,43,53,14
+    PUSHBUTTON      "&Options...",IDOPTIONS,7,43,50,14,NOT WS_VISIBLE
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,21,20
+    LTEXT           "Are you sure you want to erase the contents of the Recycle Bin?",IDC_STATIC,38,9,228,8
+END
+
+IDD_LAUNCHER_DIALOG DIALOG  0, 0, 243, 133
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION
+CAPTION "Eraser"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "&Stop",IDCANCEL,96,112,50,14
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",0x1,7,58,201,12
+    LTEXT           "Erasing:",IDC_STATIC,7,7,37,8
+    LTEXT           "",IDC_STATIC_ERASING,48,7,188,8
+    LTEXT           "",IDC_STATIC_MESSAGE,48,16,188,8
+    LTEXT           "",IDC_STATIC_DATA,48,36,188,8,SS_NOPREFIX
+    LTEXT           "Item:",IDC_STATIC,7,36,37,8
+    LTEXT           "Pass:",IDC_STATIC,7,45,37,8
+    LTEXT           "",IDC_STATIC_PASS,48,45,54,8
+    LTEXT           "",IDC_STATIC_TIME,108,45,128,8
+    RTEXT           "",IDC_STATIC_PERCENT,211,58,25,8
+    CONTROL         "Progress1",IDC_PROGRESS_TOTAL,"msctls_progress32",0x1,7,94,201,9
+    RTEXT           "",IDC_STATIC_PERCENT_TOTAL,211,94,25,8
+    LTEXT           "Total:",IDC_STATIC,7,82,37,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,30,229,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,8,76,228,1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG_CONFIRM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 266
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
+
+    IDD_LAUNCHER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 126
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDD_ERROR_DIALOG        "Failed to create dialog."
+    IDS_CMDLINE_INCORRECT   "Usage:\n\neraserl  [Data] [Method] [-silent | -results | -resultsonerror ] [-queue] [-options]\n\n  Data:\n     -file\t\tdata [-subfolders]\n     -folder\t\tdata [-subfolders] [-keepfolder]\n     -disk\t\tdrive: | ""all""\n     -recycled\n\n  Method:\n     -method\t""Gutmann"" | ""DoD"" | ""DoD_E"" | ""First_Last2k"" | ""Schneier"" | ""Random"" passes | ""Library""\n\n  Parameters:\n     -file\t\tData is a file (wildcards allowed)\n          -subfolders\tInclude subfolders\n     -folder\t\tData is a folder\n          -subfolders\tInclude subfolders\n          -keepfolder\tDo not delete the folder\n     -disk\t\tData is unused space on a drive or all local hard drives\n     -recycled\tErase all data on Recycle Bin\n     -method\tUse given overwriting method (default ""Library"")\n     -silent\t\tNo windows\n     -results\t\tShow Erasing Report\n     -resultsonerror\tShow Erasing Report only in case of error\n     -queue\t\tWait until previous instances have finished\n     -options\tIgnore other parameters and show options"
+    IDS_ERROR_DIALOG        "Failed to create window."
+    IDS_ERROR_MAX_INSTANCE  "Maximum instance count reached."
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Eraser Launcher"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Finnish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)
+#ifdef _WIN32
+LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Launcher.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Finnish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\Launcher.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

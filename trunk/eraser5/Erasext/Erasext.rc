@@ -1,0 +1,259 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_REPLACE DIALOG  0, 0, 280, 141
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Confirm File Replace"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "&No",IDCANCEL,161,120,53,14
+    PUSHBUTTON      "N&o to All",IDC_BUTTON_NOTOALL,220,120,53,14
+    PUSHBUTTON      "&Yes",IDOK,45,120,53,14
+    PUSHBUTTON      "Yes to &All",IDC_BUTTON_YESTOALL,103,120,53,14
+    ICON            IDI_ICON_REPLACE,IDC_STATIC,10,10,20,20
+    LTEXT           "This folder already contains a file called '%s'.",
+                    IDC_STATIC_HEADER,41,10,222,22,SS_NOPREFIX
+    LTEXT           "Would you like to replace the existing file",IDC_STATIC,
+                    41,35,180,10
+    ICON            "",IDI_ICON_EXISTING,51,49,20,20
+    ICON            "",IDI_ICON_SOURCE,51,89,20,20
+    LTEXT           "with this one?",IDC_STATIC,41,75,180,10
+    LTEXT           "",IDC_STATIC_EXISTING,79,51,194,18,SS_NOPREFIX
+    LTEXT           "",IDC_STATIC_SOURCE,79,91,194,18,SS_NOPREFIX
+END
+
+IDD_DIALOG_CONFIRM DIALOG  0, 0, 273, 64
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Confirm Erasing"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "&No",IDCANCEL,213,43,53,14
+    PUSHBUTTON      "&Yes",IDOK,155,43,53,14
+    PUSHBUTTON      "&Options...",IDOPTIONS,7,43,50,14
+    ICON            IDI_ICON_ERASER,IDC_STATIC,7,7,21,20
+    LTEXT           "",IDC_STATIC_LINEONE,38,9,228,8,SS_NOPREFIX
+    LTEXT           "",IDC_STATIC_LINETWO,38,18,228,8,SS_NOPREFIX
+END
+
+IDD_DIALOG_WIPEPROG DIALOG  0, 0, 243, 133
+STYLE DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | DS_3DLOOK | WS_POPUP | 
+    WS_CLIPCHILDREN | WS_CAPTION
+CAPTION "Eraser"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "&Stop",IDCANCEL,96,112,50,14
+    CONTROL         "Show results",IDC_CHECK_RESULTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,116,53,10
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",0x1,7,58,
+                    201,12
+    LTEXT           "Erasing:",IDC_STATIC,7,7,37,8
+    LTEXT           "",IDC_STATIC_ERASING,48,7,188,8
+    LTEXT           "",IDC_STATIC_MESSAGE,48,16,188,8
+    LTEXT           "",IDC_STATIC_DATA,48,36,188,8,SS_NOPREFIX
+    LTEXT           "Item:",IDC_STATIC,7,36,37,8
+    LTEXT           "Pass:",IDC_STATIC,7,45,37,8
+    LTEXT           "",IDC_STATIC_PASS,48,45,54,8
+    LTEXT           "",IDC_STATIC_TIME,108,45,128,8
+    RTEXT           "",IDC_STATIC_PERCENT,211,58,25,8
+    CONTROL         "Progress1",IDC_PROGRESS_TOTAL,"msctls_progress32",0x1,7,
+                    94,201,9
+    RTEXT           "",IDC_STATIC_PERCENT_TOTAL,211,94,25,8
+    LTEXT           "Total:",IDC_STATIC,7,82,37,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,30,229,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,8,76,228,1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG_CONFIRM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 266
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
+
+    IDD_DIALOG_WIPEPROG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 126
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_ERASER         ICON                    "..\\res\\Eraser.ico"
+IDI_ICON_REPLACE        ICON                    "..\\res\\icon_rep.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_ACCELERATOR_CONFIRM ACCELERATORS 
+BEGIN
+    "N",            IDCANCEL,               VIRTKEY, NOINVERT
+    "O",            IDOPTIONS,              VIRTKEY, NOINVERT
+    "Y",            IDOK,                   VIRTKEY, NOINVERT
+END
+
+IDR_ACCELERATOR_PROG ACCELERATORS 
+BEGIN
+    "S",            IDCANCEL,               VIRTKEY, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_MENU_TEXT_FILE      "&Erase"
+	IDS_MENU_TEXT_DRIVE     "&Erase Unused Space"
+    IDS_COMMAND_STRING_FILE "Erase file(s)"
+    IDS_COMMAND_STRING_DRIVE "Erase unused disk space"
+    IDS_CONFIRM_FILES       "these %d files?"
+    IDS_CONFIRM_DRIVE       "unused space on drive '%s'?"
+    IDS_COMMAND_STRING_DIRECTORIES "Erase file(s), folder(s) and subfolder(s)"
+    IDS_CONFIRM_FILES_AND_FOLDERS "these %d files and %d folders?"
+    IDS_CONFIRM             "Are you sure you want to erase "
+    IDS_MENU_TEXT_DRAG      "Eraser Secure Mo&ve"
+    IDS_CONFIRM_MOVE        "Are you sure you want to move "
+    IDS_CONFIRM_MOVE_FILES  "these %d files to "
+    IDS_CONFIRM_MOVE_FILES_AND_FOLDERS "these %d files and %d folders to "
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Eraser"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CONFIRM_MULTI_DRIVE "unused space on the selected drives?"
+    IDS_CONFIRM_MOVE_FILE   "to"
+    IDS_MOVE_TITLE          "Confirm Secure Move"
+    IDS_ERROR_MOVE_SAMEFOLDER 
+                            "Cannot move selected items. The destination folder is the same as the source folder."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Finnish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)
+#ifdef _WIN32
+LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\Erasext.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Finnish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\Erasext.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

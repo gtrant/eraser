@@ -1,0 +1,205 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_VERIFY_DIALOG DIALOGEX 0, 0, 320, 238
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Eraser: Verify"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "&Browse...",IDC_BUTTON_BROWSE,263,102,50,14
+    PUSHBUTTON      "&Erase",IDC_BUTTON_ERASE,45,141,50,14
+    PUSHBUTTON      "&Stop",IDC_BUTTON_STOP,45,180,50,14
+    PUSHBUTTON      "&Close",IDCANCEL,263,216,50,14
+    PUSHBUTTON      "Edit Erasing &Preferences",IDC_BUTTON_METHOD,45,63,96,
+                    14
+    LTEXT           "This program uses the Eraser library to securely overwrite a file using the predefined settings. After each overwriting pass, you are shown the contents of the file so you can verify that the operation was successful.",
+                    IDC_STATIC,38,7,275,31
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
+    LTEXT           "1. Select the file you want to erase.",IDC_STATIC_STEP1,
+                    38,90,275,8
+    EDITTEXT        IDC_EDIT_FILE,45,102,214,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "2. Start overwriting by pressing ""Erase"".",
+                    IDC_STATIC_STEP2,38,129,275,8
+    LTEXT           "3. Follow the overwriting process.",IDC_STATIC_STEP3,38,
+                    168,275,8
+    LTEXT           "",IDC_STATIC_PROGRESS,121,183,192,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,38,38,275,1
+    LTEXT           "0. Select the overwriting method you want to use.",
+                    IDC_STATIC_STEP0,38,51,275,8
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME,38,207,275,1
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_VERIFY_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 231
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Finnish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FIN)
+#ifdef _WIN32
+LANGUAGE LANG_FINNISH, SUBLANG_DEFAULT
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DIALOG_VIEWER DIALOG  0, 0, 399, 305
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Eraser: Verify: File Viewer"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    PUSHBUTTON      "<<",IDC_BUTTON_FIRST,7,284,27,14
+    PUSHBUTTON      "<",IDC_BUTTON_PREVIOUS,41,284,19,14
+    PUSHBUTTON      ">",IDC_BUTTON_NEXT,65,284,19,14
+    PUSHBUTTON      ">>",IDC_BUTTON_LAST,91,284,27,14
+    LTEXT           "Move to cluster:",IDC_STATIC,125,286,60,8
+    EDITTEXT        IDC_EDIT_CLUSTER,190,284,40,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "&Go",IDC_BUTTON_GO,235,284,32,14
+    DEFPUSHBUTTON   "&Continue",IDOK,336,284,56,14
+    CONTROL         "",IDC_RICHEDIT_VIEW,"RICHEDIT",TCS_RAGGEDRIGHT | 
+                    TCS_MULTISELECT | WS_BORDER | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP,7,7,385,270
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DIALOG_VIEWER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 392
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 298
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Verify.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "..\\res\\Verify.ico"
+#endif    // Finnish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\Verify.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
