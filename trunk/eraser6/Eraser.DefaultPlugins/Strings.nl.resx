@@ -138,7 +138,7 @@
   <data name="The input text is invalid for the current data type. Valid hexadecimal characters are the digits 0-9 and letters A-F" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The custom erasure method can only comprise passes containining constant or random passes" xml:space="preserve">
+  <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="US DoD 5220.22-M (8-306./E, C &amp; E)" xml:space="preserve">
