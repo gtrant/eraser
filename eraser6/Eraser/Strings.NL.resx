@@ -123,6 +123,9 @@
   <data name="Eraser" xml:space="preserve">
     <value>Eraser</value>
   </data>
+  <data name="{0} (Built: {1:F}, special build)" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="{0} (Built: {1:F})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

@@ -111,8 +111,10 @@ Eraser Project Members:
 				PointF eraserPos = new PointF(168, 80);
 				SizeF eraserSize = g.MeasureString(S._("Eraser"), boldFont);
 				g.DrawString(S._("Eraser"), boldFont, textBrush, eraserPos);
-				S._("{0} (Built: {1:F})");
-				g.DrawString(S._("{0} (Built: {1:F})",
+
+				string versionString = BuildInfo.CustomBuild ?
+					S._("{0} (Built: {1:F}, special build)") : S._("{0} (Built: {1:F})");
+				g.DrawString(string.Format(CultureInfo.CurrentCulture, versionString,
 					Assembly.GetExecutingAssembly().GetName().Version, BuildInfo.BuildDate),
 					Font, textBrush, new PointF(eraserPos.X + eraserSize.Width + 3, eraserPos.Y));
 
