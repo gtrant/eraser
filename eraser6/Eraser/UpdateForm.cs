@@ -1092,6 +1092,33 @@ namespace Eraser
 		{
 			return Location;
 		}
+
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Mirror))
+				return false;
+			return Equals((Mirror)obj);
+		}
+
+		public bool Equals(Mirror other)
+		{
+			return Link == other.Link;
+		}
+
+		public static bool operator ==(Mirror mirror1, Mirror mirror2)
+		{
+			return mirror1.Equals(mirror2);
+		}
+
+		public static bool operator !=(Mirror mirror1, Mirror mirror2)
+		{
+			return !mirror1.Equals(mirror2);
+		}
+
+		public override int GetHashCode()
+		{
+			return Link.GetHashCode();
+		}
 	}
 
 	/// <summary>
@@ -1105,6 +1132,33 @@ namespace Eraser
 		public string Architecture { get; set; }
 		public long FileSize { get; set; }
 		public string Link { get; set; }
+
+		public override bool Equals(object obj)
+		{
+			if (!(obj is UpdateInfo))
+				return false;
+			return Equals((UpdateInfo)obj);
+		}
+
+		public bool Equals(UpdateInfo other)
+		{
+			return Link == other.Link;
+		}
+
+		public static bool operator ==(UpdateInfo update1, UpdateInfo update2)
+		{
+			return update1.Equals(update2);
+		}
+
+		public static bool operator !=(UpdateInfo update1, UpdateInfo update2)
+		{
+			return !update1.Equals(update2);
+		}
+
+		public override int GetHashCode()
+		{
+			return Link.GetHashCode();
+		}
 	}
 
 	/// <summary>

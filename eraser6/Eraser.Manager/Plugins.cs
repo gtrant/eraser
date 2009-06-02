@@ -374,6 +374,33 @@ namespace Eraser.Manager.Plugin
 		/// The version of the assembly.
 		/// </summary>
 		public Version Version { get; set; }
+
+		public override bool Equals(object obj)
+		{
+			if (!(obj is AssemblyInfo))
+				return false;
+			return Equals((AssemblyInfo)obj);
+		}
+
+		public bool Equals(AssemblyInfo other)
+		{
+			return Guid == other.Guid;
+		}
+
+		public static bool operator ==(AssemblyInfo assembly1, AssemblyInfo assembly2)
+		{
+			return assembly1.Equals(assembly2);
+		}
+
+		public static bool operator !=(AssemblyInfo assembly1, AssemblyInfo assembly2)
+		{
+			return !assembly1.Equals(assembly2);
+		}
+
+		public override int GetHashCode()
+		{
+			return Guid.GetHashCode();
+		}
 	}
 
 	/// <summary>
