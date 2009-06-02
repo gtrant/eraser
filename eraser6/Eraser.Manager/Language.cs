@@ -96,43 +96,7 @@ namespace Eraser.Manager
 		{
 			return lang.culture;
 		}
-
-		public override bool Equals(object obj)
-		{
-			CultureInfo cultureInfo = obj as CultureInfo;
-			Language language = obj as Language;
-			if (cultureInfo != null)
-				return Equals(cultureInfo);
-			else if (language != null)
-				return Equals(language.culture);
-			return false;
-		}
-
-		public bool Equals(CultureInfo other)
-		{
-			return culture == other;
-		}
-
-		public static bool operator ==(Language language, CultureInfo culture)
-		{
-			return language.Equals(culture);
-		}
-
-		public static bool operator ==(CultureInfo culture, Language language)
-		{
-			return language.Equals(culture);
-		}
-
-		public static bool operator !=(Language language, CultureInfo culture)
-		{
-			return !language.Equals(culture);
-		}
-
-		public static bool operator !=(CultureInfo culture, Language language)
-		{
-			return !language.Equals(culture);
-		}
-
+		
 		public override int GetHashCode()
 		{
 			return culture.GetHashCode();
