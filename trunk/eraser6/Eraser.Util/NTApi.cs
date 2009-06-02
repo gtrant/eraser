@@ -119,7 +119,6 @@ namespace Eraser.Util
 						{
 							byte* currStreamPtr = i;
 							streamInfo.NextEntryOffset = *(uint*)currStreamPtr;
-							byte* nextEntry = currStreamPtr + streamInfo.NextEntryOffset;
 							currStreamPtr += sizeof(uint);
 
 							streamInfo.StreamNameLength = *(uint*)currStreamPtr;

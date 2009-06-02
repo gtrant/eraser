@@ -62,12 +62,6 @@ namespace Unlocker {
 			{
 				return handle;
 			}
-
-		internal:
-			void set(IntPtr value)
-			{
-				handle = value;
-			}
 		}
 
 		/// The path to the file.
@@ -108,7 +102,7 @@ namespace Unlocker {
 
 	private:
 		static HANDLE* NameResolutionThread;
-		static NameResolutionThreadParams* NameResolutionThreadParam = NULL;
+		static NameResolutionThreadParams* NameResolutionThreadParam;
 
 		IntPtr handle;
 		String^ path;

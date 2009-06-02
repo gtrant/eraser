@@ -106,7 +106,7 @@ namespace Eraser.Manager
 			{
 				entries = info.GetFileSystemInfos();
 			}
-			catch (Exception)
+			catch (DirectoryNotFoundException)
 			{
 				return string.Empty;
 			}

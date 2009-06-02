@@ -1298,7 +1298,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					byte[] resultArray = rawResult as byte[];
 					if (resultArray != null)
 					{
-						using (MemoryStream stream = new MemoryStream((byte[])rawResult))
+						using (MemoryStream stream = new MemoryStream(resultArray))
 							try
 							{
 								return new BinaryFormatter().Deserialize(stream);
