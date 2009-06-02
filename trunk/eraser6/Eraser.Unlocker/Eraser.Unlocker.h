@@ -53,7 +53,7 @@ namespace Unlocker {
 		}
 
 		/// Force the handle to close.
-		void Close();
+		bool Close();
 
 		/// The handle to the file, in the context of the owning process.
 		property IntPtr Handle

@@ -114,7 +114,7 @@ namespace Unlocker {
 				static_cast<int>(result.Name.length()));
 	}
 
-	void OpenHandle::Close()
+	bool OpenHandle::Close()
 	{
 		//Open a handle to the owning process
 		HANDLE processHandle = OpenProcess(PROCESS_DUP_HANDLE, false, ProcessId);
@@ -123,8 +123,21 @@ namespace Unlocker {
 		DuplicateHandle(processHandle, static_cast<void*>(Handle), GetCurrentProcess(),
 			NULL, 0, false, DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE);
 
+		//Check if the handle is closed
+		bool result = true;
+		HANDLE duplicateHandle = NULL;
+		if (DuplicateHandle(processHandle, static_cast<void*>(Handle), GetCurrentProcess(),
+			&duplicateHandle, 0, false, DUPLICATE_SAME_ACCESS))
+		{
+			result = false;
+			CloseHandle(duplicateHandle);
+		}
+
 		//Close the process handle
 		CloseHandle(processHandle);
+
+		//Return the result
+		return result;
 	}
 }
 }
