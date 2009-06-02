@@ -50,37 +50,37 @@ namespace Eraser
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BasePanel));
-			this.titleLabel = new System.Windows.Forms.Label();
-			this.content = new System.Windows.Forms.Panel();
-			this.titleIcon = new System.Windows.Forms.PictureBox();
-			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).BeginInit();
+			this.TitleLabel = new System.Windows.Forms.Label();
+			this.Content = new System.Windows.Forms.Panel();
+			this.TitleIcon = new System.Windows.Forms.PictureBox();
+			((System.ComponentModel.ISupportInitialize)(this.TitleIcon)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// titleLabel
 			// 
-			resources.ApplyResources(this.titleLabel, "titleLabel");
-			this.titleLabel.Name = "titleLabel";
+			resources.ApplyResources(this.TitleLabel, "titleLabel");
+			this.TitleLabel.Name = "titleLabel";
 			// 
 			// content
 			// 
-			resources.ApplyResources(this.content, "content");
-			this.content.Name = "content";
+			resources.ApplyResources(this.Content, "content");
+			this.Content.Name = "content";
 			// 
 			// titleIcon
 			// 
-			resources.ApplyResources(this.titleIcon, "titleIcon");
-			this.titleIcon.Name = "titleIcon";
-			this.titleIcon.TabStop = false;
+			resources.ApplyResources(this.TitleIcon, "titleIcon");
+			this.TitleIcon.Name = "titleIcon";
+			this.TitleIcon.TabStop = false;
 			// 
 			// BasePanel
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-			this.Controls.Add(this.content);
-			this.Controls.Add(this.titleIcon);
-			this.Controls.Add(this.titleLabel);
+			this.Controls.Add(this.Content);
+			this.Controls.Add(this.TitleIcon);
+			this.Controls.Add(this.TitleLabel);
 			this.Name = "BasePanel";
 			resources.ApplyResources(this, "$this");
-			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.TitleIcon)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -88,8 +88,9 @@ namespace Eraser
 
 		#endregion
 
-		protected System.Windows.Forms.Label titleLabel;
-		protected System.Windows.Forms.PictureBox titleIcon;
-		protected System.Windows.Forms.Panel content;
+		private System.Windows.Forms.Label titleLabel;
+		private System.Windows.Forms.PictureBox titleIcon;
+		private System.Windows.Forms.Panel content;
+
 	}
 }

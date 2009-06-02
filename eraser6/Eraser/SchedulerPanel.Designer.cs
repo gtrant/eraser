@@ -66,24 +66,24 @@ namespace Eraser
 			this.schedulerProgress = new System.Windows.Forms.ProgressBar();
 			this.schedulerDefaultMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.newTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).BeginInit();
-			this.content.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.TitleIcon)).BeginInit();
+			this.Content.SuspendLayout();
 			this.schedulerMenu.SuspendLayout();
 			this.schedulerDefaultMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// titleLabel
 			// 
-			resources.ApplyResources(this.titleLabel, "titleLabel");
+			resources.ApplyResources(this.TitleLabel, "titleLabel");
 			// 
 			// titleIcon
 			// 
-			this.titleIcon.Image = global::Eraser.Properties.Resources.ToolbarSchedule;
+			this.TitleIcon.Image = global::Eraser.Properties.Resources.ToolbarSchedule;
 			// 
 			// content
 			// 
-			this.content.Controls.Add(this.schedulerProgress);
-			this.content.Controls.Add(this.scheduler);
+			this.Content.Controls.Add(this.schedulerProgress);
+			this.Content.Controls.Add(this.scheduler);
 			// 
 			// scheduler
 			// 
@@ -201,11 +201,11 @@ namespace Eraser
 			// 
 			this.DoubleBuffered = true;
 			this.Name = "SchedulerPanel";
-			this.Controls.SetChildIndex(this.titleLabel, 0);
-			this.Controls.SetChildIndex(this.titleIcon, 0);
-			this.Controls.SetChildIndex(this.content, 0);
-			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).EndInit();
-			this.content.ResumeLayout(false);
+			this.Controls.SetChildIndex(this.TitleLabel, 0);
+			this.Controls.SetChildIndex(this.TitleIcon, 0);
+			this.Controls.SetChildIndex(this.Content, 0);
+			((System.ComponentModel.ISupportInitialize)(this.TitleIcon)).EndInit();
+			this.Content.ResumeLayout(false);
 			this.schedulerMenu.ResumeLayout(false);
 			this.schedulerDefaultMenu.ResumeLayout(false);
 			this.ResumeLayout(false);

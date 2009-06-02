@@ -36,5 +36,32 @@ namespace Eraser
 			InitializeComponent();
 			titleLabel.Font = new Font(SystemFonts.MessageBoxFont.Name, 18f);
 		}
+
+		/// <summary>
+		/// The content panel displaying controls for the current panel
+		/// </summary>
+		protected Panel Content
+		{
+			get { return content; }
+			set { content = value; }
+		}
+
+		/// <summary>
+		/// The title of the current panel
+		/// </summary>
+		protected Label TitleLabel
+		{
+			get { return titleLabel; }
+			set { titleLabel = value; }
+		}
+
+		/// <summary>
+		/// The icon representing the content of the current panel
+		/// </summary>
+		protected PictureBox TitleIcon
+		{
+			get { return titleIcon; }
+			set { titleIcon = value; }
+		}
 	}
 }
