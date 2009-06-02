@@ -32,6 +32,7 @@ using System.Security.Principal;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Permissions;
+using Eraser.Unlocker;
 
 namespace Eraser.Manager
 {
@@ -874,9 +875,20 @@ namespace Eraser.Manager
 				}
 				catch (FileLoadException)
 				{
-					task.Log.LastSessionEntries.Add(new LogEntry(S._("The file {0} could not be " +
-						"erased because the file is currently in use.", info.FullName),
-						LogLevel.Error));
+					List<OpenHandle> openHandles = OpenHandle.Items;
+					List<System.Diagnostics.Process> processes = new List<System.Diagnostics.Process>();
+					foreach (OpenHandle handle in openHandles)
+						if (handle.Path == paths[i])
+							processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
+
+					StringBuilder processStr = new StringBuilder();
+					foreach (System.Diagnostics.Process process in processes)
+						processStr.AppendFormat(System.Globalization.CultureInfo.InvariantCulture,
+							"{0}, ", process.MainModule.FileName);
+
+					task.Log.LastSessionEntries.Add(new LogEntry(S._(
+						"Could not force closure of file \"{0}\" (locked by {1})",
+						paths[i], processStr.ToString().Remove(processStr.Length - 2)), LogLevel.Error));
 				}
 				finally
 				{

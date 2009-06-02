@@ -28,6 +28,7 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 using Eraser.Util;
 using System.Security.Permissions;
+using Eraser.Unlocker;
 
 namespace Eraser.Manager
 {
@@ -351,11 +352,16 @@ namespace Eraser.Manager
 					totalSize += info.Length;
 				}
 			}
-			catch (IOException e)
+			catch (FileLoadException)
 			{
-				//The system cannot open the file, assume no ADSes for lack of
-				//more information.
-				Task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
+				//The system cannot open the file, try to force the file handle to close.
+				List<OpenHandle> openHandles = OpenHandle.Items;
+				foreach (OpenHandle handle in openHandles)
+					if (handle.Path == file && handle.Close())
+					{
+						GetPathADSes(list, out totalSize, file);
+						return;
+					}
 			}
 			catch (UnauthorizedAccessException e)
 			{
