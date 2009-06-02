@@ -61,6 +61,176 @@ namespace Eraser.Util
 				uint dwMaxSize, out uint dwDataSize);
 
 			/// <summary>
+			/// The ZwQueryInformationFile routine returns various kinds of information
+			/// about a file object.
+			/// </summary>
+			/// <param name="FileHandle">Handle to a file object. The handle is created
+			/// by a successful call to ZwCreateFile or ZwOpenFile.</param>
+			/// <param name="IoStatusBlock">Pointer to an IO_STATUS_BLOCK structure
+			/// that receives the final completion status and information about
+			/// the operation. The Information member receives the number of bytes
+			/// that this routine actually writes to the FileInformation buffer.</param>
+			/// <param name="FileInformation">Pointer to a caller-allocated buffer
+			/// into which the routine writes the requested information about the
+			/// file object. The FileInformationClass parameter specifies the type
+			/// of information that the caller requests.</param>
+			/// <param name="Length">The size, in bytes, of the buffer pointed to
+			/// by FileInformation.</param>
+			/// <param name="FileInformationClass">Specifies the type of information
+			/// to be returned about the file, in the buffer that FileInformation
+			/// points to. Device and intermediate drivers can specify any of the
+			/// following FILE_INFORMATION_CLASS enumeration values, which are defined
+			/// in header file Wdm.h.</param>
+			/// <returns>ZwQueryInformationFile returns STATUS_SUCCESS or an appropriate
+			/// NTSTATUS error code.</returns>
+			[DllImport("NtDll.dll")]
+			private static extern uint NtQueryInformationFile(SafeFileHandle FileHandle,
+				ref IO_STATUS_BLOCK IoStatusBlock, IntPtr FileInformation, uint Length,
+				FILE_INFORMATION_CLASS FileInformationClass);
+
+			public static FILE_STREAM_INFORMATION[] NtQueryInformationFile(SafeFileHandle FileHandle)
+			{
+				IO_STATUS_BLOCK status = new IO_STATUS_BLOCK();
+				IntPtr fileInfoPtr = IntPtr.Zero;
+
+				try
+				{
+					FILE_STREAM_INFORMATION streamInfo = new FILE_STREAM_INFORMATION();
+					int fileInfoPtrLength = (Marshal.SizeOf(streamInfo) + 32768) / 2;
+					uint ntStatus = 0;
+
+					do
+					{
+						fileInfoPtrLength *= 2;
+						if (fileInfoPtr != IntPtr.Zero)
+							Marshal.FreeHGlobal(fileInfoPtr);
+						fileInfoPtr = Marshal.AllocHGlobal(fileInfoPtrLength);
+
+						ntStatus = NtQueryInformationFile(FileHandle, ref status, fileInfoPtr,
+							(uint)fileInfoPtrLength, FILE_INFORMATION_CLASS.FileStreamInformation);
+					}
+					while (ntStatus != 0 /*STATUS_SUCCESS*/ && ntStatus == 0x80000005 /*STATUS_BUFFER_OVERFLOW*/);
+
+					//Marshal the structure manually (argh!)
+					List<FILE_STREAM_INFORMATION> result = new List<FILE_STREAM_INFORMATION>();
+					unsafe
+					{
+						for (byte* i = (byte*)fileInfoPtr; ; i += streamInfo.NextEntryOffset)
+						{
+							byte* currStreamPtr = i;
+							streamInfo.NextEntryOffset = *(uint*)currStreamPtr;
+							byte* nextEntry = currStreamPtr + streamInfo.NextEntryOffset;
+							currStreamPtr += sizeof(uint);
+
+							streamInfo.StreamNameLength = *(uint*)currStreamPtr;
+							currStreamPtr += sizeof(uint);
+
+							streamInfo.StreamSize = *(long*)currStreamPtr;
+							currStreamPtr += sizeof(long);
+
+							streamInfo.StreamAllocationSize = *(long*)currStreamPtr;
+							currStreamPtr += sizeof(long);
+
+							streamInfo.StreamName = Marshal.PtrToStringUni((IntPtr)currStreamPtr,
+								(int)streamInfo.StreamNameLength / 2);
+							result.Add(streamInfo);
+
+							if (streamInfo.NextEntryOffset == 0)
+								break;
+						}
+					}
+
+					return result.ToArray();
+				}
+				finally
+				{
+					Marshal.FreeHGlobal(fileInfoPtr);
+				}
+			}
+
+			public struct IO_STATUS_BLOCK
+			{
+				public IntPtr PointerStatus;
+				public UIntPtr Information;
+			}
+			
+			public struct FILE_STREAM_INFORMATION
+			{
+				/// <summary>
+				/// The offset of the next FILE_STREAM_INFORMATION entry. This
+				/// member is zero if no other entries follow this one. 
+				/// </summary>
+				public uint NextEntryOffset;
+
+				/// <summary>
+				/// Length, in bytes, of the StreamName string. 
+				/// </summary>
+				public uint StreamNameLength;
+
+				/// <summary>
+				/// Size, in bytes, of the stream. 
+				/// </summary>
+				public long StreamSize;
+
+				/// <summary>
+				/// File stream allocation size, in bytes. Usually this value
+				/// is a multiple of the sector or cluster size of the underlying
+				/// physical device.
+				/// </summary>
+				public long StreamAllocationSize;
+
+				/// <summary>
+				/// Unicode string that contains the name of the stream. 
+				/// </summary>
+				public string StreamName;
+			}
+
+			public enum FILE_INFORMATION_CLASS
+			{
+				FileDirectoryInformation = 1,
+				FileFullDirectoryInformation,
+				FileBothDirectoryInformation,
+				FileBasicInformation,
+				FileStandardInformation,
+				FileInternalInformation,
+				FileEaInformation,
+				FileAccessInformation,
+				FileNameInformation,
+				FileRenameInformation,
+				FileLinkInformation,
+				FileNamesInformation,
+				FileDispositionInformation,
+				FilePositionInformation,
+				FileFullEaInformation,
+				FileModeInformation,
+				FileAlignmentInformation,
+				FileAllInformation,
+				FileAllocationInformation,
+				FileEndOfFileInformation,
+				FileAlternateNameInformation,
+				FileStreamInformation,
+				FilePipeInformation,
+				FilePipeLocalInformation,
+				FilePipeRemoteInformation,
+				FileMailslotQueryInformation,
+				FileMailslotSetInformation,
+				FileCompressionInformation,
+				FileCopyOnWriteInformation,
+				FileCompletionInformation,
+				FileMoveClusterInformation,
+				FileQuotaInformation,
+				FileReparsePointInformation,
+				FileNetworkOpenInformation,
+				FileObjectIdInformation,
+				FileTrackingInformation,
+				FileOleDirectoryInformation,
+				FileContentIndexInformation,
+				FileInheritContentIndexInformation,
+				FileOleInformation,
+				FileMaximumInformation
+			}
+
+			/// <summary>
 			/// Represents volume data. This structure is passed to the
 			/// FSCTL_GET_NTFS_VOLUME_DATA control code.
 			/// </summary>
