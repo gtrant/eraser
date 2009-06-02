@@ -49,58 +49,18 @@ namespace Eraser.Util
 			using (SafeFileHandle streamHandle = stream.SafeFileHandle)
 			{
 				//Allocate the structures
-				KernelApi.NativeMethods.WIN32_STREAM_ID streamID =
-					new KernelApi.NativeMethods.WIN32_STREAM_ID();
-				IntPtr context = IntPtr.Zero;
-				uint bytesRead = 0;
+				NTApi.NativeMethods.FILE_STREAM_INFORMATION[] streams =
+					NTApi.NativeMethods.NtQueryInformationFile(streamHandle);
 
-				//Read the header of the WIN32_STREAM_ID
-				KernelApi.NativeMethods.BackupRead(streamHandle, out streamID,
-					(uint)Marshal.SizeOf(streamID), out bytesRead, false, false,
-					ref context);
-
-				while (bytesRead == Marshal.SizeOf(streamID))
+				foreach (NTApi.NativeMethods.FILE_STREAM_INFORMATION streamInfo in streams)
 				{
-					if (streamID.dwStreamId == KernelApi.NativeMethods.BACKUP_ALTERNATE_DATA)
-					{
-						//Allocate memory to copy the stream name into, then copy the name
-						IntPtr pName = Marshal.AllocHGlobal((int)streamID.dwStreamNameSize);
-						uint nameLength = streamID.dwStreamNameSize / sizeof(char);
-						char[] name = new char[nameLength];
-
-						try
-						{
-							KernelApi.NativeMethods.BackupRead(streamHandle, pName,
-								streamID.dwStreamNameSize, out bytesRead, false, false,
-								ref context);
-							Marshal.Copy(pName, name, 0, (int)nameLength);
-						}
-						finally
-						{
-							Marshal.FreeHGlobal(pName);
-						}
-
-						//Get the name of the stream. The raw value is :NAME:$DATA
-						string streamName = new string(name);
-						result.Add(streamName.Substring(1, streamName.LastIndexOf(':') - 1));
-					}
-
-					//Skip the file contents. Jump to the next header.
-					uint seekLow = 0, seekHigh = 0;
-					KernelApi.NativeMethods.BackupSeek(streamHandle,
-						(uint)(streamID.Size & uint.MaxValue),
-						(uint)(streamID.Size >> (sizeof(uint) * 8)), out seekLow,
-						out seekHigh, ref context);
-
-					//And try to read the header
-					KernelApi.NativeMethods.BackupRead(streamHandle, out streamID,
-						(uint)Marshal.SizeOf(streamID), out bytesRead, false, false,
-						ref context);
+					//Get the name of the stream. The raw value is :NAME:$DATA
+					string streamName = streamInfo.StreamName.Substring(1,
+						streamInfo.StreamName.LastIndexOf(':') - 1);
+					
+					if (streamName.Length != 0)
+						result.Add(streamName);
 				}
-
-				//Free the context
-				KernelApi.NativeMethods.BackupRead(streamHandle, IntPtr.Zero, 0,
-					out bytesRead, true, false, ref context);
 			}
 
 			return result;
