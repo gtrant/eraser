@@ -177,7 +177,7 @@
   <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The file {0} could not be erased because the file is currently in use." xml:space="preserve">
+  <data name="Could not force closure of file \&quot;{0}\&quot; (locked by {1})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
