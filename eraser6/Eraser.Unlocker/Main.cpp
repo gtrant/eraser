@@ -22,7 +22,6 @@
 #include "stdafx.h"
 
 fNtQuerySystemInformation NtQuerySystemInformation = NULL;
-fNtQueryInformationFile NtQueryInformationFile = NULL;
 fNtQueryObject NtQueryObject = NULL;
 
 class DllLoader
@@ -33,8 +32,6 @@ public:
 		HINSTANCE ntDll = LoadLibrary(L"NtDll.dll");
 		NtQuerySystemInformation = reinterpret_cast<fNtQuerySystemInformation>(
 			GetProcAddress(ntDll, "NtQuerySystemInformation"));
-		NtQueryInformationFile = reinterpret_cast<fNtQueryInformationFile>(
-			GetProcAddress(ntDll, "NtQueryInformationFile"));
 		NtQueryObject = reinterpret_cast<fNtQueryObject>(
 			GetProcAddress(ntDll, "NtQueryObject"));
 	}

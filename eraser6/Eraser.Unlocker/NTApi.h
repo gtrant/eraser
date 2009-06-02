@@ -47,11 +47,6 @@ typedef struct _SYSTEM_HANDLES {
 	SYSTEM_HANDLE_INFORMATION Information[1];
 } SYSTEM_HANDLES, *PSYSTEM_HANDLES;
 
-typedef struct _FILE_NAME_INFORMATION {
-	ULONG  FileNameLength;
-	WCHAR  FileName[1];
-} FILE_NAME_INFORMATION, *PFILE_NAME_INFORMATION;
-
 typedef struct _IO_STATUS_BLOCK {
 	union {
 		NTSTATUS Status;
@@ -60,86 +55,6 @@ typedef struct _IO_STATUS_BLOCK {
 
 	ULONG_PTR Information;
 } IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
-
-typedef enum _POOL_TYPE {
-	NonPagedPool,
-	PagedPool,
-	NonPagedPoolMustSucceed,
-	DontUseThisType,
-	NonPagedPoolCacheAligned,
-	PagedPoolCacheAligned,
-	NonPagedPoolCacheAlignedMustS,
-	MaxPoolType,
-	NonPagedPoolSession = 32,
-	PagedPoolSession,
-	NonPagedPoolMustSucceedSession,
-	DontUseThisTypeSession,
-	NonPagedPoolCacheAlignedSession,
-	PagedPoolCacheAlignedSession,
-	NonPagedPoolCacheAlignedMustSSession
-} POOL_TYPE;
-
-typedef struct _OBJECT_TYPE_INFORMATION {
-	UNICODE_STRING  Name;
-	ULONG  ObjectCount;
-	ULONG  HandleCount;
-	ULONG  Reserved1[4];
-	ULONG  PeakObjectCount;
-	ULONG  PeakHandleCount;
-	ULONG  Reserved2[4];
-	ULONG  InvalidAttributes;
-	GENERIC_MAPPING  GenericMapping;
-	ULONG  ValidAccess;
-	UCHAR  Unknown;
-	BOOLEAN  MaintainHandleDatabase;
-	POOL_TYPE  PoolType;
-	ULONG  PagedPoolUsage;
-	ULONG  NonPagedPoolUsage;
-} OBJECT_TYPE_INFORMATION, *POBJECT_TYPE_INFORMATION;
-
-typedef enum _FILE_INFORMATION_CLASS {
-	FileDirectoryInformation=1,
-	FileFullDirectoryInformation,
-	FileBothDirectoryInformation,
-	FileBasicInformation,
-	FileStandardInformation,
-	FileInternalInformation,
-	FileEaInformation,
-	FileAccessInformation,
-	FileNameInformation,
-	FileRenameInformation,
-	FileLinkInformation,
-	FileNamesInformation,
-	FileDispositionInformation,
-	FilePositionInformation,
-	FileFullEaInformation,
-	FileModeInformation,
-	FileAlignmentInformation,
-	FileAllInformation,
-	FileAllocationInformation,
-	FileEndOfFileInformation,
-	FileAlternateNameInformation,
-	FileStreamInformation,
-	FilePipeInformation,
-	FilePipeLocalInformation,
-	FilePipeRemoteInformation,
-	FileMailslotQueryInformation,
-	FileMailslotSetInformation,
-	FileCompressionInformation,
-	FileCopyOnWriteInformation,
-	FileCompletionInformation,
-	FileMoveClusterInformation,
-	FileQuotaInformation,
-	FileReparsePointInformation,
-	FileNetworkOpenInformation,
-	FileObjectIdInformation,
-	FileTrackingInformation,
-	FileOleDirectoryInformation,
-	FileContentIndexInformation,
-	FileInheritContentIndexInformation,
-	FileOleInformation,
-	FileMaximumInformation
-} FILE_INFORMATION_CLASS, *PFILE_INFORMATION_CLASS;
 
 typedef enum _SYSTEM_INFORMATION_CLASS {
 	SystemBasicInformation = 0,
@@ -168,13 +83,6 @@ typedef NTSTATUS (__stdcall *fNtQuerySystemInformation)(
 	__in       ULONG,
 	__out_opt  PULONG);
 
-typedef NTSTATUS (__stdcall *fNtQueryInformationFile)(
-	IN HANDLE  FileHandle,
-	OUT PIO_STATUS_BLOCK  IoStatusBlock,
-	OUT PVOID  FileInformation,
-	IN ULONG  Length,
-	IN FILE_INFORMATION_CLASS FileInformationClass);
-
 typedef NTSTATUS (__stdcall *fNtQueryObject)(
 	IN HANDLE   OPTIONAL,
 	IN OBJECT_INFORMATION_CLASS  ,
@@ -183,5 +91,4 @@ typedef NTSTATUS (__stdcall *fNtQueryObject)(
 	OUT PULONG   OPTIONAL);
 
 extern fNtQuerySystemInformation NtQuerySystemInformation;
-extern fNtQueryInformationFile NtQueryInformationFile;
 extern fNtQueryObject NtQueryObject;
