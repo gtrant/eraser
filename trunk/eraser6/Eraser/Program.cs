@@ -1438,7 +1438,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			get
 			{
 				return settings["IntegrateWithShell"] == null ?
-					true : Convert.ToBoolean(settings["IntegrateWithShell"]);
+					true : Convert.ToBoolean(settings["IntegrateWithShell"],
+						CultureInfo.InvariantCulture);
 			}
 			set
 			{
@@ -1455,7 +1456,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			get
 			{
 				return settings["HideWhenMinimised"] == null ?
-					true : Convert.ToBoolean(settings["HideWhenMinimised"]);
+					true : Convert.ToBoolean(settings["HideWhenMinimised"],
+						CultureInfo.InvariantCulture);
 			}
 			set
 			{
@@ -1472,7 +1474,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			get
 			{
 				return settings["ClearCompletedTasks"] == null ?
-					true : Convert.ToBoolean(settings["ClearCompletedTasks"]);
+					true : Convert.ToBoolean(settings["ClearCompletedTasks"],
+						CultureInfo.InvariantCulture);
 			}
 			set
 			{

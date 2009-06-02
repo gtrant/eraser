@@ -25,6 +25,7 @@ using System.Text;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Eraser.Util;
+using System.Globalization;
 
 namespace Eraser.Manager
 {
@@ -283,7 +284,8 @@ namespace Eraser.Manager
 			get
 			{
 				return settings["EraseLockedFilesOnRestart"] == null ? true :
-					Convert.ToBoolean(settings["EraseLockedFilesOnRestart"]);
+					Convert.ToBoolean(settings["EraseLockedFilesOnRestart"],
+						CultureInfo.InvariantCulture);
 			}
 			set
 			{
@@ -300,7 +302,8 @@ namespace Eraser.Manager
 			get
 			{
 				return settings["ConfirmEraseOnRestart"] == null ?
-					true : Convert.ToBoolean(settings["ConfirmEraseOnRestart"]);
+					true : Convert.ToBoolean(settings["ConfirmEraseOnRestart"],
+						CultureInfo.InvariantCulture);
 			}
 			set
 			{
@@ -316,7 +319,8 @@ namespace Eraser.Manager
 			get
 			{
 				return settings["ExecuteMissedTasksImmediately"] == null ?
-					true : Convert.ToBoolean(settings["ExecuteMissedTasksImmediately"]);
+					true : Convert.ToBoolean(settings["ExecuteMissedTasksImmediately"],
+						CultureInfo.InvariantCulture);
 			}
 			set
 			{
@@ -335,7 +339,8 @@ namespace Eraser.Manager
 			get
 			{
 				return settings["PlausibleDeniability"] == null ? false :
-					Convert.ToBoolean(settings["PlausibleDeniability"]);
+					Convert.ToBoolean(settings["PlausibleDeniability"],
+						CultureInfo.InvariantCulture);
 			}
 			set
 			{
