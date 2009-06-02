@@ -43,12 +43,6 @@ namespace Eraser
 
 		private class EraserToolStripRenderer : ToolStripRenderer
 		{
-			protected override void Initialize(ToolStrip toolStrip)
-			{
-				base.Initialize(toolStrip);
-				owner = toolStrip;
-			}
-
 			protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
 			{
 				Graphics g = e.Graphics;
@@ -86,11 +80,6 @@ namespace Eraser
 			/// The colour of the menu bar text.
 			/// </summary>
 			private readonly Color TextColour = Color.White;
-
-			/// <summary>
-			/// The toolstrip using this renderer.
-			/// </summary>
-			private ToolStrip owner;
 		}
 	}
 }
