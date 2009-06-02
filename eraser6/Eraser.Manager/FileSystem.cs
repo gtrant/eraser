@@ -131,8 +131,8 @@ namespace Eraser.Manager
 		/// <summary>
 		/// Writes a file for plausible deniability over the current stream.
 		/// </summary>
-		/// <param name="fileStream">The stream to write the data to.</param>
-		protected void CopyPlausibleDeniabilityFile(Stream destFileStream)
+		/// <param name="stream">The stream to write the data to.</param>
+		protected void CopyPlausibleDeniabilityFile(Stream stream)
 		{
 			//Get the template file to copy
 			FileInfo shadowFileInfo;
@@ -170,7 +170,7 @@ namespace Eraser.Manager
 			long amountToCopy = Math.Min(4 * 1024 * 1024, shadowFileInfo.Length);
 			using (FileStream shadowFileStream = shadowFileInfo.OpenRead())
 			{
-				while (destFileStream.Position < amountToCopy)
+				while (stream.Position < amountToCopy)
 				{
 					byte[] buf = new byte[524288];
 					int bytesRead = shadowFileStream.Read(buf, 0, buf.Length);
@@ -180,8 +180,8 @@ namespace Eraser.Manager
 						break;
 
 					//Dump the read contents onto the file to be deleted
-					destFileStream.Write(buf, 0,
-						(int)Math.Min(bytesRead, amountToCopy - destFileStream.Position));
+					stream.Write(buf, 0,
+						(int)Math.Min(bytesRead, amountToCopy - stream.Position));
 				}
 			}
 		}
