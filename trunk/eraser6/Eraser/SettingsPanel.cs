@@ -199,7 +199,7 @@ namespace Eraser
 			{
 				defaultsList.Add(S._("User interface language"));
 				foreach (Language lang in uiLanguage.Items)
-					if (lang == CultureInfo.CurrentUICulture)
+					if ((CultureInfo)lang == CultureInfo.CurrentUICulture)
 						uiLanguage.SelectedItem = lang;
 			}
 			if (eraseFilesMethod.SelectedIndex == -1)
