@@ -32,12 +32,12 @@ namespace Unlocker {
 		std::auto_ptr<SYSTEM_HANDLES> handlesList(new SYSTEM_HANDLES);
 		{
 			DWORD bufferSize = 0;
-			NTSTATUS status = NtQuerySystemInformation(SystemHandleInformation,
-				handlesList.get(), sizeof(SYSTEM_HANDLES), &bufferSize);
+			NtQuerySystemInformation(SystemHandleInformation, handlesList.get(),
+				sizeof(SYSTEM_HANDLES), &bufferSize);
 
 			//Then get the whole list
 			handlesList.reset(reinterpret_cast<PSYSTEM_HANDLES>(new char[bufferSize]));
-			status = NtQuerySystemInformation(SystemHandleInformation, handlesList.get(),
+			NtQuerySystemInformation(SystemHandleInformation, handlesList.get(),
 				bufferSize, &bufferSize);
 
 			if (bufferSize == 0)

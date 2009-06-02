@@ -44,7 +44,7 @@ namespace Eraser.DefaultPlugins
 					method = ErasureMethodManager.GetInstance(
 						ManagerLibrary.Settings.DefaultFileErasureMethod);
 				}
-				catch (Exception)
+				catch (FatalException)
 				{
 				}
 

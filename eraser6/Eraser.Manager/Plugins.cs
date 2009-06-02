@@ -85,7 +85,7 @@ namespace Eraser.Manager.Plugin
 		/// <summary>
 		/// Event callback executor for the OnPluginLoad Event
 		/// </summary>
-		protected internal void OnPluginLoaded(object sender, PluginLoadedEventArgs e)
+		internal void OnPluginLoaded(object sender, PluginLoadedEventArgs e)
 		{
 			if (PluginLoaded != null)
 				PluginLoaded(sender, e);

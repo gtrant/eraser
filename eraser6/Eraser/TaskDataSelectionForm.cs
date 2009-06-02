@@ -146,29 +146,31 @@ namespace Eraser
 					method.SelectedIndex = 0;
 
 				//Then the data to be erased.
-				if (value is FileTarget)
+				FileTarget fileTarget = value as FileTarget;
+				FolderTarget folderTarget = value as FolderTarget;
+				UnusedSpaceTarget unusedSpaceTarget = value as UnusedSpaceTarget;
+
+				if (fileTarget != null)
 				{
 					file.Checked = true;
-					filePath.Text = ((FileTarget)value).Path;
+					filePath.Text = fileTarget.Path;
 				}
-				else if (value is FolderTarget)
+				else if (folderTarget != null)
 				{
 					folder.Checked = true;
-					FolderTarget folderTask = (FolderTarget)value;
 
-					folderPath.Text = folderTask.Path;
-					folderInclude.Text = folderTask.IncludeMask;
-					folderExclude.Text = folderTask.ExcludeMask;
-					folderDelete.Checked = folderTask.DeleteIfEmpty;
+					folderPath.Text = folderTarget.Path;
+					folderInclude.Text = folderTarget.IncludeMask;
+					folderExclude.Text = folderTarget.ExcludeMask;
+					folderDelete.Checked = folderTarget.DeleteIfEmpty;
 				}
-				else if (value is UnusedSpaceTarget)
+				else if (unusedSpaceTarget != null)
 				{
 					unused.Checked = true;
-					UnusedSpaceTarget unusedSpaceTask = (UnusedSpaceTarget)value;
 					foreach (object item in unusedDisk.Items)
-						if (((DriveItem)item).Drive == unusedSpaceTask.Drive)
+						if (((DriveItem)item).Drive == unusedSpaceTarget.Drive)
 							unusedDisk.SelectedItem = item;
-					unusedClusterTips.Checked = unusedSpaceTask.EraseClusterTips;
+					unusedClusterTips.Checked = unusedSpaceTarget.EraseClusterTips;
 				}
 				else if (value is RecycleBinTarget)
 				{
