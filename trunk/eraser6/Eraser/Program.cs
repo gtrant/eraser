@@ -1295,7 +1295,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					object rawResult = key.GetValue(setting, null);
 
 					//Check if it is a serialised object
-					if (rawResult is byte[])
+					byte[] resultArray = rawResult as byte[];
+					if (resultArray != null)
 					{
 						using (MemoryStream stream = new MemoryStream((byte[])rawResult))
 							try

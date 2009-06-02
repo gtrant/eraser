@@ -132,7 +132,7 @@ namespace Eraser.Manager
 		/// Writes a file for plausible deniability over the current stream.
 		/// </summary>
 		/// <param name="stream">The stream to write the data to.</param>
-		protected void CopyPlausibleDeniabilityFile(Stream stream)
+		protected static void CopyPlausibleDeniabilityFile(Stream stream)
 		{
 			//Get the template file to copy
 			FileInfo shadowFileInfo;

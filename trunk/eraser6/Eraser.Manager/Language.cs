@@ -92,18 +92,25 @@ namespace Eraser.Manager
 		/// </summary>
 		/// <param name="lang">The language object being converted.</param>
 		/// <returns>A CultureInfo object, containing the data for the given language.</returns>
-		public static implicit operator CultureInfo(Language lang)
+		public static explicit operator CultureInfo(Language lang)
 		{
 			return lang.culture;
 		}
 
 		public override bool Equals(object obj)
 		{
-			CultureInfo rhs = obj as CultureInfo;
-			if (rhs != null)
-				return rhs.Equals(culture);
+			CultureInfo cultureInfo = obj as CultureInfo;
+			Language language = obj as Language;
+			if (cultureInfo != null)
+				return Equals(cultureInfo);
+			else if (language != null)
+				return Equals(language.culture);
+			return false;
+		}
 
-			return base.Equals(obj);
+		public bool Equals(CultureInfo other)
+		{
+			return culture == other;
 		}
 
 		public static bool operator ==(Language language, CultureInfo culture)
@@ -111,7 +118,17 @@ namespace Eraser.Manager
 			return language.Equals(culture);
 		}
 
+		public static bool operator ==(CultureInfo culture, Language language)
+		{
+			return language.Equals(culture);
+		}
+
 		public static bool operator !=(Language language, CultureInfo culture)
+		{
+			return !language.Equals(culture);
+		}
+
+		public static bool operator !=(CultureInfo culture, Language language)
 		{
 			return !language.Equals(culture);
 		}
