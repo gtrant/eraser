@@ -44,11 +44,10 @@ namespace Eraser.Util
 		public static ICollection<string> GetADSes(FileInfo info)
 		{
 			List<string> result = new List<string>();
-			using (FileStream stream = new FileStream(info.FullName, FileMode.Open,
+			using (FileStream stream = new StreamInfo(info.FullName).Open(FileMode.Open,
 				FileAccess.Read, FileShare.ReadWrite))
+			using (SafeFileHandle streamHandle = stream.SafeFileHandle)
 			{
-				SafeFileHandle streamHandle = stream.SafeFileHandle;
-
 				//Allocate the structures
 				KernelApi.NativeMethods.WIN32_STREAM_ID streamID =
 					new KernelApi.NativeMethods.WIN32_STREAM_ID();
