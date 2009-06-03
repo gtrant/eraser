@@ -51,17 +51,9 @@ namespace Eraser.DefaultPlugins
 			ErasureMethodManager.Register(new HMGIS5Baseline());		//1 pass
 			ErasureMethodManager.Register(new Pseudorandom());			//1 pass
 			EraseCustom.RegisterAll();
+			ErasureMethodManager.Register(new FirstLast16KB());
 
 			PrngManager.Register(new RngCrypto());
-
-			//Done last
-			try
-			{
-				ErasureMethodManager.Register(new FirstLast16KB());
-			}
-			catch (Exception)
-			{
-			}
 		}
 
 		public void Dispose()
