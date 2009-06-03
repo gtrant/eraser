@@ -454,7 +454,8 @@ namespace Eraser
 			cancelTaskToolStripMenuItem.Enabled = aTaskExecuting;
 
 			editTaskToolStripMenuItem.Enabled = scheduler.SelectedItems.Count == 1 &&
-				!((Task)scheduler.SelectedItems[0].Tag).Executing;
+				!((Task)scheduler.SelectedItems[0].Tag).Executing &&
+				!((Task)scheduler.SelectedItems[0].Tag).Queued;
 			deleteTaskToolStripMenuItem.Enabled = !aTaskExecuting;
 		}
 
@@ -539,8 +540,12 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void editTaskToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (scheduler.SelectedItems.Count != 1)
+			if (scheduler.SelectedItems.Count != 1 ||
+				((Task)scheduler.SelectedItems[0].Tag).Executing ||
+				((Task)scheduler.SelectedItems[0].Tag).Queued)
+			{
 				return;
+			}
 
 			//Make sure that the task is not being executed, or else. This can
 			//be done in the Client library, but there will be no effect on the

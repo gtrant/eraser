@@ -96,6 +96,15 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
+		/// The owner of this schedule item.
+		/// </summary>
+		public Task Owner
+		{
+			get;
+			internal set;
+		}
+
+		/// <summary>
 		/// Populates a SerializationInfo with the data needed to serialize the
 		/// target object.
 		/// </summary>
@@ -185,8 +194,8 @@ namespace Eraser.Manager
 			weeklySchedule = (DaysOfWeek)info.GetValue("WeeklySchedule", typeof(DaysOfWeek));
 			monthlySchedule = (int)info.GetValue("MonthlySchedule", typeof(int));
 
-			lastRun = (DateTime)info.GetDateTime("LastRun");
-			nextRun = (DateTime)info.GetDateTime("NextRun");
+			LastRun = (DateTime)info.GetDateTime("LastRun");
+			NextRunCache = (DateTime)info.GetDateTime("NextRun");
 		}
 
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
@@ -197,8 +206,8 @@ namespace Eraser.Manager
 			info.AddValue("ExecutionTime", executionTime);
 			info.AddValue("WeeklySchedule", weeklySchedule);
 			info.AddValue("MonthlySchedule", monthlySchedule);
-			info.AddValue("LastRun", lastRun);
-			info.AddValue("NextRun", nextRun);
+			info.AddValue("LastRun", LastRun);
+			info.AddValue("NextRun", NextRunCache);
 		}
 		#endregion
 
@@ -215,7 +224,12 @@ namespace Eraser.Manager
 		public RecurringScheduleUnit ScheduleType
 		{
 			get { return type; }
-			set { type = value; }
+			set
+			{
+				type = value;
+				if (Owner != null)
+					Owner.OnTaskEdited();
+			}
 		}
 
 		/// <summary>
@@ -240,6 +254,8 @@ namespace Eraser.Manager
 						"be greater than one"));
 
 				frequency = value;
+				if (Owner != null)
+					Owner.OnTaskEdited();
 			}
 		}
 
@@ -249,7 +265,12 @@ namespace Eraser.Manager
 		public DateTime ExecutionTime
 		{
 			get { return executionTime; }
-			set { executionTime = value; }
+			set
+			{
+				executionTime = value;
+				if (Owner != null)
+					Owner.OnTaskEdited();
+			}
 		}
 
 		/// <summary>
@@ -274,6 +295,8 @@ namespace Eraser.Manager
 						"least one day where the task should be run."));
 
 				weeklySchedule = value;
+				if (Owner != null)
+					Owner.OnTaskEdited();
 			}
 		}
 
@@ -291,7 +314,13 @@ namespace Eraser.Manager
 
 				return monthlySchedule;
 			}
-			set { monthlySchedule = value; }
+			set
+			{
+				monthlySchedule = value;
+
+				if (Owner != null)
+					Owner.OnTaskEdited();
+			}
 		}
 
 		/// <summary>
@@ -300,7 +329,8 @@ namespace Eraser.Manager
 		/// </summary>
 		public DateTime LastRun
 		{
-			get { return lastRun; }
+			get;
+			private set;
 		}
 
 		/// <summary>
@@ -317,9 +347,8 @@ namespace Eraser.Manager
 				DateTime nextRun = LastRun;
 				if (nextRun == DateTime.MinValue)
 					nextRun = DateTime.Now;
-				nextRun = nextRun.AddHours(executionTime.Hour - nextRun.Hour);
-				nextRun = nextRun.AddMinutes(executionTime.Minute - nextRun.Minute);
-				nextRun = nextRun.AddSeconds(executionTime.Second - nextRun.Second);
+				nextRun = new DateTime(nextRun.Year, nextRun.Month, nextRun.Day, executionTime.Hour,
+					executionTime.Minute, executionTime.Second);
 
 				switch (ScheduleType)
 				{
@@ -338,8 +367,8 @@ namespace Eraser.Manager
 					case RecurringScheduleUnit.Weekdays:
 					{
 						while (nextRun < DateTime.Now ||
-							lastRun.DayOfWeek == DayOfWeek.Saturday ||
-							lastRun.DayOfWeek == DayOfWeek.Sunday)
+							LastRun.DayOfWeek == DayOfWeek.Saturday ||
+							LastRun.DayOfWeek == DayOfWeek.Sunday)
 							nextRun = nextRun.AddDays(1);
 						break;
 					}
@@ -397,7 +426,7 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				return lastRun != DateTime.MinValue && NextRun != nextRun;
+				return LastRun != DateTime.MinValue && NextRun != NextRunCache;
 			}
 		}
 
@@ -421,8 +450,8 @@ namespace Eraser.Manager
 		/// <param name="lastRun">The last time the task was run.</param>
 		internal void Reschedule(DateTime lastRun)
 		{
-			this.lastRun = lastRun;
-			nextRun = NextRun;
+			LastRun = lastRun;
+			NextRunCache = NextRun;
 		}
 
 		private RecurringScheduleUnit type;
@@ -431,8 +460,11 @@ namespace Eraser.Manager
 		private DaysOfWeek weeklySchedule;
 		private int monthlySchedule;
 
-		private DateTime lastRun;
-		private DateTime nextRun;
+		/// <summary>
+		/// The next time the task is scheduled to run - this is cached from the previous
+		/// calculation of the next run time to determine if the task's schedule was missed
+		/// </summary>
+		private DateTime NextRunCache;
 	}
 
 	/// <summary>

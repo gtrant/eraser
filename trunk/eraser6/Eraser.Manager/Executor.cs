@@ -70,8 +70,18 @@ namespace Eraser.Manager
 		/// <summary>
 		/// Removes the given task from the execution queue.
 		/// </summary>
+		/// <remarks>If the task given runs a recurring schedule, the task will only
+		/// remove requested tasks and not the scheduled ones</remarks>
 		/// <param name="task">The task to cancel.</param>
 		public abstract void UnqueueTask(Task task);
+
+		/// <summary>
+		/// Gets whether a task is currently queued for execution, outside of the
+		/// scheduled time.
+		/// </summary>
+		/// <param name="task">The task to query.</param>
+		/// <returns>True if the task is currently queued, false otherwise.</returns>
+		internal abstract bool IsTaskQueued(Task task);
 
 		/// <summary>
 		/// Queues all tasks in the task list which are meant for restart execution.
