@@ -159,10 +159,9 @@ namespace Eraser.Util
 		{
 			IntPtr hDC = e.Graphics.GetHdc();
 			Rectangle rect = e.AffectedBounds;
-			rect.Width = GutterWidth;
 			rect.Inflate(-2, -2);
 			rect.Offset(1, 1);
-			rect.Size = new Size(rect.Width, rect.Height + 1);
+			rect.Size = new Size(GutterWidth, rect.Height + 1);
 
 			NativeMethods.DrawThemeBackground(hTheme, hDC,
 				(int)NativeMethods.MENUPARTS.MENU_POPUPGUTTER, 0, ref rect, ref rect);
@@ -174,7 +173,7 @@ namespace Eraser.Util
 		{
 			Rectangle rect = Rectangle.Truncate(e.Graphics.VisibleClipBounds);
 			rect.Inflate(-1, 0);
-			rect.Offset(1, 0);
+			rect.Offset(2, 0);
 			IntPtr hDC = e.Graphics.GetHdc();
 
 			int itemState = (int)(e.Item.Selected ?
@@ -208,10 +207,13 @@ namespace Eraser.Util
 				return;
 			}
 
-			Rectangle imgRect = e.ImageRectangle;
-			imgRect.Inflate(4, 3);
-			imgRect.Offset(1, 0);
-			Rectangle bgRect = imgRect;
+			//Create the rectangle for the checkmark:
+			// 1. Offset by 2px
+			// 2. Inflate by (4, 3)
+			// 3. Increase width by 1px to fall on even x-coordinate (correction for odd pixel offset)
+			Rectangle imgRect = new Rectangle(e.ImageRectangle.Left + 2 - 4,
+				e.ImageRectangle.Top - 3,
+				e.ImageRectangle.Width + 4 * 2 + 1, e.ImageRectangle.Height + 3 * 2);
 
 			IntPtr hDC = e.Graphics.GetHdc();
 			ToolStripMenuItem item = (ToolStripMenuItem)e.Item;
@@ -220,7 +222,7 @@ namespace Eraser.Util
 				NativeMethods.POPUPCHECKBACKGROUNDSTATES.MCB_DISABLED);
 			NativeMethods.DrawThemeBackground(hTheme, hDC,
 				(int)NativeMethods.MENUPARTS.MENU_POPUPCHECKBACKGROUND, bgState,
-				ref bgRect, ref bgRect);
+				ref imgRect, ref imgRect);
 
 			int checkState = (int)(item.Checked ?
 				(item.Enabled ? NativeMethods.POPUPCHECKSTATES.MC_CHECKMARKNORMAL :
@@ -241,7 +243,7 @@ namespace Eraser.Util
 					NativeMethods.POPUPITEMSTATES.MPI_DISABLED));
 
 			Rectangle newRect = e.TextRectangle;
-			newRect.Offset(1, 0);
+			newRect.Offset(2, 0);
 			e.TextRectangle = newRect;
 			Rectangle rect = new Rectangle(e.TextRectangle.Left, 0,
 				e.Item.Width - e.TextRectangle.Left, e.Item.Height);
@@ -296,7 +298,7 @@ namespace Eraser.Util
 				NativeMethods.GetThemePartSize(hTheme, IntPtr.Zero,
 					(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, 0,
 					IntPtr.Zero, NativeMethods.THEMESIZE.TS_TRUE, ref checkSize);
-				return 2 * checkSize.Width;
+				return 2 * checkSize.Width + margins.Left + margins.Width - 1;
 			}
 		}
 
