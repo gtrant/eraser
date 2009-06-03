@@ -46,6 +46,7 @@ namespace Eraser.Manager
 			Targets = (ErasureTargetsCollection)info.GetValue("Targets", typeof(ErasureTargetsCollection));
 			Targets.Owner = this;
 			Log = (Logger)info.GetValue("Log", typeof(Logger));
+			Canceled = false;
 
 			Schedule schedule = (Schedule)info.GetValue("Schedule", typeof(Schedule));
 			if (schedule.GetType() == Schedule.RunNow.GetType())
@@ -79,6 +80,7 @@ namespace Eraser.Manager
 			Name = string.Empty;
 			Targets = new ErasureTargetsCollection(this);
 			Schedule = Schedule.RunNow;
+			Canceled = false;
 			Log = new Logger();
 		}
 
@@ -137,7 +139,13 @@ namespace Eraser.Manager
 		/// if the queue it is in is an explicit request, i.e will run when the
 		/// executor is idle.
 		/// </summary>
-		public bool Queued { get; internal set; }
+		public bool Queued
+		{
+			get
+			{
+				return Executor.IsTaskQueued(this);
+			}
+		}
 
 		/// <summary>
 		/// Gets whether the task has been cancelled from execution.
@@ -152,14 +160,40 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The schedule for running the task.
 		/// </summary>
-		public Schedule Schedule { get; set; }
+		public Schedule Schedule
+		{
+			get
+			{
+				return schedule;
+			}
+			set
+			{
+				if (schedule.Owner != null)
+					throw new ArgumentException(S._("The schedule provided can only " +
+						"belong to one task at a time"));
+
+				if (schedule is RecurringSchedule)
+					((RecurringSchedule)schedule).Owner = null;
+				schedule = value;
+				if (schedule is RecurringSchedule)
+					((RecurringSchedule)schedule).Owner = this;
+				OnTaskEdited();
+			}
+		}
 
 		/// <summary>
 		/// The log entries which this task has accumulated.
 		/// </summary>
 		public Logger Log { get; private set; }
 
+		private Schedule schedule;
+
 		#region Events
+		/// <summary>
+		/// The task has been edited.
+		/// </summary>
+		public EventHandler<TaskEventArgs> TaskEdited { get; set; }
+
 		/// <summary>
 		/// The start of the execution of a task.
 		/// </summary>
@@ -174,6 +208,15 @@ namespace Eraser.Manager
 		/// The completion of the execution of a task.
 		/// </summary>
 		public EventHandler<TaskEventArgs> TaskFinished { get; set; }
+
+		/// <summary>
+		/// Broadcasts the task edited event.
+		/// </summary>
+		internal void OnTaskEdited()
+		{
+			if (TaskEdited != null)
+				TaskEdited(this, new TaskEventArgs(this));
+		}
 
 		/// <summary>
 		/// Broadcasts the task execution start event.
@@ -612,7 +655,7 @@ namespace Eraser.Manager
 					{
 						result.AddRange(GetFiles(dir));
 					}
-					catch (Exception e)
+					catch (DirectoryNotFoundException e)
 					{
 						//Ignore, but log.
 						Task.Log.LastSessionEntries.Add(new LogEntry(S._("Could not erase {0} because {1}",
@@ -719,11 +762,12 @@ namespace Eraser.Manager
 			{
 				foreach (FileSystemInfo fsInfo in info.GetFileSystemInfos())
 				{
-					if (fsInfo is FileInfo)
+					FileInfo fileInfo = fsInfo as FileInfo;
+					if (fileInfo != null)
 					{
-						totalSize += ((FileInfo)fsInfo).Length;
-						GetPathADSes(paths, out totalSize, fsInfo.FullName);
-						paths.Add(fsInfo.FullName);
+						totalSize += fileInfo.Length;
+						GetPathADSes(paths, out totalSize, fileInfo.FullName);
+						paths.Add(fileInfo.FullName);
 					}
 					else
 						GetRecyclerFiles((DirectoryInfo)fsInfo, ref paths, ref totalSize);

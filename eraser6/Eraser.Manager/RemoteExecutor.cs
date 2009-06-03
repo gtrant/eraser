@@ -395,6 +395,11 @@ namespace Eraser.Manager
 			throw new NotImplementedException();
 		}
 
+		internal override bool IsTaskQueued(Task task)
+		{
+			throw new NotImplementedException();
+		}
+
 		public override ExecutorTasksCollection Tasks { get; protected set; }
 
 		/// <summary>

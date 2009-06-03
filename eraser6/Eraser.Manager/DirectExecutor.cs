@@ -44,6 +44,8 @@ namespace Eraser.Manager
 	{
 		public DirectExecutor()
 		{
+			TaskAdded += OnTaskAdded;
+			TaskDeleted += OnTaskDeleted;
 			Tasks = new DirectExecutorTasksCollection(this);
 			thread = new Thread(Main);
 		}
@@ -70,10 +72,6 @@ namespace Eraser.Manager
 		{
 			lock (tasksLock)
 			{
-				//Set the task variable to indicate that the task is already
-				//waiting to be executed.
-				task.Queued = true;
-
 				//Queue the task to be run immediately.
 				DateTime executionTime = DateTime.Now;
 				if (!scheduledTasks.ContainsKey(executionTime))
@@ -116,14 +114,63 @@ namespace Eraser.Manager
 			lock (tasksLock)
 				for (int i = 0; i != scheduledTasks.Count; ++i)
 					for (int j = 0; j < scheduledTasks.Values[i].Count; ++j)
-						if (scheduledTasks.Values[i][j] == task)
+					{
+						Task currentTask = scheduledTasks.Values[i][j];
+						if (currentTask == task &&
+							(!(currentTask.Schedule is RecurringSchedule) ||
+								((RecurringSchedule)currentTask.Schedule).NextRun != scheduledTasks.Keys[i]))
 						{
 							scheduledTasks.Values[i].RemoveAt(i);
-
-							if (scheduledTasks.Values[i].Count == 0)
-								scheduledTasks.RemoveAt(i);
-							break;
 						}
+					}
+		}
+
+		internal override bool IsTaskQueued(Task task)
+		{
+			lock (tasksLock)
+				foreach (KeyValuePair<DateTime, List<Task>> tasks in scheduledTasks)
+					foreach (Task i in tasks.Value)
+						if (task == i)
+							if (task.Schedule is RecurringSchedule)
+							{
+								if (((RecurringSchedule)task.Schedule).NextRun != tasks.Key)
+									return true;
+							}
+							else
+								return true;
+
+			return false;
+		}
+
+		private void OnTaskAdded(object sender, TaskEventArgs e)
+		{
+			e.Task.TaskEdited += OnTaskEdited;
+		}
+
+		private void OnTaskEdited(object sender, TaskEventArgs e)
+		{
+			//Find all schedule entries containing the task - since the user cannot make
+			//edits to the task when it is queued (only if it is scheduled) remove
+			//all task references and add them back
+			lock (tasksLock)
+				for (int i = 0; i != scheduledTasks.Count; ++i)
+					for (int j = 0; j < scheduledTasks.Values[i].Count; )
+					{
+						Task currentTask = scheduledTasks.Values[i][j];
+						if (currentTask == e.Task)
+							scheduledTasks.Values[i].RemoveAt(j);
+						else
+							j++;
+					}
+
+			//Then reschedule the task
+			if (e.Task.Schedule is RecurringSchedule)
+				ScheduleTask(e.Task);
+		}
+
+		private void OnTaskDeleted(object sender, TaskEventArgs e)
+		{
+			e.Task.TaskEdited -= OnTaskEdited;
 		}
 
 		public override ExecutorTasksCollection Tasks { get; protected set; }
@@ -143,18 +190,34 @@ namespace Eraser.Manager
 				Task task = null;
 				lock (tasksLock)
 				{
-					if (scheduledTasks.Count != 0 && scheduledTasks.Values[0].Count != 0 &&
-						scheduledTasks.Keys[0] <= DateTime.Now)
-					{
-						List<Task> tasks = scheduledTasks.Values[0];
-						task = tasks[0];
-						tasks.RemoveAt(0);
-
-						//Remove the entry from the sorted list if the list of tasks
-						//with that one time to run has all been executed
-						if (tasks.Count == 0)
+					while (scheduledTasks.Count != 0)
+						if (scheduledTasks.Values[0].Count == 0)
+						{
+							//Clean all all time slots at the start of the queue which are
+							//empty
 							scheduledTasks.RemoveAt(0);
-					}
+						}
+						else
+						{
+							if (scheduledTasks.Keys[0] <= DateTime.Now)
+							{
+								List<Task> tasks = scheduledTasks.Values[0];
+								task = tasks[0];
+								tasks.RemoveAt(0);
+							}
+
+							//Do schedule queue maintenance: clean up all empty timeslots
+							if (task == null)
+							{
+								for (int i = 0; i < scheduledTasks.Count; )
+									if (scheduledTasks.Values[i].Count == 0)
+										scheduledTasks.RemoveAt(i);
+									else
+										++i;
+							}
+
+							break;
+						}
 				}
 
 				if (task != null)
@@ -169,7 +232,6 @@ namespace Eraser.Manager
 							ThreadExecutionState.SystemRequired);
 
 						//Broadcast the task started event.
-						task.Queued = false;
 						task.Canceled = false;
 						task.OnTaskStarted(new TaskEventArgs(task));
 						OnTaskProcessing(new TaskEventArgs(task));
@@ -185,10 +247,16 @@ namespace Eraser.Manager
 							{
 								progress.Event.CurrentTarget = target;
 								++progress.Event.CurrentTargetIndex;
-								if (target is UnusedSpaceTarget)
-									EraseUnusedSpace(task, (UnusedSpaceTarget)target, progress);
-								else if (target is FileSystemObjectTarget)
-									EraseFilesystemObject(task, (FileSystemObjectTarget)target, progress);
+
+								UnusedSpaceTarget unusedSpaceTarget =
+									target as UnusedSpaceTarget;
+								FileSystemObjectTarget fileSystemObjectTarget =
+									target as FileSystemObjectTarget;
+
+								if (unusedSpaceTarget != null)
+									EraseUnusedSpace(task, unusedSpaceTarget, progress);
+								else if (fileSystemObjectTarget != null)
+									EraseFilesystemObject(task, fileSystemObjectTarget, progress);
 								else
 									throw new ArgumentException(S._("Unknown erasure target."));
 							}
@@ -694,7 +762,7 @@ namespace Eraser.Manager
 					info.Attributes = FileAttributes.Normal;
 					EraseFileClusterTips(files[i], method);
 				}
-				catch (Exception e)
+				catch (IOException e)
 				{
 					task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
 						"cluster tips erased. The error returned was: {1}", files[i],
