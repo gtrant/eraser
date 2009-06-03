@@ -141,18 +141,12 @@ namespace Eraser.Util
 			Rectangle rect = e.AffectedBounds;
 
 			if (NativeMethods.IsThemeBackgroundPartiallyTransparent(hTheme,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPBACKGROUND, 0))
+				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM, 0))
 			{
-				NativeMethods.DrawThemeParentBackground(control.Handle, hDC, ref rect);
+				NativeMethods.DrawThemeBackground(hTheme, hDC,
+					(int)NativeMethods.MENUPARTS.MENU_POPUPBACKGROUND, 0, ref rect, ref rect);
 			}
-			NativeMethods.DrawThemeBackground(hTheme, hDC,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPBACKGROUND, 0, ref rect, ref rect);
-
-			if (NativeMethods.IsThemeBackgroundPartiallyTransparent(hTheme,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPBORDERS, 0))
-			{
-				NativeMethods.DrawThemeParentBackground(control.Handle, hDC, ref rect);
-			}
+			
 			NativeMethods.DrawThemeBackground(hTheme, hDC, (int)
 				NativeMethods.MENUPARTS.MENU_POPUPBORDERS, 0, ref rect, ref rect);
 
@@ -167,11 +161,6 @@ namespace Eraser.Util
 			rect.Inflate(-1, -1);
 			rect.Offset(1, 0);
 
-			if (NativeMethods.IsThemeBackgroundPartiallyTransparent(hTheme,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPGUTTER, 0))
-			{
-				NativeMethods.DrawThemeParentBackground(control.Handle, hDC, ref rect);
-			}
 			NativeMethods.DrawThemeBackground(hTheme, hDC,
 				(int)NativeMethods.MENUPARTS.MENU_POPUPGUTTER, 0, ref rect, ref rect);
 
@@ -233,11 +222,6 @@ namespace Eraser.Util
 			int checkState = (int)(item.Checked ?
 				(item.Enabled ? NativeMethods.POPUPCHECKSTATES.MC_CHECKMARKNORMAL :
 					NativeMethods.POPUPCHECKSTATES.MC_CHECKMARKDISABLED) : 0);
-			if (NativeMethods.IsThemeBackgroundPartiallyTransparent(hTheme,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, checkState))
-			{
-				NativeMethods.DrawThemeParentBackground(control.Handle, hDC, ref imgRect);
-			}
 			NativeMethods.DrawThemeBackground(hTheme, hDC,
 				(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, checkState,
 				ref imgRect, ref imgRect);
