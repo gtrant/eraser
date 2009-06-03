@@ -39,7 +39,6 @@ namespace Eraser.DefaultPlugins
 		{
 			InitializeComponent();
 			UXThemeApi.UpdateControlTheme(this);
-			UXThemeApi.UpdateControlTheme(customMethodContextMenuStrip);
 
 			//Populate the list of erasure passes, except the FL16KB.
 			foreach (ErasureMethod method in ErasureMethodManager.Items.Values)

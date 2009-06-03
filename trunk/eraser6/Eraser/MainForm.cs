@@ -45,8 +45,6 @@ namespace Eraser
 		{
 			InitializeComponent();
 			UXThemeApi.UpdateControlTheme(this);
-			UXThemeApi.UpdateControlTheme(tbScheduleDropDown);
-			UXThemeApi.UpdateControlTheme(tbHelpDropDown);
 			UXThemeApi.UpdateControlTheme(notificationMenu);
 			SettingsPage.CreateControl();
 			SchedulerPage.CreateControl();
