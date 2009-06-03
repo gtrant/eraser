@@ -16,13 +16,13 @@
 
 #include "GfxPopupMenu.h"
 
-#define _ID_GFX_SMALLICON   "Small Icons"
-#define _ID_GFX_LARGEICON   "Large Icons"
-#define _ID_GFX_REMOVEITEM  "Remove"
-#define _ID_GFX_RENAMEITEM  "Rename"
+#define _ID_GFX_SMALLICON   _T("Small Icons")
+#define _ID_GFX_LARGEICON   _T("Large Icons")
+#define _ID_GFX_REMOVEITEM  _T("Remove")
+#define _ID_GFX_RENAMEITEM  _T("Rename")
 
 // sami@tolvanen.com
-#define _ID_GFX_ANIMATION   "Animation"
+#define _ID_GFX_ANIMATION   _T("Animation")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -175,7 +175,7 @@ LRESULT CGfxOutBarCtrl::OnEndLabelEdit(WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-void CGfxOutBarCtrl::SetFolderText(const int index, const char * text)
+void CGfxOutBarCtrl::SetFolderText(const int index, const TCHAR * text)
 {
     ASSERT(index >= 0 && index < GetFolderCount());
     CBarFolder * pbf = (CBarFolder *) arFolder.GetAt(index);
@@ -184,11 +184,11 @@ void CGfxOutBarCtrl::SetFolderText(const int index, const char * text)
         delete [] pbf->cName;
         pbf->cName = NULL;
     }
-    pbf->cName = new char [lstrlen(text)+1];
+    pbf->cName = new TCHAR[lstrlen(text)+1];
     lstrcpy(pbf->cName, text);
 }
 
-void CGfxOutBarCtrl::SetItemText(const int index, const char * text)
+void CGfxOutBarCtrl::SetItemText(const int index, const TCHAR * text)
 {
     ASSERT(iSelFolder >= 0 && iSelFolder < GetFolderCount());
     CBarFolder * pbf = (CBarFolder *) arFolder.GetAt(iSelFolder);
@@ -198,7 +198,7 @@ void CGfxOutBarCtrl::SetItemText(const int index, const char * text)
         delete [] pi->cItem;
         pi->cItem = NULL;
     }
-    pi->cItem = new char [lstrlen(text)+1];
+    pi->cItem = new TCHAR [lstrlen(text)+1];
     lstrcpy(pi->cItem, text);
 }
 
@@ -627,7 +627,7 @@ void CGfxOutBarCtrl::DrawFolder(CDC * pDC, const int iIdx, CRect rect, const boo
     }
 }
 
-int CGfxOutBarCtrl::AddFolder(const char * cFolderName, const DWORD exData)
+int CGfxOutBarCtrl::AddFolder(const TCHAR * cFolderName, const DWORD exData)
 {
     CBarFolder * pbf = new CBarFolder(cFolderName, exData);
     ASSERT(pbf);
@@ -636,14 +636,14 @@ int CGfxOutBarCtrl::AddFolder(const char * cFolderName, const DWORD exData)
     return arFolder.GetSize() - 1;
 }
 
-CGfxOutBarCtrl::CBarFolder::CBarFolder(const char * name, DWORD exData)
+CGfxOutBarCtrl::CBarFolder::CBarFolder(const TCHAR * name, DWORD exData)
 {
     cName = NULL;
     dwData = exData;
 
     if (name)
     {
-        cName = new char[lstrlen(name)+1];
+        cName = new TCHAR[lstrlen(name)+1];
         ASSERT(cName);
         lstrcpy(cName, name);
     }
@@ -1336,7 +1336,7 @@ void CGfxOutBarCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 }
 
 
-int CGfxOutBarCtrl::InsertItem(const int folder, const int index, const char * text, const int image, const DWORD exData)
+int CGfxOutBarCtrl::InsertItem(const int folder, const int index, const TCHAR * text, const int image, const DWORD exData)
 {
     ASSERT(folder >= 0 && folder < GetFolderCount());
     CBarFolder * pbf = (CBarFolder *) arFolder.GetAt(folder);
@@ -1410,7 +1410,7 @@ void CGfxOutBarCtrl::RemoveFolder(const int index)
     Invalidate();
 }
 
-int CGfxOutBarCtrl::CBarFolder::InsertItem(int index, const char * text, const int image, const DWORD exData)
+int CGfxOutBarCtrl::CBarFolder::InsertItem(int index, const TCHAR * text, const int image, const DWORD exData)
 {
     if (index < 0 || index > GetItemCount()) index = GetItemCount();
 
@@ -1475,14 +1475,14 @@ CImageList * CGfxOutBarCtrl::SetFolderImageList(const int folder, CImageList * p
 }
 
 
-CGfxOutBarCtrl::CBarItem::CBarItem(const char * name, const int image, DWORD exData)
+CGfxOutBarCtrl::CBarItem::CBarItem(const TCHAR * name, const int image, DWORD exData)
 {
     cItem = NULL;
     iImageIndex = image;
     dwData = exData;
     if (name)
     {
-        cItem = new char[lstrlen(name)+1];
+        cItem = new TCHAR[lstrlen(name)+1];
         ASSERT(cItem);
         lstrcpy(cItem, name);
     }
@@ -2451,7 +2451,7 @@ CString CGfxOutBarCtrl::GetItemText(const int index)
     return item;
 }
 
-int CGfxOutBarCtrl::AddFolderBar(const char * pFolder, CWnd * pSon, const DWORD exData)
+int CGfxOutBarCtrl::AddFolderBar(const TCHAR * pFolder, CWnd * pSon, const DWORD exData)
 {
     CBarFolder * pbf = new CBarFolder(pFolder, exData);
     ASSERT(pbf);

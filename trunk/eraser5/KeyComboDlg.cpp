@@ -27,7 +27,7 @@
 #include <shared/key.h>
 #include <commctrl.h>
 
-const LPCTSTR szAccelerKey = "Acceler";
+const LPCTSTR szAccelerKey = _T("Acceler");
 // CKeyComboDlg dialog
 
 IMPLEMENT_DYNAMIC(CKeyComboDlg, CDialog)
@@ -71,9 +71,9 @@ BOOL CKeyComboDlg::OnInitDialog()
 
 void CKeyComboDlg::OnBnClickedOk()
 {
-	char ch[8];	
+	TCHAR ch[8];	
 	memset(ch, 0, sizeof(ch));
-	if (m_eKey.GetLine(0, ch, sizeof(ch)))
+	if (m_eKey.GetLine(0, ch, sizeof(ch) / sizeof(ch[0])))
 	{
 		m_strValue = ch[0];
 		m_strValue.MakeUpper();
@@ -102,9 +102,9 @@ void CKeyComboDlg::OnEnChangeEdittmp()
 		return;
 	busy = true;
 
-	char ch[8];
+	TCHAR ch[8];
 	memset(ch, 0, sizeof(ch));
-	if (!m_eKey.GetLine(0, ch, sizeof(ch)))
+	if (!m_eKey.GetLine(0, ch, sizeof(ch) / sizeof(ch[0])))
 		return;
 
 	CString strLine(ch);
@@ -123,9 +123,13 @@ void CKeyComboDlg::OnEnChangeEdittmp()
 			ebtt.pszTitle = L"Invalid shortcut";
 			ebtt.ttiIcon = TTI_ERROR;
 
-			strTmp = "The shortcut value must be one of the characters " + strTmp;
+			strTmp = _T("The shortcut value must be one of the characters ") + strTmp;
 			ebtt.pszText = new wchar_t[strTmp.GetLength() + 1];
+#if defined(UNICODE)
+			wcscpy((wchar_t*)ebtt.pszText, strTmp.GetBuffer());
+#else
 			mbstowcs((wchar_t*)ebtt.pszText, strTmp.GetBuffer(), strTmp.GetLength() + 1);
+#endif
 			
 			m_eKey.SendMessage(EM_SHOWBALLOONTIP, 0, (LPARAM)&ebtt);
 			delete[] ebtt.pszText;

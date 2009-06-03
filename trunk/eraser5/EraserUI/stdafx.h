@@ -20,10 +20,6 @@
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 // 02111-1307, USA.
 
-#ifdef _UNICODE
-#error UNICODE is not supported!
-#endif
-
 #undef NOCRYPT
 #pragma once
 

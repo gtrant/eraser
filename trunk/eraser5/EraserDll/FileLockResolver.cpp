@@ -30,8 +30,8 @@
 #include <atlbase.h>
 
 #define LOCKED_FILE_LIST_NAME _T("lock")
-#define RUNONCE  "Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce"
-#define LAUNCHER "Eraserl.exe"
+#define RUNONCE  _T("Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce")
+#define LAUNCHER _T("Eraserl.exe")
 
 CFileLockResolver::CFileLockResolver(BOOL askUser)
 : m_bAskUser(askUser), m_hHandle(ERASER_INVALID_CONTEXT),
@@ -60,60 +60,65 @@ void CFileLockResolver::SetHandle(ERASER_HANDLE h)
 CString CFileLockResolver::GetLockFilePath(bool path_only)
 {
 	// Retrieve the path to the current binary
-	char fullname[MAX_PATH];
+	TCHAR fullname[MAX_PATH];
 	GetModuleFileName(AfxGetInstanceHandle(), fullname, sizeof(fullname));
 
 	// Then separate the path into its constituent parts
-	char filename[MAX_PATH];
-	char extension[MAX_PATH];
-	char pathname[MAX_PATH];
-	char drive[10];
-	_splitpath(fullname, drive, pathname, filename, extension); 
+	TCHAR filename[MAX_PATH];
+	TCHAR extension[MAX_PATH];
+	TCHAR pathname[MAX_PATH];
+	TCHAR drive[10];
+	_tsplitpath(fullname, drive, pathname, filename, extension); 
 
 	// Then generate the path which we want
 	CString result;
 	if (path_only)
-		result.Format("%s%s", drive, pathname);
+		result.Format(_T("%s%s"), drive, pathname);
 	else
-		result.Format("%s%s%d.%s", drive, pathname, time(0), LOCKED_FILE_LIST_NAME);
+		result.Format(_T("%s%s%d.%s"), drive, pathname, time(0), LOCKED_FILE_LIST_NAME);
 	return result;
 }
 
+typedef std::basic_string<_TCHAR, std::char_traits<_TCHAR>, std::allocator<_TCHAR> > tstring;
+typedef std::basic_istream<_TCHAR, std::char_traits<_TCHAR> > tistream;
+typedef std::basic_ostream<_TCHAR, std::char_traits<_TCHAR> > tostream;
+typedef std::basic_ifstream<_TCHAR, std::char_traits<_TCHAR> > tifstream;
+typedef std::basic_ofstream<_TCHAR, std::char_traits<_TCHAR> > tofstream;
 struct FileData
 {
-	std::string name;
+	tstring name;
 	int method;
 	unsigned int passes;
 
 	FileData()
 	{
 	}
-
-	FileData(const std::string& fname, int m, unsigned int pass)
-		: name(fname), method(m), passes(pass)
+	FileData(const tstring& fname, int m, unsigned int pass)
+		:name(fname), method(m), passes(pass)
 	{
 	}
 
-	void read(std::istream& is)
+	void read(tistream& is)
 	{
 		std::getline(is, name);
 		is >> method >> passes;
 	}
 
-	void write(std::ostream& os) const
+	void write(tostream& os) const
 	{
 		os << std::noskipws;
-		os << name << std::endl << method << std::endl << passes;
+		os << name << std::endl;
+		os << method << std::endl << passes;
 	}
 };
 
-std::ostream& operator<< (std::ostream& os, const FileData& data)
+tostream& operator<< (tostream& os, const FileData& data)
 {
 	data.write(os);
 	return os;
 }
 
-std::istream& operator>> (std::istream& is, FileData& data)
+tistream& operator>> (tistream& is, FileData& data)
 {
 	data.read(is);
 	return is;
@@ -129,12 +134,12 @@ void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int m
 		int eraseOnRestart = !m_bAskUser || m_defaultAction == 1;
 		if (m_bAskUser && m_defaultAction == -1)
 		{
-			int dlgCode = AfxMessageBox(CString("The file ") + szFileName +
-				"\nis locked by another process. Do you want to Erase the file "
-				"after you restart your computer?", MB_YESNO | MB_ICONQUESTION);
+			int dlgCode = AfxMessageBox(CString(_T("The file ")) + szFileName +
+				_T("\nis locked by another process. Do you want to Erase the file ")
+				_T("after you restart your computer?"), MB_YESNO | MB_ICONQUESTION);
 
 			eraseOnRestart = dlgCode == IDYES;
-			if (AfxMessageBox("Remember this decision for the rest of this erase?",
+			if (AfxMessageBox(_T("Remember this decision for the rest of this erase?"),
 				MB_YESNO | MB_ICONQUESTION) == IDYES)
 			{
 				m_defaultAction = eraseOnRestart;
@@ -145,7 +150,7 @@ void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int m
 		{
 			if (m_strLockFileList.IsEmpty())
 				m_strLockFileList = GetLockFilePath();
-			std::ofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
+			tofstream os(m_strLockFileList, std::ios_base::out | std::ios_base::app);		
 			os << FileData(szFileName, method, passes);
 
 			ASSERT(m_iMethod == 0 || m_iMethod == method);
@@ -158,7 +163,7 @@ void CFileLockResolver::HandleError(LPCTSTR szFileName, DWORD dwErrorCode, int m
 
 void CFileLockResolver::Resolve(LPCTSTR szFileName, CStringArray& ar)
 {
-	std::ifstream is(szFileName);
+	tifstream is(szFileName);
 	if (is.fail())
 		throw std::runtime_error("Unable to resolve locked files. Can't open file list");
 
@@ -192,27 +197,27 @@ void CFileLockResolver::Close()
 	switch (m_iMethod)
 	{
 	case GUTMANN_METHOD_ID:
-		method = "Gutmann";
+		method = _T("Gutmann");
 		break;
 	case DOD_METHOD_ID:
-		method = "DoD";
+		method = _T("DoD");
 		break;
 	case DOD_E_METHOD_ID:
-		method = "DoD_E";
+		method = _T("DoD_E");
 		break;
 	case RANDOM_METHOD_ID:
-		method.Format("Random %d", m_iPasses);
+		method.Format(_T("Random %d"), m_iPasses);
 		break;
 	case FL2KB_METHOD_ID:
-		method = "First_Last2k";
+		method = _T("First_Last2k");
 		break;
 	case SCHNEIER_METHOD_ID:
-		method = "Schneier";
+		method = _T("Schneier");
 		break;
 	}
 
-	CString cmdLine(CString("\"") + LAUNCHER + "\" " + szResolveLock + " \"" +
-		m_strLockFileList + "\" -method " + method);
+	CString cmdLine(CString(_T("\"")) + LAUNCHER + _T("\" ") + szResolveLock + _T(" \"") +
+		m_strLockFileList + _T("\" -method ") + method);
 
 	extern bool no_registry;
 	if (!no_registry)
@@ -223,15 +228,16 @@ void CFileLockResolver::Close()
 			// Find an unused eraser launcher ID
 			int i = 0;
 			ULONG bufSiz = 0;
-			const char* KeyName = "EraserRestartErase (%i)";
-			char KeyNameBuf[64];
-			do
-				sprintf(KeyNameBuf, KeyName, ++i);
+			const TCHAR* KeyName = _T("EraserRestartErase (%i)");
+			TCHAR KeyNameBuf[64];
+			do {
+				_stprintf(KeyNameBuf, KeyName, ++i);
+			}
 			while (key.QueryStringValue(KeyNameBuf, NULL, &bufSiz) == ERROR_SUCCESS);
 
 			// Then save to registry
 			key.SetStringValue(KeyNameBuf, cmdLine);
-			m_strLockFileList = "";
+			m_strLockFileList = _T("");
 			m_iMethod = 0;
 			m_iPasses = 0;
 		}

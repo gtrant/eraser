@@ -81,48 +81,54 @@ const E_UINT16 DEFAULT_SECTOR_SIZE
 //
 // temporary folders
 const LPCTSTR ERASER_TEMP_DIRECTORY
-    = "~ERAFSWD.TMP";
+    = _T("~ERAFSWD.TMP");
 const LPCTSTR ERASER_TEMP_DIRECTORY_NTFS_ENTRIES
-    = "~ERAFEWD.";
+    = _T("~ERAFEWD.");
 // module names
 const LPCTSTR ERASER_MODULENAME_KERNEL
-    = "KERNEL32.DLL";
+    = _T("KERNEL32.DLL");
 const LPCTSTR ERASER_MODULENAME_NTDLL
-    = "NTDLL.DLL";
+    = _T("NTDLL.DLL");
 const LPCTSTR ERASER_MODULENAME_SFC
-    = "SFC.DLL";
+    = _T("SFC.DLL");
 // function names
-const LPCTSTR ERASER_FUNCTIONNAME_GETDISKFREESPACEEX
+#if defined(_UNICODE)
+const LPCSTR ERASER_FUNCTIONNAME_GETDISKFREESPACEEX
+    = "GetDiskFreeSpaceExW";
+#else
+const LPCSTR ERASER_FUNCTIONNAME_GETDISKFREESPACEEX
     = "GetDiskFreeSpaceExA";
-const LPCTSTR ERASER_FUNCTIONNAME_NTFSCONTROLFILE
+#endif
+
+const LPCSTR ERASER_FUNCTIONNAME_NTFSCONTROLFILE
     = "NtFsControlFile";
-const LPCTSTR ERASER_FUNCTIONNAME_NTQUERYINFORMATIONFILE
+const LPCSTR ERASER_FUNCTIONNAME_NTQUERYINFORMATIONFILE
     = "NtQueryInformationFile";
-const LPCTSTR ERASER_FUNCTIONNAME_RTLNTSTATUSTODOSERROR
+const LPCSTR ERASER_FUNCTIONNAME_RTLNTSTATUSTODOSERROR
     = "RtlNtStatusToDosError";
-const LPCTSTR ERASER_FUNCTIONNAME_SFCISFILEPROTECTED
+const LPCSTR ERASER_FUNCTIONNAME_SFCISFILEPROTECTED
     = "SfcIsFileProtected";
 // progress messages
 const LPCTSTR ERASER_MESSAGE_WORK
-    = "Overwriting...";
+    = _T("Overwriting...");
 const LPCTSTR ERASER_MESSAGE_SEARCH
-    = "Searching...";
+    = _T("Searching...");
 const LPCTSTR ERASER_MESSAGE_CLUSTER
-    = "Cluster Tips...";
+    = _T("Cluster Tips...");
 const LPCTSTR ERASER_MESSAGE_FILENAMES
-    = "File Names...";
+    = _T("File Names...");
 const LPCTSTR ERASER_MESSAGE_FILENAMES_RETRY
-    = "File Names... Retrying %u";
+    = _T("File Names... Retrying %u");
 const LPCTSTR ERASER_MESSAGE_DIRENTRY
-    = "Directory Entries...";
+    = _T("Directory Entries...");
 const LPCTSTR ERASER_MESSAGE_DIRENTRY_RETRY
-    = "Directory Entries... Retrying %u";
+    = _T("Directory Entries... Retrying %u");
 const LPCTSTR ERASER_MESSAGE_MFT
-    = "Master File Table Records...";
+    = _T("Master File Table Records...");
 const LPCTSTR ERASER_MESSAGE_MFT_WAIT
-    = "Master File Table Records... File %u";
+    = _T("Master File Table Records... File %u");
 const LPCTSTR ERASER_MESSAGE_REMOVING
-    = "Removing Temporary Files...";
+    = _T("Removing Temporary Files...");
 
 
 // function type definitions
@@ -244,7 +250,7 @@ public:
 
 private:
     void clear() {
-        strncpy(m_szDrive, " :\\", 4);
+        _tcsncpy(m_szDrive, _T(" :\\"), 4);
         m_fsType = fsUnknown;
         m_uCluster = 0;
         m_uSector = DEFAULT_SECTOR_SIZE;
@@ -680,59 +686,87 @@ eraserAddError1(CEraserContext *context, E_UINT32 rid, LPCTSTR str)
 #define roundUp(x, multiple) \
     (((x) + ((multiple) - 1)) & ~((multiple) - 1))
 
-// string conversion
-//
-inline void
-asciiToUnicode(LPCSTR ansi_string, LPWSTR unicode_string)
-{
-    if (ansi_string == NULL || unicode_string == NULL) {
-        return;
-    }
-
-    if (ansi_string == (LPCSTR) unicode_string) {
-        ASSERT(0);
-        return;
-    }
-
-    try {
-        E_INT32 loop_index = 0;
-
-        while (ansi_string[loop_index] != 0x00) {
-            unicode_string[loop_index] = ansi_string[loop_index];
-            loop_index++;
-        }
-
-        unicode_string[loop_index] = 0;
-    } catch (...) {
-        ASSERT(0);
-    }
+inline
+void ansiToCString(LPCSTR ansi, CString& str) {
+#if defined(_UNICODE)
+	const int x = MultiByteToWideChar(
+		CP_ACP,
+		0,
+		ansi,
+		-1,
+		NULL,
+		0
+		);
+	wchar_t *buf = new wchar_t[x+1];
+	if (MultiByteToWideChar(
+		CP_ACP,
+		0,
+		ansi,
+		-1,
+		buf,
+		x+1
+		)
+	)
+	{
+		str = buf;
+	}
+	delete [] buf;
+#else
+	str = ansi;
+#endif
 }
 
 inline void
-unicodeToCString(LPCWSTR source_string, CString& destination_string)
-{
-    destination_string.Empty();
+unicodeToCString(LPCWSTR uni, CString& str) {
+#if defined(_UNICODE)
+	str = uni;
+#else
+	const int x = WideCharToMultiByte(
+		CP_ACP,
+		0,
+		uni,
+		-1,
+		NULL,
+		0,
+		NULL,
+		NULL
+		);
 
-    if (source_string == NULL) {
-        ASSERT(0);
-        return;
-    }
+	if (x == 0) {
+		str = "";
+		return;
+	}
 
-    try {
-        int index = 0;
-        TCHAR character_to_add = 0;
-
-        character_to_add = (TCHAR)source_string[index];
-
-        while (character_to_add != 0) {
-            destination_string += character_to_add;
-            index++;
-            character_to_add = (TCHAR)source_string[index];
-        }
-    } catch (...) {
-        ASSERT(0);
-    }
+	char *buf = new char[x+1];
+	if (WideCharToMultiByte(
+		CP_ACP,
+		0,
+		uni,
+		-1,
+		buf,
+		x+1,
+		NULL,
+		NULL
+		)
+	)
+	{
+		str = buf;
+	}
+	delete [] buf;
+#endif
 }
+
+void inline ansiToUnicode(const char *ansi, wchar_t *uni, int len) {
+	MultiByteToWideChar(
+		CP_ACP,
+		0,
+		ansi,
+		-1,
+		uni,
+		len
+		);
+}
+
 
 inline E_UINT64
 fileSizeToArea(CEraserContext *context, const E_UINT64& uFileSize)

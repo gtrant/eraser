@@ -44,11 +44,11 @@ static const int iColumnCount = 5;
 
 static const LPTSTR szColumnNames[] =
 {
-    "Name",
-    "Size",
-    "Type",
-    "Modified",
-    "Attributes"
+    _T("Name"),
+    _T("Size"),
+    _T("Type"),
+    _T("Modified"),
+    _T("Attributes")
 };
 
 static const int iMinFirstColumnWidth = 100;
@@ -304,7 +304,7 @@ BOOL CShellListView::InitListViewItems(LPITEMIDLIST lpidl, LPSHELLFOLDER lpsf, i
                                     uiSize.HighPart = wfdFind.nFileSizeHigh;
                                     uiSize.LowPart = wfdFind.nFileSizeLow;
 
-                                    strData.Format("%I64uKB", (uiSize.QuadPart + 1024) / 1024);
+                                    strData.Format(_T("%I64uKB"), (uiSize.QuadPart + 1024) / 1024);
                                     clc.SetItemText(idx, ColumnSize, strData);
                                     strData.Empty();
                                 }
@@ -312,25 +312,25 @@ BOOL CShellListView::InitListViewItems(LPITEMIDLIST lpidl, LPSHELLFOLDER lpsf, i
                                 if (!(wfdFind.dwFileAttributes & FILE_ATTRIBUTE_NORMAL))
                                 {
                                     if (wfdFind.dwFileAttributes & FILE_ATTRIBUTE_READONLY)
-                                        strData += "R";
+                                        strData += _T("R");
 
                                     if (wfdFind.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN)
-                                        strData += "H";
+                                        strData += _T("H");
 
                                     if (wfdFind.dwFileAttributes & FILE_ATTRIBUTE_SYSTEM)
-                                        strData += "S";
+                                        strData += _T("S");
 
                                     if (wfdFind.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)
-                                        strData += "A";
+                                        strData += _T("A");
 
                                     if (wfdFind.dwFileAttributes & FILE_ATTRIBUTE_COMPRESSED)
-                                        strData += "C";
+                                        strData += _T("C");
 
                                     if (wfdFind.dwFileAttributes & FILE_ATTRIBUTE_ENCRYPTED)
-                                        strData += "E";
+                                        strData += _T("E");
 
                                     if (wfdFind.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY)
-                                        strData += "T";
+                                        strData += _T("T");
                                 }
 
                                 clc.SetItemText(idx, ColumnAttributes, strData);
@@ -341,7 +341,7 @@ BOOL CShellListView::InitListViewItems(LPITEMIDLIST lpidl, LPSHELLFOLDER lpsf, i
                         }
                     }
 
-                    SHGetFileInfo((LPCSTR)lpifqThisItem,
+                    SHGetFileInfo((LPCTSTR)lpifqThisItem,
                                   0,
                                   &sfi,
                                   sizeof(SHFILEINFO),
@@ -513,10 +513,10 @@ void CShellListView::ShellOpenItem(LPLVITEMDATA lplvid)
                 sizeof(SHELLEXECUTEINFO),
                 SEE_MASK_INVOKEIDLIST,  // fMask
                 ::GetParent(m_hWnd),    // hwnd of parent
-                "",                     // lpVerb
+                _T(""),                     // lpVerb
                 NULL,                   // lpFile
-                "",
-                "",                     // lpDirectory
+                _T(""),
+                _T(""),                     // lpDirectory
                 SW_SHOWNORMAL,          // nShow
                 AfxGetInstanceHandle(), // hInstApp
                 (LPVOID)NULL,           // lpIDList...will set below
@@ -1301,10 +1301,10 @@ void CShellListView::OnUpdateItems(CCmdUI* pCmdUI)
     CString str;
     int iCount = lc.GetItemCount();
 
-    str.Format("%u Item", iCount);
+    str.Format(_T("%u Item"), iCount);
 
     if (iCount != 1)
-        str += "s";
+        str += _T("s");
 
     pCmdUI->SetText((LPCTSTR)str);
     pCmdUI->Enable();

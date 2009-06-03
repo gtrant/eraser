@@ -25,11 +25,11 @@
 #include <vector>
 #include <atlbase.h>
 #include <atlsecurity.h>
-#define REG_PROTECT_KEY "Software\\Heidi Computers Ltd\\Eraser\\PROTECT"
-#define REG_PRODUCT_KEY "Software\\Heidi Computers Ltd\\Eraser"
+#define REG_PROTECT_KEY _T("Software\\Heidi Computers Ltd\\Eraser\\PROTECT")
+#define REG_PRODUCT_KEY _T("Software\\Heidi Computers Ltd\\Eraser")
 
-#define PROTECTION "protection"
-#define SECRET "sec"
+#define PROTECTION _T("protection")
+#define SECRET _T("sec")
 
 #pragma comment( lib, "Crypt32" )
 
@@ -69,7 +69,7 @@ static void init_sa(CSecurityAttributes& sa)
 
 }
 void 
-CSecurityManager::Protect(const char* szSecret )
+CSecurityManager::Protect(const TCHAR* szSecret )
 {
 	extern bool no_registry;
 	if (no_registry)
@@ -99,7 +99,7 @@ CSecurityManager::Protect(const char* szSecret )
 	}
 
 	DATA_BLOB data_in;
-	data_in.cbData = static_cast<DWORD>(strlen(szSecret) + 1);
+	data_in.cbData = static_cast<DWORD>((_tcslen(szSecret) + 1) * sizeof(TCHAR));
 	data_in.pbData = reinterpret_cast<BYTE*>(const_cast<LPTSTR>(szSecret));
 	CRYPTPROTECT_PROMPTSTRUCT promt;
 	ZeroMemory(&promt, sizeof(promt));
@@ -153,7 +153,7 @@ CSecurityManager::Unprotect()
 		return;
 	}
 
-	dwErrorCode = protect.DeleteSubKey("PROTECT");
+	dwErrorCode = protect.DeleteSubKey(_T("PROTECT"));
 	/*
 	if (ERROR_SUCCESS != dwErrorCode )	
 	throw std::runtime_error("Unable to unprotect");	
@@ -161,7 +161,7 @@ CSecurityManager::Unprotect()
 }
 
 bool 
-CSecurityManager::Check(const char* szSecret )
+CSecurityManager::Check(const TCHAR* szSecret )
 {
 	extern bool no_registry;
 	if (no_registry)
@@ -192,7 +192,7 @@ CSecurityManager::Check(const char* szSecret )
 	DATA_BLOB data_verify;
 	DATA_BLOB data_enc;
 	DATA_BLOB data_entropy;
-	data_entropy.cbData = static_cast<DWORD>(strlen(szSecret) + 1);
+	data_entropy.cbData = static_cast<DWORD>((_tcslen(szSecret) + 1) * sizeof(TCHAR));
 	data_entropy.pbData = reinterpret_cast<BYTE*>(const_cast<LPTSTR>(szSecret));
 	data_enc.cbData = blob_len;
 	data_enc.pbData = reinterpret_cast<BYTE*>(&blob[0]);
@@ -266,7 +266,7 @@ bool CheckAccess(DWORD dwMaxError /*= 3*/)
 			if (is_ok)							
 				return true;
 			++i;						
-			AfxGetApp()->GetMainWnd()->MessageBox("Password incorrect", "Security error", MB_OK|MB_ICONERROR);
+			AfxGetApp()->GetMainWnd()->MessageBox(_T("Password incorrect"), _T("Security error"), MB_OK|MB_ICONERROR);
 		}
 	}
 	catch (const CAtlException& )
@@ -281,7 +281,9 @@ bool CheckAccess(DWORD dwMaxError /*= 3*/)
 	}
 	catch (const std::exception& e)
 	{
-		AfxGetApp()->GetMainWnd()->MessageBox(e.what(), "Security error", MB_OK|MB_ICONERROR);
+		CString str;
+		ansiToCString(e.what(), str);
+		AfxGetApp()->GetMainWnd()->MessageBox(str, _T("Security error"), MB_OK|MB_ICONERROR);
 		is_ok = false;
 	}
 	
@@ -320,16 +322,16 @@ bool SetProtection()
 		{
 		case ERROR_ACCESS_DENIED:
 			{
-				message = "Setting password protection requires your user account to be an Administrator";
+				message = _T("Setting password protection requires your user account to be an Administrator");
 				OSVERSIONINFO info;
 				info.dwOSVersionInfoSize = sizeof(info);
 				if (GetVersionEx(&info) && info.dwMajorVersion >= 6)
-					message += " and for Eraser to be elevated";
-				message += ".";
+					message += _T(" and for Eraser to be elevated");
+				message += _T(".");
 			}
 		}
 
-		AfxGetApp()->GetMainWnd()->MessageBox(message, "Security error", MB_OK | MB_ICONERROR);
+		AfxGetApp()->GetMainWnd()->MessageBox(message, _T("Security error"), MB_OK | MB_ICONERROR);
 	}
 
 	return false;
@@ -358,7 +360,9 @@ bool ClearProtection()
 	}
 	catch (const std::exception& e)
 	{
-		AfxGetApp()->GetMainWnd()->MessageBox(e.what(), "Security error", MB_OK|MB_ICONERROR);
+		CString str;
+		ansiToCString(e.what(), str);
+		AfxGetApp()->GetMainWnd()->MessageBox(str, _T("Security error"), MB_OK|MB_ICONERROR);
 		is_ok = false;
 	}
 	return is_ok;

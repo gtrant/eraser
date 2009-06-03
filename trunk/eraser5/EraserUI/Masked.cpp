@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // COleDateTime read /write
 
-static COleDateTime ReadCOleDateTime(LPCSTR lpszData)
+static COleDateTime ReadCOleDateTime(LPCTSTR lpszData)
 {
     COleDateTime DateTime;
     DateTime.ParseDateTime(lpszData);

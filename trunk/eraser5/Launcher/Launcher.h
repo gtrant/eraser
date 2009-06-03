@@ -34,35 +34,39 @@
 // SHEmptyRecycleBin
 typedef HRESULT (STDAPICALLTYPE *SHEMPTYRECYCLEBIN)(HWND, LPCTSTR, DWORD);
 
-const LPCTSTR szShell32             = "SHELL32.dll";
-const LPCTSTR szSHEmptyRecycleBin   = "SHEmptyRecycleBinA";
+const LPCTSTR szShell32             = _T("SHELL32.dll");
+#if defined(_UNICODE)
+	const LPCSTR szSHEmptyRecycleBin   = "SHEmptyRecycleBinW";
+#else
+	const LPCSTR szSHEmptyRecycleBin   = "SHEmptyRecycleBinA";
+#endif
 
 // constants
-const LPCTSTR szFile            = "-file";
-const LPCTSTR szFolder          = "-folder";
-const LPCTSTR szSubFolders      = "-subfolders";
-const LPCTSTR szKeepFolder      = "-keepfolder";
-const LPCTSTR szDisk            = "-disk";
-const LPCTSTR szDiskAll         = "all";
-const LPCTSTR szSilent          = "-silent";
-const LPCTSTR szRecycled        = "-recycled";
+const LPCTSTR szFile            = _T("-file");
+const LPCTSTR szFolder          = _T("-folder");
+const LPCTSTR szSubFolders      = _T("-subfolders");
+const LPCTSTR szKeepFolder      = _T("-keepfolder");
+const LPCTSTR szDisk            = _T("-disk");
+const LPCTSTR szDiskAll         = _T("all");
+const LPCTSTR szSilent          = _T("-silent");
+const LPCTSTR szRecycled        = _T("-recycled");
 
-const LPCTSTR szMethod          = "-method";
-const LPCTSTR szMethodLibrary   = "Library";
-const LPCTSTR szMethodGutmann   = "Gutmann";
-const LPCTSTR szMethodDoD       = "DoD";
-const LPCTSTR szMethodDoD_E     = "DoD_E";
-const LPCTSTR szMethodFL2K      = "First_Last2k";
-const LPCTSTR szMethodRandom    = "Random";
-const LPCTSTR szSchneier        = "Schneier";
+const LPCTSTR szMethod          = _T("-method");
+const LPCTSTR szMethodLibrary   = _T("Library");
+const LPCTSTR szMethodGutmann   = _T("Gutmann");
+const LPCTSTR szMethodDoD       = _T("DoD");
+const LPCTSTR szMethodDoD_E     = _T("DoD_E");
+const LPCTSTR szMethodFL2K      = _T("First_Last2k");
+const LPCTSTR szMethodRandom    = _T("Random");
+const LPCTSTR szSchneier        = _T("Schneier");
 
-const LPCTSTR szOptions         = "-options";
-const LPCTSTR szResults         = "-results";
-const LPCTSTR szResultsOnError  = "-resultsonerror";
-const LPCTSTR szQueue           = "-queue";
-const LPCTSTR szResolveLock     = "-rl";
+const LPCTSTR szOptions         = _T("-options");
+const LPCTSTR szResults         = _T("-results");
+const LPCTSTR szResultsOnError  = _T("-resultsonerror");
+const LPCTSTR szQueue           = _T("-queue");
+const LPCTSTR szResolveLock     = _T("-rl");
 
-const LPCTSTR szQueueGUID       = "EraserL.{F0D19C73-EF5F-422a-9F0C-524C7F76E090}.%u";
+const LPCTSTR szQueueGUID       = _T("EraserL.{F0D19C73-EF5F-422a-9F0C-524C7F76E090}.%u");
 const DWORD   ERASERL_MAX_QUEUE = 100;
 
 /////////////////////////////////////////////////////////////////////////////

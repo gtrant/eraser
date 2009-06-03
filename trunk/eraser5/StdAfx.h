@@ -84,9 +84,26 @@
 #define AfxFreeLibrary  ::FreeLibrary
 #endif
 
+#define WIDEN2(x) L ## x
+#define WIDEN(x) WIDEN2(x)
+#define __WFILE__ WIDEN(__FILE__)
+#define __WDATE__ WIDEN(__DATE__)
+#define __WTIME__ WIDEN(__TIME__)
+
+#if defined(_UNICODE)
+#define __TFILE__ __WFILE__
+#define __TDATE__ __WDATE__
+#define __TTIME__ __WTIME__
+#else
+#define __TFILE__ __FILE__
+#define __TDATE__ __DATE__
+#define __TTIME__ __TIME__
+#endif
+
+
 #define REPORT_ERROR(e) \
     (((e)->IsKindOf(RUNTIME_CLASS(CSeException))) ?\
-        ReportExceptionError((CSeException*)(e), __FILE__, __LINE__, __DATE__, __TIME__) :\
+        ReportExceptionError((CSeException*)(e), __TFILE__, __LINE__, __TDATE__, __TTIME__) :\
         (e)->ReportError(MB_ICONERROR))
 
 inline void ReportExceptionError(CSeException *e, LPCTSTR szFile,
@@ -100,7 +117,7 @@ inline void ReportExceptionError(CSeException *e, LPCTSTR szFile,
 
         e->GetErrorMessage(strException);
 
-        strError.Format("%s\n\nFile: %s (%i)\nCompiled: %s, %s",
+        strError.Format(_T("%s\n\nFile: %s (%i)\nCompiled: %s, %s"),
                         (LPCTSTR)strException,
                         szFile, iLine,
                         szDate, szTime);

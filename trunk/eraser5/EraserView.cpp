@@ -51,11 +51,11 @@ static const int iColumnCount = 5;
 
 static const LPTSTR szColumnNames[] =
 {
-    "Name",
-    "Size",
-    "Type",
-    "Modified",
-    "Attributes"
+    _T("Name"),
+    _T("Size"),
+    _T("Type"),
+    _T("Modified"),
+    _T("Attributes")
 };
 
 static const int iMinFirstColumnWidth = 100;
@@ -503,7 +503,7 @@ void CEraserView::UpdateList()
                 {
                     // file information
                     if (strData.GetLength() <= _MAX_DRIVE &&
-                        strData.Find(":\\") == 1)
+                        strData.Find(_T(":\\")) == 1)
                     {
                         // clear all data on a drive!
                         bExists = TRUE;
@@ -606,9 +606,9 @@ void CEraserView::UpdateList()
                 uiSize.QuadPart /= 1024;
 
                 if (uiSize.QuadPart > 100000) // > 100 000 KB ~ 97,7 MB
-                    strData.Format("%I64u MB", (uiSize.QuadPart / 1024));
+                    strData.Format(_T("%I64u MB"), (uiSize.QuadPart / 1024));
                 else if (!(piItem->GetType() == Drive) || uiSize.QuadPart > 0) // > 0 KB
-                    strData.Format("%I64u KB", uiSize.QuadPart);
+                    strData.Format(_T("%I64u KB"), uiSize.QuadPart);
             }
 
             lvi.pszText = strData.GetBuffer(strData.GetLength());
@@ -620,9 +620,9 @@ void CEraserView::UpdateList()
             lvi.iSubItem    = ColumnType;
 
             if (piItem->GetType() == Drive)
-                strData = "Unused disk space";
+                strData = _T("Unused disk space");
             else if (piItem->UseWildcards())
-                strData = "Wildcard search";
+                strData = _T("Wildcard search");
             else
                 strData = sfi.szTypeName;
 
@@ -826,8 +826,8 @@ void CEraserView::OnEditDeleteTask()
 
     CListCtrl& lc = GetListCtrl();
 
-	if (lc.GetSelectedCount() > 0 && AfxMessageBox("Are you sure you want to "
-		"delete the selected tasks?", MB_YESNO | MB_ICONQUESTION) == IDYES)
+	if (lc.GetSelectedCount() > 0 && AfxMessageBox(_T("Are you sure you want to ")
+		_T("delete the selected tasks?"), MB_YESNO | MB_ICONQUESTION) == IDYES)
     {
         CEraserDoc *pDoc = static_cast<CEraserDoc*>(GetDocument());
         ASSERT(AfxIsValidAddress(pDoc, sizeof(CEraserDoc)));
@@ -886,10 +886,10 @@ void CEraserView::OnUpdateItems(CCmdUI* pCmdUI)
     CString str;
     int     iCount = lc.GetItemCount();
 
-    str.Format("%u Item", iCount);
+    str.Format(_T("%u Item"), iCount);
 
     if (iCount != 1)
-        str += "s";
+        str += _T("s");
 
     pCmdUI->SetText((LPCTSTR)str);
     pCmdUI->Enable();

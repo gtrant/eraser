@@ -91,42 +91,42 @@ const PASS passDOD_E[PASSES_DOD_E] = {
 // the array of built-in methods (add #defines to Pass.h)
 const BMETHOD bmMethods[nBuiltinMethods] = {
     bmEntry(GUTMANN_METHOD_ID,       // REQUIRED: ID
-            "Gutmann",               // REQUIRED: Description (max. 80 chars)
+            _T("Gutmann"),               // REQUIRED: Description (max. 80 chars)
             PASSES_GUTMANN,          // REQUIRED: Passes
             wipeFileWithGutmann,     // REQUIRED: Wipe function
             1,                       // OPTIONAL: Shuffle passes (depends on wipe function)
             passGutmann),            // OPTIONAL: Pointer to pass array (depends on wipe function)
 
     bmEntry(DOD_METHOD_ID,
-            "US DoD 5220.22-M (8-306. / E, C and E)",
+            _T("US DoD 5220.22-M (8-306. / E, C and E)"),
             PASSES_DOD,
             wipeFileWithDoD,
             0,
             passDOD),
 
     bmEntry(DOD_E_METHOD_ID,
-            "US DoD 5220.22-M (8-306. / E)",
+            _T("US DoD 5220.22-M (8-306. / E)"),
             PASSES_DOD_E,
             wipeFileWithCustom,     // There's no need to write yet another wipe function...
             0,
             passDOD_E),
 
     bmEntry(RANDOM_METHOD_ID,
-            "Pseudorandom Data",
+            _T("Pseudorandom Data"),
             PASSES_RND,
             wipeFileWithPseudoRandom,
             0,
             0),
 
 	bmEntry(FL2KB_METHOD_ID,
-			"Only first and last 2KB",
+			_T("Only first and last 2KB"),
 			PASSES_FL2KB,
 			wipeFileWithFirstLast2kb,
 			0,
 			0),
 
 	bmEntry(SCHNEIER_METHOD_ID,
-			"Schneier's 7 pass",
+			_T("Schneier's 7 pass"),
 			PASSES_SCHNEIER,
 			wipeFileWithSchneier7Pass,
 			0,

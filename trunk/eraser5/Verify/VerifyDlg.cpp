@@ -37,7 +37,7 @@ static char THIS_FILE[] = __FILE__;
 #define TIMER_CONTINUE  100
 const DWORD uWait = 2; // seconds
 
-const LPCTSTR szProgress = "Now overwriting pass %u / %u (%u%% completed)";
+const LPCTSTR szProgress = _T("Now overwriting pass %u / %u (%u%% completed)");
 
 /////////////////////////////////////////////////////////////////////////////
 // CVerifyDlg dialog
@@ -233,7 +233,7 @@ void CVerifyDlg::OnButtonErase()
         m_ehContext = ERASER_INVALID_CONTEXT;
 
         // notify the user
-        m_strProgress = "Failed to start erasing.";
+        m_strProgress = _T("Failed to start erasing.");
         UpdateData(FALSE);
     }
 }
@@ -260,7 +260,7 @@ LRESULT CVerifyDlg::OnEraserNotify(WPARAM wParam, LPARAM)
 
     switch (wParam) {
     case ERASER_WIPE_BEGIN:
-        m_strProgress = "Erasing started...";
+        m_strProgress = _T("Erasing started...");
         break;
     case ERASER_WIPE_UPDATE:
         {
@@ -331,7 +331,7 @@ LRESULT CVerifyDlg::OnEraserNotify(WPARAM wParam, LPARAM)
                 viewer.m_strFileName = szCurrentData;
 
                 if (uCurrent > 0) {
-                    viewer.m_strMessage.Format("After Pass %u", uCurrent);
+					viewer.m_strMessage.Format(_T("After Pass %u"), uCurrent);
                 }
                 viewer.DoModal();
             } catch (...) {
@@ -343,7 +343,7 @@ LRESULT CVerifyDlg::OnEraserNotify(WPARAM wParam, LPARAM)
                 if (!SetTimer(TIMER_CONTINUE, uWait * 1000, NULL)) {
                     eraserTestContinueProcess(m_ehContext);
                 }
-                m_strProgress = "Starting next overwriting pass...";
+                m_strProgress = _T("Starting next overwriting pass...");
             } else {
                 eraserTestContinueProcess(m_ehContext);
             }

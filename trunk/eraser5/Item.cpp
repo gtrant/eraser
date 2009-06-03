@@ -79,7 +79,7 @@ void CItem::Copy(const CItem& op)
 
 BOOL CItem::SetDrive(const CString& str)
 {
-    if (str.GetLength() > _MAX_DRIVE || str.Find(":\\") != 1)
+    if (str.GetLength() > _MAX_DRIVE || str.Find(_T(":\\")) != 1)
         return FALSE;
     else
     {
@@ -92,7 +92,7 @@ BOOL CItem::SetDrive(const CString& str)
 
 BOOL CItem::SetFolder(const CString& str)
 {
-    if (str.Find(":\\") != 1)
+	if (str.Find(_T(":\\")) != 1)
         return FALSE;
     else
     {
@@ -196,7 +196,7 @@ m_bQueued(FALSE),
 m_ehContext(ERASER_INVALID_CONTEXT),
 m_bMethod(0)
 {
-	m_strID.Format("Eraser%d.%d", time(NULL), ++LastID);
+	m_strID.Format(_T("Eraser%d.%d"), time(NULL), ++LastID);
     m_odtNext = GetTimeTimeZoneBased();
     m_odtLast.SetStatus(COleDateTime::null);
 }

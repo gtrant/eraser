@@ -32,7 +32,7 @@ public:
 	CEdit	m_eKey;
 	CString	m_strValue;
 	CString m_strRegKey;
-	CKeyComboDlg(CString wValue = "", CString strValName = "", CWnd* pParent = NULL) ;   // standard constructor
+	CKeyComboDlg(CString wValue = _T(""), CString strValName = _T(""), CWnd* pParent = NULL) ;   // standard constructor
 	virtual ~CKeyComboDlg();
 
 // Dialog Data

@@ -211,10 +211,10 @@ BOOL CKey::GetNextValueName(CString& strValName, DWORD index /*=0*/, LPDWORD val
 {
      if (m_hKey == NULL) return FALSE;
      DWORD dwNameLen = MAX_KEY_LENGTH;
-     char lpszValName[MAX_KEY_LENGTH];     
+     _TCHAR lpszValName[MAX_KEY_LENGTH];     
      
      try{
-          LONG lRes = RegEnumValue(m_hKey, index, (LPSTR)lpszValName, &dwNameLen, NULL, valType, NULL, NULL);
+          LONG lRes = RegEnumValue(m_hKey, index, (LPTSTR)lpszValName, &dwNameLen, NULL, valType, NULL, NULL);
           
           if (lRes == ERROR_SUCCESS) {
                strValName = lpszValName;
@@ -386,22 +386,22 @@ HKEY CIniKey::GetHandle() {
 
 BOOL CIniKey::SetValue(LPCTSTR lpszValue, LPCTSTR lpszValueName) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
+		lpszValueName = _T("__default");
 	AfxGetApp()->WriteProfileString(section, lpszValueName, lpszValue);
 	::WritePrivateProfileString(NULL, NULL, NULL, AfxGetApp()->m_pszProfileName);
 	return true;
 }
 BOOL CIniKey::SetValue(DWORD lpszValue, LPCTSTR lpszValueName) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
+		lpszValueName = _T("__default");
 	AfxGetApp()->WriteProfileInt(section, lpszValueName, lpszValue);
 	::WritePrivateProfileString(NULL, NULL, NULL, AfxGetApp()->m_pszProfileName);
 	return true;
 }
 BOOL CIniKey::SetValue(BOOL lpszValue, LPCTSTR lpszValueName) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
-	AfxGetApp()->WriteProfileString(section, lpszValueName, lpszValue ? "yes" : "no");
+		lpszValueName = _T("__default");
+	AfxGetApp()->WriteProfileString(section, lpszValueName, lpszValue ? _T("yes") : _T("no"));
 	::WritePrivateProfileString(NULL, NULL, NULL, AfxGetApp()->m_pszProfileName);
 	return true;
 }
@@ -409,7 +409,7 @@ BOOL CIniKey::SetValue(LPVOID lpszValue, LPCTSTR lpszValueName, DWORD dwSize) {
 	if(!lpszValue)
 		return false;
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
+		lpszValueName = _T("__default");
 	AfxGetApp()->WriteProfileBinary(section, lpszValueName, (LPBYTE)lpszValue, dwSize);
 	::WritePrivateProfileString(NULL, NULL, NULL, AfxGetApp()->m_pszProfileName);
 	return true;
@@ -417,26 +417,26 @@ BOOL CIniKey::SetValue(LPVOID lpszValue, LPCTSTR lpszValueName, DWORD dwSize) {
 
 BOOL CIniKey::GetValue(CString &str, LPCTSTR lpszValueName, CString strDefault) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
+		lpszValueName = _T("__default");
 	str = AfxGetApp()->GetProfileString(section, lpszValueName, strDefault);
 	return true;
 }
 BOOL CIniKey::GetValue(DWORD &value, LPCTSTR lpszValueName, DWORD dwDefault) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
+		lpszValueName = _T("__default");
 	value = AfxGetApp()->GetProfileInt(section, lpszValueName, dwDefault);
 	return true;
 }
 BOOL CIniKey::GetValue(BOOL &value, LPCTSTR lpszValueName, BOOL bDefault) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
-	CString str = AfxGetApp()->GetProfileString(section, lpszValueName, bDefault ? "yes" : "no");
-	value = !_stricmp(str, "yes");
+		lpszValueName = _T("__default");
+	CString str = AfxGetApp()->GetProfileString(section, lpszValueName, bDefault ? _T("yes") : _T("no"));
+	value = !_tcsicmp(str, _T("yes"));
 	return true;
 }
 BOOL CIniKey::GetValue(LPVOID data, LPCTSTR lpszValueName) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
+		lpszValueName = _T("__default");
 	LPBYTE data2 = NULL;
 	UINT bytes = 0;
 	BOOL ret = AfxGetApp()->GetProfileBinary(section, lpszValueName, &data2, &bytes);
@@ -458,7 +458,7 @@ BOOL CIniKey::IsEmpty() {
 
 DWORD CIniKey::GetValueSize(LPCTSTR lpszValueName) {
 	if(!lpszValueName || !lpszValueName[0])
-		lpszValueName = "__default";
+		lpszValueName = _T("__default");
 	LPBYTE data = NULL;
 	UINT bytes = 0;
 	BOOL ret = AfxGetApp()->GetProfileBinary(section, lpszValueName, &data, &bytes);
@@ -472,4 +472,3 @@ BOOL CIniKey::GetNextValueName(CString& strValName, DWORD /*index*/, LPDWORD /*v
 	strValName = "";
 	return false;
 }
-

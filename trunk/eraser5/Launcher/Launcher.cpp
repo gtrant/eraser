@@ -88,9 +88,9 @@ static BOOL ParseRecycledDirectory(LPCTSTR szDirectory, CStringArray& saFiles,
     if (!strDirectory.IsEmpty())
     {
         if (strDirectory[strDirectory.GetLength() - 1] != '\\')
-            strDirectory += "\\";
+            strDirectory += _T("\\");
 
-        strTemp = strDirectory + "*";
+        strTemp = strDirectory + _T("*");
 
         hFind = FindFirstFile((LPCTSTR) strTemp, &wfdData);
 
@@ -113,10 +113,10 @@ static BOOL ParseRecycledDirectory(LPCTSTR szDirectory, CStringArray& saFiles,
                 }
                 else
                 {
-                    if (_stricmp(wfdData.cFileName, "desktop.ini") == 0)
+                    if (_tcsicmp(wfdData.cFileName, _T("desktop.ini")) == 0)
                         continue;
 
-                    if (bNoINFO && _strnicmp(wfdData.cFileName, "INFO", 4) == 0)
+                    if (bNoINFO && _tcsnicmp(wfdData.cFileName, _T("INFO"), 4) == 0)
                         continue;
 
                     strTemp = strDirectory + wfdData.cFileName;
@@ -206,25 +206,25 @@ static void LocateRecycledItems(CStringArray& saRecycled, CStringArray& saRecycl
         if (GetVolumeInformation((LPCTSTR)lstraDrives[iSize], NULL, 0, NULL, NULL,
             &dwFileSystem, szFS, MAX_PATH))
         {
-            if (_stricmp(szFS, "NTFS") == 0)
+            if (_tcsicmp(szFS, _T("NTFS")) == 0)
             {
-                straDrives.Add(lstraDrives[iSize]+ "RECYCLER\\NPROTECT");
+                straDrives.Add(lstraDrives[iSize]+ _T("RECYCLER\\NPROTECT"));
                 if (!strSID.IsEmpty())
-                {
-                    //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLER\\" + strSID);
-                    straDrives.Add(lstraDrives[iSize] + "RECYCLER\\" + strSID);		
-                    straDrives.Add(lstraDrives[iSize] + "$Recycle.Bin\\" + strSID);
-                }
+				{
+                    //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLER\\" + strSID);					
+                    straDrives.Add(lstraDrives[iSize] + _T("RECYCLER\\") + strSID);		
+                    straDrives.Add(lstraDrives[iSize] + _T("$Recycle.Bin\\") + strSID);
+				}
                 else
-                {
+				{
                     //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLER");
-                    straDrives.Add(lstraDrives[iSize] + "RECYCLER");
-                    straDrives.Add(lstraDrives[iSize] + "$Recycle.Bin\\");
-                }
+                    straDrives.Add(lstraDrives[iSize] + _T("RECYCLER"));
+                    straDrives.Add(lstraDrives[iSize] + _T("$Recycle.Bin\\"));
+				}
             }
             else
                 //straDrives.SetAt(iSize, straDrives[iSize] + "RECYCLED");
-                straDrives.Add(lstraDrives[iSize] + "RECYCLED");
+                straDrives.Add(lstraDrives[iSize] + _T("RECYCLED"));
             
         }
     }
@@ -338,7 +338,12 @@ BOOL CLauncherApp::InitInstance()
 			{
 				CString msg = Message;
 				chrBuf = new char[msg.GetLength() + 1];
-				strcpy(chrBuf, msg.GetBuffer());
+				chrBuf[0] = '\0';
+#if defined(_UNICODE)
+				::WideCharToMultiByte(CP_ACP, 0, msg.GetBuffer(), -1, chrBuf, msg.GetLength() + 1, NULL, NULL);
+#else
+				_tcscpy(chrBuf, msg.GetBuffer());
+#endif
 				msg.ReleaseBuffer();
 			}
 			return chrBuf;
@@ -360,7 +365,7 @@ BOOL CLauncherApp::InitInstance()
 				{
 					// file
 					if (!GetNextParameter(strCmdLine, strCurrentParameter))
-						throw InvalidCommandLineException("-file was specified but no file name was given.");
+						throw InvalidCommandLineException(_T("-file was specified but no file name was given."));
 					else
 					{
 						strData = strCurrentParameter;
@@ -372,7 +377,7 @@ BOOL CLauncherApp::InitInstance()
 				{
 					// resolve locked files
 					if (!GetNextParameter(strCmdLine, strCurrentParameter))
-						throw InvalidCommandLineException("-rl was specified but no file name was given.");
+						throw InvalidCommandLineException(_T("-rl was specified but no file name was given."));
 					else
 					{
 						strData = strCurrentParameter;
@@ -384,7 +389,7 @@ BOOL CLauncherApp::InitInstance()
 				{
 					// folder
 					if (!GetNextParameter(strCmdLine, strCurrentParameter))
-						throw InvalidCommandLineException("-folder was specified but no folder name was given.");
+						throw InvalidCommandLineException(_T("-folder was specified but no folder name was given."));
 					else
 					{
 						strData = strCurrentParameter;
@@ -400,13 +405,13 @@ BOOL CLauncherApp::InitInstance()
 				{
 					// unused disk space
 					if (!GetNextParameter(strCmdLine, strCurrentParameter))
-						throw InvalidCommandLineException("-disk was specified but no file name was given.");
+						throw InvalidCommandLineException(_T("-disk was specified but no file name was given."));
 					else
 					{
 						bDrive = TRUE;
 
 						if (strCurrentParameter != szDiskAll)
-							strData.Format("%c:\\", strCurrentParameter[0]);
+							strData.Format(_T("%c:\\"), strCurrentParameter[0]);
 						else
 							strData = strCurrentParameter;
 					}
@@ -420,7 +425,7 @@ BOOL CLauncherApp::InitInstance()
 				else if (strCurrentParameter.CompareNoCase(szMethod) == 0)
 				{
 					if (!GetNextParameter(strCmdLine, strCurrentParameter))
-						throw InvalidCommandLineException("-method was specified but no method name was given.");
+						throw InvalidCommandLineException(_T("-method was specified but no method name was given."));
 					else
 					{
 						if (strCurrentParameter.CompareNoCase(szMethodLibrary) == 0)
@@ -440,21 +445,21 @@ BOOL CLauncherApp::InitInstance()
 							emMethod = ERASER_METHOD_PSEUDORANDOM;
 
 							if (!GetNextParameter(strCmdLine, strCurrentParameter))
-								throw InvalidCommandLineException("-method Random was specified but no number of passes was specified.");
+								throw InvalidCommandLineException(_T("-method Random was specified but no number of passes was specified."));
 							else
 							{
-								char *sztmp = 0;
-								E_UINT32 uCurrentParameter = strtoul((LPCTSTR)strCurrentParameter, &sztmp, 10);
+								TCHAR *sztmp = 0;
+								E_UINT32 uCurrentParameter = _tcstoul((LPCTSTR)strCurrentParameter, &sztmp, 10);
 
 								if (*sztmp != '\0' || uCurrentParameter > (E_UINT16)-1) {
-									throw InvalidCommandLineException("-method Random was specified an invalid number of passes was specified.");
+									throw InvalidCommandLineException(_T("-method Random was specified an invalid number of passes was specified."));
 								} else {
 									uPasses = (E_UINT16)uCurrentParameter;
 								}
 							}
 						}
 						else
-							throw InvalidCommandLineException("Unrecognized method name '" + strCurrentParameter + "'");
+							throw InvalidCommandLineException(_T("Unrecognized method name '") + strCurrentParameter + _T("'"));
 					}
 				}
 				else if (strCurrentParameter.CompareNoCase(szSubFolders) == 0)
@@ -475,28 +480,28 @@ BOOL CLauncherApp::InitInstance()
 				else if (strCurrentParameter.CompareNoCase(szQueue) == 0)
 					bQueue = TRUE;
 				else
-					throw InvalidCommandLineException("Unrecognized parameter '" + strCurrentParameter + "'");
+					throw InvalidCommandLineException(_T("Unrecognized parameter '") + strCurrentParameter + _T("'"));
 			}
 		}
 		else
 		{
-			throw InvalidCommandLineException("Invalid command line.");
+			throw InvalidCommandLineException(_T("Invalid command line."));
 		}
 
 		// conflicting command line parameters ?
 		if (((!bOptions && !bRecycled) && strData.IsEmpty()))
-			throw InvalidCommandLineException("No data to erase.");
+			throw InvalidCommandLineException(_T("No data to erase."));
 		if (!bFolders && bKeepFolder)
-			throw InvalidCommandLineException("Data to erase is not a folder, -keepfolder has no effect.");
+			throw InvalidCommandLineException(_T("Data to erase is not a folder, -keepfolder has no effect."));
 		if (bSilent && bResults == TRUE)
-			throw InvalidCommandLineException("-silent and -results are mutually exclusive.");
+			throw InvalidCommandLineException(_T("-silent and -results are mutually exclusive."));
 		if (bOptions && bQueue)
-			throw InvalidCommandLineException("The help command cannot be queued.");
+			throw InvalidCommandLineException(_T("The help command cannot be queued."));
 
 		// is the user naive enough to select the first/last 2KB pass with free space?
 		if (emMethod == ERASER_METHOD_FIRST_LAST_2KB && bDrive)
 		{
-			AfxMessageBox("The first/last 2KB erase cannot be used with Free Space erases.", MB_ICONERROR);
+			AfxMessageBox(_T("The first/last 2KB erase cannot be used with Free Space erases."), MB_ICONERROR);
 			return FALSE;
 		}
 
@@ -545,7 +550,7 @@ BOOL CLauncherApp::InitInstance()
 				}
 				catch (const std::exception& ee)
 				{
-					AfxMessageBox(ee.what(), MB_ICONERROR);
+					AfxMessageBox(CString(ee.what()), MB_ICONERROR);
 					return FALSE;
 				}
 			}
@@ -597,9 +602,9 @@ BOOL CLauncherApp::InitInstance()
 			else if (!bSilent)
 			{
 				if (bRecycled)
-					AfxMessageBox("Recycle Bin is empty.", MB_ICONERROR);
+					AfxMessageBox(_T("Recycle Bin is empty."), MB_ICONERROR);
 				else
-					AfxMessageBox("File not found. Nothing to erase. (" + strData + ")", MB_ICONERROR);
+					AfxMessageBox(_T("File not found. Nothing to erase. (") + strData + _T(")"), MB_ICONERROR);
 			}
 		}
 	}
@@ -607,7 +612,7 @@ BOOL CLauncherApp::InitInstance()
 	{
 		CString msg;
 		msg.LoadString(AfxGetInstanceHandle(), IDS_CMDLINE_INCORRECT);
-		AfxMessageBox(CString(e.what()) + "\n\n" + msg, MB_ICONERROR);
+		AfxMessageBox(CString(e.what()) + _T("\n\n") + msg, MB_ICONERROR);
 	}
 	catch (CException *e)
 	{

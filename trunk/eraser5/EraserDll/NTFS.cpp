@@ -192,7 +192,7 @@ wipeClusters(NTFSContext& ntc, CEraserContext *context, bool& bCompressed)
 static bool
 initAndOpenVolume(NTFSContext& ntc, TCHAR cDrive)
 {
-    TCHAR szVolumeName[] = "\\\\.\\ :";
+    TCHAR szVolumeName[] = _T("\\\\.\\ :");
 
     if (initEntryPoints(ntc)) {
         // open the volume for direct access
@@ -312,7 +312,7 @@ wipeMFTRecords(CEraserContext *context)
 
         do {
             createRandomShortFileName(szFileName, uCounter++);
-            strTemp.Format("Eraser%s%s", context->m_piCurrent.m_szDrive, szFileName);
+            strTemp.Format(_T("Eraser%s%s"), context->m_piCurrent.m_szDrive, szFileName);
 
             context->m_hFile = CreateFile((LPCTSTR)strTemp,
                                          GENERIC_WRITE,
@@ -375,8 +375,8 @@ wipeMFTRecords(CEraserContext *context)
         eraserProgressSetMessage(context, ERASER_MESSAGE_REMOVING);
         eraserUpdateNotify(context);
 
-        INT_PTR iSize = saList.GetSize();
-        for (INT_PTR i = 0; i < iSize; i++) {
+        E_INT32 iSize = saList.GetSize();
+        for (E_INT32 i = 0; i < iSize; i++) {
             eraserSafeAssign(context, context->m_uProgressPercent, (E_UINT8)((i * 100) / iSize));
             eraserUpdateNotify(context);
 
@@ -458,7 +458,7 @@ wipeNTFSFileEntries(CEraserContext *context)
 
                 do {
                     if (uFiles % uMaxFilesPerFolder == 0) {
-                        strFolder.Format("%c:\\%s%04X", context->m_strData[0],
+                        strFolder.Format(_T("%c:\\%s%04X"), context->m_strData[0],
                                     ERASER_TEMP_DIRECTORY_NTFS_ENTRIES, uFolders++);
 
                         // remove possibly existing folder
@@ -467,14 +467,14 @@ wipeNTFSFileEntries(CEraserContext *context)
 
                         // create new directory
                         if (CreateDirectory((LPCTSTR)strFolder, NULL)) {
-                            saFolders.Add(strFolder + "\\");
+                            saFolders.Add(strFolder + _T("\\"));
                         } else {
                             eraserAddError(context, IDS_ERROR_TEMPFILE);
                             break;
                         }
                     }
 
-                    strPath.Format("%s\\%s%08X", strFolder, szPrefix, uFiles);
+                    strPath.Format(_T("%s\\%s%08X"), strFolder, szPrefix, uFiles);
 
                     hFile = CreateFile((LPCTSTR)strPath, GENERIC_WRITE, 0, NULL, CREATE_NEW, 0, 0);
 
@@ -534,7 +534,7 @@ wipeNTFSFileEntries(CEraserContext *context)
                 // remove temporary files
                 for (i = 0, j = 0; i < uFolders; i++) {
                     strFolder = saFolders[i];
-                    hFind = FindFirstFile((LPCTSTR)(strFolder + "*"), &wfdData);
+                    hFind = FindFirstFile((LPCTSTR)(strFolder + _T("*")), &wfdData);
 
                     if (hFind != INVALID_HANDLE_VALUE) {
                         do {

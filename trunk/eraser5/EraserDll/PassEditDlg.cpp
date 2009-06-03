@@ -73,7 +73,7 @@ BOOL CPassEditDlg::OnInitDialog()
     // the spin control fails to set the window text if m_uPasses
     // is greater than (2^16)/2 - 1, so we'll have to help it...
     CString strText;
-    strText.Format("%u", m_uPasses);
+    strText.Format(_T("%u"), m_uPasses);
     GetDlgItem(IDC_EDIT_PASSES)->SetWindowText((LPCTSTR)strText);
 
     m_bIgnoreChange = false;

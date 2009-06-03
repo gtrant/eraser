@@ -43,7 +43,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-const LPCTSTR szAccelerKey = "Acceler";
+const LPCTSTR szAccelerKey = _T("Acceler");
 
 /////////////////////////////////////////////////////////////////////////////
 // CErasextMenu
@@ -167,8 +167,8 @@ STDMETHODIMP_(ULONG) CErasextMenu::XMenuExt::Release(void)
 CString setShortcut(CString str)
 {
 	CKey kReg;
-	CString strPath(""), strKey(""), strRes(str);
-	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
+	CString strPath(""), strKey(""), strRes("");
+	strPath.Format(_T("%s\\%s"), ERASER_REGISTRY_BASE, szAccelerKey);
 	int iPos;
 	if (kReg.Open(HKEY_CURRENT_USER, strPath,FALSE))
 	{
@@ -181,7 +181,7 @@ CString setShortcut(CString str)
 			strKey.MakeUpper();
 			strTmp.MakeUpper();
 			iPos=strTmp.Find(strKey[0]);
-			strRes = str.Left(iPos)+"&"+str.Right(str.GetLength()-iPos);
+			strRes = str.Left(iPos)+_T("&")+str.Right(str.GetLength()-iPos);
 		}
 		kReg.Close();
 	}
@@ -214,7 +214,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::QueryContextMenu(HMENU hMenu, UINT nIndex, 
 			UINT startIndex = nIndex;
 			if (!pThis->m_bDragMenu)
 			{
-				if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst , ""))
+				if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst , _T("")))
 					return ResultFromShort(0);
 
 				if (!pThis->m_bUseFiles)
@@ -235,7 +235,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::QueryContextMenu(HMENU hMenu, UINT nIndex, 
 					return ResultFromShort(0);
 			}
 
-			if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst , ""))
+			if (!InsertMenu(hMenu, nIndex++, MF_SEPARATOR | MF_BYPOSITION, idCmdFirst , _T("")))
 				return ResultFromShort(0);
 
 			return MAKE_HRESULT(SEVERITY_SUCCESS, 0, nIndex - startIndex);
@@ -263,7 +263,7 @@ BOOL GetFolder(HWND hParent, TCHAR* path)
 	memset(&bi, 0, sizeof (bi));
 	bi.hwndOwner = hParent;
 	bi.ulFlags = BIF_NEWDIALOGSTYLE | BIF_EDITBOX;
-	bi.lpszTitle = "Select target folder";
+	bi.lpszTitle = _T("Select target folder");
 
 
 	LPITEMIDLIST pidlFolder;
@@ -407,7 +407,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpici)
                     // ask for confirmation
 					if (cd.m_bMove)
 					{
-						if ( !strlen(pThis->m_szDropTarget) 
+						if ( !_tcslen(pThis->m_szDropTarget) 
 							&& !GetFolder(lpici->hwnd, pThis->m_szDropTarget))
 						{
 							parent.Detach();
@@ -538,7 +538,6 @@ CErasextMenu::getstr_handle_erase(UINT /*nType*/, CString& cmdstr)
 void 
 CErasextMenu::getstr_handle_move(UINT /*nType*/, CString& cmdstr)
 {
-	
 	cmdstr = "Move";
 }
 
@@ -553,11 +552,8 @@ STDMETHODIMP CErasextMenu::XMenuExt::GetCommandString(UINT_PTR  idCmd, UINT nTyp
 	{
 		if (0 == idCmd )
 			pThis->getstr_handle_erase(nType, cmdstr);
-		else
-			if (1 == idCmd)
-				pThis->getstr_handle_move(nType, cmdstr);
-			
-			
+		else if (1 == idCmd)
+			pThis->getstr_handle_move(nType, cmdstr);
 	}
 	catch (CException *e)
 	{
@@ -574,14 +570,24 @@ STDMETHODIMP CErasextMenu::XMenuExt::GetCommandString(UINT_PTR  idCmd, UINT nTyp
 		return E_FAIL;
 	}
 
-	if (!pThis->m_bNT)
-		lstrcpyn(lpszName, (LPCTSTR) cmdstr, nMax);
-	else
+	switch(nType)
 	{
-		MultiByteToWideChar(CP_ACP, 0, (LPCSTR)cmdstr, -1, (LPWSTR)lpszName,
-			nMax / sizeof(WCHAR));
+#if defined(_UNICODE)
+		case GCS_HELPTEXTW:
+#else
+		case GCS_HELPTEXTA:
+#endif
+			lstrcpyn((LPTSTR)lpszName, cmdstr, nMax);
+			return NOERROR;
+
+#if defined(_UNICODE)
+		case GCS_VALIDATEW:
+#else
+		case GCS_VALIDATEA:
+#endif
+			return S_OK;
 	}
-    return NOERROR;
+	return E_NOTIMPL;
 }
 
 // IUnknown for IShellExtInit

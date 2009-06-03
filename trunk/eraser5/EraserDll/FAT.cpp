@@ -28,7 +28,7 @@
 
 // path to VWIN32.vxd
 //
-const LPCTSTR szVWIN32 = "\\\\.\\vwin32";
+const LPCTSTR szVWIN32 = _T("\\\\.\\vwin32");
 
 // helpful definitions
 //
@@ -792,7 +792,7 @@ isMatchingFolder(CEraserContext *context, const CString& strFolder)
 
             while (pos != NULL) {
                 strItem = context->m_pstrlDirectories->GetNext(pos);
-                if (strncmp((LPCTSTR)strItem, (LPCTSTR)strFolder, iLength) == 0) {
+                if (_tcsncmp((LPCTSTR)strItem, (LPCTSTR)strFolder, iLength) == 0) {
                     return true;
                 }
             }
@@ -834,11 +834,11 @@ clearDeletedEntries(wfeInfo *pwInfo, CEraserContext *context, E_PUINT8 pEntry, E
                 // long entry
             } else if (bitSet(pd->deAttributes, 0x10)) {
                 // directory
-                if (strncmp(".       ", (LPCTSTR)pd->deName, 8) != 0 &&
-                    strncmp("..      ", (LPCTSTR)pd->deName, 8) != 0) {
+                if (_tcsncmp(_T(".       "), (LPCTSTR)pd->deName, 8) != 0 &&
+                    _tcsncmp(_T("..      "), (LPCTSTR)pd->deName, 8) != 0) {
 
-                    strncpy(szDeName, (LPCTSTR)pd->deName, 8);
-                    strncpy(szDeExtension, (LPCTSTR)pd->deExtension, 3);
+                    _tcsncpy(szDeName, (LPCTSTR)pd->deName, 8);
+                    _tcsncpy(szDeExtension, (LPCTSTR)pd->deExtension, 3);
 
                     diInfo.strPath = strBase + szDeName;
                     diInfo.strPath.TrimRight();
@@ -847,10 +847,10 @@ clearDeletedEntries(wfeInfo *pwInfo, CEraserContext *context, E_PUINT8 pEntry, E
                     strExtension.TrimRight();
 
                     if (!strExtension.IsEmpty()) {
-                        diInfo.strPath += "." + strExtension;
+                        diInfo.strPath += _T(".") + strExtension;
                     }
 
-                    diInfo.strPath += "\\";
+                    diInfo.strPath += _T("\\");
                     diInfo.strPath.MakeUpper();
 
                     if (isMatchingFolder(context, diInfo.strPath)) {
@@ -993,9 +993,9 @@ clearEntries(wfeInfo *pwInfo, CEraserContext *context)
                                   pwInfo->m_uFATDirectorySize, pBuffer);
 
             if (uReturn == WFE_SUCCESS) {
-                uReturn = clearDeletedEntries(pwInfo, context, pBuffer, uBufferSize, "\\");
+                uReturn = clearDeletedEntries(pwInfo, context, pBuffer, uBufferSize, _T("\\"));
 
-                if (uReturn == WFE_CHANGED && isExactMatchingFolder(context, "\\")) {
+                if (uReturn == WFE_CHANGED && isExactMatchingFolder(context, _T("\\"))) {
                     uReturn = writeSectors(pwInfo, pwInfo->m_uFATDirectoryStart,
                                            pwInfo->m_uFATDirectorySize, pBuffer);
                 }
@@ -1027,7 +1027,7 @@ clearEntries(wfeInfo *pwInfo, CEraserContext *context)
             }
 
             if (isWindowsNT && !isEntryLocked(pwInfo)) {
-                strDirectory.Format("%c:%s", (TCHAR)(pwInfo->m_iVolume + 'A' - 1), (LPCTSTR)diInfo.strPath);
+                strDirectory.Format(_T("%c:%s"), (TCHAR)(pwInfo->m_iVolume + 'A' - 1), (LPCTSTR)diInfo.strPath);
                 pwInfo->FS.lockDirectory(pwInfo, (LPCTSTR)strDirectory);
             }
 
@@ -1191,7 +1191,7 @@ openVolume(wfeInfo& wfe, PARTITIONINFO& pi)
     }
 
     if (isWindowsNT) {
-        TCHAR szVolume[] = "\\\\.\\ :";
+        TCHAR szVolume[] = _T("\\\\.\\ :");
         szVolume[4] = pi.m_szDrive[0];
 
         wfe.m_hVolume = CreateFile(szVolume, GENERIC_READ | GENERIC_WRITE,

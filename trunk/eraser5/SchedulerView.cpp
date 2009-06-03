@@ -55,11 +55,11 @@ static const int iColumnCount = 5;
 
 static const LPTSTR szColumnNames[iColumnCount] =
 {
-    "Name",
-    "Type",
-    "Last Run",
-    "Next Run",
-    "Schedule"
+    _T("Name"),
+    _T("Type"),
+    _T("Last Run"),
+    _T("Next Run"),
+    _T("Schedule")
 };
 
 static const int iMinFirstColumnWidth = 100;
@@ -318,7 +318,7 @@ void CSchedulerView::OnInitialUpdate()
     SetTimers();
 
     if (!IsWindow(m_pbProgress.GetSafeHwnd()))
-        m_pbProgress.Create("", 30, 100, TRUE, 0);
+        m_pbProgress.Create(_T(""), 30, 100, TRUE, 0);
 
     CFlatListView::OnInitialUpdate();
 }
@@ -430,20 +430,20 @@ void CSchedulerView::OnFileNewTask()
 					CKey kReg;
 					CString m_strExePath;
 					CString m_strName;
-					char Fullname[260];
-					char Filename[260];
-					char Extension[5];
-					char Pathname[260];
-					char myDrive[10];
-					char *buffer = new char[260];
+					TCHAR Fullname[260];
+	      		    TCHAR Filename[260];
+					TCHAR Extension[5];
+					TCHAR Pathname[260];
+					TCHAR myDrive[10];
+					TCHAR *buffer = new TCHAR[260];
 
-					if (kReg.Open(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
+					if (kReg.Open(HKEY_LOCAL_MACHINE, _T("Software\\Microsoft\\Windows\\CurrentVersion\\Run")))
 					{
-						 GetModuleFileName(AfxGetInstanceHandle(),Fullname,sizeof Fullname);
-					    _splitpath(Fullname,myDrive,Pathname,Filename,Extension); 
-						strcpy(buffer,myDrive);
-						strncat(buffer,Pathname,250);
-						strncpy(Pathname,buffer,260);
+						 GetModuleFileName(AfxGetInstanceHandle(),Fullname, sizeof(Fullname) / sizeof(Fullname[0]));
+					    _tsplitpath(Fullname,myDrive,Pathname,Filename,Extension); 
+						_tcscpy(buffer,myDrive);
+						_tcsncat(buffer,Pathname,250);
+						_tcsncpy(Pathname,buffer,260);
 						delete buffer;
 						m_strExePath = '"';
 						//gt m_strExePath+=  CString(Pathname);
@@ -452,10 +452,10 @@ void CSchedulerView::OnFileNewTask()
 						switch (tps.m_pgData.m_tType)
 						{
 							case Drive:
-								m_strExePath+= " -disk " + tps.m_pgData.m_strSelectedDrive;
+								m_strExePath+= _T(" -disk ") + tps.m_pgData.m_strSelectedDrive;
 								break;
 							case Folder:
-								m_strExePath+= " -folder ";
+								m_strExePath+= _T(" -folder ");
 								m_strExePath+= '"';
 								m_strExePath+= tps.m_pgData.m_strFolder;
 								m_strExePath+= '"';
@@ -518,8 +518,8 @@ void CSchedulerView::OnEditDeleteTask()
     {
         CListCtrl& lc = GetListCtrl();
 
-        if (lc.GetSelectedCount() > 0 && AfxMessageBox("Are you sure you want to "
-			"delete the selected tasks?", MB_YESNO | MB_ICONQUESTION) == IDYES)
+        if (lc.GetSelectedCount() > 0 && AfxMessageBox(_T("Are you sure you want to ")
+			_T("delete the selected tasks?"), MB_YESNO | MB_ICONQUESTION) == IDYES)
         {
             int nItem;
             DWORD_PTR iSize = pDoc->m_paScheduledTasks.GetSize();
@@ -555,7 +555,7 @@ void CSchedulerView::OnEditDeleteTask()
 						if (psiItem->GetSchedule() == Reboot) 
 						{
 							CKey kReg;
-							if (kReg.Open(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
+							if (kReg.Open(HKEY_CURRENT_USER, _T("Software\\Microsoft\\Windows\\CurrentVersion\\Run")))
 							{
 								kReg.DeleteValue(psiItem->GetId());
 								kReg.Close();
@@ -749,20 +749,20 @@ void CSchedulerView::OnEditProperties()
 					CKey kReg;
 					CString m_strExePath;
 					CString m_strName;
-					char Fullname[260];
-	      		    char Filename[260];
-					char Extension[5];
-					char Pathname[260];
-					char myDrive[10];
-					char *buffer = new char[260];
+					TCHAR Fullname[260];
+	      		    TCHAR Filename[260];
+					TCHAR Extension[5];
+					TCHAR Pathname[260];
+					TCHAR myDrive[10];
+					TCHAR *buffer = new TCHAR [260];
 
-					if (kReg.Open(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run"))
+					if (kReg.Open(HKEY_LOCAL_MACHINE, _T("Software\\Microsoft\\Windows\\CurrentVersion\\Run")))
 					{
-						 GetModuleFileName(AfxGetInstanceHandle(),Fullname,sizeof Fullname);
-					    _splitpath(Fullname,myDrive,Pathname,Filename,Extension); 
-						strcpy(buffer,myDrive);
-						strncat(buffer,Pathname,250);
-						strncpy(Pathname,buffer,260);
+						 GetModuleFileName(AfxGetInstanceHandle(),Fullname, sizeof(Fullname) / sizeof(Fullname[0]));
+					    _tsplitpath(Fullname,myDrive,Pathname,Filename,Extension); 
+						_tcscpy(buffer,myDrive);
+						_tcsncat(buffer,Pathname,250);
+						_tcsncpy(Pathname,buffer,260);
 						delete buffer;
 						m_strExePath = '"';
 						//gt m_strExePath+=  CString(Pathname);
@@ -772,18 +772,18 @@ void CSchedulerView::OnEditProperties()
 						switch (tps.m_pgData.m_tType)
 						{
 							case Drive:
-								m_strExePath+= " -disk " + tps.m_pgData.m_strSelectedDrive;
+								m_strExePath+= _T(" -disk ") + tps.m_pgData.m_strSelectedDrive;
 								break;
 							case Folder:
-								m_strExePath+= " -folder ";
+								m_strExePath+= _T(" -folder ");
 								m_strExePath+= '"';
 								m_strExePath+= tps.m_pgData.m_strFolder;
 								m_strExePath+= '"';
-								if (tps.m_pgData.m_bRemoveFolder==FALSE) {m_strExePath+= " -keepfolder ";}
-								if (tps.m_pgData.m_bSubfolders) {m_strExePath+= " -subfolders ";}
+								if (tps.m_pgData.m_bRemoveFolder==FALSE) {m_strExePath += _T("-keepfolder ");}
+								if (tps.m_pgData.m_bSubfolders) {m_strExePath+= _T("-subfolders ");}
 								break;
 							case File:
-								m_strExePath+= " -file ";
+								m_strExePath+= _T(" -file ");
 								m_strExePath+= '"';
 								m_strExePath+= tps.m_pgData.m_strFile;
 								m_strExePath+= '"';
@@ -1516,7 +1516,7 @@ void CSchedulerView::UpdateList()
             case Folder:
                 {
                     if (strData.GetLength() <= _MAX_DRIVE &&
-                        strData.Find(":\\") == 1)
+                        strData.Find(_T(":\\")) == 1)
                     {
                         // clear all data on a drive!
                         bExists = TRUE;
@@ -1543,7 +1543,7 @@ void CSchedulerView::UpdateList()
                 bExists = TRUE;
                 if (strData == DRIVE_ALL_LOCAL)
                 {
-                    SHGetFileInfo((LPCTSTR)"C:\\",
+                    SHGetFileInfo((LPCTSTR)_T("C:\\"),
                                   0,
                                   &sfi,
                                   sizeof(SHFILEINFO),
@@ -1585,9 +1585,9 @@ void CSchedulerView::UpdateList()
             lvi.iSubItem = ColumnType;
 
             if (psiItem->GetType() == Drive)
-                strData = "Unused disk space";
+                strData = _T("Unused disk space");
             else if (psiItem->UseWildcards())
-                strData = "Wildcard search";
+                strData = _T("Wildcard search");
             else
                 strData = sfi.szTypeName;
 
@@ -1603,7 +1603,7 @@ void CSchedulerView::UpdateList()
             odtLast = psiItem->GetLastTime();
 
             if (odtLast.GetStatus() == COleDateTime::valid)
-                strData = odtLast.Format("%c");
+                strData = odtLast.Format(_T("%c"));
             else
                 strData.Empty();
 
@@ -1652,7 +1652,7 @@ void CSchedulerView::UpdateList()
             }
             else
             {
-                strData = psiItem->GetNextTime().Format("%c");
+                strData = psiItem->GetNextTime().Format(_T("%c"));
             }
 
             lvi.pszText = strData.GetBuffer(strData.GetLength());
@@ -1922,10 +1922,10 @@ void CSchedulerView::OnUpdateItems(CCmdUI* pCmdUI)
     CString str;
     int iCount = lc.GetItemCount();
 
-    str.Format("%u Task", iCount);
+    str.Format(_T("%u Task"), iCount);
 
     if (iCount != 1)
-        str += "s";
+        str += _T("s");
 
     pCmdUI->SetText((LPCTSTR)str);
     pCmdUI->Enable();

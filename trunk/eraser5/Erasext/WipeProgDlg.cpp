@@ -44,7 +44,7 @@ static BOOL getAskUserParam()
 	CKey kReg;
 	if (kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE))
 	{
-		kReg.GetValue(bResolveAskUser, "EraserResolveLockAskUser", TRUE);	
+		kReg.GetValue(bResolveAskUser, _T("EraserResolveLockAskUser"), TRUE);	
 		kReg.Close();
 	}	
 	return bResolveAskUser; 
@@ -253,14 +253,14 @@ BOOL CEraserDlg::EraserWipeUpdate()
     // percent
     if (eraserOK(eraserProgGetPercent(m_ehContext, &uValue)))
     {
-        strPercent.Format("%u%%", uValue);
+        strPercent.Format(_T("%u%%"), uValue);
         m_pcProgress.SetPos(uValue);
     }
 
     // total percent
     if (eraserOK(eraserProgGetTotalPercent(m_ehContext, &uValue)))
     {
-        strPercentTotal.Format("%u%%", uValue);
+        strPercentTotal.Format(_T("%u%%"), uValue);
         m_pcProgressTotal.SetPos(uValue);
     }
 
@@ -273,7 +273,7 @@ BOOL CEraserDlg::EraserWipeUpdate()
             if (eraserOK(eraserProgGetCurrentPass(m_ehContext, &current)) &&
                 eraserOK(eraserProgGetPasses(m_ehContext, &passes)))
             {
-                strPass.Format("%u of %u", current, passes);
+                strPass.Format(_T("%u of %u"), current, passes);
             }
         }
 
@@ -287,14 +287,14 @@ BOOL CEraserDlg::EraserWipeUpdate()
                 if (uTimeLeft > 120)
                 {
                     uTimeLeft = (uTimeLeft / 60) + 1;
-                    strTime.Format("%u minutes left", uTimeLeft);
+                    strTime.Format(_T("%u minutes left"), uTimeLeft);
                 }
                 else if (uTimeLeft > 0)
                 {
                     if (uTimeLeft % 5)
                         strTime = m_strTime;
                     else
-                        strTime.Format("%u seconds left", uTimeLeft);
+                        strTime.Format(_T("%u seconds left"), uTimeLeft);
                 }
             }
         }
@@ -393,7 +393,7 @@ BOOL CEraserDlg::PreTranslateMessage(MSG* pMsg)
 
 void CEraserDlg::OnCancel()
 {
-    m_strMessage = "Terminating...";
+    m_strMessage = _T("Terminating...");
     m_strPercent.Empty();
     m_strPercentTotal.Empty();
     m_strPass.Empty();

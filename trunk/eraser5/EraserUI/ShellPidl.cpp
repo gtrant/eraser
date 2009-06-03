@@ -166,7 +166,7 @@ LPITEMIDLIST CShellPidl::CopyITEMID(LPMALLOC lpMalloc, LPITEMIDLIST pidl)
 BOOL CShellPidl::GetName(LPSHELLFOLDER lpsf,
                          LPITEMIDLIST  lpi,
                          DWORD         dwFlags,
-                         LPSTR         lpFriendlyName)
+                         LPTSTR         lpFriendlyName)
 {
     try
     {
@@ -178,6 +178,9 @@ BOOL CShellPidl::GetName(LPSHELLFOLDER lpsf,
             switch (str.uType)
             {
             case STRRET_WSTR:
+#if defined(_UNICODE)
+				lstrcpy(lpFriendlyName, (LPTSTR)str.pOleStr);
+#else
                 WideCharToMultiByte(CP_ACP,         // CodePage
                                     0,              // dwFlags
                                     str.pOleStr,    // lpWideCharStr
@@ -186,12 +189,35 @@ BOOL CShellPidl::GetName(LPSHELLFOLDER lpsf,
                                     MAX_PATH,       // cchMultiByte
                                     NULL,           // lpDefaultChar,
                                     NULL);          // lpUsedDefaultChar
+#endif
                 break;
             case STRRET_OFFSET:
+#if defined(_UNICODE)
+				::MultiByteToWideChar(
+					CP_ACP,
+					0,
+					(LPCSTR)str.cStr + str.uOffset,
+					-1,
+					lpFriendlyName,
+					MAX_PATH
+					);
+#else
                 lstrcpy(lpFriendlyName, (LPSTR)lpi + str.uOffset);
+#endif
                 break;
             case STRRET_CSTR:
+#if defined(_UNICODE)
+				::MultiByteToWideChar(
+					CP_ACP,
+					0,
+					(LPCSTR)str.cStr,
+					-1,
+					lpFriendlyName,
+					MAX_PATH
+					);
+#else
                 lstrcpy(lpFriendlyName, (LPSTR)str.cStr);
+#endif
                 break;
             default:
                 bSuccess = FALSE;
@@ -228,12 +254,16 @@ LPITEMIDLIST CShellPidl::GetFullyQualPidl(LPSHELLFOLDER lpsf, LPITEMIDLIST lpi)
         {
             if (SUCCEEDED(SHGetDesktopFolder(&lpsfDeskTop)))
             {
+#if defined(_UNICODE)
+				lstrcpy(szOleChar, szBuffer);
+#else
                 MultiByteToWideChar(CP_ACP,
                                     MB_PRECOMPOSED,
                                     szBuffer,
                                     -1,
                                     (LPWSTR )szOleChar, //gt
                                     sizeof(szOleChar));
+#endif
 
                 if (FAILED(lpsfDeskTop->ParseDisplayName(NULL, NULL, szOleChar,
                                                          &ulEaten, &lpifq, &ulAttribs)))
@@ -271,7 +301,7 @@ BOOL CShellPidl::DoTheMenuThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
     {
         HMENU               hMenu;
         LPCONTEXTMENU       lpcm;
-        CMINVOKECOMMANDINFO cmi;
+        CMINVOKECOMMANDINFOEX cmi;
         int                 idCmd;
         HRESULT             hr;
         BOOL                bSuccess = FALSE;
@@ -300,24 +330,31 @@ BOOL CShellPidl::DoTheMenuThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
 
                     if (idCmd)
                     {
-                        cmi.cbSize          = sizeof(CMINVOKECOMMANDINFO);
-                        cmi.fMask           = 0;
+                        cmi.cbSize          = sizeof(CMINVOKECOMMANDINFOEX);
                         cmi.hwnd            = hwnd;
+#if defined(_UNICODE)
+                        cmi.fMask           = CMIC_MASK_UNICODE;
+                        cmi.lpVerbW          = MAKEINTRESOURCE(idCmd - 1);
+                        cmi.lpParametersW    = NULL;
+                        cmi.lpDirectoryW     = NULL;
+#else
+                        cmi.fMask           = 0;
                         cmi.lpVerb          = MAKEINTRESOURCE(idCmd - 1);
                         cmi.lpParameters    = NULL;
                         cmi.lpDirectory     = NULL;
+#endif
                         cmi.nShow           = SW_SHOWNORMAL;
                         cmi.dwHotKey        = 0;
                         cmi.hIcon           = NULL;
 
-                        hr = lpcm->InvokeCommand(&cmi);
+                        hr = lpcm->InvokeCommand((LPCMINVOKECOMMANDINFO)&cmi);
 
                         if (SUCCEEDED(hr))
                             bSuccess = TRUE;
-                        else if (HRESULT_FACILITY(hr) != FACILITY_WIN32 || HRESULT_CODE(hr) != ERROR_CANCELLED)
+                        else
                         {
                             CString strError;
-                            strError.Format("InvokeCommand failed. hr = %lx", hr);
+                            strError.Format(_T("InvokeCommand failed. hr = %lx"), hr);
                             AfxMessageBox(strError);
                         }
                     }
@@ -333,7 +370,7 @@ BOOL CShellPidl::DoTheMenuThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
         else
         {
             CString strError;
-            strError.Format("GetUIObjectOf failed! hr = %lx", hr);
+            strError.Format(_T("GetUIObjectOf failed! hr = %lx"), hr);
             AfxMessageBox(strError);
         }
 
@@ -361,7 +398,7 @@ BOOL CShellPidl::DoTheDefaultThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
     {
         HMENU               hMenu;
         LPCONTEXTMENU       lpcm;
-        CMINVOKECOMMANDINFO cmi;
+        CMINVOKECOMMANDINFOEX cmi;
         int                 idCmd;
         HRESULT             hr;
         BOOL                bSuccess = FALSE;
@@ -389,24 +426,31 @@ BOOL CShellPidl::DoTheDefaultThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
                     // if there was a default item, do the thing
                     if (idCmd != -1)
                     {
-                        cmi.cbSize          = sizeof(CMINVOKECOMMANDINFO);
-                        cmi.fMask           = 0;
+                        cmi.cbSize          = sizeof(CMINVOKECOMMANDINFOEX);
                         cmi.hwnd            = hwnd;
+#if defined(_UNICODE)
+                        cmi.fMask           = CMIC_MASK_UNICODE;
+                        cmi.lpVerbW          = MAKEINTRESOURCE(idCmd - 1);
+                        cmi.lpParametersW    = NULL;
+                        cmi.lpDirectoryW     = NULL;
+#else
+                        cmi.fMask           = 0;
                         cmi.lpVerb          = MAKEINTRESOURCE(idCmd - 1);
                         cmi.lpParameters    = NULL;
                         cmi.lpDirectory     = NULL;
+#endif
                         cmi.nShow           = SW_SHOWNORMAL;
                         cmi.dwHotKey        = 0;
                         cmi.hIcon           = NULL;
 
-                        hr = lpcm->InvokeCommand(&cmi);
+                        hr = lpcm->InvokeCommand((LPCMINVOKECOMMANDINFO)&cmi);
 
                         if (SUCCEEDED(hr))
                             bSuccess = TRUE;
-                        else if (HRESULT_FACILITY(hr) != FACILITY_WIN32 || HRESULT_CODE(hr) != ERROR_CANCELLED)
+                        else
                         {
                             CString strError;
-                            strError.Format("InvokeCommand failed. hr = %lx", hr);
+                            strError.Format(_T("InvokeCommand failed. hr = %lx"), hr);
                             AfxMessageBox(strError);
                         }
                     }
@@ -422,7 +466,7 @@ BOOL CShellPidl::DoTheDefaultThing(HWND hwnd, LPSHELLFOLDER lpsfParent,
         else
         {
             CString strError;
-            strError.Format("GetUIObjectOf failed! hr = %lx", hr);
+            strError.Format(_T("GetUIObjectOf failed! hr = %lx"), hr);
             AfxMessageBox(strError);
         }
 
@@ -442,7 +486,7 @@ int CShellPidl::GetItemIcon(LPITEMIDLIST lpi, UINT uFlags)
     {
         SHFILEINFO    sfi;
 
-        SHGetFileInfo((LPCSTR)lpi,
+        SHGetFileInfo((LPCTSTR)lpi,
                       0,
                       &sfi,
                       sizeof(SHFILEINFO),

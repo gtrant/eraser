@@ -96,7 +96,7 @@ GLOBALVAR TCHAR szExceptionBuffer[uExceptionBufferSize];
 // safe characters for filenames (excluded some that are not that so common)
 //
 const E_UINT16 ERASER_SAFEARRAY_SIZE = 36;
-const LPCTSTR ERASER_SAFEARRAY = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const LPCTSTR ERASER_SAFEARRAY = _T("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ");
 
 inline void createRandomFileName(LPTSTR szFileName, E_UINT16 uNameLength, E_UINT16 uExtLength, E_UINT16 uCounter)
 {
@@ -122,7 +122,7 @@ inline void createRandomFileName(LPTSTR szFileName, E_UINT16 uNameLength, E_UINT
         ZeroMemory(uRandomArray, MAX_PATH);
 
         if (uCounter > 0 && uNameLength >= 4) {
-            _snprintf(&szFileName[uNameLength - 4], 4, "%04X", uCounter);
+            _sntprintf(&szFileName[uNameLength - 4], 4, _T("%04X"), uCounter);
         }
 
         if (uExtLength > 0) {

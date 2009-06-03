@@ -45,13 +45,13 @@ void CSecManDlg::OnOK()
 	{
 		Clear();
 		UpdateData(FALSE);
-		this->MessageBox(CString(MAKEINTRESOURCE(IDS_PASSWDNOTMATCH)), "Error", MB_OK | MB_ICONERROR);
+		this->MessageBox(CString(MAKEINTRESOURCE(IDS_PASSWDNOTMATCH)), _T("Error"), MB_OK | MB_ICONERROR);
 		GetDlgItem(IDC_EDIT_SECMAN_PASSWD)->SetFocus();		
 	}
 	else if (m_Password.IsEmpty())
 	{
 		UpdateData(FALSE);
-		MessageBox(CString(MAKEINTRESOURCE(IDS_PASSWDEMPTY)), "Error", MB_OK | MB_ICONERROR);
+		MessageBox(CString(MAKEINTRESOURCE(IDS_PASSWDEMPTY)), _T("Error"), MB_OK | MB_ICONERROR);
 		GetDlgItem(IDC_EDIT_SECMAN_PASSWD)->SetFocus();		
 	}
 	else

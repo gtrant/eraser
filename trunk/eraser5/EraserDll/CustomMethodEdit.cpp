@@ -36,10 +36,10 @@ static char THIS_FILE[] = __FILE__;
 
 static const int iColumnCount = 2;
 
-static const LPSTR szColumnNames[] =
+static const LPTSTR szColumnNames[] =
 {
-    "#",
-    "Data"
+    _T("#"),
+    _T("Data")
 };
 
 static int iColumnWidths[] =
@@ -356,10 +356,11 @@ BOOL CCustomMethodEdit::LoadCustomMethod(LPMETHOD lpcm)
 
 inline static CString GetByteStr(BYTE byte)
 {
-    CString str = "00000000";
+    CString str = _T("00000000");
 
-    for (BYTE j = 0; j < 8; j++) \
+	for (BYTE j = 0; j < 8; j++) {
         str.SetAt(7 - j, (byte & (1 << j)) ? '1' : '0');
+	}
 
     return str;
 }
@@ -367,17 +368,17 @@ inline static CString GetByteStr(BYTE byte)
 inline static void GetPassStr(CString& str, const PASS& pass)
 {
     if (pass.byte1 == RND_DATA)
-        str = "Pseudorandom Data";
+        str = _T("Pseudorandom Data");
     else
     {
-        str = "Pattern (" + GetByteStr((BYTE)pass.byte1);
+        str = _T("Pattern (") + GetByteStr((BYTE)pass.byte1);
 
         if (pass.bytes >= 2)
-            str += " " + GetByteStr((BYTE)pass.byte2);
+            str += _T(" ") + GetByteStr((BYTE)pass.byte2);
         if (pass.bytes == 3)
-            str += " " + GetByteStr((BYTE)pass.byte3);
+            str += _T(" ") + GetByteStr((BYTE)pass.byte3);
 
-        str += ")";
+        str += _T(")");
     }
 }
 
@@ -397,7 +398,7 @@ void CCustomMethodEdit::UpdateList()
         // built-in
         for (WORD i = 0; i < m_aPasses.GetSize(); i++)
         {
-            strTmp.Format("%u", (DWORD)i + 1);
+            strTmp.Format(_T("%u"), (DWORD)i + 1);
             lvi.mask        = LVIF_TEXT | LVIF_PARAM;
             lvi.lParam      = (LPARAM)i;
             lvi.iItem       = i;

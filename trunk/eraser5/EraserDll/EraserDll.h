@@ -36,38 +36,38 @@
 //
 // base keys
 const LPCTSTR ERASER_REGISTRY_AUTHOR
-    = "Software\\Heidi Computers Ltd";
+    = _T("Software\\Heidi Computers Ltd");
 const LPCTSTR ERASER_REGISTRY_PROGRAM
-    = "Software\\Heidi Computers Ltd\\Eraser";
+    = _T("Software\\Heidi Computers Ltd\\Eraser");
 const LPCTSTR ERASER_REGISTRY_BASE
-    = "Software\\Heidi Computers Ltd\\Eraser\\5.8";
+    = _T("Software\\Heidi Computers Ltd\\Eraser\\5.8");
 // settings for the library
 const LPCTSTR ERASER_REGISTRY_LIBRARY
-    = "Library";
+    = _T("Library");
 // enable Shell Extension?
 const LPCTSTR ERASEXT_REGISTRY_ENABLED
-    = "ErasextEnabled";
+    = _T("ErasextEnabled");
 // results for the Shell Extension
 const LPCTSTR ERASEXT_REGISTRY_RESULTS
-    = "ResultsErasext";
+    = _T("ResultsErasext");
 // enable slow entropy polling?
 const LPCTSTR ERASER_RANDOM_SLOW_POLL
-    = "EraserSlowPollEnabled";
+    = _T("EraserSlowPollEnabled");
 // common results
 const LPCTSTR ERASER_REGISTRY_RESULTS_WHENFAILED
-    = "ResultsOnlyWhenFailed";
+    = _T("ResultsOnlyWhenFailed");
 const LPCTSTR ERASER_REGISTRY_RESULTS_FILES
-    = "ResultsForFiles";
+    = _T("ResultsForFiles");
 const LPCTSTR ERASER_REGISTRY_RESULTS_UNUSEDSPACE
-    = "ResultsForUnusedSpace";
+    = _T("ResultsForUnusedSpace");
 
 
 // URLs
 //
 const LPCTSTR ERASER_URL_HOMEPAGE
-    = "http://eraser.sourceforge.net/";
+    = _T("http://www.heidi.ie/eraser/");
 const LPCTSTR ERASER_URL_EMAIL
-    = "http://bbs.heidi.ie";
+    = _T("mailto:support@heidi.ie");
 
 #ifdef DMARS
 typedef unsigned __int64 ULONGLONG;

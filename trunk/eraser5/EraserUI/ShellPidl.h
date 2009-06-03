@@ -62,7 +62,7 @@ public:
     LPITEMIDLIST    ConcatPidls(LPCITEMIDLIST pidl1, LPCITEMIDLIST pidl2);
     LPITEMIDLIST    GetFullyQualPidl(LPSHELLFOLDER lpsf, LPITEMIDLIST lpi);
     LPITEMIDLIST    CopyITEMID(LPMALLOC lpMalloc, LPITEMIDLIST lpi);
-    BOOL            GetName(LPSHELLFOLDER lpsf, LPITEMIDLIST lpi, DWORD dwFlags, LPSTR lpFriendlyName);
+    BOOL            GetName(LPSHELLFOLDER lpsf, LPITEMIDLIST lpi, DWORD dwFlags, LPTSTR lpFriendlyName);
     LPITEMIDLIST    CreatePidl(UINT cbSize);
     UINT            GetSize(LPCITEMIDLIST pidl);
     LPITEMIDLIST    Next(LPCITEMIDLIST pidl);

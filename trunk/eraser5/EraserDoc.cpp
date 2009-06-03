@@ -48,7 +48,7 @@ static char THIS_FILE[] = __FILE__;
 
 CString findRecycledBinGUID()
 {
-	const LPCTSTR RBIN_NSPACE = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace";
+	const LPCTSTR RBIN_NSPACE = _T("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace");
 	CKey kReg;
 	BOOL bRes;
 	HKEY hReg;
@@ -63,10 +63,10 @@ CString findRecycledBinGUID()
 	{		 
 		CKey kTmpReg;
 		CString strTmp=_T("");
-		strTmp.Format("%s\\%s", RBIN_NSPACE, szSubKey);
+		strTmp.Format(_T("%s\\%s"), RBIN_NSPACE, szSubKey);
 		if (kTmpReg.Open(HKEY_LOCAL_MACHINE,strTmp,FALSE)) {
-			kTmpReg.GetValue(strValue,strDef,"");
-			if (strValue == "Recycle Bin") {
+			kTmpReg.GetValue(strValue,strDef,_T(""));
+			if (strValue == _T("Recycle Bin")) {
 				strFind = szSubKey; 
 			}
 			dwIndex++;
@@ -137,9 +137,9 @@ m_smallImageList (NULL)
 		// Create the Application Data path to store the Default ers file
 #ifndef ERASER_STANDALONE
 		if (!SUCCEEDED(SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, m_strAppDataPath.GetBuffer(MAX_PATH))))
-			AfxMessageBox("Could not determine path to Application Data", MB_ICONERROR);
+			AfxMessageBox(_T("Could not determine path to Application Data"), MB_ICONERROR);
 		m_strAppDataPath.ReleaseBuffer();
-		CreateDirectory((m_strAppDataPath += "\\") += szAppDataPath, NULL);
+		CreateDirectory((m_strAppDataPath += _T("\\")) += szAppDataPath, NULL);
 #else
 		TCHAR moduleName[MAX_PATH];
 		SetLastError(0);
@@ -166,7 +166,7 @@ m_smallImageList (NULL)
         }
 
         // create task bar tray icon
-        m_stIcon.Create(NULL, WM_TRAY_NOTIFY, "Starting...",
+        m_stIcon.Create(NULL, WM_TRAY_NOTIFY, _T("Starting..."),
                         AfxGetApp()->LoadIcon(IDI_ICON_TRAY),
                         IDR_MENU_TRAY, m_bNoTrayIcon);
 		
@@ -177,7 +177,7 @@ m_smallImageList (NULL)
         if (m_bLog && !m_bLogOnlyErrors)
         {
             CString strStart;
-            AfxFormatString1(strStart, IDS_ACTION_START, VERSION_NUMBER_STRING);
+            AfxFormatString1(strStart, IDS_ACTION_START, _T(VERSION_NUMBER_STRING));
             LogAction(strStart);
         }
 
@@ -695,7 +695,7 @@ BOOL CEraserDoc::LogAction(CString str)
     if (sf.Open(strPath, CFile::modeReadWrite | CFile::modeCreate | CFile::modeNoTruncate | CFile::typeText))
     {
         strDate = GetTimeTimeZoneBased().Format();
-        str = strDate + ": " + str + "\n";
+        str = strDate + _T(": ") + str + _T("\n");
 
 
         try
@@ -913,7 +913,7 @@ BOOL CEraserDoc::SavePreferences()
     CString         strPath;
     OSVERSIONINFO   ov;
 
-    strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szSettingsKey);
+    strPath.Format(_T("%s\\%s"), ERASER_REGISTRY_BASE, szSettingsKey);
 
     ZeroMemory(&ov, sizeof(OSVERSIONINFO));
     ov.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -970,14 +970,14 @@ BOOL CEraserDoc::SavePreferences()
     // General Preferences
 
 	//cancel report on recycle bin clearance if m_bShellextResults is unchecked
-	const LPCTSTR REC_BIN_PKEY = "CLSID\\";
-	const LPCTSTR REC_BIN_SKEY = "Shell\\Eraserxt\\command";
-	const CString strWthReport = "\\Eraserl.exe -recycled -results ";
-	const CString strWoReport =  "\\Eraserl.exe -recycled ";
+	const LPCTSTR REC_BIN_PKEY = _T("CLSID\\");
+	const LPCTSTR REC_BIN_SKEY = _T("Shell\\Eraserxt\\command");
+	const CString strWthReport = _T("\\Eraserl.exe -recycled -results ");
+	const CString strWoReport =  _T("\\Eraserl.exe -recycled ");
 
 	CString strDef = _T(""), strCmd, strOld = _T("");
 	CString strRecBinGUID = REC_BIN_PKEY + findRecycledBinGUID();
-	strRecBinGUID = strRecBinGUID + "\\" + REC_BIN_SKEY;
+	strRecBinGUID = strRecBinGUID + _T("\\") + REC_BIN_SKEY;
 	
 	if (!no_registry && kReg.Open(HKEY_CLASSES_ROOT,strRecBinGUID,FALSE))
 	{
@@ -986,7 +986,7 @@ BOOL CEraserDoc::SavePreferences()
 		strCmd = buf;
 		if (m_bShellextResults == TRUE)	strCmd = strCmd + strWthReport;
 		else strCmd = strCmd + strWoReport;
-		kReg.GetValue(strOld,strDef,"");
+		kReg.GetValue(strOld,strDef,_T(""));
 		if (strOld != strCmd ) kReg.SetValue(strCmd,strDef);
 		kReg.Close();
 	}
@@ -1047,7 +1047,7 @@ BOOL CEraserDoc::ReadPreferences()
     CString         strPath;
     OSVERSIONINFO   ov;
 
-    strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szSettingsKey);
+    strPath.Format(_T("%s\\%s"), ERASER_REGISTRY_BASE, szSettingsKey);
 
     ZeroMemory(&ov, sizeof(OSVERSIONINFO));
     ov.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
@@ -1217,7 +1217,7 @@ void CEraserDoc::OnFileViewLog()
 
     if (CFile::GetStatus((LPCTSTR)strPath, fs))
     {
-        if (reinterpret_cast<int>(ShellExecute(NULL, "open", (LPCTSTR)strPath,
+        if (reinterpret_cast<int>(ShellExecute(NULL, _T("open"), (LPCTSTR)strPath,
                                                NULL, NULL, SW_SHOWNORMAL)) <= 32)
         {
             AfxMessageBox(IDS_ERROR_VIEWLOG, MB_ICONERROR, 0);
