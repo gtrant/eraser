@@ -151,6 +151,8 @@ namespace Eraser.Util
 				NativeMethods.MENUPARTS.MENU_POPUPBORDERS, 0, ref rect, ref rect);
 
 			e.Graphics.ReleaseHdc();
+			rect.Inflate(-Margin, -Margin);
+			e.Graphics.FillRectangle(new SolidBrush(e.BackColor), rect);
 		}
 
 		protected override void OnRenderImageMargin(ToolStripRenderEventArgs e)
@@ -158,8 +160,9 @@ namespace Eraser.Util
 			IntPtr hDC = e.Graphics.GetHdc();
 			Rectangle rect = e.AffectedBounds;
 			rect.Width = GutterWidth;
-			rect.Inflate(-1, -1);
-			rect.Offset(1, 0);
+			rect.Inflate(-2, -2);
+			rect.Offset(1, 1);
+			rect.Size = new Size(rect.Width, rect.Height + 1);
 
 			NativeMethods.DrawThemeBackground(hTheme, hDC,
 				(int)NativeMethods.MENUPARTS.MENU_POPUPGUTTER, 0, ref rect, ref rect);
@@ -237,6 +240,9 @@ namespace Eraser.Util
 				(e.Item.Enabled ? NativeMethods.POPUPITEMSTATES.MPI_NORMAL :
 					NativeMethods.POPUPITEMSTATES.MPI_DISABLED));
 
+			Rectangle newRect = e.TextRectangle;
+			newRect.Offset(1, 0);
+			e.TextRectangle = newRect;
 			Rectangle rect = new Rectangle(e.TextRectangle.Left, 0,
 				e.Item.Width - e.TextRectangle.Left, e.Item.Height);
 			IntPtr hFont = e.TextFont.ToHfont();
@@ -276,11 +282,33 @@ namespace Eraser.Util
 			}
 		}
 
-		private static int GutterWidth
+		private int GutterWidth
 		{
 			get
 			{
-				return 2 * (SystemInformation.MenuCheckSize.Width + SystemInformation.BorderSize.Width);
+				Rectangle margins = Rectangle.Empty;
+				Size checkSize = Size.Empty;
+
+				NativeMethods.GetThemeMargins(hTheme, IntPtr.Zero,
+					(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, 0,
+					(int)NativeMethods.TMT_MARGINS.TMT_SIZINGMARGINS,
+					IntPtr.Zero, ref margins);
+				NativeMethods.GetThemePartSize(hTheme, IntPtr.Zero,
+					(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, 0,
+					IntPtr.Zero, NativeMethods.THEMESIZE.TS_TRUE, ref checkSize);
+				return 2 * checkSize.Width;
+			}
+		}
+
+		private int Margin
+		{
+			get
+			{
+				Size borderSize = Size.Empty;
+				NativeMethods.GetThemePartSize(hTheme, IntPtr.Zero,
+					(int)NativeMethods.MENUPARTS.MENU_POPUPBORDERS, 0,
+					IntPtr.Zero, NativeMethods.THEMESIZE.TS_TRUE, ref borderSize);
+				return borderSize.Width;
 			}
 		}
 
@@ -320,6 +348,26 @@ namespace Eraser.Util
 
 			[DllImport("Gdi32.dll")]
 			public extern static IntPtr SelectObject(IntPtr hdc, IntPtr hgdiobj);
+
+			[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
+			public static extern IntPtr GetThemeMargins(SafeThemeHandle hTheme,
+				IntPtr hdc, int iPartId, int iStateId, int iPropId, ref Rectangle prc,
+				ref Rectangle pMargins);
+
+			[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
+			public static extern IntPtr GetThemeMargins(SafeThemeHandle hTheme,
+				IntPtr hdc, int iPartId, int iStateId, int iPropId, IntPtr prc,
+				ref Rectangle pMargins);
+
+			[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
+			public static extern IntPtr GetThemePartSize(SafeThemeHandle hTheme,
+				IntPtr hdc, int iPartId, int iStateId, ref Rectangle prc,
+				THEMESIZE eSize, ref Size psz);
+
+			[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
+			public static extern IntPtr GetThemePartSize(SafeThemeHandle hTheme,
+				IntPtr hdc, int iPartId, int iStateId, IntPtr prc,
+				THEMESIZE eSize, ref Size psz);
 
 			public enum MENUPARTS
 			{
@@ -372,6 +420,20 @@ namespace Eraser.Util
 			{
 				MSM_NORMAL = 1,
 				MSM_DISABLED = 2,
+			}
+
+			public enum TMT_MARGINS
+			{
+				TMT_SIZINGMARGINS = 3601,
+				TMT_CONTENTMARGINS,
+				TMT_CAPTIONMARGINS
+			}
+
+			public enum THEMESIZE
+			{
+				TS_MIN,
+				TS_TRUE,
+				TS_DRAW
 			}
 		}
 	}
