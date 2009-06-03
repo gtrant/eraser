@@ -168,7 +168,7 @@ namespace Eraser.Manager
 			}
 			set
 			{
-				if (schedule.Owner != null)
+				if (value.Owner != null)
 					throw new ArgumentException(S._("The schedule provided can only " +
 						"belong to one task at a time"));
 
