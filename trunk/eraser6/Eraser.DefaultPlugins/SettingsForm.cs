@@ -143,12 +143,15 @@ namespace Eraser.DefaultPlugins
 
 			DefaultPlugin.Settings.FL16Method = ((ErasureMethod)fl16MethodCmb.SelectedItem).Guid;
 
-			//Save the list of custom erasure methods
-			DefaultPlugin.Settings.EraseCustom = customMethods;
-
 			//Remove the old methods.
 			foreach (Guid guid in removeCustomMethods)
+			{
+				customMethods.Remove(guid);
 				ErasureMethodManager.Unregister(guid);
+			}
+
+			//Save the list of custom erasure methods
+			DefaultPlugin.Settings.EraseCustom = customMethods;
 
 			//Update the Erasure method manager on the methods
 			foreach (CustomErasureMethod method in addCustomMethods)

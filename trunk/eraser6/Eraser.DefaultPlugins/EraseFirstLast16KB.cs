@@ -27,6 +27,7 @@ using Eraser.Manager;
 using Eraser.Util;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Eraser.DefaultPlugins
 {
@@ -34,25 +35,24 @@ namespace Eraser.DefaultPlugins
 	{
 		public FirstLast16KB()
 		{
-			//Try to retrieve the set erasure method
-			if (DefaultPlugin.Settings.FL16Method != Guid.Empty)
-				method = ErasureMethodManager.GetInstance(
-					DefaultPlugin.Settings.FL16Method);
-			else
-				try
-				{
+			try
+			{
+				//Try to retrieve the set erasure method
+				if (DefaultPlugin.Settings.FL16Method != Guid.Empty)
+					method = ErasureMethodManager.GetInstance(
+						DefaultPlugin.Settings.FL16Method);
+				else
 					method = ErasureMethodManager.GetInstance(
 						ManagerLibrary.Settings.DefaultFileErasureMethod);
-				}
-				catch (FatalException)
-				{
-				}
-
-			//If we have no default or we are the default then throw an exception
-			if (method == null || method.Guid == Guid)
-				throw new InvalidOperationException(S._("The First/last 16KB erasure method " +
+			}
+			catch (FatalException)
+			{
+				MessageBox.Show(S._("The First/last 16KB erasure method " +
 					"requires another erasure method to erase the file.\n\nThis must " +
-					"be set in the Plugin Settings dialog."));
+					"be set in the Plugin Settings dialog."), Name, MessageBoxButtons.OK,
+					MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
+					S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+			}
 		}
 
 		public override string Name
@@ -72,6 +72,12 @@ namespace Eraser.DefaultPlugins
 
 		public override long CalculateEraseDataSize(ICollection<string> paths, long targetSize)
 		{
+			//If we have no default or we are the default then throw an exception
+			if (method == null || method.Guid == Guid)
+				throw new InvalidOperationException(S._("The First/last 16KB erasure method " +
+					"requires another erasure method to erase the file.\n\nThis must " +
+					"be set in the Plugin Settings dialog."));
+
 			//Amount of data required to be written.
 			long amountToWrite = 0;
 			if (paths == null)
@@ -91,6 +97,12 @@ namespace Eraser.DefaultPlugins
 		public override void Erase(Stream strm, long erasureLength, Prng prng,
 			EraserMethodProgressFunction callback)
 		{
+			//If we have no default or we are the default then throw an exception
+			if (method == null || method.Guid == Guid)
+				throw new InvalidOperationException(S._("The First/last 16KB erasure method " +
+					"requires another erasure method to erase the file.\n\nThis must " +
+					"be set in the Plugin Settings dialog."));
+
 			//Make sure that the erasureLength passed in here is the maximum value
 			//for the size of long, since we don't want to write extra or write
 			//less.
