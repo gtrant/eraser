@@ -250,7 +250,7 @@ BOOL CInfoBar::SetTextFont(LPCTSTR lpFontName)
 
     metrics.lfCaptionFont.lfHeight *= 5;
     metrics.lfCaptionFont.lfHeight /= 4;
-    strcpy(metrics.lfCaptionFont.lfFaceName, lpFontName);
+    _tcscpy(metrics.lfCaptionFont.lfFaceName, lpFontName);
     bRet = m_font.CreateFontIndirect(&metrics.lfCaptionFont);
     Invalidate();
     return bRet;

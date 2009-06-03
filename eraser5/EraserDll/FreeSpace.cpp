@@ -37,9 +37,9 @@
 
 // Windows 98 - Q188074
 static const LPCTSTR ERASER_REGISTRY_FILESYSTEM
-    = "System\\CurrentControlSet\\Control\\FileSystem";
+    = _T("System\\CurrentControlSet\\Control\\FileSystem");
 static const LPCTSTR ERASER_REGISTRY_LOWDISKSPACE
-    = "DisableLowDiskSpaceBroadcast";
+    = _T("DisableLowDiskSpaceBroadcast");
 
 #undef MAX_PATH
 #define MAX_PATH 2048 //HACK: Some filenames under Vista can exceed the 260
@@ -163,11 +163,11 @@ getPartitionType(PARTITIONINFO& pi)
     TCHAR szFS[MAX_PATH];
 
     if (GetVolumeInformation(pi.m_szDrive, NULL, 0, NULL, NULL, NULL, szFS, MAX_PATH)) {
-        if (_strcmpi(szFS, "FAT32") == 0) {
+        if (_tcsicmp(szFS, _T("FAT32")) == 0) {
             pi.m_fsType = fsFAT32;
-        } else if (_strcmpi(szFS, "FAT") == 0) {
+        } else if (_tcsicmp(szFS, _T("FAT")) == 0) {
             pi.m_fsType = fsFAT;
-        } else if (_strcmpi(szFS, "NTFS") == 0) {
+        } else if (_tcsicmp(szFS, _T("NTFS")) == 0) {
             pi.m_fsType = fsNTFS;
         } else {
             pi.m_fsType = fsUnknown;
@@ -248,7 +248,7 @@ static bool hasPrivileges(CEraserContext *context)
 {
 	if (!IsProcessElevated(GetCurrentProcess()))
 	{
-		context->m_saError.Add("Erasing the Free Space of a drive requires elevation");
+		context->m_saError.Add(_T("Erasing the Free Space of a drive requires elevation"));
 		return false;
 	}
 
@@ -269,7 +269,7 @@ countFilesOnDrive(CEraserContext *context, const CString& strDrive, E_UINT32& uF
         strRoot += "\\";
     }
 
-    hFind = FindFirstFile((LPCTSTR) (strRoot + "*"), &wfdData);
+    hFind = FindFirstFile((LPCTSTR) (strRoot + _T("*")), &wfdData);
 
     if (hFind != INVALID_HANDLE_VALUE) {
         try {
@@ -324,7 +324,7 @@ wipeClusterTipsRecursive(CEraserContext *context, SFCISFILEPROTECTED pSfcIsFileP
         strDirectory += "\\";
     }
 
-    hFind = FindFirstFile((LPCTSTR) (strDirectory + "*"), &wfdData);
+    hFind = FindFirstFile((LPCTSTR) (strDirectory + _T("*")), &wfdData);
 
     if (hFind != INVALID_HANDLE_VALUE) {
         WCHAR    szWideName[MAX_PATH];
@@ -345,7 +345,7 @@ wipeClusterTipsRecursive(CEraserContext *context, SFCISFILEPROTECTED pSfcIsFileP
                 // skip volume mount point
                 if (bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_REPARSE_POINT)) {
                     strFile = strDirectory + wfdData.cFileName;
-                    context->m_saFailed.Add(strFile + " (Reparse point)");
+                    context->m_saFailed.Add(strFile + _T(" (Reparse point)"));
                     continue;
                 }
                 // skip "." and ".."
@@ -366,11 +366,16 @@ wipeClusterTipsRecursive(CEraserContext *context, SFCISFILEPROTECTED pSfcIsFileP
                 // System File Protection - use only for Windows 2000 and later
                 if (isWindowsNT && pSfcIsFileProtected) {
                     try {
-                        asciiToUnicode((LPCSTR)strFile, (LPWSTR)szWideName);
+#if defined(_UNICODE)
+						wcscpy(szWideName, strFile);
+#else
+
+                        ansiToUnicode((LPCSTR)strFile, (LPWSTR)szWideName, 260);
+#endif
 
                         // we skip protected files to avoid confusing the user
                         if (pSfcIsFileProtected(NULL, (LPCWSTR)szWideName)) {
-                            context->m_saFailed.Add(strFile + " (Protected File)");
+                            context->m_saFailed.Add(strFile + _T(" (Protected File)"));
 
                             bIgnoreFile = true;
                             bCompleted = false;
@@ -520,7 +525,7 @@ wipeFreeSpace(CEraserContext *context)
     CString strFolder;
 
     try {
-        strFolder.Format("%s%s", context->m_piCurrent.m_szDrive, ERASER_TEMP_DIRECTORY);
+        strFolder.Format(_T("%s%s"), context->m_piCurrent.m_szDrive, ERASER_TEMP_DIRECTORY);
 
         // remove possibly existing folder
         eraserRemoveFolder((LPVOID)(LPCTSTR)strFolder, (E_UINT16)strFolder.GetLength(),
@@ -572,7 +577,7 @@ wipeFreeSpace(CEraserContext *context)
                         }
 
                         createRandomShortFileName(szFileName, (E_UINT16)uCurrent);
-                        strTempFile.Format("%s\\%s", strFolder, szFileName);
+                        strTempFile.Format(_T("%s\\%s"), strFolder, szFileName);
 
                         // cannot disable buffering for the last file, its size may not be sector aligned
                         if (uCurrent == uFiles) {

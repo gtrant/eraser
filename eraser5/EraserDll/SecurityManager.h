@@ -27,9 +27,9 @@ class ERASER_API CSecurityManager
 	~CSecurityManager(void);
 public:
 
-	static void Protect(const char* szSecret );
+	static void Protect(const TCHAR* szSecret );
 	static void Unprotect();
-	static bool Check(const char* szSecret );
+	static bool Check(const TCHAR* szSecret );
 	static bool IsProtected();
 };
 

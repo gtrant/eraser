@@ -26,7 +26,7 @@ public:
     {
         int     iImageIdx;
         int     iCmd;
-        char    cText[128];
+        TCHAR   cText[128];
     };
     struct ImageItem
     {
@@ -44,7 +44,7 @@ public:
     CSize szImage;
     int FindImageItem(const int cmd);
 
-    SpawnItem * AddSpawnItem(const char * txt, const int cmd);
+    SpawnItem * AddSpawnItem(const TCHAR * txt, const int cmd);
     void AddImageItem(const int idx, WORD cmd);
 
     void RemapMenu(CMenu * pMenu);

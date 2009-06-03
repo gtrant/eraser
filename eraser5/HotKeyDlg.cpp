@@ -28,19 +28,19 @@
 #include <shared/key.h>
 
 
-const LPCTSTR szAccelerKey = "Acceler";
+const LPCTSTR szAccelerKey = _T("Acceler");
 static const int iColumnCount = 2;
 static const LPTSTR szColumnNames[] =
 {
-	"Menu command",
-	"Hot key combination"	
+	_T("Menu command"),
+	_T("Hot key combination")
 };
 
 static const LPTSTR szDefAccelerKeys[] =
 {
-	"E",
-	"M",
-	"U"
+	_T("E"),
+	_T("M"),
+    _T("U")
 };
 
 static int iColumnWidths[] =
@@ -51,9 +51,9 @@ static int iColumnWidths[] =
 
 static LPCTSTR szCommandNames[] =
 {
-	"Erase",
-	"Eraser Secure Move",
-	"Erase Unused Space"
+	_T("Erase"),
+	_T("Eraser Secure Move"),
+    _T("Erase Unused Space")
 };
 
 static void CreateList(CListCtrl& lcHKey)
@@ -86,8 +86,8 @@ void InitRegistry()
 	CIniKey kReg_ini;
 	CKey &kReg = no_registry ? kReg_ini : kReg_reg;
 	CString strPath = _T("");
-	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
-
+	strPath.Format(_T("%s\\%s"), ERASER_REGISTRY_BASE, szAccelerKey);
+	
 	if (!no_registry) {
 		if (!kReg.Open(HKEY_CURRENT_USER, strPath, FALSE))
 		{
@@ -103,16 +103,16 @@ void InitRegistry()
 	} else {
 		kReg.Open(HKEY_CURRENT_USER, strPath);
 		DWORD count = 0;
-		kReg.GetValue(count, "__count", 0);
+		kReg.GetValue(count, _T("__count"), 0);
 		if (!count) {
 			CString temp;
 			for (int i = 0; i < iCommandCount; i++) {
-				temp.Format("__key_%ld", i);
+				temp.Format(_T("__key_%ld"), i);
 				kReg.SetValue(szDefAccelerKeys[i], temp);
-				temp.Format("__value_%ld", i);
+				temp.Format(_T("__value_%ld"), i);
 				kReg.SetValue(szCommandNames[i], temp);
 			}
-			kReg.SetValue(iCommandCount, "__count");
+			kReg.SetValue(iCommandCount, _T("__count"));
 		}
 	}
 }
@@ -125,8 +125,8 @@ void CHotKeyDlg::LoadValuesFromRegistry()
 	CString	strPath =_T("");
 	CString strValueName=_T("");
 	CString strValue=_T("");
-
-	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
+	
+	strPath.Format(_T("%s\\%s"), ERASER_REGISTRY_BASE, szAccelerKey);
 	InitRegistry();
 
 	try
@@ -147,13 +147,13 @@ void CHotKeyDlg::LoadValuesFromRegistry()
 				}
 			} else {
 				DWORD count = 0;
-				kReg.GetValue(count, "__count", 0);
-				for (DWORD i = 0; i < count; i++) {
+				kReg.GetValue(count, _T("__count"), 0);
+				for (int i = 0; i < count; i++) {
 					CString temp, key, value;
-					temp.Format("__key_%ld", i);
-					kReg.GetValue(key, temp, "");
-					temp.Format("__value_%ld", i);
-					kReg.GetValue(value, temp, "");
+					temp.Format(_T("__key_%ld"), i);
+					kReg.GetValue(key, temp, _T(""));
+					temp.Format(_T("__value_%ld"), i);
+					kReg.GetValue(value, temp, _T(""));
 					if ((key.GetLength() > 0) && (value.GetLength() > 0))
 						m_arKeyValues.SetAt(key, value);
 				}
@@ -211,7 +211,7 @@ void CHotKeyDlg::saveListToRegistry()
 	CKey    &kReg = no_registry ? kReg_ini : kReg_reg;
 	CString  strPath;
 
-	strPath.Format("%s\\%s", ERASER_REGISTRY_BASE, szAccelerKey);
+	strPath.Format(_T("%s\\%s"), ERASER_REGISTRY_BASE, szAccelerKey);
 
 	if (kReg.Open(HKEY_CURRENT_USER, strPath))
 	{
@@ -225,15 +225,15 @@ void CHotKeyDlg::saveListToRegistry()
 				kReg.SetValue(strKey,strCommand);
 			} else {
 				CString temp;
-				temp.Format("__key_%ld", cnt);
+				temp.Format(_T("__key_%ld"), cnt);
 				kReg.SetValue(strKey, temp);
-				temp.Format("__value_%ld", cnt);
+				temp.Format(_T("__value_%ld"), cnt);
 				kReg.SetValue(strCommand, temp);
 			}
 			cnt++;
 		}
 		if (no_registry)
-			kReg.SetValue(cnt, "__count");
+			kReg.SetValue(cnt, _T("__count"));
 	}
 	kReg.Close();
 }

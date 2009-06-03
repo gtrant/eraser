@@ -75,7 +75,7 @@ BOOL fitFileNameToScrn(CWnd *pWnd, CString& strText, LPCTSTR szPrefix, LPCTSTR s
         CString strExt;
 
         try {
-            _splitpath((LPCTSTR) strText,
+            _tsplitpath((LPCTSTR) strText,
                        strDrive.GetBuffer(_MAX_DRIVE),
                        strPath.GetBuffer(_MAX_DIR),
                        strFile.GetBuffer(_MAX_FNAME),

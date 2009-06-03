@@ -145,7 +145,7 @@ int CChildFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
                      CRect(0,0,0,0), this, IDW_INFO_BAR);
 
     m_InfoBar.SetBarStyle(CBRS_ALIGN_TOP);
-    m_InfoBar.SetTextFont("Tahoma");
+    m_InfoBar.SetTextFont(_T("Tahoma"));
 
     ModifyStyleEx(WS_EX_CLIENTEDGE, 0);
 

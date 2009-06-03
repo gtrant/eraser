@@ -540,7 +540,7 @@ void CGfxPopupMenu::RemapMenu(CMenu * pMenu)
                 if (!(oldState & MF_OWNERDRAW) && !(oldState & MF_BITMAP))
                 {
                     ASSERT(oldState != (UINT)-1);
-                    SpawnItem * sp = AddSpawnItem("--", -3);
+                    SpawnItem * sp = AddSpawnItem(_T("--"), -3);
                     pMenu->ModifyMenu(nItem, MF_BYPOSITION | MF_OWNERDRAW | oldState, (LPARAM)itemId, (LPCTSTR)sp);
                 }
             }
@@ -550,7 +550,7 @@ void CGfxPopupMenu::RemapMenu(CMenu * pMenu)
     iRecurse --;
 }
 
-CGfxPopupMenu::SpawnItem * CGfxPopupMenu::AddSpawnItem(const char * txt, const int cmd)
+CGfxPopupMenu::SpawnItem * CGfxPopupMenu::AddSpawnItem(const TCHAR * txt, const int cmd)
 {
     if (iSpawnItem == 0)
         pSpawnItem = (SpawnItem **) GlobalAlloc(GPTR, sizeof(SpawnItem));

@@ -103,17 +103,17 @@ BOOL CConfirmDialog::OnInitDialog()
             if (!m_bMove)
             {
                 // the width required to display the whole string
-                sizeText = dc.GetTextExtent(m_strLineOne + "\'" + m_strData + "\'?");
+                sizeText = dc.GetTextExtent(m_strLineOne + _T("\'") + m_strData + _T("\'?"));
 
                 // the width of the window
                 pWnd->GetClientRect(&rectWnd);
 
                 if (rectWnd.Width() >= sizeText.cx)
-                    m_strLineOne += "\'" + m_strData + "\'?";
+                    m_strLineOne += _T("\'") + m_strData + _T("\'?");
                 else
                 {
-                    fitFileNameToScrn(pWnd2, m_strData, "\'", "\'?");
-                    m_strLineTwo = "\'" + m_strData + "\'?";
+                    fitFileNameToScrn(pWnd2, m_strData, _T("\'"), _T("\'?"));
+                    m_strLineTwo = _T("\'") + m_strData + _T("\'?");
                 }
             }
             else
@@ -122,32 +122,32 @@ BOOL CConfirmDialog::OnInitDialog()
                 strTo.LoadString(IDS_CONFIRM_MOVE_FILE);
 
                 // the width required to display the whole string
-                sizeText = dc.GetTextExtent(m_strLineOne + "\'" + m_strData + "\' " + strTo);
+                sizeText = dc.GetTextExtent(m_strLineOne + _T("\'") + m_strData + _T("\' ") + strTo);
 
                 // the width of the window
                 pWnd->GetClientRect(&rectWnd);
 
                 if (rectWnd.Width() >= sizeText.cx)
                 {
-                    m_strLineOne += "\'" + m_strData + "\' " + strTo;
+                    m_strLineOne += _T("\'") + m_strData + _T("\' ") + strTo;
 
-                    sizeText = dc.GetTextExtent(m_strLineOne + " \'" + m_strTarget + "\'?");
+                    sizeText = dc.GetTextExtent(m_strLineOne + _T(" \'") + m_strTarget + _T("\'?"));
 
                     if (rectWnd.Width() >= sizeText.cx)
-                        m_strLineOne += " \'" + m_strTarget + "\'?";
+                        m_strLineOne += _T(" \'") + m_strTarget + _T("\'?");
                     else
                     {
-                        fitFileNameToScrn(pWnd2, m_strTarget, "\'", "\'?");
-                        m_strLineTwo = "\'" + m_strTarget + "\'?";
+                        fitFileNameToScrn(pWnd2, m_strTarget, _T("\'"), _T("\'?"));
+                        m_strLineTwo = _T("\'") + m_strTarget + _T("\'?");
                     }
                 }
                 else
                 {
-                    fitFileNameToScrn(pWnd, m_strData, m_strLineOne + "\'", "\'");
-                    m_strLineOne += "\'" + m_strData + "\'";
+                    fitFileNameToScrn(pWnd, m_strData, m_strLineOne + _T("\'"), _T("\'"));
+                    m_strLineOne += _T("\'") + m_strData + _T("\'");
 
-                    fitFileNameToScrn(pWnd2, m_strTarget, strTo + " \'", "\'?");
-                    m_strLineTwo = strTo + " \'" + m_strTarget + "\'?";
+                    fitFileNameToScrn(pWnd2, m_strTarget, strTo + _T(" \'"), _T("\'?"));
+                    m_strLineTwo = strTo + _T(" \'") + m_strTarget + _T("\'?");
                 }
             }
         }
@@ -158,19 +158,19 @@ BOOL CConfirmDialog::OnInitDialog()
             if (m_bMove)
             {
                 // the width required to display the whole string
-                sizeText = dc.GetTextExtent(m_strLineOne + "\'" + m_strTarget + "\'?");
+				sizeText = dc.GetTextExtent(m_strLineOne + _T("\'") + m_strTarget + _T("\'?"));
 
                 // the width of the window
                 pWnd->GetClientRect(&rectWnd);
 
                 if (rectWnd.Width() >= sizeText.cx)
                 {
-                    m_strLineOne += "\'" + m_strTarget + "\'?";
+                    m_strLineOne += _T("\'") + m_strTarget + _T("\'?");
                 }
                 else
                 {
-                    fitFileNameToScrn(pWnd2, m_strTarget, "\'", "\'?");
-                    m_strLineTwo = "\'" + m_strTarget + "\'?";
+                    fitFileNameToScrn(pWnd2, m_strTarget, _T("\'"), _T("\'?"));
+                    m_strLineTwo = _T("\'") + m_strTarget + _T("\'?");
                 }
             }
         }

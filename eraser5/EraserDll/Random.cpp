@@ -464,16 +464,16 @@ loadDependenciesNT()
 
     if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, RANDOM_KEY_PRODUCTOPTIONS,
                      0, KEY_READ, &hKey) == ERROR_SUCCESS) {
-        E_UINT8 szValue[32];
-        E_UINT32 status;
+        _TCHAR szValue[32];
         E_UINT32 uSize = sizeof(szValue);
+        E_UINT32 status;
 
         isNTWorkstation = true;
         status = RegQueryValueEx(hKey, RANDOM_KEY_PRODUCTTYPE, 0,
-                                 NULL, szValue, &uSize);
+                                 NULL, (LPBYTE)szValue, &uSize);
 
         if (status == ERROR_SUCCESS &&
-            _stricmp((const char*)szValue, RANDOM_NTWORKSTATION_TOKEN)) {
+            _tcsicmp(szValue, RANDOM_NTWORKSTATION_TOKEN)) {
             isNTWorkstation = false;
         }
 
@@ -1137,7 +1137,7 @@ slowPollNT()
             ** Check whether we can access this device
             */
 
-            strDevice.Format("\\\\.\\PhysicalDrive%d", nDrive);
+            strDevice.Format(_T("\\\\.\\PhysicalDrive%d"), nDrive);
 
             hDevice = CreateFile((LPCTSTR)strDevice, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
                                  NULL, OPEN_EXISTING, 0, NULL);
@@ -1214,7 +1214,7 @@ slowPollNT()
                 checkStatus(ExitPoll_NT);
 
                 uSize = cbPerfData;
-                status = RegQueryValueEx(HKEY_PERFORMANCE_DATA, "Global", NULL,
+                status = RegQueryValueEx(HKEY_PERFORMANCE_DATA, _T("Global"), NULL,
                                          NULL, (E_PUINT8)pPerfData, &uSize);
 
                 if (status == ERROR_SUCCESS) {

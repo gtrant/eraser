@@ -65,19 +65,19 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CReportDialog message handlers
 
-const LPCTSTR szFileExtension   = "txt";
-const LPCTSTR szFileFilter      = "Text Files (*.txt)|*.txt||";
-const LPCTSTR szSaveTitle       = "Save Report As";
+const LPCTSTR szFileExtension   = _T("txt");
+const LPCTSTR szFileFilter      = _T("Text Files (*.txt)|*.txt||");
+const LPCTSTR szSaveTitle       = _T("Save Report As");
 
-const LPCTSTR szInformation     = "Information:";
-const LPCTSTR szFailures        = "Failures:";
+const LPCTSTR szInformation     = _T("Information:");
+const LPCTSTR szFailures        = _T("Failures:");
 
 void CReportDialog::OnSaveAs()
 {
     // Was CfileDialogEx now with MFC7 we can change back to MFC Class
 	CFileDialog fd(FALSE,
-                     "txt",
-                     "*.txt",//NULL,
+                     _T("txt"),
+                     _T("*.txt"),//NULL,
                      OFN_EXPLORER | OFN_PATHMUSTEXIST |OFN_ENABLESIZING |OFN_NODEREFERENCELINKS | OFN_FILEMUSTEXIST | OFN_SHOWHELP | OFN_OVERWRITEPROMPT,
                      szFileFilter,
                      AfxGetMainWnd());
@@ -95,7 +95,7 @@ void CReportDialog::OnSaveAs()
             try
             {
                 // information
-                strTemp.Format("%s\n  ", szInformation);
+                strTemp.Format(_T("%s\n  "), szInformation);
                 file.WriteString(strTemp);
                 file.WriteString(m_strStatistics);
 
@@ -103,13 +103,13 @@ void CReportDialog::OnSaveAs()
                 if (AfxIsValidAddress(m_pstraErrorArray, sizeof(CStringArray)) &&
                     m_pstraErrorArray->GetSize() > 0)
                 {
-                    strTemp.Format("\n\n%s\n", szFailures);
+                    strTemp.Format(_T("\n\n%s\n"), szFailures);
                     file.WriteString(strTemp);
 
                     uSize = m_pstraErrorArray->GetSize();
                     for (uIndex = 0; uIndex < uSize; uIndex++)
                     {
-                        strTemp = "  " + m_pstraErrorArray->GetAt(uIndex) + "\n";
+                        strTemp = _T("  ") + m_pstraErrorArray->GetAt(uIndex) + _T("\n");
                         file.WriteString(strTemp);
                     }
                 }
@@ -145,14 +145,14 @@ BOOL CReportDialog::OnInitDialog()
 
     lvc.mask        = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
     lvc.fmt         = LVCFMT_LEFT;
-    lvc.pszText     = "#";
+    lvc.pszText     = _T("#");
     lvc.cx          = iColumnWidths[0];
     lvc.iSubItem    = 0;
     m_listErrors.InsertColumn(0, &lvc);
 
     lvc.mask        = LVCF_FMT | LVCF_SUBITEM | LVCF_TEXT | LVCF_WIDTH;
     lvc.fmt         = LVCFMT_LEFT;
-    lvc.pszText     = "Item";
+    lvc.pszText     = _T("Item");
     lvc.cx          = iColumnWidths[1];
     lvc.iSubItem    = 1;
     m_listErrors.InsertColumn(1, &lvc);
@@ -181,7 +181,7 @@ BOOL CReportDialog::OnInitDialog()
 
                 for (i = 0; i < iSize; i++)
                 {
-                    strTemp.Format("%i", i + 1);
+                    strTemp.Format(_T("%i"), i + 1);
                     lvi.mask        = LVIF_TEXT;
                     lvi.iItem       = i;
                     lvi.iSubItem    = 0;
@@ -279,4 +279,3 @@ BOOL CReportDialog::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
                   // EXCEPTION: OCX Property Pages should return FALSE
 }
-

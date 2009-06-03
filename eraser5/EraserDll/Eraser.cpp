@@ -144,8 +144,8 @@ overwriteFileName(LPCTSTR szFile, LPTSTR szLastFileName)
     size_t index, i, j, length;
 
     try {
-        strncpy(szLastFileName, szFile, MAX_PATH);
-        pszLastSlash = strrchr(szLastFileName, '\\');
+        _tcsncpy(szLastFileName, szFile, MAX_PATH);
+        pszLastSlash = _tcsrchr(szLastFileName, '\\');
 
         if (pszLastSlash == NULL) {
             return false;
@@ -153,8 +153,8 @@ overwriteFileName(LPCTSTR szFile, LPTSTR szLastFileName)
 
         index = (pszLastSlash - szLastFileName) / sizeof(TCHAR);
 
-        strncpy(szNewName, szLastFileName, MAX_PATH);
-        length = (E_UINT32)strlen(szLastFileName);
+        _tcsncpy(szNewName, szLastFileName, MAX_PATH);
+        length = (E_UINT32)_tcslen(szLastFileName);
 
         for (i = 0; i < ERASER_FILENAME_PASSES; i++) {
             // replace each non-'.' character with a random letter
@@ -169,12 +169,12 @@ overwriteFileName(LPCTSTR szFile, LPTSTR szLastFileName)
             }
 
             if (MoveFile(szLastFileName, szNewName)) {
-                strncpy(szLastFileName, szNewName, MAX_PATH);
+                _tcsncpy(szLastFileName, szNewName, MAX_PATH);
             } else
             {
                 Sleep(50); // Allow for Anti-Virus applications to stop looking at the file
                 if (MoveFile(szLastFileName, szNewName)) {
-                strncpy(szLastFileName, szNewName, MAX_PATH);
+                _tcsncpy(szLastFileName, szNewName, MAX_PATH);
                 }
             }
         }
@@ -203,7 +203,7 @@ isFolderEmpty(LPCTSTR szFolder)
         strFolder += "\\";
     }
 
-    hFind = FindFirstFile((LPCTSTR)(strFolder + "*"), &wfdData);
+    hFind = FindFirstFile((LPCTSTR)(strFolder + _T("*")), &wfdData);
 
     if (hFind != INVALID_HANDLE_VALUE) {
         do {
@@ -237,7 +237,7 @@ emptyFolder(LPCTSTR szFolder)
         strFolder += "\\";
     }
 
-    hFind = FindFirstFile((LPCTSTR)(strFolder + "*"), &wfdData);
+    hFind = FindFirstFile((LPCTSTR)(strFolder + _T("*")), &wfdData);
 
     if (hFind != INVALID_HANDLE_VALUE) {
         do {
@@ -731,8 +731,8 @@ eraserAddItem(E_IN ERASER_HANDLE param1, E_IN LPVOID param2, E_IN E_UINT16 param
 
             eraserContextAccess(context);
 
-            if ((context->m_edtDataType == ERASER_DATA_FILES  && strlen(szItem) > _MAX_PATH) ||
-                (context->m_edtDataType == ERASER_DATA_DRIVES && strlen(szItem) > _MAX_DRIVE)) {
+            if ((context->m_edtDataType == ERASER_DATA_FILES  && _tcslen(szItem) > _MAX_PATH) ||
+                (context->m_edtDataType == ERASER_DATA_DRIVES && _tcslen(szItem) > _MAX_DRIVE)) {
                 return ERASER_ERROR_PARAM2;
             } else {
                 context->m_saData.Add(szItem);
@@ -1715,39 +1715,39 @@ eraserShowReport(E_IN ERASER_HANDLE param1, E_IN HWND param2)
             } while (0)
 
         // information header
-        rd.m_strStatistics = "Statistics:\r\n";
+        rd.m_strStatistics = _T("Statistics:\r\n");
         // erased area
         setValueAndUnit(context->m_uStatErasedArea);
-        strTemp.Format("    Erased area\t\t\t=  %I64u %s\r\n", uTemp, strUnit);
+        strTemp.Format(_T("    Erased area\t\t\t=  %I64u %s\r\n"), uTemp, strUnit);
         rd.m_strStatistics += strTemp;
         // cluster tips
         setValueAndUnit(context->m_uStatTips);
-        strTemp.Format("    Cluster tips\t\t\t=  %I64u %s\r\n", uTemp, strUnit);
+        strTemp.Format(_T("    Cluster tips\t\t\t=  %I64u %s\r\n"), uTemp, strUnit);
         rd.m_strStatistics += strTemp;
         // written
         setValueAndUnit(context->m_uStatWiped);
-        strTemp.Format("\r\n    Data written\t\t\t=  %I64u %s\r\n", uTemp, strUnit);
+        strTemp.Format(_T("\r\n    Data written\t\t\t=  %I64u %s\r\n"), uTemp, strUnit);
         rd.m_strStatistics += strTemp;
         // time
         dTime = (double)context->m_uStatTime / 1000.0f;
-        strTemp.Format("    Write time\t\t\t=  %.2f %s", dTime, "s");
+        strTemp.Format(_T("    Write time\t\t\t=  %.2f %s"), dTime, _T("s"));
         rd.m_strStatistics += strTemp;
         // speed
         if (dTime > 0.0) {
-            strTemp.Format("\r\n    Write speed\t\t\t=  %I64u %s", (E_UINT64)
-                ((((E_INT64)context->m_uStatWiped / dTime) + 512.0f) / 1024.0f), "kB/s");
+            strTemp.Format(_T("\r\n    Write speed\t\t\t=  %I64u %s"), (E_UINT64)
+                ((((E_INT64)context->m_uStatWiped / dTime) + 512.0f) / 1024.0f), _T("kB/s"));
             rd.m_strStatistics += strTemp;
         }
 
         uSize = context->m_saError.GetSize();
         for (uIndex = 0; uIndex < uSize; uIndex++) {
-            strTemp.Format("Error: %s", context->m_saError[uIndex]);
+            strTemp.Format(_T("Error: %s"), context->m_saError[uIndex]);
             straFailures.Add(strTemp);
         }
 
         uSize = context->m_saFailed.GetSize();
         for (uIndex = 0; uIndex < uSize; uIndex++) {
-            strTemp.Format("Failed: %s", context->m_saFailed[uIndex]);
+            strTemp.Format(_T("Failed: %s"), context->m_saFailed[uIndex]);
             straFailures.Add(strTemp);
         }
 
@@ -2055,7 +2055,7 @@ eraserThread(LPVOID param1)
 	static pSetThreadExecutionState SetThreadExecutionState = NULL;
 	if (!SetThreadExecutionState)
 	{
-		HMODULE kernel32 = LoadLibrary("kernel32.dll");
+		HMODULE kernel32 = LoadLibrary(_T("kernel32.dll"));
 		SetThreadExecutionState = reinterpret_cast<pSetThreadExecutionState>(
 			GetProcAddress(kernel32, "_SetThreadExecutionState"));
 	}
@@ -2203,7 +2203,7 @@ eraserThread(LPVOID param1)
                                 uLength = GetShortPathName(strDirectory, szShortPath, _MAX_PATH - 1);
 
                                 if (uLength > 2 && uLength <= _MAX_PATH) {
-                                    strDirectory.Format("%s\\", (LPCTSTR)&szShortPath[2]);
+                                    strDirectory.Format(_T("%s\\"), (LPCTSTR)&szShortPath[2]);
                                     strDirectory.MakeUpper();
                                 } else {
                                     strDirectory.Empty();

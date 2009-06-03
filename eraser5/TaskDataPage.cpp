@@ -168,7 +168,7 @@ void CTaskDataPage::OnBrowse()
 
 	CDirectoryDialog dd;
 	CString tempPath(m_strFolder);
-    if (dd.DoModal(tempPath, "Select the Folder to be erased."))
+    if (dd.DoModal(tempPath, _T("Select the Folder to be erased.")))
 		m_strFolder = tempPath;
     
     UpdateData(FALSE);
@@ -308,10 +308,10 @@ BOOL CTaskDataPage::OnInitDialog()
 
 	CComboBox* finish_action  = (CComboBox*)GetDlgItem(IDC_COMBO_WHENFINISH);
 	int selstr;
-	finish_action->SetItemDataPtr(selstr = finish_action->AddString("None"), NULL);
-	finish_action->SetItemData(finish_action->AddString("Shutdown system"), EWX_POWEROFF);
-	finish_action->SetItemData(finish_action->AddString("Restart"), EWX_REBOOT);
-	finish_action->SetItemData(finish_action->AddString("Sleep"), (DWORD_PTR)-1);
+	finish_action->SetItemDataPtr(selstr = finish_action->AddString(_T("None")), NULL);
+	finish_action->SetItemData(finish_action->AddString(_T("Shutdown system")), EWX_POWEROFF);
+	finish_action->SetItemData(finish_action->AddString(_T("Restart")), EWX_REBOOT);
+	finish_action->SetItemData(finish_action->AddString(_T("Sleep")), (DWORD_PTR)-1);
 
 	OSVERSIONINFO version;
 	::ZeroMemory(&version, sizeof(version));
@@ -430,7 +430,7 @@ BOOL CTaskSchedulePage::OnInitDialog()
             m_bPM = FALSE;
         }
 
-        str.Format("%.2d:%.2d", iHour, m_odtTime.GetMinute());
+        str.Format(_T("%.2d:%.2d"), iHour, m_odtTime.GetMinute());
         m_editTime.SetTime(str);
     }
     else
@@ -472,42 +472,41 @@ void CTaskStatisticsPage::UpdateStatistics()
         double dTime;
 
         // report header
-        m_strStatistics = "Task Report:\r\n\r\n";
+        m_strStatistics = _T("Task Report:\r\n\r\n");
         // run
-        strTemp.Format("    Processed\t\t=  %u times\r\n", m_lpts->m_dwTimes);
+        strTemp.Format(_T("    Processed\t\t=  %u times\r\n"), m_lpts->m_dwTimes);
         m_strStatistics += strTemp;
         // successful
-        strTemp.Format("    Successful\t\t=  %u times\r\n", m_lpts->m_dwTimesSuccess);
+        strTemp.Format(_T("    Successful\t\t=  %u times\r\n"), m_lpts->m_dwTimesSuccess);
         m_strStatistics += strTemp;
         // terminated
-        strTemp.Format("    Terminated\t\t=  %u times\r\n", m_lpts->m_dwTimesInterrupted);
+        strTemp.Format(_T("    Terminated\t\t=  %u times\r\n"), m_lpts->m_dwTimesInterrupted);
         m_strStatistics += strTemp;
         // failure
-        strTemp.Format("    Possible failure\t\t=  %u times\r\n",
+        strTemp.Format(_T("    Possible failure\t\t=  %u times\r\n"),
                         m_lpts->m_dwTimes - m_lpts->m_dwTimesSuccess - m_lpts->m_dwTimesInterrupted);
         m_strStatistics += strTemp;
 
         // statistics header
-        m_strStatistics += "\r\nStatistics (average):\r\n\r\n";
+        m_strStatistics += _T("\r\nStatistics (average):\r\n\r\n");
         // erased area
-        strTemp.Format("    Erased area\t\t=  %u %s\r\n", m_lpts->m_dwAveArea, "kB");
+        strTemp.Format(_T("    Erased area\t\t=  %u %s\r\n"), m_lpts->m_dwAveArea, _T("kB"));
         m_strStatistics += strTemp;
         // written
-        strTemp.Format("    Data written\t\t=  %u %s\r\n", m_lpts->m_dwAveWritten, "kB");
+        strTemp.Format(_T("    Data written\t\t=  %u %s\r\n"), m_lpts->m_dwAveWritten, _T("kB"));
         m_strStatistics += strTemp;
         // time
         dTime = (double)m_lpts->m_dwAveTime / 1000.0f;
-        strTemp.Format("    Write time\t\t=  %.2f %s", dTime, "s");
+        strTemp.Format(_T("    Write time\t\t=  %.2f %s"), dTime, _T("s"));
         m_strStatistics += strTemp;
         // speed
         if (dTime > 0)
         {
-            strTemp.Format("\r\n    Write speed\t\t=  %u %s", (DWORD)((double)m_lpts->m_dwAveWritten /
-                dTime), "kB/s");
+            strTemp.Format(_T("\r\n    Write speed\t\t=  %u %s"), (DWORD)((double)m_lpts->m_dwAveWritten /
+                dTime), _T("kB/s"));
             m_strStatistics += strTemp;
         }
 
         UpdateData(FALSE);
     }
 }
-

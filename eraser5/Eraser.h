@@ -33,8 +33,8 @@
 #include "resource.h"       // main symbols
 #include "EraserDoc.h"
 
-const LPCTSTR NOWINDOW_PARAMETER    = "-hide";
-const LPCTSTR szEraserClassName     = "Eraser.{73F5BCF6-F36C-11d2-BBF3-00105AAF62C4}";
+const LPCTSTR NOWINDOW_PARAMETER    = _T("-hide");
+const LPCTSTR szEraserClassName     = _T("Eraser.{73F5BCF6-F36C-11d2-BBF3-00105AAF62C4}");
 
 /////////////////////////////////////////////////////////////////////////////
 // CEraserApp:

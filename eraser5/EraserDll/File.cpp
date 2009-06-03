@@ -46,13 +46,13 @@ formatError(CString& strError)
 
         // remove CRLFs
         strError.TrimRight();
-        E_INT32 iPos = strError.Find("\r\n");
+        E_INT32 iPos = strError.Find(_T("\r\n"));
 
         while (iPos != -1) {
-            strError = strError.Left(iPos) + " " +
+            strError = strError.Left(iPos) + _T(" ") +
                        strError.Right(strError.GetLength() - iPos - 2);
 
-            iPos = strError.Find("\r\n");
+            iPos = strError.Find(_T("\r\n"));
         }
 
         // Free the buffer.
@@ -68,7 +68,7 @@ DWORD SetFileMACE(HANDLE file, FILE_BASIC_INFORMATION fbi) {
 	IO_STATUS_BLOCK iostatus;
 	pNtSetInformationFile NtSetInformationFile = NULL;
 
-	ntdll = LoadLibrary("ntdll.dll");
+	ntdll = LoadLibrary(_T("ntdll.dll"));
 	if (ntdll == NULL) {
 		return 0;
 	}
@@ -90,7 +90,7 @@ DWORD SetFileMACE(HANDLE file, FILE_BASIC_INFORMATION fbi) {
 
 /* returns the handle on success or NULL on failure. this function opens a file and returns
 the FILE_BASIC_INFORMATION on it. */
-HANDLE RetrieveFileBasicInformation(char *filename, FILE_BASIC_INFORMATION *fbi) {
+HANDLE RetrieveFileBasicInformation(TCHAR *filename, FILE_BASIC_INFORMATION *fbi) {
 	
 	HANDLE file = NULL;
 	HMODULE ntdll = NULL;
@@ -103,7 +103,7 @@ HANDLE RetrieveFileBasicInformation(char *filename, FILE_BASIC_INFORMATION *fbi)
 	}
 
 	/* load ntdll and retrieve function pointer */
-	ntdll = LoadLibrary("ntdll.dll");
+	ntdll = LoadLibrary(_T("ntdll.dll"));
 	if (ntdll == NULL) {
 		CloseHandle(file);
 		return 0;
@@ -135,7 +135,7 @@ static int RetrieveFileBasicInformationFromHandle(HANDLE file, FILE_BASIC_INFORM
 	IO_STATUS_BLOCK iostatus;
 	
 	/* load ntdll and retrieve function pointer */
-	ntdll = LoadLibrary("ntdll.dll");
+	ntdll = LoadLibrary(_T("ntdll.dll"));
 	if (ntdll == NULL) {
 		return 0;
 	}
@@ -350,7 +350,7 @@ wipeDataStreams(CEraserContext *context, DataStreamArray& streams)
             formatError(strError);
 
             if (!strError.IsEmpty()) {
-                strError = " (" + strError + ")";
+                strError = _T(" (") + strError + _T(")");
             }
             strError = streams[i].m_strName + strError;
             context->m_saFailed.Add(strError);
@@ -395,7 +395,7 @@ wipeFile(CEraserContext *context)
             formatError(strError);
 
             if (!strError.IsEmpty()) {
-                strError = " (" + strError + ")";
+                strError = _T(" (") + strError + _T(")");
             }
             strError = defaultStream.m_strName + strError;
             context->m_saFailed.Add(strError);
@@ -417,7 +417,7 @@ wipeFile(CEraserContext *context)
                 return false;
             } else if (uResult == WCF_NOACCESS) {
                 CString strError;
-                strError.Format("%s (Administrator privileges required)", defaultStream.m_strName);
+                strError.Format(_T("%s (Administrator privileges required)"), defaultStream.m_strName);
 
                 context->m_saFailed.Add(strError);
                 return false;

@@ -161,9 +161,9 @@ static const int iColumnCount = 3;
 
 static const LPTSTR szColumnNames[] =
 {
-    "#",
-    "Description",
-    "Passes"
+    _T("#"),
+    _T("Description"),
+    _T("Passes")
 };
 
 static int iColumnWidths[] =
@@ -175,8 +175,8 @@ static int iColumnWidths[] =
 
 static inline void FormatSelectedField(CString& strOutput, const CString& strName, const CString& strPasses)
 {
-    strOutput = "Selected: " + strName +
-                " (" + strPasses + ((strPasses == "1") ? " pass)" : " passes)");
+    strOutput = _T("Selected: ") + strName +
+                _T(" (") + strPasses + ((strPasses == _T("1")) ? _T(" pass)") : _T(" passes)"));
 }
 
 static void CreateList(CListCtrl& lcMethod)
@@ -241,7 +241,7 @@ static void UpdateFreeSpaceMethodList(CListCtrl& lcMethod, LibrarySettings *plsS
             nPasses = (GetBMethods()[i].m_nMethodID == RANDOM_METHOD_ID) ?
                         nRandomPasses : GetBMethods()[i].m_nPasses;
 
-            strTmp.Format("%u", (DWORD)nItem);
+            strTmp.Format(_T("%u"), (DWORD)nItem);
             lvi.mask        = LVIF_TEXT | LVIF_PARAM;
             lvi.lParam      = (LPARAM)GetBMethods()[i].m_nMethodID;
             lvi.iItem       = nItem;
@@ -255,7 +255,7 @@ static void UpdateFreeSpaceMethodList(CListCtrl& lcMethod, LibrarySettings *plsS
             lvi.pszText     = (LPTSTR)GetBMethods()[i].m_szDescription;
             lcMethod.SetItem(&lvi);
 
-            strTmp.Format("%u", (DWORD)nPasses);
+            strTmp.Format(_T("%u"), (DWORD)nPasses);
             lvi.iSubItem    = 2;
             lvi.pszText     = strTmp.GetBuffer(strTmp.GetLength());
             lcMethod.SetItem(&lvi);
@@ -266,7 +266,7 @@ static void UpdateFreeSpaceMethodList(CListCtrl& lcMethod, LibrarySettings *plsS
         // custom
         for (i = 0; i < plsSettings->m_nCMethods; i++, nItem++)
         {
-            strTmp.Format("%u", (DWORD)nItem);
+            strTmp.Format(_T("%u"), (DWORD)nItem);
             lvi.mask        = LVIF_TEXT | LVIF_PARAM;
             lvi.lParam      = (LPARAM)plsSettings->m_lpCMethods[i].m_nMethodID;
             lvi.iItem       = nItem;
@@ -280,7 +280,7 @@ static void UpdateFreeSpaceMethodList(CListCtrl& lcMethod, LibrarySettings *plsS
             lvi.pszText     = (LPTSTR)plsSettings->m_lpCMethods[i].m_szDescription;
             lcMethod.SetItem(&lvi);
 
-            strTmp.Format("%u", (DWORD)plsSettings->m_lpCMethods[i].m_nPasses);
+            strTmp.Format(_T("%u"), (DWORD)plsSettings->m_lpCMethods[i].m_nPasses);
             lvi.iSubItem    = 2;
             lvi.pszText     = strTmp.GetBuffer(strTmp.GetLength());
             lcMethod.SetItem(&lvi);
@@ -327,7 +327,7 @@ static void UpdateMethodList(CListCtrl& lcMethod, LibrarySettings *plsSettings, 
             nPasses = (GetBMethods()[i].m_nMethodID == RANDOM_METHOD_ID) ?
                         nRandomPasses : GetBMethods()[i].m_nPasses;
 
-            strTmp.Format("%u", (DWORD)nItem);
+            strTmp.Format(_T("%u"), (DWORD)nItem);
             lvi.mask        = LVIF_TEXT | LVIF_PARAM;
             lvi.lParam      = (LPARAM)GetBMethods()[i].m_nMethodID;
             lvi.iItem       = nItem;
@@ -341,7 +341,7 @@ static void UpdateMethodList(CListCtrl& lcMethod, LibrarySettings *plsSettings, 
             lvi.pszText     = (LPTSTR)GetBMethods()[i].m_szDescription;
             lcMethod.SetItem(&lvi);
 
-            strTmp.Format("%u", (DWORD)nPasses);
+            strTmp.Format(_T("%u"), (DWORD)nPasses);
             lvi.iSubItem    = 2;
             lvi.pszText     = strTmp.GetBuffer(strTmp.GetLength());
             lcMethod.SetItem(&lvi);
@@ -351,7 +351,7 @@ static void UpdateMethodList(CListCtrl& lcMethod, LibrarySettings *plsSettings, 
         // custom
         for (i = 0; i < plsSettings->m_nCMethods; i++, nItem++)
         {
-            strTmp.Format("%u", (DWORD)nItem);
+            strTmp.Format(_T("%u"), (DWORD)nItem);
             lvi.mask        = LVIF_TEXT | LVIF_PARAM;
             lvi.lParam      = (LPARAM)plsSettings->m_lpCMethods[i].m_nMethodID;
             lvi.iItem       = nItem;
@@ -365,7 +365,7 @@ static void UpdateMethodList(CListCtrl& lcMethod, LibrarySettings *plsSettings, 
             lvi.pszText     = (LPTSTR)plsSettings->m_lpCMethods[i].m_szDescription;
             lcMethod.SetItem(&lvi);
 
-            strTmp.Format("%u", (DWORD)plsSettings->m_lpCMethods[i].m_nPasses);
+            strTmp.Format(_T("%u"), (DWORD)plsSettings->m_lpCMethods[i].m_nPasses);
             lvi.iSubItem    = 2;
             lvi.pszText     = strTmp.GetBuffer(strTmp.GetLength());
             lcMethod.SetItem(&lvi);

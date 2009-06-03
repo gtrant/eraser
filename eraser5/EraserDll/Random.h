@@ -31,7 +31,7 @@
 */
 
 /* Module name */
-const LPCTSTR RANDOM_MODULE_ADVAPI32 = "ADVAPI32.DLL";
+const LPCTSTR RANDOM_MODULE_ADVAPI32 = _T("ADVAPI32.DLL");
 #ifdef DMARS
 #define ULONG_PTR DWORD
 #endif
@@ -41,9 +41,13 @@ typedef BOOL (WINAPI *CRYPTGENRANDOM)(HCRYPTPROV, DWORD, BYTE*);
 typedef BOOL (WINAPI *CRYPTRELEASECONTEXT)(HCRYPTPROV, ULONG_PTR);
 
 /* Function names */
-const LPCTSTR RANDOM_FUNCTION_CRYPTACQUIRECONTEXT = "CryptAcquireContextA";
-const LPCTSTR RANDOM_FUNCTION_CRYPTGENRANDOM      = "CryptGenRandom";
-const LPCTSTR RANDOM_FUNCTION_CRYPTRELEASECONTEXT = "CryptReleaseContext";
+#if defined(_UNICODE)
+const LPCSTR RANDOM_FUNCTION_CRYPTACQUIRECONTEXT = "CryptAcquireContextW";
+#else
+const LPCSTR RANDOM_FUNCTION_CRYPTACQUIRECONTEXT = "CryptAcquireContextA";
+#endif
+const LPCSTR RANDOM_FUNCTION_CRYPTGENRANDOM      = "CryptGenRandom";
+const LPCSTR RANDOM_FUNCTION_CRYPTRELEASECONTEXT = "CryptReleaseContext";
 
 /* Constants */
 const E_UINT32 fastPollSize = 20;   /* 160 bits */
@@ -51,7 +55,7 @@ const E_UINT32 slowPollSize = 64;   /* 512 bits */
 
 /* Intel i8xx (82802 Firmware Hub Device) hardware random number generator */
 #ifndef INTEL_DEF_PROV
-#define INTEL_DEF_PROV  "Intel Hardware Cryptographic Service Provider"
+#define INTEL_DEF_PROV  _T("Intel Hardware Cryptographic Service Provider")
 #endif
 
 
@@ -60,7 +64,7 @@ const E_UINT32 slowPollSize = 64;   /* 512 bits */
 */
 
 /* Module name */
-const LPCTSTR RANDOM_MODULE_KERNEL32 = "KERNEL32.DLL";
+const LPCTSTR RANDOM_MODULE_KERNEL32 = _T("KERNEL32.DLL");
 
 /* Function definitions */
 typedef BOOL (WINAPI *MODULEWALK)(HANDLE hSnapshot, LPMODULEENTRY32 lpme);
@@ -72,17 +76,17 @@ typedef BOOL (WINAPI *HEAPNEXT)(LPHEAPENTRY32 lphe);
 typedef HANDLE (WINAPI *CREATESNAPSHOT)(DWORD dwFlags, DWORD th32ProcessID);
 
 /* Function names */
-const LPCTSTR RANDOM_FUNCTION_MODULE32FIRST   = "Module32First";
-const LPCTSTR RANDOM_FUNCTION_MODULE32NEXT    = "Module32Next";
-const LPCTSTR RANDOM_FUNCTION_THREAD32FIRST   = "Thread32First";
-const LPCTSTR RANDOM_FUNCTION_THREAD32NEXT    = "Thread32Next";
-const LPCTSTR RANDOM_FUNCTION_PROCESS32FIRST  = "Process32First";
-const LPCTSTR RANDOM_FUNCTION_PROCESS32NEXT   = "Process32Next";
-const LPCTSTR RANDOM_FUNCTION_HEAP32LISTFIRST = "Heap32ListFirst";
-const LPCTSTR RANDOM_FUNCTION_HEAP32LISTNEXT  = "Heap32ListNext";
-const LPCTSTR RANDOM_FUNCTION_HEAPFIRST       = "Heap32First";
-const LPCTSTR RANDOM_FUNCTION_HEAPNEXT        = "Heap32Next";
-const LPCTSTR RANDOM_FUNCTION_CREATESNAPSHOT  = "CreateToolhelp32Snapshot";
+const LPCSTR RANDOM_FUNCTION_MODULE32FIRST   = "Module32First";
+const LPCSTR RANDOM_FUNCTION_MODULE32NEXT    = "Module32Next";
+const LPCSTR RANDOM_FUNCTION_THREAD32FIRST   = "Thread32First";
+const LPCSTR RANDOM_FUNCTION_THREAD32NEXT    = "Thread32Next";
+const LPCSTR RANDOM_FUNCTION_PROCESS32FIRST  = "Process32First";
+const LPCSTR RANDOM_FUNCTION_PROCESS32NEXT   = "Process32Next";
+const LPCSTR RANDOM_FUNCTION_HEAP32LISTFIRST = "Heap32ListFirst";
+const LPCSTR RANDOM_FUNCTION_HEAP32LISTNEXT  = "Heap32ListNext";
+const LPCSTR RANDOM_FUNCTION_HEAPFIRST       = "Heap32First";
+const LPCSTR RANDOM_FUNCTION_HEAPNEXT        = "Heap32Next";
+const LPCSTR RANDOM_FUNCTION_CREATESNAPSHOT  = "CreateToolhelp32Snapshot";
 
 
 /*
@@ -90,7 +94,7 @@ const LPCTSTR RANDOM_FUNCTION_CREATESNAPSHOT  = "CreateToolhelp32Snapshot";
 */
 
 /* Module name */
-const LPCTSTR RANDOM_MODULE_NETAPI = "NETAPI32.DLL";
+const LPCTSTR RANDOM_MODULE_NETAPI = _T("NETAPI32.DLL");
 
 /* Function definitions */
 typedef DWORD (WINAPI *NETSTATISTICSGET2)(LPWSTR szServer, LPWSTR szService,
@@ -100,14 +104,14 @@ typedef DWORD (WINAPI *NETAPIBUFFERSIZE)(LPVOID lpBuffer, LPDWORD cbBuffer);
 typedef DWORD (WINAPI *NETAPIBUFFERFREE)(LPVOID lpBuffer);
 
 /* Function names */
-const LPCTSTR RANDOM_FUNCTION_NETSTATISTICSGET2 = "NetStatisticsGet2";
-const LPCTSTR RANDOM_FUNCTION_NETAPIBUFFERSIZE  = "NetApiBufferSize";
-const LPCTSTR RANDOM_FUNCTION_NETAPIBUFFERFREE  = "NetApiBufferFree";
+const LPCSTR RANDOM_FUNCTION_NETSTATISTICSGET2 = "NetStatisticsGet2";
+const LPCSTR RANDOM_FUNCTION_NETAPIBUFFERSIZE  = "NetApiBufferSize";
+const LPCSTR RANDOM_FUNCTION_NETAPIBUFFERFREE  = "NetApiBufferFree";
 
 /* Constants */
-const LPCTSTR RANDOM_KEY_PRODUCTOPTIONS  = "SYSTEM\\CurrentControlSet\\Control\\ProductOptions";
-const LPCTSTR RANDOM_KEY_PRODUCTTYPE     = "ProductType";
-const LPCTSTR RANDOM_NTWORKSTATION_TOKEN = "WinNT";
+const LPCTSTR RANDOM_KEY_PRODUCTOPTIONS  = _T("SYSTEM\\CurrentControlSet\\Control\\ProductOptions");
+const LPCTSTR RANDOM_KEY_PRODUCTTYPE     = _T("ProductType");
+const LPCTSTR RANDOM_NTWORKSTATION_TOKEN = _T("WinNT");
 
 #undef SERVICE_WORKSTATION
 #undef SERVICE_SERVER
@@ -119,14 +123,14 @@ const LPWSTR SERVICE_SERVER      = L"LanmanServer";
 */
 
 /* Module name */
-const LPCTSTR RANDOM_MODULE_NTDLL = "NTDLL.DLL";
+const LPCTSTR RANDOM_MODULE_NTDLL = _T("NTDLL.DLL");
 
 /* Function definitions */
 typedef DWORD (WINAPI *NTQUERYSYSTEMINFO)(DWORD dwType, DWORD dwData,
                                           DWORD dwMaxSize, DWORD dwDataSize);
 
 /* Function names */
-const LPCTSTR RANDOM_FUNCTION_NTQUERYSYSTEMINFO = "NtQuerySystemInformation";
+const LPCSTR RANDOM_FUNCTION_NTQUERYSYSTEMINFO = "NtQuerySystemInformation";
 
 /* Constants */
 #define PERFORMANCE_BUFFER_SIZE     65536   /* Start at 64K */

@@ -33,10 +33,10 @@ static char THIS_FILE[] = __FILE__;
 
 #define DISPLAY_LAST    1
 
-const LPCTSTR szWindowTitle   = "Eraser: Verify: File Viewer [%s]";
-const LPCTSTR szHeader        = "%s (%I64u bytes)\r\n\r\nCluster %u (%u bytes, offset: %I64u bytes):\r\n";
-const LPCTSTR szLineFormat    = "%.4X:  %.8X  %.8X  %.8X  %.8X   : %s\r\n";
-const LPCTSTR szEndOfFile     = "\r\nEnd Of File at 0x%.4X.\r\n";
+const LPCTSTR szWindowTitle   = _T("Eraser: Verify: File Viewer [%s]");
+const LPCTSTR szHeader        = _T("%s (%I64u bytes)\r\n\r\nCluster %u (%u bytes, offset: %I64u bytes):\r\n");
+const LPCTSTR szLineFormat    = _T("%.4X:  %.8X  %.8X  %.8X  %.8X   : %s\r\n");
+const LPCTSTR szEndOfFile     = _T("\r\nEnd Of File at 0x%.4X.\r\n");
 
 const int iOffsetLength       = 5;
 const int iStringStart        = 48;
@@ -131,16 +131,16 @@ BOOL CViewerDlg::OnInitDialog()
 
 	cf.cbSize = sizeof (CHARFORMAT);  
 	cf.dwMask = CFM_FACE; 
-	lstrcpyn(cf.szFaceName, "Courier New", LF_FACESIZE); 
+	lstrcpyn(cf.szFaceName, _T("Courier New"), LF_FACESIZE); 
  
     m_recView.SetDefaultCharFormat(cf); 
 
     // open file
     if (m_strFileName.GetLength() <= _MAX_DRIVE) {
-        m_recView.SetWindowText("No file selected.");
+        m_recView.SetWindowText(_T("No file selected."));
     } else {
         // get cluster size
-        TCHAR szDrive[] = " :\\";
+        TCHAR szDrive[] = _T(" :\\");
         szDrive[0] = m_strFileName[0];
 
         if (eraserError(eraserGetClusterSize((E_IN LPVOID)szDrive, 3,
@@ -157,7 +157,7 @@ BOOL CViewerDlg::OnInitDialog()
                              NULL);
 
         if (m_hFile == INVALID_HANDLE_VALUE) {
-            m_recView.SetWindowText("Failed to open file.");
+            m_recView.SetWindowText(_T("Failed to open file."));
         } else {
             DisplayCluster(0);
         }
@@ -182,7 +182,7 @@ BOOL CViewerDlg::DisplayCluster(DWORD dwCluster, DWORD dwSpecial)
     uiFileSize.LowPart = GetFileSize(m_hFile, &uiFileSize.HighPart);
 
     if (uiFileSize.LowPart == 0xFFFFFFFF && GetLastError() != NO_ERROR) {
-        m_recView.SetWindowText("Failed to get file size.");
+        m_recView.SetWindowText(_T("Failed to get file size."));
         return FALSE;
     } else {
         CString strText;

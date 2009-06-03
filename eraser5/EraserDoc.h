@@ -31,44 +31,44 @@
 #include "SystemTray.h"
 
 // constants
-const LPCTSTR szSettingsKey      = "Scheduler";
-const LPCTSTR szScheduleKey      = "Scheduled Assignments";
+const LPCTSTR szSettingsKey      = _T("Scheduler");
+const LPCTSTR szScheduleKey      = _T("Scheduled Assignments");
 
-const LPCTSTR szSchedulerEnabled = "SchedulerEnabled";
-const LPCTSTR szLog              = "SchedulerLog";
-const LPCTSTR szLogOnlyErrors    = "SchedulerLogOnlyErrors";
-const LPCTSTR szStartup          = "SchedulerStartup";
-const LPCTSTR szQueueTasks       = "SchedulerQueueTasks";
-const LPCTSTR szNoVisualErrors   = "SchedulerNoVisualErrors";
-const LPCTSTR szMaxLogSize       = "SchedulerMaxLogFileSize";
+const LPCTSTR szSchedulerEnabled = _T("SchedulerEnabled");
+const LPCTSTR szLog              = _T("SchedulerLog");
+const LPCTSTR szLogOnlyErrors    = _T("SchedulerLogOnlyErrors");
+const LPCTSTR szStartup          = _T("SchedulerStartup");
+const LPCTSTR szQueueTasks       = _T("SchedulerQueueTasks");
+const LPCTSTR szNoVisualErrors   = _T("SchedulerNoVisualErrors");
+const LPCTSTR szMaxLogSize       = _T("SchedulerMaxLogFileSize");
 
-const LPCTSTR szStartView        = "EraserStartView";
-const LPCTSTR szIconAnimation    = "EraserOutbarIconAnimation";
-const LPCTSTR szSmallIconView    = "EraserOutbarSmallIconView";
-const LPCTSTR szOutBarWidth      = "EraserOutbarWidth";
-const LPCTSTR szNoTrayIcon       = "EraserNoTrayIcon";
-const LPCTSTR szHideOnMinimize   = "EraserHideOnMinimize";
-const LPCTSTR szWindowRect       = "EraserWindowRect";
+const LPCTSTR szStartView        = _T("EraserStartView");
+const LPCTSTR szIconAnimation    = _T("EraserOutbarIconAnimation");
+const LPCTSTR szSmallIconView    = _T("EraserOutbarSmallIconView");
+const LPCTSTR szOutBarWidth      = _T("EraserOutbarWidth");
+const LPCTSTR szNoTrayIcon       = _T("EraserNoTrayIcon");
+const LPCTSTR szHideOnMinimize   = _T("EraserHideOnMinimize");
+const LPCTSTR szWindowRect       = _T("EraserWindowRect");
 
-const LPCTSTR szViewInfoBar      = "EraserViewInfoBar";
-const LPCTSTR szResolveLock      = "EraserResolveLock";
-const LPCTSTR szResolveAskUser   = "EraserResolveLockAskUser";
+const LPCTSTR szViewInfoBar      = _T("EraserViewInfoBar");
+const LPCTSTR szResolveLock      = _T("EraserResolveLock");
+const LPCTSTR szResolveAskUser   = _T("EraserResolveLockAskUser");
 
-const LPCTSTR szStartupPath      = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-const LPCTSTR szLogFile          = "schedlog.txt";
-const LPCTSTR szRunOnStartup     = "Eraser";
+const LPCTSTR szStartupPath      = _T("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+const LPCTSTR szLogFile          = _T("schedlog.txt");
+const LPCTSTR szRunOnStartup     = _T("Eraser");
 
-const LPCTSTR szClearSwapPath    = "SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management";
-const LPCTSTR szClearSwapValue   = "ClearPageFileAtShutdown";
+const LPCTSTR szClearSwapPath    = _T("SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Memory Management");
+const LPCTSTR szClearSwapValue   = _T("ClearPageFileAtShutdown");
 
-const LPCTSTR szFileExtension    = "ers";
-const LPCTSTR szFileWCard		 = "*.ers";
-const LPCTSTR szFileFilter       = "Eraser Files (*.ers)|*.ers||";
-const LPCTSTR szExportTitle      = "Select Export File";
-const LPCTSTR szImportTitle      = "Select Import File";
+const LPCTSTR szFileExtension    = _T("ers");
+const LPCTSTR szFileWCard		 = _T("*.ers");
+const LPCTSTR szFileFilter       = _T("Eraser Files (*.ers)|*.ers||");
+const LPCTSTR szExportTitle      = _T("Select Export File");
+const LPCTSTR szImportTitle      = _T("Select Import File");
 
-const LPCTSTR szAppDataPath      = "Eraser\\";
-const LPCTSTR szDefaultFile      = "default.ers";
+const LPCTSTR szAppDataPath      = _T("Eraser\\");
+const LPCTSTR szDefaultFile      = _T("default.ers");
 
 // definitions
 #define VIEW_ERASER     1

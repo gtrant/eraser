@@ -36,7 +36,7 @@
 struct OUTBAR_INFO
 {
     int             index;
-    const char *    cText;
+    const TCHAR *    cText;
     int             iDragFrom;
     int             iDragTo;
 };
@@ -93,21 +93,21 @@ public:
     class CBarItem
     {
     public:
-        CBarItem(const char * name, const int image, DWORD exData);
+        CBarItem(const TCHAR * name, const int image, DWORD exData);
         virtual  ~CBarItem();
         int             iImageIndex;
-        char *          cItem;
+        TCHAR *          cItem;
         DWORD           dwData;
     };
 
     class CBarFolder
     {
     public:
-        CBarFolder(const char * name, DWORD exData);
+        CBarFolder(const TCHAR * name, DWORD exData);
         virtual  ~CBarFolder();
         int GetItemCount();
-        int InsertItem(int index, const char * text, const int image, const DWORD exData);
-        char *          cName;
+        int InsertItem(int index, const TCHAR * text, const int image, const DWORD exData);
+        TCHAR *          cName;
         DWORD           dwData;
         CImageList *    pLargeImageList;
         CImageList *    pSmallImageList;
@@ -145,7 +145,7 @@ public:
     int GetAnimSelHighligt() { return iSelAnimTiming; } // sami@tolvanen.com
     DWORD GetFolderData(int iFolder = -1);
     CWnd * GetFolderChild(int iFolder = -1);
-    int AddFolderBar(const char * pFolder, CWnd * pSon, const DWORD exData = 0);
+    int AddFolderBar(const TCHAR * pFolder, CWnd * pSon, const DWORD exData = 0);
     CString GetItemText(const int index);
     void SetAnimationTickCount(const long value) { lAnimationTickCount = value; };
     long GetAnimationTickCount() { return lAnimationTickCount; };
@@ -159,9 +159,9 @@ public:
     DWORD GetItemData(const int index) const;
     bool IsValidItem(const int index) const;
     void RemoveItem(const int index);
-    void SetItemText(const int index, const char * text);
+    void SetItemText(const int index, const TCHAR * text);
     void StartItemEdit(const int index);
-    void SetFolderText(const int index, const char * text);
+    void SetFolderText(const int index, const TCHAR * text);
     void StartGroupEdit(const int index);
     void GetLabelRect(const int iFolder, const int iIndex, CRect &rect);
     void GetIconRect(const int iFolder, const int iIndex, CRect &rect);
@@ -180,11 +180,11 @@ public:
     int GetFolderCount() const;
     void SetSelFolder(const int index);
     int GetItemCount() const;
-    int InsertItem(const int folder, const int index, const char * text, const int image = -1, const DWORD exData = 0);
+    int InsertItem(const int folder, const int index, const TCHAR * text, const int image = -1, const DWORD exData = 0);
     void HighlightFolder(const int index);
     int HitTestEx(const CPoint &point, int &index);
     void GetInsideRect(CRect &rect) const;
-    int AddFolder(const char * cFolderName, const DWORD exData);
+    int AddFolder(const TCHAR * cFolderName, const DWORD exData);
     void GetItemRect(const int iFolder, const int iIndex, CRect &rect);
     bool GetFolderRect(const int iIndex, CRect &rect) const;
     void ModifyFlag(const DWORD &dwRemove, const DWORD &dwAdd, const UINT redraw = 0);

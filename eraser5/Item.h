@@ -68,15 +68,15 @@ enum Schedule
 // schedule names
 const LPCTSTR szScheduleName[] =
 {
-    "Day",
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-	"Reboot"
+    _T("Day"),
+    _T("Sunday"),
+    _T("Monday"),
+    _T("Tuesday"),
+    _T("Wednesday"),
+    _T("Thursday"),
+    _T("Friday"),
+    _T("Saturday"),
+	_T("Reboot")
 };
 
 // helper for scheduler task statistics

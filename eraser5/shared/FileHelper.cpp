@@ -21,7 +21,7 @@
 #include "stdafx.h"
 #include "..\EraserDll\EraserDll.h"
 #include "FileHelper.h"
-const LPCTSTR pprefix  = "\\\\?";
+const LPCTSTR pprefix  = _T("\\\\?");
 
 void
 findMatchingFiles2(CString strSearch, CStringArray& saFiles, BOOL bSubFolders /*=FALSE*/)
@@ -35,7 +35,7 @@ findMatchingFiles2(CString strSearch, CStringArray& saFiles, BOOL bSubFolders /*
     TCHAR           szFolder[_MAX_PATH];
 
     // get the root folder
-    _splitpath((LPCTSTR)strSearch, szDrive, szFolder, NULL, NULL);
+    _tsplitpath((LPCTSTR)strSearch, szDrive, szFolder, NULL, NULL);
 
     strBaseFolder = szDrive;
     strBaseFolder += szFolder;
@@ -60,7 +60,7 @@ findMatchingFiles2(CString strSearch, CStringArray& saFiles, BOOL bSubFolders /*
     }
 
     // browse through all files (and directories)
-    hFolder = FindFirstFile((LPCTSTR)(strBaseFolder + "*"), &wfdFolder);
+    hFolder = FindFirstFile((LPCTSTR)(strBaseFolder + _T("*")), &wfdFolder);
 
     if (hFolder != INVALID_HANDLE_VALUE) {
         hFind = FindFirstFile((LPCTSTR)(strBaseFolder + strSearch), &wfdData);
@@ -96,7 +96,7 @@ findMatchingFiles2(CString strSearch, CStringArray& saFiles, BOOL bSubFolders /*
 void
 findMatchingFiles(CString strSearch, CStringArray& saFiles, BOOL bSubFolders /*=FALSE*/) {
 	strSearch.Replace('/', '\\');
-	int i = strSearch.FindOneOf("*?");
+	int i = strSearch.FindOneOf(_T("*?"));
 	int j = -1;
 	if (i != -1) {
 		j = strSearch.Find('\\', i);
@@ -116,9 +116,9 @@ findMatchingFiles(CString strSearch, CStringArray& saFiles, BOOL bSubFolders /*=
 		do {
 			if (!bitSet(wfdData.dwFileAttributes, FILE_ATTRIBUTE_DIRECTORY))
 				continue;
-			if(!strcmp(wfdData.cFileName, ".") || !strcmp(wfdData.cFileName, ".."))
+			if(!_tcscmp(wfdData.cFileName, _T(".")) || !_tcscmp(wfdData.cFileName, _T("..")))
 				continue;
-			CString newStrSearch = strSearch.Left(k) + "\\" + wfdData.cFileName + strSearch.Mid(j);
+			CString newStrSearch = strSearch.Left(k) + _T("\\") + wfdData.cFileName + strSearch.Mid(j);
 			findMatchingFiles(newStrSearch, saFiles, bSubFolders);
 		} while(FindNextFile(hFolder, &wfdData));
 		VERIFY(FindClose(hFolder));
@@ -150,7 +150,7 @@ parseDirectory(LPCTSTR szDirectory, CStringArray& saFiles, CStringArray& saDirec
         // --> subfolders will be removed first
         saDirectories.InsertAt(0, strDirectory);
 
-        hFind = FindFirstFile((LPCTSTR)(strDirectory + "*"), &wfdData);
+        hFind = FindFirstFile((LPCTSTR)(strDirectory + _T("*")), &wfdData);
 
         if (hFind != INVALID_HANDLE_VALUE) {
             do {
@@ -205,26 +205,27 @@ CString findPattern(LPCTSTR szPath,CString& strBefore, CString& strAfter)
 	if (iGearPos>-1&&iWhatPos>-1) iStart = iGearPos<iWhatPos?iGearPos:iWhatPos;
 	if (iStart == -1) {
 		strBefore = strPath;
-		return "*";
+		return _T("*");
 	}
 	iStart = (strPath.Left(iStart)).ReverseFind('\\');
-	strBefore = strPath.Left(iStart)+"\\";
+	strBefore = strPath.Left(iStart) + _T("\\");
 	strPattern=strPath.Right(strPath.GetLength() - iStart-1);
 	if ((iStart = strPattern.Find('\\')) != -1)
 	{
-		strAfter = "\\" + strPattern.Right(strPattern.GetLength()-iStart-1);
+		strAfter = _T("\\") + strPattern.Right(strPattern.GetLength()-iStart-1);
 		//if (strAfter.IsEmpty()) strAfter = "\\";
 		strPattern = strPattern.Left(iStart);
 	}
 	return strPattern;
 }
 
-bool PatternMatch(const char* s, const char* mask)
+
+bool PatternMatch(const _TCHAR* s, const _TCHAR* mask)
 {
 
-	const   char* cp=0;
-	const   char* mp=0;
-	for (; *s&&*mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
+	const _TCHAR* cp=0;
+	const _TCHAR* mp=0;
+	for (; *s && *mask!='*'; mask++,s++) if (*mask!=*s&&*mask!='?') return 0;
 	for (;;) {
 		if (!*s) { while (*mask=='*') mask++; return !*mask; }
 		if (*mask=='*') { if (!*++mask) return 1; mp=mask; cp=s+1; continue; }

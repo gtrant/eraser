@@ -389,9 +389,9 @@ void CHyperLink::ReportError(int nError)
         case SE_ERR_NOASSOC:          str = "There is no application associated\nwith the given filename extension."; break;
         case SE_ERR_OOM:              str = "There was not enough memory to complete the operation."; break;
         case SE_ERR_SHARE:            str = "A sharing violation occurred. ";
-        default:                      str.Format("Unknown Error (%d) occurred.", nError); break;
+        default:                      str.Format(_T("Unknown Error (%d) occurred."), nError); break;
     }
-    str = "Unable to open hyperlink:\n\n" + str;
+    str = _T("Unable to open hyperlink:\n\n") + str;
     AfxMessageBox(str, MB_ICONEXCLAMATION | MB_OK);
 }
 
@@ -412,7 +412,7 @@ HINSTANCE CHyperLink::GotoURL(LPCTSTR url, int showcmd)
                 TCHAR *pos;
                 pos = _tcsstr(key, _T("\"%1\""));
                 if (pos == NULL) {                     // No quotes found
-                    pos = strstr(key, _T("%1"));       // Check for %1, without quotes
+                    pos = _tcsstr(key, _T("%1"));      // Check for %1, without quotes
                     if (pos == NULL)                   // No parameter at all...
                         pos = key+lstrlen(key)-1;
                     else
@@ -423,7 +423,23 @@ HINSTANCE CHyperLink::GotoURL(LPCTSTR url, int showcmd)
 
                 lstrcat(pos, _T(" "));
                 lstrcat(pos, url);
-                result = reinterpret_cast<HINSTANCE>(WinExec(key,showcmd));
+
+				STARTUPINFO siInfo;
+				PROCESS_INFORMATION piInfo;
+				::ZeroMemory(&siInfo, sizeof(siInfo));
+				::ZeroMemory(&piInfo, sizeof(piInfo));
+				siInfo.cb = sizeof(siInfo);
+				siInfo.dwFlags = STARTF_USESHOWWINDOW | STARTF_FORCEONFEEDBACK;
+				siInfo.wShowWindow = showcmd;
+                if (CreateProcess(NULL, key, NULL, NULL, false, 0, NULL, NULL,
+					&siInfo, &piInfo))
+				{
+					CloseHandle(piInfo.hProcess);
+					CloseHandle(piInfo.hThread);
+					result = 0;
+				}
+				else
+					result = reinterpret_cast<HINSTANCE>(HINSTANCE_ERROR + 1);
             }
         }
     }

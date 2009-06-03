@@ -224,14 +224,14 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 		m_wndTree.SetImageList(pDoc->m_smallImageList, TVSIL_NORMAL);
 
         // add folders
-        m_wndBar.AddFolder("Eraser", 0);
-        m_wndBar.AddFolderBar("Explorer", &m_wndTree);
+        m_wndBar.AddFolder(_T("Eraser"), 0);
+        m_wndBar.AddFolderBar(_T("Explorer"), &m_wndTree);
 
         // add folder items
-        m_wndBar.InsertItem(FolderEraser, ViewEraser, "On-Demand",
+        m_wndBar.InsertItem(FolderEraser, ViewEraser, _T("On-Demand"),
                             ViewEraser, ViewEraser);
 
-        m_wndBar.InsertItem(FolderEraser, ViewScheduler, "Scheduler",
+        m_wndBar.InsertItem(FolderEraser, ViewScheduler, _T("Scheduler"),
                             ViewScheduler, ViewScheduler);
 
         m_wndBar.SetSelFolder(0);
@@ -346,7 +346,7 @@ LRESULT CMainFrame::OnOutbarNotify(WPARAM wParam, LPARAM lParam)
                     (m_pwndChild->m_iActiveViewID == VIEW_ERASER) ? ViewEraser : ViewScheduler;
 
                 m_pwndChild->SwitchToForm(VIEW_EXPLORER);
-                SetInfoText("Explorer");
+                SetInfoText(_T("Explorer"));
                 break;
             }
             break;

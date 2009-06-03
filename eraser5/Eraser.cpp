@@ -100,10 +100,10 @@ BOOL CEraserApp::FirstInstance()
 
 		if (!(elevationStatus & 2) && (elevationStatus & 1))
 		{
-			switch (AfxMessageBox("Another instance of Eraser is still running, but this "
-				"new instance is running at a higher privilege level than the other.\n\n"
-				"Do you want to close the previous instance? "
-				"All active erasing tasks will be terminated", MB_YESNO))
+			switch (AfxMessageBox(_T("Another instance of Eraser is still running, but this ")
+				_T("new instance is running at a higher privilege level than the other.\n\n")
+				_T("Do you want to close the previous instance? ")
+				_T("All active erasing tasks will be terminated"), MB_YESNO))
 			{
 			case IDYES:
 				pWndPrev->SendMessage(WM_CLOSE);
@@ -142,7 +142,7 @@ BOOL CEraserApp::InitInstance()
 
 #ifndef ERASER_STANDALONE
 	{
-		char temp[512];
+		TCHAR temp[512];
 		::GetModuleFileName(NULL, temp, sizeof(temp));
 		::PathStripToRoot(temp);
 		switch(::GetDriveType(temp)) {
@@ -165,11 +165,11 @@ BOOL CEraserApp::InitInstance()
 #endif
 
 	if (no_registry) {
-		char temp[512];
-		::GetModuleFileName(NULL, temp, sizeof(temp));
+		TCHAR temp[512];
+		::GetModuleFileName(NULL, temp, 512);
 		::PathRemoveFileSpec(temp);
-		::PathAppend(temp, "eraser.ini");
-		m_pszProfileName = _strdup(temp);
+		::PathAppend(temp, _T("eraser.ini"));
+		m_pszProfileName = _tcsdup(temp);
 	}
 
 	if (!CheckAccess())
@@ -199,7 +199,7 @@ BOOL CEraserApp::InitInstance()
     // Register new class and exit if it fails
     if (!AfxRegisterClass(&wndcls))
     {
-        AfxMessageBox("Class Registration Failed");
+        AfxMessageBox(_T("Class Registration Failed"));
         return FALSE;
     }
 
@@ -208,7 +208,7 @@ BOOL CEraserApp::InitInstance()
     // Initialize OLE libraries
     if (!AfxOleInit())
     {
-        AfxMessageBox("OLE initialization failed.");
+        AfxMessageBox(_T("OLE initialization failed."));
         return FALSE;
     }
 
@@ -253,9 +253,9 @@ BOOL CEraserApp::InitInstance()
         return FALSE;
 
     EnableHtmlHelp();
-    size_t helpfilelen = strlen(m_pszHelpFilePath);
-    if((helpfilelen >= 4) && !_stricmp(&m_pszHelpFilePath[helpfilelen - 4], ".hlp"))
-        strcpy((char *)&m_pszHelpFilePath[helpfilelen - 4], ".chm");
+    size_t helpfilelen = _tcslen(m_pszHelpFilePath);
+    if((helpfilelen >= 4) && !_tcsicmp(&m_pszHelpFilePath[helpfilelen - 4], _T(".hlp")))
+        _tcscpy((TCHAR *)&m_pszHelpFilePath[helpfilelen - 4], _T(".chm"));
 
     // The one and only window has been initialized, so show and update it.
     m_pMainWnd->ShowWindow((bHide) ? SW_HIDE : SW_SHOW);
@@ -322,7 +322,7 @@ void CEraserApp::OnAppAbout()
 {
     CAboutDlg aboutDlg;
 	//aboutDlg.m_strVersion.Format("Eraser Version %s",GetVersionInfoFromModule( TRUE )); // Show four-digit version info
-	aboutDlg.m_strVersion.Format("Eraser Version %s",VERSION_NUMBER_STRING); 
+	aboutDlg.m_strVersion.Format(_T("Eraser Version %s"),VERSION_NUMBER_STRING); 
     aboutDlg.DoModal();
 }
 LPCTSTR  CEraserApp::GetVersionInfoFromModule( BOOL boolFourDigitString )
@@ -331,7 +331,7 @@ LPCTSTR  CEraserApp::GetVersionInfoFromModule( BOOL boolFourDigitString )
  
  // This method reads information from the Version resource.
 
-    char  szFullPath[MAX_PATH];
+    TCHAR szFullPath[MAX_PATH];
     DWORD dwVerHnd;
     DWORD dwVerInfoSize;
 
@@ -348,7 +348,7 @@ LPCTSTR  CEraserApp::GetVersionInfoFromModule( BOOL boolFourDigitString )
                                              (DWORD)dwVerHnd,
                                              (DWORD)dwVerInfoSize,
                                              (LPVOID)pVersionInfo);
-            char* szVer = NULL;
+            TCHAR* szVer = NULL;
             UINT uVerLength;
             if(bRet)
             {
@@ -374,7 +374,7 @@ TEXT("\\StringFileInfo\\040904b0\\FileVersion"),
         }
     }
 
- return "";
+ return _T("");
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -417,4 +417,3 @@ BOOL CAboutDlg::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
                   // EXCEPTION: OCX Property Pages should return FALSE
 }
-
