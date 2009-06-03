@@ -1,0 +1,902 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="1.36" Name="Eraser">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">c:\program files\microsoft fxcop 1.36\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded" NewOnly="False" />
+   <Report Status="Active" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="Message Level" Deterministic="False" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>True</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+  <TargetFrameworkVersion>3.5</TargetFrameworkVersion>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/bin/Debug/Eraser.exe" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/Eraser.Manager.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/Eraser.Unlocker.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/bin/Debug/Eraser.Util.dll" Analyze="False" AnalyzeAllChildren="False" />
+  <Target Name="$(ProjectDir)/bin/Debug/Plugins/Eraser.DefaultPlugins.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" />
+  </RuleFiles>
+  <Groups>
+   <Group Name="Message Level" IsSystem="True" Selected="True">
+    <Categories>
+     <Category Name="Critical Error" AllRulesEnabled="True" />
+     <Category Name="Critical Warning" AllRulesEnabled="True" />
+     <Category Name="Error" AllRulesEnabled="True" />
+     <Category Name="Information">
+      <Rules />
+     </Category>
+     <Category Name="Warning" AllRulesEnabled="True" />
+    </Categories>
+   </Group>
+  </Groups>
+  <Settings />
+ </Rules>
+ <FxCopReport Version="1.36" LastAnalysis="2009-06-02 07:39:56Z">
+  <Namespaces>
+   <Namespace Name="Eraser.Unlocker">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2009-06-02 07:31:56Z">
+      <Issue>
+       <Item>Eraser.Unlocker</Item>
+      </Issue>
+     </Message>
+     <Message Id="Unlocker" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2009-06-02 07:31:56Z">
+      <Issue Name="Namespace">
+       <Item>Unlocker</Item>
+       <Item>Eraser.Unlocker</Item>
+      </Issue>
+      <Notes>
+       <User Name="Joel">
+        <Note Id="16" />
+       </User>
+      </Notes>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="$(ProjectDir)/bin/Debug/Eraser.exe">
+    <Modules>
+     <Module Name="eraser.exe">
+      <Messages>
+       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Created="2009-06-02 07:17:10Z">
+        <Issue>
+         <Item>'Eraser.exe'</Item>
+        </Issue>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="Eraser">
+        <Types>
+         <Type Name="AboutForm">
+          <Members>
+           <Member Name="#InitializeComponent()">
+            <Messages>
+             <Message TypeName="DoNotUseTimersThatPreventPowerStateChanges" Category="Microsoft.Mobility" CheckId="CA1601" Status="Excluded" Created="2009-06-02 07:17:10Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="AboutForm.Designer.cs" Line="65">
+               <Item>'Timer.Interval.set(int)'</Item>
+               <Item>'AboutForm.InitializeComponent()'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="11" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CommandLineProgram+CommandLine">
+          <Members>
+           <Member Name="#.ctor(System.String[])">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-06-02 07:17:10Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="593">
+               <Item>'CommandLineProgram.CommandLine.CommandLine(string[])'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;CommandLineProgram+CommandLine..ctor(String[])&#xD;&#xA;CommandLineProgram+CommandLine.ResolveParameter(String):Boolean</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="GUIProgram">
+          <Members>
+           <Member Name="#OnExitInstance(System.Object)">
+            <Messages>
+             <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2009-06-02 07:17:10Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="540">
+               <Item>'GUIProgram.OnExitInstance(object)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="10" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Run()">
+            <Messages>
+             <Message Id="handle" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2009-06-02 07:17:10Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="325">
+               <Item>'GUIProgram.Run()'</Item>
+               <Item>'handle'</Item>
+               <Item>'IntPtr'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="3" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Program">
+          <Members>
+           <Member Name="#CommandMain(System.String[])">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2009-06-02 07:17:10Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="101">
+               <Item>'Program.CommandMain(string[])'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UpdateForm">
+          <Members>
+           <Member Name="#downloader_ProgressChanged(System.Object,Eraser.ProgressEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-06-02 07:17:10Z">
+              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser" File="UpdateForm.cs" Line="313">
+               <Item>'e'</Item>
+               <Item>'ProgressErrorEventArgs'</Item>
+               <Item>'UpdateForm.downloader_ProgressChanged(object, ProgressEventArgs)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#installer_ProgressChanged(System.Object,System.ComponentModel.ProgressChangedEventArgs)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-06-02 07:17:10Z">
+              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser" File="UpdateForm.cs" Line="422">
+               <Item>'e'</Item>
+               <Item>'ProgressErrorEventArgs'</Item>
+               <Item>'UpdateForm.installer_ProgressChanged(object, ProgressChangedEventArgs)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UpdateManager">
+          <Members>
+           <Member Name="#DownloadUpdates(System.Collections.Generic.ICollection`1&lt;Eraser.UpdateInfo&gt;)">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2009-06-02 07:17:10Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="UpdateForm.cs" Line="720">
+               <Item>'UpdateManager.DownloadUpdates(ICollection&lt;UpdateInfo&gt;)'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#InstallUpdates(System.Object)">
+            <Messages>
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2009-06-02 07:17:10Z">
+              <Issue Name="TooGeneric" Path="D:\Development\Projects\Eraser\Eraser" File="UpdateForm.cs" Line="762">
+               <Item>'UpdateManager.InstallUpdates(object)'</Item>
+               <Item>'ApplicationException'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+      <Resources>
+       <Resource Name="Eraser.MainForm.resources">
+        <Messages>
+         <Message Id="Minimised" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2009-06-02 07:17:10Z">
+          <Issue Name="ComponentResource">
+           <Item>'MainForm'</Item>
+           <Item>hideWhenMinimisedToolStripMenuItem.Text</Item>
+           <Item>Minimised</Item>
+           <Item>Hide When Minimised</Item>
+          </Issue>
+          <Notes>
+           <User Name="Joel">
+            <Note Id="4" />
+           </User>
+          </Notes>
+         </Message>
+        </Messages>
+       </Resource>
+       <Resource Name="Eraser.Strings.resources">
+        <Messages>
+         <Message Id="IT-Richtlinien" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2009-06-02 07:17:10Z">
+          <Issue Name="StringResource">
+           <Item>'Eraser.Strings.resx'</Item>
+           <Item>Eraser is an advanced security tool for Windows, which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Eraser is Free software and its source code is released under GNU General Public License.\r\n\r\nErasure Method Credits:\r\nGutmann (35 Pass):	 	Copyright Peter Gutmann &amp; Colin Plumb\r\nGutmann Lite (10 pass): 		Copyright Peter Gutmann &amp; Colin Plumb\r\nUS DoD (7 pass):			Copyright United States Department of\r\n				Defense\r\nUS DoD (3 pass):			Copyright United States Department of\r\n				Defense\r\nUS Air Force 5020 (3 pass):	Copyright United States Department of\r\n				Defense\r\nUS Army AR380-19 (3 pass):	Copyright United States Department of\r\n				Defense\r\nRCMP TSSIT OPS-II (7 pass):	Copyright Government of Canada,\r\n				Royal Canadian Mounted Police\r\nSchneier's Method (7 pass):	Copyright Bruce Schneier\r\nGerman VSITR (7 pass):		Copyright Germany BSI Verschlusssachen\r\n				-IT-Richtlinien\r\nBritish HMG IS5 (3 pass):		Copyright British Government\r\nBritish HMG IS5 (1 pass):		Copyright British Government\r\nRussian GOST P50739-95 (2 pass):	Copyright Government of the Soviet\r\n				Union \r\nPseudorandom data (1 pass):	Public Domain\r\nFirst/Last 16Kb:			Copyright The Eraser Project\r\n\r\nEraser Copyright © The Eraser Project\r\n\r\nEraser Project Members:\r\n• Sami Tolvanen:		Mentor/Initiator\r\n• Garrett Trant:		Mentor/Researcher\r\n• Joel Low:		Lead Developer\r\n• Kasra Nassiri:		Developer/Security Researcher\r\n• Dennis van Lith:		Designer</Item>
+           <Item>IT-Richtlinien</Item>
+           <Item>Eraser is an advanced security tool for Windows, which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Eraser is Free software and its source code is released under GNU General Public License.\r\n\r\nErasure Method...</Item>
+          </Issue>
+          <Notes>
+           <User Name="Joel">
+            <Note Id="5" />
+           </User>
+          </Notes>
+         </Message>
+        </Messages>
+       </Resource>
+      </Resources>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/Eraser.Manager.dll">
+    <Modules>
+     <Module Name="eraser.manager.dll">
+      <Messages>
+       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Created="2009-05-01 03:14:45Z">
+        <Issue>
+         <Item>'Eraser.Manager.dll'</Item>
+        </Issue>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="Eraser">
+        <Types>
+         <Type Name="BuildInfo">
+          <Members>
+           <Member Name="#BuildDate">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2009-06-02 06:19:50Z">
+              <Issue>
+               <Item>'BuildInfo.BuildDate'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Eraser.Manager">
+        <Types>
+         <Type Name="DaysOfWeek">
+          <Messages>
+           <Message TypeName="FlagsEnumsShouldHavePluralNames" Category="Microsoft.Naming" CheckId="CA1714" Status="Excluded" Created="2009-05-01 04:21:55Z">
+            <Issue>
+             <Item>'DaysOfWeek'</Item>
+            </Issue>
+            <Notes>
+             <User Name="Joel">
+              <Note Id="6" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="DirectExecutor">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-05-01 03:14:45Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="1032">
+               <Item>'DirectExecutor.DirectExecutor()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;DirectExecutor..ctor()&#xD;&#xA;Executor.set_TaskAdded(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_TaskDeleted(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_Tasks(ExecutorTasksCollection):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#EraseFilesystemObject(Eraser.Manager.Task,Eraser.Manager.FileSystemObjectTarget,Eraser.Manager.DirectExecutor+TaskProgressManager)">
+            <Messages>
+             <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-05-01 03:14:45Z">
+              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="975">
+               <Item>'target'</Item>
+               <Item>'FolderTarget'</Item>
+               <Item>'DirectExecutor.EraseFilesystemObject(Task, FileSystemObjectTarget, DirectExecutor.TaskProgressManager)'</Item>
+               <Item>castclass</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Main()">
+            <Messages>
+             <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2009-05-01 03:14:45Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="267">
+               <Item>'DirectExecutor.Main()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="276">
+               <Item>'DirectExecutor.Main()'</Item>
+               <Item>'Exception'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="12" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Tasks">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2009-05-01 03:14:45Z">
+              <Issue>
+               <Item>'DirectExecutor.Tasks'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ErasureMethod">
+          <Members>
+           <Member Name="#Erase(System.IO.Stream,System.Int64,Eraser.Manager.Prng,Eraser.Manager.EraserMethodProgressFunction)">
+            <Messages>
+             <Message Id="Erase" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2009-05-01 04:19:08Z">
+              <Issue Name="Member">
+               <Item>'ErasureMethod.Erase(Stream, long, Prng, EraserMethodProgressFunction)'</Item>
+               <Item>Erase</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="1" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ErasureMethodManager">
+          <Members>
+           <Member Name="#Default">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2009-05-01 03:23:16Z">
+              <Issue>
+               <Item>'ErasureMethodManager.Default'</Item>
+               <Item>'ErasureMethod'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="ErasureTarget">
+          <Messages>
+           <Message TypeName="IdentifiersShouldDifferByMoreThanCase" Category="Microsoft.Naming" CheckId="CA1708" Created="2009-05-01 03:14:45Z">
+            <Issue Name="Member">
+             <Item>'method'</Item>
+             <Item>Method</Item>
+            </Issue>
+           </Message>
+          </Messages>
+          <Members>
+           <Member Name="#method">
+            <Messages>
+             <Message Id="method" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2009-05-01 03:14:45Z">
+              <Issue Name="Member">
+               <Item>method</Item>
+               <Item>'ErasureTarget.method'</Item>
+               <Item>Method</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Executor">
+          <Members>
+           <Member Name="#Tasks">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Status="Excluded" Created="2009-05-01 03:14:45Z">
+              <Issue>
+               <Item>'Executor.Tasks'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="9" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FileSystem">
+          <Members>
+           <Member Name="#GenerateRandomFileName(System.IO.DirectoryInfo,System.Int32)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2009-05-01 03:14:45Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="FileSystem.cs" Line="70">
+               <Item>'info'</Item>
+               <Item>'FileSystem.GenerateRandomFileName(DirectoryInfo, int)'</Item>
+               <Item>'DirectoryInfo'</Item>
+               <Item>'FileSystemInfo'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FileSystemObjectTarget">
+          <Members>
+           <Member Name="#GetPathADSes(System.Collections.Generic.ICollection`1&lt;System.String&gt;,System.Int64&amp;,System.String)">
+            <Messages>
+             <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2009-05-01 03:23:16Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="377">
+               <Item>'totalSize'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="LogEntry">
+          <Messages>
+           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Status="Excluded" Created="2009-05-01 03:14:45Z">
+            <Issue Name="Equals">
+             <Item>'LogEntry'</Item>
+            </Issue>
+            <Issue Name="op_Equality">
+             <Item>'LogEntry'</Item>
+            </Issue>
+            <Notes>
+             <User Name="Joel">
+              <Note Id="0" />
+             </User>
+            </Notes>
+           </Message>
+          </Messages>
+         </Type>
+         <Type Name="ManagerSettings">
+          <Members>
+           <Member Name="#PlausibleDeniabilityFiles">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-05-01 03:14:45Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="357">
+               <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
+              </Issue>
+             </Message>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-05-01 03:14:45Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="357">
+               <Item>'List&lt;string&gt;'</Item>
+               <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#PluginApprovals">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-05-01 03:14:45Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="490">
+               <Item>'ManagerSettings.PluginApprovals'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PassBasedErasureMethod">
+          <Members>
+           <Member Name="#PassesSet">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2009-05-01 03:14:45Z">
+              <Issue>
+               <Item>'PassBasedErasureMethod.PassesSet'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="RemoteExecutorClient">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-05-01 03:14:45Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="RemoteExecutor.cs" Line="297">
+               <Item>'RemoteExecutorClient.RemoteExecutorClient()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;RemoteExecutorClient..ctor()&#xD;&#xA;Executor.set_Tasks(ExecutorTasksCollection):Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Tasks">
+            <Messages>
+             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-05-01 03:14:45Z">
+              <Issue>
+               <Item>'RemoteExecutorClient.Tasks'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="Schedule">
+          <Members>
+           <Member Name="#RunNow">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2009-05-01 03:23:16Z">
+              <Issue>
+               <Item>'Schedule.RunNow'</Item>
+               <Item>'Schedule'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#RunOnRestart">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2009-05-01 03:23:16Z">
+              <Issue>
+               <Item>'Schedule.RunOnRestart'</Item>
+               <Item>'Schedule'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="7" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/Eraser.Unlocker.dll">
+    <Modules>
+     <Module Name="eraser.unlocker.dll">
+      <Messages>
+       <Message Id="Unlocker" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2009-06-02 07:31:56Z">
+        <Issue Name="Assembly">
+         <Item>Unlocker</Item>
+         <Item>'Eraser.Unlocker.dll'</Item>
+        </Issue>
+        <Notes>
+         <User Name="Joel">
+          <Note Id="15" />
+         </User>
+        </Notes>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="Eraser.Unlocker">
+        <Types>
+         <Type Name="OpenHandle">
+          <Members>
+           <Member Name="#Close()">
+            <Messages>
+             <Message Id="&lt;Module&gt;.CloseHandle(System.Void*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="133">
+               <Item>'OpenHandle.Close()'</Item>
+               <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
+              </Issue>
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="137">
+               <Item>'OpenHandle.Close()'</Item>
+               <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="&lt;Module&gt;.DuplicateHandle(System.Void*,System.Void*,System.Void*,System.Void**,optional(System.Runtime.CompilerServices.IsLong) System.UInt32,System.Int32,optional(System.Runtime.CompilerServices.IsLong) System.UInt32)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2009-06-02 07:31:56Z">
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="124">
+               <Item>'OpenHandle.Close()'</Item>
+               <Item>'&lt;Module&gt;.DuplicateHandle(void*, void*, void*, void**, uint, int, uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="13" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#Items">
+            <Messages>
+             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-06-02 07:31:56Z">
+              <Issue Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="28">
+               <Item>'List&lt;OpenHandle&gt;'</Item>
+               <Item>'OpenHandle.Items'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#ResolveHandlePath(System.IntPtr,System.Int32)">
+            <Messages>
+             <Message Id="&lt;Module&gt;.CloseHandle(System.Void*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="88">
+               <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
+               <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
+              </Issue>
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="107">
+               <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
+               <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="&lt;Module&gt;.ReleaseSemaphore(System.Void*,optional(System.Runtime.CompilerServices.IsLong) System.Int32,System.optional(IsLong) Int32*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="97">
+               <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
+               <Item>'&lt;Module&gt;.ReleaseSemaphore(void*, int, int*)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="&lt;Module&gt;.DuplicateHandle(System.Void*,System.Void*,System.Void*,System.Void**,optional(System.Runtime.CompilerServices.IsLong) System.UInt32,System.Int32,optional(System.Runtime.CompilerServices.IsLong) System.UInt32)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2009-06-02 07:31:56Z">
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="87">
+               <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
+               <Item>'&lt;Module&gt;.DuplicateHandle(void*, void*, void*, void**, uint, int, uint)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="14" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/bin/Debug/Plugins/Eraser.DefaultPlugins.dll">
+    <Modules>
+     <Module Name="eraser.defaultplugins.dll">
+      <Messages>
+       <Message TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014" Created="2009-04-28 13:43:02Z">
+        <Issue>
+         <Item>'Eraser.DefaultPlugins.dll'</Item>
+        </Issue>
+       </Message>
+      </Messages>
+      <Namespaces>
+       <Namespace Name="Eraser">
+        <Types>
+         <Type Name="BuildInfo">
+          <Members>
+           <Member Name="#BuildDate">
+            <Messages>
+             <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Excluded" Created="2009-06-02 06:19:50Z">
+              <Issue>
+               <Item>'BuildInfo.BuildDate'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="2" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="Eraser.DefaultPlugins">
+        <Types>
+         <Type Name="CustomErasureMethod">
+          <Members>
+           <Member Name="#Passes">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2009-04-28 13:43:02Z">
+              <Issue>
+               <Item>'CustomErasureMethod.Passes'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="CustomMethodPassEditor">
+          <Members>
+           <Member Name="#PassData">
+            <Messages>
+             <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2009-04-28 13:43:02Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.DefaultPlugins" File="CustomMethodPassEditor.cs" Line="57">
+               <Item>'CustomMethodPassEditor.PassData'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="FirstLast16KB">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-04-28 13:43:02Z">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.DefaultPlugins" File="EraseFirstLast16KB.cs" Line="35">
+               <Item>'FirstLast16KB.FirstLast16KB()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;FirstLast16KB..ctor()&#xD;&#xA;ErasureMethod.get_Guid():Guid</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+      <Resources>
+       <Resource Name="Eraser.DefaultPlugins.Strings.resources">
+        <Messages>
+         <Message Id="PRNGs" TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703" Status="Excluded" Created="2009-05-01 03:38:07Z">
+          <Issue Name="StringResource">
+           <Item>'Eraser.DefaultPlugins.Strings.resx'</Item>
+           <Item>Default Erasure Methods and PRNGs</Item>
+           <Item>PRNGs</Item>
+           <Item>Default Erasure Methods and PRNGs</Item>
+          </Issue>
+          <Notes>
+           <User Name="Joel">
+            <Note Id="8" />
+           </User>
+          </Notes>
+         </Message>
+        </Messages>
+       </Resource>
+      </Resources>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="Joel">
+    <Note Id="0" Modified="2009-06-02 07:18:16Z">All fields are relevant</Note>
+    <Note Id="1" Modified="2009-06-02 07:18:44Z">No better alternative</Note>
+    <Note Id="2" Modified="2009-06-02 07:18:57Z">Build metadata</Note>
+    <Note Id="3" Modified="2009-06-02 07:19:19Z">Used to force creation of window handle</Note>
+    <Note Id="4" Modified="2009-06-02 07:19:33Z">British spelling</Note>
+    <Note Id="5" Modified="2009-06-02 07:19:41Z">Proper German noun</Note>
+    <Note Id="6" Modified="2009-06-02 07:20:17Z">Already plural</Note>
+    <Note Id="7" Modified="2009-06-02 07:20:41Z">Already immutable</Note>
+    <Note Id="8" Modified="2009-06-02 07:20:51Z">PRNG is an acronym</Note>
+    <Note Id="9" Modified="2009-06-02 07:21:06Z">Backing variable is polymorphic</Note>
+    <Note Id="10" Modified="2009-06-02 07:21:18Z">False positive</Note>
+    <Note Id="11" Modified="2009-06-02 07:25:41Z">This is used for animation</Note>
+    <Note Id="12" Modified="2009-06-02 07:29:11Z">This loop must never be exited since it waits for requests</Note>
+    <Note Id="13" Modified="2009-06-02 07:34:09Z">DuplicateHandle does not "fail" per se when closing handles in the context of another process (MSDN Docs)</Note>
+    <Note Id="14" Modified="2009-06-02 07:35:03Z">Result checked further downstream</Note>
+    <Note Id="15" Modified="2009-06-02 07:36:01Z">Unlocker is our assembly name, hence a proper noun</Note>
+    <Note Id="16" Modified="2009-06-02 07:36:03Z">Unlocker is our assembly name, hence a proper noun</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021">
+    <Resolution Name="Default">Consider a design that does not require that {0} be an out parameter.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+    <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   </Rule>
+   <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+    <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
+    <Resolution Name="Default">Change {0} to be read-only by removing the property setter.</Resolution>
+   </Rule>
+   <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
+    <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
+    <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
+    <Resolution Name="Parameter">{0}, a parameter, is cast to type {1} multiple times in method {2}. Cache the result of the 'as' operator or direct cast in order to eliminate the redundant {3} instruction.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+    <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104">
+    <Resolution Name="Default">Remove the read-only designation from {0} or change the field to one that is an immutable reference type. If the reference type {1} is, in fact, immutable, exclude this message.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
+    <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806">
+    <Resolution Name="HResultOrErrorCode">{0} calls {1} but does not use the HRESULT or error code that the method returns. This could lead to unexpected behavior in error conditions or low-resource situations. Use the result in a conditional statement, assign the result to a variable, or pass it as an argument to another method.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201">
+    <Resolution Name="TooGeneric">{0} creates an exception of type {1}, an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotUseTimersThatPreventPowerStateChanges" Category="Microsoft.Mobility" CheckId="CA1601">
+    <Resolution Name="Default">Modify the call to {0} in method {1} to set the timer interval to a value that's greater than or equal to one second.</Resolution>
+   </Rule>
+   <Rule TypeName="FlagsEnumsShouldHavePluralNames" Category="Microsoft.Naming" CheckId="CA1714">
+    <Resolution Name="Default">If enumeration name {0} is singular, change it to a plural form.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+    <Resolution Name="Assembly">Correct the spelling of '{0}' in assembly name {1}.</Resolution>
+    <Resolution Name="Namespace">Correct the spelling of '{0}' in namespace name '{1}'.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldDifferByMoreThanCase" Category="Microsoft.Naming" CheckId="CA1708">
+    <Resolution Name="Member">Change member names {0} and '{1}' so that they differ by more than case.</Resolution>
+   </Rule>
+   <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
+    <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkAssembliesWithClsCompliant" Category="Microsoft.Design" CheckId="CA1014">
+    <Resolution Name="Default">Mark {0} with CLSCompliant(true) because it exposes externally visible types.</Resolution>
+   </Rule>
+   <Rule TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815">
+    <Resolution Name="Equals">{0} should override Equals.</Resolution>
+    <Resolution Name="op_Equality">{0} should override the equality (==) and inequality (!=) operators.</Resolution>
+   </Rule>
+   <Rule TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819">
+    <Resolution Name="Default">Change {0} to return a collection or make it a method.</Resolution>
+   </Rule>
+   <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
+    <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="ResourceStringsShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1703">
+    <Resolution Name="ComponentResource">In component {0}, on '{1}', correct the spelling of '{2}' in '{3}'.</Resolution>
+    <Resolution Name="StringResource">In resource {0}, referenced by name '{1}', correct the spelling of '{2}' in string value '{3}'.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>
