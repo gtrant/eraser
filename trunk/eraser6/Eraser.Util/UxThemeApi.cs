@@ -25,6 +25,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Drawing;
+using System.IO;
 
 namespace Eraser.Util
 {
@@ -75,9 +76,25 @@ namespace Eraser.Util
 		/// <param name="menu">The tool strip control to set the theme on.</param>
 		public static void UpdateControlTheme(ToolStrip menu)
 		{
+			//Register for Theme changed messages
+			if (ThemeMessageFilter.Instance == null)
+			{
+				ThemeMessageFilter filter = new ThemeMessageFilter();
+				ThemeMessageFilter.Instance.ThemeChanged += OnThemeChanged;
+			}
+
 			if (Environment.OSVersion.Version.Major >= 6)
+			{
+				//Assign our themed renderer for non-custom renderers
+				UXThemeMenuRenderer renderer = new UXThemeMenuRenderer();
 				if (menu.Renderer is ToolStripProfessionalRenderer)
-					menu.Renderer = new UXThemeMenuRenderer();
+				{
+					menu.Disposed += OnThemedMenuDisposed;
+					ThemedMenus.Add(menu, renderer);
+					if (NativeMethods.ThemesActive)
+						menu.Renderer = renderer;
+				}
+			}
 
 			foreach (ToolStripItem item in menu.Items)
 			{
@@ -97,10 +114,122 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
+		/// Handles the theme changed event - reassigning the renderers to managed
+		/// context menus.
+		/// </summary>
+		private static void OnThemeChanged(object sender, EventArgs e)
+		{
+			bool themesActive = NativeMethods.ThemesActive;
+			foreach (KeyValuePair<ToolStrip, UXThemeMenuRenderer> value in ThemedMenus)
+			{
+				if (themesActive)
+					value.Key.Renderer = value.Value;
+				else
+					value.Key.RenderMode = ToolStripRenderMode.ManagerRenderMode;
+			}
+		}
+
+		/// <summary>
+		/// Clean up the reference to the menu when the menu is disposed so we no
+		/// longer track the menu for theme changes.
+		/// </summary>
+		private static void OnThemedMenuDisposed(object sender, EventArgs e)
+		{
+			ThemedMenus.Remove(sender as ToolStrip);
+		}
+
+		/// <summary>
+		/// The private list of menus which has their render changed to the UxTheme renderer.
+		/// This allows us to revert the renderer back to the default Professional
+		/// renderer when we get a theme changed message.
+		/// </summary>
+		private static Dictionary<ToolStrip, UXThemeMenuRenderer> ThemedMenus =
+			new Dictionary<ToolStrip,UXThemeMenuRenderer>();
+
+		/// <summary>
+		/// Filters the Application message loop for WM_THEMECHANGED messages
+		/// and broadcasts them to the event handlers.
+		/// </summary>
+		private class ThemeMessageFilter : IMessageFilter
+		{
+			public ThemeMessageFilter()
+			{
+				if (Instance != null)
+					throw new InvalidOperationException("Only one instance of the " +
+						"ThemeMessageFilter can exist at any one time,");
+				Instance = this;
+				ThemesActive = NativeMethods.ThemesActive;
+				Application.AddMessageFilter(this);
+			}
+
+			#region IMessageFilter Members
+			public bool PreFilterMessage(ref Message m)
+			{
+				if (m.Msg == WM_THEMECHANGED)
+				{
+					ThemesActive = NativeMethods.ThemesActive;
+					ThemeChanged(null, EventArgs.Empty);
+				}
+				else if (m.Msg == WM_DWMCOMPOSITIONCHANGED)
+				{
+					if (ThemesActive != NativeMethods.ThemesActive)
+					{
+						ThemesActive = NativeMethods.ThemesActive;
+						ThemeChanged(null, EventArgs.Empty);
+					}
+				}
+
+				return false;			
+			}
+			#endregion
+
+			/// <summary>
+			/// The global ThemeMessageFilter instance.
+			/// </summary>
+			public static ThemeMessageFilter Instance
+			{
+				get;
+				private set;
+			}
+
+			/// <summary>
+			/// Called when a WM_THEMECHANGED message is sent.
+			/// </summary>
+			public EventHandler<EventArgs> ThemeChanged
+			{
+				get;
+				set;
+			}
+
+			private const int WM_THEMECHANGED = 0x031A;
+			private const int WM_DWMCOMPOSITIONCHANGED = 0x031E;
+			private bool ThemesActive;
+		}
+
+		/// <summary>
 		/// Stores functions, structs and constants from UxTheme.dll and User32.dll
 		/// </summary>
 		internal static class NativeMethods
 		{
+			[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			private static extern bool IsThemeActive();
+
+			public static bool ThemesActive
+			{
+				get
+				{
+					try
+					{
+						return IsThemeActive();
+					}
+					catch (FileLoadException)
+					{
+						return false;
+					}
+				}
+			}
+
 			/// <summary>
 			/// Causes a window to use a different set of visual style information
 			/// than its class normally uses.
@@ -124,7 +253,8 @@ namespace Eraser.Util
 	{
 		~UXThemeMenuRenderer()
 		{
-			hTheme.Close();
+			if (hTheme != null)
+				hTheme.Close();
 		}
 
 		protected override void Initialize(ToolStrip toolStrip)
