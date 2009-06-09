@@ -162,7 +162,7 @@ void CCustomMethodEdit::OnButtonAdd()
         INT_PTR iItem = m_aPasses.Add(passNew);
 
         UpdateList();
-        m_lcPasses.SetItemState(iItem, LVIS_SELECTED, LVIS_SELECTED);
+        m_lcPasses.SetItemState(static_cast<int>(iItem), LVIS_SELECTED, LVIS_SELECTED);
     }
 }
 

@@ -148,7 +148,7 @@ void CHotKeyDlg::LoadValuesFromRegistry()
 			} else {
 				DWORD count = 0;
 				kReg.GetValue(count, _T("__count"), 0);
-				for (int i = 0; i < count; i++) {
+				for (DWORD i = 0; i < count; i++) {
 					CString temp, key, value;
 					temp.Format(_T("__key_%ld"), i);
 					kReg.GetValue(key, temp, _T(""));
