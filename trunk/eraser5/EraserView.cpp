@@ -462,7 +462,7 @@ void CEraserView::UpdateList()
         ULARGE_INTEGER  uiSize;
         DWORD           dwAttributes;
         COleDateTime    odtModified;
-        BOOL            bExists;
+        BOOL            bExists = FALSE;
 
         WIN32_FIND_DATA findFileData;
         HANDLE          hFind   = NULL;
@@ -736,7 +736,7 @@ void CEraserView::OnEditProperties()
         POSITION pos = lc.GetFirstSelectedItemPosition();
 
         int       nItem  = lc.GetNextSelectedItem(pos);
-        DWORD_PTR nIndex = lc.GetItemData(nItem);
+        INT_PTR   nIndex = static_cast<INT_PTR>(lc.GetItemData(nItem));
 
         if (nIndex >= 0 && nIndex < pDoc->m_paTasks.GetSize())
         {
@@ -833,7 +833,7 @@ void CEraserView::OnEditDeleteTask()
         ASSERT(AfxIsValidAddress(pDoc, sizeof(CEraserDoc)));
 
         int       nItem;
-        DWORD_PTR nIndex;
+        INT_PTR   nIndex;
         INT_PTR   iSize   = pDoc->m_paTasks.GetSize();
         CItem     *piItem = 0;
 
@@ -842,7 +842,7 @@ void CEraserView::OnEditDeleteTask()
         while (pos)
         {
             nItem   = lc.GetNextSelectedItem(pos);
-            nIndex  = lc.GetItemData(nItem);
+            nIndex  = static_cast<INT_PTR>(lc.GetItemData(nItem));
 
             if (nIndex >= 0 && nIndex < iSize)
             {
@@ -942,7 +942,7 @@ void CEraserView::OnProcessRun()
             CDWordArray daRemovedIfComplete;
             CItem       *piItem = 0;
             int         nItem = -1;
-            DWORD_PTR   nIndex = 0;
+            INT_PTR     nIndex = 0;
             INT_PTR     iSize = pDoc->m_paTasks.GetSize();
             POSITION    pos = lc.GetFirstSelectedItemPosition();
 
@@ -952,7 +952,7 @@ void CEraserView::OnProcessRun()
             while (pos)
             {
                 nItem = lc.GetNextSelectedItem(pos);
-                nIndex = lc.GetItemData(nItem);
+				nIndex = static_cast<INT_PTR>(lc.GetItemData(nItem));
 
                 if (nIndex >= 0 && nIndex < iSize)
                 {

@@ -609,7 +609,7 @@ void CSchedulerView::OnEditProperties()
             POSITION pos = lc.GetFirstSelectedItemPosition();
 
             int nItem = lc.GetNextSelectedItem(pos);
-            DWORD_PTR nIndex = lc.GetItemData(nItem);
+            INT_PTR nIndex = static_cast<INT_PTR>(lc.GetItemData(nItem));
 
             if (nIndex >= 0 && nIndex < pDoc->m_paScheduledTasks.GetSize())
             {
@@ -1249,7 +1249,7 @@ BOOL CSchedulerView::EraserWipeUpdate()
         SetRedraw(FALSE);
 
         int             iCount      = lc.GetItemCount();
-        DWORD_PTR       iIndex      = 0;
+        INT_PTR         iIndex      = 0;
         CScheduleItem   *psiItem    = 0;
         CString         str;
         CString         strOld;
@@ -1260,7 +1260,7 @@ BOOL CSchedulerView::EraserWipeUpdate()
             // update information for all active threads
             for (int iItem = 0; iItem < iCount; iItem++)
             {
-                iIndex = lc.GetItemData(iItem);
+                iIndex = static_cast<INT_PTR>(lc.GetItemData(iItem));
 
                 if (iIndex >= 0 && iIndex < pDoc->m_paScheduledTasks.GetSize())
                 {
@@ -1824,7 +1824,7 @@ void CSchedulerView::OnUpdateProcessStop(CCmdUI* pCmdUI)
             POSITION pos = lc.GetFirstSelectedItemPosition();
 
             int       nItem = lc.GetNextSelectedItem(pos);
-            DWORD_PTR nIndex = lc.GetItemData(nItem);
+            INT_PTR   nIndex = static_cast<INT_PTR>(lc.GetItemData(nItem));
 
             if (nIndex >= 0 && nIndex < pDoc->m_paScheduledTasks.GetSize())
             {

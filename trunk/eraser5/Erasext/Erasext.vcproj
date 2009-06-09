@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9,00"
+	Version="9.00"
 	Name="Erasext"
 	ProjectGUID="{E3DBF6A6-475B-4BA8-AE20-73655A7D42D9}"
 	RootNamespace="Erasext"
@@ -467,7 +467,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="EraserUI.lib Shared.lib"
+				AdditionalDependencies="unicows.lib EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Erasext.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -665,7 +665,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="EraserUI.lib Shared.lib"
+				AdditionalDependencies="unicows.lib EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Erasext.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -862,7 +862,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="EraserUI.lib Shared.lib"
+				AdditionalDependencies="unicows.lib EraserUI.lib Shared.lib"
 				OutputFile="$(OutDir)\Erasext.dll"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(OUTDIR)&quot;"
