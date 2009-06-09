@@ -167,7 +167,7 @@ STDMETHODIMP_(ULONG) CErasextMenu::XMenuExt::Release(void)
 CString setShortcut(CString str)
 {
 	CKey kReg;
-	CString strPath(""), strKey(""), strRes("");
+	CString strPath(""), strKey(""), strRes(str);
 	strPath.Format(_T("%s\\%s"), ERASER_REGISTRY_BASE, szAccelerKey);
 	int iPos;
 	if (kReg.Open(HKEY_CURRENT_USER, strPath,FALSE))
@@ -440,7 +440,7 @@ STDMETHODIMP CErasextMenu::XMenuExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpici)
                             }
 
                             // the amount of items to erase
-                            pThis->m_dwItems = pThis->m_saData.GetSize();
+                            pThis->m_dwItems = static_cast<DWORD>(pThis->m_saData.GetSize());
                         }
 
                         if (pThis->m_dwItems > 0)
