@@ -145,13 +145,13 @@ m_smallImageList (NULL)
 		SetLastError(0);
 		DWORD charsWritten = GetModuleFileName(AfxGetInstanceHandle(), moduleName, MAX_PATH);
 		if (!charsWritten || GetLastError() != 0)
-			AfxMessageBox("Could not determine path to Application Data", MB_ICONERROR);
+			AfxMessageBox(_T("Could not determine path to Application Data"), MB_ICONERROR);
 
 		TCHAR drive[5];
 		TCHAR dir[MAX_PATH];
 		TCHAR ext[MAX_PATH];
 		TCHAR filename[MAX_PATH];
-		_splitpath(moduleName, drive, dir, filename, ext);
+		_tsplitpath(moduleName, drive, dir, filename, ext);
 		m_strAppDataPath = drive;
 		m_strAppDataPath += dir;
 #endif
