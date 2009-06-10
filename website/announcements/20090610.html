@@ -1,0 +1,369 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="Title" -->
+<title>Eraser ::  Announcemens :: June 10, 2009</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts.js"></script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+<!-- InstanceParam name="ArticlePoster" type="boolean" value="true" -->
+</head>
+
+<body onload="MM_preloadImages('../images/btn_home_hov.gif', '../images/btn_download_hov.gif', '../images/btn_forum_hov.gif', '../images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="../index.php"><img src="../images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- InstanceBeginRepeat name="LeftContent" --><!-- InstanceBeginRepeatEntry -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 6-rc5 <!-- InstanceEndEditable --></h2>
+						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted
+								by: Joel, 10 June 2009, 7.00pm, +800 GMT <!-- InstanceEndEditable --></div>
+					</div>
+				</div>
+
+				<!-- InstanceBeginEditable name="LeftContentEdit" -->
+			  <p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use.</p>
+			  <p>However, due to the same code changes resulting from the review, <strong>all tasks will be lost during the upgrade</strong>. You are encouraged to note down tasks which you intend to use in the new install and redefine them once it is installed. Furthermore, because quite a substantial amount of code has been rewritten, certain functions may no longer work (or they may not work properly.) Please report such bugs to <a href="/trac/newticket">Trac</a>!</p>
+			  <p>Nonetheless, there has been a large number of bugs being fixed (as evidenced from the large jump in build number) and this release of Eraser should be better than before. Please help find any remaining bugs and report thme to Trac - this is most likely to be the final RC before Eraser 6 is released as stable. </p>
+			  <h2>Changelog</h2>
+			  <table class="changelog">
+					<tr>
+						<th>Revision</th>
+						<th>Description</th>
+						<th>Author</th>
+					</tr>
+					<tr>
+						<th>876, 1014, 1015</th>
+						<td>FAT dates only reach up to Jan 1 1980. Fixes #168.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>878</th>
+						<td>Allow drives to be erased from the Explorer context menu.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>879</th>
+						<td>Allow task cancellations to take place when searching for file cluster tips to erase.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>880</th>
+						<td>Internationalised the Log Viewer.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>881</th>
+						<td>Add the Eraser icon to the add/remove programs control panel applet. Fixes #187.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>892, 897</th>
+						<td>Store all certificates in the Windows certificate store instead of having thme as loose PFX's on the disk for security reasons.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>893</th>
+						<td>Flush all data to disk immediately after writing. Fixes #171.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>894-895</th>
+						<td>Handle files which are currently locked during erasure as well as files which are encrypted, compressed or sparse gracefully.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>896, 1022</th>
+						<td>Improvements to the progress dialog, better user experience when the dialog is waiting for data to come from the Erasure Executor.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>898, 899, 901-973, 976, 978-984, 986-988, 991-1010, 1017, 1018, 1052-1053, 1057-1063, 1069-1071, 1088-1094, 1096, 1102-1103</th>
+						<td>
+							Code Review/Cleanup with FxCop: User-visible changes:
+							<ul>
+								<li>Dialog boxes appear as right-to-left under Arabic or Hebrew locales (currently no impact since Eraser doesn't come in the Arabic or Hebrew translations; but this will be of importance once those translations are complete.)</li>
+								<li>Remote Executor classes (eg Explorer context menu erasure, Eraser Command Line) rewritten from scratch - less prone to crashing and more reliable. This should fix problems for users who report that after selecting a file for erasure through the context menu nothing happens.</li>
+								<li>Called IDispoable.Dispose on some disposable objects; should reduce memory consumption in the long run.</li>
+								<li>The Eraser Tool Bar now is an ownerdrawn menu bar instead of a generic control. This allows for shortcuts to be used. Ctrl+N now maps to New Task.</li>
+								<li>Native context menus look better. All context menus under Vista+ will be natively styled.</li>
+								<li>More error messages are localisable, for it to be displayed in languages other than English (in non-English environments)</li>
+							</ul>
+						</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>900</th>
+						<td>Disable redrawing on the log viewer when log items are being added. This allows for the display of long logs quickly.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>972, 974</th>
+						<td>Fixed crash in Log Viewer when copying an empty log.</td>
+						<td>Kaz/Joel</td>
+					</tr>
+					<tr>
+						<th>975</th>
+						<td>Delete the folder the user asked for erasure only if it is empty! Fixes the problem reported in <a href="http://bbs.heidi.ie/viewtopic.php?f=2&amp;t=5556">the forums</a>.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>977</th>
+						<td>
+							Implemented filename escaping/unescaping when using the Eraser command line. All filenames containing any one of:
+							<ul>
+								<li>\</li>
+								<li>,</li>
+								<li>=</li>
+							</ul>
+							must be escaped by prepending a \ to it. This reduced ambiguity to the Eraser command line parser since , and = are used to denote subparameters.
+						</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>985</th>
+						<td>The About dialog displays our new Website now instead of the SourceForge one.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>989-990</th>
+						<td>Remove ISAAC from the list of PRNGs.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1011-1013, 1081</th>
+						<td>Allow users to export and import task lists. Implements #193.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1016</th>
+						<td>Display the nice antialiased Security Shield instead of an old aliased one previously.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1019</th>
+						<td>Fixed how the Scheduler manages actively executing tasks. This should prevent progress bars from being &quot;abandoned&quot;: displayed without a parent item.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1026</th>
+						<td>Disable the context menu for the recycle bin entry when there are no files in the recycle bin. Implements #50..</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1028</th>
+						<td>All forms should call UXThemeApi.UpdateControlTheme so that relevant theming upgrades can be made (eg list-views) and that the proper system font can be assigned (Tahoma on XP, Segoe UI &gt;= Vista). This prevents the ugly use of MS Sans Serif under XP.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1033, 1034</th>
+						<td>Allow date Created, date Accessed and date Modified values to be set on streams.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1035</th>
+						<td>Fixed ADS enumeration. WIN32_STREAM_ID is a structure with packing 1 - the native packing doesn't seem to give a structure of the right size. I picked Pack=1 because this is meant to be stored to file and files don't usually have alignments (unlike memory).</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1037</th>
+						<td>Implemented ADS Deletion.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1041</th>
+						<td>GetPathADSes takes a value by &quot;out&quot;, meaning whatever value the totalSize variable had before would have been overwritten. Fixed the code to work properly now. This would have reported the wrong amount of data that needs to be written to erase the file..</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1042, 1044, 1046, 1047</th>
+						<td>Implemented drag-and-drop into the scheduler. Task Lists are imported and all other files are erased.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1048</th>
+						<td>Fixed the Log viewer's resizing: the buttons aren't all over the place now.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1049</th>
+						<td>Use SetFileAttributes directly when dealing with streams since that will support ADSes but not the .NET variant (which does path checking.) ADSes can be erased properly now and their properties are also reset like normal files.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1050</th>
+						<td>When erasing Recycle bin files erase ADSes before the unnamed stream (following the order of the other file erasures). This allows for the secure deletion of files with ADSes which were sent to the recycle bin.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1051</th>
+						<td>Don't delete folders which are volume mount points even if they are empty</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1054</th>
+						<td>Save all tasks when exiting Eraser on system shut down.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1056, 1064, 1083, 1087</th>
+						<td>Implemented unlocker feature - all locked files which are slated for erasure will have all open handles closed where possible before erasure.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1066</th>
+						<td>Include the correct runtime library - prevent Runtime configuration incorrect errors.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1067</th>
+						<td>
+							Various scheduler fixes, including:
+							<ul>
+								<li>Scheduled tasks should be queued at start up</li>
+								<li>Multiple tasks with the same scheduled execution time will now work as expected</li>
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<th>1068</th>
+						<td>Place the run status on the Status column instead of the Next Run column</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1072, 1073</th>
+						<td>Fixed crash when clearing the task log while the task was executing, and when there are no entries for a particular execution session, append a blank entry so that the session header will appear.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1082</th>
+						<td>Allow tasks to specify files to delete - and if they don't exist when the task is executed ignore and continue.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1085</th>
+						<td>Handle locked files' ADSes more elegantly - if the file can't be unlocked when searching for ADSes just continue; if the file is still locked it will throw an error later when the unnamed stream is erased.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1086</th>
+						<td>Rewritten ADS finding function - more efficient.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1095</th>
+						<td>Updated About dialog - version information is displayed, along side special build status (when there are uncommitted changes)</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1097-1099, 1105-1106</th>
+						<td>Better-looking native menus (down to pixel)</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1100</th>
+						<td>Better error handling when FL16KB erase method was unselected/deleted</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1101</th>
+						<td>When displaying the Invalid default values message box, do not specify the invalid/invisible parent window. This ensures that the dialog can be seen in the status bar at startup.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1102</th>
+						<td>
+							Multiple scheduler fixes:
+							<ul>
+								<li>When cancelling scheduled tasks we removed the scheduled version of the task as well so tasks will no longer run on the schedule</li>
+								<li>When editing tasks the schedules were not updated and scheduled tasks still ran on the old schedule</li>
+								<li>Determining whether the task was queued manually for execution was a little unpredictable, this is now fixed</li>
+								<li>For consistency, when tasks are queued we will prevent editing of tasks</li>
+							</ul>
+						</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>1107</th>
+						<td>Fixed a regression introduced in the scheduler fixes</td>
+						<td>Joel</td>
+					</tr>
+				</table>
+				<h2>Why remove ISAAC?</h2>
+				<p>Perhaps some of you are wondering why I'm removing ISAAC, the default PRNG for Eraser 5, from Eraser 6.</p>
+				<p>I met up with <a href="http://www3.ntu.edu.sg/home/lingsan/">Professor Ling San</a> on a seminar he conducted and I managed to ask him about his opinion regarding ISAAC (through email). This was his response and I quote:</p>
+				<blockquote>
+					<p>After discussing with some colleagues who know ISAAC better, this is what some of them have to say:</p>
+					<p>ISAAC cannot be considered as broken so far, despite the few properties highlighted in the works of Aumasson (the best attack to date) and Paul-Praneel (on a modified version rather than the original ISAAC).</p>
+					<p>However, using ISAAC as a pseudo-random generator is maybe not an optimal choice, for</p>
+					<ol>
+						<li>the specification of ISAAC includes no precise initialization mechanism,</li>
+						<li>ISAAC has probably not been as thoroughly analyzed as other algorithms,</li>
+						<li>it uses a rather large internal state (more than 8192 bits), which may be a performance issue in certain environments.</li>
+					</ol>
+					<p>To use as a pseudo-random generator in cryptographic applications, we would suggest one of the stream ciphers selected by the eSTREAM project (http://www.ecrypt.eu.org/stream/), or AES in counter mode.</p>
+				</blockquote>
+				<p>This, and in light of concerns that some members of the community have over the security of ISAAC (most notably <a href="/trac/ticket/143">#143</a>), I've come to a decision that ISAAC will be removed from Eraser. In addition, since an alternative was readily available in .NET (RNGCryptoServiceProvider) and that the default for v6 was set to the RNGCryptoServiceProvider, I felt that the change was not going to be really significant.</p>
+				<h2>The On-Ramp</h2>
+				<p>So you've still decided that v6 is for you? Look no further.</p>
+				<p>
+					<strong>Disclaimer: The code is still of <em>beta quality</em> and may not be as stable or secure as the released versions of Eraser.</strong>
+					Internal testing has been conducted to a certain extent, but remember that this is beta quality code and any loss of information or any data left unerased due to the use of this software has been disclaimed.
+				</p>
+				<p>If you have read the disclaimer, read a few notes about <strong><a href="../trac/wiki/InstallingBetas">installing
+							and using betas</a></strong> then download and runthe <strong><a href="../download.php?id=12">installer</a>.</strong> Some
+							may have realised that the need for installing an Eraser Root Certificate
+							is no longer needed - that is correct. I have managed to acquire a validated
+							Certum Certificate which should validate without further action.</p>
+			  <!-- InstanceEndEditable -->
+			</div>
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="../index.php"><img src="../images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','../images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="../index.php#download"><img src="../images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', '../images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="http://bbs.heidi.ie/viewforum.php?f=30" target="_blank"><img src="../images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', '../images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="../trac/"><img src="../images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', '../images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 6-rc5 released!</h2>
+					<div class="posted">Posted by: Joel, 10 June 2009, 7.00pm, +800 GMT</div>
+					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/2009065.html">See the full announcement.</a></p>
+					<h2>Eraser 5.8.7-beta5 released!</h2>
+					<div class="posted">Posted by: Joel, 18 April 2009, 11.36am, +800 GMT</div>
+					<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. <a href="20090418.html">See the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- InstanceBeginRepeat name="RightContent" --><!-- InstanceEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+<!-- InstanceEnd --></html>
