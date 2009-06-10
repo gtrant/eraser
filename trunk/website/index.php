@@ -99,12 +99,12 @@ function GetDownloads($downloadID)
 			<div class="right_news">
 				<h3>Latest News</h3>
 				<div class="right_news_bg">
+					<h2>Eraser 6-rc5 released!</h2>
+					<div class="posted">Posted by: Joel, 10 June 2009, 7.00pm, +800 GMT</div>
+					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/2009065.html">See the full announcement.</a></p>
 					<h2>Eraser 5.8.7-beta5 released!</h2>
 					<div class="posted">Posted by: Joel, 18 April 2009, 11.36am, +800 GMT</div>
 					<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. <a href="announcements/20090418.html">See the full announcement.</a></p>
-					<h2>Eraser 6-rc4 released!</h2>
-					<div class="posted">Posted by: Joel, 8 January 2008, 2.45pm, +800 GMT</div>
-					<p>Hello again! I wish everyone's been enjoying the new rc3, but while you're at it, I felt it wasn't good enough. So here's <strong>rc4</strong> with more bugfixes than the previous release and with all the v6 goodness. <a href="announcements/20090108.html">See the full announcement.</a></p>
 				</div>
 			</div>
 
