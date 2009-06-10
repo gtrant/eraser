@@ -101,7 +101,7 @@ function GetDownloads($downloadID)
 				<div class="right_news_bg">
 					<h2>Eraser 6-rc5 released!</h2>
 					<div class="posted">Posted by: Joel, 10 June 2009, 7.00pm, +800 GMT</div>
-					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/2009065.html">See the full announcement.</a></p>
+					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/20090610.html">See the full announcement.</a></p>
 					<h2>Eraser 5.8.7-beta5 released!</h2>
 					<div class="posted">Posted by: Joel, 18 April 2009, 11.36am, +800 GMT</div>
 					<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. <a href="announcements/20090418.html">See the full announcement.</a></p>
@@ -128,7 +128,7 @@ function GetDownloads($downloadID)
 				</ul>
 				<h4>Beta versions</h4>
 				<ul>
-					<li><a href="announcements/20090108.html">Eraser 6.0.5</a> (rc-5, build 1114)<br />
+					<li><a href="announcements/20090610.html">Eraser 6.0.5</a> (rc-5, build 1114)<br />
 						<span class="downloads">&raquo; downloaded <?php GetDownloads(12); ?> times</span></li>
 					<li><a href="announcements/20090418.html">Eraser 5.8.7-beta5</a><br />
 						<span class="downloads">&raquo; downloaded <?php GetDownloads(10); ?> times</span></li>
