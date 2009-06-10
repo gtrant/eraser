@@ -128,8 +128,8 @@ function GetDownloads($downloadID)
 				</ul>
 				<h4>Beta versions</h4>
 				<ul>
-					<li><a href="announcements/20090108.html">Eraser 6.0.4</a> (rc-4, build 875)<br />
-						<span class="downloads">&raquo; downloaded <?php GetDownloads(9); ?> times</span></li>
+					<li><a href="announcements/20090108.html">Eraser 6.0.5</a> (rc-5, build 1114)<br />
+						<span class="downloads">&raquo; downloaded <?php GetDownloads(12); ?> times</span></li>
 					<li><a href="announcements/20090418.html">Eraser 5.8.7-beta5</a><br />
 						<span class="downloads">&raquo; downloaded <?php GetDownloads(10); ?> times</span></li>
 					<li><a href="announcements/20090418.html">Eraser 5.8.7-beta5</a> (portable)
