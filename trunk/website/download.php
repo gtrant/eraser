@@ -4,11 +4,18 @@ if (empty($_GET['id']))
 	exit;
 
 //Get the download link associated with the download
-$query = mysql_query(sprintf('SELECT Link FROM downloads WHERE DownloadID=%d AND Superseded=0', intval($_GET['id'])));
+$query = mysql_query(sprintf('SELECT Link, Superseded FROM downloads WHERE DownloadID=%d', intval($_GET['id'])));
 if (!$query)
 	exit;
 if (!($row = mysql_fetch_array($query)))
 	exit;
+
+//Check for supercedence
+if (intval($row['Superseded']))
+{
+	echo 'The requested download has been superseded with a newer version.';
+	exit;
+}
 
 //Register the download
 mysql_query(sprintf('INSERT INTO download_statistics (DownloadID) VALUES (%d)', intval($_GET['id'])));
