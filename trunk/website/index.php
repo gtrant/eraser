@@ -124,7 +124,8 @@ function GetDownloads($downloadID)
 				<h4>Stable versions</h4>
 				<ul>
 					<li><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_setup.exe">Eraser 5.8.7</a></li>
-					<li><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_portable.zip">Eraser 5.8.6a</a> (portable)</li>
+					<li><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_portable.zip">Eraser
+							5.8.7</a> (portable)</li>
 				</ul>
 				<h4>Beta versions</h4>
 				<ul>
