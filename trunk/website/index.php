@@ -78,7 +78,7 @@ function GetDownloads($downloadID)
 				<ul>
 					<li>It works with Windows XP, Windows Vista, Windows Server 2003 and Windows Server 2008.</li>
 					<ul>
-						<li>Windows 98, ME, NT, 2000 can still be used with version 5!</li>
+						<li>Windows 98, ME, NT, 2000 can still be used with version 5.7!</li>
 					</ul>
 					<li>It works with any drive that works with Windows</li>
 					<li>Secure drive erasure methods are supported out of the box</li>
