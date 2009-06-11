@@ -1,12 +1,18 @@
 ----------------------------------------------------------------
-NOTE: This version uses a new installer system. You MUST remove
-ALL EARLIER VERSIONS before installing this Beta. When installing
-an earlier stable build, UNINSTALL the Beta first.
+NOTE: You MUST remove ALL EARLIER VERSIONS (including BETAS)
+before installing this version. When installing an earlier
+stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.87 beta 5: Latest changes
+Eraser 5.8.7: Changes over 5.8.7-beta5
 ----------------------------------------------------------------
-- Timestamp all binaries on top of signing with the beta certificate
+- Allow users to specify whether they want to delete Eraser-related
+  configuration files on uninstall
+- Implemented Eraser 5 Unicode support.
+
+Fixed in previous 5.8.7 betas:
+----------------------------------------------------------------
+- Timestamp all binaries on top of signing with the certificate
 - Fixed dragged-and-dropped tasks to the On-Demand pane. The computer
   will shut down when done
 - Fixed scheduled tasks' completion action
@@ -17,9 +23,6 @@ Eraser 5.87 beta 5: Latest changes
   detected as encrypted when they are not
 - Fixed the missing shell extension
 - Fixed 64-bit installs (VC runtime complained of lack of cabinet)
-
-Beta 4 Changes
-----------------------------------------------------------------
 - Fixed error message when user deletes files and cancels in the
   Eraser Explorer.
 - Deleting tasks now require confirmation (as per Windows)
@@ -41,9 +44,6 @@ Beta 4 Changes
   button.
 - Implemented the deletion of run-at-reboot scheduled tasks.
 - Compile everything using VS 2008.
-
-Beta 3 Changes
-----------------------------------------------------------------
 - Fixed command line error when selecting subfolders to be erased
   with the parent folder
 - Fixed a few issues with EraserL creating a registry key after an
@@ -58,14 +58,8 @@ Beta 3 Changes
   standby when running
 - Fixed #36: Eraser overriding Windows hotkeys in context menu
 - Fixed #48: Inaccurate determination of process elevation
-
-Beta 2 Changes
-----------------------------------------------------------------
 - Do not create "New Eraser Document" in the New context menu of
   Explorer when using a Portable version
-
-Beta 1 changes
-----------------------------------------------------------------
 - Schedlog.txt will always be kept in the local Application Data
   folder.
 - Fixed shutdown issues after erase for NT-based computers.
@@ -99,8 +93,8 @@ CONTENTS
 
    1.1. Copyright
 
-        Eraser Copyright © 2007-2008 by the Eraser Project. All rights
-        reserved.
+        Eraser Copyright © 2007-2008 by The Eraser Project. All
+        rights reserved.
         Eraser Copyright © 2002-2006 by Garrett Trant. All rights
         reserved.
         Eraser Copyright © 1997-2002 by Sami Tolvanen. All rights
@@ -134,22 +128,16 @@ CONTENTS
 
    1.3. Digital signature
 
-        The setup program is signed with Pretty Good Privacy
-        (PGP) (public key available at web site) for verifying
-        the authenticity. The signature file should be included
-        with the archive. This file has the extension '.asc'.
-
-        If you did not receive a separate digital signature file
-        with this archive, download the official binary
-        distribution at the home page (see section 5.1).
+        The setup program is signed with an Authenticode signature
+        for authenticity verification.
 
 ----------------------------------------------------------------
 2. SYSTEM REQUIREMENTS
 
-   This version of Eraser runs on Windows 95, 98, ME, NT 4.0,
-   2000, XP and all editions of Vista. Windows XP x64 and all
-   64-bit SKUs of Vista can also be used (using the 64-bit
-   version)
+   This version of Eraser runs on Windows 2000, XP and all editions
+   of Vista. Windows XP x64 and all 64-bit SKUs of Vista can also
+   be used (using the 64-bit version). Windows 7 installs may work
+   but Eraser 5 is not currently tested under that platform.
 
 ----------------------------------------------------------------
 3. HOW TO INSTALL & UNINSTALL
@@ -164,8 +152,8 @@ CONTENTS
 
    3.2. Installing
 
-        EraserSetup.exe is a self-extracting executable containing the
-        program files.
+        This setup file is a self-extracting executable containing
+        the program files.
 
         Run EraserSetup.exe to install Eraser. The setup program will
         extract the files and copy them to a desired location.
@@ -216,7 +204,7 @@ CONTENTS
 ----------------------------------------------------------------
 5. AUTHOR
    
-   The new maintainer of this product is the Eraser Project.
+   The new maintainer of this product is The Eraser Project.
    For more information visit
    http://sourceforge.net/projects/eraser
   
