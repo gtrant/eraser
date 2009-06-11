@@ -113,7 +113,7 @@ function GetDownloads($downloadID)
 			<div class="right_doyouknow">
 				<h3>Did you Know?</h3>
 				<div class="right_doyouknow_bg">
-					<p>Eraser Version 6 Development started on <a href="http://eraser.heidi.ie/trac/changeset/73" target="_blank">November 1, 2007</a>?</p>
+					<p>Eraser Version 6 Development started on <a href="trac/changeset/73" target="_blank">November 1, 2007</a>?</p>
 				</div>
 			</div>
 			<!-- InstanceEndEditable -->
