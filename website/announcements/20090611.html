@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="Title" -->
+<title>Eraser :: Announcements :: 11 June, 2009</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts.js"></script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+<!-- InstanceParam name="ArticlePoster" type="boolean" value="true" -->
+</head>
+
+<body onload="MM_preloadImages('../images/btn_home_hov.gif', '../images/btn_download_hov.gif', '../images/btn_forum_hov.gif', '../images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="../index.php"><img src="../images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- InstanceBeginRepeat name="LeftContent" --><!-- InstanceBeginRepeatEntry -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 5.8.7
+								stable released!<!-- InstanceEndEditable --></h2>
+						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Psoted
+								by: Joel, 11 June 2009, 9:15am, +800GMT<!-- InstanceEndEditable --></div>
+					</div>
+				</div>
+
+				<!-- InstanceBeginEditable name="LeftContentEdit" -->
+				<p>Eraser 5.8.7 stable is finally released after being too long in the making!
+					This version brings with it Unicode changes, allowing the erasure of file names
+					containing non English characters as well as the Portable distribution being
+					a supported distribution. The full changelog follows:</p>
+				<p><strong>Important note</strong>: since Eraser 5 is now compiled using Visual
+					Studio 2008, the compiled binaries will <strong>not</strong> work with Windows
+					9x and Windows NT. The source code has support for such platforms. Should you
+					require 9x support, either use 5.7 or compile the source code
+					yourself using earlier versions of Visual Studio.</p>
+				\
+				<h2>Changelog</h2>
+				<h3>Eraser 5.8.7: Changes over 5.8.7-beta5</h3>
+				<ul>
+					<li>Allow users to specify whether they want to delete Eraser-related configuration
+						files on uninstall</li>
+					<li>Implemented Eraser 5 Unicode support.</li>
+				</ul>
+				<h3>Fixed in previous 5.8.7 betas:</h3>
+				<ul>
+					<li>Timestamp all binaries on top of signing with the certificate</li>
+					<li>Fixed dragged-and-dropped tasks to the On-Demand pane. The computer will
+						shut down when done</li>
+					<li>Fixed scheduled tasks' completion action</li>
+					<li>Display the time when scheduled tasks are to run at midnight</li>
+					<li>Fixed a 64-bit problem for ISAAC buffer fills (semantic, not really serious)</li>
+					<li>Fixed a wrong use of the equality operator leading to files being detected
+						as encrypted when they are not (should fix some random hangs)</li>
+					<li>Fixed the missing shell extension</li>
+					<li>Fixed 64-bit installs (VC runtime complained of lack of cabinet)</li>
+					<li>Fixed error message when user deletes files and cancels in the Eraser Explorer.</li>
+					<li>Deleting tasks now require confirmation (as per Windows)</li>
+					<li>Fixed a hang when users expanded the Network bit of the file data selection
+						dialog (now only affects Verifier)</li>
+					<li>Run the post-task operation when it is complete.</li>
+					<li>Replaced the custom file/folder selection dialog with the Windows built-in
+						ones.</li>
+					<li>The “no files to erase” error no longer appears for file/folder erasures.</li>
+					<li>Fixed the Hotkey selection dialog in General Preferences</li>
+					<li>System passwords must be specified for it to be active. Throw an error if
+						the user wanted a password but didn't set one</li>
+					<li>x64 compatibility fixes (NTAPI call)</li>
+					<li>The scheduler log size must be positive, the dialog enforces it now.</li>
+					<li>Allow users to tell Eraser to remember the resolve locked files setting
+						for the current erase. Like a No to All or Yes to All button.</li>
+					<li>Implemented the deletion of run-at-reboot scheduled tasks.</li>
+					<li>Compile everything using VS 2008.</li>
+					<li>Fixed command line error when selecting subfolders to be erased with the
+						parent folder</li>
+					<li>Fixed a few issues with EraserL creating a registry key after an erase</li>
+					<li>Fixed the weird bug of right-clicking the various erase methods and Eraser
+						hangs. Hopefully this resolves the problem of the file/folder selection dialog
+						blinking and resetting the selections.</li>
+					<li>Implemented NTFS EFS file erasure (EXPERIMENTAL!)</li>
+					<li>Further complicate forensics: Set MACE to invalid values (NTFS only)</li>
+					<li>Fixed #6: Incorrect 'When Finished' option</li>
+					<li>Implemented #37: Eraser should not allow system to hibernate or standby
+						when running</li>
+					<li>Fixed #36: Eraser overriding Windows hotkeys in context menu</li>
+					<li>Fixed #48: Inaccurate determination of process elevation</li>
+					<li>Do not create &quot;New Eraser Document&quot; in the New context menu of
+						Explorer when using a Portable version</li>
+					<li>Schedlog.txt will always be kept in the local Application Data folder.</li>
+					<li>Fixed shutdown issues after erase for NT-based computers.</li>
+					<li>Fixed erasure of recycle bin contents when the erase was cancelled.</li>
+					<li>Fixed Windows 98 compatibility.</li>
+					<li>Fixed error checking when querying for elevation.</li>
+					<li>Renamed Verify.exe to Erschk.exe. Resolved #418558.</li>
+					<li>Fixed the VC2005 redistributable being extracted over each other when both
+						x86 and x64 builds are selected for install.</li>
+					<li>Fixed command line error when -silent was passed to EraserL.</li>
+				</ul>
+				<p>Once you're ready, hop over to the SourceForge Download area to get your copy
+					while it's still hot.</p>
+				<!-- InstanceEndEditable -->
+			</div>
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="../index.php"><img src="../images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','../images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="../index.php#download"><img src="../images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', '../images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="http://bbs.heidi.ie/viewforum.php?f=30" target="_blank"><img src="../images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', '../images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="../trac/"><img src="../images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', '../images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 5.8.7 released!</h2>
+					<div class="posted">Posted by: Joel, 11 June 2009, 9.15am, +800 GMT</div>
+					<p>Eraser 5.8.7 stable is finally released after being too long in the making! This version brings with it Unicode changes, allowing the erasure of file names containing non English characters as well as the Portable distribution being a supported distribution. <a href="announcements/20090611.html">See the full announcement.</a></p>
+					<h2>Eraser 6-rc5 released!</h2>
+					<div class="posted">Posted by: Joel, 10 June 2009, 7.00pm, +800 GMT</div>
+					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/20090610.html">See the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- InstanceBeginRepeat name="RightContent" --><!-- InstanceBeginRepeatEntry -->
+			<!-- InstanceBeginEditable name="RightContentEdit" -->
+			<div class="right_intro">
+				<h3>Pane Summary</h3>
+				<div class="right_intro_bg">
+					<h2>Item Title</h2>
+					<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Morbi aliquet augue ultricies leo. Ut tempor turpis a tortor. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam semper commodo urna. Morbi mi. Aliquam id quam sed tortor imperdiet imperdiet. Aliquam auctor tortor sit amet nibh. In pellentesque porttitor nunc. Pellentesque turpis massa, ultrices sit amet, luctus eget, ultrices sollicitudin, metus. Cras eget diam nec leo ultricies imperdiet. In hac habitasse platea dictumst. Mauris non mi at libero facilisis interdum. Duis auctor nibh at sem ullamcorper dictum. Curabitur porta, metus id mollis tristique, nunc felis malesuada dolor, a bibendum nisl massa in diam. Morbi magna sem, imperdiet nec, varius eu, rutrum nec, metus. Nunc aliquet dui auctor elit. Phasellus scelerisque, dui sed interdum vulputate, nulla sapien mattis turpis, et fringilla dolor ipsum non libero. Integer et erat eget velit luctus pharetra. Vestibulum eu urna sed nisi fermentum ultricies. Mauris nulla.</p>
+			    </div>
+			</div>
+			<!-- InstanceEndEditable -->
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+<!-- InstanceEnd --></html>
