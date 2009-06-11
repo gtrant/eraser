@@ -51,19 +51,19 @@ Source: Eraser.chm; DestDir: {app}; Flags: overwritereadonly 64bit; Components: 
 Source: ..\README.txt; DestDir: {app}; Flags: overwritereadonly
 Source: ..\COPYING.txt; DestDir: {app}; Flags: overwritereadonly
 
-Source: win32\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Eraserl.exe; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
-Source: win32\release\Eraser.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
-Source: win32\release\Erasext.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
-Source: win32\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
+Source: win32\release_unicode\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: arch32Bit
+Source: win32\release_unicode\Eraserl.exe; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit
+Source: win32\release_unicode\Eraser.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
+Source: win32\release_unicode\Erasext.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
+Source: win32\release_unicode\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
 Source: vcredist_x86.cab; DestName: vc_red.cab; DestDir: {tmp}\vcredist_x86; Flags: deleteafterinstall; Components: arch32Bit archWoW
 Source: vcredist_x86.msi; DestName: vc_red.msi; DestDir: {tmp}\vcredist_x86; Flags: deleteafterinstall; Components: arch32Bit archWoW
 
-Source: x64\release\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
-Source: x64\release\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
+Source: x64\release_unicode\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
+Source: x64\release_unicode\Eraserl.exe; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
+Source: x64\release_unicode\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
+Source: x64\release_unicode\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
+Source: x64\release_unicode\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
 Source: vcredist_x64.cab; DestName: vc_red.cab; DestDir: {tmp}\vcredist_x64; Flags: deleteafterinstall; Components: arch64Bit
 Source: vcredist_x64.msi; DestName: vc_red.msi; DestDir: {tmp}\vcredist_x64; Flags: deleteafterinstall; Components: arch64Bit
 
