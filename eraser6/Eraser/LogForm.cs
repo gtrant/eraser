@@ -45,28 +45,16 @@ namespace Eraser
 			//Update the title
 			Text = string.Format(CultureInfo.InvariantCulture, "{0} - {1}", Text, task.UIText);
 
-			//Add all the existing log messages
-			this.log.BeginUpdate();
-			LogSessionDictionary log = task.Log.Entries;
-			foreach (DateTime sessionTime in log.Keys)
-			{
-				ListViewGroup sessionGroup = new ListViewGroup(S._("Session: {0:F}", sessionTime));
-				this.log.Groups.Add(sessionGroup);
+			//Set the filter settings
+			filterFilterType.SelectedIndex = 0;
+			filterSeverity.SelectedIndex = 0;
 
-				if (log[sessionTime].Count == 0)
-				{
-					ListViewItem item = this.log.Items.Add(string.Empty);
-					item.Group = sessionGroup;
-				}
-				else
-					foreach (LogEntry entry in log[sessionTime])
-						task_Logged(this, new LogEventArgs(entry));
-			}
+			//Add all the existing log messages
+			RefreshMessages();
+			EnableButtons();
 
 			//Register our event handler to get live log messages
 			task.Log.Logged += task_Logged;
-			this.log.EndUpdate();
-			EnableButtons();
 		}
 
 		private void LogForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -81,6 +69,10 @@ namespace Eraser
 				Invoke(new EventHandler<LogEventArgs>(task_Logged), sender, e);
 				return;
 			}
+
+			//Check whether the current entry meets the criteria for display.
+			if (!MeetsCriteria(e.LogEntry))
+				return;
 
 			ListViewItem item = log.Items.Add(e.LogEntry.Timestamp.ToString("F", CultureInfo.CurrentCulture));
 			item.SubItems.Add(e.LogEntry.Level.ToString());
@@ -105,6 +97,11 @@ namespace Eraser
 			EnableButtons();
 		}
 
+		private void filter_Changed(object sender, EventArgs e)
+		{
+			RefreshMessages();
+		}
+
 		private void clear_Click(object sender, EventArgs e)
 		{
 			task.Log.Clear();
@@ -124,6 +121,10 @@ namespace Eraser
 				rawText.AppendLine(S._("Session: {0:F}", sessionTime));
 				foreach (LogEntry entry in logEntries[sessionTime])
 				{
+					//Only copy entries which meet the display criteria.
+					if (!MeetsCriteria(entry))
+						continue;
+
 					string timeStamp = entry.Timestamp.ToString("F", CultureInfo.CurrentCulture);
 					string message = entry.Message;
 					csvText.AppendFormat("\"{0}\",\"{1}\",\"{2}\"\n",
@@ -153,6 +154,68 @@ namespace Eraser
 		private void close_Click(object sender, EventArgs e)
 		{
 			Close();
+		}
+
+		/// <summary>
+		/// Checks whether the given log entry meets the current display criteria.
+		/// </summary>
+		/// <param name="entry">The entry to check.</param>
+		/// <returns>True if the entry meets the display criteria.</returns>
+		private bool MeetsCriteria(LogEntry entry)
+		{
+			//Check if the current message meets criteria
+			switch (filterFilterType.SelectedIndex)
+			{
+				case 0: //and above
+					if (entry.Level < (LogLevel)filterSeverity.SelectedIndex)
+						return false;
+					break;
+
+				case 1: //equal to
+					if (entry.Level != (LogLevel)filterSeverity.SelectedIndex)
+						return false;
+					break;
+
+				case 2: //and below
+					if (entry.Level > (LogLevel)filterSeverity.SelectedIndex)
+						return false;
+					break;
+			}
+
+			return true;
+		}
+
+		/// <summary>
+		/// Updates all messages in the list view to show only those meeting the
+		/// selection criteria.
+		/// </summary>
+		private void RefreshMessages()
+		{
+			Application.UseWaitCursor = true;
+
+			this.log.BeginUpdate();
+			this.log.Items.Clear();
+			this.log.Groups.Clear();
+			LogSessionDictionary log = task.Log.Entries;
+
+			//Iterate over every key
+			foreach (DateTime sessionTime in log.Keys)
+			{
+				ListViewGroup sessionGroup = new ListViewGroup(S._("Session: {0:F}", sessionTime));
+				this.log.Groups.Add(sessionGroup);
+
+				foreach (LogEntry entry in log[sessionTime])
+					task_Logged(this, new LogEventArgs(entry));
+
+				if (sessionGroup.Items.Count == 0)
+				{
+					ListViewItem item = this.log.Items.Add(string.Empty);
+					item.Group = sessionGroup;
+				}	
+			}
+
+			this.log.EndUpdate();
+			Application.UseWaitCursor = false;
 		}
 
 		/// <summary>
