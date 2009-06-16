@@ -144,7 +144,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;overallProgressLbl.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="overallProgress.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 192</value>
@@ -165,7 +165,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;overallProgress.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="jobTitle.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -192,7 +192,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;jobTitle.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="status.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -222,7 +222,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;status.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="statusLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -249,7 +249,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;statusLbl.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="itemLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -261,7 +261,7 @@
     <value>34, 15</value>
   </data>
   <data name="itemLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="itemLbl.Text" xml:space="preserve">
     <value>Item:</value>
@@ -276,7 +276,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;itemLbl.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="item.Location" type="System.Drawing.Point, System.Drawing">
     <value>215, 61</value>
@@ -285,7 +285,7 @@
     <value>220, 45</value>
   </data>
   <data name="item.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="&gt;&gt;item.Name" xml:space="preserve">
     <value>item</value>
@@ -297,7 +297,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;item.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="passLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -309,7 +309,7 @@
     <value>33, 15</value>
   </data>
   <data name="passLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="passLbl.Text" xml:space="preserve">
     <value>Pass:</value>
@@ -324,7 +324,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;passLbl.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="pass.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -336,7 +336,7 @@
     <value>13, 15</value>
   </data>
   <data name="pass.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="pass.Text" xml:space="preserve">
     <value>0</value>
@@ -351,7 +351,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pass.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="title.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -832,7 +832,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;title.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="titleLbl.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 10pt, style=Bold</value>
@@ -862,7 +862,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;titleLbl.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="itemProgressLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -874,7 +874,7 @@
     <value>0, 15</value>
   </data>
   <data name="itemProgressLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;itemProgressLbl.Name" xml:space="preserve">
     <value>itemProgressLbl</value>
@@ -886,7 +886,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;itemProgressLbl.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="itemProgress.Location" type="System.Drawing.Point, System.Drawing">
     <value>150, 157</value>
@@ -895,7 +895,7 @@
     <value>257, 17</value>
   </data>
   <data name="itemProgress.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;itemProgress.Name" xml:space="preserve">
     <value>itemProgress</value>
@@ -907,7 +907,11 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;itemProgress.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="stop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="stop.Location" type="System.Drawing.Point, System.Drawing">
     <value>367, 184</value>
@@ -916,7 +920,7 @@
     <value>75, 23</value>
   </data>
   <data name="stop.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>16</value>
   </data>
   <data name="stop.Text" xml:space="preserve">
     <value>Stop</value>
@@ -931,7 +935,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;stop.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="bevelLine1.Location" type="System.Drawing.Point, System.Drawing">
     <value>152, 51</value>
@@ -940,7 +944,7 @@
     <value>285, 2</value>
   </data>
   <data name="bevelLine1.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;bevelLine1.Name" xml:space="preserve">
     <value>bevelLine1</value>
@@ -952,13 +956,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;bevelLine1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="bevelLine2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>140, 13</value>
+    <value>140, 8</value>
   </data>
   <data name="bevelLine2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>2, 194</value>
+    <value>2, 200</value>
   </data>
   <data name="bevelLine2.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -973,7 +977,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;bevelLine2.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="timeLeftLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -985,7 +989,7 @@
     <value>57, 15</value>
   </data>
   <data name="timeLeftLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="timeLeftLbl.Text" xml:space="preserve">
     <value>Time left:</value>
@@ -1000,7 +1004,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;timeLeftLbl.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="timeLeft.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1012,7 +1016,7 @@
     <value>58, 15</value>
   </data>
   <data name="timeLeft.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="timeLeft.Text" xml:space="preserve">
     <value>Unknown</value>
@@ -1027,6 +1031,33 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;timeLeft.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="hide.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="hide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>286, 184</value>
+  </data>
+  <data name="hide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="hide.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="hide.Text" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="&gt;&gt;hide.Name" xml:space="preserve">
+    <value>hide</value>
+  </data>
+  <data name="&gt;&gt;hide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;hide.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;hide.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
