@@ -158,21 +158,27 @@ namespace Eraser
 			Application.SafeTopLevelCaptionFormat = S._("Eraser");
 
 			//Load the task list
-			if (settings.TaskList != null)
-				using (MemoryStream stream = new MemoryStream(settings.TaskList))
-					try
+			SettingsCompatibility.Execute();
+			try
+			{
+				if (System.IO.File.Exists(TaskListPath))
+				{
+					using (FileStream stream = new FileStream(TaskListPath, FileMode.Open,
+						FileAccess.Read, FileShare.Read))
 					{
 						eraserClient.Tasks.LoadFromStream(stream);
 					}
-					catch (SerializationException e)
-					{
-						settings.TaskList = null;
-						MessageBox.Show(S._("Could not load task list. All task entries have " +
-							"been lost. The error returned was: {0}", e.Message), S._("Eraser"),
-							MessageBoxButtons.OK, MessageBoxIcon.Error,
-							MessageBoxDefaultButton.Button1,
-							S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
-					}
+				}
+			}
+			catch (SerializationException e)
+			{
+				System.IO.File.Delete(TaskListPath);
+				MessageBox.Show(S._("Could not load task list. All task entries have " +
+					"been lost. The error returned was: {0}", e.Message), S._("Eraser"),
+					MessageBoxButtons.OK, MessageBoxIcon.Error,
+					MessageBoxDefaultButton.Button1,
+					S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+			}
 
 			//Create the main form
 			program.MainForm = new MainForm();
@@ -229,10 +235,12 @@ namespace Eraser
 		private static void OnGUIExitInstance(object sender)
 		{
 			//Save the task list
-			using (MemoryStream stream = new MemoryStream())
+			if (!Directory.Exists(Program.AppDataPath))
+				Directory.CreateDirectory(Program.AppDataPath);
+			using (FileStream stream = new FileStream(TaskListPath, FileMode.Create,
+				FileAccess.Write, FileShare.None))
 			{
 				eraserClient.Tasks.SaveToStream(stream);
-				EraserSettings.Get().TaskList = stream.ToArray();
 			}
 
 			//Dispose the eraser executor instance
@@ -243,6 +251,27 @@ namespace Eraser
 		/// The global Executor instance.
 		/// </summary>
 		public static Executor eraserClient;
+
+		/// <summary>
+		/// Path to the Eraser application data path.
+		/// </summary>
+		public static readonly string AppDataPath = Path.Combine(Environment.GetFolderPath(
+			Environment.SpecialFolder.LocalApplicationData), @"Eraser 6");
+
+		/// <summary>
+		/// File name of the Eraser task list.
+		/// </summary>
+		private const string TaskListFileName = @"Task List.ersx";
+
+		/// <summary>
+		/// Path to the Eraser task list.
+		/// </summary>
+		public static readonly string TaskListPath = Path.Combine(AppDataPath, TaskListFileName);
+
+		/// <summary>
+		/// Path to the Eraser settings key (relative to HKCU)
+		/// </summary>
+		public const string SettingsPath = @"SOFTWARE\Eraser\Eraser 6";
 	}
 
 	class GUIProgram : IDisposable
@@ -1276,7 +1305,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <summary>
 		/// Registry-based storage backing for the Settings class.
 		/// </summary>
-		private class RegistrySettings : Manager.Settings
+		private class RegistrySettings : Manager.Settings, IDisposable
 		{
 			/// <summary>
 			/// Constructor.
@@ -1286,6 +1315,26 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			{
 				this.key = key;
 			}
+
+			#region IDisposable Members
+
+			~RegistrySettings()
+			{
+				Dispose(false);
+			}
+
+			public void Dispose()
+			{
+				Dispose(true);
+			}
+
+			private void Dispose(bool disposing)
+			{
+				if (disposing)
+					key.Close();
+			}
+
+			#endregion
 
 			public override object this[string setting]
 			{
@@ -1363,18 +1412,27 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 
 		protected override Manager.Settings GetSettings(Guid guid)
 		{
-			//Open the registry key containing the settings
-			const string eraserKeyPath = @"SOFTWARE\Eraser\Eraser 6";
-			RegistryKey eraserKey = Registry.CurrentUser.OpenSubKey(eraserKeyPath, true);
-			if (eraserKey == null)
-				eraserKey = Registry.CurrentUser.CreateSubKey(eraserKeyPath);
+			RegistryKey eraserKey = null;
 
-			RegistryKey pluginsKey = eraserKey.OpenSubKey(guid.ToString(), true);
-			if (pluginsKey == null)
-				pluginsKey = eraserKey.CreateSubKey(guid.ToString());
+			try
+			{
+				//Open the registry key containing the settings
+				eraserKey = Registry.CurrentUser.OpenSubKey(Program.SettingsPath, true);
+				if (eraserKey == null)
+					eraserKey = Registry.CurrentUser.CreateSubKey(Program.SettingsPath);
 
-			//Return the Settings object.
-			return new RegistrySettings(pluginsKey);
+				RegistryKey pluginsKey = eraserKey.OpenSubKey(guid.ToString(), true);
+				if (pluginsKey == null)
+					pluginsKey = eraserKey.CreateSubKey(guid.ToString());
+
+				//Return the Settings object.
+				return new RegistrySettings(pluginsKey);
+			}
+			finally
+			{
+				if (eraserKey != null)
+					eraserKey.Close();
+			}
 		}
 	}
 
@@ -1397,21 +1455,6 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			if (instance == null)
 				instance = new EraserSettings();
 			return instance;
-		}
-
-		/// <summary>
-		/// Gets or sets the task list, serialised in binary form by the Manager assembly.
-		/// </summary>
-		public byte[] TaskList
-		{
-			get
-			{
-				return (byte[])settings["TaskList"];
-			}
-			set
-			{
-				settings["TaskList"] = value;
-			}
 		}
 
 		/// <summary>
