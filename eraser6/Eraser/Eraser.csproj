@@ -225,6 +225,7 @@
     <Compile Include="SchedulerPanel.Designer.cs">
       <DependentUpon>SchedulerPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="SettingsCompatibility.cs" />
     <Compile Include="SettingsPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
