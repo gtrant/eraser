@@ -762,6 +762,12 @@ namespace Eraser.Manager
 					info.Attributes = FileAttributes.Normal;
 					EraseFileClusterTips(files[i], method);
 				}
+				catch (UnauthorizedAccessException)
+				{
+					task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
+						"cluster tips erased because you do not have the required permissions to " +
+						"erase the file cluster tips.", files[i]), LogLevel.Error));
+				}
 				catch (IOException e)
 				{
 					task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
@@ -799,39 +805,33 @@ namespace Eraser.Manager
 
 			try
 			{
-				try
+				//Otherwise, create the stream, lengthen the file, then tell the erasure
+				//method to erase the cluster tips.
+				using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
+					FileShare.None, FileOptions.WriteThrough))
 				{
-					//Otherwise, create the stream, lengthen the file, then tell the erasure
-					//method to erase the cluster tips.
-					using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
-						FileShare.None, FileOptions.WriteThrough))
+					try
 					{
-						try
-						{
-							stream.SetLength(fileArea);
-							stream.Seek(fileLength, SeekOrigin.Begin);
+						stream.SetLength(fileArea);
+						stream.Seek(fileLength, SeekOrigin.Begin);
 
-							//Erase the file
-							method.Erase(stream, long.MaxValue, PrngManager.GetInstance(
-								ManagerLibrary.Settings.ActivePrng), null);
-						}
-						finally
-						{
-							//Make sure the file length is restored!
-							stream.SetLength(fileLength);
-						}
+						//Erase the file
+						method.Erase(stream, long.MaxValue, PrngManager.GetInstance(
+							ManagerLibrary.Settings.ActivePrng), null);
+					}
+					finally
+					{
+						//Make sure the file length is restored!
+						stream.SetLength(fileLength);
 					}
 				}
-				finally
-				{
-					//Reset the file times
-					streamInfo.LastAccessTime = lastAccess;
-					streamInfo.LastWriteTime = lastWrite;
-					streamInfo.CreationTime = created;
-				}
 			}
-			catch (UnauthorizedAccessException)
+			finally
 			{
+				//Reset the file times
+				streamInfo.LastAccessTime = lastAccess;
+				streamInfo.LastWriteTime = lastWrite;
+				streamInfo.CreationTime = created;
 			}
 		}
 		#endregion
