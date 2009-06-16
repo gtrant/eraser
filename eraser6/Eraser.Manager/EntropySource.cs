@@ -333,9 +333,16 @@ namespace Eraser.Manager
 			//Thread execution times
 			foreach (ProcessThread thread in currProcess.Threads)
 			{
-				result.AddRange(StructToBuffer(thread.TotalProcessorTime));
-				result.AddRange(StructToBuffer(thread.UserProcessorTime));
-				result.AddRange(StructToBuffer(thread.PrivilegedProcessorTime));
+				try
+				{
+					result.AddRange(StructToBuffer(thread.TotalProcessorTime));
+					result.AddRange(StructToBuffer(thread.UserProcessorTime));
+					result.AddRange(StructToBuffer(thread.PrivilegedProcessorTime));
+				}
+				catch (InvalidOperationException)
+				{
+					//Caught when the thread has exited in the middle of the foreach.
+				}
 			}
 
 			//Current system time
