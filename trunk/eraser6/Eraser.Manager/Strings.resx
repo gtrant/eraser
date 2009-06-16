@@ -165,6 +165,9 @@
   <data name="{0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>{0} did not have its cluster tips erased because of the following error: {1}</value>
   </data>
+  <data name="{0} did not have its cluster tips erased because you do not have the required permissions to erase the file cluster tips." xml:space="preserve">
+    <value>{0} did not have its cluster tips erased because you do not have the required permissions to erase the file cluster tips.</value>
+  </data>
   <data name="{0} did not have its cluster tips erased. The error returned was: {1}" xml:space="preserve">
     <value>{0} did not have its cluster tips erased. The error returned was: {1}</value>
   </data>
