@@ -44,6 +44,7 @@ namespace Eraser
 			UXThemeApi.UpdateControlTheme(this);
 			this.task = task;
 			this.lastUpdate = DateTime.Now;
+			this.ActiveControl = hide;
 
 			//Register the event handlers
 			jobTitle.Text = task.UIText;
@@ -137,8 +138,15 @@ namespace Eraser
 					break;
 			}
 
-			//Change the Stop button to be a Close button.
+			//Change the Stop button to be a Close button and the Hide button
+			//to be disabled
+			hide.Enabled = false;
 			stop.Text = S._("Close");
+		}
+
+		private void hide_Click(object sender, EventArgs e)
+		{
+			Close();
 		}
 
 		private void stop_Click(object sender, EventArgs e)
@@ -151,19 +159,27 @@ namespace Eraser
 		private string WrapItemName(string itemName)
 		{
 			StringBuilder result = new StringBuilder(itemName.Length);
-			using (Graphics g = item.CreateGraphics())
-			{
-				//Split the long file name into lines which fit into the width of the label
-				while (itemName.Length > 0)
-				{
-					int chars = 0;
-					int lines = 0;
-					g.MeasureString(itemName, item.Font, new SizeF(item.Width - 2, 15),
-						StringFormat.GenericDefault, out chars, out lines);
 
-					result.AppendLine(itemName.Substring(0, chars));
-					itemName = itemName.Remove(0, chars);
+			try
+			{
+				using (Graphics g = item.CreateGraphics())
+				{
+					//Split the long file name into lines which fit into the width of the label
+					while (itemName.Length > 0)
+					{
+						int chars = 0;
+						int lines = 0;
+						g.MeasureString(itemName, item.Font, new SizeF(item.Width - 2, 15),
+							StringFormat.GenericDefault, out chars, out lines);
+
+						result.AppendLine(itemName.Substring(0, chars));
+						itemName = itemName.Remove(0, chars);
+					}
 				}
+			}
+			catch (ObjectDisposedException)
+			{
+				//Called when the user closes the form and the delegate call to Invoke was queued.
 			}
 
 			return result.ToString();

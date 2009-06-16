@@ -68,6 +68,7 @@ namespace Eraser
 			this.bevelLine2 = new Trustbridge.Windows.Controls.BevelLine();
 			this.timeLeftLbl = new System.Windows.Forms.Label();
 			this.timeLeft = new System.Windows.Forms.Label();
+			this.hide = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.title)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -171,10 +172,18 @@ namespace Eraser
 			resources.ApplyResources(this.timeLeft, "timeLeft");
 			this.timeLeft.Name = "timeLeft";
 			// 
+			// hide
+			// 
+			resources.ApplyResources(this.hide, "hide");
+			this.hide.Name = "hide";
+			this.hide.UseVisualStyleBackColor = true;
+			this.hide.Click += new System.EventHandler(this.hide_Click);
+			// 
 			// ProgressForm
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+			this.Controls.Add(this.hide);
 			this.Controls.Add(this.timeLeft);
 			this.Controls.Add(this.timeLeftLbl);
 			this.Controls.Add(this.bevelLine2);
@@ -225,6 +234,7 @@ namespace Eraser
 		private Trustbridge.Windows.Controls.BevelLine bevelLine2;
 		private System.Windows.Forms.Label timeLeftLbl;
 		private System.Windows.Forms.Label timeLeft;
+		private System.Windows.Forms.Button hide;
 	}
 }
 
