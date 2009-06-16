@@ -799,33 +799,39 @@ namespace Eraser.Manager
 
 			try
 			{
-				//Otherwise, create the stream, lengthen the file, then tell the erasure
-				//method to erase the cluster tips.
-				using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
-					FileShare.None, FileOptions.WriteThrough))
+				try
 				{
-					try
+					//Otherwise, create the stream, lengthen the file, then tell the erasure
+					//method to erase the cluster tips.
+					using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
+						FileShare.None, FileOptions.WriteThrough))
 					{
-						stream.SetLength(fileArea);
-						stream.Seek(fileLength, SeekOrigin.Begin);
+						try
+						{
+							stream.SetLength(fileArea);
+							stream.Seek(fileLength, SeekOrigin.Begin);
 
-						//Erase the file
-						method.Erase(stream, long.MaxValue, PrngManager.GetInstance(
-							ManagerLibrary.Settings.ActivePrng), null);
-					}
-					finally
-					{
-						//Make sure the file length is restored!
-						stream.SetLength(fileLength);
+							//Erase the file
+							method.Erase(stream, long.MaxValue, PrngManager.GetInstance(
+								ManagerLibrary.Settings.ActivePrng), null);
+						}
+						finally
+						{
+							//Make sure the file length is restored!
+							stream.SetLength(fileLength);
+						}
 					}
 				}
+				finally
+				{
+					//Reset the file times
+					streamInfo.LastAccessTime = lastAccess;
+					streamInfo.LastWriteTime = lastWrite;
+					streamInfo.CreationTime = created;
+				}
 			}
-			finally
+			catch (UnauthorizedAccessException)
 			{
-				//Reset the file times
-				streamInfo.LastAccessTime = lastAccess;
-				streamInfo.LastWriteTime = lastWrite;
-				streamInfo.CreationTime = created;
 			}
 		}
 		#endregion
@@ -972,7 +978,20 @@ namespace Eraser.Manager
 				progress.Event.CurrentTargetStatus = S._("Removing folders...");
 				task.OnProgressChanged(progress.Event);
 
+				//Remove all subfolders which are empty.
 				FolderTarget fldr = (FolderTarget)target;
+				FileSystem fsManager = FileSystem.Get(VolumeInfo.FromMountpoint(fldr.Path));
+				SubFoldersHandler eraseEmptySubFolders = null;
+				eraseEmptySubFolders = delegate(DirectoryInfo info)
+				{
+					foreach (DirectoryInfo subDir in info.GetDirectories())
+						eraseEmptySubFolders(subDir);
+					FileSystemInfo[] files = info.GetFileSystemInfos();
+					if (files.Length == 0)
+						fsManager.DeleteFolder(info);
+				};
+				eraseEmptySubFolders(new DirectoryInfo(fldr.Path));
+
 				if (fldr.DeleteIfEmpty)
 				{
 					DirectoryInfo info = new DirectoryInfo(fldr.Path);
@@ -987,10 +1006,7 @@ namespace Eraser.Manager
 					//If the folder is a mount point, then don't delete it. If it isn't,
 					//search for files under the folder to see if it is empty.
 					if (!isVolumeRoot && info.Exists && info.GetFiles("*", SearchOption.AllDirectories).Length == 0)
-					{
-						FileSystem fsManager = FileSystem.Get(VolumeInfo.FromMountpoint(fldr.Path));
 						fsManager.DeleteFolder(info);
-					}
 				}
 			}
 
