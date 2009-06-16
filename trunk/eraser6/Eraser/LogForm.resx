@@ -135,17 +135,17 @@
     <value>Message</value>
   </data>
   <data name="logMessageColumn.Width" type="System.Int32, mscorlib">
-    <value>375</value>
+    <value>415</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="log.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
   <data name="log.Size" type="System.Drawing.Size, System.Drawing">
-    <value>600, 391</value>
+    <value>640, 421</value>
   </data>
   <data name="log.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;log.Name" xml:space="preserve">
     <value>log</value>
@@ -157,19 +157,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;log.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="clear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
   <data name="clear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 409</value>
+    <value>412, 439</value>
   </data>
   <data name="clear.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="clear.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>6</value>
   </data>
   <data name="clear.Text" xml:space="preserve">
     <value>Clear Log</value>
@@ -184,19 +184,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;clear.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="close.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="close.Location" type="System.Drawing.Point, System.Drawing">
-    <value>537, 409</value>
+    <value>577, 439</value>
   </data>
   <data name="close.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="close.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>0</value>
   </data>
   <data name="close.Text" xml:space="preserve">
     <value>Close</value>
@@ -211,19 +211,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;close.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="copy.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
   </data>
   <data name="copy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 409</value>
+    <value>496, 439</value>
   </data>
   <data name="copy.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
   <data name="copy.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="copy.Text" xml:space="preserve">
     <value>Copy Log</value>
@@ -238,6 +238,99 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;copy.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="filterLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="filterLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 443</value>
+  </data>
+  <data name="filterLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>186, 15</value>
+  </data>
+  <data name="filterLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="filterLabel.Text" xml:space="preserve">
+    <value>Only show messages with severity</value>
+  </data>
+  <data name="&gt;&gt;filterLabel.Name" xml:space="preserve">
+    <value>filterLabel</value>
+  </data>
+  <data name="&gt;&gt;filterLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;filterLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;filterLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="filterSeverity.Items" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="filterSeverity.Items1" xml:space="preserve">
+    <value>Notice</value>
+  </data>
+  <data name="filterSeverity.Items2" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="filterSeverity.Items3" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="filterSeverity.Items4" xml:space="preserve">
+    <value>Fatal</value>
+  </data>
+  <data name="filterSeverity.Location" type="System.Drawing.Point, System.Drawing">
+    <value>204, 439</value>
+  </data>
+  <data name="filterSeverity.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 23</value>
+  </data>
+  <data name="filterSeverity.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;filterSeverity.Name" xml:space="preserve">
+    <value>filterSeverity</value>
+  </data>
+  <data name="&gt;&gt;filterSeverity.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;filterSeverity.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;filterSeverity.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="filterFilterType.Items" xml:space="preserve">
+    <value>and higher</value>
+  </data>
+  <data name="filterFilterType.Items1" xml:space="preserve">
+    <value>only</value>
+  </data>
+  <data name="filterFilterType.Items2" xml:space="preserve">
+    <value>and lower</value>
+  </data>
+  <data name="filterFilterType.Location" type="System.Drawing.Point, System.Drawing">
+    <value>300, 439</value>
+  </data>
+  <data name="filterFilterType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 23</value>
+  </data>
+  <data name="filterFilterType.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;filterFilterType.Name" xml:space="preserve">
+    <value>filterFilterType</value>
+  </data>
+  <data name="&gt;&gt;filterFilterType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;filterFilterType.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;filterFilterType.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -247,7 +340,7 @@
     <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>624, 444</value>
+    <value>664, 474</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
