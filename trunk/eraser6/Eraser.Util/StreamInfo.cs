@@ -181,18 +181,12 @@ namespace Eraser.Util
 			get
 			{
 				DateTime creationTime, lastAccess, lastWrite;
-				using (SafeFileHandle handle = fileHandle)
-					KernelApi.GetFileTime(handle, out creationTime, out lastAccess,
-						out lastWrite);
+				GetFileTime(out creationTime, out lastAccess, out lastWrite);
 				return lastAccess;
 			}
 			set
 			{
-				using (SafeFileHandle handle = OpenHandle(FileMode.Open, FileAccess.Write,
-					FileShare.Read, FileOptions.None))
-				{
-					KernelApi.SetFileTime(handle, DateTime.MinValue, value, DateTime.MinValue);
-				}
+				SetFileTime(DateTime.MinValue, value, DateTime.MinValue);
 			}
 		}
 
@@ -201,18 +195,12 @@ namespace Eraser.Util
 			get
 			{
 				DateTime creationTime, lastAccess, lastWrite;
-				using (SafeFileHandle handle = fileHandle)
-					KernelApi.GetFileTime(handle, out creationTime, out lastAccess,
-						out lastWrite);
+				GetFileTime(out creationTime, out lastAccess, out lastWrite);
 				return lastWrite;
 			}
 			set
 			{
-				using (SafeFileHandle handle = OpenHandle(FileMode.Open, FileAccess.Write,
-					FileShare.Read, FileOptions.None))
-				{
-					KernelApi.SetFileTime(handle, DateTime.MinValue, DateTime.MinValue, value);
-				}
+				SetFileTime(DateTime.MinValue, DateTime.MinValue, value);
 			}
 		}
 
@@ -221,18 +209,71 @@ namespace Eraser.Util
 			get
 			{
 				DateTime creationTime, lastAccess, lastWrite;
-				using (SafeFileHandle handle = fileHandle)
-					KernelApi.GetFileTime(handle, out creationTime, out lastAccess,
-						out lastWrite);
+				GetFileTime(out creationTime, out lastAccess, out lastWrite);
 				return creationTime;
 			}
 			set
 			{
-				using (SafeFileHandle handle = OpenHandle(FileMode.Open, FileAccess.Write,
-					FileShare.Read, FileOptions.None))
+				SetFileTime(value, DateTime.MinValue, DateTime.MinValue);
+			}
+		}
+
+		private void GetFileTime(out DateTime creationTime, out DateTime lastAccess,
+			out DateTime lastWrite)
+		{
+			SafeFileHandle handle = exclusiveHandle;
+			bool ownsHandle = false;
+			try
+			{
+				if (handle == null || handle.IsClosed || handle.IsInvalid)
 				{
-					KernelApi.SetFileTime(handle, value, DateTime.MinValue, DateTime.MinValue);
+					handle = fileHandle;
+					ownsHandle = true;
 				}
+			}
+			catch (ObjectDisposedException)
+			{
+				handle = fileHandle;
+				ownsHandle = true;
+			}
+
+			try
+			{
+				KernelApi.GetFileTime(handle, out creationTime, out lastAccess, out lastWrite);
+			}
+			finally
+			{
+				if (ownsHandle)
+					handle.Close();
+			}
+		}
+
+		private void SetFileTime(DateTime creationTime, DateTime lastAccess, DateTime lastWrite)
+		{
+			SafeFileHandle handle = exclusiveHandle;
+			bool ownsHandle = false;
+			try
+			{
+				if (handle == null || handle.IsClosed || handle.IsInvalid)
+				{
+					handle = fileHandle;
+					ownsHandle = true;
+				}
+			}
+			catch (ObjectDisposedException)
+			{
+				handle = fileHandle;
+				ownsHandle = true;
+			}
+
+			try
+			{
+				KernelApi.SetFileTime(handle, creationTime, lastAccess, lastWrite);
+			}
+			finally
+			{
+				if (ownsHandle)
+					handle.Close();
 			}
 		}
 
@@ -350,6 +391,11 @@ namespace Eraser.Util
 				(uint)share, IntPtr.Zero, (uint)mode, (uint)options, IntPtr.Zero);
 			if (result.IsInvalid)
 				throw KernelApi.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+
+			//Cache the handle if we have an exclusive handle - this is used for things like
+			//file times.
+			if (share == FileShare.None)
+				exclusiveHandle = result;
 			return result;
 		}
 
@@ -373,7 +419,11 @@ namespace Eraser.Util
 					FileShare.Delete, FileOptions.None);
 			}
 		}
-
+		
+		/// <summary>
+		/// Cached exclusive file handle. This is used for setting file access times
+		/// </summary>
+		private SafeFileHandle exclusiveHandle;
 		private string fileName;
 		private string streamName;
 	}
