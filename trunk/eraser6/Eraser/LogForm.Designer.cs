@@ -117,7 +117,6 @@ namespace Eraser
 			// filterSeverity
 			// 
 			this.filterSeverity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.filterSeverity.FormattingEnabled = true;
 			this.filterSeverity.Items.AddRange(new object[] {
             resources.GetString("filterSeverity.Items"),
             resources.GetString("filterSeverity.Items1"),
