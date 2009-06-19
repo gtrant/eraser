@@ -40,7 +40,6 @@ namespace Eraser
 		{
 			InitializeComponent();
 			UXThemeApi.UpdateControlTheme(this);
-			this.task = task;
 
 			//Update the title
 			Text = string.Format(CultureInfo.InvariantCulture, "{0} - {1}", Text, task.UIText);
@@ -49,7 +48,8 @@ namespace Eraser
 			filterFilterType.SelectedIndex = 0;
 			filterSeverity.SelectedIndex = 0;
 
-			//Add all the existing log messages
+			//Display the log entries
+			this.task = task;
 			RefreshMessages();
 			EnableButtons();
 
@@ -191,8 +191,11 @@ namespace Eraser
 		/// </summary>
 		private void RefreshMessages()
 		{
-			Application.UseWaitCursor = true;
+			//Check if we have a task
+			if (task == null)
+				return;
 
+			Application.UseWaitCursor = true;
 			this.log.BeginUpdate();
 			this.log.Items.Clear();
 			this.log.Groups.Clear();
