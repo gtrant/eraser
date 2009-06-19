@@ -356,13 +356,13 @@ namespace Eraser.Manager
 			ErasureMethod method, FileSystemEntriesEraseProgress callback)
 		{
 			DirectoryInfo rootDir = new DirectoryInfo(FileSystem.GenerateRandomFileName(
-				new DirectoryInfo(volume.MountPoints[0]), 32));
+				new DirectoryInfo(info.MountPoints[0]), 32));
 			rootDir.Create();
 
 			try
 			{
 				//Squeeze one-byte files until the volume or the MFT is full.
-				long oldMFTSize = NtfsApi.GetMftValidSize(volume);
+				long oldMFTSize = NtfsApi.GetMftValidSize(info);
 
 				for ( ; ; )
 				{
