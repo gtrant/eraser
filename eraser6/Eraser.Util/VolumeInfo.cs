@@ -105,6 +105,7 @@ namespace Eraser.Util
 				{
 					case 0:		//ERROR_NO_ERROR
 					case 21:	//ERROR_NOT_READY
+					case 87:	//ERROR_INVALID_PARAMETER: when the volume given is not mounted.
 					case 1005:	//ERROR_UNRECOGNIZED_VOLUME
 						break;
 
