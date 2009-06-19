@@ -355,11 +355,14 @@ namespace Eraser.Manager
 		public override void EraseOldFileSystemResidentFiles(VolumeInfo info,
 			ErasureMethod method, FileSystemEntriesEraseProgress callback)
 		{
+			DirectoryInfo rootDir = new DirectoryInfo(FileSystem.GenerateRandomFileName(
+				new DirectoryInfo(volume.MountPoints[0]), 32));
+			rootDir.Create();
+
 			try
 			{
 				//Squeeze one-byte files until the volume or the MFT is full.
-				DirectoryInfo rootDir = new DirectoryInfo(info.MountPoints[0]);
-				long oldMFTSize = NtfsApi.GetMftValidSize(info);
+				long oldMFTSize = NtfsApi.GetMftValidSize(volume);
 
 				for ( ; ; )
 				{
@@ -386,14 +389,18 @@ namespace Eraser.Manager
 			{
 				//OK, enough squeezing.
 			}
+			finally
+			{
+				rootDir.Delete(true);
+			}
 		}
 
 		public override void EraseDirectoryStructures(VolumeInfo info,
 			FileSystemEntriesEraseProgress callback)
 		{
 			//Create a directory to hold all the temporary files
-			DirectoryInfo tempDir = new DirectoryInfo(info.MountPoints[0]);
-			tempDir = new DirectoryInfo(FileSystem.GenerateRandomFileName(tempDir, 32));
+			DirectoryInfo tempDir = new DirectoryInfo(FileSystem.GenerateRandomFileName(
+				new DirectoryInfo(info.MountPoints[0]), 32));
 			tempDir.Create();
 
 			try
