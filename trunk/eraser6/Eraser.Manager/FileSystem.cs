@@ -207,12 +207,15 @@ namespace Eraser.Manager
 		/// files until disk is full. This will erase unused space which was used for
 		/// files resident in the file system table.
 		/// </summary>
-		/// <param name="info">The directory information structure containing
+		/// <param name="volume">The directory information structure containing
 		/// the path to store the temporary one-byte files. The file system table
 		/// of that drive will be erased.</param>
+		/// <param name="tempDirectory">The directory structure containing the path
+		/// to store temporary files used for resident file cleaning.</param>
 		/// <param name="method">The method used to erase the files.</param>
-		public abstract void EraseOldFileSystemResidentFiles(VolumeInfo info,
-			ErasureMethod method, FileSystemEntriesEraseProgress callback);
+		public abstract void EraseOldFileSystemResidentFiles(VolumeInfo volume,
+			DirectoryInfo tempDirectory, ErasureMethod method,
+			FileSystemEntriesEraseProgress callback);
 
 		/// <summary>
 		/// Erases the unused space in the main filesystem structures by creating,
@@ -352,24 +355,21 @@ namespace Eraser.Manager
 	/// </summary>
 	public class NtfsFileSystem : WindowsFileSystem
 	{
-		public override void EraseOldFileSystemResidentFiles(VolumeInfo info,
-			ErasureMethod method, FileSystemEntriesEraseProgress callback)
+		public override void EraseOldFileSystemResidentFiles(VolumeInfo volume,
+			DirectoryInfo tempDirectory, ErasureMethod method,
+			FileSystemEntriesEraseProgress callback)
 		{
-			DirectoryInfo rootDir = new DirectoryInfo(FileSystem.GenerateRandomFileName(
-				new DirectoryInfo(info.MountPoints[0]), 32));
-			rootDir.Create();
-
 			try
 			{
 				//Squeeze one-byte files until the volume or the MFT is full.
-				long oldMFTSize = NtfsApi.GetMftValidSize(info);
+				long oldMFTSize = NtfsApi.GetMftValidSize(volume);
 
 				for ( ; ; )
 				{
 					//Open this stream
-					using (FileStream strm = new FileStream(GenerateRandomFileName(rootDir, 18),
-						FileMode.CreateNew, FileAccess.Write, FileShare.None, 8,
-						FileOptions.WriteThrough))
+					using (FileStream strm = new FileStream(
+						GenerateRandomFileName(tempDirectory, 18), FileMode.CreateNew,
+						FileAccess.Write, FileShare.None, 8, FileOptions.WriteThrough))
 					{
 						//Stretch the file size to use up some of the resident space.
 						strm.SetLength(1);
@@ -381,17 +381,13 @@ namespace Eraser.Manager
 					}
 
 					//We can stop when the MFT has grown.
-					if (NtfsApi.GetMftValidSize(info) > oldMFTSize)
+					if (NtfsApi.GetMftValidSize(volume) > oldMFTSize)
 						break;
 				}
 			}
 			catch (IOException)
 			{
 				//OK, enough squeezing.
-			}
-			finally
-			{
-				rootDir.Delete(true);
 			}
 		}
 
@@ -465,8 +461,9 @@ namespace Eraser.Manager
 	/// </summary>
 	public class FatFileSystem : WindowsFileSystem
 	{
-		public override void EraseOldFileSystemResidentFiles(VolumeInfo info,
-			ErasureMethod method, FileSystemEntriesEraseProgress callback)
+		public override void EraseOldFileSystemResidentFiles(VolumeInfo volume,
+			DirectoryInfo tempDirectory, ErasureMethod method,
+			FileSystemEntriesEraseProgress callback)
 		{
 			//Nothing to be done here. FAT doesn't store files in its FAT.
 		}

@@ -622,7 +622,7 @@ namespace Eraser.Manager
 				//Erase old resident file system table files
 				progress.Event.CurrentItemName = S._("Old resident file system table files");
 				task.OnProgressChanged(progress.Event);
-				fsManager.EraseOldFileSystemResidentFiles(volInfo, method, null);
+				fsManager.EraseOldFileSystemResidentFiles(volInfo, info, method, null);
 			}
 			finally
 			{
