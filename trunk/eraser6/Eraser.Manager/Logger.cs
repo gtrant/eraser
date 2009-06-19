@@ -74,7 +74,7 @@ namespace Eraser.Manager
 			Entries = (LogSessionDictionary)info.GetValue("Entries", typeof(LogSessionDictionary));
 			Entries.Owner = this;
 			foreach (DateTime key in Entries.Keys)
-				lastSession = key;
+				LastSession = key;
 		}
 
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter=true)]
@@ -109,10 +109,10 @@ namespace Eraser.Manager
 		/// </summary>
 		public EventHandler<EventArgs> NewSession { get; set; }
 
-		internal void OnNewSession(object sender, LogEventArgs e)
+		internal void OnNewSession(object sender, EventArgs e)
 		{
-			if (Logged != null)
-				Logged(sender, e);
+			if (NewSession != null)
+				NewSession(sender, e);
 		}
 
 		/// <summary>
@@ -128,7 +128,7 @@ namespace Eraser.Manager
 			get
 			{
 				lock (Entries)
-					return Entries[lastSession];
+					return Entries[LastSession];
 			}
 		}
 
@@ -140,19 +140,25 @@ namespace Eraser.Manager
 			lock (Entries)
 			{
 				LogEntryCollection lastSessionEntries = null;
-				if (Entries.ContainsKey(lastSession))
-					lastSessionEntries = Entries[lastSession];
+				if (Entries.ContainsKey(LastSession))
+					lastSessionEntries = Entries[LastSession];
 				Entries.Clear();
 
 				if (lastSessionEntries != null)
-					Entries.Add(lastSession, lastSessionEntries);
+					Entries.Add(LastSession, lastSessionEntries);
 			}
 		}
 
 		/// <summary>
-		/// The last session
+		/// The date and time of the last session.
 		/// </summary>
-		internal DateTime lastSession;
+		public DateTime LastSession
+		{
+			get { return lastSession; }
+			internal set { lastSession = value; OnNewSession(null, EventArgs.Empty); }
+		}
+
+		private DateTime lastSession;
 	}
 
 	public class LogEventArgs : EventArgs
@@ -189,7 +195,7 @@ namespace Eraser.Manager
 		{
 			DateTime sessionTime = DateTime.Now;
 			Add(sessionTime, new LogEntryCollection(Owner));
-			Owner.lastSession = sessionTime;
+			Owner.LastSession = sessionTime;
 		}
 
 		#region ISerializable Members
