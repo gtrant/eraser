@@ -160,7 +160,7 @@
     <value>6</value>
   </data>
   <data name="clear.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="clear.Location" type="System.Drawing.Point, System.Drawing">
     <value>412, 439</value>
@@ -214,7 +214,7 @@
     <value>4</value>
   </data>
   <data name="copy.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="copy.Location" type="System.Drawing.Point, System.Drawing">
     <value>496, 439</value>
@@ -346,7 +346,7 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>640, 482</value>
+    <value>680, 512</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Log Viewer</value>
