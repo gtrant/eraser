@@ -282,8 +282,8 @@ namespace Eraser {
 				sii.cbSize = sizeof(sii);
 
 				static HMODULE shellAPI = LoadLibrary(L"Shell32.dll");
-				typedef HRESULT (*pSHGetStockIconInfo)(SHSTOCKICONID siid, UINT uFlags,
-					SHSTOCKICONINFO *psii);
+				typedef HRESULT (__stdcall *pSHGetStockIconInfo)(SHSTOCKICONID siid, UINT uFlags,
+					SHSTOCKICONINFO* psii);
 				pSHGetStockIconInfo SHGetStockIconInfo = reinterpret_cast<pSHGetStockIconInfo>(
 					GetProcAddress(shellAPI, "SHGetStockIconInfo"));
 
