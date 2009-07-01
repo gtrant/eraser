@@ -127,7 +127,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>signtool sign /r "The Eraser Project, http://eraser.heidi.ie" "$(TargetPath)"
+    <PostBuildEvent>signtool sign /a "$(TargetPath)"
 if ERRORLEVEL 0 exit 0</PostBuildEvent>
     <PreBuildEvent>call $(SolutionDir)UpdateVersions.bat "$(SolutionDir)\" "$(SolutionDir)Version.cs.in" "$(SolutionDir)Version.cs"
 csgettext --merge EN,NL "$(ProjectDir)\" Strings
