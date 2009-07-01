@@ -155,7 +155,15 @@ wipeClusters(NTFSContext& ntc, CEraserContext *context, bool& bCompressed)
                 context->m_uiFileSize.QuadPart = (fileMappings->Pair[i].Vcn - startVcn) *
                                                  (E_UINT64)context->m_piCurrent.m_uCluster;
 
-                if (!context->m_lpmMethod->m_pwfFunction(context)) {
+				if (context->m_lpmMethod->m_pwfFunction == bmMethods[4].m_pwfFunction)
+				{
+					context->m_hFile = hFile;
+					context->m_saError.Add(_T("The file could not be erased with the first/last ")
+						_T("2kb erasure because the file is compressed, encrypted or a sparse file."));
+					return false;
+				}
+
+				if (!context->m_lpmMethod->m_pwfFunction(context)) {
                     context->m_hFile = hFile;
                     return false;
                 }
