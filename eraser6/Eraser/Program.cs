@@ -93,6 +93,10 @@ namespace Eraser
 
 				return 0;
 			}
+			catch (UnauthorizedAccessException)
+			{
+				return 5; //ERROR_ACCESS_DENIED
+			}
 			catch (Win32Exception e)
 			{
 				Console.WriteLine(e.Message);
