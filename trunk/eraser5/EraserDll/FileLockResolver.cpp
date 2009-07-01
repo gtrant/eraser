@@ -231,7 +231,7 @@ void CFileLockResolver::Close()
 			const TCHAR* KeyName = _T("EraserRestartErase (%i)");
 			TCHAR KeyNameBuf[64];
 			do {
-				_stprintf(KeyNameBuf, sizeof(KeyNameBuf) / sizeof(KeyNameBuf[0]), KeyName, ++i);
+				_sntprintf(KeyNameBuf, sizeof(KeyNameBuf) / sizeof(KeyNameBuf[0]), KeyName, ++i);
 			}
 			while (key.QueryStringValue(KeyNameBuf, NULL, &bufSiz) == ERROR_SUCCESS);
 
