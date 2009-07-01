@@ -609,7 +609,7 @@
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -807,7 +807,7 @@
 			ConfigurationType="2"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
-			CharacterSet="2"
+			CharacterSet="1"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -1552,11 +1552,11 @@
 			Filter="ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath="res\Eraser.ico"
+				RelativePath="..\res\Eraser.ico"
 				>
 			</File>
 			<File
-				RelativePath="..\res\Eraser.ico"
+				RelativePath="res\Eraser.ico"
 				>
 			</File>
 			<File
