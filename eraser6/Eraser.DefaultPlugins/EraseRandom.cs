@@ -31,7 +31,7 @@ namespace Eraser.DefaultPlugins
 {
 	[DefaultUnusedSpaceErasure(1)]
 	[Guid("BF8BA267-231A-4085-9BF9-204DE65A6641")]
-	class Pseudorandom : PassBasedErasureMethod
+	sealed class Pseudorandom : PassBasedErasureMethod
 	{
 		public override string Name
 		{

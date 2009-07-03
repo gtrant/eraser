@@ -34,7 +34,7 @@ namespace Eraser.DefaultPlugins
 {
 	[DefaultFileErasure(1)]
 	[Guid("1407FC4E-FEFF-4375-B4FB-D7EFBB7E9922")]
-	public class Gutmann : PassBasedErasureMethod
+	sealed class Gutmann : PassBasedErasureMethod
 	{
 		public override string Name
 		{
@@ -97,7 +97,7 @@ namespace Eraser.DefaultPlugins
 		}
 	}
 
-	class GutmannLite : PassBasedErasureMethod
+	sealed class GutmannLite : PassBasedErasureMethod
 	{
 		public override string Name
 		{

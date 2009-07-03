@@ -25,6 +25,7 @@
 
 using namespace System;
 using namespace System::Collections::Generic;
+using namespace System::Collections::ObjectModel;
 using namespace Microsoft::Win32::SafeHandles;
 
 namespace Eraser {
@@ -47,9 +48,9 @@ namespace Unlocker {
 
 	public:
 		/// Retrieves all open handles on the system
-		static property List<OpenHandle^>^ Items
+		static property ReadOnlyCollection<OpenHandle^>^ Items
 		{
-			List<OpenHandle^>^ get();
+			ReadOnlyCollection<OpenHandle^>^ get();
 		}
 
 		/// Force the handle to close.

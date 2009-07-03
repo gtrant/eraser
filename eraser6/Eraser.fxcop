@@ -55,7 +55,7 @@
   </Groups>
   <Settings />
  </Rules>
- <FxCopReport Version="1.36" LastAnalysis="2009-06-02 07:39:56Z">
+ <FxCopReport Version="1.36" LastAnalysis="2009-07-03 06:57:16Z">
   <Namespaces>
    <Namespace Name="Eraser.Unlocker">
     <Messages>
@@ -111,26 +111,12 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="CommandLineProgram+CommandLine">
-          <Members>
-           <Member Name="#.ctor(System.String[])">
-            <Messages>
-             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-06-02 07:17:10Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="593">
-               <Item>'CommandLineProgram.CommandLine.CommandLine(string[])'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;CommandLineProgram+CommandLine..ctor(String[])&#xD;&#xA;CommandLineProgram+CommandLine.ResolveParameter(String):Boolean</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="GUIProgram">
           <Members>
            <Member Name="#OnExitInstance(System.Object)">
             <Messages>
              <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2009-06-02 07:17:10Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="540">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="573">
                <Item>'GUIProgram.OnExitInstance(object)'</Item>
               </Issue>
               <Notes>
@@ -144,7 +130,7 @@
            <Member Name="#Run()">
             <Messages>
              <Message Id="handle" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2009-06-02 07:17:10Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="325">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="358">
                <Item>'GUIProgram.Run()'</Item>
                <Item>'handle'</Item>
                <Item>'IntPtr'</Item>
@@ -164,7 +150,7 @@
            <Member Name="#CommandMain(System.String[])">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Created="2009-06-02 07:17:10Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="101">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="105">
                <Item>'Program.CommandMain(string[])'</Item>
                <Item>'Exception'</Item>
               </Issue>
@@ -215,11 +201,16 @@
            </Member>
            <Member Name="#InstallUpdates(System.Object)">
             <Messages>
-             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Created="2009-06-02 07:17:10Z">
+             <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Status="Excluded" Created="2009-06-02 07:17:10Z">
               <Issue Name="TooGeneric" Path="D:\Development\Projects\Eraser\Eraser" File="UpdateForm.cs" Line="762">
                <Item>'UpdateManager.InstallUpdates(object)'</Item>
                <Item>'ApplicationException'</Item>
               </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="17" />
+               </User>
+              </Notes>
              </Message>
             </Messages>
            </Member>
@@ -321,7 +312,7 @@
            <Member Name="#.ctor()">
             <Messages>
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="1032">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="1049">
                <Item>'DirectExecutor.DirectExecutor()'</Item>
                <Item>&#xD;&#xA;&#xD;&#xA;DirectExecutor..ctor()&#xD;&#xA;Executor.set_TaskAdded(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_TaskDeleted(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_Tasks(ExecutorTasksCollection):Void</Item>
               </Issue>
@@ -331,7 +322,7 @@
            <Member Name="#EraseFilesystemObject(Eraser.Manager.Task,Eraser.Manager.FileSystemObjectTarget,Eraser.Manager.DirectExecutor+TaskProgressManager)">
             <Messages>
              <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-05-01 03:14:45Z">
-              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="975">
+              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="977">
                <Item>'target'</Item>
                <Item>'FolderTarget'</Item>
                <Item>'DirectExecutor.EraseFilesystemObject(Task, FileSystemObjectTarget, DirectExecutor.TaskProgressManager)'</Item>
@@ -414,25 +405,20 @@
           </Members>
          </Type>
          <Type Name="ErasureTarget">
-          <Messages>
-           <Message TypeName="IdentifiersShouldDifferByMoreThanCase" Category="Microsoft.Naming" CheckId="CA1708" Created="2009-05-01 03:14:45Z">
-            <Issue Name="Member">
-             <Item>'method'</Item>
-             <Item>Method</Item>
-            </Issue>
-           </Message>
-          </Messages>
           <Members>
-           <Member Name="#method">
-            <Messages>
-             <Message Id="method" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Created="2009-05-01 03:14:45Z">
-              <Issue Name="Member">
-               <Item>method</Item>
-               <Item>'ErasureTarget.method'</Item>
-               <Item>Method</Item>
-              </Issue>
-             </Message>
-            </Messages>
+           <Member Name="#Method">
+            <Accessors>
+             <Accessor Name="#get_Method()">
+              <Messages>
+               <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2009-07-03 06:55:12Z" FixCategory="Breaking">
+                <Issue Name="PropertyGetter" Level="Warning" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="294">
+                 <Item>'ErasureTarget.Method.get()'</Item>
+                 <Item>'NotImplementedException'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
            </Member>
           </Members>
          </Type>
@@ -475,7 +461,7 @@
            <Member Name="#GetPathADSes(System.Collections.Generic.ICollection`1&lt;System.String&gt;,System.Int64&amp;,System.String)">
             <Messages>
              <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2009-05-01 03:23:16Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="377">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="382">
                <Item>'totalSize'</Item>
               </Issue>
              </Message>
@@ -765,9 +751,9 @@
            <Member Name="#.ctor()">
             <Messages>
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-04-28 13:43:02Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.DefaultPlugins" File="EraseFirstLast16KB.cs" Line="35">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.DefaultPlugins" File="EraseFirstLast16KB.cs" Line="36">
                <Item>'FirstLast16KB.FirstLast16KB()'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;FirstLast16KB..ctor()&#xD;&#xA;ErasureMethod.get_Guid():Guid</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;FirstLast16KB..ctor()&#xD;&#xA;ErasureMethod.get_Name():String</Item>
               </Issue>
              </Message>
             </Messages>
@@ -819,6 +805,7 @@
     <Note Id="14" Modified="2009-06-02 07:35:03Z">Result checked further downstream</Note>
     <Note Id="15" Modified="2009-06-02 07:36:01Z">Unlocker is our assembly name, hence a proper noun</Note>
     <Note Id="16" Modified="2009-06-02 07:36:03Z">Unlocker is our assembly name, hence a proper noun</Note>
+    <Note Id="17" Modified="2009-07-03 07:02:50Z">Can't think of a better exception to use</Note>
    </User>
   </Notes>
   <Rules>
@@ -858,6 +845,9 @@
    <Rule TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806">
     <Resolution Name="HResultOrErrorCode">{0} calls {1} but does not use the HRESULT or error code that the method returns. This could lead to unexpected behavior in error conditions or low-resource situations. Use the result in a conditional statement, assign the result to a variable, or pass it as an argument to another method.</Resolution>
    </Rule>
+   <Rule TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065">
+    <Resolution Name="PropertyGetter">{0} creates an exception of type {1}, an exception type that should not be raised in a property. If this exception instance might be raised, use a different exception type, convert this property into a method, or change this property's logic so that it no longer raises an exception.</Resolution>
+   </Rule>
    <Rule TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201">
     <Resolution Name="TooGeneric">{0} creates an exception of type {1}, an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Resolution>
    </Rule>
@@ -867,15 +857,9 @@
    <Rule TypeName="FlagsEnumsShouldHavePluralNames" Category="Microsoft.Naming" CheckId="CA1714">
     <Resolution Name="Default">If enumeration name {0} is singular, change it to a plural form.</Resolution>
    </Rule>
-   <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
-    <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
-   </Rule>
    <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
     <Resolution Name="Assembly">Correct the spelling of '{0}' in assembly name {1}.</Resolution>
     <Resolution Name="Namespace">Correct the spelling of '{0}' in namespace name '{1}'.</Resolution>
-   </Rule>
-   <Rule TypeName="IdentifiersShouldDifferByMoreThanCase" Category="Microsoft.Naming" CheckId="CA1708">
-    <Resolution Name="Member">Change member names {0} and '{1}' so that they differ by more than case.</Resolution>
    </Rule>
    <Rule TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716">
     <Resolution Name="Member">Rename virtual/interface member {0} so that it no longer conflicts with the reserved language keyword '{1}'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member.</Resolution>

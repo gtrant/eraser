@@ -27,7 +27,7 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	class DoD_EcE : PassBasedErasureMethod
+	sealed class DoD_EcE : PassBasedErasureMethod
 	{
 		public override string Name
 		{
@@ -73,7 +73,7 @@ namespace Eraser.DefaultPlugins
 		}
 	}
 
-	class DoD_E : PassBasedErasureMethod
+	sealed class DoD_E : PassBasedErasureMethod
 	{
 		public override string Name
 		{

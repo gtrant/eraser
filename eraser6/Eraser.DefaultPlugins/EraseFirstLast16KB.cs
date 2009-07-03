@@ -31,7 +31,7 @@ using System.Windows.Forms;
 
 namespace Eraser.DefaultPlugins
 {
-	class FirstLast16KB : ErasureMethod
+	sealed class FirstLast16KB : ErasureMethod
 	{
 		public FirstLast16KB()
 		{

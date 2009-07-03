@@ -30,7 +30,7 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	class RCMP_TSSIT_OPS_II : PassBasedErasureMethod
+	sealed class RCMP_TSSIT_OPS_II : PassBasedErasureMethod
 	{
 		public override string Name
 		{
