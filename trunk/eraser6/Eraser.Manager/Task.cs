@@ -285,12 +285,21 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The method used for erasing the file. If the variable is equal to
 		/// ErasureMethodManager.Default then the default is queried for the
-		/// task type.
+		/// task type. Check the <see cref="MethodDefined"/> property to see if
+		/// this variable was set on deliberately or if the result of the get
+		/// call is from the inferred default.
 		/// </summary>
-		public abstract ErasureMethod Method
+		public virtual ErasureMethod Method
 		{
-			get;
-			set;
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				method = value;
+				MethodDefined = method != ErasureMethodManager.Default;
+			}
 		}
 
 		/// <summary>
@@ -298,13 +307,7 @@ namespace Eraser.Manager
 		/// because the Method property will return non-default erasure methods
 		/// only.
 		/// </summary>
-		public bool MethodDefined
-		{
-			get
-			{
-				return method != ErasureMethodManager.Default;
-			}
-		}
+		public bool MethodDefined { get; private set; }
 
 		/// <summary>
 		/// The task which owns this target.
@@ -331,7 +334,7 @@ namespace Eraser.Manager
 		/// <summary>
 		/// Erasure method to use for the target.
 		/// </summary>
-		protected ErasureMethod method { get; set; }
+		private ErasureMethod method;
 	}
 
 	/// <summary>
@@ -344,14 +347,14 @@ namespace Eraser.Manager
 		protected FileSystemObjectTarget(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
-			path = (string)info.GetValue("Path", typeof(string));
+			Path = (string)info.GetValue("Path", typeof(string));
 		}
 
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
-			info.AddValue("Path", path);
+			info.AddValue("Path", Path);
 		}
 		#endregion
 
@@ -361,7 +364,7 @@ namespace Eraser.Manager
 		protected FileSystemObjectTarget()
 			: base()
 		{
-			method = ErasureMethodManager.Default;
+			Method = ErasureMethodManager.Default;
 		}
 
 		/// <summary>
@@ -398,8 +401,7 @@ namespace Eraser.Manager
 			catch (FileLoadException)
 			{
 				//The system cannot open the file, try to force the file handle to close.
-				List<OpenHandle> openHandles = OpenHandle.Items;
-				foreach (OpenHandle handle in openHandles)
+				foreach (OpenHandle handle in OpenHandle.Items)
 					if (handle.Path == file && handle.Close())
 					{
 						GetPathADSes(list, out totalSize, file);
@@ -417,24 +419,20 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The path to the file or folder referred to by this object.
 		/// </summary>
-		public string Path
-		{
-			get { return path; }
-			set { path = value; }
-		}
+		public string Path { get; set; }
 
-		public override ErasureMethod Method
+		public sealed override ErasureMethod Method
 		{
 			get
 			{
-				if (method != ErasureMethodManager.Default)
-					return method;
+				if (base.MethodDefined)
+					return base.Method;
 				return ErasureMethodManager.GetInstance(
 					ManagerLibrary.Settings.DefaultFileErasureMethod);
 			}
 			set
 			{
-				method = value;
+				base.Method = value;
 			}
 		}
 
@@ -452,8 +450,6 @@ namespace Eraser.Manager
 				return Method.CalculateEraseDataSize(paths, totalSize);
 			}
 		}
-
-		private string path;
 	}
 
 	/// <summary>
@@ -485,21 +481,21 @@ namespace Eraser.Manager
 		public UnusedSpaceTarget()
 			: base()
 		{
-			method = ErasureMethodManager.Default;
+			Method = ErasureMethodManager.Default;
 		}
 
-		public override ErasureMethod Method
+		public override sealed ErasureMethod Method
 		{
 			get
 			{
-				if (method != ErasureMethodManager.Default)
-					return method;
+				if (base.MethodDefined)
+					return base.Method;
 				return ErasureMethodManager.GetInstance(
 					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod);
 			}
 			set
 			{
-				method = value;
+				base.Method = value;
 			}
 		}
 
@@ -570,18 +566,18 @@ namespace Eraser.Manager
 		protected FolderTarget(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
-			includeMask = (string)info.GetValue("IncludeMask", typeof(string));
-			excludeMask = (string)info.GetValue("ExcludeMask", typeof(string));
-			deleteIfEmpty = (bool)info.GetValue("DeleteIfEmpty", typeof(bool));
+			IncludeMask = (string)info.GetValue("IncludeMask", typeof(string));
+			ExcludeMask = (string)info.GetValue("ExcludeMask", typeof(string));
+			DeleteIfEmpty = (bool)info.GetValue("DeleteIfEmpty", typeof(bool));
 		}
 
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
-			info.AddValue("IncludeMask", includeMask);
-			info.AddValue("ExcludeMask", excludeMask);
-			info.AddValue("DeleteIfEmpty", deleteIfEmpty);
+			info.AddValue("IncludeMask", IncludeMask);
+			info.AddValue("ExcludeMask", ExcludeMask);
+			info.AddValue("DeleteIfEmpty", DeleteIfEmpty);
 		}
 		#endregion
 
@@ -590,6 +586,9 @@ namespace Eraser.Manager
 		/// </summary>
 		public FolderTarget()
 		{
+			IncludeMask = string.Empty;
+			ExcludeMask = string.Empty;
+			DeleteIfEmpty = true;
 		}
 
 		internal override List<string> GetPaths(out long totalSize)
@@ -662,10 +661,10 @@ namespace Eraser.Manager
 							dir.FullName, e.Message), LogLevel.Error));
 					}
 
-				if (includeMask.Length == 0)
+				if (IncludeMask.Length == 0)
 					result.AddRange(info.GetFiles());
 				else
-					result.AddRange(info.GetFiles(includeMask, SearchOption.TopDirectoryOnly));
+					result.AddRange(info.GetFiles(IncludeMask, SearchOption.TopDirectoryOnly));
 			}
 
 			return result.ToArray();
@@ -676,35 +675,19 @@ namespace Eraser.Manager
 		/// The include mask is applied before the exclude mask is applied. If this value
 		/// is empty, all files and folders within the folder specified is included.
 		/// </summary>
-		public string IncludeMask
-		{
-			get { return includeMask; }
-			set { includeMask = value; }
-		}
+		public string IncludeMask { get; set; }
 
 		/// <summary>
 		/// A wildcard expression stating the condition for removing files from the set
 		/// of included files. If this value is omitted, all files and folders extracted
 		/// by the inclusion mask is erased.
 		/// </summary>
-		public string ExcludeMask
-		{
-			get { return excludeMask; }
-			set { excludeMask = value; }
-		}
+		public string ExcludeMask { get; set; }
 
 		/// <summary>
 		/// Determines if Eraser should delete the folder after the erase process.
 		/// </summary>
-		public bool DeleteIfEmpty
-		{
-			get { return deleteIfEmpty; }
-			set { deleteIfEmpty = value; }
-		}
-
-		private string includeMask = string.Empty;
-		private string excludeMask = string.Empty;
-		private bool deleteIfEmpty = true;
+		public bool DeleteIfEmpty { get; set; }
 	}
 
 	[Serializable]
