@@ -29,6 +29,6 @@ namespace Eraser {
 	{
 		public static readonly DateTime BuildDate = DateTime.Parse("$WCNOW$",
 			System.Globalization.CultureInfo.InvariantCulture);
-		public static readonly bool CustomBuild = $WCMODS?true:false$;
+		public const bool CustomBuild = $WCMODS?true:false$;
 	}
 }

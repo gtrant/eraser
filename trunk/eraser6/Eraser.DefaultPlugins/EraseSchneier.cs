@@ -27,7 +27,7 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	class Schneier : PassBasedErasureMethod
+	sealed class Schneier : PassBasedErasureMethod
 	{
 		public override string Name
 		{

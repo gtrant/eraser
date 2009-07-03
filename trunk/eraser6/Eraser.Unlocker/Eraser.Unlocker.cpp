@@ -24,7 +24,7 @@
 
 namespace Eraser {
 namespace Unlocker {
-	List<OpenHandle^>^ OpenHandle::Items::get()
+	ReadOnlyCollection<OpenHandle^>^ OpenHandle::Items::get()
 	{
 		List<OpenHandle^>^ handles = gcnew List<OpenHandle^>();
 
@@ -67,7 +67,7 @@ namespace Unlocker {
 			handles->Add(listItem);
 		}
 
-		return handles;
+		return handles->AsReadOnly();
 	}
 
 	String^ OpenHandle::ResolveHandlePath(IntPtr handle, int pid)

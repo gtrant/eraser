@@ -1313,6 +1313,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			public void Dispose()
 			{
 				Dispose(true);
+				GC.SuppressFinalize(this);
 			}
 
 			private void Dispose(bool disposing)

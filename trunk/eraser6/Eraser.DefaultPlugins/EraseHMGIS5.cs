@@ -30,7 +30,7 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	class HMGIS5Baseline : PassBasedErasureMethod
+	sealed class HMGIS5Baseline : PassBasedErasureMethod
 	{
 		public override string Name
 		{
@@ -59,7 +59,7 @@ namespace Eraser.DefaultPlugins
 		}
 	}
 
-	class HMGIS5Enhanced : PassBasedErasureMethod
+	sealed class HMGIS5Enhanced : PassBasedErasureMethod
 	{
 		public override string Name
 		{

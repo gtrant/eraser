@@ -599,7 +599,8 @@ namespace Eraser.Manager
 							PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng),
 							delegate(long lastWritten, int currentPass)
 							{
-								progress.Completed += lastWritten;
+								progress.Completed = Math.Min(progress.Total,
+									progress.Completed + lastWritten);
 								progress.Event.CurrentItemPass = currentPass;
 								progress.Event.CurrentItemProgress = progress.Progress;
 								if (target.EraseClusterTips)
@@ -944,9 +945,8 @@ namespace Eraser.Manager
 				}
 				catch (FileLoadException)
 				{
-					List<OpenHandle> openHandles = OpenHandle.Items;
 					List<System.Diagnostics.Process> processes = new List<System.Diagnostics.Process>();
-					foreach (OpenHandle handle in openHandles)
+					foreach (OpenHandle handle in OpenHandle.Items)
 						if (handle.Path == paths[i])
 							processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
 

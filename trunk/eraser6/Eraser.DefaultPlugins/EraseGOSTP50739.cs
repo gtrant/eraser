@@ -30,7 +30,7 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	class GOSTP50739 : PassBasedErasureMethod
+	sealed class GOSTP50739 : PassBasedErasureMethod
 	{
 		public override string Name
 		{
