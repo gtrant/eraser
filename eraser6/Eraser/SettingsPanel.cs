@@ -37,7 +37,7 @@ using System.Threading;
 
 namespace Eraser
 {
-	public partial class SettingsPanel
+	internal partial class SettingsPanel : BasePanel
 	{
 		public SettingsPanel()
 		{
@@ -178,11 +178,8 @@ namespace Eraser
 				plausibleDeniabilityFiles.Items.Add(path);
 
 			uiContextMenu.Checked = settings.IntegrateWithShell;
-			lockedAllow.Checked =
-				ManagerLibrary.Settings.EraseLockedFilesOnRestart;
-			lockedConfirm.Checked =
-				ManagerLibrary.Settings.ConfirmEraseOnRestart;
-			lockedAllow_CheckedChanged(lockedAllow, new EventArgs());
+			lockedForceUnlock.Checked =
+				ManagerLibrary.Settings.ForceUnlockLockedFiles;
 			schedulerMissedImmediate.Checked =
 				ManagerLibrary.Settings.ExecuteMissedTasksImmediately;
 			schedulerMissedIgnore.Checked =
@@ -247,11 +244,6 @@ namespace Eraser
 					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
 				saveSettings_Click(null, null);
 			}
-		}
-
-		private void lockedAllow_CheckedChanged(object sender, EventArgs e)
-		{
-			lockedConfirm.Enabled = lockedAllow.Checked;
 		}
 
 		private void plausableDeniabilityFilesRemoveUpdate()
@@ -348,8 +340,7 @@ namespace Eraser
 			ManagerSettings managerSettings = ManagerLibrary.Settings;
 
 			//Save the settings that don't fail first.
-			managerSettings.EraseLockedFilesOnRestart = lockedAllow.Checked;
-			managerSettings.ConfirmEraseOnRestart = lockedConfirm.Checked;
+			managerSettings.ForceUnlockLockedFiles = lockedForceUnlock.Checked;
 			managerSettings.ExecuteMissedTasksImmediately = schedulerMissedImmediate.Checked;
 			settings.ClearCompletedTasks = schedulerClearCompleted.Checked;
 

@@ -55,7 +55,7 @@
   </Groups>
   <Settings />
  </Rules>
- <FxCopReport Version="1.36" LastAnalysis="2009-07-03 06:57:16Z">
+ <FxCopReport Version="1.36" LastAnalysis="2009-07-03 10:46:36Z">
   <Namespaces>
    <Namespace Name="Eraser.Unlocker">
     <Messages>
@@ -312,7 +312,7 @@
            <Member Name="#.ctor()">
             <Messages>
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="1049">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="1048">
                <Item>'DirectExecutor.DirectExecutor()'</Item>
                <Item>&#xD;&#xA;&#xD;&#xA;DirectExecutor..ctor()&#xD;&#xA;Executor.set_TaskAdded(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_TaskDeleted(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_Tasks(ExecutorTasksCollection):Void</Item>
               </Issue>
@@ -322,7 +322,7 @@
            <Member Name="#EraseFilesystemObject(Eraser.Manager.Task,Eraser.Manager.FileSystemObjectTarget,Eraser.Manager.DirectExecutor+TaskProgressManager)">
             <Messages>
              <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-05-01 03:14:45Z">
-              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="977">
+              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="976">
                <Item>'target'</Item>
                <Item>'FolderTarget'</Item>
                <Item>'DirectExecutor.EraseFilesystemObject(Task, FileSystemObjectTarget, DirectExecutor.TaskProgressManager)'</Item>
@@ -411,7 +411,7 @@
              <Accessor Name="#get_Method()">
               <Messages>
                <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2009-07-03 06:55:12Z" FixCategory="Breaking">
-                <Issue Name="PropertyGetter" Level="Warning" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="294">
+                <Issue Name="PropertyGetter" Level="Warning" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="296">
                  <Item>'ErasureTarget.Method.get()'</Item>
                  <Item>'NotImplementedException'</Item>
                 </Issue>
@@ -461,7 +461,7 @@
            <Member Name="#GetPathADSes(System.Collections.Generic.ICollection`1&lt;System.String&gt;,System.Int64&amp;,System.String)">
             <Messages>
              <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2009-05-01 03:23:16Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="382">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="384">
                <Item>'totalSize'</Item>
               </Issue>
              </Message>
@@ -491,12 +491,12 @@
            <Member Name="#PlausibleDeniabilityFiles">
             <Messages>
              <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="357">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="339">
                <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
               </Issue>
              </Message>
              <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="357">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="339">
                <Item>'List&lt;string&gt;'</Item>
                <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
               </Issue>
@@ -506,7 +506,7 @@
            <Member Name="#PluginApprovals">
             <Messages>
              <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="490">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="472">
                <Item>'ManagerSettings.PluginApprovals'</Item>
               </Issue>
              </Message>
@@ -636,16 +636,6 @@
              </Message>
             </Messages>
            </Member>
-           <Member Name="#Items">
-            <Messages>
-             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-06-02 07:31:56Z">
-              <Issue Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="28">
-               <Item>'List&lt;OpenHandle&gt;'</Item>
-               <Item>'OpenHandle.Items'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#ResolveHandlePath(System.IntPtr,System.Int32)">
             <Messages>
              <Message Id="&lt;Module&gt;.CloseHandle(System.Void*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
@@ -740,20 +730,6 @@
              <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2009-04-28 13:43:02Z">
               <Issue Path="D:\Development\Projects\Eraser\Eraser.DefaultPlugins" File="CustomMethodPassEditor.cs" Line="57">
                <Item>'CustomMethodPassEditor.PassData'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="FirstLast16KB">
-          <Members>
-           <Member Name="#.ctor()">
-            <Messages>
-             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-04-28 13:43:02Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.DefaultPlugins" File="EraseFirstLast16KB.cs" Line="36">
-               <Item>'FirstLast16KB.FirstLast16KB()'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;FirstLast16KB..ctor()&#xD;&#xA;ErasureMethod.get_Name():String</Item>
               </Issue>
              </Message>
             </Messages>
