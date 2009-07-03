@@ -103,7 +103,7 @@ namespace Eraser.Manager
 		{
 			lock (tasksLock)
 			{
-				foreach (Task task in tasks.Values)
+				foreach (Task task in Tasks)
 					if (task.Schedule == Schedule.RunOnRestart)
 						QueueTask(task);
 			}
@@ -1046,11 +1046,6 @@ namespace Eraser.Manager
 		/// tasks queue.
 		/// </summary>
 		private object tasksLock = new object();
-
-		/// <summary>
-		/// The list of tasks. Includes all immediate, reboot, and recurring tasks
-		/// </summary>
-		private Dictionary<uint, Task> tasks = new Dictionary<uint, Task>();
 
 		/// <summary>
 		/// The queue of tasks. This queue is executed when the first element's
