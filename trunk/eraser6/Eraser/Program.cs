@@ -617,19 +617,62 @@ namespace Eraser
 		/// <summary>
 		/// Manages a command line.
 		/// </summary>
-		public class CommandLine
+		public abstract class CommandLine
 		{
 			/// <summary>
-			/// Constructor.
+			/// Gets the CommandLine-derived object for the given command line.
 			/// </summary>
 			/// <param name="cmdParams">The raw arguments passed to the program.</param>
-			public CommandLine(string[] cmdParams)
+			/// <returns>A processed CommandLine Object.</returns>
+			public static CommandLine Get(string[] cmdParams)
 			{
 				//Get the action.
 				if (cmdParams.Length < 1)
 					throw new ArgumentException("An action must be specified.");
-				Action = cmdParams[0];
+				string action = cmdParams[0];
 
+				CommandLine result = null;
+				switch (action)
+				{
+					case "help":
+						result = new HelpCommandLine();
+						break;
+					case "querymethods":
+						result = new QueryMethodsCommandLine();
+						break;
+					case "importtasklist":
+						result = new ImportTaskListCommandLine();
+						break;
+					case "addtask":
+						result = new AddTaskCommandLine();
+						break;
+				}
+
+				if (result != null)
+				{
+					result.Parse(cmdParams);
+					return result;
+				}
+				else
+					throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
+						"Unknown action: {0}", action));
+			}
+
+			/// <summary>
+			/// Constructor.
+			/// </summary>
+			protected CommandLine()
+			{
+			}
+
+			/// <summary>
+			/// Parses the given command line arguments to the respective properties of
+			/// the class.
+			/// </summary>
+			/// <param name="cmdParams">The raw arguments passed to the program.</param>
+			/// <returns></returns>
+			public bool Parse(string[] cmdParams)
+			{
 				//Iterate over each argument, resolving them ourselves and letting
 				//subclasses resolve them if we don't know how to.
 				for (int i = 1; i != cmdParams.Length; ++i)
@@ -639,6 +682,8 @@ namespace Eraser
 					else if (!ResolveParameter(cmdParams[i]))
 						throw new ArgumentException("Unknown argument: " + cmdParams[i]);
 				}
+
+				return true;
 			}
 
 			/// <summary>
@@ -647,7 +692,7 @@ namespace Eraser
 			/// </summary>
 			/// <param name="param">The parameter to resolve.</param>
 			/// <returns>Return true if the parameter was resolved and accepted.</returns>
-			virtual protected bool ResolveParameter(string param)
+			protected virtual bool ResolveParameter(string param)
 			{
 				return false;
 			}
@@ -779,37 +824,26 @@ namespace Eraser
 			}
 
 			/// <summary>
-			/// The action that the command line specifies.
-			/// </summary>
-			public string Action
-			{
-				get
-				{
-					return action;
-				}
-				private set
-				{
-					action = value;
-				}
-			}
-
-			/// <summary>
 			/// True if no console window should be created.
 			/// </summary>
-			public bool Quiet
-			{
-				get
-				{
-					return quiet;
-				}
-				private set
-				{
-					quiet = value;
-				}
-			}
+			public bool Quiet { get; private set; }
+		}
 
-			private string action;
-			private bool quiet;
+		/// <summary>
+		/// Manages a help query command line.
+		/// </summary>
+		class HelpCommandLine : CommandLine
+		{
+			public HelpCommandLine()
+			{
+			}
+		}
+
+		class QueryMethodsCommandLine : CommandLine
+		{
+			public QueryMethodsCommandLine()
+			{
+			}
 		}
 
 		/// <summary>
@@ -820,10 +854,10 @@ namespace Eraser
 			/// <summary>
 			/// Constructor.
 			/// </summary>
-			/// <param name="cmdParams">The raw command line arguments passed to the program.</param>
-			public AddTaskCommandLine(string[] cmdParams)
-				: base(cmdParams)
+			public AddTaskCommandLine()
 			{
+				Schedule = Schedule.RunNow;
+				Targets = new List<ErasureTarget>();
 			}
 
 			protected override bool ResolveParameter(string param)
@@ -837,7 +871,7 @@ namespace Eraser
 
 					List<KeyValuePair<string, string>> subParams =
 						GetSubParameters(param.Substring(equalPos + 1));
-					erasureMethod = new Guid(subParams[0].Key);
+					ErasureMethod = new Guid(subParams[0].Key);
 				}
 				else if (IsParam(param, "schedule", "s"))
 				{
@@ -850,10 +884,10 @@ namespace Eraser
 					switch (subParams[0].Key)
 					{
 						case "now":
-							schedule = Schedule.RunNow;
+							Schedule = Schedule.RunNow;
 							break;
 						case "restart":
-							schedule = Schedule.RunOnRestart;
+							Schedule = Schedule.RunOnRestart;
 							break;
 						default:
 							throw new ArgumentException("Unknown schedule type: " + subParams[0].Key);
@@ -861,7 +895,7 @@ namespace Eraser
 				}
 				else if (IsParam(param, "recycled", "r"))
 				{
-					targets.Add(new RecycleBinTarget());
+					Targets.Add(new RecycleBinTarget());
 				}
 				else if (IsParam(param, "unused", "u"))
 				{
@@ -883,7 +917,7 @@ namespace Eraser
 							target.EraseClusterTips = true;
 						else
 							throw new ArgumentException("Unknown subparameter: " + kvp.Key);
-					targets.Add(target);
+					Targets.Add(target);
 				}
 				else if (IsParam(param, "dir", "d") || IsParam(param, "directory", null))
 				{
@@ -920,15 +954,17 @@ namespace Eraser
 							throw new ArgumentException("Unknown subparameter: " + kvp.Key);
 
 					//Add the target to the list of targets
-					targets.Add(target);
+					Targets.Add(target);
 				}
-				else
+				else if (IsParam(param, "file", "f"))
 				{
 					//It's just a file!
 					FileTarget target = new FileTarget();
 					target.Path = Path.GetFullPath(param);
-					targets.Add(target);
+					Targets.Add(target);
 				}
+				else
+					return false;
 
 				return true;
 			}
@@ -936,39 +972,17 @@ namespace Eraser
 			/// <summary>
 			/// The erasure method which the user specified on the command line.
 			/// </summary>
-			public Guid ErasureMethod
-			{
-				get
-				{
-					return erasureMethod;
-				}
-			}
+			public Guid ErasureMethod { get; private set; }
 
 			/// <summary>
 			/// The schedule for the current set of targets.
 			/// </summary>
-			public Schedule Schedule
-			{
-				get
-				{
-					return schedule;
-				}
-			}
+			public Schedule Schedule { get; private set; }
 
 			/// <summary>
 			/// The list of targets which was specified on the command line.
 			/// </summary>
-			public List<ErasureTarget> Targets
-			{
-				get
-				{
-					return new List<ErasureTarget>(targets.ToArray());
-				}
-			}
-
-			private Guid erasureMethod;
-			private Schedule schedule = Schedule.RunNow;
-			private List<ErasureTarget> targets = new List<ErasureTarget>();
+			public List<ErasureTarget> Targets { get; private set; }
 		}
 
 		/// <summary>
@@ -980,9 +994,7 @@ namespace Eraser
 			/// <summary>
 			/// Constructor.
 			/// </summary>
-			/// <param name="cmdParams">The raw command line arguments passed to the program.</param>
-			public ImportTaskListCommandLine(string[] cmdParams)
-				: base(cmdParams)
+			public ImportTaskListCommandLine()
 			{
 			}
 
@@ -1016,34 +1028,17 @@ namespace Eraser
 		{
 			try
 			{
-				//Parse the command line arguments.
-				if (cmdParams.Length < 1)
-					throw new ArgumentException("An action must be specified.");
-
-				switch (cmdParams[0])
-				{
-					case "addtask":
-						Arguments = new AddTaskCommandLine(cmdParams);
-						break;
-					case "importtasklist":
-						Arguments = new ImportTaskListCommandLine(cmdParams);
-						break;
-					case "querymethods":
-					case "help":
-					default:
-						Arguments = new CommandLine(cmdParams);
-						break;
-				}
+				Arguments = CommandLine.Get(cmdParams);
 
 				//If the user did not specify the quiet command line, then create the console.
 				if (!Arguments.Quiet)
 					CreateConsole();
 
 				//Map actions to their handlers
-				actionHandlers.Add("addtask", AddTask);
-				actionHandlers.Add("importtasklist", ImportTaskList);
-				actionHandlers.Add("querymethods", QueryMethods);
-				actionHandlers.Add("help", Help);
+				actionHandlers.Add(typeof(AddTaskCommandLine), AddTask);
+				actionHandlers.Add(typeof(ImportTaskListCommandLine), ImportTaskList);
+				actionHandlers.Add(typeof(QueryMethodsCommandLine), QueryMethods);
+				actionHandlers.Add(typeof(HelpCommandLine), Help);
 			}
 			finally
 			{
@@ -1058,7 +1053,7 @@ namespace Eraser
 		public void Run()
 		{
 			//Call the function handling the current command line.
-			actionHandlers[Arguments.Action]();
+			actionHandlers[Arguments.GetType()]();
 		}
 
 		/// <summary>
@@ -1095,7 +1090,7 @@ parameters for help:
 
 parameters for addtask:
     eraser addtask [--method=<methodGUID>] [--schedule=(now|restart)] (--recycled " +
-@"| --unused=<volume> | --dir=<directory> | [file1 [file2 [...]]])
+@"| --unused=<volume> | --dir=<directory> | --file=<file>)[...]
 
     --method, -m            The Erasure method to use.
     --schedule, -s          The schedule the task will follow. The value must
@@ -1118,7 +1113,7 @@ parameters for addtask:
                             mask.
             delete          Deletes the folder at the end of the erasure if
                             specified.
-    file1 ... fileN         The list of files to erase.
+    --file, -f              Erases the specified file
 
 parameters for querymethods:
     eraser querymethods
@@ -1133,17 +1128,7 @@ All arguments are case sensitive.");
 		/// <summary>
 		/// The command line arguments passed to the program.
 		/// </summary>
-		public CommandLine Arguments
-		{
-			get
-			{
-				return arguments;
-			}
-			private set
-			{
-				arguments = value;
-			}
-		}
+		public CommandLine Arguments { get; private set; }
 
 		/// <summary>
 		/// Prints the help text for Eraser (with copyright)
@@ -1193,6 +1178,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			ErasureMethod method = taskArgs.ErasureMethod == Guid.Empty ? 
 				ErasureMethodManager.Default :
 				ErasureMethodManager.GetInstance(taskArgs.ErasureMethod);
+
 			foreach (ErasureTarget target in taskArgs.Targets)
 			{
 				target.Method = method;
@@ -1288,9 +1274,6 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		}
 		#endregion
 
-		/// <see cref="Arguments"/>
-		private CommandLine arguments;
-
 		/// <summary>
 		/// The prototype of an action handler in the class which executes an
 		/// action as specified in the command line.
@@ -1300,8 +1283,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <summary>
 		/// Matches an action handler to a function in the class.
 		/// </summary>
-		private Dictionary<string, ActionHandler> actionHandlers =
-			new Dictionary<string, ActionHandler>();
+		private Dictionary<Type, ActionHandler> actionHandlers =
+			new Dictionary<Type, ActionHandler>();
 	}
 
 	internal class Settings : Manager.SettingsManager
