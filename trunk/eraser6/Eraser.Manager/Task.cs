@@ -401,6 +401,9 @@ namespace Eraser.Manager
 			catch (FileLoadException)
 			{
 				//The system cannot open the file, try to force the file handle to close.
+				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+					throw;
+
 				foreach (OpenHandle handle in OpenHandle.Items)
 					if (handle.Path == file && handle.Close())
 					{

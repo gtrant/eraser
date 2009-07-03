@@ -945,6 +945,9 @@ namespace Eraser.Manager
 				}
 				catch (FileLoadException)
 				{
+					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+						throw;
+
 					List<System.Diagnostics.Process> processes = new List<System.Diagnostics.Process>();
 					foreach (OpenHandle handle in OpenHandle.Items)
 						if (handle.Path == paths[i])

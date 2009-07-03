@@ -37,7 +37,7 @@ using System.Runtime.Serialization;
 
 namespace Eraser
 {
-	public partial class SchedulerPanel : Eraser.BasePanel
+	internal partial class SchedulerPanel : Eraser.BasePanel
 	{
 		public SchedulerPanel()
 		{

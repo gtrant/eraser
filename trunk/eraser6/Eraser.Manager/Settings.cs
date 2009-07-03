@@ -276,38 +276,20 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Whether files which are locked when being erased can be scheduled for
-		/// erasure on system restart.
+		/// Whether files which are locked when being erased should be forcibly
+		/// unlocked for erasure.
 		/// </summary>
-		public bool EraseLockedFilesOnRestart
+		public bool ForceUnlockLockedFiles
 		{
 			get
 			{
-				return settings["EraseLockedFilesOnRestart"] == null ? true :
-					Convert.ToBoolean(settings["EraseLockedFilesOnRestart"],
+				return settings["ForceUnlockLockedFiles"] == null ? true :
+					Convert.ToBoolean(settings["ForceUnlockLockedFiles"],
 						CultureInfo.InvariantCulture);
 			}
 			set
 			{
-				settings["EraseLockedFilesOnRestart"] = value;
-			}
-		}
-
-		/// <summary>
-		/// Whether scheduling files for restart erase should get the blessing of
-		/// the user first.
-		/// </summary>
-		public bool ConfirmEraseOnRestart
-		{
-			get
-			{
-				return settings["ConfirmEraseOnRestart"] == null ?
-					true : Convert.ToBoolean(settings["ConfirmEraseOnRestart"],
-						CultureInfo.InvariantCulture);
-			}
-			set
-			{
-				settings["ConfirmEraseOnRestart"] = value;
+				settings["ForceUnlockLockedFiles"] = value;
 			}
 		}
 

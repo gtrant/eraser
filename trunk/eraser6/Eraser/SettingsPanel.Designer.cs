@@ -22,7 +22,7 @@
 
 namespace Eraser
 {
-	partial class SettingsPanel : Eraser.BasePanel
+	partial class SettingsPanel
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -54,8 +54,7 @@ namespace Eraser
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsPanel));
 			this.ui = new Eraser.LightGroup();
 			this.uiContextMenu = new System.Windows.Forms.CheckBox();
-			this.lockedAllow = new System.Windows.Forms.CheckBox();
-			this.lockedConfirm = new System.Windows.Forms.CheckBox();
+			this.lockedForceUnlock = new System.Windows.Forms.CheckBox();
 			this.erase = new Eraser.LightGroup();
 			this.eraseFilesMethodLbl = new System.Windows.Forms.Label();
 			this.eraseUnusedMethodLbl = new System.Windows.Forms.Label();
@@ -88,51 +87,50 @@ namespace Eraser
 			this.schedulerClearCompleted = new System.Windows.Forms.CheckBox();
 			this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-			((System.ComponentModel.ISupportInitialize)(this.TitleIcon)).BeginInit();
-			this.Content.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).BeginInit();
+			this.content.SuspendLayout();
 			this.pluginsMenu.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
-			// titleLbl
+			// titleLabel
 			// 
-			this.errorProvider.SetIconAlignment(base.TitleLabel, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("titleLbl.IconAlignment"))));
-			resources.ApplyResources(base.TitleLabel, "titleLbl");
+			this.errorProvider.SetIconAlignment(this.titleLabel, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("titleLabel.IconAlignment"))));
+			resources.ApplyResources(this.titleLabel, "titleLabel");
 			// 
 			// titleIcon
 			// 
-			this.errorProvider.SetIconAlignment(this.TitleIcon, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("titleIcon.IconAlignment"))));
-			this.TitleIcon.Image = global::Eraser.Properties.Resources.ToolbarSettings;
+			this.errorProvider.SetIconAlignment(this.titleIcon, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("titleIcon.IconAlignment"))));
+			this.titleIcon.Image = global::Eraser.Properties.Resources.ToolbarSettings;
 			// 
 			// content
 			// 
-			this.Content.Controls.Add(this.schedulerClearCompleted);
-			this.Content.Controls.Add(this.plausibleDeniabilityFilesAddFolder);
-			this.Content.Controls.Add(this.plausibleDeniabilityFilesRemove);
-			this.Content.Controls.Add(this.plausibleDeniabilityFilesAddFile);
-			this.Content.Controls.Add(this.plausibleDeniabilityFiles);
-			this.Content.Controls.Add(this.uiLanguage);
-			this.Content.Controls.Add(this.uiLanguageLbl);
-			this.Content.Controls.Add(this.plausibleDeniability);
-			this.Content.Controls.Add(this.erasePRNG);
-			this.Content.Controls.Add(this.erasePRNGLbl);
-			this.Content.Controls.Add(this.schedulerMissedIgnore);
-			this.Content.Controls.Add(this.schedulerMissedImmediate);
-			this.Content.Controls.Add(this.schedulerMissed);
-			this.Content.Controls.Add(this.scheduler);
-			this.Content.Controls.Add(this.pluginsManager);
-			this.Content.Controls.Add(this.plugins);
-			this.Content.Controls.Add(this.eraseUnusedMethod);
-			this.Content.Controls.Add(this.eraseFilesMethod);
-			this.Content.Controls.Add(this.eraseUnusedMethodLbl);
-			this.Content.Controls.Add(this.eraseFilesMethodLbl);
-			this.Content.Controls.Add(this.erase);
-			this.Content.Controls.Add(this.lockedConfirm);
-			this.Content.Controls.Add(this.lockedAllow);
-			this.Content.Controls.Add(this.uiContextMenu);
-			this.Content.Controls.Add(this.ui);
-			this.errorProvider.SetIconAlignment(this.Content, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("content.IconAlignment"))));
-			resources.ApplyResources(this.Content, "content");
+			this.content.Controls.Add(this.schedulerClearCompleted);
+			this.content.Controls.Add(this.plausibleDeniabilityFilesAddFolder);
+			this.content.Controls.Add(this.plausibleDeniabilityFilesRemove);
+			this.content.Controls.Add(this.plausibleDeniabilityFilesAddFile);
+			this.content.Controls.Add(this.plausibleDeniabilityFiles);
+			this.content.Controls.Add(this.uiLanguage);
+			this.content.Controls.Add(this.uiLanguageLbl);
+			this.content.Controls.Add(this.plausibleDeniability);
+			this.content.Controls.Add(this.erasePRNG);
+			this.content.Controls.Add(this.erasePRNGLbl);
+			this.content.Controls.Add(this.schedulerMissedIgnore);
+			this.content.Controls.Add(this.schedulerMissedImmediate);
+			this.content.Controls.Add(this.schedulerMissed);
+			this.content.Controls.Add(this.scheduler);
+			this.content.Controls.Add(this.pluginsManager);
+			this.content.Controls.Add(this.plugins);
+			this.content.Controls.Add(this.eraseUnusedMethod);
+			this.content.Controls.Add(this.eraseFilesMethod);
+			this.content.Controls.Add(this.eraseUnusedMethodLbl);
+			this.content.Controls.Add(this.eraseFilesMethodLbl);
+			this.content.Controls.Add(this.erase);
+			this.content.Controls.Add(this.lockedForceUnlock);
+			this.content.Controls.Add(this.uiContextMenu);
+			this.content.Controls.Add(this.ui);
+			this.errorProvider.SetIconAlignment(this.content, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("content.IconAlignment"))));
+			resources.ApplyResources(this.content, "content");
 			// 
 			// ui
 			// 
@@ -149,22 +147,14 @@ namespace Eraser
 			this.uiContextMenu.Name = "uiContextMenu";
 			this.uiContextMenu.UseVisualStyleBackColor = true;
 			// 
-			// lockedAllow
+			// lockedForceUnlock
 			// 
-			resources.ApplyResources(this.lockedAllow, "lockedAllow");
-			this.lockedAllow.Checked = true;
-			this.lockedAllow.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.errorProvider.SetIconAlignment(this.lockedAllow, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("lockedAllow.IconAlignment"))));
-			this.lockedAllow.Name = "lockedAllow";
-			this.lockedAllow.UseVisualStyleBackColor = true;
-			this.lockedAllow.CheckedChanged += new System.EventHandler(this.lockedAllow_CheckedChanged);
-			// 
-			// lockedConfirm
-			// 
-			resources.ApplyResources(this.lockedConfirm, "lockedConfirm");
-			this.errorProvider.SetIconAlignment(this.lockedConfirm, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("lockedConfirm.IconAlignment"))));
-			this.lockedConfirm.Name = "lockedConfirm";
-			this.lockedConfirm.UseVisualStyleBackColor = true;
+			resources.ApplyResources(this.lockedForceUnlock, "lockedForceUnlock");
+			this.lockedForceUnlock.Checked = true;
+			this.lockedForceUnlock.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.errorProvider.SetIconAlignment(this.lockedForceUnlock, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("lockedForceUnlock.IconAlignment"))));
+			this.lockedForceUnlock.Name = "lockedForceUnlock";
+			this.lockedForceUnlock.UseVisualStyleBackColor = true;
 			// 
 			// erase
 			// 
@@ -390,12 +380,12 @@ namespace Eraser
 			this.Name = "SettingsPanel";
 			resources.ApplyResources(this, "$this");
 			this.Controls.SetChildIndex(this.saveSettings, 0);
-			this.Controls.SetChildIndex(this.TitleLabel, 0);
-			this.Controls.SetChildIndex(this.TitleIcon, 0);
-			this.Controls.SetChildIndex(this.Content, 0);
-			((System.ComponentModel.ISupportInitialize)(this.TitleIcon)).EndInit();
-			this.Content.ResumeLayout(false);
-			this.Content.PerformLayout();
+			this.Controls.SetChildIndex(this.titleLabel, 0);
+			this.Controls.SetChildIndex(this.titleIcon, 0);
+			this.Controls.SetChildIndex(this.content, 0);
+			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).EndInit();
+			this.content.ResumeLayout(false);
+			this.content.PerformLayout();
 			this.pluginsMenu.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
 			this.ResumeLayout(false);
@@ -405,8 +395,7 @@ namespace Eraser
 
 		#endregion
 
-		private System.Windows.Forms.CheckBox lockedConfirm;
-		private System.Windows.Forms.CheckBox lockedAllow;
+		private System.Windows.Forms.CheckBox lockedForceUnlock;
 		private System.Windows.Forms.CheckBox uiContextMenu;
 		private LightGroup ui;
 		private System.Windows.Forms.Label eraseUnusedMethodLbl;
