@@ -129,8 +129,8 @@
   <data name="{0} (Built: {1:F})" xml:space="preserve">
     <value>{0} (Built: {1:F})</value>
   </data>
-  <data name="copyright © 2008 The Eraser Project" xml:space="preserve">
-    <value>copyright © 2008 The Eraser Project</value>
+  <data name="copyright © 2008-2009 The Eraser Project" xml:space="preserve">
+    <value>copyright © 2008-2009 The Eraser Project</value>
   </data>
   <data name="Eraser is free open-source software!" xml:space="preserve">
     <value>Eraser is free open-source software!</value>
