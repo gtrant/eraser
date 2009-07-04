@@ -32,6 +32,7 @@ using Eraser.Manager;
 using Eraser.Properties;
 using System.IO;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace Eraser
 {
@@ -247,6 +248,24 @@ namespace Eraser
 						Program.eraserClient.Tasks.LoadFromStream(stream);
 					}
 				}
+			}
+		}
+
+		private void tbHelp_Click(object sender, EventArgs e)
+		{
+			try
+			{
+				Process.Start(Path.Combine(Path.GetDirectoryName(
+						Assembly.GetEntryAssembly().Location),
+					"Eraser Documentation.pdf"));
+			}
+			catch (Win32Exception ex)
+			{
+				MessageBox.Show(this, S._("Eraser"), S._("The Eraser documentation file " +
+					"could not be opened. Check that Adobe Reader installed and that your " +
+					"Eraser install is not corrupt.\n\nThe error returned was: {0}", ex.Message),
+					MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
+					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
 			}
 		}
 

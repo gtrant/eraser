@@ -141,6 +141,9 @@
   <data name="Session: {0:F}" xml:space="preserve">
     <value>Session: {0:F}</value>
   </data>
+  <data name="The Eraser documentation file could not be opened. Check that Adobe Reader installed and that your Eraser install is not corrupt.\n\nThe error returned was: {0}" xml:space="preserve">
+    <value>The Eraser documentation file could not be opened. Check that Adobe Reader installed and that your Eraser install is not corrupt.\n\nThe error returned was: {0}</value>
+  </data>
   <data name="Processing:" xml:space="preserve">
     <value>Processing:</value>
   </data>

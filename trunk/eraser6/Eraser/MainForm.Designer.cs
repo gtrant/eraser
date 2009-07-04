@@ -213,6 +213,7 @@ namespace Eraser
 			this.tbHelp.Name = "tbHelp";
 			this.tbHelp.Padding = new System.Windows.Forms.Padding(0);
 			resources.ApplyResources(this.tbHelp, "tbHelp");
+			this.tbHelp.Click += new System.EventHandler(this.tbHelp_Click);
 			// 
 			// tbHelpDropDown
 			// 
