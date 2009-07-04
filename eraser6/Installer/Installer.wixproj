@@ -76,6 +76,6 @@
   <PropertyGroup>
     <PreBuildEvent>call "$(ProjectDir)\SignBin.bat" "$(SolutionDir)"
 call $(SolutionDir)UpdateVersions.bat "$(SolutionDir)\" "$(SolutionDir)Version.wxs.in" "$(SolutionDir)Version.wxs"</PreBuildEvent>
-    <PostBuildEvent>signtool sign /r "The Eraser Project, http://eraser.heidi.ie" /t http://timestamp.verisign.com/scripts/timestamp.dll "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>signtool sign /a /t http://timestamp.verisign.com/scripts/timestamp.dll "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
