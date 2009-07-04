@@ -50,6 +50,10 @@
 						<Shortcut Advertise="yes" Id="EraserExeDesktopShortcut" Directory="DesktopFolder"
 							Name="Eraser" Icon="Eraser.exe" IconIndex="0" />
 					</File>
+					<RegistryValue Action="write" Id="EraserExeAppPath" Root="HKLM"
+						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Eraser.exe"
+						Type="string" Value="[!EraserExe]" />
+
 					<File Id="BevelLine" Name="BevelLine.dll" Source="..\bin\Release\BevelLine.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="DragDropLib" Name="DragDropLib.dll" Source="..\bin\Release\DragDropLib.dll"
@@ -68,6 +72,10 @@
 						ProcessorArchitecture="x86" />
 					<?endif?>
 
+					<!-- Documentation -->
+					<File Id="EraserDocumentation" Name="Eraser Documentation.pdf"
+						Source="..\Documentation\Documentation.pdf" />
+					
 					<!-- Start Eraser when Windows starts -->
 					<RegistryValue Id="EraserStartup" Root="HKLM"
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="Eraser"
