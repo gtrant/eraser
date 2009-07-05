@@ -198,6 +198,42 @@
   <metadata name="schedulerMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="runNowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 22</value>
+  </data>
+  <data name="runNowToolStripMenuItem.Text" xml:space="preserve">
+    <value>Run Now</value>
+  </data>
+  <data name="cancelTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 22</value>
+  </data>
+  <data name="cancelTaskToolStripMenuItem.Text" xml:space="preserve">
+    <value>Cancel Task</value>
+  </data>
+  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 6</value>
+  </data>
+  <data name="viewTaskLogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 22</value>
+  </data>
+  <data name="viewTaskLogToolStripMenuItem.Text" xml:space="preserve">
+    <value>View Task Log</value>
+  </data>
+  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 6</value>
+  </data>
+  <data name="editTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 22</value>
+  </data>
+  <data name="editTaskToolStripMenuItem.Text" xml:space="preserve">
+    <value>Edit Task</value>
+  </data>
+  <data name="deleteTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 22</value>
+  </data>
+  <data name="deleteTaskToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete Task</value>
+  </data>
   <data name="schedulerMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>150, 126</value>
   </data>
@@ -213,8 +249,8 @@
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
         ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
-        AwAAABpUYXNrcyBleGVjdXRlZCBpbW1lZGlhdGVseQX8////KFN5c3RlbS5XaW5kb3dzLkZvcm1zLkhv
-        cml6b250YWxBbGlnbm1lbnQBAAAAB3ZhbHVlX18ACAIAAAAAAAAACgYFAAAACWltbWVkaWF0ZQs=
+        AwAAABdUYXNrcyBleGVjdXRlZCBtYW51YWxseQX8////KFN5c3RlbS5XaW5kb3dzLkZvcm1zLkhvcml6
+        b250YWxBbGlnbm1lbnQBAAAAB3ZhbHVlX18ACAIAAAAAAAAACgYFAAAABm1hbnVhbAs=
 </value>
   </data>
   <data name="scheduler.Groups1" mimetype="application/x-microsoft.net.object.binary.base64">
@@ -270,45 +306,15 @@
   <data name="&gt;&gt;content.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="runNowToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 22</value>
-  </data>
-  <data name="runNowToolStripMenuItem.Text" xml:space="preserve">
-    <value>Run Now</value>
-  </data>
-  <data name="cancelTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 22</value>
-  </data>
-  <data name="cancelTaskToolStripMenuItem.Text" xml:space="preserve">
-    <value>Cancel Task</value>
-  </data>
-  <data name="toolStripSeparator2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 6</value>
-  </data>
-  <data name="viewTaskLogToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 22</value>
-  </data>
-  <data name="viewTaskLogToolStripMenuItem.Text" xml:space="preserve">
-    <value>View Task Log</value>
-  </data>
-  <data name="toolStripSeparator1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 6</value>
-  </data>
-  <data name="editTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 22</value>
-  </data>
-  <data name="editTaskToolStripMenuItem.Text" xml:space="preserve">
-    <value>Edit Task</value>
-  </data>
-  <data name="deleteTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 22</value>
-  </data>
-  <data name="deleteTaskToolStripMenuItem.Text" xml:space="preserve">
-    <value>Delete Task</value>
-  </data>
   <metadata name="schedulerDefaultMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 17</value>
   </metadata>
+  <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 22</value>
+  </data>
+  <data name="newTaskToolStripMenuItem.Text" xml:space="preserve">
+    <value>New Task</value>
+  </data>
   <data name="schedulerDefaultMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 26</value>
   </data>
@@ -317,12 +323,6 @@
   </data>
   <data name="&gt;&gt;schedulerDefaultMenu.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 22</value>
-  </data>
-  <data name="newTaskToolStripMenuItem.Text" xml:space="preserve">
-    <value>New Task</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -397,6 +397,6 @@
     <value>SchedulerPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Eraser.BasePanel, Eraser, Version=6.0.5.1039, Culture=neutral, PublicKeyToken=311f5aaf640c645d</value>
+    <value>Eraser.BasePanel, Eraser, Version=6.0.6.1160, Culture=neutral, PublicKeyToken=311f5aaf640c645d</value>
   </data>
 </root>

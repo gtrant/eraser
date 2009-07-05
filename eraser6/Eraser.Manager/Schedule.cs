@@ -38,6 +38,30 @@ namespace Eraser.Manager
 	{
 		#region Default values
 		[Serializable]
+		private class RunManuallySchedule : Schedule
+		{
+			#region Object serialization
+			public RunManuallySchedule(SerializationInfo info, StreamingContext context)
+			{
+			}
+
+			[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+			public override void GetObjectData(SerializationInfo info, StreamingContext context)
+			{
+			}
+			#endregion
+
+			public RunManuallySchedule()
+			{
+			}
+
+			public override string UIText
+			{
+				get { return string.Empty; }
+			}
+		}
+
+		[Serializable]
 		private class RunNowSchedule : Schedule
 		{
 			#region Object serialization
@@ -112,6 +136,12 @@ namespace Eraser.Manager
 		/// <param name="context">The destination for this serialization.</param>
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
+
+		/// <summary>
+		/// The global value for tasks which should be run manually.
+		/// </summary>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")]
+		public static readonly Schedule RunManually = new RunManuallySchedule();
 
 		/// <summary>
 		/// The global value for tasks which should be run immediately.

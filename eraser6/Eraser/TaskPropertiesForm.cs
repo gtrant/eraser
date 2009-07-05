@@ -42,7 +42,7 @@ namespace Eraser
 			scheduleTime.CustomFormat = DateTimeFormatInfo.CurrentInfo.ShortTimePattern;
 
 			//Set a default task type
-			typeImmediate.Checked = true;
+			typeManual.Checked = true;
 			scheduleDaily.Checked = true;
 		}
 
@@ -64,7 +64,11 @@ namespace Eraser
 			task.Name = name.Text;
 
 			//And the schedule, if selected.
-			if (typeImmediate.Checked)
+			if (typeManual.Checked)
+			{
+				task.Schedule = Schedule.RunManually;
+			}
+			else if (typeImmediate.Checked)
 			{
 				task.Schedule = Schedule.RunNow;
 			}
@@ -140,7 +144,11 @@ namespace Eraser
 			}
 
 			//And the schedule, if selected.
-			if (task.Schedule == Schedule.RunNow)
+			if (task.Schedule == Schedule.RunManually)
+			{
+				typeManual.Checked = true;
+			}
+			else if (task.Schedule == Schedule.RunNow)
 			{
 				typeImmediate.Checked = true;
 			}
