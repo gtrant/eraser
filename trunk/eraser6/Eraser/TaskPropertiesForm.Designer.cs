@@ -102,6 +102,7 @@ namespace Eraser
 			this.scheduleTime = new System.Windows.Forms.DateTimePicker();
 			this.scheduleTimeLbl = new System.Windows.Forms.Label();
 			this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+			this.typeManual = new System.Windows.Forms.RadioButton();
 			this.dataContextMenuStrip.SuspendLayout();
 			this.container.SuspendLayout();
 			this.containerTask.SuspendLayout();
@@ -221,6 +222,7 @@ namespace Eraser
 			// 
 			// containerTask
 			// 
+			this.containerTask.Controls.Add(this.typeManual);
 			this.containerTask.Controls.Add(this.typeRestart);
 			this.containerTask.Controls.Add(this.nameLbl);
 			this.containerTask.Controls.Add(this.name);
@@ -528,6 +530,14 @@ namespace Eraser
 			// 
 			this.errorProvider.ContainerControl = this;
 			// 
+			// typeManual
+			// 
+			resources.ApplyResources(this.typeManual, "typeManual");
+			this.typeManual.Name = "typeManual";
+			this.typeManual.TabStop = true;
+			this.typeManual.UseVisualStyleBackColor = true;
+			this.typeManual.CheckedChanged += new System.EventHandler(this.taskType_CheckedChanged);
+			// 
 			// TaskPropertiesForm
 			// 
 			this.AcceptButton = this.ok;
@@ -621,5 +631,6 @@ namespace Eraser
 		private System.Windows.Forms.DateTimePicker scheduleTime;
 		private System.Windows.Forms.ContextMenuStrip dataContextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem deleteDataToolStripMenuItem;
+		private System.Windows.Forms.RadioButton typeManual;
 	}
 }

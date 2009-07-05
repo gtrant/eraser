@@ -886,6 +886,9 @@ namespace Eraser
 						case "now":
 							Schedule = Schedule.RunNow;
 							break;
+						case "manually":
+							Schedule = Schedule.RunManually;
+							break;
 						case "restart":
 							Schedule = Schedule.RunOnRestart;
 							break;
@@ -1089,15 +1092,17 @@ parameters for help:
     no parameters to set.
 
 parameters for addtask:
-    eraser addtask [--method=<methodGUID>] [--schedule=(now|restart)] (--recycled " +
+    eraser addtask [--method=<methodGUID>] [--schedule=(now|manually|restart)] (--recycled " +
 @"| --unused=<volume> | --dir=<directory> | --file=<file>)[...]
 
     --method, -m            The Erasure method to use.
     --schedule, -s          The schedule the task will follow. The value must
                             be one of:
             now             The task will be queued for immediate execution.
+            manually        The task will be created but not queued for execution.
             restart         The task will be queued for execution when the
                             computer is next restarted.
+                            This parameter defaults to now.
     --recycled, -r          Erases files and folders in the recycle bin
     --unused, -u            Erases unused space in the volume.
         optional arguments: --unused=<drive>[,clusterTips]

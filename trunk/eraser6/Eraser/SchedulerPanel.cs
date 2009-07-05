@@ -93,7 +93,7 @@ namespace Eraser
 			else if (task.Schedule is RecurringSchedule)
 				item.SubItems[1].Text = ((task.Schedule as RecurringSchedule).NextRun.
 					ToString("F", CultureInfo.CurrentCulture));
-			else if (task.Schedule == Schedule.RunNow)
+			else if (task.Schedule == Schedule.RunNow || task.Schedule == Schedule.RunManually)
 				item.SubItems[1].Text = S._("Not queued");
 			else
 				item.SubItems[1].Text = task.Schedule.UIText;
@@ -109,8 +109,8 @@ namespace Eraser
 
 		private void CategorizeTask(Task task, ListViewItem item)
 		{
-			if (task.Schedule == Schedule.RunNow)
-				item.Group = scheduler.Groups["immediate"];
+			if (task.Schedule == Schedule.RunNow || task.Schedule == Schedule.RunManually)
+				item.Group = scheduler.Groups["manual"];
 			else if (task.Schedule == Schedule.RunOnRestart)
 				item.Group = scheduler.Groups["restart"];
 			else
@@ -266,7 +266,7 @@ namespace Eraser
 
 			//If the user requested us to remove completed one-time tasks, do so.
 			if (EraserSettings.Get().ClearCompletedTasks &&
-				!(e.Task.Schedule is RecurringSchedule) && highestLevel < LogLevel.Warning)
+				(e.Task.Schedule == Schedule.RunNow) && highestLevel < LogLevel.Warning)
 			{
 				Program.eraserClient.Tasks.Remove(e.Task);
 			}
