@@ -83,7 +83,7 @@ namespace Eraser.Manager
 
 		public override void ScheduleTask(Task task)
 		{
-			RecurringSchedule schedule = (RecurringSchedule)task.Schedule;
+			RecurringSchedule schedule = task.Schedule as RecurringSchedule;
 			if (schedule == null)
 				return;
 
