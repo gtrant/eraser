@@ -71,26 +71,6 @@ namespace Eraser.Manager
 			get;
 			set;
 		}
-
-		/// <summary>
-		/// The language which all user interface elements should be presented in.
-		/// This is a GUID since languages are supplied through plugins.
-		/// </summary>
-		public string UILanguage
-		{
-			get
-			{
-				lock (this)
-					return uiLanguage;
-			}
-			set
-			{
-				lock (this)
-					uiLanguage = value;
-			}
-		}
-
-		private string uiLanguage;
 	}
 
 	#region Default attributes
@@ -184,7 +164,7 @@ namespace Eraser.Manager
 	#endregion
 
 	/// <summary>
-	/// Handles the settings related to the Eraser Manager.
+	/// Presents an opaque type for the management of the Manager settings.
 	/// </summary>
 	public class ManagerSettings
 	{
