@@ -51,11 +51,12 @@
     </Compile>
     <Compile Include="DirectExecutor.cs" />
     <Compile Include="EntropySource.cs" />
+    <Compile Include="Exception.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="Language.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Manager.cs" />
+    <Compile Include="ManagerLibrary.cs" />
     <Compile Include="Method.cs" />
     <Compile Include="Plugins.cs" />
     <Compile Include="PRNG.cs" />
@@ -74,9 +75,6 @@
       <Project>{D083E1A8-3A4C-4683-9B3F-D5FEDE61B9C9}</Project>
       <Name>Eraser.Util</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Manager.cd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Strings.en.resx">
