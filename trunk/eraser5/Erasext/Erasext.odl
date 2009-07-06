@@ -6,11 +6,7 @@
 [ uuid(8BE13460-936F-11D1-A87D-444553540000), version(1.0) ]
 library Erasext
 {
-	#ifdef _WIN64 
-	importlib("stdole64.tlb");
-	#else
 	importlib("stdole32.tlb");
-	#endif
 	
 
 	//  Primary dispatch interface for CErasextMenu
