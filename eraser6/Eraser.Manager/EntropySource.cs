@@ -23,16 +23,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using System.Globalization;
 using System.Threading;
 using System.Security.Cryptography;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
 using System.IO;
-using Microsoft.Win32.SafeHandles;
-using Eraser.Util;
+
 using System.Windows.Forms;
 using Microsoft.VisualBasic.Devices;
+using Microsoft.Win32.SafeHandles;
+using Eraser.Util;
 
 namespace Eraser.Manager
 {
@@ -153,15 +155,11 @@ namespace Eraser.Manager
 		/// <returns>The EntropySource instance.</returns>
 		public static EntropySource GetInstance(Guid value)
 		{
-			try
+			lock (ManagerLibrary.Instance.EntropySourceManager.sources)
 			{
-				lock (ManagerLibrary.Instance.EntropySourceManager.sources)
-					return ManagerLibrary.Instance.EntropySourceManager.sources[value];
-			}
-			catch (KeyNotFoundException)
-			{
-				throw new FatalException(S._("EntropySource GUID not found: {0}",
-					value.ToString()));
+				if (!ManagerLibrary.Instance.EntropySourceManager.sources.ContainsKey(value))
+					throw new EntropySourceNotFoundException(value);
+				return ManagerLibrary.Instance.EntropySourceManager.sources[value];
 			}
 		}
 
