@@ -99,6 +99,9 @@ function GetDownloads($downloadID)
 			<div class="right_news">
 				<h3>Latest News</h3>
 				<div class="right_news_bg">
+					<h2>Eraser 5.8.8-beta1 released!</h2>
+					<div class="posted">Posted by: Joel, 6 July 2009, 11.15am, +800 GMT</div>
+					<p>Eraser 5.8.8-beta1 has been released, fixing a few bugs regarding the context menu extension. <a href="announcements/20090706.html">See the full announcement</a></p>
 					<h2>Eraser 5.8.7 released!</h2>
 					<div class="posted">Posted by: Joel, 11 June 2009, 9.15am, +800 GMT</div>
 					<p>Eraser 5.8.7 stable is finally released after being too long in the making! This version brings with it Unicode changes, allowing the erasure of file names containing non English characters as well as the Portable distribution being a supported distribution. <a href="announcements/20090611.html">See the full announcement.</a></p>
@@ -129,6 +132,8 @@ function GetDownloads($downloadID)
 				</ul>
 				<h4>Beta versions</h4>
 				<ul>
+					<li><a href="announcements/20090706.html">Eraser 5.8.8</a> (beta1)<br />
+						<span class="downloads">&raquo; downloaded <?php GetDownloads(13); ?> times</span></li>
 					<li><a href="announcements/20090610.html">Eraser 6.0.5</a> (rc-5, build 1114)<br />
 						<span class="downloads">&raquo; downloaded <?php GetDownloads(12); ?> times</span></li>
 				</ul>

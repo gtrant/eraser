@@ -3,26 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <!-- InstanceBeginEditable name="Title" -->
-<title>Eraser :: Announcemens :: April 18, 2009</title>
+<title>Eraser :: Announcements :: July 6, 2009</title>
 <!-- InstanceEndEditable -->
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link href="../style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../scripts.js"></script>
 <!-- InstanceBeginEditable name="head" -->
 <style type="text/css">
-table.changelog {
-	width: 100%;
-}
-
-table.changelog td {
-	vertical-align: top;
-}
-
-td.author {
-	padding-left: 1.0em;
-	text-align: right;
-}
-
 code.hash {
 	background-color: #F0F0F0;
 	font-family: Consolas, "Courier New", Courier, mono;
@@ -46,73 +33,45 @@ code.hash {
 			<div class="article">
 				<div class="article_head">
 					<div class="title">
-						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 5.8.7-beta5 released!<!-- InstanceEndEditable --></h2>
-						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted by: Joel, 18 April 2009, 11.36am, +800 GMT <!-- InstanceEndEditable --></div>
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 5.8.8-beta 1
+						released!<!-- InstanceEndEditable --></h2>
+						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted
+								by: Joel, 6th July 2009, 11.15am, +800 GMT<!-- InstanceEndEditable --></div>
 					</div>
 				</div>
 
 				<!-- InstanceBeginEditable name="LeftContentEdit" -->
-				<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. Just that I've been too busy to do much stuff recently. Anyway, I've spent a few hours going through the buglist and solving these last few v5 bugs:</p>
+				<p>A relative rapid release for Eraser 5.8.8-beta1 has been made in light of reports that the Shell extension does not work (hanging the computer). This update is meant to addres the issue. Please try the beta if you are experiencing the problem. Otherwise, all the other code is the same as 5.8.7.</p>
+				<p><strong>A new version has been built and re-released at 6.40pm +800GMT on July 6th 2009, owing to a compile issue with the previously-uploaded binaries.</strong></p>
 				<h2>Changelog</h2>
-				<table class="changelog">
-					<tr>
-						<th>Revision</th>
-						<th>Description</th>
-						<th>Author</th>
-					</tr>
-					<tr>
-						<td>882</td>
-						<td>Fixed the task completion action specifier for dragged-and-dropped files to the On-Demand as well as for tasks on the Scheduler</td>
-						<td class="author">Joel</td>
-					</tr>
-					<tr>
-						<td>883</td>
-						<td>Show the time the scheduled task will run even if it is running at midnight</td>
-						<td class="author">Joel</td>
-					</tr>
-					<tr>
-						<td>884</td>
-						<td><ul>
-								<li>Fixed a 64-bit problem for ISAAC buffer fills (semantic, not really serious)</li>
-								<li>Fixed a wrong use of the equality operator leading to files being detected as encrypted when they are not</li>
-							</ul>
-						</td>
-						<td class="author">Joel</td>
-					</tr>
-					<tr>
-						<td>885</td>
-						<td>Fixed the missing shell extension entries </td>
-						<td class="author">Joel</td>
-					</tr>
-					<tr>
-						<td>886</td>
-						<td>Fixed the Visual C++ Redistributable install for 64-bit builds </td>
-						<td class="author">Joel</td>
-					</tr>
-				</table>
-				<p>
-					<strong>Disclaimer: The code is still of <em>beta quality</em> and may not be as stable as the released versions of Eraser.</strong>
-					It is however good to note that there are no feature additions and are mainly feature fixes and therefore upgrading should constitute an increase in stability.
-				</p>
-				<p>
-					If you have read the disclaimer, follow the instructions about <strong><a href="../trac/wiki/InstallingBetas">installing betas</a></strong> then download the <strong><a href="../download.php?id=10">installer</a></strong> or the <strong><a href="../download.php?id=11">standalone (&quot;portable&quot;)</a></strong> edition.
-				</p>
-				<p>File hashes:</p>
+				<h3>Eraser 5.8.8-beta1</h3>
 				<ul>
-					<li>Installer</li>
-					<ul>
-						<li>SHA-1:     <code class="hash">f93d4c43d738a962156ae6e9245e8ef59c926ce0</code></li>
-						<li>SHA-256:   <code class="hash">1cc0e746e4cbb041d1f67a6c90cfabe3b398b4febc956313360<br />63cec340b155b</code></li>
-					  <li>Whirlpool:   <code class="hash">4ca1cee10200fb1e52ebae9cc5ee53d4c4349af1c953e332d25<br />e6442dc4431633bc663321d0574050792777e2063520fa0770f<br />fd53fa84b0185cb207bc60ce9d</code></li>
-					</ul>
-					<li>Standalone</li>
-					<ul>
-						<li>SHA-1:     <code class="hash">88bc622669f110a01d487630105e1fe543ccd668</code></li>
-						<li>SHA-256:   <code class="hash">00113b1e81fc22d0a4ebca10e3820476d58a9d01e8e923a5b48<br />3b763cc76cb4c</code></li>
-						<li>Whirlpool: <code class="hash">9709eb3d4a029204cb43c4dfe224d2928d8d5b62c57fde8fa49<br />b14d5cd6f0257649aa59d7ed2549cde6d36867d620fb2b30d27<br />d5141d7782ad9c806e723639b6</code></li>
-					</ul>
+					<li>Do not erase sparse, compressed or encrypted files when FL2KB erasure is selected to prevent disk corruption.</li>
+					<li>Fix Win32 Eraser builds to be truly Unicode builds.</li>
+					<li>A few 64-bit fixes.</li>
+					<li>Ensure that Eraser uses the latest runtimes packaged with the installer. This should fix hangs when using the Context menu.</li>
 				</ul>
-				
+				<p> <strong>Disclaimer: The code is still of <em>beta quality</em> and may not
+						be as stable as the released versions of Eraser.</strong> It is however good
+						to note that there are no feature additions and are mainly
+						feature fixes and therefore upgrading should constitute an increase in stability.</p>
+				<p> If you have read the disclaimer, follow the instructions about <strong><a href="../trac/wiki/InstallingBetas">installing
+							betas</a></strong> then download the <strong><a href="../download.php?id=13">installer</a></strong>.</p>
+				<h3>File Hashes</h3>
+				<ul>
+					<li>MD5:<code class="hash">8bfa0a323cedfd236d93e3c01598ef39</code></li>
+					<li>SHA-1: <code class="hash">83fe4897d4febfa480430117e1451f36e7661450</code></li>
+					<li>SHA-256: <code class="hash">6225b5a23f5f063727048e0e67eca4197ad6913c44bee2cb602da41be<br />
+                                                    f1408b6</code></li>
+					<li>SHA-384: <code class="hash">7a0bf970416cd26a0f28492f42d07865fcc2e4ee8ace94280f2b190e9<br />
+					                                5754ed7844e4017827cdc2b8f9552266df0abbf</code></li>
+					<li>SHA-512: <code class="hash">050251135cbfe212ac9e621d42532161065fcef301c8565a4be9852ad<br />
+					                                388e19bdf6dd8e2f0167e8c982af202451e292d0c42783a9832d62955<br />
+					                                4421b95dcbd923</code></li>
+					<li>Whirlpool: <code class="hash">3681c5b9fdea34ca5fdf72d6f85f9697c7004445b3d2fddc8c7d24c50<br />
+					                                  7118b894a70f5d007f846a7245ebdc53acbbb2a010c46f4703a315c14<br />
+					                                  cc6c00017375a5</code></li>
+				</ul>
 				<!-- InstanceEndEditable -->
 			</div>
 			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->

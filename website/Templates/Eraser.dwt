@@ -29,7 +29,17 @@
 				</div>
 
 				<!-- TemplateBeginEditable name="LeftContentEdit" -->
-				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis et diam. Praesent pulvinar enim vulputate mauris. Curabitur ipsum justo, tincidunt at, interdum nec, semper id, felis. Ut eget lectus. Suspendisse sollicitudin luctus odio. Mauris massa tellus, dictum viverra, facilisis iaculis, consectetuer at, augue. Pellentesque pulvinar placerat risus. Proin ullamcorper, urna vel vulputate aliquam, ipsum est fringilla turpis, ut dignissim lorem massa in libero. Aliquam erat volutpat. Suspendisse potenti. Nam nunc nulla, accumsan at, congue in, gravida id, enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla eleifend, felis quis porttitor tincidunt, massa pede malesuada ante, in pharetra risus urna ac tortor. In hac habitasse platea dictumst. Maecenas lorem. Nam interdum.</p>
+				<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Duis et diam. Praesent
+					pulvinar enim vulputate mauris. Curabitur ipsum justo, tincidunt
+					at, interdum nec, semper id, felis. Ut eget lectus. Suspendisse sollicitudin
+					luctus odio. Mauris massa tellus, dictum viverra, facilisis iaculis, consectetuer
+					at, augue. Pellentesque pulvinar placerat risus. Proin ullamcorper, urna vel
+					vulputate aliquam, ipsum est fringilla turpis, ut dignissim lorem massa in libero.
+					Aliquam erat volutpat. Suspendisse potenti. Nam nunc nulla, accumsan at, congue
+					in, gravida id, enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+					Nulla eleifend, felis quis porttitor tincidunt, massa pede malesuada
+					ante, in pharetra risus urna ac tortor. In hac habitasse platea dictumst. Maecenas
+					lorem. Nam interdum.</p>
 				<p>Vivamus ut velit. Maecenas molestie sodales ligula. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In et tellus vel leo dignissim blandit. Sed purus dui, porta ac, sollicitudin sit amet, euismod eget, nulla. Suspendisse quis velit. Maecenas eu sapien eget metus semper dapibus. Morbi diam sapien, pharetra ut, iaculis at, commodo vel, metus. Donec sed diam. Phasellus mattis congue nulla.</p>
 				<p>Nulla vestibulum feugiat massa. Nulla enim diam, eleifend eget, varius pellentesque, consequat lobortis, nisl. Phasellus posuere mi. Sed ut ipsum. Etiam vitae lectus. Donec accumsan nisi vel augue. Vivamus erat risus, viverra vel, mattis ac, suscipit ut, arcu. Nullam nec mauris quis ante lobortis venenatis. Vivamus orci felis, luctus sed, lacinia quis, sollicitudin a, magna. Praesent rhoncus ante in pede. Quisque congue fringilla dui. Ut viverra porttitor purus. Donec massa lorem, condimentum ut, dapibus id, dignissim in, metus. Cras laoreet nisi ut purus. Maecenas ligula eros, aliquet malesuada, tincidunt in, faucibus varius, lorem. Ut arcu turpis, gravida vitae, dignissim at, facilisis eget, ante.</p>
 				<p>Nullam gravida mi. Pellentesque pede quam, mattis at, tincidunt vitae, malesuada in, nulla. Etiam porttitor. Fusce dapibus adipiscing erat. Aliquam pretium nisi. Morbi urna. Pellentesque in purus ac metus pharetra suscipit. Aliquam erat volutpat. Suspendisse eu est. Donec ipsum est, blandit vitae, molestie et, tempus et, leo.</p>
@@ -48,6 +58,9 @@
 			<div class="right_news">
 				<h3>Latest News</h3>
 				<div class="right_news_bg">
+					<h2>Eraser 5.8.8-beta1 released!</h2>
+					<div class="posted">Posted by: Joel, 6 July 2009, 11.15am, +800 GMT</div>
+					<p>Eraser 5.8.8-beta1 has been released, fixing a few bugs regarding the context menu extension. <a href="../announcements/20090706.html">See the full announcement</a></p>
 					<h2>Eraser 5.8.7 released!</h2>
 					<div class="posted">Posted by: Joel, 11 June 2009, 9.15am, +800 GMT</div>
 					<p>Eraser 5.8.7 stable is finally released after being too long in the making! This version brings with it Unicode changes, allowing the erasure of file names containing non English characters as well as the Portable distribution being a supported distribution. <a href="../announcements/20090611.html">See the full announcement.</a></p>
