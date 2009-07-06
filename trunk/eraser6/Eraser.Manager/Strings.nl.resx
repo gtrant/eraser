@@ -192,6 +192,12 @@
   <data name="EntropySource GUID not found: {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Erasure method not found: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="PRNG not found: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The file system on the drive {0} is not supported." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -216,9 +222,6 @@
   <data name="The DefaultMethod class should never be used and should instead be replaced before execution!" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Erasure method not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="Registered erasure methods must contain a parameterless constructor that is called whenever clients request for an instance of the method. If a constructor requires parameters, specify it in the parameters parameter." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -226,9 +229,6 @@
     <value>(Untranslated)</value>
   </data>
   <data name="minValue is greater than maxValue" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="PRNG not found: {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Running on restart" xml:space="preserve">
