@@ -24,6 +24,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -52,7 +53,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
 			/>
@@ -115,6 +114,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -143,7 +143,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -152,7 +151,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -206,6 +204,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -235,7 +234,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="NDEBUG"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
@@ -244,7 +243,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -302,6 +300,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -331,7 +330,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="NDEBUG"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
@@ -340,7 +339,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -398,6 +396,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -427,7 +426,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;ERASER_STANDALONE"
+				PreprocessorDefinitions="NDEBUG;ERASER_STANDALONE"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -436,7 +435,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -494,6 +492,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="2"
@@ -523,7 +522,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;ERASER_STANDALONE"
+				PreprocessorDefinitions="NDEBUG;ERASER_STANDALONE"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
@@ -532,7 +531,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -590,6 +588,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -619,7 +618,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="NDEBUG"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
@@ -628,7 +627,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -686,6 +684,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -715,7 +714,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
+				PreprocessorDefinitions="NDEBUG"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
@@ -724,7 +723,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -782,6 +780,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -810,7 +809,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -819,7 +817,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="4"
 			/>
@@ -873,6 +870,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -901,7 +899,6 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="_DEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
 				BasicRuntimeChecks="3"
@@ -910,7 +907,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -964,6 +960,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="1"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -993,7 +990,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;ERASER_STANDALONE"
+				PreprocessorDefinitions="NDEBUG;ERASER_STANDALONE"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -1002,7 +999,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
@@ -1060,6 +1056,7 @@
 			OutputDirectory="$(SolutionDir)bin\$(PlatformName)\$(ConfigurationName)"
 			IntermediateDirectory="$(SolutionDir)obj\$(PlatformName)\$(ConfigurationName)\$(ProjectName)"
 			ConfigurationType="1"
+			InheritedPropertySheets="..\Deployment.vsprops"
 			UseOfMFC="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
 			CharacterSet="1"
@@ -1089,7 +1086,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_SECURE_NO_DEPRECATE;ERASER_STANDALONE"
+				PreprocessorDefinitions="NDEBUG;ERASER_STANDALONE"
 				StringPooling="true"
 				ExceptionHandling="2"
 				RuntimeLibrary="2"
@@ -1098,7 +1095,6 @@
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile="$(IntDir)\Launcher.pch"
 				AssemblerListingLocation=""
-				WarningLevel="4"
 				SuppressStartupBanner="true"
 				DebugInformationFormat="3"
 			/>
