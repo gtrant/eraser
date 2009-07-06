@@ -126,8 +126,8 @@ const LPWSTR SERVICE_SERVER      = L"LanmanServer";
 const LPCTSTR RANDOM_MODULE_NTDLL = _T("NTDLL.DLL");
 
 /* Function definitions */
-typedef DWORD (WINAPI *NTQUERYSYSTEMINFO)(DWORD dwType, DWORD dwData,
-                                          DWORD dwMaxSize, DWORD dwDataSize);
+typedef DWORD (WINAPI *NTQUERYSYSTEMINFO)(DWORD dwType, PVOID dwData,
+                                          ULONG dwMaxSize, PULONG dwDataSize);
 
 /* Function names */
 const LPCSTR RANDOM_FUNCTION_NTQUERYSYSTEMINFO = "NtQuerySystemInformation";

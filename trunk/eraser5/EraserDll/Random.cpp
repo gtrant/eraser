@@ -797,8 +797,8 @@ addEntropyString(E_PUINT8 buffer, E_UINT32 bytes)
     addEntropyString((E_PUINT8)(pointer), (size))
 
 #define addEntropyValue(x) \
-    entropyValue = (E_UINT32)(x); \
-    addEntropy(&entropyValue, sizeof(E_UINT32))
+    entropyValue = (uintptr_t)(x); \
+    addEntropy(&entropyValue, sizeof(uintptr_t))
 
 
 /*
@@ -1093,7 +1093,7 @@ slowPollNT()
     static E_UINT32 cbPerfData = PERFORMANCE_BUFFER_SIZE;
 
     E_PUINT8 buffer = NULL;
-    E_UINT32 uSize;
+    uintptr_t uSize;
     E_UINT32 status;
 
     DISK_PERFORMANCE diskPerformance;
@@ -1184,8 +1184,8 @@ slowPollNT()
             for (uType = 0; uType < 64; uType++) {
                 uSize = cbPerfData;
 
-                status = pNtQuerySystemInfo(uType, (E_UINT32)pPerfData,
-                                            32768, (E_UINT32)&uSize);
+                status = pNtQuerySystemInfo(uType, pPerfData,
+                                            32768, &uSize);
 
                 if (status == ERROR_SUCCESS && uSize > 0) {
                     addEntropy(pPerfData, uSize);

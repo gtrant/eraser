@@ -1217,8 +1217,8 @@ void CEraserDoc::OnFileViewLog()
 
     if (CFile::GetStatus((LPCTSTR)strPath, fs))
     {
-        if (reinterpret_cast<int>(ShellExecute(NULL, _T("open"), (LPCTSTR)strPath,
-                                               NULL, NULL, SW_SHOWNORMAL)) <= 32)
+        if (reinterpret_cast<intptr_t>(ShellExecute(NULL, _T("open"), (LPCTSTR)strPath,
+			NULL, NULL, SW_SHOWNORMAL)) <= HINSTANCE_ERROR)
         {
             AfxMessageBox(IDS_ERROR_VIEWLOG, MB_ICONERROR, 0);
         }
