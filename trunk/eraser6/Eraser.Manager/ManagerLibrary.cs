@@ -121,30 +121,4 @@ namespace Eraser.Manager
 		/// </summary>
 		internal Plugin.DefaultHost Host;
 	}
-
-	/// <summary>
-	/// Fatal exception class.
-	/// </summary>
-	[Serializable]
-	public class FatalException : Exception
-	{
-		public FatalException()
-		{
-		}
-
-		public FatalException(string message)
-			: base(message)
-		{
-		}
-
-		protected FatalException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-
-		public FatalException(string message, Exception innerException)
-			: base(message, innerException)
-		{
-		}
-	}
 }
