@@ -759,7 +759,7 @@ invertPool(E_PUINT8 poolPtr)
 }
 
 static void
-addEntropyString(E_PUINT8 buffer, E_UINT32 bytes)
+addEntropyString(E_PUINT8 buffer, uintptr_t bytes)
 {
     static int poolPosition = 0;
 
@@ -813,7 +813,7 @@ fastPoll()
 {
     static bool fixedItemsAdded = false;
 
-    E_UINT32 entropyValue;
+    uintptr_t entropyValue;
     POINT point;
     LARGE_INTEGER uCounter;
     ULARGE_INTEGER uSpace;
