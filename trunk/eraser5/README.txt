@@ -4,72 +4,14 @@ before installing this version. When installing an earlier
 stable build, UNINSTALL the Beta first.
 ----------------------------------------------------------------
 ----------------------------------------------------------------
-Eraser 5.8.7: Changes over 5.8.7-beta5
+Eraser 5.8.8-beta1
 ----------------------------------------------------------------
-- Allow users to specify whether they want to delete Eraser-related
-  configuration files on uninstall
-- Implemented Eraser 5 Unicode support.
-
-Fixed in previous 5.8.7 betas:
-----------------------------------------------------------------
-- Timestamp all binaries on top of signing with the certificate
-- Fixed dragged-and-dropped tasks to the On-Demand pane. The computer
-  will shut down when done
-- Fixed scheduled tasks' completion action
-- Display the time when scheduled tasks are to run at midnight
-- Fixed a 64-bit problem for ISAAC buffer fills (semantic, not
-  really serious)
-- Fixed a wrong use of the equality operator leading to files being
-  detected as encrypted when they are not
-- Fixed the missing shell extension
-- Fixed 64-bit installs (VC runtime complained of lack of cabinet)
-- Fixed error message when user deletes files and cancels in the
-  Eraser Explorer.
-- Deleting tasks now require confirmation (as per Windows)
-- Fixed a hang when users expanded the Network bit of the file
-  data selection dialog (now only affects Verifier)
-- Run the post-task operation when it is complete.
-- Replaced the custom file/folder selection dialog with the Windows
-  built-in ones.
-- The "no files to erase" error no longer appears for file/folder
-  erasures.
-- Fixed the Hotkey selection dialog in General Preferences
-- System passwords must be specified for it to be active. Throw
-  an error if the user wanted a password but didn't set one
-- x64 compatibility fixes (NTAPI call)
-- The scheduler log size must be positive, the dialog enforces it
-  now.
-- Allow users to tell Eraser to remember the resolve locked files
-  setting for the current erase. Like a No to All or Yes to All
-  button.
-- Implemented the deletion of run-at-reboot scheduled tasks.
-- Compile everything using VS 2008.
-- Fixed command line error when selecting subfolders to be erased
-  with the parent folder
-- Fixed a few issues with EraserL creating a registry key after an
-  erase
-- Fixed the weird bug of right-clicking the various erase methods
-  and Eraser hangs. Hopefully this resolves the problem of the
-  file/folder selection dialog blinking and resetting the selections.
-- Implemented NTFS EFS file erasure (EXPERIMENTAL!)
-- Further complicate forensics: Set MACE to invalid values (NTFS only)
-- Fixed #6: Incorrect 'When Finished' option
-- Implemented #37: Eraser should not allow system to hibernate or
-  standby when running
-- Fixed #36: Eraser overriding Windows hotkeys in context menu
-- Fixed #48: Inaccurate determination of process elevation
-- Do not create "New Eraser Document" in the New context menu of
-  Explorer when using a Portable version
-- Schedlog.txt will always be kept in the local Application Data
-  folder.
-- Fixed shutdown issues after erase for NT-based computers.
-- Fixed erasure of recycle bin contents when the erase was cancelled.
-- Fixed Windows 98 compatibility.
-- Fixed error checking when querying for elevation.
-- Renamed Verify.exe to Erschk.exe. Resolved #418558.
-- Fixed the VC2005 redistributable being extracted over each other.
-  when both x86 and x64 builds are selected for install.
-- Fixed command line error when -silent was passed to EraserL.
+- Do not erase sparse, compressed or encrypted files when FL2KB erasure
+  is selected to prevent disk corruption.
+- Fix Win32 Eraser builds to be truly Unicode builds.
+- A few 64-bit fixes.
+- Ensure that Eraser uses the latest runtimes packaged with the installer.
+  This should fix hangs when using the Context menu.
 
 =================================================================
 CONTENTS
@@ -93,7 +35,7 @@ CONTENTS
 
    1.1. Copyright
 
-        Eraser Copyright © 2007-2008 by The Eraser Project. All
+        Eraser Copyright © 2007-2009 by The Eraser Project. All
         rights reserved.
         Eraser Copyright © 2002-2006 by Garrett Trant. All rights
         reserved.
@@ -136,8 +78,9 @@ CONTENTS
 
    This version of Eraser runs on Windows 2000, XP and all editions
    of Vista. Windows XP x64 and all 64-bit SKUs of Vista can also
-   be used (using the 64-bit version). Windows 7 installs may work
-   but Eraser 5 is not currently tested under that platform.
+   be used (the 64-bit version will be chosen automatically).
+   Windows 7 installs may work but Eraser 5 is not currently tested
+   under that platform.
 
 ----------------------------------------------------------------
 3. HOW TO INSTALL & UNINSTALL
