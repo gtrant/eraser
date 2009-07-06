@@ -1093,7 +1093,6 @@ slowPollNT()
     static E_UINT32 cbPerfData = PERFORMANCE_BUFFER_SIZE;
 
     E_PUINT8 buffer = NULL;
-    uintptr_t uSize;
     E_UINT32 status;
 
     DISK_PERFORMANCE diskPerformance;
@@ -1116,6 +1115,7 @@ slowPollNT()
         if (dllNetAPI != NULL &&
             pNetStatisticsGet(NULL, isNTWorkstation ? SERVICE_WORKSTATION : SERVICE_SERVER,
                               0, 0, &buffer) == 0) {
+            DWORD uSize = 0;
             pNetApiBufferSize(buffer, &uSize);
             addEntropy(buffer, uSize);
 
@@ -1152,6 +1152,7 @@ slowPollNT()
             ** by default
             */
 
+            DWORD uSize;
             if (DeviceIoControl(hDevice, IOCTL_DISK_PERFORMANCE, NULL, 0,
                                 &diskPerformance, sizeof(DISK_PERFORMANCE),
                                 &uSize, NULL)) {
@@ -1182,10 +1183,8 @@ slowPollNT()
             */
 
             for (uType = 0; uType < 64; uType++) {
-                uSize = cbPerfData;
-
-                status = pNtQuerySystemInfo(uType, pPerfData,
-                                            32768, &uSize);
+                ULONG uSize = cbPerfData;
+                status = pNtQuerySystemInfo(uType, pPerfData, 32768, &uSize);
 
                 if (status == ERROR_SUCCESS && uSize > 0) {
                     addEntropy(pPerfData, uSize);
@@ -1213,7 +1212,7 @@ slowPollNT()
 
                 checkStatus(ExitPoll_NT);
 
-                uSize = cbPerfData;
+                DWORD uSize = cbPerfData;
                 status = RegQueryValueEx(HKEY_PERFORMANCE_DATA, _T("Global"), NULL,
                                          NULL, (E_PUINT8)pPerfData, &uSize);
 
