@@ -45,7 +45,7 @@ namespace Eraser.DefaultPlugins
 					method = ErasureMethodManager.GetInstance(
 						ManagerLibrary.Settings.DefaultFileErasureMethod);
 			}
-			catch (FatalException)
+			catch (ErasureMethodNotFoundException)
 			{
 				MessageBox.Show(S._("The First/last 16KB erasure method " +
 					"requires another erasure method to erase the file.\n\nThis must " +
