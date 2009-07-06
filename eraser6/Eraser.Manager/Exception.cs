@@ -53,10 +53,20 @@ namespace Eraser.Manager
 		}
 	}
 
+	[Serializable]
 	public class EntropySourceNotFoundException : FatalException
 	{
-		public EntropySourceNotFoundException(Guid guid)
-			: base(S._("EntropySource GUID not found: {0}", guid.ToString()))
+		public EntropySourceNotFoundException()
+		{
+		}
+
+		public EntropySourceNotFoundException(string message)
+			: base(message)
+		{
+		}
+
+		public EntropySourceNotFoundException(Guid value)
+			: this(S._("EntropySource GUID not found: {0}", value.ToString()))
 		{
 		}
 
@@ -65,18 +75,32 @@ namespace Eraser.Manager
 		{
 		}
 
-		public EntropySourceNotFoundException(Guid guid, Exception innerException)
-			: base(S._("EntropySource GUID not found: {0}", guid.ToString()),
+		public EntropySourceNotFoundException(Guid value, Exception innerException)
+			: this(S._("EntropySource GUID not found: {0}", value.ToString()),
 				innerException)
 		{
+		}
 
+		public EntropySourceNotFoundException(string message, Exception innerException)
+			: base(message, innerException)
+		{
 		}
 	}
 
+	[Serializable]
 	public class ErasureMethodNotFoundException : FatalException
 	{
-		public ErasureMethodNotFoundException(Guid guid)
-			: base(S._("Erasure method not found: {0}", guid.ToString()))
+		public ErasureMethodNotFoundException()
+		{
+		}
+
+		public ErasureMethodNotFoundException(string message)
+			: base(message)
+		{
+		}
+		
+		public ErasureMethodNotFoundException(Guid value)
+			: this(S._("Erasure method not found: {0}", value.ToString()))
 		{
 		}
 
@@ -85,18 +109,32 @@ namespace Eraser.Manager
 		{
 		}
 
-		public ErasureMethodNotFoundException(Guid guid, Exception innerException)
-			: base(S._("Erasure method not found: {0}", guid.ToString()),
+		public ErasureMethodNotFoundException(Guid value, Exception innerException)
+			: this(S._("Erasure method not found: {0}", value.ToString()),
 				innerException)
 		{
+		}
 
+		public ErasureMethodNotFoundException(string message, Exception innerException)
+			: base(message, innerException)
+		{
 		}
 	}
 
+	[Serializable]
 	public class PrngNotFoundException : FatalException
 	{
-		public PrngNotFoundException(Guid guid)
-			: base(S._("PRNG not found: {0}", guid.ToString()))
+		public PrngNotFoundException()
+		{
+		}
+
+		public PrngNotFoundException(string message)
+			: base(message)
+		{
+		}
+		
+		public PrngNotFoundException(Guid value)
+			: this(S._("PRNG not found: {0}", value.ToString()))
 		{
 		}
 
@@ -105,11 +143,15 @@ namespace Eraser.Manager
 		{
 		}
 
-		public PrngNotFoundException(Guid guid, Exception innerException)
-			: base(S._("PRNG not found: {0}", guid.ToString()),
+		public PrngNotFoundException(Guid value, Exception innerException)
+			: this(S._("PRNG not found: {0}", value.ToString()),
 				innerException)
 		{
+		}
 
+		public PrngNotFoundException(string message, Exception innerException)
+			: base(message, innerException)
+		{
 		}
 	}
 }
