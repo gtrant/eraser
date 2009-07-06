@@ -429,17 +429,12 @@ namespace Eraser.Manager
 		/// <returns>The erasure method instance.</returns>
 		public static ErasureMethod GetInstance(Guid value)
 		{
-			try
+			lock (ManagerLibrary.Instance.ErasureMethodManager.methods)
 			{
-				lock (ManagerLibrary.Instance.ErasureMethodManager.methods)
-				{
-					MethodConstructorInfo info = ManagerLibrary.Instance.ErasureMethodManager.methods[value];
-					return (ErasureMethod)info.Constructor.Invoke(info.Parameters);
-				}
-			}
-			catch (KeyNotFoundException)
-			{
-				throw new FatalException(S._("Erasure method not found: {0}", value.ToString()));
+				if (!ManagerLibrary.Instance.ErasureMethodManager.methods.ContainsKey(value))
+					throw new ErasureMethodNotFoundException(value);
+				MethodConstructorInfo info = ManagerLibrary.Instance.ErasureMethodManager.methods[value];
+				return (ErasureMethod)info.Constructor.Invoke(info.Parameters);
 			}
 		}
 

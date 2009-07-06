@@ -179,7 +179,7 @@ namespace Eraser.Manager
 			lock (ManagerLibrary.Instance.PRNGManager.prngs)
 			{
 				if (!ManagerLibrary.Instance.PRNGManager.prngs.ContainsKey(value))
-					throw new FatalException(S._("PRNG not found: {0}", value.ToString()));
+					throw new PrngNotFoundException(value);
 				return ManagerLibrary.Instance.PRNGManager.prngs[value];
 			}
 		}
