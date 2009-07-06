@@ -1,7 +1,13 @@
-<?xml version="1.0"?>
-<VisualStudioPropertySheet 
-	ProjectType="Visual C++" 
-	Version="8.00" 
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
 	Name="Deployment"
 	>
+	<Tool
+		Name="VCCLCompilerTool"
+		PreprocessorDefinitions="_BIND_TO_CURRENT_VCLIBS_VERSION;_CRT_SECURE_NO_DEPRECATE"
+		WarningLevel="4"
+		DisableSpecificWarnings="4201;4251"
+	/>
 </VisualStudioPropertySheet>
