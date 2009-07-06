@@ -29,6 +29,7 @@ using System.ComponentModel;
 using Eraser.Util;
 using System.Security.Permissions;
 using Eraser.Unlocker;
+using System.Threading;
 
 namespace Eraser.Manager
 {
@@ -66,9 +67,7 @@ namespace Eraser.Manager
 			info.AddValue("Name", Name);
 			info.AddValue("Schedule", Schedule);
 			info.AddValue("Targets", Targets);
-
-			lock (Log)
-				info.AddValue("Log", Log);
+			info.AddValue("Log", Log);
 		}
 		#endregion
 
@@ -150,7 +149,18 @@ namespace Eraser.Manager
 		/// <summary>
 		/// Gets whether the task has been cancelled from execution.
 		/// </summary>
-		public bool Canceled { get; internal set; }
+		public bool Canceled
+		{
+			get
+			{
+				return canceled;
+			}
+
+			internal set
+			{
+				canceled = value;
+			}
+		}
 
 		/// <summary>
 		/// The set of data to erase when this task is executed.
@@ -187,6 +197,9 @@ namespace Eraser.Manager
 		public Logger Log { get; private set; }
 
 		private Schedule schedule;
+
+		/// <see cref="Canceled"/>
+		private volatile bool canceled;
 
 		#region Events
 		/// <summary>
