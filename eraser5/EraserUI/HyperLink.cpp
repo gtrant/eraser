@@ -71,7 +71,7 @@ BOOL CHyperLink::PreTranslateMessage(MSG* pMsg)
 
 void CHyperLink::OnClicked()
 {
-    int result = reinterpret_cast<int>(GotoURL(m_strURL, SW_SHOW));
+    intptr_t result = reinterpret_cast<intptr_t>(GotoURL(m_strURL, SW_SHOW));
     m_bVisited = (result > HINSTANCE_ERROR);
     if (!m_bVisited) {
         MessageBeep(MB_ICONEXCLAMATION);     // Unable to follow link
@@ -403,7 +403,7 @@ HINSTANCE CHyperLink::GotoURL(LPCTSTR url, int showcmd)
     HINSTANCE result = ShellExecute(NULL, _T("open"), url, NULL,NULL, showcmd);
 
     // If it failed, get the .htm regkey and lookup the program
-    if (reinterpret_cast<UINT>(result) <= HINSTANCE_ERROR) {
+    if (reinterpret_cast<intptr_t>(result) <= HINSTANCE_ERROR) {
 
         if (GetRegKey(HKEY_CLASSES_ROOT, _T(".htm"), key) == ERROR_SUCCESS) {
             lstrcat(key, _T("\\shell\\open\\command"));

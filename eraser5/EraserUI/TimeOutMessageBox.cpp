@@ -57,11 +57,11 @@ static BOOL CALLBACK EnumChildProc(HWND hwnd, LPARAM lParam)
 {
     if (lParam)
     {
-        SetWindowLong(hwnd, -21 /*GWL_USERDATA*/, SetWindowLong(hwnd, -4 /*GWL_WNDPROC*/,
-                      (LONG)MyWindowProc));
+        SetWindowLongPtr(hwnd, -21 /*GWL_USERDATA*/, SetWindowLongPtr(hwnd, -4 /*GWL_WNDPROC*/,
+            (LONG_PTR)MyWindowProc));
     }
     else
-		SetWindowLong(hwnd, -4 /*GWL_WNDPROC*/, GetWindowLong(hwnd, -21 /*GWL_USERDATA*/));
+		SetWindowLongPtr(hwnd, -4 /*GWL_WNDPROC*/, GetWindowLongPtr(hwnd, -21 /*GWL_USERDATA*/));
 
     return TRUE;
 }
@@ -88,7 +88,7 @@ static UINT _stdcall TimeoutMsgBox(LPVOID pParam)
     if (!hwndMsgBox)
         return 0;
 
-    SetWindowLong(hwndMsgBox, -21 /*GWL_USERDATA*/, SetWindowLong(hwndMsgBox,-4 /* GWL_WNDPROC*/, (long)MyWindowProc));
+	SetWindowLongPtr(hwndMsgBox, -21 /*GWL_USERDATA*/, SetWindowLongPtr(hwndMsgBox,-4 /* GWL_WNDPROC*/, (LONG_PTR)MyWindowProc));
     EnumChildWindows(hwndMsgBox, EnumChildProc, TRUE);
 
     if (uBlinkingTime > prMyData->uElapse)
