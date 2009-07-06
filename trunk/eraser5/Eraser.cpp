@@ -322,7 +322,7 @@ void CEraserApp::OnAppAbout()
 {
     CAboutDlg aboutDlg;
 	//aboutDlg.m_strVersion.Format("Eraser Version %s",GetVersionInfoFromModule( TRUE )); // Show four-digit version info
-	aboutDlg.m_strVersion.Format(_T("Eraser Version %s"),VERSION_NUMBER_STRING); 
+	aboutDlg.m_strVersion.Format(_T("Eraser Version %s"), _T(VERSION_NUMBER_STRING));
     aboutDlg.DoModal();
 }
 LPCTSTR  CEraserApp::GetVersionInfoFromModule( BOOL boolFourDigitString )
