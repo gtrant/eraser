@@ -127,8 +127,7 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				lock (Entries)
-					return Entries[LastSession];
+				return Entries[LastSession];
 			}
 		}
 
@@ -137,16 +136,13 @@ namespace Eraser.Manager
 		/// </summary>
 		public void Clear()
 		{
-			lock (Entries)
-			{
-				LogEntryCollection lastSessionEntries = null;
-				if (Entries.ContainsKey(LastSession))
-					lastSessionEntries = Entries[LastSession];
-				Entries.Clear();
+			LogEntryCollection lastSessionEntries = null;
+			if (Entries.ContainsKey(LastSession))
+				lastSessionEntries = Entries[LastSession];
+			Entries.Clear();
 
-				if (lastSessionEntries != null)
-					Entries.Add(LastSession, lastSessionEntries);
-			}
+			if (lastSessionEntries != null)
+				Entries.Add(LastSession, lastSessionEntries);
 		}
 
 		/// <summary>
@@ -208,50 +204,73 @@ namespace Eraser.Manager
 		[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			info.AddValue("Dictionary", dictionary);
+			lock (dictionary)
+				info.AddValue("Dictionary", dictionary);
 		}
 		#endregion
 
 		#region IDictionary<DateTime,LogSessionEntryCollection> Members
 		public void Add(DateTime key, LogEntryCollection value)
 		{
-			dictionary.Add(key, value);
+			lock (dictionary)
+				dictionary.Add(key, value);
 		}
 
 		public bool ContainsKey(DateTime key)
 		{
-			return dictionary.ContainsKey(key);
+			lock (dictionary)
+				return dictionary.ContainsKey(key);
 		}
 
 		public ICollection<DateTime> Keys
 		{
-			get { return dictionary.Keys; }
+			get
+			{
+				lock (dictionary)
+				{
+					DateTime[] result = new DateTime[dictionary.Keys.Count];
+					dictionary.Keys.CopyTo(result, 0);
+					return result;
+				}
+			}
 		}
 
 		public bool Remove(DateTime key)
 		{
-			return dictionary.Remove(key);
+			lock (dictionary)
+				return dictionary.Remove(key);
 		}
 
 		public bool TryGetValue(DateTime key, out LogEntryCollection value)
 		{
-			return dictionary.TryGetValue(key, out value);
+			lock (dictionary)
+				return dictionary.TryGetValue(key, out value);
 		}
 
 		public ICollection<LogEntryCollection> Values
 		{
-			get { return dictionary.Values; }
+			get
+			{
+				lock (dictionary)
+				{
+					LogEntryCollection[] result = new LogEntryCollection[dictionary.Values.Count];
+					dictionary.Values.CopyTo(result, 0);
+					return result;
+				}
+			}
 		}
 
 		public LogEntryCollection this[DateTime key]
 		{
 			get
 			{
-				return dictionary[key];
+				lock (dictionary)
+					return dictionary[key];
 			}
 			set
 			{
-				dictionary[key] = value;
+				lock (dictionary)
+					dictionary[key] = value;
 			}
 		}
 		#endregion
@@ -264,12 +283,14 @@ namespace Eraser.Manager
 
 		public void Clear()
 		{
-			dictionary.Clear();
+			lock (dictionary)
+				dictionary.Clear();
 		}
 
 		public bool Contains(KeyValuePair<DateTime, LogEntryCollection> item)
 		{
-			return dictionary.ContainsKey(item.Key) && dictionary[item.Key] == item.Value;
+			lock (dictionary)
+				return dictionary.ContainsKey(item.Key) && dictionary[item.Key] == item.Value;
 		}
 
 		public void CopyTo(KeyValuePair<DateTime, LogEntryCollection>[] array, int arrayIndex)
@@ -279,7 +300,11 @@ namespace Eraser.Manager
 
 		public int Count
 		{
-			get { return dictionary.Count; }
+			get
+			{
+				lock (dictionary)
+					return dictionary.Count;
+			}
 		}
 
 		public bool IsReadOnly
@@ -289,7 +314,8 @@ namespace Eraser.Manager
 
 		public bool Remove(KeyValuePair<DateTime, LogEntryCollection> item)
 		{
-			return dictionary.Remove(item.Key);
+			lock (dictionary)
+				return dictionary.Remove(item.Key);
 		}
 		#endregion
 
@@ -318,8 +344,9 @@ namespace Eraser.Manager
 			}
 			set
 			{
-				foreach (LogEntryCollection entries in dictionary.Values)
-					entries.owner = value;
+				lock (dictionary)
+					foreach (LogEntryCollection entries in dictionary.Values)
+						entries.owner = value;
 				owner = value;
 			}
 		}
@@ -351,12 +378,14 @@ namespace Eraser.Manager
 		#region IList<LogEntry> Members
 		public int IndexOf(LogEntry item)
 		{
-			return list.IndexOf(item);
+			lock (list)
+				return list.IndexOf(item);
 		}
 
 		public void Insert(int index, LogEntry item)
 		{
-			list.Insert(index, item);
+			lock (list)
+				list.Insert(index, item);
 			owner.OnLogged(owner, new LogEventArgs(item));
 		}
 
@@ -369,7 +398,8 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				return list[index];
+				lock (list)
+					return list[index];
 			}
 			set
 			{
@@ -391,17 +421,23 @@ namespace Eraser.Manager
 
 		public bool Contains(LogEntry item)
 		{
-			return list.Contains(item);
+			lock (list)
+				return list.Contains(item);
 		}
 
 		public void CopyTo(LogEntry[] array, int arrayIndex)
 		{
-			list.CopyTo(array, arrayIndex);
+			lock (list)
+				list.CopyTo(array, arrayIndex);
 		}
 
 		public int Count
 		{
-			get { return list.Count; }
+			get
+			{
+				lock (list)
+					return list.Count;
+			}
 		}
 
 		public bool IsReadOnly
@@ -411,7 +447,8 @@ namespace Eraser.Manager
 
 		public bool Remove(LogEntry item)
 		{
-			return list.Remove(item);
+			lock (list)
+				return list.Remove(item);
 		}
 		#endregion
 

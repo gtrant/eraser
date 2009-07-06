@@ -46,8 +46,7 @@ namespace Eraser.DefaultPlugins
 
 		public override void NextBytes(byte[] buffer)
 		{
-			lock (rand)
-				rand.GetBytes(buffer);
+			rand.GetBytes(buffer);
 		}
 
 		protected override void Reseed(byte[] seed)

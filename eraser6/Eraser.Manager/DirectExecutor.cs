@@ -264,12 +264,20 @@ namespace Eraser.Manager
 							{
 								throw;
 							}
+							catch (OperationCanceledException)
+							{
+								throw;
+							}
 							catch (Exception e)
 							{
 								task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
 							}
 					}
 					catch (FatalException e)
+					{
+						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Fatal));
+					}
+					catch (OperationCanceledException e)
 					{
 						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Fatal));
 					}
@@ -520,9 +528,8 @@ namespace Eraser.Manager
 						progress.Event.CurrentItemName = path;
 						task.OnProgressChanged(progress.Event);
 
-						lock (currentTask)
-							if (currentTask.Canceled)
-								throw new FatalException(S._("The task was cancelled."));
+						if (currentTask.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
 					};
 
 				ClusterTipsEraseProgress eraseProgress =
@@ -538,9 +545,8 @@ namespace Eraser.Manager
 						progress.Event.TimeLeft = tipProgress.TimeLeft;
 						task.OnProgressChanged(progress.Event);
 
-						lock (currentTask)
-							if (currentTask.Canceled)
-								throw new FatalException(S._("The task was cancelled."));
+						if (currentTask.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
 					};
 
 				EraseClusterTips(task, target, method, searchProgress, eraseProgress);
@@ -612,9 +618,8 @@ namespace Eraser.Manager
 								progress.Event.TimeLeft = progress.TimeLeft;
 								task.OnProgressChanged(progress.Event);
 
-								lock (currentTask)
-									if (currentTask.Canceled)
-										throw new FatalException(S._("The task was cancelled."));
+								if (currentTask.Canceled)
+									throw new OperationCanceledException(S._("The task was cancelled."));
 							}
 						);
 					}
@@ -640,9 +645,8 @@ namespace Eraser.Manager
 			fsManager.EraseDirectoryStructures(volInfo,
 				delegate(int currentFile, int totalFiles)
 				{
-					lock (currentTask)
-						if (currentTask.Canceled)
-							throw new FatalException(S._("The task was cancelled."));
+					if (currentTask.Canceled)
+						throw new OperationCanceledException(S._("The task was cancelled."));
 
 					//Compute the progress
 					fsEntriesProgress.Total = totalFiles;
@@ -675,7 +679,7 @@ namespace Eraser.Manager
 			{
 				//Check if we've been cancelled
 				if (task.Canceled)
-					throw new FatalException(S._("The task was cancelled."));
+					throw new OperationCanceledException(S._("The task was cancelled."));
 
 				try
 				{
@@ -920,9 +924,8 @@ namespace Eraser.Manager
 									progress.Event.TimeLeft = progress.TimeLeft;
 									task.OnProgressChanged(progress.Event);
 
-									lock (currentTask)
-										if (currentTask.Canceled)
-											throw new FatalException(S._("The task was cancelled."));
+									if (currentTask.Canceled)
+										throw new OperationCanceledException(S._("The task was cancelled."));
 								}
 							);
 						}
@@ -1131,11 +1134,13 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				return list[index];
+				lock (list)
+					return list[index];
 			}
 			set
 			{
-				list[index] = value;
+				lock (list)
+					list[index] = value;
 			}
 		}
 		#endregion
@@ -1154,17 +1159,23 @@ namespace Eraser.Manager
 
 		public override bool Contains(Task item)
 		{
-			return list.Contains(item);
+			lock (list)
+				return list.Contains(item);
 		}
 
 		public override void CopyTo(Task[] array, int arrayIndex)
 		{
-			list.CopyTo(array, arrayIndex);
+			lock (list)
+				list.CopyTo(array, arrayIndex);
 		}
 
 		public override int Count
 		{
-			get { return list.Count; }
+			get
+			{
+				lock (list)
+					return list.Count;
+			}
 		}
 
 		public override bool Remove(Task item)
