@@ -115,7 +115,8 @@ namespace Eraser.Util
 					List<FILE_STREAM_INFORMATION> result = new List<FILE_STREAM_INFORMATION>();
 					unsafe
 					{
-						for (byte* i = (byte*)fileInfoPtr; ; i += streamInfo.NextEntryOffset)
+						for (byte* i = (byte*)fileInfoPtr; streamInfo.NextEntryOffset != 0;
+							i += streamInfo.NextEntryOffset)
 						{
 							byte* currStreamPtr = i;
 							streamInfo.NextEntryOffset = *(uint*)currStreamPtr;
@@ -133,9 +134,6 @@ namespace Eraser.Util
 							streamInfo.StreamName = Marshal.PtrToStringUni((IntPtr)currStreamPtr,
 								(int)streamInfo.StreamNameLength / 2);
 							result.Add(streamInfo);
-
-							if (streamInfo.NextEntryOffset == 0)
-								break;
 						}
 					}
 
