@@ -563,15 +563,8 @@ namespace Eraser {
 							item.erase(item.end() - 1);
 						DWORD attributes = GetFileAttributes(item.c_str());
 
-						//Escape the command line (= and , are special characters)
-						std::wstring escapedItem;
-						escapedItem.reserve(item.length());
-						for (std::wstring::const_iterator i = item.begin(); i != item.end(); ++i)
-						{
-							if (wcschr(L"\\=,", *i))
-								escapedItem += '\\';
-							escapedItem += *i;
-						}
+						//Escape the string
+						std::wstring escapedItem(EscapeString(item));
 
 						//Add the correct command line for the file type.
 						if (attributes & FILE_ATTRIBUTE_DIRECTORY)
@@ -596,7 +589,8 @@ namespace Eraser {
 				for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
 					i != SelectedFiles.end(); ++i)
 				{
-					commandLine += L"\"-u=" + *i + L",clusterTips\" ";
+					std::wstring escapedItem(EscapeString(*i));
+					commandLine += L"\"-u=" + escapedItem + L",clusterTips\" ";
 				}
 				
 				break;
@@ -677,6 +671,21 @@ namespace Eraser {
 		if (lastCount > 0)
 			return std::wstring(buffer, lastCount);
 		return std::wstring();
+	}
+
+	std::wstring CCtxMenu::EscapeString(const std::wsting& string)
+	{
+		//Escape the command line (= and , are special characters)
+		std::wstring escapedItem;
+		escapedItem.reserve(item.length());
+		for (std::wstring::const_iterator i = item.begin(); i != item.end(); ++i)
+		{
+			if (wcschr(L"\\=,", *i))
+				escapedItem += '\\';
+			escapedItem += *i;
+		}
+
+		return escapedItem;
 	}
 
 	std::wstring CCtxMenu::FormatString(const std::wstring& formatString, ...)
