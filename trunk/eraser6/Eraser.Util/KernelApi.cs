@@ -278,6 +278,63 @@ namespace Eraser.Util
 				(NativeMethods.EXECUTION_STATE)executionState);
 		}
 
+		public class DiskPerformanceInfo
+		{
+			unsafe internal DiskPerformanceInfo(NativeMethods.DiskPerformanceInfoInternal info)
+			{
+				BytesRead = info.BytesRead;
+				BytesWritten = info.BytesWritten;
+				ReadTime = info.ReadTime;
+				WriteTime = info.WriteTime;
+				IdleTime = info.IdleTime;
+				ReadCount = info.ReadCount;
+				WriteCount = info.WriteCount;
+				QueueDepth = info.QueueDepth;
+				SplitCount = info.SplitCount;
+				QueryTime = info.QueryTime;
+				StorageDeviceNumber = info.StorageDeviceNumber;
+				StorageManagerName = new string((char*)info.StorageManagerName);
+			}
+
+			public long BytesRead { get; private set; }
+			public long BytesWritten { get; private set; }
+			public long ReadTime { get; private set; }
+			public long WriteTime { get; private set; }
+			public long IdleTime { get; private set; }
+			public uint ReadCount { get; private set; }
+			public uint WriteCount { get; private set; }
+			public uint QueueDepth { get; private set; }
+			public uint SplitCount { get; private set; }
+			public long QueryTime { get; private set; }
+			public uint StorageDeviceNumber { get; private set; }
+			public string StorageManagerName { get; private set; }
+		}
+
+		/// <summary>
+		/// Queries the performance information for the given disk.
+		/// </summary>
+		/// <param name="diskHandle">A read-only handle to a device (disk).</param>
+		/// <returns>A DiskPerformanceInfo structure describing the performance
+		/// information for the given disk.</returns>
+		public static DiskPerformanceInfo QueryDiskPerformanceInfo(SafeFileHandle diskHandle)
+		{
+			if (diskHandle.IsInvalid)
+				throw new ArgumentException("The disk handle must not be invalid.");
+
+			//This only works if the user has turned on the disk performance
+			//counters with 'diskperf -y'. These counters are off by default
+			NativeMethods.DiskPerformanceInfoInternal result =
+				new NativeMethods.DiskPerformanceInfoInternal();
+			uint bytesReturned = 0;
+			if (NativeMethods.DeviceIoControl(diskHandle, NativeMethods.IOCTL_DISK_PERFORMANCE,
+				IntPtr.Zero, 0, out result, (uint)Marshal.SizeOf(result), out bytesReturned, IntPtr.Zero))
+			{
+				return new DiskPerformanceInfo(result);
+			}
+
+			return null;
+		}
+
 		/// <summary>
 		/// Stores Kernel32.dll functions, structs and constants.
 		/// </summary>
@@ -600,7 +657,31 @@ namespace Eraser.Util
 			public const ushort COMPRESSION_FORMAT_NONE = 0x0000;
 			public const ushort COMPRESSION_FORMAT_DEFAULT = 0x0001;
 
+			[DllImport("Kernel32.dll", SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			public extern static bool DeviceIoControl(SafeFileHandle hDevice,
+				uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
+				out DiskPerformanceInfoInternal lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned,
+				IntPtr lpOverlapped);
 
+			public const uint IOCTL_DISK_PERFORMANCE = ((0x00000007) << 16) | ((0x0008) << 2);
+
+			public unsafe struct DiskPerformanceInfoInternal
+			{
+				public long BytesRead;
+				public long BytesWritten;
+				public long ReadTime;
+				public long WriteTime;
+				public long IdleTime;
+				public uint ReadCount;
+				public uint WriteCount;
+				public uint QueueDepth;
+				public uint SplitCount;
+				public long QueryTime;
+				public uint StorageDeviceNumber;
+				public fixed short StorageManagerName[8];
+			}
+		
 			/// <summary>
 			/// Retrieves a set of FAT file system attributes for a specified file or
 			/// directory.
