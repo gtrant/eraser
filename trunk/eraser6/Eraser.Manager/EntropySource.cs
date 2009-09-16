@@ -369,29 +369,47 @@ namespace Eraser.Manager
 			List<byte> result = new List<byte>();
 
 			//NetAPI statistics
-			result.AddRange(NetApi.NetStatisticsGet(null, NetApiService.Workstation, 0, 0));
+			byte[] netApiStats = NetApi.NetStatisticsGet(null, NetApiService.Workstation, 0, 0);
+			if (netApiStats != null)
+				result.AddRange(netApiStats);
 
 #if false
 			//Get disk I/O statistics for all the hard drives
-			for (int drive = 0; ; ++drive)
+			try
 			{
-				//Try to open the drive.
-				using (SafeFileHandle hDevice = File.CreateFile(
-					string.Format("\\\\.\\PhysicalDrive%d", drive), 0,
-					File.FILE_SHARE_READ | File.FILE_SHARE_WRITE, IntPtr.Zero,
-					File.OPEN_EXISTING, 0, IntPtr.Zero))
+				for (int drive = 0; ; ++drive)
 				{
-					if (hDevice.IsInvalid)
-						break;
-
-					//This only works if the user has turned on the disk performance
-					//counters with 'diskperf -y'. These counters are off by default
-					if (File.DeviceIoControl(hDevice, IOCTL_DISK_PERFORMANCE, NULL, 0,
-						&diskPerformance, sizeof(DISK_PERFORMANCE), &uSize, NULL))
+					//Try to open the drive.
+					StreamInfo info = new StreamInfo(string.Format(CultureInfo.InvariantCulture,
+						"\\\\.\\PhysicalDrive{0}", drive));
+					using (FileStream stream = info.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 					{
-						addEntropy(&diskPerformance, uSize);
+						SafeFileHandle device = stream.SafeFileHandle;
+						KernelApi.DiskPerformanceInfo diskPerformance =
+							KernelApi.QueryDiskPerformanceInfo(device);
+						if (diskPerformance != null)
+						{
+							result.AddRange(StructToBuffer(diskPerformance.BytesRead));
+							result.AddRange(StructToBuffer(diskPerformance.BytesWritten));
+							result.AddRange(StructToBuffer(diskPerformance.IdleTime));
+							result.AddRange(StructToBuffer(diskPerformance.QueryTime));
+							result.AddRange(StructToBuffer(diskPerformance.QueueDepth));
+							result.AddRange(StructToBuffer(diskPerformance.ReadCount));
+							result.AddRange(StructToBuffer(diskPerformance.ReadTime));
+							result.AddRange(StructToBuffer(diskPerformance.SplitCount));
+							result.AddRange(StructToBuffer(diskPerformance.StorageDeviceNumber));
+							result.AddRange(Encoding.UTF8.GetBytes(diskPerformance.StorageManagerName));
+							result.AddRange(StructToBuffer(diskPerformance.WriteCount));
+							result.AddRange(StructToBuffer(diskPerformance.WriteTime));
+						}
 					}
 				}
+			}
+			catch (FileNotFoundException)
+			{
+			}
+			catch (UnauthorizedAccessException)
+			{
 			}
 #endif
 
