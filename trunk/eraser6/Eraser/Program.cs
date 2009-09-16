@@ -961,9 +961,22 @@ namespace Eraser
 				}
 				else if (IsParam(param, "file", "f"))
 				{
+					if (equalPos == -1)
+						throw new ArgumentException("--file must be specified with the " +
+							"file to erase.");
+
 					//It's just a file!
 					FileTarget target = new FileTarget();
-					target.Path = Path.GetFullPath(param);
+
+					//Parse the subparameters.
+					List<KeyValuePair<string, string>> subParams =
+						GetSubParameters(param.Substring(equalPos + 1));
+					foreach (KeyValuePair<string, string> kvp in subParams)
+						if (kvp.Value == null && target.Path == null)
+							target.Path = Path.GetFullPath(kvp.Key);
+						else
+							throw new ArgumentException("Unknown subparameter: " + kvp.Key);
+
 					Targets.Add(target);
 				}
 				else
