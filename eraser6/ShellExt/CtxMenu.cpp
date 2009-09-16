@@ -570,7 +570,7 @@ namespace Eraser {
 						if (attributes & FILE_ATTRIBUTE_DIRECTORY)
 							commandLine += L"\"-d=" + escapedItem + L"\" ";
 						else
-							commandLine += L"\"" + escapedItem + L"\" ";
+							commandLine += L"\"-f=" + escapedItem + L"\" ";
 					}
 				}
 
@@ -677,8 +677,8 @@ namespace Eraser {
 	{
 		//Escape the command line (= and , are special characters)
 		std::wstring escapedItem;
-		escapedItem.reserve(item.length());
-		for (std::wstring::const_iterator i = item.begin(); i != item.end(); ++i)
+		escapedItem.reserve(string.length());
+		for (std::wstring::const_iterator i = string.begin(); i != string.end(); ++i)
 		{
 			if (wcschr(L"\\=,", *i))
 				escapedItem += '\\';
