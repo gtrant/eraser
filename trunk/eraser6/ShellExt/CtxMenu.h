@@ -80,7 +80,7 @@ namespace Eraser
 		Actions GetApplicableActions();
 
 		static std::wstring LoadString(UINT stringID);
-		static std::wstring EscapeString(const std::wsting& string);
+		static std::wstring EscapeString(const std::wstring& string);
 		static std::wstring FormatString(const std::wstring& formatString, ...);
 		static std::wstring GetHKeyPath(HKEY handle);
 

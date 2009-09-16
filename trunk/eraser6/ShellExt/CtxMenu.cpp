@@ -673,7 +673,7 @@ namespace Eraser {
 		return std::wstring();
 	}
 
-	std::wstring CCtxMenu::EscapeString(const std::wsting& string)
+	std::wstring CCtxMenu::EscapeString(const std::wstring& string)
 	{
 		//Escape the command line (= and , are special characters)
 		std::wstring escapedItem;
