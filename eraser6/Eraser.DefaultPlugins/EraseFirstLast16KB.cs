@@ -95,7 +95,7 @@ namespace Eraser.DefaultPlugins
 		}
 
 		public override void Erase(Stream strm, long erasureLength, Prng prng,
-			EraserMethodProgressFunction callback)
+			ErasureMethodProgressFunction callback)
 		{
 			//If we have no default or we are the default then throw an exception
 			if (method == null || method.Guid == Guid)
