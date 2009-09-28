@@ -55,7 +55,7 @@
   </Groups>
   <Settings />
  </Rules>
- <FxCopReport Version="1.36" LastAnalysis="2009-07-03 10:46:36Z">
+ <FxCopReport Version="1.36" LastAnalysis="2009-09-28 06:30:14Z">
   <Namespaces>
    <Namespace Name="Eraser.Unlocker">
     <Messages>
@@ -312,7 +312,7 @@
            <Member Name="#.ctor()">
             <Messages>
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="1048">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="848">
                <Item>'DirectExecutor.DirectExecutor()'</Item>
                <Item>&#xD;&#xA;&#xD;&#xA;DirectExecutor..ctor()&#xD;&#xA;Executor.set_TaskAdded(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_TaskDeleted(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_Tasks(ExecutorTasksCollection):Void</Item>
               </Issue>
@@ -322,7 +322,7 @@
            <Member Name="#EraseFilesystemObject(Eraser.Manager.Task,Eraser.Manager.FileSystemObjectTarget,Eraser.Manager.DirectExecutor+TaskProgressManager)">
             <Messages>
              <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-05-01 03:14:45Z">
-              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="976">
+              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="791">
                <Item>'target'</Item>
                <Item>'FolderTarget'</Item>
                <Item>'DirectExecutor.EraseFilesystemObject(Task, FileSystemObjectTarget, DirectExecutor.TaskProgressManager)'</Item>
@@ -334,11 +334,11 @@
            <Member Name="#Main()">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="267">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="271">
                <Item>'DirectExecutor.Main()'</Item>
                <Item>'Exception'</Item>
               </Issue>
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="276">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="284">
                <Item>'DirectExecutor.Main()'</Item>
                <Item>'Exception'</Item>
               </Issue>
@@ -368,16 +368,16 @@
          </Type>
          <Type Name="ErasureMethod">
           <Members>
-           <Member Name="#Erase(System.IO.Stream,System.Int64,Eraser.Manager.Prng,Eraser.Manager.EraserMethodProgressFunction)">
+           <Member Name="#Erase(System.IO.Stream,System.Int64,Eraser.Manager.Prng,Eraser.Manager.ErasureMethodProgressFunction)">
             <Messages>
-             <Message Id="Erase" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2009-05-01 04:19:08Z">
+             <Message Id="Erase" TypeName="IdentifiersShouldNotMatchKeywords" Category="Microsoft.Naming" CheckId="CA1716" Status="Excluded" Created="2009-09-28 06:25:17Z">
               <Issue Name="Member">
-               <Item>'ErasureMethod.Erase(Stream, long, Prng, EraserMethodProgressFunction)'</Item>
+               <Item>'ErasureMethod.Erase(Stream, long, Prng, ErasureMethodProgressFunction)'</Item>
                <Item>Erase</Item>
               </Issue>
               <Notes>
                <User Name="Joel">
-                <Note Id="1" />
+                <Note Id="19" />
                </User>
               </Notes>
              </Message>
@@ -411,7 +411,7 @@
              <Accessor Name="#get_Method()">
               <Messages>
                <Message TypeName="DoNotRaiseExceptionsInUnexpectedLocations" Category="Microsoft.Design" CheckId="CA1065" Created="2009-07-03 06:55:12Z" FixCategory="Breaking">
-                <Issue Name="PropertyGetter" Level="Warning" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="296">
+                <Issue Name="PropertyGetter" Level="Warning" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="309">
                  <Item>'ErasureTarget.Method.get()'</Item>
                  <Item>'NotImplementedException'</Item>
                 </Issue>
@@ -461,7 +461,7 @@
            <Member Name="#GetPathADSes(System.Collections.Generic.ICollection`1&lt;System.String&gt;,System.Int64&amp;,System.String)">
             <Messages>
              <Message Id="1#" TypeName="AvoidOutParameters" Category="Microsoft.Design" CheckId="CA1021" Created="2009-05-01 03:23:16Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="384">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Task.cs" Line="397">
                <Item>'totalSize'</Item>
               </Issue>
              </Message>
@@ -491,12 +491,12 @@
            <Member Name="#PlausibleDeniabilityFiles">
             <Messages>
              <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="339">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="319">
                <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
               </Issue>
              </Message>
              <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="339">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="319">
                <Item>'List&lt;string&gt;'</Item>
                <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
               </Issue>
@@ -506,7 +506,7 @@
            <Member Name="#PluginApprovals">
             <Messages>
              <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-05-01 03:14:45Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="472">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="452">
                <Item>'ManagerSettings.PluginApprovals'</Item>
               </Issue>
              </Message>
@@ -552,6 +552,21 @@
          </Type>
          <Type Name="Schedule">
           <Members>
+           <Member Name="#RunManually">
+            <Messages>
+             <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2009-07-06 08:09:06Z">
+              <Issue>
+               <Item>'Schedule.RunManually'</Item>
+               <Item>'Schedule'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="18" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
            <Member Name="#RunNow">
             <Messages>
              <Message TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104" Status="Excluded" Created="2009-05-01 03:23:16Z">
@@ -613,7 +628,7 @@
           <Members>
            <Member Name="#Close()">
             <Messages>
-             <Message Id="&lt;Module&gt;.CloseHandle(System.Void*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
+             <Message Id="&lt;Module&gt;.CloseHandle(System.Void*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2009-06-02 07:31:56Z">
               <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="133">
                <Item>'OpenHandle.Close()'</Item>
                <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
@@ -622,6 +637,11 @@
                <Item>'OpenHandle.Close()'</Item>
                <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
               </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="21" />
+               </User>
+              </Notes>
              </Message>
              <Message Id="&lt;Module&gt;.DuplicateHandle(System.Void*,System.Void*,System.Void*,System.Void**,optional(System.Runtime.CompilerServices.IsLong) System.UInt32,System.Int32,optional(System.Runtime.CompilerServices.IsLong) System.UInt32)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2009-06-02 07:31:56Z">
               <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="124">
@@ -638,7 +658,13 @@
            </Member>
            <Member Name="#ResolveHandlePath(System.IntPtr,System.Int32)">
             <Messages>
-             <Message Id="&lt;Module&gt;.CloseHandle(System.Void*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
+             <Message Id="&lt;Module&gt;.ReleaseSemaphore(System.Void*,optional(System.Runtime.CompilerServices.IsLong) System.Int32,System.optional(IsLong) Int32*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="97">
+               <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
+               <Item>'&lt;Module&gt;.ReleaseSemaphore(void*, int, int*)'</Item>
+              </Issue>
+             </Message>
+             <Message Id="&lt;Module&gt;.CloseHandle(System.Void*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2009-06-02 07:31:56Z">
               <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="88">
                <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
                <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
@@ -647,12 +673,11 @@
                <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
                <Item>'&lt;Module&gt;.CloseHandle(void*)'</Item>
               </Issue>
-             </Message>
-             <Message Id="&lt;Module&gt;.ReleaseSemaphore(System.Void*,optional(System.Runtime.CompilerServices.IsLong) System.Int32,System.optional(IsLong) Int32*)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-06-02 07:31:56Z">
-              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="97">
-               <Item>'OpenHandle.ResolveHandlePath(IntPtr, int)'</Item>
-               <Item>'&lt;Module&gt;.ReleaseSemaphore(void*, int, int*)'</Item>
-              </Issue>
+              <Notes>
+               <User Name="Joel">
+                <Note Id="20" />
+               </User>
+              </Notes>
              </Message>
              <Message Id="&lt;Module&gt;.DuplicateHandle(System.Void*,System.Void*,System.Void*,System.Void**,optional(System.Runtime.CompilerServices.IsLong) System.UInt32,System.Int32,optional(System.Runtime.CompilerServices.IsLong) System.UInt32)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Status="Excluded" Created="2009-06-02 07:31:56Z">
               <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.unlocker" File="eraser.unlocker.cpp" Line="87">
@@ -765,7 +790,6 @@
   <Notes>
    <User Name="Joel">
     <Note Id="0" Modified="2009-06-02 07:18:16Z">All fields are relevant</Note>
-    <Note Id="1" Modified="2009-06-02 07:18:44Z">No better alternative</Note>
     <Note Id="2" Modified="2009-06-02 07:18:57Z">Build metadata</Note>
     <Note Id="3" Modified="2009-06-02 07:19:19Z">Used to force creation of window handle</Note>
     <Note Id="4" Modified="2009-06-02 07:19:33Z">British spelling</Note>
@@ -782,6 +806,10 @@
     <Note Id="15" Modified="2009-06-02 07:36:01Z">Unlocker is our assembly name, hence a proper noun</Note>
     <Note Id="16" Modified="2009-06-02 07:36:03Z">Unlocker is our assembly name, hence a proper noun</Note>
     <Note Id="17" Modified="2009-07-03 07:02:50Z">Can't think of a better exception to use</Note>
+    <Note Id="18" Modified="2009-07-06 08:09:47Z">Already is immutable</Note>
+    <Note Id="19" Modified="2009-09-28 06:26:12Z">There seems to be no suitable alternative.</Note>
+    <Note Id="20" Modified="2009-09-28 06:28:24Z">If CloseHandle fails, there's nothing we can do.</Note>
+    <Note Id="21" Modified="2009-09-28 06:29:02Z">If CloseHandle fails we cannot do anything to recover our state.</Note>
    </User>
   </Notes>
   <Rules>
