@@ -32,13 +32,13 @@ namespace Unlocker {
 		std::auto_ptr<SYSTEM_HANDLES> handlesList(new SYSTEM_HANDLES);
 		{
 			DWORD bufferSize = 0;
-			NtQuerySystemInformation(SystemHandleInformation, handlesList.get(),
-				sizeof(SYSTEM_HANDLES), &bufferSize);
+			NtQuerySystemInformation(static_cast<SYSTEM_INFORMATION_CLASS>(SystemHandleInformation),
+				handlesList.get(), sizeof(SYSTEM_HANDLES), &bufferSize);
 
 			//Then get the whole list
 			handlesList.reset(reinterpret_cast<PSYSTEM_HANDLES>(new char[bufferSize]));
-			NtQuerySystemInformation(SystemHandleInformation, handlesList.get(),
-				bufferSize, &bufferSize);
+			NtQuerySystemInformation(static_cast<SYSTEM_INFORMATION_CLASS>(SystemHandleInformation),
+				handlesList.get(), bufferSize, &bufferSize);
 
 			if (bufferSize == 0)
 				throw gcnew InvalidOperationException("The list of open system handles could not be retrieved.");

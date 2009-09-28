@@ -21,21 +21,55 @@
 
 #include "stdafx.h"
 
-fNtQuerySystemInformation NtQuerySystemInformation = NULL;
-fNtQueryObject NtQueryObject = NULL;
+namespace {
+	typedef NTSTATUS (__stdcall *fNtQuerySystemInformation)(
+		__in       SYSTEM_INFORMATION_CLASS,
+		__inout    PVOID,
+		__in       ULONG,
+		__out_opt  PULONG);
 
-class DllLoader
-{
-public:
-	DllLoader()
+	typedef NTSTATUS (__stdcall *fNtQueryObject)(
+		IN HANDLE   OPTIONAL,
+		IN OBJECT_INFORMATION_CLASS  ,
+		OUT PVOID   OPTIONAL,
+		IN ULONG  ,
+		OUT PULONG   OPTIONAL);
+
+	fNtQuerySystemInformation pNtQuerySystemInformation = NULL;
+	fNtQueryObject pNtQueryObject = NULL;
+
+	class DllLoader
 	{
-		HINSTANCE ntDll = LoadLibrary(L"NtDll.dll");
-		NtQuerySystemInformation = reinterpret_cast<fNtQuerySystemInformation>(
-			GetProcAddress(ntDll, "NtQuerySystemInformation"));
-		NtQueryObject = reinterpret_cast<fNtQueryObject>(
-			GetProcAddress(ntDll, "NtQueryObject"));
-	}
+	public:
+		DllLoader()
+		{
+			HINSTANCE ntDll = LoadLibrary(L"NtDll.dll");
+			pNtQuerySystemInformation = reinterpret_cast<fNtQuerySystemInformation>(
+				GetProcAddress(ntDll, "NtQuerySystemInformation"));
+			pNtQueryObject = reinterpret_cast<fNtQueryObject>(
+				GetProcAddress(ntDll, "NtQueryObject"));
+		}
 
-};
+	};
 
-DllLoader loader;
+	DllLoader loader;
+}
+
+NTSTATUS __stdcall NtQuerySystemInformation(
+		__in       SYSTEM_INFORMATION_CLASS sic,
+		__inout    PVOID data,
+		__in       ULONG length,
+		__out_opt  PULONG outLength)
+{
+	return pNtQuerySystemInformation(sic, data, length, outLength);
+}
+
+NTSTATUS __stdcall NtQueryObject(
+		IN HANDLE handle OPTIONAL,
+		IN OBJECT_INFORMATION_CLASS oic,
+		OUT PVOID data OPTIONAL,
+		IN ULONG length,
+		OUT PULONG outLength OPTIONAL)
+{
+	return pNtQueryObject(handle, oic, data, length, outLength);
+}

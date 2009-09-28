@@ -56,7 +56,9 @@ namespace {
 			param.Input.erase(i);
 
 			//Query the name of the object
-			if (NtQueryObject(result.Handle, ObjectNameInformation, name, sizeof(name), NULL) == STATUS_SUCCESS)
+			if (NtQueryObject(result.Handle, static_cast<OBJECT_INFORMATION_CLASS>(ObjectNameInformation),
+				name, sizeof(name), NULL) == STATUS_SUCCESS)
+			{
 				if (nameStr && nameStr->Length)
 				{
 					std::wstring& name = result.Name;
@@ -75,6 +77,7 @@ namespace {
 							}
 						}
 				}
+			}
 
 			//Tell the waiting thread that we're done
 			SetEvent(result.Event);
