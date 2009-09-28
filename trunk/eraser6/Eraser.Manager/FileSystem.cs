@@ -212,32 +212,15 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// The function prototype for cluster tip search progress callbacks. This is
-		/// called when the cluster tips are being searched.
-		/// </summary>
-		/// <param name="currentPath">The directory being searched</param>
-		public delegate void ClusterTipsSearchProgress(string currentPath);
-
-		/// <summary>
-		/// The function prototype for cluster tip erasure callbacks. This is called when
-		/// the cluster tips are being erased.
-		/// </summary>
-		/// <param name="currentFile">The current file index being erased.</param>
-		/// <param name="totalFiles">The total number of files to be erased.</param>
-		/// <param name="currentFilePath">The path to the current file being erased.</param>
-		public delegate void ClusterTipsEraseProgress(int currentFile, int totalFiles,
-			string currentFilePath);
-
-		/// <summary>
 		/// Erases all file cluster tips in the given volume.
 		/// </summary>
 		/// <param name="info">The volume to search for file cluster tips and erase them.</param>
 		/// <param name="method">The erasure method being employed.</param>
-		/// <param name="logger">The log manager instance that tracks log messages.</param>
+		/// <param name="log">The log manager instance that tracks log messages.</param>
 		/// <param name="searchCallback">The callback function for search progress.</param>
 		/// <param name="eraseCallback">The callback function for erasure progress.</param>
 		public abstract void EraseClusterTips(VolumeInfo info, ErasureMethod method,
-			Logger logger, ClusterTipsSearchProgress searchCallback,
+			Logger log, ClusterTipsSearchProgress searchCallback,
 			ClusterTipsEraseProgress eraseCallback);
 
 		/// <summary>
@@ -274,7 +257,7 @@ namespace Eraser.Manager
 		/// </summary>
 		/// <param name="info"></param>
 		public abstract void EraseFileSystemObject(StreamInfo info, ErasureMethod method,
-			EraserMethodProgressFunction callback);
+			ErasureMethodProgressFunction callback);
 
 		/// <summary>
 		/// Retrieves the size of the file on disk, calculated by the amount of
@@ -296,6 +279,23 @@ namespace Eraser.Manager
 		/// </summary>
 		public const int FileNameEraseTries = 50;
 	}
+
+	/// <summary>
+	/// The function prototype for cluster tip search progress callbacks. This is
+	/// called when the cluster tips are being searched.
+	/// </summary>
+	/// <param name="currentPath">The directory being searched</param>
+	public delegate void ClusterTipsSearchProgress(string currentPath);
+
+	/// <summary>
+	/// The function prototype for cluster tip erasure callbacks. This is called when
+	/// the cluster tips are being erased.
+	/// </summary>
+	/// <param name="currentFile">The current file index being erased.</param>
+	/// <param name="totalFiles">The total number of files to be erased.</param>
+	/// <param name="currentFilePath">The path to the current file being erased.</param>
+	public delegate void ClusterTipsEraseProgress(int currentFile, int totalFiles,
+		string currentFilePath);
 
 	/// <summary>
 	/// The prototype of callbacks handling the file system table erase progress.
@@ -695,7 +695,7 @@ namespace Eraser.Manager
 		}
 
 		public override void EraseFileSystemObject(StreamInfo info, ErasureMethod method,
-			EraserMethodProgressFunction callback)
+			ErasureMethodProgressFunction callback)
 		{
 			//Check if the file fits in one MFT record
 			long mftRecordSize = NtfsApi.GetMftRecordSegmentSize(VolumeInfo.FromMountpoint(info.DirectoryName));
@@ -766,7 +766,7 @@ namespace Eraser.Manager
 		}
 
 		public override void EraseFileSystemObject(StreamInfo info, ErasureMethod method,
-			EraserMethodProgressFunction callback)
+			ErasureMethodProgressFunction callback)
 		{
 			//Create the file stream, and call the erasure method to write to
 			//the stream.
