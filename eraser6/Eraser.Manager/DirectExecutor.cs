@@ -746,8 +746,8 @@ namespace Eraser.Manager
 
 					//Remove the file.
 					FileInfo fileInfo = info.File;
-					/*if (fileInfo != null)
-						fsManager.DeleteFile(fileInfo);*/
+					if (fileInfo != null)
+						fsManager.DeleteFile(fileInfo);
 				}
 				catch (UnauthorizedAccessException)
 				{
