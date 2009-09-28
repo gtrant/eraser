@@ -396,6 +396,10 @@ namespace Eraser.Manager
 				}
 			}
 
+			//Set the date of the directory to be invalid to prevent forensic
+			//detection
+			info.CreationTime = info.LastWriteTime = info.LastAccessTime = MinTimestamp;
+
 			//Remove the folder
 			info.Delete(true);
 		}
