@@ -20,18 +20,7 @@
  */
 
 #pragma once
-
-#define STATUS_SUCCESS                          ((NTSTATUS)0x00000000L) // ntsubauth
-#define STATUS_BUFFER_OVERFLOW                  ((NTSTATUS)0x80000005L)
-#define STATUS_WAIT_0                           ((DWORD   )0x00000000L)
-
-typedef struct _UNICODE_STRING {
-	USHORT Length;
-	USHORT MaximumLength;
-	PWSTR  Buffer;
-} UNICODE_STRING;
-typedef UNICODE_STRING *PUNICODE_STRING;
-typedef const UNICODE_STRING *PCUNICODE_STRING;
+#include <winternl.h>
 
 typedef struct _SYSTEM_HANDLE_INFORMATION {
 	ULONG  ProcessId;
@@ -47,48 +36,7 @@ typedef struct _SYSTEM_HANDLES {
 	SYSTEM_HANDLE_INFORMATION Information[1];
 } SYSTEM_HANDLES, *PSYSTEM_HANDLES;
 
-typedef struct _IO_STATUS_BLOCK {
-	union {
-		NTSTATUS Status;
-		PVOID Pointer;
-	} DUMMYUNIONNAME;
-
-	ULONG_PTR Information;
-} IO_STATUS_BLOCK, *PIO_STATUS_BLOCK;
-
-typedef enum _SYSTEM_INFORMATION_CLASS {
-	SystemBasicInformation = 0,
-	SystemPerformanceInformation = 2,
-	SystemTimeOfDayInformation = 3,
-	SystemProcessInformation = 5,
-	SystemProcessorPerformanceInformation = 8,
-	SystemHandleInformation = 16,
-	SystemInterruptInformation = 23,
-	SystemExceptionInformation = 33,
-	SystemRegistryQuotaInformation = 37,
-	SystemLookasideInformation = 45
-} SYSTEM_INFORMATION_CLASS;
-
-typedef enum _OBJECT_INFORMATION_CLASS {
-	ObjectBasicInformation,
-	ObjectNameInformation,
-	ObjectTypeInformation,
-	ObjectAllTypesInformation,
-	ObjectHandleInformation
-} OBJECT_INFORMATION_CLASS;
-
-typedef NTSTATUS (__stdcall *fNtQuerySystemInformation)(
-	__in       SYSTEM_INFORMATION_CLASS,
-	__inout    PVOID,
-	__in       ULONG,
-	__out_opt  PULONG);
-
-typedef NTSTATUS (__stdcall *fNtQueryObject)(
-	IN HANDLE   OPTIONAL,
-	IN OBJECT_INFORMATION_CLASS  ,
-	OUT PVOID   OPTIONAL,
-	IN ULONG  ,
-	OUT PULONG   OPTIONAL);
-
-extern fNtQuerySystemInformation NtQuerySystemInformation;
-extern fNtQueryObject NtQueryObject;
+const int SystemHandleInformation = 16;
+const int ObjectNameInformation = 1;
+const int ObjectAllTypesInformation = 3;
+const int ObjectHandleInformation = 4;

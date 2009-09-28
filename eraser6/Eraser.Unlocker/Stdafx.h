@@ -28,10 +28,11 @@
 
 #include <process.h>
 
-#define WIN32_NO_STATUS
 #include "targetver.h"
+#define WIN32_NO_STATUS 1
 #include <windows.h>
-#include <winnt.h>
+#undef  WIN32_NO_STATUS
 #include <ntstatus.h>
+#include <winnt.h>
 
 #include "NTApi.h"
