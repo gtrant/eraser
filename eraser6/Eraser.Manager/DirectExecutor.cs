@@ -477,7 +477,6 @@ namespace Eraser.Manager
 			private TaskProgressEventArgs evt;
 		}
 
-		#region Unused Space erasure functions
 		/// <summary>
 		/// Executes a unused space erase.
 		/// </summary>
@@ -509,7 +508,14 @@ namespace Eraser.Manager
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = target.Method;
-			
+
+			//Make a folder to dump our temporary files in
+			DirectoryInfo info = new DirectoryInfo(target.Drive);
+			VolumeInfo volInfo = VolumeInfo.FromMountpoint(target.Drive);
+			FileSystem fsManager = FileSystem.Get(volInfo);
+			info = info.CreateSubdirectory(Path.GetFileName(
+				FileSystem.GenerateRandomFileName(info, 18)));
+
 			//Erase the cluster tips of every file on the drive.
 			if (target.EraseClusterTips)
 			{
@@ -523,7 +529,7 @@ namespace Eraser.Manager
 				tipProgress.Start();
 
 				//Define the callback handlers
-				ClusterTipsSearchProgress searchProgress = delegate(string path)
+				FileSystem.ClusterTipsSearchProgress searchProgress = delegate(string path)
 					{
 						progress.Event.CurrentItemName = path;
 						task.OnProgressChanged(progress.Event);
@@ -532,7 +538,7 @@ namespace Eraser.Manager
 							throw new OperationCanceledException(S._("The task was cancelled."));
 					};
 
-				ClusterTipsEraseProgress eraseProgress =
+				FileSystem.ClusterTipsEraseProgress eraseProgress =
 					delegate(int currentFile, int totalFiles, string currentFilePath)
 					{
 						tipProgress.Total = totalFiles;
@@ -549,15 +555,9 @@ namespace Eraser.Manager
 							throw new OperationCanceledException(S._("The task was cancelled."));
 					};
 
-				EraseClusterTips(task, target, method, searchProgress, eraseProgress);
+				fsManager.EraseClusterTips(VolumeInfo.FromMountpoint(target.Drive),
+					method, task.Log, searchProgress, eraseProgress);
 			}
-
-			//Make a folder to dump our temporary files in
-			DirectoryInfo info = new DirectoryInfo(target.Drive);
-			VolumeInfo volInfo = VolumeInfo.FromMountpoint(target.Drive);
-			FileSystem fsManager = FileSystem.Get(volInfo);
-			info = info.CreateSubdirectory(Path.GetFileName(
-				FileSystem.GenerateRandomFileName(info, 18)));
 
 			try
 			{
@@ -603,7 +603,7 @@ namespace Eraser.Manager
 						//Then run the erase task
 						method.Erase(stream, long.MaxValue,
 							PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng),
-							delegate(long lastWritten, int currentPass)
+							delegate(long lastWritten, long totalData, int currentPass)
 							{
 								progress.Completed = Math.Min(progress.Total,
 									progress.Completed + lastWritten);
@@ -662,181 +662,13 @@ namespace Eraser.Manager
 			);
 		}
 
-		private delegate void SubFoldersHandler(DirectoryInfo info);
-		private delegate void ClusterTipsSearchProgress(string currentPath);
-		private delegate void ClusterTipsEraseProgress(int currentFile, int totalFiles,
-			string currentFilePath);
-
-		private static void EraseClusterTips(Task task, UnusedSpaceTarget target,
-			ErasureMethod method, ClusterTipsSearchProgress searchCallback,
-			ClusterTipsEraseProgress eraseCallback)
-		{
-			//List all the files which can be erased.
-			List<string> files = new List<string>();
-			SubFoldersHandler subFolders = null;
-
-			subFolders = delegate(DirectoryInfo info)
-			{
-				//Check if we've been cancelled
-				if (task.Canceled)
-					throw new OperationCanceledException(S._("The task was cancelled."));
-
-				try
-				{
-					//Skip this directory if it is a reparse point
-					if ((info.Attributes & FileAttributes.ReparsePoint) != 0)
-					{
-						task.Log.LastSessionEntries.Add(new LogEntry(S._("Files in {0} did " +
-							"not have their cluster tips erased because it is a hard link or " +
-							"a symbolic link.", info.FullName), LogLevel.Information));
-						return;
-					}
-
-					foreach (FileInfo file in info.GetFiles())
-						if (Util.File.IsProtectedSystemFile(file.FullName))
-							task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have " +
-								"its cluster tips erased, because it is a system file",
-								file.FullName), LogLevel.Information));
-						else if ((file.Attributes & FileAttributes.ReparsePoint) != 0)
-							task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have " +
-								"its cluster tips erased because it is a hard link or a " +
-								"symbolic link.", file.FullName), LogLevel.Information));
-						else if ((file.Attributes & FileAttributes.Compressed) != 0 ||
-							(file.Attributes & FileAttributes.Encrypted) != 0 ||
-							(file.Attributes & FileAttributes.SparseFile) != 0)
-						{
-							task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have " +
-								"its cluster tips erased because it is compressed, encrypted " +
-								"or a sparse file.", file.FullName), LogLevel.Information));
-						}
-						else
-						{
-							try
-							{
-								foreach (string i in Util.File.GetADSes(file))
-									files.Add(file.FullName + ':' + i);
-
-								files.Add(file.FullName);
-							}
-							catch (UnauthorizedAccessException e)
-							{
-								task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not " +
-									"have its cluster tips erased because of the following " +
-									"error: {1}", info.FullName, e.Message), LogLevel.Error));
-							}
-							catch (IOException e)
-							{
-								task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not " +
-									"have its cluster tips erased because of the following " +
-									"error: {1}", info.FullName, e.Message), LogLevel.Error));
-							}
-						}
-
-					foreach (DirectoryInfo subDirInfo in info.GetDirectories())
-					{
-						searchCallback(subDirInfo.FullName);
-						subFolders(subDirInfo);
-					}
-				}
-				catch (UnauthorizedAccessException e)
-				{
-					task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
-						"cluster tips erased because of the following error: {1}",
-						info.FullName, e.Message), LogLevel.Error));
-				}
-				catch (IOException e)
-				{
-					task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
-						"cluster tips erased because of the following error: {1}",
-						info.FullName, e.Message), LogLevel.Error));
-				}
-			};
-
-			subFolders(new DirectoryInfo(target.Drive));
-
-			//For every file, erase the cluster tips.
-			for (int i = 0, j = files.Count; i != j; ++i)
-			{
-				//Get the file attributes for restoring later
-				StreamInfo info = new StreamInfo(files[i]);
-				FileAttributes fileAttr = info.Attributes;
-
-				try
-				{
-					//Reset the file attributes.
-					info.Attributes = FileAttributes.Normal;
-					EraseFileClusterTips(files[i], method);
-				}
-				catch (UnauthorizedAccessException)
-				{
-					task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
-						"cluster tips erased because you do not have the required permissions to " +
-						"erase the file cluster tips.", files[i]), LogLevel.Error));
-				}
-				catch (IOException e)
-				{
-					task.Log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
-						"cluster tips erased. The error returned was: {1}", files[i],
-						e.Message), LogLevel.Error));
-				}
-				finally
-				{
-					info.Attributes = fileAttr;
-				}
-				eraseCallback(i, files.Count, files[i]);
-			}
-		}
-
 		/// <summary>
-		/// Erases the cluster tips of the given file.
+		/// Traverses the given folder and deletes it securely only if it is
+		/// empty.
 		/// </summary>
-		/// <param name="file">The file to erase.</param>
-		/// <param name="method">The erasure method to use.</param>
-		private static void EraseFileClusterTips(string file, ErasureMethod method)
-		{
-			//Get the file access times
-			StreamInfo streamInfo = new StreamInfo(file);
-			DateTime lastAccess = streamInfo.LastAccessTime;
-			DateTime lastWrite = streamInfo.LastWriteTime;
-			DateTime created = streamInfo.CreationTime;
+		/// <param name="info">The folder to check.</param>
+		private delegate void FolderEraseDelegate(DirectoryInfo info);
 
-			//And get the file lengths to know how much to overwrite
-			long fileArea = GetFileArea(file);
-			long fileLength = streamInfo.Length;
-
-			//If the file length equals the file area there is no cluster tip to overwrite
-			if (fileArea == fileLength)
-				return;
-
-			//Otherwise, create the stream, lengthen the file, then tell the erasure
-			//method to erase the cluster tips.
-			using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
-				FileShare.None, FileOptions.WriteThrough))
-			{
-				try
-				{
-					stream.SetLength(fileArea);
-					stream.Seek(fileLength, SeekOrigin.Begin);
-
-					//Erase the file
-					method.Erase(stream, long.MaxValue, PrngManager.GetInstance(
-						ManagerLibrary.Settings.ActivePrng), null);
-				}
-				finally
-				{
-					//Make sure the file length is restored!
-					stream.SetLength(fileLength);
-
-					//Reset the file times
-					streamInfo.LastAccessTime = lastAccess;
-					streamInfo.LastWriteTime = lastWrite;
-					streamInfo.CreationTime = created;
-				}
-			}
-		}
-		#endregion
-
-		#region Filesystem Object erasure functions
 		/// <summary>
 		/// Erases a file or folder on the volume.
 		/// </summary>
@@ -893,52 +725,29 @@ namespace Eraser.Manager
 							"a sparse file.", info.FullName), LogLevel.Error));
 					}
 
-					//Create the file stream, and call the erasure method to write to
-					//the stream.
-					long fileArea = GetFileArea(paths[i]);
-					using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
-						FileShare.None, FileOptions.WriteThrough))
-					{
-						//Set the end of the stream after the wrap-round the cluster size
-						strm.SetLength(fileArea);
-
-						//If the stream is empty, there's nothing to overwrite. Continue
-						//to the next entry
-						if (strm.Length != 0)
+					long itemWritten = 0;
+					fsManager.EraseFileSystemObject(info, method,
+						delegate(long lastWritten, long totalData, int currentPass)
 						{
-							//Then erase the file.
-							long itemWritten = 0,
-								 itemTotal = method.CalculateEraseDataSize(null, strm.Length);
-							method.Erase(strm, long.MaxValue,
-								PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng),
-								delegate(long lastWritten, int currentPass)
-								{
-									dataTotal -= lastWritten;
-									progress.Completed += lastWritten;
-									progress.Event.CurrentItemPass = currentPass;
-									progress.Event.CurrentItemProgress = (float)
-										((itemWritten += lastWritten) / (float)itemTotal);
-									progress.Event.CurrentTargetProgress =
-										(i + progress.Event.CurrentItemProgress) /
-										(float)paths.Count;
-									progress.Event.TimeLeft = progress.TimeLeft;
-									task.OnProgressChanged(progress.Event);
+							dataTotal -= lastWritten;
+							progress.Completed += lastWritten;
+							progress.Event.CurrentItemPass = currentPass;
+							progress.Event.CurrentItemProgress = (float)
+								((itemWritten += lastWritten) / (float)totalData);
+							progress.Event.CurrentTargetProgress =
+								(i + progress.Event.CurrentItemProgress) /
+								(float)paths.Count;
+							progress.Event.TimeLeft = progress.TimeLeft;
+							task.OnProgressChanged(progress.Event);
 
-									if (currentTask.Canceled)
-										throw new OperationCanceledException(S._("The task was cancelled."));
-								}
-							);
-						}
-
-						//Set the length of the file to 0.
-						strm.Seek(0, SeekOrigin.Begin);
-						strm.SetLength(0);
-					}
+							if (currentTask.Canceled)
+								throw new OperationCanceledException(S._("The task was cancelled."));
+						});
 
 					//Remove the file.
 					FileInfo fileInfo = info.File;
-					if (fileInfo != null)
-						fsManager.DeleteFile(fileInfo);
+					/*if (fileInfo != null)
+						fsManager.DeleteFile(fileInfo);*/
 				}
 				catch (UnauthorizedAccessException)
 				{
@@ -981,7 +790,7 @@ namespace Eraser.Manager
 				//Remove all subfolders which are empty.
 				FolderTarget fldr = (FolderTarget)target;
 				FileSystem fsManager = FileSystem.Get(VolumeInfo.FromMountpoint(fldr.Path));
-				SubFoldersHandler eraseEmptySubFolders = null;
+				FolderEraseDelegate eraseEmptySubFolders = null;
 				eraseEmptySubFolders = delegate(DirectoryInfo info)
 				{
 					foreach (DirectoryInfo subDir in info.GetDirectories())
@@ -1026,21 +835,6 @@ namespace Eraser.Manager
 					EmptyRecycleBinOptions.NoProgressUI | EmptyRecycleBinOptions.NoSound);
 			}
 		}
-
-		/// <summary>
-		/// Retrieves the size of the file on disk, calculated by the amount of
-		/// clusters allocated by it.
-		/// </summary>
-		/// <param name="filePath">The path to the file.</param>
-		/// <returns>The area of the file.</returns>
-		private static long GetFileArea(string filePath)
-		{
-			StreamInfo info = new StreamInfo(filePath);
-			VolumeInfo volume = VolumeInfo.FromMountpoint(info.Directory.FullName);
-			long clusterSize = volume.ClusterSize;
-			return (info.Length + (clusterSize - 1)) & ~(clusterSize - 1);
-		}
-		#endregion
 
 		/// <summary>
 		/// The thread object.

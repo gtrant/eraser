@@ -169,9 +169,12 @@ namespace Eraser.Manager
 	/// </summary>
 	/// <param name="lastWritten">The amount of data written to the stream since
 	/// the last call to the delegate.</param>
+	/// <param name="totalData">The total amount of data that must be written to
+	/// complete the erasure.</param>
 	/// <param name="currentPass">The current pass number. The total number
 	/// of passes can be found from the Passes property.</param>
-	public delegate void EraserMethodProgressFunction(long lastWritten, int currentPass);
+	public delegate void EraserMethodProgressFunction(long lastWritten, long totalData,
+		int currentPass);
 
 	/// <summary>
 	/// A pass object. This object holds both the pass function, as well as the
@@ -298,6 +301,7 @@ namespace Eraser.Manager
 			//Remember the starting position of the stream.
 			long strmStart = stream.Position;
 			long strmLength = Math.Min(stream.Length - strmStart, erasureLength);
+			long totalData = CalculateEraseDataSize(null, strmLength);
 
 			//Allocate memory for a buffer holding data for the pass.
 			byte[] buffer = new byte[Math.Min(DiskOperationUnit, strmLength)];
@@ -307,7 +311,7 @@ namespace Eraser.Manager
 			{
 				//Do a progress callback first.
 				if (callback != null)
-					callback(0, pass + 1);
+					callback(0, totalData, pass + 1);
 
 				//Start from the beginning again
 				stream.Seek(strmStart, SeekOrigin.Begin);
@@ -335,7 +339,7 @@ namespace Eraser.Manager
 
 					//Do a progress callback.
 					if (callback != null)
-						callback(amount, pass + 1);
+						callback(amount, totalData, pass + 1);
 				}
 			}
 		}
