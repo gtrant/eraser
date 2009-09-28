@@ -99,7 +99,7 @@ namespace Eraser.Manager
 		/// <param name="prng">The PRNG source for random data.</param>
 		/// <param name="callback">The progress callback function.</param>
 		public abstract void Erase(Stream stream, long erasureLength, Prng prng,
-			EraserMethodProgressFunction callback);
+			ErasureMethodProgressFunction callback);
 
 		/// <summary>
 		/// Disk operation write unit. Chosen such that this value mod 3, 4, 512,
@@ -173,7 +173,7 @@ namespace Eraser.Manager
 	/// complete the erasure.</param>
 	/// <param name="currentPass">The current pass number. The total number
 	/// of passes can be found from the Passes property.</param>
-	public delegate void EraserMethodProgressFunction(long lastWritten, long totalData,
+	public delegate void ErasureMethodProgressFunction(long lastWritten, long totalData,
 		int currentPass);
 
 	/// <summary>
@@ -245,7 +245,7 @@ namespace Eraser.Manager
 		/// <param name="strm">The stream which needs to be erased.</param>
 		/// <param name="prng">The PRNG source for random data.</param>
 		/// <param name="callback">The progress callback function.</param>
-		public virtual void EraseUnusedSpace(Stream stream, Prng prng, EraserMethodProgressFunction callback)
+		public virtual void EraseUnusedSpace(Stream stream, Prng prng, ErasureMethodProgressFunction callback)
 		{
 			Erase(stream, long.MaxValue, prng, callback);
 		}
@@ -291,7 +291,7 @@ namespace Eraser.Manager
 		}
 
 		public override void Erase(Stream stream, long erasureLength, Prng prng,
-			EraserMethodProgressFunction callback)
+			ErasureMethodProgressFunction callback)
 		{
 			//Randomize the order of the passes
 			ErasureMethodPass[] randomizedPasses = PassesSet;
@@ -382,7 +382,7 @@ namespace Eraser.Manager
 			}
 
 			public override void Erase(Stream strm, long erasureLength, Prng prng,
-				EraserMethodProgressFunction callback)
+				ErasureMethodProgressFunction callback)
 			{
 				throw new InvalidOperationException(S._("The DefaultMethod class should never " +
 					"be used and should instead be replaced before execution!"));
