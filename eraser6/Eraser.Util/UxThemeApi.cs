@@ -39,6 +39,10 @@ namespace Eraser.Util
 		{
 			if (control is Form)
 				((Form)control).Font = SystemFonts.MessageBoxFont;
+			else if (control.Font != SystemFonts.MessageBoxFont)
+				control.Font = new Font(SystemFonts.MessageBoxFont.FontFamily,
+					control.Font.Size, control.Font.Style);
+
 			if (control is ListView)
 				UpdateControlTheme((ListView)control);
 			else if (control is ToolStrip)
