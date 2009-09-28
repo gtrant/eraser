@@ -529,7 +529,7 @@ namespace Eraser.Manager
 				tipProgress.Start();
 
 				//Define the callback handlers
-				FileSystem.ClusterTipsSearchProgress searchProgress = delegate(string path)
+				ClusterTipsSearchProgress searchProgress = delegate(string path)
 					{
 						progress.Event.CurrentItemName = path;
 						task.OnProgressChanged(progress.Event);
@@ -538,7 +538,7 @@ namespace Eraser.Manager
 							throw new OperationCanceledException(S._("The task was cancelled."));
 					};
 
-				FileSystem.ClusterTipsEraseProgress eraseProgress =
+				ClusterTipsEraseProgress eraseProgress =
 					delegate(int currentFile, int totalFiles, string currentFilePath)
 					{
 						tipProgress.Total = totalFiles;
