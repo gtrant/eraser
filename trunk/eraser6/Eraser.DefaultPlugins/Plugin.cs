@@ -55,7 +55,7 @@ namespace Eraser.DefaultPlugins
 
 			PrngManager.Register(new RngCrypto());
 
-			FileSystemManager.Register(new FatFileSystem());
+			FileSystemManager.Register(new Fat32FileSystem());
 			FileSystemManager.Register(new NtfsFileSystem());
 		}
 
