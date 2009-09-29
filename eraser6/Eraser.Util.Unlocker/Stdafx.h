@@ -29,10 +29,12 @@
 #include <process.h>
 
 #include "targetver.h"
+#define _NTSYSTEM_
 #define WIN32_NO_STATUS 1
 #include <windows.h>
 #undef  WIN32_NO_STATUS
 #include <ntstatus.h>
 #include <winnt.h>
+#include <winternl.h>
 
 #include "NTApi.h"
