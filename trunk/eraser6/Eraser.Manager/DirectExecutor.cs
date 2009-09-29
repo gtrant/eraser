@@ -32,7 +32,6 @@ using System.Security.Principal;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Permissions;
-using Eraser.Unlocker;
 
 namespace Eraser.Manager
 {
@@ -512,7 +511,7 @@ namespace Eraser.Manager
 			//Make a folder to dump our temporary files in
 			DirectoryInfo info = new DirectoryInfo(target.Drive);
 			VolumeInfo volInfo = VolumeInfo.FromMountpoint(target.Drive);
-			FileSystem fsManager = FileSystem.Get(volInfo);
+			FileSystem fsManager = FileSystemManager.Get(volInfo);
 			info = info.CreateSubdirectory(Path.GetFileName(
 				FileSystem.GenerateRandomFileName(info, 18)));
 
@@ -704,7 +703,8 @@ namespace Eraser.Manager
 				
 				//Get the filesystem provider to handle the secure file erasures
 				StreamInfo info = new StreamInfo(paths[i]);
-				FileSystem fsManager = FileSystem.Get(VolumeInfo.FromMountpoint(info.DirectoryName));
+				FileSystem fsManager = FileSystemManager.Get(
+					VolumeInfo.FromMountpoint(info.DirectoryName));
 				bool isReadOnly = false;
 				
 				try
@@ -789,7 +789,7 @@ namespace Eraser.Manager
 				
 				//Remove all subfolders which are empty.
 				FolderTarget fldr = (FolderTarget)target;
-				FileSystem fsManager = FileSystem.Get(VolumeInfo.FromMountpoint(fldr.Path));
+				FileSystem fsManager = FileSystemManager.Get(VolumeInfo.FromMountpoint(fldr.Path));
 				FolderEraseDelegate eraseEmptySubFolders = null;
 				eraseEmptySubFolders = delegate(DirectoryInfo info)
 				{

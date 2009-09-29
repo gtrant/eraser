@@ -54,6 +54,9 @@ namespace Eraser.DefaultPlugins
 			ErasureMethodManager.Register(new FirstLast16KB());
 
 			PrngManager.Register(new RngCrypto());
+
+			FileSystemManager.Register(new FatFileSystem());
+			FileSystemManager.Register(new NtfsFileSystem());
 		}
 
 		public void Dispose()
