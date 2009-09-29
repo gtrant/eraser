@@ -67,7 +67,7 @@
     <Compile Include="Task.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eraser.Unlocker\Eraser.Unlocker.vcproj">
+    <ProjectReference Include="..\Eraser.Util.Unlocker\Eraser.Util.Unlocker.vcproj">
       <Project>{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}</Project>
       <Name>Eraser.Unlocker</Name>
     </ProjectReference>
