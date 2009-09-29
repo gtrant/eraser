@@ -63,12 +63,18 @@
 					<File Id="EraserUtil" Name="Eraser.Util.dll"
 						Source="..\bin\Release\Eraser.Util.dll" ProcessorArchitecture="msil" />
 					<?if $(sys.BUILDARCH) = "x64"?>
-					<File Id="EraserUnlocker" Name="Eraser.Unlocker.dll"
-						Source="..\Bin\Release\x64\Eraser.Unlocker.dll"
+					<File Id="EraserUnlocker" Name="Eraser.Util.Unlocker.dll"
+						Source="..\Bin\Release\x64\Eraser.Util.Unlocker.dll"
+						ProcessorArchitecture="x64" />
+					<File Id="EraserFileSystem" Name="Eraser.Util.FileSystem.dll"
+						Source="..\Bin\Release\x64\Eraser.Util.FileSystem.dll"
 						ProcessorArchitecture="x64" />
 					<?else?>
-					<File Id="EraserUnlocker" Name="Eraser.Unlocker.dll"
-						Source="..\Bin\Release\Win32\Eraser.Unlocker.dll"
+					<File Id="EraserUnlocker" Name="Eraser.Util.Unlocker.dll"
+						Source="..\Bin\Release\Win32\Eraser.Util.Unlocker.dll"
+						ProcessorArchitecture="x86" />
+					<File Id="EraserFileSystem" Name="Eraser.Util.FileSystem.dll"
+						Source="..\Bin\Release\x64\Eraser.Util.FileSystem.dll"
 						ProcessorArchitecture="x86" />
 					<?endif?>
 
