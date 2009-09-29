@@ -28,7 +28,6 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 using Eraser.Util;
 using System.Security.Permissions;
-using Eraser.Unlocker;
 using System.Threading;
 
 namespace Eraser.Manager

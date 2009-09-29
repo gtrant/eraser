@@ -20,7 +20,7 @@
  */
 
 #include "stdafx.h"
-#include "Eraser.Unlocker.h"
+#include "Eraser.Util.Unlocker.h"
 
 #pragma managed(push)
 #pragma unmanaged
