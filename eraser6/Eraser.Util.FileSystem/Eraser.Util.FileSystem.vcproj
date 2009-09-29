@@ -23,7 +23,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(SolutionDir)\bin\$(ConfigurationName)\$(PlatformName)"
 			IntermediateDirectory="obj\$(ConfigurationName)\$(PlatformName)"
-			ConfigurationType="1"
+			ConfigurationType="2"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
