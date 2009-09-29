@@ -20,10 +20,11 @@
  */
 
 #include <windows.h>
+#include "../Version.rc"
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,0,5,1063
- PRODUCTVERSION 6,0,5,1063
+ FILEVERSION ERASER_FILE_VERSION
+ PRODUCTVERSION ERASER_PRODUCT_VERSION
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -40,12 +41,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "The Eraser Project"
             VALUE "FileDescription", "Eraser File Handle Unlocker"
-            VALUE "FileVersion", "6.0.5.1063"
-            VALUE "InternalName", "Eraser.Unlocker.dll"
+            VALUE "FileVersion", ERASER_STRING_FILE_VERSION
+            VALUE "InternalName", "Eraser.Util.Unlocker.dll"
             VALUE "LegalCopyright", "Copyright (C) 2009 The Eraser Project"
-            VALUE "OriginalFilename", "Eraser.Unlocker"
+            VALUE "OriginalFilename", "Eraser.Util.Unlocker"
             VALUE "ProductName", "Eraser"
-            VALUE "ProductVersion", "6.0.5.1063"
+            VALUE "ProductVersion", ERASER_STRING_PRODUCT_VERSION
         END
     END
     BLOCK "VarFileInfo"
