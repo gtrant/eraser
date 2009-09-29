@@ -79,8 +79,11 @@ namespace Util {
 
 	FatDirectory^ FatApi::LoadDirectory(String^ directory)
 	{
-		String^ directory2 = Path::GetDirectoryName(directory);
-		return LoadDirectory(DirectoryToCluster(directory), directory2);
+		array<wchar_t>^ pathSeparators = { Path::DirectorySeparatorChar, Path::AltDirectorySeparatorChar };
+		DirectoryInfo^ info = gcnew DirectoryInfo(directory);
+		return LoadDirectory(DirectoryToCluster(directory), directory->Substring(
+				directory->IndexOfAny(pathSeparators)),
+			info->Parent == nullptr ? nullptr : LoadDirectory(info->Parent->FullName));
 	}
 
 	unsigned long long FatApi::SectorToOffset(unsigned long long sector)
@@ -145,9 +148,11 @@ namespace Util {
 		SetFileContents(&contents.front(), contents.size(), cluster);
 	}
 
-	FatDirectoryEntry::FatDirectoryEntry(String^ name, FatDirectoryEntryTypes type, unsigned cluster)
+	FatDirectoryEntry::FatDirectoryEntry(String^ name, FatDirectory^ parent,
+		FatDirectoryEntryTypes type, unsigned cluster)
 	{
 		Name = name;
+		Parent = parent;
 		Type = type;
 		Cluster = cluster;
 	}
@@ -160,15 +165,16 @@ namespace Util {
 		while (currentEntry->Parent != nullptr)
 		{
 			currentEntry = currentEntry->Parent;
-			result = currentEntry->Name + Path::PathSeparator + result;
+			result = currentEntry->Name + Path::DirectorySeparatorChar + result;
 		}
 
 		return result;
 	}
 
-	FatDirectory::FatDirectory(String^ name, unsigned cluster, FatApi^ api)
-		: FatDirectoryEntry(name, FatDirectoryEntryTypes::Directory, cluster)
+	FatDirectory::FatDirectory(String^ name, FatDirectory^ parent, unsigned cluster, FatApi^ api)
+		: FatDirectoryEntry(name, parent, FatDirectoryEntryTypes::Directory, cluster)
 	{
+		System::Diagnostics::Debug::Print(FullName);
 		Entries = gcnew Dictionary<String^, FatDirectoryEntry^>();
 		Api = api;
 
@@ -226,7 +232,7 @@ namespace Util {
 					//fileName contains the correct full long file name, strip the file name of the
 					//invalid characters.
 					String^ fileName = gcnew String(longFileName.c_str());
-					Entries->Add(fileName, gcnew FatDirectoryEntry(fileName,
+					Entries->Add(fileName, gcnew FatDirectoryEntry(fileName, this,
 						(i->Short.Attributes & FILE_ATTRIBUTE_DIRECTORY) ?
 							FatDirectoryEntryTypes::Directory : FatDirectoryEntryTypes::File,
 						GetStartCluster(*i)));
@@ -258,7 +264,7 @@ namespace Util {
 			}
 
 			String^ fileName = gcnew String(shortFileName);
-			Entries->Add(fileName, gcnew FatDirectoryEntry(fileName,
+			Entries->Add(fileName, gcnew FatDirectoryEntry(fileName, this,
 				(i->Short.Attributes & FILE_ATTRIBUTE_DIRECTORY) ?
 					FatDirectoryEntryTypes::Directory : FatDirectoryEntryTypes::File,
 				GetStartCluster(*i)));

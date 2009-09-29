@@ -57,9 +57,9 @@ namespace Util {
 		Marshal::Copy(buffer, 0, static_cast<IntPtr>(Fat), buffer->Length);
 	}
 
-	FatDirectory^ Fat32Api::LoadDirectory(unsigned cluster, String^ name)
+	FatDirectory^ Fat32Api::LoadDirectory(unsigned cluster, String^ name, FatDirectory^ parent)
 	{
-		return gcnew Directory(name, cluster, this);
+		return gcnew Directory(name, parent, cluster, this);
 	}
 
 	long long Fat32Api::ClusterToOffset(unsigned cluster)
@@ -125,22 +125,22 @@ namespace Util {
 
 		//Traverse the directories until we get the cluster we want.
 		unsigned cluster = BootSector->Fat32ParameterBlock.RootDirectoryCluster;
-		String^ parentDir = nullptr;
+		FatDirectory^ parentDir = nullptr;
 		for each (String^ component in components)
 		{
 			if (component == String::Empty)
 				break;
 
-			FatDirectory^ currentDirectory = LoadDirectory(cluster, parentDir);
-			cluster = currentDirectory->Items[component]->Cluster;
-			parentDir = component;
+			parentDir = LoadDirectory(cluster, parentDir == nullptr ? nullptr : parentDir->Name,
+				parentDir);
+			cluster = parentDir->Items[component]->Cluster;
 		}
 
 		return cluster;
 	}
 
-	Fat32Api::Directory::Directory(String^ name, unsigned cluster, Fat32Api^ api)
-		: FatDirectory(name, cluster, api)
+	Fat32Api::Directory::Directory(String^ name, FatDirectory^ parent, unsigned cluster, Fat32Api^ api)
+		: FatDirectory(name, parent, cluster, api)
 	{
 	}
 
