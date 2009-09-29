@@ -29,7 +29,7 @@ using namespace System::Collections::ObjectModel;
 using namespace Microsoft::Win32::SafeHandles;
 
 namespace Eraser {
-namespace Unlocker {
+namespace Util {
 	/// Represents one open handle in the system.
 	public ref struct OpenHandle
 	{
