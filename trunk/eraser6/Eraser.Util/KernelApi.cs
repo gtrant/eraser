@@ -661,6 +661,15 @@ namespace Eraser.Util
 			[return: MarshalAs(UnmanagedType.Bool)]
 			public extern static bool DeviceIoControl(SafeFileHandle hDevice,
 				uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
+				IntPtr lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned,
+				IntPtr lpOverlapped);
+			public const uint FSCTL_LOCK_VOLUME = 0x90018;
+			public const uint FSCTL_UNLOCK_VOLUME = 0x9001C;
+
+			[DllImport("Kernel32.dll", SetLastError = true)]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			public extern static bool DeviceIoControl(SafeFileHandle hDevice,
+				uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
 				out DiskPerformanceInfoInternal lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned,
 				IntPtr lpOverlapped);
 
