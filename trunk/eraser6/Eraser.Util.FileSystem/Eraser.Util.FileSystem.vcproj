@@ -347,6 +347,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Fat32Api.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FatApi.cpp"
 				>
 			</File>
