@@ -79,11 +79,14 @@ namespace Util {
 
 	FatDirectory^ FatApi::LoadDirectory(String^ directory)
 	{
+		//Return the root directory if nothing is specified
+		if (directory == String::Empty)
+			return LoadDirectory(DirectoryToCluster(directory), String::Empty, nullptr);
+
 		array<wchar_t>^ pathSeparators = { Path::DirectorySeparatorChar, Path::AltDirectorySeparatorChar };
-		DirectoryInfo^ info = gcnew DirectoryInfo(directory);
-		return LoadDirectory(DirectoryToCluster(directory), directory->Substring(
-				directory->IndexOfAny(pathSeparators)),
-			info->Parent == nullptr ? nullptr : LoadDirectory(info->Parent->FullName));
+		int lastIndex = directory->LastIndexOfAny(pathSeparators);
+		return LoadDirectory(DirectoryToCluster(directory), directory->Substring(lastIndex + 1),
+			LoadDirectory(directory->Substring(0, lastIndex == 0 ? 0 : lastIndex - 1)));
 	}
 
 	unsigned long long FatApi::SectorToOffset(unsigned long long sector)
