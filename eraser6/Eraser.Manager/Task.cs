@@ -49,7 +49,9 @@ namespace Eraser.Manager
 			Canceled = false;
 
 			Schedule schedule = (Schedule)info.GetValue("Schedule", typeof(Schedule));
-			if (schedule.GetType() == Schedule.RunNow.GetType())
+			if (schedule.GetType() == Schedule.RunManually.GetType())
+				Schedule = Schedule.RunManually;
+			else if (schedule.GetType() == Schedule.RunNow.GetType())
 				Schedule = Schedule.RunNow;
 			else if (schedule.GetType() == Schedule.RunOnRestart.GetType())
 				Schedule = Schedule.RunOnRestart;
