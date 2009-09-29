@@ -20,10 +20,10 @@
  */
 
 #include "stdafx.h"
-#include "Eraser.Unlocker.h"
+#include "Eraser.Util.Unlocker.h"
 
 namespace Eraser {
-namespace Unlocker {
+namespace Util {
 	ReadOnlyCollection<OpenHandle^>^ OpenHandle::Items::get()
 	{
 		List<OpenHandle^>^ handles = gcnew List<OpenHandle^>();
