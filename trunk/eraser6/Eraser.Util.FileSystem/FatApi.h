@@ -193,9 +193,6 @@ namespace Util {
 		/// \param[in] api     The FAT API object which is creating this object.
 		FatDirectory(String^ name, unsigned cluster, FatApi^ api);
 
-		/// Gets the start cluster of the requested file within this directory.
-		unsigned GetStartCluster(String^ file);
-
 		/// Compacts the directory structure.
 		void ClearDeletedEntries();
 

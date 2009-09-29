@@ -269,11 +269,6 @@ namespace Util {
 		}
 	}
 
-	unsigned FatDirectory::GetStartCluster(String^ file)
-	{
-		return Entries[file]->Cluster;
-	}
-
 	void FatDirectory::ClearDeletedEntries()
 	{
 		std::vector<::FatDirectory> validEntries;
