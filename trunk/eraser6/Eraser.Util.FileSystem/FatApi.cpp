@@ -45,7 +45,8 @@ namespace Util {
 		CString volumeName(info->VolumeId);
 		volumeName.Truncate(volumeName.GetLength() - 1);
 		VolumeHandle = gcnew SafeFileHandle(static_cast<IntPtr>(CreateFile(volumeName,
-					GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL)),
+					GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
+					FILE_FLAG_RANDOM_ACCESS, NULL)),
 			true);
 		VolumeStream = gcnew FileStream(VolumeHandle, FileAccess::Read);
 
@@ -54,6 +55,9 @@ namespace Util {
 		VolumeStream->Seek(0, SeekOrigin::Begin);
 		VolumeStream->Read(bootSector, 0, sizeof(*BootSector));
 		Marshal::Copy(bootSector, 0, static_cast<IntPtr>(BootSector), bootSector->Length);
+
+		//Then load the FAT
+		LoadFat();
 	}
 
 	FatApi::FatApi(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
@@ -79,7 +83,8 @@ namespace Util {
 
 	FatDirectory^ FatApi::LoadDirectory(String^ directory)
 	{
-		return LoadDirectory(DirectoryToCluster(directory));
+		String^ directory2 = Path::GetDirectoryName(directory);
+		return LoadDirectory(DirectoryToCluster(directory), directory2);
 	}
 
 	unsigned long long FatApi::SectorToOffset(unsigned long long sector)
@@ -144,10 +149,31 @@ namespace Util {
 		SetFileContents(&contents.front(), contents.size(), cluster);
 	}
 
-	FatDirectory::FatDirectory(unsigned cluster, FatApi^ api)
+	FatDirectoryEntry::FatDirectoryEntry(String^ name, FatDirectoryEntryTypes type, unsigned cluster)
 	{
+		Name = name;
+		Type = type;
 		Cluster = cluster;
-		Entries = gcnew Dictionary<String^, unsigned>();
+	}
+
+	String^ FatDirectoryEntry::FullName::get()
+	{
+		String^ result = Name;
+		FatDirectoryEntry^ currentEntry = this;
+
+		while (currentEntry->Parent != nullptr)
+		{
+			currentEntry = currentEntry->Parent;
+			result = currentEntry->Name + Path::PathSeparator + result;
+		}
+
+		return result;
+	}
+
+	FatDirectory::FatDirectory(String^ name, unsigned cluster, FatApi^ api)
+		: FatDirectoryEntry(name, FatDirectoryEntryTypes::Directory, cluster)
+	{
+		Entries = gcnew Dictionary<String^, FatDirectoryEntry^>();
 		Api = api;
 
 		//Get the size of the directory list and read it to memory
@@ -203,7 +229,11 @@ namespace Util {
 				{
 					//fileName contains the correct full long file name, strip the file name of the
 					//invalid characters.
-					Entries->Add(gcnew String(longFileName.c_str()), GetStartCluster(*i));
+					String^ fileName = gcnew String(longFileName.c_str());
+					Entries->Add(fileName, gcnew FatDirectoryEntry(fileName,
+						(i->Short.Attributes & FILE_ATTRIBUTE_DIRECTORY) ?
+							FatDirectoryEntryTypes::Directory : FatDirectoryEntryTypes::File,
+						GetStartCluster(*i)));
 				}
 			}
 
@@ -231,13 +261,17 @@ namespace Util {
 				shortFileName[8 + 3 + 1] = '\0';
 			}
 
-			Entries->Add(gcnew String(shortFileName), GetStartCluster(*i));
+			String^ fileName = gcnew String(shortFileName);
+			Entries->Add(fileName, gcnew FatDirectoryEntry(fileName,
+				(i->Short.Attributes & FILE_ATTRIBUTE_DIRECTORY) ?
+					FatDirectoryEntryTypes::Directory : FatDirectoryEntryTypes::File,
+				GetStartCluster(*i)));
 		}
 	}
 
 	unsigned FatDirectory::GetStartCluster(String^ file)
 	{
-		return Entries[file];
+		return Entries[file]->Cluster;
 	}
 
 	void FatDirectory::ClearDeletedEntries()
