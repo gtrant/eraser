@@ -56,28 +56,30 @@
     <Compile Include="CustomMethodPassEditor.Designer.cs">
       <DependentUpon>CustomMethodPassEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="EraseCustom.cs" />
-    <Compile Include="EraseDoD.cs" />
-    <Compile Include="EraseRandom.cs" />
-    <Compile Include="EraseGutmann.cs" />
-    <Compile Include="EraseFirstLast16KB.cs" />
-    <Compile Include="EraseHMGIS5.cs" />
-    <Compile Include="EraseGOSTP50739.cs" />
-    <Compile Include="EraseUSAF5020.cs" />
-    <Compile Include="EraseVSITR.cs" />
-    <Compile Include="EraseRCMP_TSSIT_OPS_II.cs" />
-    <Compile Include="FileSystemWindows.cs" />
+    <Compile Include="ErasureMethods\Custom.cs" />
+    <Compile Include="ErasureMethods\DoD.cs" />
+    <Compile Include="ErasureMethods\Random.cs" />
+    <Compile Include="ErasureMethods\Gutmann.cs" />
+    <Compile Include="ErasureMethods\FirstLast16KB.cs" />
+    <Compile Include="ErasureMethods\HMGIS5.cs" />
+    <Compile Include="ErasureMethods\GOSTP50739.cs" />
+    <Compile Include="ErasureMethods\USAF5020.cs" />
+    <Compile Include="ErasureMethods\VSITR.cs" />
+    <Compile Include="ErasureMethods\RCMP_TSSIT_OPS_II.cs" />
+    <Compile Include="FileSystems\Fat.cs" />
+    <Compile Include="FileSystems\Ntfs.cs" />
+    <Compile Include="FileSystems\Windows.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RNGCrypto.cs" />
-    <Compile Include="EraseSchneier.cs" />
+    <Compile Include="ErasureMethods\Schneier.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="EraseUSArmyAR380_19.cs" />
+    <Compile Include="ErasureMethods\USArmyAR380_19.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eraser.Manager\Eraser.Manager.csproj">
