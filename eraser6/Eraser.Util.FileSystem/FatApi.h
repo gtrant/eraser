@@ -55,7 +55,7 @@ namespace Util {
 		FatDirectory^ LoadDirectory(String^ directory);
 
 		/// Loads the directory structure at the given cluster.
-		virtual FatDirectory^ LoadDirectory(unsigned cluster) = 0;
+		virtual FatDirectory^ LoadDirectory(unsigned cluster, String^ name) = 0;
 
 	internal:
 		/// Converts a sector-based address to a byte offset relative to the start
@@ -119,15 +119,79 @@ namespace Util {
 		char* Fat;
 	};
 
-	/// Represents a FAT directory list.
-	public ref class FatDirectory abstract
+	/// Represents the types of FAT directory entries.
+	public enum class FatDirectoryEntryTypes
+	{
+		File,
+		Directory
+	};
+
+	/// Represents a FAT directory entry.
+	public ref class FatDirectoryEntry
 	{
 	public:
 		/// Constructor.
 		/// 
+		/// \param[in] name    The name of the entry.
+		/// \param[in] type    The type of this entry.
+		/// \param[in] cluster The first cluster of the file.
+		FatDirectoryEntry(String^ name, FatDirectoryEntryTypes type, unsigned cluster);
+
+		/// Gets the name of the file or directory.
+		property String^ Name
+		{
+			String^ get() { return name; }
+		private:
+			void set(String^ value) { name = value; }
+		}
+
+		/// Gets the full path to the file or directory.
+		property String^ FullName
+		{
+			String^ get();
+		}
+
+		/// Gets the parent directory of this entry.
+		property FatDirectory^ Parent
+		{
+			FatDirectory^ get() { return parent; }
+		private:
+			void set(FatDirectory^ value) { parent = value; }
+		}
+
+		/// Gets the type of this entry.
+		property FatDirectoryEntryTypes Type
+		{
+			FatDirectoryEntryTypes get() { return type; }
+		private:
+			void set(FatDirectoryEntryTypes value) { type = value; }
+		}
+
+		/// Gets the first cluster of this entry.
+		property unsigned Cluster
+		{
+			unsigned get() { return cluster; }
+		private:
+			void set(unsigned value) { cluster = value; }
+		}
+
+	private:
+		String^ name;
+		FatDirectory^ parent;
+		FatDirectoryEntryTypes type;
+		unsigned cluster;
+	};
+
+	/// Represents a FAT directory list.
+	public ref class FatDirectory abstract : FatDirectoryEntry
+	{
+	public:
+		/// Constructor.
+		/// 
+		/// \param[in] name    The name of the current directory.
 		/// \param[in] cluster The cluster at which the directory list starts.
 		/// \param[in] api     The FAT API object which is creating this object.
-		FatDirectory(unsigned cluster, FatApi^ api);
+		FatDirectory(String^ name, unsigned cluster, FatApi^ api);
 
 		/// Gets the start cluster of the requested file within this directory.
 		unsigned GetStartCluster(String^ file);
@@ -135,14 +199,22 @@ namespace Util {
 		/// Compacts the directory structure.
 		void ClearDeletedEntries();
 
+		/// The list of files and subfolders in this directory.
+		property Collections::Generic::Dictionary<String^, FatDirectoryEntry^>^ Items
+		{
+			Collections::Generic::Dictionary<String^, FatDirectoryEntry^>^ get()
+			{
+				return Entries;
+			}
+		}
+
 	protected:
 		/// Gets the start cluster from the given directory entry.
 		virtual unsigned GetStartCluster(::FatDirectory& directory) = 0;
 
 	private:
-		unsigned Cluster;
 		FatDirectoryFile Directory;
-		Collections::Generic::Dictionary<String^, unsigned>^ Entries;
+		Collections::Generic::Dictionary<String^, FatDirectoryEntry^>^ Entries;
 
 		FatApi^ Api;
 	};
@@ -156,7 +228,7 @@ namespace Util {
 
 	public:
 		virtual void LoadFat() override;
-		virtual FatDirectory^ LoadDirectory(unsigned cluster) override;
+		virtual FatDirectory^ LoadDirectory(unsigned cluster, String^ name) override;
 
 	internal:
 		virtual long long ClusterToOffset(unsigned cluster) override;
@@ -169,7 +241,7 @@ namespace Util {
 		ref class Directory : FatDirectory
 		{
 		public:
-			Directory(unsigned cluster, Fat32Api^ api);
+			Directory(String^ name, unsigned cluster, Fat32Api^ api);
 
 		protected:
 			virtual unsigned GetStartCluster(::FatDirectory& directory) override;
