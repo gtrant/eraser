@@ -67,6 +67,7 @@
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="1"
+				KeyFile="$(SolutionDir)\Strong Name.snk"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -139,6 +140,7 @@
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
 				TargetMachine="17"
+				KeyFile="$(SolutionDir)\Strong Name.snk"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -212,6 +214,7 @@
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
 				TargetMachine="1"
+				KeyFile="$(SolutionDir)\Strong Name.snk"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -286,6 +289,7 @@
 				EnableCOMDATFolding="2"
 				OptimizeForWindows98="0"
 				TargetMachine="17"
+				KeyFile="$(SolutionDir)\Strong Name.snk"
 			/>
 			<Tool
 				Name="VCALinkTool"
