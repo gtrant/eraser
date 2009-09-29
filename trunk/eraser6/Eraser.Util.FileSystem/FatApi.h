@@ -34,8 +34,17 @@ namespace Util {
 	public:
 		/// Constructor.
 		/// 
-		/// \param[in] info The volume to create the FAT API for.
+		/// \param[in] info   The volume to create the FAT API for. The volume handle
+		///                   created has read access only.
 		FatApi(VolumeInfo^ info);
+
+		/// Constructor.
+		/// 
+		/// \param[in] info   The volume to create the FAT API for.
+		/// \param[in] handle A handle to the volume for read/write requests.
+		/// \param[in] access The access required for the volume.
+		FatApi(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
+			 IO::FileAccess access);
 
 	public:
 		/// Loads the File Allocation Table from disk.
@@ -142,6 +151,8 @@ namespace Util {
 	{
 	public:
 		Fat32Api(VolumeInfo^ info);
+		Fat32Api(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
+			 IO::FileAccess access);
 
 	public:
 		virtual void LoadFat() override;

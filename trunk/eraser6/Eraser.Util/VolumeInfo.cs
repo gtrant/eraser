@@ -240,6 +240,24 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
+		/// Determines the sector size of the current volume.
+		/// </summary>
+		public int SectorSize
+		{
+			get
+			{
+				uint clusterSize, sectorSize, freeClusters, totalClusters;
+				if (KernelApi.NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
+					out sectorSize, out freeClusters, out totalClusters))
+				{
+					return (int)sectorSize;
+				}
+
+				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+			}
+		}
+
+		/// <summary>
 		/// Checks if the current user has disk quotas on the current volume.
 		/// </summary>
 		public bool HasQuota

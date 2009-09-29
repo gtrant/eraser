@@ -28,6 +28,7 @@
 using namespace System::Collections::Generic;
 using namespace System::IO;
 using namespace System::Runtime::InteropServices;
+using namespace Microsoft::Win32::SafeHandles;
 
 namespace Eraser {
 namespace Util {
@@ -39,6 +40,41 @@ namespace Util {
 		BootSector = new FatBootSector();
 		memset(BootSector, 0, sizeof(*BootSector));
 		Fat = NULL;
+
+		//Open the handle to the drive
+		CString volumeName(info->VolumeId);
+		volumeName.Truncate(volumeName.GetLength() - 1);
+		VolumeHandle = gcnew SafeFileHandle(static_cast<IntPtr>(CreateFile(volumeName,
+					GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL)),
+			true);
+		VolumeStream = gcnew FileStream(VolumeHandle, FileAccess::Read);
+
+		//Then read the boot sector for information
+		array<Byte>^ bootSector = gcnew array<Byte>(sizeof(*BootSector));
+		VolumeStream->Seek(0, SeekOrigin::Begin);
+		VolumeStream->Read(bootSector, 0, sizeof(*BootSector));
+		Marshal::Copy(bootSector, 0, static_cast<IntPtr>(BootSector), bootSector->Length);
+	}
+
+	FatApi::FatApi(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
+		IO::FileAccess access)
+	{
+		SectorSize = info->SectorSize;
+		ClusterSize = info->ClusterSize;
+
+		BootSector = new FatBootSector();
+		memset(BootSector, 0, sizeof(*BootSector));
+		Fat = NULL;
+
+		//Open the handle to the drive
+		VolumeHandle = handle;
+		VolumeStream = gcnew FileStream(VolumeHandle, access);
+
+		//Then read the boot sector for information
+		array<Byte>^ bootSector = gcnew array<Byte>(sizeof(*BootSector));
+		VolumeStream->Seek(0, SeekOrigin::Begin);
+		VolumeStream->Read(bootSector, 0, sizeof(*BootSector));
+		Marshal::Copy(bootSector, 0, static_cast<IntPtr>(BootSector), bootSector->Length);
 	}
 
 	FatDirectory^ FatApi::LoadDirectory(String^ directory)
@@ -250,7 +286,7 @@ namespace Util {
 				if (sum == (i - 1)->LongFileName.Checksum)
 				{
 					//The previous few entries contained the correct file name. Save these entries
-					validEntries.insert(validEntries.end(), longFileNameBegin, i - 1);
+					validEntries.insert(validEntries.end(), longFileNameBegin, i);
 				}
 			}
 
@@ -263,7 +299,7 @@ namespace Util {
 		memcpy(Directory, &validEntries.front(), validEntries.size() * sizeof(::FatDirectory));
 
 		//Write the entries to disk
-		Api->SetFileContents(&validEntries.front(), Api->FileSize(Cluster), Cluster);
+		Api->SetFileContents(Directory, Api->FileSize(Cluster), Cluster);
 	}
 
 	Fat32Api::Fat32Api(VolumeInfo^ info) : FatApi(info)
@@ -271,20 +307,14 @@ namespace Util {
 		//Sanity checks: check that this volume is FAT32!
 		if (info->VolumeFormat != L"FAT32")
 			throw gcnew ArgumentException(L"The volume provided is not a FAT32 volume.");
+	}
 
-		//Open the handle to the drive
-		CString volumeName(info->VolumeId);
-		volumeName.Truncate(volumeName.GetLength() - 1);
-		VolumeHandle = gcnew Microsoft::Win32::SafeHandles::SafeFileHandle(
-			static_cast<IntPtr>(CreateFile(volumeName, GENERIC_READ, 0, NULL,
-			OPEN_EXISTING, FILE_FLAG_RANDOM_ACCESS, NULL)), true);
-		VolumeStream = gcnew FileStream(VolumeHandle, FileAccess::Read);
-
-		//Then read the boot sector for information
-		array<Byte>^ bootSector = gcnew array<Byte>(sizeof(*BootSector));
-		VolumeStream->Seek(0, SeekOrigin::Begin);
-		VolumeStream->Read(bootSector, 0, sizeof(*BootSector));
-		Marshal::Copy(bootSector, 0, static_cast<IntPtr>(BootSector), bootSector->Length);
+	Fat32Api::Fat32Api(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
+		IO::FileAccess access) : FatApi(info, handle, access)
+	{
+		//Sanity checks: check that this volume is FAT32!
+		if (info->VolumeFormat != L"FAT32")
+			throw gcnew ArgumentException(L"The volume provided is not a FAT32 volume.");
 	}
 
 	void Fat32Api::LoadFat()
