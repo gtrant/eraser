@@ -28,7 +28,6 @@
 using namespace System::Collections::Generic;
 using namespace System::IO;
 using namespace System::Runtime::InteropServices;
-using namespace Microsoft::Win32::SafeHandles;
 
 namespace Eraser {
 namespace Util {
@@ -44,11 +43,7 @@ namespace Util {
 		//Open the handle to the drive
 		CString volumeName(info->VolumeId);
 		volumeName.Truncate(volumeName.GetLength() - 1);
-		VolumeHandle = gcnew SafeFileHandle(static_cast<IntPtr>(CreateFile(volumeName,
-					GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING,
-					FILE_FLAG_RANDOM_ACCESS, NULL)),
-			true);
-		VolumeStream = gcnew FileStream(VolumeHandle, FileAccess::Read);
+		VolumeStream = info->Open(FileAccess::Read);
 
 		//Then read the boot sector for information
 		array<Byte>^ bootSector = gcnew array<Byte>(sizeof(*BootSector));
@@ -60,8 +55,7 @@ namespace Util {
 		LoadFat();
 	}
 
-	FatApi::FatApi(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
-		IO::FileAccess access)
+	FatApi::FatApi(VolumeInfo^ info, Stream^ stream)
 	{
 		SectorSize = info->SectorSize;
 		ClusterSize = info->ClusterSize;
@@ -71,14 +65,16 @@ namespace Util {
 		Fat = NULL;
 
 		//Open the handle to the drive
-		VolumeHandle = handle;
-		VolumeStream = gcnew FileStream(VolumeHandle, access);
+		VolumeStream = stream;
 
 		//Then read the boot sector for information
 		array<Byte>^ bootSector = gcnew array<Byte>(sizeof(*BootSector));
 		VolumeStream->Seek(0, SeekOrigin::Begin);
 		VolumeStream->Read(bootSector, 0, sizeof(*BootSector));
 		Marshal::Copy(bootSector, 0, static_cast<IntPtr>(BootSector), bootSector->Length);
+
+		//Then load the FAT
+		LoadFat();
 	}
 
 	FatDirectory^ FatApi::LoadDirectory(String^ directory)
