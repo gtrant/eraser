@@ -41,10 +41,8 @@ namespace Util {
 		/// Constructor.
 		/// 
 		/// \param[in] info   The volume to create the FAT API for.
-		/// \param[in] handle A handle to the volume for read/write requests.
-		/// \param[in] access The access required for the volume.
-		FatApi(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
-			 IO::FileAccess access);
+		/// \param[in] stream The stream to use to read/write to the disk.
+		FatApi(VolumeInfo^ info, IO::Stream^ stream);
 
 	public:
 		/// Loads the File Allocation Table from disk.
@@ -110,8 +108,7 @@ namespace Util {
 		virtual unsigned DirectoryToCluster(String^ path) = 0;
 
 	protected:
-		Microsoft::Win32::SafeHandles::SafeFileHandle^ VolumeHandle;
-		IO::FileStream^ VolumeStream;
+		IO::Stream^ VolumeStream;
 
 		unsigned SectorSize;                 // Size of one sector, in bytes
 		unsigned ClusterSize;                // Size of one cluster, in bytes
@@ -220,8 +217,7 @@ namespace Util {
 	{
 	public:
 		Fat32Api(VolumeInfo^ info);
-		Fat32Api(VolumeInfo^ info, Microsoft::Win32::SafeHandles::SafeFileHandle^ handle,
-			 IO::FileAccess access);
+		Fat32Api(VolumeInfo^ info, IO::Stream^ stream);
 
 	public:
 		virtual void LoadFat() override;
