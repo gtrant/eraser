@@ -133,7 +133,7 @@ namespace Util {
 				break;
 
 			FatDirectory^ currentDirectory = LoadDirectory(cluster, parentDir);
-			cluster = currentDirectory->GetStartCluster(component);
+			cluster = currentDirectory->Items[component]->Cluster;
 			parentDir = component;
 		}
 
