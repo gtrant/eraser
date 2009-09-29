@@ -43,7 +43,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Installer.Bootstrapper", "I
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShellExt", "ShellExt\ShellExt.vcproj", "{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Unlocker", "Eraser.Unlocker\Eraser.Unlocker.vcproj", "{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.Unlocker", "Eraser.Util.Unlocker\Eraser.Util.Unlocker.vcproj", "{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
