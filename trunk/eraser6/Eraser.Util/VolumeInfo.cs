@@ -392,6 +392,145 @@ namespace Eraser.Util
 			get { return MountPoints.Count != 0; }
 		}
 
+		/// <summary>
+		/// Opens a file with read, write, or read/write access.
+		/// </summary>
+		/// <param name="access">A System.IO.FileAccess constant specifying whether
+		/// to open the file with Read, Write, or ReadWrite file access.</param>
+		/// <returns>A System.IO.FileStream object opened in the specified mode
+		/// and access, unshared, and no special file options.</returns>
+		public FileStream Open(FileAccess access)
+		{
+			return Open(access, FileShare.None, FileOptions.None);
+		}
+
+		/// <summary>
+		/// Opens a file with read, write, or read/write access and the specified
+		/// sharing option.
+		/// </summary>
+		/// <param name="access">A System.IO.FileAccess constant specifying whether
+		/// to open the file with Read, Write, or ReadWrite file access.</param>
+		/// <param name="share">A System.IO.FileShare constant specifying the type
+		/// of access other FileStream objects have to this file.</param>
+		/// <returns>A System.IO.FileStream object opened with the specified mode,
+		/// access, sharing options, and no special file options.</returns>
+		public FileStream Open(FileAccess access, FileShare share)
+		{
+			return Open(access, share, FileOptions.None);
+		}
+
+		/// <summary>
+		/// Opens a file with read, write, or read/write access, the specified
+		/// sharing option, and other advanced options.
+		/// </summary>
+		/// <param name="mode">A System.IO.FileMode constant specifying the mode
+		/// (for example, Open or Append) in which to open the file.</param>
+		/// <param name="access">A System.IO.FileAccess constant specifying whether
+		/// to open the file with Read, Write, or ReadWrite file access.</param>
+		/// <param name="share">A System.IO.FileShare constant specifying the type
+		/// of access other FileStream objects have to this file.</param>
+		/// <param name="options">The System.IO.FileOptions constant specifying
+		/// the advanced file options to use when opening the file.</param>
+		/// <returns>A System.IO.FileStream object opened with the specified mode,
+		/// access, sharing options, and special file options.</returns>
+		public FileStream Open(FileAccess access, FileShare share, FileOptions options)
+		{
+			SafeFileHandle handle = OpenHandle(access, share, options);
+
+			//Check that the handle is valid
+			if (handle.IsInvalid)
+				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+
+			//Return the FileStream
+			return new FileStream(handle, access);
+		}
+
+		private SafeFileHandle OpenHandle(FileAccess access, FileShare share, FileOptions options)
+		{
+			//Access mode
+			uint iAccess = 0;
+			switch (access)
+			{
+				case FileAccess.Read:
+					iAccess = KernelApi.NativeMethods.GENERIC_READ;
+					break;
+				case FileAccess.ReadWrite:
+					iAccess = KernelApi.NativeMethods.GENERIC_READ |
+						KernelApi.NativeMethods.GENERIC_WRITE;
+					break;
+				case FileAccess.Write:
+					iAccess = KernelApi.NativeMethods.GENERIC_WRITE;
+					break;
+			}
+
+			//Sharing mode
+			if ((share & FileShare.Inheritable) != 0)
+				throw new NotSupportedException("Inheritable handles are not supported.");
+
+			//Advanced options
+			if ((options & FileOptions.Asynchronous) != 0)
+				throw new NotSupportedException("Asynchronous handles are not implemented.");
+
+			//Create the handle
+			string openPath = VolumeId;
+			if (openPath.Length > 0 && openPath[openPath.Length - 1] == '\\')
+				openPath = openPath.Remove(openPath.Length - 1);
+			SafeFileHandle result = KernelApi.NativeMethods.CreateFile(openPath, iAccess,
+				(uint)share, IntPtr.Zero, (uint)FileMode.Open, (uint)options, IntPtr.Zero);
+			if (result.IsInvalid)
+				throw KernelApi.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+
+			return result;
+		}
+
+		public VolumeLock LockVolume(FileStream stream)
+		{
+			return new VolumeLock(stream.SafeFileHandle);
+		}
+
 		private List<string> mountPoints = new List<string>();
+	}
+
+	public class VolumeLock : IDisposable
+	{
+		internal VolumeLock(SafeFileHandle handle)
+		{
+			uint result = 0;
+			for (int i = 0; !KernelApi.NativeMethods.DeviceIoControl(handle,
+					KernelApi.NativeMethods.FSCTL_LOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
+					0, out result, IntPtr.Zero); ++i)
+			{
+				if (i > 100)
+					throw new IOException("Could not lock volume.");
+				System.Threading.Thread.Sleep(100);
+			}
+
+			Handle = handle;
+		}
+
+		~VolumeLock()
+		{
+			Dispose(false);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+		}
+
+		void Dispose(bool disposing)
+		{
+			if (disposing)
+				GC.SuppressFinalize(this);
+
+			uint result = 0;
+			if (!KernelApi.NativeMethods.DeviceIoControl(Handle, KernelApi.NativeMethods.FSCTL_UNLOCK_VOLUME,
+				IntPtr.Zero, 0, IntPtr.Zero, 0, out result, IntPtr.Zero))
+			{
+				throw new IOException("Could not unlock volume.");
+			}
+		}
+
+		private SafeFileHandle Handle;
 	}
 }
