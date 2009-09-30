@@ -512,9 +512,7 @@ namespace Eraser.Manager
 			DirectoryInfo info = new DirectoryInfo(target.Drive);
 			VolumeInfo volInfo = VolumeInfo.FromMountpoint(target.Drive);
 			FileSystem fsManager = FileSystemManager.Get(volInfo);
-			info = info.CreateSubdirectory(Path.GetFileName(
-				FileSystem.GenerateRandomFileName(info, 18)));
-
+			
 			//Erase the cluster tips of every file on the drive.
 			if (target.EraseClusterTips)
 			{
@@ -558,6 +556,8 @@ namespace Eraser.Manager
 					method, task.Log, searchProgress, eraseProgress);
 			}
 
+			info = info.CreateSubdirectory(Path.GetFileName(
+				FileSystem.GenerateRandomFileName(info, 18)));
 			try
 			{
 				//Set the folder's compression flag off since we want to use as much
