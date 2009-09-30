@@ -30,14 +30,14 @@ namespace Util {
 	Fat16Api::Fat16Api(VolumeInfo^ info) : Fat12Or16Api(info)
 	{
 		//Sanity checks: check that this volume is FAT16!
-		if (IsFat12())
+		if (IsFat12() || info->VolumeFormat == L"FAT12")
 			throw gcnew ArgumentException(L"The volume provided is not a FAT16 volume.");
 	}
 
 	Fat16Api::Fat16Api(VolumeInfo^ info, IO::Stream^ stream) : Fat12Or16Api(info, stream)
 	{
 		//Sanity checks: check that this volume is FAT16!
-		if (IsFat12())
+		if (IsFat12() || info->VolumeFormat == L"FAT12")
 			throw gcnew ArgumentException(L"The volume provided is not a FAT16 volume.");
 	}
 

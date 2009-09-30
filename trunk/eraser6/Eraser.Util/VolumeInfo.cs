@@ -118,6 +118,20 @@ namespace Eraser.Util
 				IsReady = true;
 				VolumeLabel = volumeName.ToString();
 				VolumeFormat = fileSystemName.ToString();
+
+				//Determine whether it is FAT12 or FAT16
+				if (VolumeFormat == "FAT")
+				{
+					uint clusterSize, sectorSize, freeClusters, totalClusters;
+					if (KernelApi.NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
+						out sectorSize, out freeClusters, out totalClusters))
+					{
+						if (totalClusters <= 0xFF0)
+							VolumeFormat += "12";
+						else
+							VolumeFormat += "16";
+					}
+				}
 			}
 		}
 
