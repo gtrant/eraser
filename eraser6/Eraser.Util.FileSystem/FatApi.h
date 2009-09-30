@@ -303,6 +303,22 @@ namespace Util {
 		bool IsFat12();
 	};
 
+	public ref class Fat12Api : Fat12Or16Api
+	{
+	public:
+		Fat12Api(VolumeInfo^ info);
+		Fat12Api(VolumeInfo^ info, IO::Stream^ stream);
+
+	internal:
+		virtual bool IsClusterAllocated(unsigned cluster) override;
+		virtual unsigned GetNextCluster(unsigned cluster) override;
+		virtual unsigned FileSize(unsigned cluster) override;
+
+	private:
+		/// Retrieves the FAT value for the given cluster.
+		unsigned GetFatValue(unsigned cluster);
+	};
+
 	public ref class Fat16Api : Fat12Or16Api
 	{
 	public:
