@@ -109,6 +109,7 @@ namespace Eraser.DefaultPlugins
 							}
 
 						currentDir.ClearDeletedEntries();
+						++directoriesCleaned;
 					}
 				}
 			}
