@@ -77,7 +77,7 @@ namespace Util {
 			else if (fatPtr[cluster] == 0xFFF7)
 				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
 			else if (fatPtr[cluster] >= 0xFFF8)
-				return result * ClusterSize;
+				return ClusterSizeToSize(result);
 			else
 				cluster = fatPtr[cluster];
 		}
