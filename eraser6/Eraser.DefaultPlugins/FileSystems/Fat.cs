@@ -97,7 +97,7 @@ namespace Eraser.DefaultPlugins
 
 						//Queue the subfolders in this directory
 						foreach (KeyValuePair<string, FatDirectoryEntry> entry in currentDir.Items)
-							if (entry.Value.Type == FatDirectoryEntryTypes.Directory)
+							if (entry.Value.Type == FatDirectoryEntryType.Directory)
 							{
 								//Check that we don't have the same cluster queued twice (e.g. for
 								//long/8.3 file names)

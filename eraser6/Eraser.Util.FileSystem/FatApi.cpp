@@ -77,7 +77,7 @@ namespace Util {
 	FatDirectoryBase^ FatApi::LoadDirectory(String^ directory)
 	{
 		//Return the root directory if nothing is specified
-		if (directory == String::Empty)
+		if (String::IsNullOrEmpty(directory))
 			return LoadDirectory(DirectoryToCluster(directory), String::Empty, nullptr);
 
 		array<wchar_t>^ pathSeparators = { Path::DirectorySeparatorChar, Path::AltDirectorySeparatorChar };
@@ -143,17 +143,12 @@ namespace Util {
 		}
 	}
 
-	void FatApi::SetFileContents(const std::vector<char>& contents, unsigned cluster)
-	{
-		SetFileContents(&contents.front(), contents.size(), cluster);
-	}
-
 	FatDirectoryEntry::FatDirectoryEntry(String^ name, FatDirectoryBase^ parent,
-		FatDirectoryEntryTypes type, unsigned cluster)
+		FatDirectoryEntryType type, unsigned cluster)
 	{
 		Name = name;
 		Parent = parent;
-		Type = type;
+		EntryType = type;
 		Cluster = cluster;
 	}
 
@@ -172,7 +167,7 @@ namespace Util {
 	}
 
 	FatDirectoryBase::FatDirectoryBase(String^ name, FatDirectoryBase^ parent, unsigned cluster)
-		: FatDirectoryEntry(name, parent, FatDirectoryEntryTypes::Directory, cluster)
+		: FatDirectoryEntry(name, parent, FatDirectoryEntryType::Directory, cluster)
 	{
 		Entries = gcnew Dictionary<String^, FatDirectoryEntry^>();
 		ReadDirectory();
@@ -309,7 +304,7 @@ namespace Util {
 					String^ fileName = gcnew String(longFileName.c_str());
 					Entries->Add(fileName, gcnew FatDirectoryEntry(fileName, this,
 						(i->Short.Attributes & FILE_ATTRIBUTE_DIRECTORY) ?
-							FatDirectoryEntryTypes::Directory : FatDirectoryEntryTypes::File,
+							FatDirectoryEntryType::Directory : FatDirectoryEntryType::File,
 						GetStartCluster(*i)));
 				}
 				else
@@ -329,7 +324,8 @@ namespace Util {
 			
 			//Then read the 8.3 entry for the file details
 			wchar_t shortFileName[8 + 3 + 2];
-			mbstowcs(shortFileName, i->Short.Name, sizeof(i->Short.Name));
+			if (mbstowcs(shortFileName, i->Short.Name, sizeof(i->Short.Name)) != sizeof(i->Short.Name))
+				continue;
 
 			//If the extension is blank, don't care about it
 			if (strncmp(i->Short.Extension, "   ", 3) == 0)
@@ -346,7 +342,7 @@ namespace Util {
 			String^ fileName = gcnew String(shortFileName);
 			Entries->Add(fileName, gcnew FatDirectoryEntry(fileName, this,
 				(i->Short.Attributes & FILE_ATTRIBUTE_DIRECTORY) ?
-					FatDirectoryEntryTypes::Directory : FatDirectoryEntryTypes::File,
+					FatDirectoryEntryType::Directory : FatDirectoryEntryType::File,
 				GetStartCluster(*i)));
 		}
 	}
