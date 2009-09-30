@@ -499,7 +499,7 @@ namespace Eraser.Util
 
 		public VolumeLock LockVolume(FileStream stream)
 		{
-			return new VolumeLock(stream.SafeFileHandle);
+			return new VolumeLock(stream);
 		}
 
 		private List<string> mountPoints = new List<string>();
@@ -507,10 +507,10 @@ namespace Eraser.Util
 
 	public class VolumeLock : IDisposable
 	{
-		internal VolumeLock(SafeFileHandle handle)
+		internal VolumeLock(FileStream stream)
 		{
 			uint result = 0;
-			for (int i = 0; !KernelApi.NativeMethods.DeviceIoControl(handle,
+			for (int i = 0; !KernelApi.NativeMethods.DeviceIoControl(stream.SafeFileHandle,
 					KernelApi.NativeMethods.FSCTL_LOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
 					0, out result, IntPtr.Zero); ++i)
 			{
@@ -519,7 +519,7 @@ namespace Eraser.Util
 				System.Threading.Thread.Sleep(100);
 			}
 
-			Handle = handle;
+			Stream = stream;
 		}
 
 		~VolumeLock()
@@ -537,14 +537,19 @@ namespace Eraser.Util
 			if (disposing)
 				GC.SuppressFinalize(this);
 
+			//Flush the contents of the buffer to disk since after we unlock the volume
+			//we can no longer write to the volume.
+			Stream.Flush();
+
 			uint result = 0;
-			if (!KernelApi.NativeMethods.DeviceIoControl(Handle, KernelApi.NativeMethods.FSCTL_UNLOCK_VOLUME,
-				IntPtr.Zero, 0, IntPtr.Zero, 0, out result, IntPtr.Zero))
+			if (!KernelApi.NativeMethods.DeviceIoControl(Stream.SafeFileHandle,
+				KernelApi.NativeMethods.FSCTL_UNLOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
+				0, out result, IntPtr.Zero))
 			{
 				throw new IOException("Could not unlock volume.");
 			}
 		}
 
-		private SafeFileHandle Handle;
+		private FileStream Stream;
 	}
 }
