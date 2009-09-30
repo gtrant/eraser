@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include <vector>
 #include "Fat.h"
 
 using namespace System;
@@ -94,15 +93,14 @@ namespace Util {
 		virtual unsigned FileSize(unsigned cluster) = 0;
 
 		/// Gets the contents of the file starting at the given cluster.
-		std::vector<char> GetFileContents(unsigned cluster);
+		array<Byte>^ GetFileContents(unsigned cluster);
 
 		/// Set the contents of the file starting at the given cluster. The length
 		/// of the contents must exactly match the length of the file.
 		/// 
 		/// \param[in] buffer  The data to write.
-		/// \param[in] length  The amount of data to write.
 		/// \param[in] cluster The cluster to begin writing to.
-		void SetFileContents(const void* buffer, size_t length, unsigned cluster);
+		void SetFileContents(array<Byte>^ buffer, unsigned cluster);
 
 		/// Resolves a directory to the position on-disk
 		///

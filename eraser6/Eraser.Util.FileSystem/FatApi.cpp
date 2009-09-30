@@ -20,6 +20,7 @@
  */
 
 #include <stdafx.h>
+#include <vector>
 #include <windows.h>
 
 #include "FatApi.h"
@@ -49,7 +50,7 @@ namespace Util {
 		LoadFat();
 	}
 
-	FatApi::FatApi(VolumeInfo^ info, Stream^ stream)
+	FatApi::FatApi(VolumeInfo^, Stream^ stream)
 	{
 		BootSector = new FatBootSector();
 		memset(BootSector, 0, sizeof(*BootSector));
@@ -95,45 +96,39 @@ namespace Util {
 		return size * (BootSector->BytesPerSector * BootSector->SectorsPerCluster);
 	}
 
-	std::vector<char> FatApi::GetFileContents(unsigned cluster)
+	array<Byte>^ FatApi::GetFileContents(unsigned cluster)
 	{
 		if (!IsClusterAllocated(cluster))
 			throw gcnew ArgumentException(L"The specified cluster is not used.");
 
-		std::vector<char> result;
-		result.reserve(FileSize(cluster));
-		array<Byte>^ buffer = gcnew array<Byte>(ClusterSizeToSize(1));
+		array<Byte>^ result = gcnew array<Byte>(FileSize(cluster));
+		const int clusterSize = ClusterSizeToSize(1);
+		int nextIndex = 0;
 
 		do
 		{
 			VolumeStream->Seek(ClusterToOffset(cluster), SeekOrigin::Begin);
-			VolumeStream->Read(buffer, 0, buffer->Length);
-
-			result.insert(result.end(), buffer->Length, 0);
-			Marshal::Copy(buffer, 0, static_cast<IntPtr>(&result.back() - buffer->Length + 1),
-				buffer->Length);
+			VolumeStream->Read(result, nextIndex, clusterSize);
+			nextIndex += clusterSize;
 		}
 		while ((cluster = GetNextCluster(cluster)) != 0xFFFFFFFF);
 
 		return result;
 	}
 
-	void FatApi::SetFileContents(const void* data, size_t length, unsigned cluster)
+	void FatApi::SetFileContents(array<Byte>^ buffer, unsigned cluster)
 	{
 		if (!IsClusterAllocated(cluster))
 			throw gcnew ArgumentException(L"The specified cluster is not used.");
-		if (length != FileSize(cluster))
+		if (static_cast<unsigned>(buffer->Length) != FileSize(cluster))
 			throw gcnew ArgumentException(L"The provided file contents will not fit in the " +
 				gcnew String(L"allocated file."));
 
 		size_t clusterSize = ClusterSizeToSize(1);
-		array<Byte>^ buffer = gcnew array<Byte>(clusterSize);
-		for (size_t i = 0; i < length; i += clusterSize)
+		for (int i = 0; i < buffer->Length; i += clusterSize)
 		{
-			Marshal::Copy(static_cast<IntPtr>(reinterpret_cast<intptr_t>(static_cast<const char*>(data) + i)),
-				buffer, 0, clusterSize);
 			VolumeStream->Seek(ClusterToOffset(cluster), SeekOrigin::Begin);
-			VolumeStream->Write(buffer, 0, clusterSize);
+			VolumeStream->Write(buffer, i, clusterSize);
 			cluster = GetNextCluster(cluster);
 		}
 	}
@@ -350,17 +345,19 @@ namespace Util {
 
 	void FatDirectory::ReadDirectory()
 	{
-		std::vector<char> dir = Api->GetFileContents(Cluster);
-		DirectorySize = dir.size() / sizeof(::FatDirectoryEntry);
+		array<Byte>^ dir = Api->GetFileContents(Cluster);
+		DirectorySize = dir->Length / sizeof(::FatDirectoryEntry);
 		Directory = new ::FatDirectoryEntry[DirectorySize];
-		memcpy(Directory, &dir.front(), dir.size());
+		Marshal::Copy(dir, 0, static_cast<IntPtr>(Directory), dir->Length);
 
 		ParseDirectory();
 	}
 
 	void FatDirectory::WriteDirectory()
 	{
-		Api->SetFileContents(Directory, Api->FileSize(Cluster), Cluster);
+		array<Byte>^ buffer = gcnew array<Byte>(DirectorySize * sizeof(::FatDirectoryEntry));
+		Marshal::Copy(static_cast<IntPtr>(Directory), buffer, 0, buffer->Length);
+		Api->SetFileContents(buffer, Cluster);
 	}
 }
 }
