@@ -83,7 +83,7 @@ namespace Util {
 		array<wchar_t>^ pathSeparators = { Path::DirectorySeparatorChar, Path::AltDirectorySeparatorChar };
 		int lastIndex = directory->LastIndexOfAny(pathSeparators);
 		return LoadDirectory(DirectoryToCluster(directory), directory->Substring(lastIndex + 1),
-			LoadDirectory(directory->Substring(0, lastIndex == 0 ? 0 : lastIndex - 1)));
+			LoadDirectory(directory->Substring(0, lastIndex)));
 	}
 
 	unsigned long long FatApi::SectorToOffset(unsigned long long sector)
@@ -199,7 +199,9 @@ namespace Util {
 				::FatDirectoryEntry* longFileNameBegin = i;
 				for (unsigned char sequence = 0; i->Short.Attributes == 0x0F; ++i)
 				{
-					if (!(i->LongFileName.Sequence & 0x40)) //Second entry onwards
+					if (static_cast<unsigned char>(i->Short.Name[0]) == 0xE5)
+						continue;
+					else if (!(i->LongFileName.Sequence & 0x40)) //Second entry onwards
 					{
 						//Check that the checksum of the file name is the same as the previous
 						//long file name entry, to ensure no corruption has taken place
@@ -225,6 +227,11 @@ namespace Util {
 					//The previous few entries contained the correct file name. Save these entries
 					validEntries.insert(validEntries.end(), longFileNameBegin, i);
 				}
+				else
+				{
+					--i;
+					continue;
+				}
 			}
 
 			validEntries.push_back(*i);
@@ -233,7 +240,7 @@ namespace Util {
 		//validEntries now contains the compacted list of directory entries. Zero
 		//the memory used.
 		memset(Directory, 0, DirectorySize * sizeof(::FatDirectoryEntry));
-		memcpy(Directory, &validEntries.front(), validEntries.size() * sizeof(::FatDirectory));
+		memcpy(Directory, &validEntries.front(), validEntries.size() * sizeof(::FatDirectoryEntry));
 
 		//Write the entries to disk
 		WriteDirectory();
@@ -261,7 +268,9 @@ namespace Util {
 				std::wstring longFileName;
 				for (unsigned char sequence = 0; i->Short.Attributes == 0x0F; ++i)
 				{
-					if (!(i->LongFileName.Sequence & 0x40)) //Second entry onwards
+					if (static_cast<unsigned char>(i->Short.Name[0]) == 0xE5)
+						continue;
+					else if (!(i->LongFileName.Sequence & 0x40)) //Second entry onwards
 					{
 						//Check that the checksum of the file name is the same as the previous
 						//long file name entry, to ensure no corruption has taken place
@@ -272,6 +281,8 @@ namespace Util {
 						if (sequence != i->LongFileName.Sequence + 1)
 							throw gcnew ArgumentException(L"Invalid directory entry.");
 					}
+					else
+						longFileName.clear();
 					
 					sequence = i->LongFileName.Sequence & ~0x40;
 					std::wstring namePart(i->LongFileName.Name1, sizeof(i->LongFileName.Name1) / sizeof(i->LongFileName.Name1[0]));
@@ -296,6 +307,11 @@ namespace Util {
 						(i->Short.Attributes & FILE_ATTRIBUTE_DIRECTORY) ?
 							FatDirectoryEntryTypes::Directory : FatDirectoryEntryTypes::File,
 						GetStartCluster(*i)));
+				}
+				else
+				{
+					--i;
+					continue;
 				}
 			}
 

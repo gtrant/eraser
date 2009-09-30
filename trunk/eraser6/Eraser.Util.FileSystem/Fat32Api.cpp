@@ -113,9 +113,13 @@ namespace Util {
 	unsigned Fat32Api::DirectoryToCluster(String^ path)
 	{
 		//The path must start with a backslash as it must be volume-relative.
-		if (path->Length != 0 && path[0] != L'\\')
-			throw gcnew ArgumentException(L"The path provided is not volume relative. " +
-				gcnew String(L"Volume relative paths must begin with a backslash."));
+		if (path->Length != 0)
+		{
+			if (path[0] != L'\\')
+				throw gcnew ArgumentException(L"The path provided is not volume relative. " +
+					gcnew String(L"Volume relative paths must begin with a backslash."));
+			path = path->Remove(0, 1);
+		}
 
 		//Chop the path into it's constituent directory components
 		array<String^>^ components = path->Split(Path::DirectorySeparatorChar,
@@ -129,7 +133,7 @@ namespace Util {
 			if (component == String::Empty)
 				break;
 
-			parentDir = LoadDirectory(cluster, parentDir == nullptr ? nullptr : parentDir->Name,
+			parentDir = LoadDirectory(cluster, parentDir == nullptr ? String::Empty : parentDir->Name,
 				parentDir);
 			cluster = parentDir->Items[component]->Cluster;
 		}

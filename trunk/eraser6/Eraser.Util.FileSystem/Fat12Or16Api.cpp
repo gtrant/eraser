@@ -65,9 +65,9 @@ namespace Util {
 
 	long long Fat12Or16Api::ClusterToOffset(unsigned cluster)
 	{
-		unsigned long long sector = BootSector->ReservedSectorCount +											//Reserved area
-			BootSector->FatCount * BootSector->SectorsPerFat +													//FAT area
-			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / (ClusterSize / SectorSize)) +	//Root directory area
+		unsigned long long sector = BootSector->ReservedSectorCount +							//Reserved area
+			BootSector->FatCount * BootSector->SectorsPerFat +									//FAT area
+			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / SectorSize) +	//Root directory area
 			(static_cast<unsigned long long>(cluster) - 2) * (ClusterSize / SectorSize);
 		return SectorToOffset(sector);
 	}
@@ -75,9 +75,13 @@ namespace Util {
 	unsigned Fat12Or16Api::DirectoryToCluster(String^ path)
 	{
 		//The path must start with a backslash as it must be volume-relative.
-		if (path->Length != 0 && path[0] != L'\\')
-			throw gcnew ArgumentException(L"The path provided is not volume relative. " +
-				gcnew String(L"Volume relative paths must begin with a backslash."));
+		if (path->Length != 0)
+		{
+			if (path[0] != L'\\')
+				throw gcnew ArgumentException(L"The path provided is not volume relative. " +
+					gcnew String(L"Volume relative paths must begin with a backslash."));
+			path = path->Remove(0, 1);
+		}
 
 		//Chop the path into it's constituent directory components
 		array<String^>^ components = path->Split(Path::DirectorySeparatorChar,
@@ -85,13 +89,13 @@ namespace Util {
 
 		//Traverse the directories until we get the cluster we want.
 		unsigned cluster = 0;
-		FatDirectoryBase^ parentDir = gcnew RootDirectory(this);
+		FatDirectoryBase^ parentDir = nullptr;
 		for each (String^ component in components)
 		{
 			if (component == String::Empty)
 				break;
 
-			parentDir = LoadDirectory(cluster, parentDir == nullptr ? nullptr : parentDir->Name,
+			parentDir = LoadDirectory(cluster, parentDir == nullptr ? String::Empty : parentDir->Name,
 				parentDir);
 			cluster = parentDir->Items[component]->Cluster;
 		}
@@ -104,9 +108,9 @@ namespace Util {
 		unsigned long long numberOfSectors = (BootSector->SectorCount16 == 0 ?
 			BootSector->SectorCount32 : BootSector->SectorCount16);
 		unsigned long long availableSectors = numberOfSectors - (
-			BootSector->ReservedSectorCount +																	//Reserved area
-			BootSector->FatCount * BootSector->SectorsPerFat +													//FAT area
-			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / (ClusterSize / SectorSize))	//Root directory area
+			BootSector->ReservedSectorCount +													//Reserved area
+			BootSector->FatCount * BootSector->SectorsPerFat +									//FAT area
+			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / SectorSize)	//Root directory area
 		);
 		unsigned long long numberOfClusters = availableSectors / (ClusterSize / SectorSize);
 
