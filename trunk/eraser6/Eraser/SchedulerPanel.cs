@@ -140,6 +140,24 @@ namespace Eraser
 			DisplayTask(e.Task);
 		}
 
+		private void DeleteSelectedTasks()
+		{
+			if (MessageBox.Show(this, S._("Are you sure you want to delete the selected tasks?"),
+				   S._("Eraser"), MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+				   MessageBoxDefaultButton.Button1,
+				   S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0) != DialogResult.Yes)
+			{
+				return;
+			}
+
+			foreach (ListViewItem item in scheduler.SelectedItems)
+			{
+				Task task = (Task)item.Tag;
+				if (!task.Executing)
+					Program.eraserClient.Tasks.Remove(task);
+			}
+		}
+
 		/// <summary>
 		/// Handles the task deleted event.
 		/// </summary>
@@ -298,6 +316,17 @@ namespace Eraser
 				//Update the status of the task.
 				UpdateTask(item);
 			}
+		}
+
+		/// <summary>
+		/// Occurs when the user presses a key on the list view.
+		/// </summary>
+		/// <param name="sender">The list view which triggered the event.</param>
+		/// <param name="e">Event argument.</param>
+		private void scheduler_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyCode == Keys.Delete)
+				DeleteSelectedTasks();
 		}
 
 		/// <summary>
@@ -576,20 +605,7 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void deleteTaskToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (MessageBox.Show(this, S._("Are you sure you want to delete the selected tasks?"),
-				S._("Eraser"), MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-				MessageBoxDefaultButton.Button1,
-				S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0) != DialogResult.Yes)
-			{
-				return;
-			}
-
-			foreach (ListViewItem item in scheduler.SelectedItems)
-			{
-				Task task = (Task)item.Tag;
-				if (!task.Executing)
-					Program.eraserClient.Tasks.Remove(task);
-			}
+			DeleteSelectedTasks();
 		}
 
 		#region Item management
