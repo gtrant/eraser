@@ -70,31 +70,13 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		protected override DateTime MinTimestamp
-		{
-			get
-			{
-				return new DateTime(1980, 1, 1, 0, 0, 0);
-			}
-		}
-	}
-
-	public class Fat32FileSystem : FatFileSystem
-	{
-		public override bool Supports(string fileSystemName)
-		{
-			if (fileSystemName == "FAT32")
-				return true;
-			return false;
-		}
-
 		public override void EraseDirectoryStructures(VolumeInfo info,
 			FileSystemEntriesEraseProgress callback)
 		{
 			using (FileStream stream = info.Open(FileAccess.ReadWrite, FileShare.ReadWrite))
 			{
 				int directoriesCleaned = 0;
-				Fat32Api api = new Fat32Api(info, stream);
+				FatApi api = GetFatApi(info, stream);
 				HashSet<uint> eraseQueueClusters = new HashSet<uint>();
 				List<FatDirectoryEntry> eraseQueue = new List<FatDirectoryEntry>();
 				{
@@ -110,7 +92,7 @@ namespace Eraser.DefaultPlugins
 						if (callback != null)
 							callback(directoriesCleaned, directoriesCleaned + eraseQueue.Count);
 
-						FatDirectory currentDir = api.LoadDirectory(eraseQueue[0].FullName);
+						FatDirectoryBase currentDir = api.LoadDirectory(eraseQueue[0].FullName);
 						eraseQueue.RemoveAt(0);
 
 						//Queue the subfolders in this directory
@@ -130,6 +112,49 @@ namespace Eraser.DefaultPlugins
 					}
 				}
 			}
+		}
+
+		protected override DateTime MinTimestamp
+		{
+			get
+			{
+				return new DateTime(1980, 1, 1, 0, 0, 0);
+			}
+		}
+
+		/// <summary>
+		///  Gets the FAT API to use to interface with the disk.
+		/// </summary>
+		protected abstract FatApi GetFatApi(VolumeInfo info, FileStream stream);
+	}
+
+	public class Fat16FileSystem : FatFileSystem
+	{
+		public override bool Supports(string fileSystemName)
+		{
+			if (fileSystemName == "FAT16")
+				return true;
+			return false;
+		}
+
+		protected override FatApi GetFatApi(VolumeInfo info, FileStream stream)
+		{
+			return new Fat16Api(info, stream);
+		}
+	}
+
+	public class Fat32FileSystem : FatFileSystem
+	{
+		public override bool Supports(string fileSystemName)
+		{
+			if (fileSystemName == "FAT32")
+				return true;
+			return false;
+		}
+
+		protected override FatApi GetFatApi(VolumeInfo info, FileStream stream)
+		{
+			return new Fat32Api(info, stream);
 		}
 	}
 }
