@@ -109,6 +109,7 @@ namespace Eraser
 			this.scheduler.DragDrop += new System.Windows.Forms.DragEventHandler(this.scheduler_DragDrop);
 			this.scheduler.DragEnter += new System.Windows.Forms.DragEventHandler(this.scheduler_DragEnter);
 			this.scheduler.DragLeave += new System.EventHandler(this.scheduler_DragLeave);
+			this.scheduler.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scheduler_KeyDown);
 			this.scheduler.DragOver += new System.Windows.Forms.DragEventHandler(this.scheduler_DragOver);
 			this.scheduler.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.scheduler_DrawSubItem);
 			// 

@@ -195,6 +195,9 @@
   <data name="{0} has just been added to the list of tasks." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Are you sure you want to delete the selected tasks?" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Running..." xml:space="preserve">
     <value>Wordt uitgevoerd...</value>
   </data>
@@ -220,9 +223,6 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Could not import task list from {0}. The error returned was: {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Are you sure you want to delete the selected tasks?" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="User interface language" xml:space="preserve">
