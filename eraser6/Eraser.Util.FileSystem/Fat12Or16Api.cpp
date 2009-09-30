@@ -65,10 +65,11 @@ namespace Util {
 
 	long long Fat12Or16Api::ClusterToOffset(unsigned cluster)
 	{
-		unsigned long long sector = BootSector->ReservedSectorCount +							//Reserved area
-			BootSector->FatCount * BootSector->SectorsPerFat +									//FAT area
-			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / SectorSize) +	//Root directory area
-			(static_cast<unsigned long long>(cluster) - 2) * (ClusterSize / SectorSize);
+		unsigned long long sector = BootSector->ReservedSectorCount +						//Reserved area
+			BootSector->FatCount * BootSector->SectorsPerFat +								//FAT area
+			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) /			//Root directory area
+				BootSector->BytesPerSector) +
+			(static_cast<unsigned long long>(cluster) - 2) * BootSector->SectorsPerCluster;
 		return SectorToOffset(sector);
 	}
 
@@ -110,9 +111,10 @@ namespace Util {
 		unsigned long long availableSectors = numberOfSectors - (
 			BootSector->ReservedSectorCount +													//Reserved area
 			BootSector->FatCount * BootSector->SectorsPerFat +									//FAT area
-			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / SectorSize)	//Root directory area
+			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) /			//Root directory area
+				BootSector->BytesPerSector)
 		);
-		unsigned long long numberOfClusters = availableSectors / (ClusterSize / SectorSize);
+		unsigned long long numberOfClusters = availableSectors / BootSector->SectorsPerCluster;
 
 		return numberOfClusters <= 0xFF0;
 	}

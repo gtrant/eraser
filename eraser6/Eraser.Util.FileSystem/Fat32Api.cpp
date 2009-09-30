@@ -64,7 +64,7 @@ namespace Util {
 	{
 		unsigned long long sector = BootSector->ReservedSectorCount +				//Reserved area
 			BootSector->FatCount * BootSector->Fat32ParameterBlock.SectorsPerFat +	//FAT area
-			(static_cast<unsigned long long>(cluster) - 2) * (ClusterSize / SectorSize);
+			(static_cast<unsigned long long>(cluster) - 2) *  BootSector->SectorsPerCluster;
 		return SectorToOffset(sector);
 	}
 
@@ -104,7 +104,7 @@ namespace Util {
 			else if (fatPtr[cluster] == 0x0FFFFFF7)
 				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
 			else if (fatPtr[cluster] >= 0x0FFFFFF8)
-				return result * ClusterSize;
+				return ClusterSizeToSize(result);
 			else
 				cluster = fatPtr[cluster];
 		}

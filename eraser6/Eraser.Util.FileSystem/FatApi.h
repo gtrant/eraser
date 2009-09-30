@@ -110,12 +110,31 @@ namespace Util {
 		virtual unsigned DirectoryToCluster(String^ path) = 0;
 
 	protected:
-		IO::Stream^ VolumeStream;
+		/// The stream used to access the volume.
+		property IO::Stream^ VolumeStream
+		{
+			IO::Stream^ get() { return volumeStream; }
+		private:
+			void set(IO::Stream^ value) { volumeStream = value; }
+		}
 
-		unsigned SectorSize;                 // Size of one sector, in bytes
-		unsigned ClusterSize;                // Size of one cluster, in bytes
-		FatBootSector* BootSector;
-		char* Fat;
+		property FatBootSector* BootSector
+		{
+			FatBootSector* get() { return bootSector; }
+		private:
+			void set(FatBootSector* value) { bootSector = value; }
+		}
+
+		property char* Fat
+		{
+			char* get() { return fat; }
+			void set(char* value) { fat = value; }
+		}
+
+	private:
+		IO::Stream^ volumeStream;
+		FatBootSector* bootSector;
+		char* fat;
 	};
 
 	/// Represents the types of FAT directory entries.
@@ -229,14 +248,25 @@ namespace Util {
 
 	protected:
 		/// A pointer to the directory structure.
-		::FatDirectory Directory;
+		property ::FatDirectory Directory
+		{
+			::FatDirectory get() { return directory; }
+			void set(::FatDirectory value) { directory = value; }
+		}
 
 		/// The number of entries in the directory
-		size_t DirectorySize;
+		property size_t DirectorySize
+		{
+			size_t get() { return directorySize; }
+			void set(size_t value) { directorySize = value; }
+		}
 
 	private:
 		/// The list of parsed entries in the folder.
 		Collections::Generic::Dictionary<String^, FatDirectoryEntry^>^ Entries;
+
+		size_t directorySize;
+		::FatDirectory directory;
 	};
 
 	/// Represents a FAT directory file.

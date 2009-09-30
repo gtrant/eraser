@@ -78,7 +78,7 @@ namespace Util {
 			else if (nextCluster == 0xFF7)
 				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
 			else if (nextCluster >= 0xFF8)
-				return result * ClusterSize;
+				return ClusterSizeToSize(result);
 			else
 				cluster = nextCluster;
 		}

@@ -32,9 +32,6 @@ namespace Eraser {
 namespace Util {
 	FatApi::FatApi(VolumeInfo^ info)
 	{
-		SectorSize = info->SectorSize;
-		ClusterSize = info->ClusterSize;
-
 		BootSector = new FatBootSector();
 		memset(BootSector, 0, sizeof(*BootSector));
 		Fat = NULL;
@@ -54,9 +51,6 @@ namespace Util {
 
 	FatApi::FatApi(VolumeInfo^ info, Stream^ stream)
 	{
-		SectorSize = info->SectorSize;
-		ClusterSize = info->ClusterSize;
-
 		BootSector = new FatBootSector();
 		memset(BootSector, 0, sizeof(*BootSector));
 		Fat = NULL;
@@ -88,17 +82,17 @@ namespace Util {
 
 	unsigned long long FatApi::SectorToOffset(unsigned long long sector)
 	{
-		return sector * SectorSize;
+		return sector * BootSector->BytesPerSector;
 	}
 
 	unsigned FatApi::SectorSizeToSize(unsigned size)
 	{
-		return size * SectorSize;
+		return size * BootSector->BytesPerSector;
 	}
 
 	unsigned FatApi::ClusterSizeToSize(unsigned size)
 	{
-		return size * ClusterSize;
+		return size * (BootSector->BytesPerSector * BootSector->SectorsPerCluster);
 	}
 
 	std::vector<char> FatApi::GetFileContents(unsigned cluster)
@@ -108,16 +102,16 @@ namespace Util {
 
 		std::vector<char> result;
 		result.reserve(FileSize(cluster));
-		array<Byte>^ buffer = gcnew array<Byte>(ClusterSize);
+		array<Byte>^ buffer = gcnew array<Byte>(ClusterSizeToSize(1));
 
 		do
 		{
 			VolumeStream->Seek(ClusterToOffset(cluster), SeekOrigin::Begin);
-			VolumeStream->Read(buffer, 0, ClusterSize);
+			VolumeStream->Read(buffer, 0, buffer->Length);
 
-			result.insert(result.end(), ClusterSize, 0);
-			Marshal::Copy(buffer, 0, static_cast<IntPtr>(&result.back() - ClusterSize + 1),
-				ClusterSize);
+			result.insert(result.end(), buffer->Length, 0);
+			Marshal::Copy(buffer, 0, static_cast<IntPtr>(&result.back() - buffer->Length + 1),
+				buffer->Length);
 		}
 		while ((cluster = GetNextCluster(cluster)) != 0xFFFFFFFF);
 
@@ -132,13 +126,14 @@ namespace Util {
 			throw gcnew ArgumentException(L"The provided file contents will not fit in the " +
 				gcnew String(L"allocated file."));
 
-		array<Byte>^ buffer = gcnew array<Byte>(ClusterSize);
-		for (size_t i = 0; i < length; i += ClusterSize)
+		size_t clusterSize = ClusterSizeToSize(1);
+		array<Byte>^ buffer = gcnew array<Byte>(clusterSize);
+		for (size_t i = 0; i < length; i += clusterSize)
 		{
 			Marshal::Copy(static_cast<IntPtr>(reinterpret_cast<intptr_t>(static_cast<const char*>(data) + i)),
-				buffer, 0, ClusterSize);
+				buffer, 0, clusterSize);
 			VolumeStream->Seek(ClusterToOffset(cluster), SeekOrigin::Begin);
-			VolumeStream->Write(buffer, 0, ClusterSize);
+			VolumeStream->Write(buffer, 0, clusterSize);
 			cluster = GetNextCluster(cluster);
 		}
 	}
