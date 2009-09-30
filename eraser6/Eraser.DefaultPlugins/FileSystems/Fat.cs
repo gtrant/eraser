@@ -128,6 +128,21 @@ namespace Eraser.DefaultPlugins
 		protected abstract FatApi GetFatApi(VolumeInfo info, FileStream stream);
 	}
 
+	public class Fat12FileSystem : FatFileSystem
+	{
+		public override bool Supports(string fileSystemName)
+		{
+			if (fileSystemName == "FAT12")
+				return true;
+			return false;
+		}
+
+		protected override FatApi GetFatApi(VolumeInfo info, FileStream stream)
+		{
+			return new Fat12Api(info, stream);
+		}
+	}
+
 	public class Fat16FileSystem : FatFileSystem
 	{
 		public override bool Supports(string fileSystemName)
