@@ -130,7 +130,7 @@ namespace Util {
 		FatDirectoryBase^ parentDir = nullptr;
 		for each (String^ component in components)
 		{
-			if (component == String::Empty)
+			if (String::IsNullOrEmpty(component))
 				break;
 
 			parentDir = LoadDirectory(cluster, parentDir == nullptr ? String::Empty : parentDir->Name,

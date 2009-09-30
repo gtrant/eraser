@@ -58,7 +58,7 @@ namespace Util {
 		FatDirectoryBase^ parent)
 	{
 		//Return the root directory if we get cluster 0, name is blank and the parent is null
-		if (cluster == 0 && name == String::Empty && parent == nullptr)
+		if (cluster == 0 && String::IsNullOrEmpty(name) && parent == nullptr)
 			return gcnew RootDirectory(this);
 		return gcnew Directory(name, parent, cluster, this);
 	}
@@ -92,7 +92,7 @@ namespace Util {
 		FatDirectoryBase^ parentDir = nullptr;
 		for each (String^ component in components)
 		{
-			if (component == String::Empty)
+			if (String::IsNullOrEmpty(component))
 				break;
 
 			parentDir = LoadDirectory(cluster, parentDir == nullptr ? String::Empty : parentDir->Name,

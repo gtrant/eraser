@@ -33,7 +33,7 @@ namespace Util {
 	/// Represents an abstract API to interface with FAT file systems.
 	public ref class FatApi abstract
 	{
-	public:
+	protected:
 		/// Constructor.
 		/// 
 		/// \param[in] info   The volume to create the FAT API for. The volume handle
@@ -104,9 +104,6 @@ namespace Util {
 		/// \param[in] cluster The cluster to begin writing to.
 		void SetFileContents(const void* buffer, size_t length, unsigned cluster);
 
-		/// \see SetFileContents
-		void SetFileContents(const std::vector<char>& contents, unsigned cluster);
-
 		/// Resolves a directory to the position on-disk
 		///
 		/// \param[in] path A volume-relative path to the directory.
@@ -122,7 +119,7 @@ namespace Util {
 	};
 
 	/// Represents the types of FAT directory entries.
-	public enum class FatDirectoryEntryTypes
+	public enum class FatDirectoryEntryType
 	{
 		File,
 		Directory
@@ -155,11 +152,11 @@ namespace Util {
 		}
 
 		/// Gets the type of this entry.
-		property FatDirectoryEntryTypes Type
+		property FatDirectoryEntryType EntryType
 		{
-			FatDirectoryEntryTypes get() { return type; }
+			FatDirectoryEntryType get() { return type; }
 		private:
-			void set(FatDirectoryEntryTypes value) { type = value; }
+			void set(FatDirectoryEntryType value) { type = value; }
 		}
 
 		/// Gets the first cluster of this entry.
@@ -177,13 +174,13 @@ namespace Util {
 		/// \param[in] parent  The parent directory containing this file.
 		/// \param[in] type    The type of this entry.
 		/// \param[in] cluster The first cluster of the file.
-		FatDirectoryEntry(String^ name, FatDirectoryBase^ parent, FatDirectoryEntryTypes type,
+		FatDirectoryEntry(String^ name, FatDirectoryBase^ parent, FatDirectoryEntryType type,
 			unsigned cluster);
 
 	private:
 		String^ name;
 		FatDirectoryBase^ parent;
-		FatDirectoryEntryTypes type;
+		FatDirectoryEntryType type;
 		unsigned cluster;
 	};
 
@@ -191,7 +188,7 @@ namespace Util {
 	/// FAT12 and FAT16 volumes.)
 	public ref class FatDirectoryBase abstract : FatDirectoryEntry
 	{
-	public:
+	protected:
 		/// Constructor.
 		/// 
 		/// \param[in] name    The name of the current directory.
@@ -199,6 +196,7 @@ namespace Util {
 		/// \param[in] cluster The cluster at which the directory list starts.
 		FatDirectoryBase(String^ name, FatDirectoryBase^ parent, unsigned cluster);
 
+	public:
 		/// Compacts the directory structure, updating the structure on-disk as well.
 		void ClearDeletedEntries();
 
@@ -244,7 +242,7 @@ namespace Util {
 	/// Represents a FAT directory file.
 	public ref class FatDirectory abstract : FatDirectoryBase
 	{
-	public:
+	protected:
 		/// Constructor.
 		/// 
 		/// \param[in] name    The name of the current directory.
@@ -253,7 +251,6 @@ namespace Util {
 		/// \param[in] api     The FAT API object which is creating this object.
 		FatDirectory(String^ name, FatDirectoryBase^ parent, unsigned cluster, FatApi^ api);
 
-	protected:
 		virtual void ReadDirectory() override;
 		virtual void WriteDirectory() override;
 
@@ -263,10 +260,11 @@ namespace Util {
 
 	public ref class Fat12Or16Api abstract : FatApi
 	{
-	public:
+	protected:
 		Fat12Or16Api(VolumeInfo^ info);
 		Fat12Or16Api(VolumeInfo^ info, IO::Stream^ stream);
 
+	public:
 		virtual void LoadFat() override;
 		virtual FatDirectoryBase^ LoadDirectory(unsigned cluster, String^ name,
 			FatDirectoryBase^ parent) override;
