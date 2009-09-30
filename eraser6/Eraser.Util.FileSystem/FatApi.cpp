@@ -240,7 +240,11 @@ namespace Util {
 		//validEntries now contains the compacted list of directory entries. Zero
 		//the memory used.
 		memset(Directory, 0, DirectorySize * sizeof(::FatDirectoryEntry));
-		memcpy(Directory, &validEntries.front(), validEntries.size() * sizeof(::FatDirectoryEntry));
+
+		//Copy the memory back if we have any valid entries. The root directory can
+		//be empty (no . and .. entries)
+		if (!validEntries.empty())
+			memcpy(Directory, &validEntries.front(), validEntries.size() * sizeof(::FatDirectoryEntry));
 
 		//Write the entries to disk
 		WriteDirectory();
