@@ -26,7 +26,7 @@
 
 struct FatBootSector
 {
-	unsigned char    JumpInstructure[3];              // jmp to executable code
+	unsigned char    JumpInstruction[3];              // jmp to executable code
 	unsigned char    OemName[8];                      // OEM name and version
 
 	unsigned short   BytesPerSector;                  // bytes per sector

@@ -217,6 +217,45 @@ namespace Util {
 		FatApi^ Api;
 	};
 
+	public ref class Fat12Or16Api abstract : FatApi
+	{
+	public:
+		Fat12Or16Api(VolumeInfo^ info);
+		Fat12Or16Api(VolumeInfo^ info, IO::Stream^ stream);
+
+		virtual void LoadFat() override;
+		virtual FatDirectory^ LoadDirectory(unsigned cluster, String^ name, FatDirectory^ parent) override;
+
+	internal:
+		virtual long long ClusterToOffset(unsigned cluster) override;
+		virtual unsigned DirectoryToCluster(String^ path) override;
+
+	protected:
+		ref class Directory : FatDirectory
+		{
+		public:
+			Directory(String^ name, FatDirectory^ parent, unsigned cluster, Fat12Or16Api^ api);
+
+		protected:
+			virtual unsigned GetStartCluster(::FatDirectory& directory) override;
+		};
+
+	protected:
+		bool IsFat12();
+	};
+
+	public ref class Fat16Api : Fat12Or16Api
+	{
+	public:
+		Fat16Api(VolumeInfo^ info);
+		Fat16Api(VolumeInfo^ info, IO::Stream^ stream);
+
+	internal:
+		virtual bool IsClusterAllocated(unsigned cluster) override;
+		virtual unsigned GetNextCluster(unsigned cluster) override;
+		virtual unsigned FileSize(unsigned cluster) override;
+	};
+
 	public ref class Fat32Api : FatApi
 	{
 	public:
