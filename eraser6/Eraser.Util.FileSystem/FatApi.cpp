@@ -21,7 +21,6 @@
 
 #include <stdafx.h>
 #include <windows.h>
-#include <atlstr.h>
 
 #include "FatApi.h"
 
@@ -41,8 +40,6 @@ namespace Util {
 		Fat = NULL;
 
 		//Open the handle to the drive
-		CString volumeName(info->VolumeId);
-		volumeName.Truncate(volumeName.GetLength() - 1);
 		VolumeStream = info->Open(FileAccess::Read);
 
 		//Then read the boot sector for information
@@ -77,7 +74,7 @@ namespace Util {
 		LoadFat();
 	}
 
-	FatDirectory^ FatApi::LoadDirectory(String^ directory)
+	FatDirectoryBase^ FatApi::LoadDirectory(String^ directory)
 	{
 		//Return the root directory if nothing is specified
 		if (directory == String::Empty)
@@ -151,7 +148,7 @@ namespace Util {
 		SetFileContents(&contents.front(), contents.size(), cluster);
 	}
 
-	FatDirectoryEntry::FatDirectoryEntry(String^ name, FatDirectory^ parent,
+	FatDirectoryEntry::FatDirectoryEntry(String^ name, FatDirectoryBase^ parent,
 		FatDirectoryEntryTypes type, unsigned cluster)
 	{
 		Name = name;
@@ -174,21 +171,81 @@ namespace Util {
 		return result;
 	}
 
-	FatDirectory::FatDirectory(String^ name, FatDirectory^ parent, unsigned cluster, FatApi^ api)
+	FatDirectoryBase::FatDirectoryBase(String^ name, FatDirectoryBase^ parent, unsigned cluster)
 		: FatDirectoryEntry(name, parent, FatDirectoryEntryTypes::Directory, cluster)
 	{
-		System::Diagnostics::Debug::Print(FullName);
 		Entries = gcnew Dictionary<String^, FatDirectoryEntry^>();
-		Api = api;
+		ReadDirectory();
+	}
 
-		//Get the size of the directory list and read it to memory
-		std::vector<char> dir = api->GetFileContents(cluster);
-		const size_t dirCount = dir.size() / sizeof(::FatDirectory);
-		Directory = new ::FatDirectory[dirCount];
-		memcpy(Directory, &dir.front(), dir.size());
+	void FatDirectoryBase::ClearDeletedEntries()
+	{
+		std::vector<::FatDirectoryEntry> validEntries;
 
 		//Parse the directory structures
-		for (::FatDirectory* i = Directory; i != Directory + dirCount; ++i)
+		for (::FatDirectoryEntry* i = Directory; i != Directory + DirectorySize; ++i)
+		{
+			//Check if we have checked the last valid entry
+			if (i->Short.Name[0] == 0x00)
+				break;
+
+			//Skip deleted entries.
+			if (static_cast<unsigned char>(i->Short.Name[0]) == 0xE5)
+				continue;
+
+			if (i->Short.Attributes == 0x0F)
+			{
+				//This is a long file name.
+				::FatDirectoryEntry* longFileNameBegin = i;
+				for (unsigned char sequence = 0; i->Short.Attributes == 0x0F; ++i)
+				{
+					if (!(i->LongFileName.Sequence & 0x40)) //Second entry onwards
+					{
+						//Check that the checksum of the file name is the same as the previous
+						//long file name entry, to ensure no corruption has taken place
+						if ((i - 1)->LongFileName.Checksum != i->LongFileName.Checksum)
+							continue;
+
+						//Check that the sequence is one less than the previous one.
+						if (sequence != i->LongFileName.Sequence + 1)
+							throw gcnew ArgumentException(L"Invalid directory entry.");
+					}
+					
+					sequence = i->LongFileName.Sequence & ~0x40;
+				}
+
+				//Checksum the string
+				unsigned char sum = 0;
+				char* shortFileName = i->Short.Name;
+				for (int j = 11; j; --j)
+					sum = ((sum & 1) << 7) + (sum >> 1) + *shortFileName++;
+
+				if (sum == (i - 1)->LongFileName.Checksum)
+				{
+					//The previous few entries contained the correct file name. Save these entries
+					validEntries.insert(validEntries.end(), longFileNameBegin, i);
+				}
+			}
+
+			validEntries.push_back(*i);
+		}
+
+		//validEntries now contains the compacted list of directory entries. Zero
+		//the memory used.
+		memset(Directory, 0, DirectorySize * sizeof(::FatDirectoryEntry));
+		memcpy(Directory, &validEntries.front(), validEntries.size() * sizeof(::FatDirectory));
+
+		//Write the entries to disk
+		WriteDirectory();
+	}
+
+	void FatDirectoryBase::ParseDirectory()
+	{
+		//Clear the list of entries
+		Entries->Clear();
+
+		//Parse the directory structures
+		for (::FatDirectoryEntry* i = Directory; i != Directory + DirectorySize; ++i)
 		{
 			//Check if we have checked the last valid entry
 			if (i->Short.Name[0] == 0x00)
@@ -274,65 +331,24 @@ namespace Util {
 		}
 	}
 
-	void FatDirectory::ClearDeletedEntries()
+	FatDirectory::FatDirectory(String^ name, FatDirectoryBase^ parent, unsigned cluster, FatApi^ api)
+		: Api(api),
+		  FatDirectoryBase(name, parent, cluster)
 	{
-		std::vector<::FatDirectory> validEntries;
-		size_t entryCount = Api->FileSize(Cluster) / sizeof(::FatDirectory);
+	}
 
-		//Parse the directory structures
-		for (::FatDirectory* i = Directory; i != Directory + entryCount; ++i)
-		{
-			//Check if we have checked the last valid entry
-			if (i->Short.Name[0] == 0x00)
-				break;
+	void FatDirectory::ReadDirectory()
+	{
+		std::vector<char> dir = Api->GetFileContents(Cluster);
+		DirectorySize = dir.size() / sizeof(::FatDirectoryEntry);
+		Directory = new ::FatDirectoryEntry[DirectorySize];
+		memcpy(Directory, &dir.front(), dir.size());
 
-			//Skip deleted entries.
-			if (static_cast<unsigned char>(i->Short.Name[0]) == 0xE5)
-				continue;
+		ParseDirectory();
+	}
 
-			if (i->Short.Attributes == 0x0F)
-			{
-				//This is a long file name.
-				::FatDirectory* longFileNameBegin = i;
-				for (unsigned char sequence = 0; i->Short.Attributes == 0x0F; ++i)
-				{
-					if (!(i->LongFileName.Sequence & 0x40)) //Second entry onwards
-					{
-						//Check that the checksum of the file name is the same as the previous
-						//long file name entry, to ensure no corruption has taken place
-						if ((i - 1)->LongFileName.Checksum != i->LongFileName.Checksum)
-							continue;
-
-						//Check that the sequence is one less than the previous one.
-						if (sequence != i->LongFileName.Sequence + 1)
-							throw gcnew ArgumentException(L"Invalid directory entry.");
-					}
-					
-					sequence = i->LongFileName.Sequence & ~0x40;
-				}
-
-				//Checksum the string
-				unsigned char sum = 0;
-				char* shortFileName = i->Short.Name;
-				for (int j = 11; j; --j)
-					sum = ((sum & 1) << 7) + (sum >> 1) + *shortFileName++;
-
-				if (sum == (i - 1)->LongFileName.Checksum)
-				{
-					//The previous few entries contained the correct file name. Save these entries
-					validEntries.insert(validEntries.end(), longFileNameBegin, i);
-				}
-			}
-
-			validEntries.push_back(*i);
-		}
-
-		//validEntries now contains the compacted list of directory entries. Zero
-		//the memory used.
-		memset(Directory, 0, Api->FileSize(Cluster));
-		memcpy(Directory, &validEntries.front(), validEntries.size() * sizeof(::FatDirectory));
-
-		//Write the entries to disk
+	void FatDirectory::WriteDirectory()
+	{
 		Api->SetFileContents(Directory, Api->FileSize(Cluster), Cluster);
 	}
 }
