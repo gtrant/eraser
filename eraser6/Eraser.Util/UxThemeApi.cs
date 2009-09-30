@@ -37,8 +37,8 @@ namespace Eraser.Util
 		/// <remarks>This function will also set the volume on all child controls.</remarks>
 		public static void UpdateControlTheme(Control control)
 		{
-			if (control is Form)
-				((Form)control).Font = SystemFonts.MessageBoxFont;
+			if (control is ContainerControl)
+				((ContainerControl)control).Font = SystemFonts.MessageBoxFont;
 			else if (control.Font != SystemFonts.MessageBoxFont)
 				control.Font = new Font(SystemFonts.MessageBoxFont.FontFamily,
 					control.Font.Size, control.Font.Style);
