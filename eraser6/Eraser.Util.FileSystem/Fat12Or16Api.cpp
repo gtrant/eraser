@@ -114,7 +114,7 @@ namespace Util {
 		);
 		unsigned long long numberOfClusters = availableSectors / (ClusterSize / SectorSize);
 
-		return numberOfClusters < 0xFF0;
+		return numberOfClusters <= 0xFF0;
 	}
 
 	Fat12Or16Api::RootDirectory::RootDirectory(Fat12Or16Api^ api)
