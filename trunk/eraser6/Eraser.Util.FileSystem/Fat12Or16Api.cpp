@@ -30,14 +30,14 @@ namespace Util {
 	Fat12Or16Api::Fat12Or16Api(VolumeInfo^ info) : FatApi(info)
 	{
 		//Sanity checks: check that this volume is FAT12 or FAT16!
-		if (info->VolumeFormat != L"FAT")
+		if (info->VolumeFormat != L"FAT12" && info->VolumeFormat != "FAT16")
 			throw gcnew ArgumentException(L"The volume provided is not a FAT12 or FAT16 volume.");
 	}
 
 	Fat12Or16Api::Fat12Or16Api(VolumeInfo^ info, IO::Stream^ stream) : FatApi(info, stream)
 	{
 		//Sanity checks: check that this volume is FAT12 or FAT16!
-		if (info->VolumeFormat != L"FAT")
+		if (info->VolumeFormat != L"FAT12" && info->VolumeFormat != "FAT16")
 			throw gcnew ArgumentException(L"The volume provided is not a FAT12 or FAT16 volume.");
 	}
 
@@ -57,6 +57,9 @@ namespace Util {
 	FatDirectoryBase^ Fat12Or16Api::LoadDirectory(unsigned cluster, String^ name,
 		FatDirectoryBase^ parent)
 	{
+		//Return the root directory if we get cluster 0, name is blank and the parent is null
+		if (cluster == 0 && name == String::Empty && parent == nullptr)
+			return gcnew RootDirectory(this);
 		return gcnew Directory(name, parent, cluster, this);
 	}
 
@@ -71,7 +74,29 @@ namespace Util {
 
 	unsigned Fat12Or16Api::DirectoryToCluster(String^ path)
 	{
-		throw gcnew NotImplementedException();
+		//The path must start with a backslash as it must be volume-relative.
+		if (path->Length != 0 && path[0] != L'\\')
+			throw gcnew ArgumentException(L"The path provided is not volume relative. " +
+				gcnew String(L"Volume relative paths must begin with a backslash."));
+
+		//Chop the path into it's constituent directory components
+		array<String^>^ components = path->Split(Path::DirectorySeparatorChar,
+			Path::AltDirectorySeparatorChar);
+
+		//Traverse the directories until we get the cluster we want.
+		unsigned cluster = 0;
+		FatDirectoryBase^ parentDir = gcnew RootDirectory(this);
+		for each (String^ component in components)
+		{
+			if (component == String::Empty)
+				break;
+
+			parentDir = LoadDirectory(cluster, parentDir == nullptr ? nullptr : parentDir->Name,
+				parentDir);
+			cluster = parentDir->Items[component]->Cluster;
+		}
+
+		return cluster;
 	}
 
 	bool Fat12Or16Api::IsFat12()
@@ -79,13 +104,59 @@ namespace Util {
 		unsigned long long numberOfSectors = (BootSector->SectorCount16 == 0 ?
 			BootSector->SectorCount32 : BootSector->SectorCount16);
 		unsigned long long availableSectors = numberOfSectors - (
-			BootSector->ReservedSectorCount +																//Reserved area
-			BootSector->FatCount * BootSector->SectorsPerFat +												//FAT area
+			BootSector->ReservedSectorCount +																	//Reserved area
+			BootSector->FatCount * BootSector->SectorsPerFat +													//FAT area
 			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / (ClusterSize / SectorSize))	//Root directory area
 		);
 		unsigned long long numberOfClusters = availableSectors / (ClusterSize / SectorSize);
 
 		return numberOfClusters < 0xFF0;
+	}
+
+	Fat12Or16Api::RootDirectory::RootDirectory(Fat12Or16Api^ api)
+		: Api(api),
+		  FatDirectoryBase(String::Empty, nullptr, 0)
+	{
+	}
+
+	void Fat12Or16Api::RootDirectory::ReadDirectory()
+	{
+		//Calculate the starting sector of the root directory
+		unsigned long long startPos = Api->SectorToOffset(Api->BootSector->ReservedSectorCount +
+			Api->BootSector->FatCount * Api->BootSector->SectorsPerFat);
+		int directoryLength = Api->BootSector->RootDirectoryEntryCount *
+			sizeof(::FatDirectoryEntry);
+
+		array<Byte>^ buffer = gcnew array<Byte>(directoryLength);
+		Api->VolumeStream->Seek(startPos, SeekOrigin::Begin);
+		Api->VolumeStream->Read(buffer, 0, directoryLength);
+
+		DirectorySize = Api->BootSector->RootDirectoryEntryCount;
+		Directory = new ::FatDirectoryEntry[DirectorySize];
+		Marshal::Copy(buffer, 0, static_cast<IntPtr>(Directory), directoryLength);
+
+		ParseDirectory();
+	}
+
+	void Fat12Or16Api::RootDirectory::WriteDirectory()
+	{
+		//Calculate the starting sector of the root directory
+		unsigned long long startPos = Api->SectorToOffset(Api->BootSector->ReservedSectorCount +
+			Api->BootSector->FatCount * Api->BootSector->SectorsPerFat);
+		int directoryLength = Api->BootSector->RootDirectoryEntryCount *
+			sizeof(::FatDirectoryEntry);
+
+		array<Byte>^ buffer = gcnew array<Byte>(directoryLength);
+		Marshal::Copy(static_cast<IntPtr>(Directory), buffer, 0, directoryLength);
+		Api->VolumeStream->Seek(startPos, SeekOrigin::Begin);
+		Api->VolumeStream->Write(buffer, 0, directoryLength);
+	}
+
+	unsigned Fat12Or16Api::RootDirectory::GetStartCluster(::FatDirectoryEntry& directory)
+	{
+		if (directory.Short.Attributes == 0x0F)
+			throw gcnew ArgumentException(L"The provided directory is a long file name.");
+		return directory.Short.StartClusterLow;
 	}
 
 	Fat12Or16Api::Directory::Directory(String^ name, FatDirectoryBase^ parent, unsigned cluster,
