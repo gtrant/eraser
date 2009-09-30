@@ -261,11 +261,12 @@ namespace Eraser
 			}
 			catch (Win32Exception ex)
 			{
-				MessageBox.Show(this, S._("Eraser"), S._("The Eraser documentation file " +
-					"could not be opened. Check that Adobe Reader installed and that your " +
-					"Eraser install is not corrupt.\n\nThe error returned was: {0}", ex.Message),
-					MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+				MessageBox.Show(this, S._("The Eraser documentation file could not be " +
+					"opened. Check that Adobe Reader installed and that your Eraser " +
+					"install is not corrupt.\n\nThe error returned was: {0}", ex.Message),
+					S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
+					MessageBoxDefaultButton.Button1, S.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading : 0);
 			}
 		}
 
