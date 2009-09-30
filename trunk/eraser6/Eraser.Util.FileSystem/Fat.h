@@ -88,7 +88,7 @@ struct FatFsInformationSector
 };
 
 /// Represents a short (8.3) directory entry.
-struct FatDirectoryEntry
+struct Fat8Dot3DirectoryEntry
 {
 	/// Base name. If Name[0] is:
 	/// 
@@ -188,12 +188,12 @@ struct FatLfnDirectoryEntry
 };
 
 /// The collection of Fat Directory entries.
-union FatDirectory
+union FatDirectoryEntry
 {
-	FatDirectoryEntry Short;
+	Fat8Dot3DirectoryEntry Short;
 	FatLfnDirectoryEntry LongFileName;
 };
 
-typedef FatDirectory* FatDirectoryFile;
+typedef FatDirectoryEntry* FatDirectory;
 
 #pragma pack(pop)

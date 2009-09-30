@@ -20,9 +20,6 @@
  */
 
 #include <stdafx.h>
-#include <windows.h>
-#include <atlstr.h>
-
 #include "FatApi.h"
 
 using namespace System::IO;
@@ -57,16 +54,17 @@ namespace Util {
 		Marshal::Copy(buffer, 0, static_cast<IntPtr>(Fat), buffer->Length);
 	}
 
-	FatDirectory^ Fat12Or16Api::LoadDirectory(unsigned cluster, String^ name, FatDirectory^ parent)
+	FatDirectoryBase^ Fat12Or16Api::LoadDirectory(unsigned cluster, String^ name,
+		FatDirectoryBase^ parent)
 	{
 		return gcnew Directory(name, parent, cluster, this);
 	}
 
 	long long Fat12Or16Api::ClusterToOffset(unsigned cluster)
 	{
-		unsigned long long sector = BootSector->ReservedSectorCount +										//Reserved area
-			BootSector->FatCount * BootSector->SectorsPerFat +												//FAT area
-			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectory) / (ClusterSize / SectorSize)) +	//Root directory area
+		unsigned long long sector = BootSector->ReservedSectorCount +											//Reserved area
+			BootSector->FatCount * BootSector->SectorsPerFat +													//FAT area
+			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / (ClusterSize / SectorSize)) +	//Root directory area
 			(static_cast<unsigned long long>(cluster) - 2) * (ClusterSize / SectorSize);
 		return SectorToOffset(sector);
 	}
@@ -81,21 +79,21 @@ namespace Util {
 		unsigned long long numberOfSectors = (BootSector->SectorCount16 == 0 ?
 			BootSector->SectorCount32 : BootSector->SectorCount16);
 		unsigned long long availableSectors = numberOfSectors - (
-			BootSector->ReservedSectorCount +															//Reserved area
-			BootSector->FatCount * BootSector->SectorsPerFat +											//FAT area
-			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectory) / (ClusterSize / SectorSize))	//Root directory area
+			BootSector->ReservedSectorCount +																//Reserved area
+			BootSector->FatCount * BootSector->SectorsPerFat +												//FAT area
+			(BootSector->RootDirectoryEntryCount * sizeof(::FatDirectoryEntry) / (ClusterSize / SectorSize))	//Root directory area
 		);
 		unsigned long long numberOfClusters = availableSectors / (ClusterSize / SectorSize);
 
 		return numberOfClusters < 0xFF0;
 	}
 
-	Fat12Or16Api::Directory::Directory(String^ name, FatDirectory^ parent, unsigned cluster,
+	Fat12Or16Api::Directory::Directory(String^ name, FatDirectoryBase^ parent, unsigned cluster,
 		Fat12Or16Api^ api) : FatDirectory(name, parent, cluster, api)
 	{
 	}
 
-	unsigned Fat12Or16Api::Directory::GetStartCluster(::FatDirectory& directory)
+	unsigned Fat12Or16Api::Directory::GetStartCluster(::FatDirectoryEntry& directory)
 	{
 		if (directory.Short.Attributes == 0x0F)
 			throw gcnew ArgumentException(L"The provided directory is a long file name.");

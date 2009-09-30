@@ -20,9 +20,6 @@
  */
 
 #include <stdafx.h>
-#include <windows.h>
-#include <atlstr.h>
-
 #include "FatApi.h"
 
 using namespace System::IO;

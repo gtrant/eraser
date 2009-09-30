@@ -20,9 +20,6 @@
  */
 
 #include <stdafx.h>
-#include <windows.h>
-#include <atlstr.h>
-
 #include "FatApi.h"
 
 using namespace System::IO;
@@ -49,7 +46,7 @@ namespace Util {
 		Fat = new char[SectorSizeToSize(BootSector->Fat32ParameterBlock.SectorsPerFat)];
 
 		//Seek to the FAT
-		VolumeStream->Seek(SectorSizeToSize(BootSector->ReservedSectorCount), SeekOrigin::Begin);
+		VolumeStream->Seek(SectorToOffset(BootSector->ReservedSectorCount), SeekOrigin::Begin);
 
 		//Read the FAT
 		array<Byte>^ buffer = gcnew array<Byte>(SectorSizeToSize(BootSector->Fat32ParameterBlock.SectorsPerFat));
@@ -57,7 +54,8 @@ namespace Util {
 		Marshal::Copy(buffer, 0, static_cast<IntPtr>(Fat), buffer->Length);
 	}
 
-	FatDirectory^ Fat32Api::LoadDirectory(unsigned cluster, String^ name, FatDirectory^ parent)
+	FatDirectoryBase^ Fat32Api::LoadDirectory(unsigned cluster, String^ name,
+		FatDirectoryBase^ parent)
 	{
 		return gcnew Directory(name, parent, cluster, this);
 	}
@@ -125,7 +123,7 @@ namespace Util {
 
 		//Traverse the directories until we get the cluster we want.
 		unsigned cluster = BootSector->Fat32ParameterBlock.RootDirectoryCluster;
-		FatDirectory^ parentDir = nullptr;
+		FatDirectoryBase^ parentDir = nullptr;
 		for each (String^ component in components)
 		{
 			if (component == String::Empty)
@@ -139,12 +137,12 @@ namespace Util {
 		return cluster;
 	}
 
-	Fat32Api::Directory::Directory(String^ name, FatDirectory^ parent, unsigned cluster, Fat32Api^ api)
+	Fat32Api::Directory::Directory(String^ name, FatDirectoryBase^ parent, unsigned cluster, Fat32Api^ api)
 		: FatDirectory(name, parent, cluster, api)
 	{
 	}
 
-	unsigned Fat32Api::Directory::GetStartCluster(::FatDirectory& directory)
+	unsigned Fat32Api::Directory::GetStartCluster(::FatDirectoryEntry& directory)
 	{
 		if (directory.Short.Attributes == 0x0F)
 			throw gcnew ArgumentException(L"The provided directory is a long file name.");
