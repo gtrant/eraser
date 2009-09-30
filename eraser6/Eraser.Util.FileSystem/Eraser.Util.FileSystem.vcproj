@@ -351,6 +351,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Fat12Or16Api.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Fat16Api.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Fat32Api.cpp"
 				>
 			</File>
