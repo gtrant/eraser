@@ -276,6 +276,20 @@ namespace Util {
 		virtual unsigned DirectoryToCluster(String^ path) override;
 
 	protected:
+		ref class RootDirectory : FatDirectoryBase
+		{
+		public:
+			RootDirectory(Fat12Or16Api^ api);
+
+		protected:
+			virtual void ReadDirectory() override;
+			virtual void WriteDirectory() override;
+			virtual unsigned GetStartCluster(::FatDirectoryEntry& directory) override;
+
+		private:
+			Fat12Or16Api^ Api;
+		};
+
 		ref class Directory : FatDirectory
 		{
 		public:
