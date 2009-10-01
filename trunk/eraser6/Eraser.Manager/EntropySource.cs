@@ -341,6 +341,11 @@ namespace Eraser.Manager
 				{
 					//Caught when the thread has exited in the middle of the foreach.
 				}
+				catch (System.ComponentModel.Win32Exception e)
+				{
+					if (e.NativeErrorCode != 6) //ERROR_ACCESS_DENIED
+						throw;
+				}
 			}
 
 			//Current system time
