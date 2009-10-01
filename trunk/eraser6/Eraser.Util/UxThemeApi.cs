@@ -112,9 +112,12 @@ namespace Eraser.Util
 		/// Updates the control's theme to fit in with the latest Windows visuals.
 		/// </summary>
 		/// <param name="menu">The List View control to set the theme on.</param>
-		public static void UpdateControlTheme(ToolStripDropDownItem menu)
+		public static void UpdateControlTheme(ToolStripDropDownItem menuItem)
 		{
-			UpdateControlTheme(menu.DropDown);
+			if (menuItem.Font != SystemFonts.MessageBoxFont)
+				menuItem.Font = new Font(SystemFonts.MessageBoxFont, menuItem.Font.Style);
+
+			UpdateControlTheme(menuItem.DropDown);
 		}
 
 		/// <summary>
