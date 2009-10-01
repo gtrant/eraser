@@ -345,7 +345,7 @@ namespace Eraser
 			settings.ClearCompletedTasks = schedulerClearCompleted.Checked;
 
 			bool pluginApprovalsChanged = false;
-			Dictionary<Guid, bool> pluginApprovals = managerSettings.PluginApprovals;
+			IDictionary<Guid, bool> pluginApprovals = managerSettings.PluginApprovals;
 			foreach (ListViewItem item in pluginsManager.Items)
 			{
 				PluginInstance plugin = (PluginInstance)item.Tag;
@@ -361,7 +361,7 @@ namespace Eraser
 					pluginApprovalsChanged = true;
 				}
 			}
-			managerSettings.PluginApprovals = pluginApprovals;
+
 			if (pluginApprovalsChanged)
 			{
 				MessageBox.Show(this, S._("Plugins which have just been approved will only be loaded " +
@@ -430,10 +430,9 @@ namespace Eraser
 			}
 			
 			managerSettings.PlausibleDeniability = plausibleDeniability.Checked;
-			List<string> plausibleDeniabilityFilesList = new List<string>();
+			IList<string> plausibleDeniabilityFilesList = managerSettings.PlausibleDeniabilityFiles;
 			foreach (string str in this.plausibleDeniabilityFiles.Items)
 				plausibleDeniabilityFilesList.Add(str);
-			managerSettings.PlausibleDeniabilityFiles = plausibleDeniabilityFilesList;
 		}
 	}
 }
