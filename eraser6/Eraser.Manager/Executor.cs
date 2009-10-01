@@ -96,7 +96,7 @@ namespace Eraser.Manager
 		/// Retrieves the current task list for the executor.
 		/// </summary>
 		/// <returns>A list of tasks which the executor has registered.</returns>
-		public abstract ExecutorTasksCollection Tasks { get; protected set; }
+		public abstract ExecutorTasksCollection Tasks { get; }
 
 		/// <summary>
 		/// The task added event object.

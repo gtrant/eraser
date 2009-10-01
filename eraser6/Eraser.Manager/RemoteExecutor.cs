@@ -298,7 +298,7 @@ namespace Eraser.Manager
 		{
 			client = new NamedPipeClientStream(".", RemoteExecutorServer.ServerName,
 				PipeDirection.InOut);
-			Tasks = new RemoteExecutorClientTasksCollection(this);
+			tasks = new RemoteExecutorClientTasksCollection(this);
 		}
 
 		protected override void Dispose(bool disposing)
@@ -400,7 +400,13 @@ namespace Eraser.Manager
 			throw new NotImplementedException();
 		}
 
-		public override ExecutorTasksCollection Tasks { get; protected set; }
+		public override ExecutorTasksCollection Tasks
+		{
+			get
+			{
+				return tasks;
+			}
+		}
 
 		/// <summary>
 		/// Checks whether the executor instance has connected to a server.
@@ -411,123 +417,128 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
+		/// The list of tasks belonging to this executor instance.
+		/// </summary>
+		private RemoteExecutorClientTasksCollection tasks;
+
+		/// <summary>
 		/// The named pipe used to connect to another running instance of Eraser.
 		/// </summary>
 		private NamedPipeClientStream client;
-	}
 
-	public class RemoteExecutorClientTasksCollection : ExecutorTasksCollection
-	{
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		/// <param name="executor">The <see cref="RemoteExecutor"/> object owning
-		/// this list.</param>
-		public RemoteExecutorClientTasksCollection(RemoteExecutorClient executor)
-			: base(executor)
+		private class RemoteExecutorClientTasksCollection : ExecutorTasksCollection
 		{
-		}
-
-		/// <summary>
-		/// Sends a request to the executor server.
-		/// </summary>
-		/// <typeparam name="ReturnType">The expected return type of the request.</typeparam>
-		/// <param name="function">The requested operation.</param>
-		/// <param name="args">The arguments for the operation.</param>
-		/// <returns>The return result from the object as if it were executed locally.</returns>
-		private ReturnType SendRequest<ReturnType>(RemoteExecutorFunction function, params object[] args)
-		{
-			RemoteExecutorClient client = (RemoteExecutorClient)Owner;
-			return client.SendRequest<ReturnType>(function, args);
-		}
-
-		#region IList<Task> Members
-		public override int IndexOf(Task item)
-		{
-			throw new NotSupportedException();
-		}
-
-		public override void Insert(int index, Task item)
-		{
-			throw new NotSupportedException();
-		}
-
-		public override void RemoveAt(int index)
-		{
-			throw new NotSupportedException();
-		}
-
-		public override Task this[int index]
-		{
-			get
+			/// <summary>
+			/// Constructor.
+			/// </summary>
+			/// <param name="executor">The <see cref="RemoteExecutor"/> object owning
+			/// this list.</param>
+			public RemoteExecutorClientTasksCollection(RemoteExecutorClient executor)
+				: base(executor)
 			{
-				return SendRequest<Task>(RemoteExecutorFunction.GetTask, index);
 			}
-			set
+
+			/// <summary>
+			/// Sends a request to the executor server.
+			/// </summary>
+			/// <typeparam name="ReturnType">The expected return type of the request.</typeparam>
+			/// <param name="function">The requested operation.</param>
+			/// <param name="args">The arguments for the operation.</param>
+			/// <returns>The return result from the object as if it were executed locally.</returns>
+			private ReturnType SendRequest<ReturnType>(RemoteExecutorFunction function, params object[] args)
+			{
+				RemoteExecutorClient client = (RemoteExecutorClient)Owner;
+				return client.SendRequest<ReturnType>(function, args);
+			}
+
+			#region IList<Task> Members
+			public override int IndexOf(Task item)
 			{
 				throw new NotSupportedException();
 			}
-		}
-		#endregion
 
-		#region ICollection<Task> Members
-		public override void Add(Task item)
-		{
-			item.Executor = Owner;
-			SendRequest<object>(RemoteExecutorFunction.AddTask, item);
+			public override void Insert(int index, Task item)
+			{
+				throw new NotSupportedException();
+			}
 
-			//Call all the event handlers who registered to be notified of tasks
-			//being added.
-			Owner.OnTaskAdded(new TaskEventArgs(item));
-		}
+			public override void RemoveAt(int index)
+			{
+				throw new NotSupportedException();
+			}
 
-		public override void Clear()
-		{
-			throw new NotSupportedException();
-		}
+			public override Task this[int index]
+			{
+				get
+				{
+					return SendRequest<Task>(RemoteExecutorFunction.GetTask, index);
+				}
+				set
+				{
+					throw new NotSupportedException();
+				}
+			}
+			#endregion
 
-		public override bool Contains(Task item)
-		{
-			throw new NotSupportedException();
-		}
+			#region ICollection<Task> Members
+			public override void Add(Task item)
+			{
+				item.Executor = Owner;
+				SendRequest<object>(RemoteExecutorFunction.AddTask, item);
 
-		public override void CopyTo(Task[] array, int arrayIndex)
-		{
-			throw new NotSupportedException();
-		}
+				//Call all the event handlers who registered to be notified of tasks
+				//being added.
+				Owner.OnTaskAdded(new TaskEventArgs(item));
+			}
 
-		public override int Count
-		{
-			get { return SendRequest<int>(RemoteExecutorFunction.GetTaskCount); }
-		}
+			public override void Clear()
+			{
+				throw new NotSupportedException();
+			}
 
-		public override bool Remove(Task item)
-		{
-			item.Cancel();
-			item.Executor = null;
-			SendRequest<object>(RemoteExecutorFunction.DeleteTask, item);
+			public override bool Contains(Task item)
+			{
+				throw new NotSupportedException();
+			}
 
-			//Call all event handlers registered to be notified of task deletions.
-			Owner.OnTaskDeleted(new TaskEventArgs(item));
-			return true;
-		}
-		#endregion
+			public override void CopyTo(Task[] array, int arrayIndex)
+			{
+				throw new NotSupportedException();
+			}
 
-		#region IEnumerable<Task> Members
-		public override IEnumerator<Task> GetEnumerator()
-		{
-			throw new NotSupportedException();
-		}
-		#endregion
+			public override int Count
+			{
+				get { return SendRequest<int>(RemoteExecutorFunction.GetTaskCount); }
+			}
 
-		public override void SaveToStream(Stream stream)
-		{
-			throw new NotSupportedException();
-		}
+			public override bool Remove(Task item)
+			{
+				item.Cancel();
+				item.Executor = null;
+				SendRequest<object>(RemoteExecutorFunction.DeleteTask, item);
 
-		public override void LoadFromStream(Stream stream)
-		{
-			throw new NotSupportedException();
+				//Call all event handlers registered to be notified of task deletions.
+				Owner.OnTaskDeleted(new TaskEventArgs(item));
+				return true;
+			}
+			#endregion
+
+			#region IEnumerable<Task> Members
+			public override IEnumerator<Task> GetEnumerator()
+			{
+				throw new NotSupportedException();
+			}
+			#endregion
+
+			public override void SaveToStream(Stream stream)
+			{
+				throw new NotSupportedException();
+			}
+
+			public override void LoadFromStream(Stream stream)
+			{
+				throw new NotSupportedException();
+			}
 		}
 	}
 }
