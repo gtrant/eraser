@@ -124,7 +124,7 @@ namespace Util {
 			throw gcnew ArgumentException(L"The provided file contents will not fit in the " +
 				gcnew String(L"allocated file."));
 
-		size_t clusterSize = ClusterSizeToSize(1);
+		int clusterSize = static_cast<int>(ClusterSizeToSize(1));
 		for (int i = 0; i < buffer->Length; i += clusterSize)
 		{
 			VolumeStream->Seek(ClusterToOffset(cluster), SeekOrigin::Begin);
@@ -355,7 +355,8 @@ namespace Util {
 
 	void FatDirectory::WriteDirectory()
 	{
-		array<Byte>^ buffer = gcnew array<Byte>(DirectorySize * sizeof(::FatDirectoryEntry));
+		array<Byte>^ buffer = gcnew array<Byte>(static_cast<size_t>(DirectorySize) *
+			sizeof(::FatDirectoryEntry));
 		Marshal::Copy(static_cast<IntPtr>(Directory), buffer, 0, buffer->Length);
 		Api->SetFileContents(buffer, Cluster);
 	}
