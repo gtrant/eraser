@@ -45,7 +45,7 @@ namespace Eraser.Manager
 		{
 			TaskAdded += OnTaskAdded;
 			TaskDeleted += OnTaskDeleted;
-			Tasks = new DirectExecutorTasksCollection(this);
+			tasks = new DirectExecutorTasksCollection(this);
 			thread = new Thread(Main);
 		}
 
@@ -172,7 +172,13 @@ namespace Eraser.Manager
 			e.Task.TaskEdited -= OnTaskEdited;
 		}
 
-		public override ExecutorTasksCollection Tasks { get; protected set; }
+		public override ExecutorTasksCollection Tasks
+		{
+			get
+			{
+				return tasks;
+			}
+		}
 
 		/// <summary>
 		/// The thread entry point for this object. This object operates on a queue
@@ -856,6 +862,11 @@ namespace Eraser.Manager
 			new SortedList<DateTime, List<Task>>();
 
 		/// <summary>
+		/// The task list associated with this executor instance.
+		/// </summary>
+		private DirectExecutorTasksCollection tasks;
+
+		/// <summary>
 		/// The currently executing task.
 		/// </summary>
 		Task currentTask;
@@ -866,159 +877,160 @@ namespace Eraser.Manager
 		/// task to be due.
 		/// </summary>
 		AutoResetEvent schedulerInterrupt = new AutoResetEvent(true);
-	}
 
-	public class DirectExecutorTasksCollection : ExecutorTasksCollection
-	{
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		/// <param name="executor">The <see cref="DirectExecutor"/> object owning
-		/// this list.</param>
-		public DirectExecutorTasksCollection(DirectExecutor executor)
-			: base(executor)
+		private class DirectExecutorTasksCollection : ExecutorTasksCollection
 		{
-		}
-
-		#region IList<Task> Members
-		public override int IndexOf(Task item)
-		{
-			return list.IndexOf(item);
-		}
-
-		public override void Insert(int index, Task item)
-		{
-			item.Executor = Owner;
-			lock (list)
-				list.Insert(index, item);
-
-			//Call all the event handlers who registered to be notified of tasks
-			//being added.
-			Owner.OnTaskAdded(new TaskEventArgs(item));
-
-			//If the task is scheduled to run now, break the waiting thread and
-			//run it immediately
-			if (item.Schedule == Schedule.RunNow)
+			/// <summary>
+			/// Constructor.
+			/// </summary>
+			/// <param name="executor">The <see cref="DirectExecutor"/> object owning
+			/// this list.</param>
+			public DirectExecutorTasksCollection(DirectExecutor executor)
+				: base(executor)
 			{
-				Owner.QueueTask(item);
 			}
-			//If the task is scheduled, add the next execution time to the list
-			//of schduled tasks.
-			else if (item.Schedule != Schedule.RunOnRestart)
+
+			#region IList<Task> Members
+			public override int IndexOf(Task item)
 			{
-				Owner.ScheduleTask(item);
+				return list.IndexOf(item);
 			}
-		}
 
-		public override void RemoveAt(int index)
-		{
-			lock (list)
+			public override void Insert(int index, Task item)
 			{
-				Task task = list[index];
-				task.Cancel();
-				task.Executor = null;
-				list.RemoveAt(index);
+				item.Executor = Owner;
+				lock (list)
+					list.Insert(index, item);
 
-				//Call all event handlers registered to be notified of task deletions.
-				Owner.OnTaskDeleted(new TaskEventArgs(task));
+				//Call all the event handlers who registered to be notified of tasks
+				//being added.
+				Owner.OnTaskAdded(new TaskEventArgs(item));
+
+				//If the task is scheduled to run now, break the waiting thread and
+				//run it immediately
+				if (item.Schedule == Schedule.RunNow)
+				{
+					Owner.QueueTask(item);
+				}
+				//If the task is scheduled, add the next execution time to the list
+				//of schduled tasks.
+				else if (item.Schedule != Schedule.RunOnRestart)
+				{
+					Owner.ScheduleTask(item);
+				}
 			}
-		}
 
-		public override Task this[int index]
-		{
-			get
+			public override void RemoveAt(int index)
 			{
 				lock (list)
-					return list[index];
+				{
+					Task task = list[index];
+					task.Cancel();
+					task.Executor = null;
+					list.RemoveAt(index);
+
+					//Call all event handlers registered to be notified of task deletions.
+					Owner.OnTaskDeleted(new TaskEventArgs(task));
+				}
 			}
-			set
+
+			public override Task this[int index]
+			{
+				get
+				{
+					lock (list)
+						return list[index];
+				}
+				set
+				{
+					lock (list)
+						list[index] = value;
+				}
+			}
+			#endregion
+
+			#region ICollection<Task> Members
+			public override void Add(Task item)
+			{
+				Insert(Count, item);
+			}
+
+			public override void Clear()
+			{
+				foreach (Task task in list)
+					Remove(task);
+			}
+
+			public override bool Contains(Task item)
 			{
 				lock (list)
-					list[index] = value;
+					return list.Contains(item);
 			}
-		}
-		#endregion
 
-		#region ICollection<Task> Members
-		public override void Add(Task item)
-		{
-			Insert(Count, item);
-		}
-
-		public override void Clear()
-		{
-			foreach (Task task in list)
-				Remove(task);
-		}
-
-		public override bool Contains(Task item)
-		{
-			lock (list)
-				return list.Contains(item);
-		}
-
-		public override void CopyTo(Task[] array, int arrayIndex)
-		{
-			lock (list)
-				list.CopyTo(array, arrayIndex);
-		}
-
-		public override int Count
-		{
-			get
+			public override void CopyTo(Task[] array, int arrayIndex)
 			{
 				lock (list)
-					return list.Count;
+					list.CopyTo(array, arrayIndex);
 			}
-		}
 
-		public override bool Remove(Task item)
-		{
-			lock (list)
+			public override int Count
 			{
-				int index = list.IndexOf(item);
-				if (index < 0)
-					return false;
-
-				RemoveAt(index);
+				get
+				{
+					lock (list)
+						return list.Count;
+				}
 			}
 
-			return true;
-		}
-		#endregion
-
-		#region IEnumerable<Task> Members
-		public override IEnumerator<Task> GetEnumerator()
-		{
-			return list.GetEnumerator();
-		}
-		#endregion
-
-		public override void SaveToStream(Stream stream)
-		{
-			lock (list)
-				new BinaryFormatter().Serialize(stream, list);
-		}
-
-		public override void LoadFromStream(Stream stream)
-		{
-			//Load the list into the dictionary
-			StreamingContext context = new StreamingContext(
-				StreamingContextStates.All, Owner);
-			List<Task> deserialised = (List<Task>)new BinaryFormatter(null, context).Deserialize(stream);
-			list.AddRange(deserialised);
-
-			foreach (Task task in deserialised)
+			public override bool Remove(Task item)
 			{
-				Owner.OnTaskAdded(new TaskEventArgs(task));
-				if (task.Schedule is RecurringSchedule)
-					Owner.ScheduleTask(task);
-			}
-		}
+				lock (list)
+				{
+					int index = list.IndexOf(item);
+					if (index < 0)
+						return false;
 
-		/// <summary>
-		/// The data store for this object.
-		/// </summary>
-		private List<Task> list = new List<Task>();
+					RemoveAt(index);
+				}
+
+				return true;
+			}
+			#endregion
+
+			#region IEnumerable<Task> Members
+			public override IEnumerator<Task> GetEnumerator()
+			{
+				return list.GetEnumerator();
+			}
+			#endregion
+
+			public override void SaveToStream(Stream stream)
+			{
+				lock (list)
+					new BinaryFormatter().Serialize(stream, list);
+			}
+
+			public override void LoadFromStream(Stream stream)
+			{
+				//Load the list into the dictionary
+				StreamingContext context = new StreamingContext(
+					StreamingContextStates.All, Owner);
+				BinaryFormatter formatter = new BinaryFormatter(null, context);
+				List<Task> deserialised = (List<Task>)formatter.Deserialize(stream);
+				list.AddRange(deserialised);
+
+				foreach (Task task in deserialised)
+				{
+					Owner.OnTaskAdded(new TaskEventArgs(task));
+					if (task.Schedule is RecurringSchedule)
+						Owner.ScheduleTask(task);
+				}
+			}
+
+			/// <summary>
+			/// The data store for this object.
+			/// </summary>
+			private List<Task> list = new List<Task>();
+		}
 	}
 }
