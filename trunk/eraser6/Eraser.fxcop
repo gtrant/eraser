@@ -56,7 +56,7 @@
   </Groups>
   <Settings />
  </Rules>
- <FxCopReport Version="1.36" LastAnalysis="2009-09-30 08:57:50Z">
+ <FxCopReport Version="1.36" LastAnalysis="2009-10-01 02:02:01Z">
   <Namespaces>
    <Namespace Name="Eraser.Util">
     <Messages>
@@ -113,7 +113,7 @@
            <Member Name="#OnExitInstance(System.Object)">
             <Messages>
              <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Excluded" Created="2009-06-02 07:17:10Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="573">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="567">
                <Item>'GUIProgram.OnExitInstance(object)'</Item>
               </Issue>
               <Notes>
@@ -126,7 +126,7 @@
            </Member>
            <Member Name="#Run()">
             <Messages>
-             <Message Id="handle" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2009-06-02 07:17:10Z">
+             <Message Id="handle" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Excluded" Created="2009-06-02 07:17:10Z" LastSeen="2009-09-30 08:57:50Z">
               <Issue Path="D:\Development\Projects\Eraser\Eraser" File="Program.cs" Line="358">
                <Item>'GUIProgram.Run()'</Item>
                <Item>'handle'</Item>
@@ -306,20 +306,10 @@
          </Type>
          <Type Name="DirectExecutor">
           <Members>
-           <Member Name="#.ctor()">
-            <Messages>
-             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-09-30 08:52:18Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="848">
-               <Item>'DirectExecutor.DirectExecutor()'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;DirectExecutor..ctor()&#xD;&#xA;Executor.set_TaskAdded(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_TaskDeleted(EventHandler&lt;TaskEventArgs&gt;):Void&#xD;&#xA;Executor.set_Tasks(ExecutorTasksCollection):Void</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
            <Member Name="#EraseFilesystemObject(Eraser.Manager.Task,Eraser.Manager.FileSystemObjectTarget,Eraser.Manager.DirectExecutor+TaskProgressManager)">
             <Messages>
              <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Created="2009-09-30 08:52:18Z">
-              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="791">
+              <Issue Name="Parameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="797">
                <Item>'target'</Item>
                <Item>'FolderTarget'</Item>
                <Item>'DirectExecutor.EraseFilesystemObject(Task, FileSystemObjectTarget, DirectExecutor.TaskProgressManager)'</Item>
@@ -331,11 +321,11 @@
            <Member Name="#Main()">
             <Messages>
              <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Excluded" Created="2009-09-30 08:52:18Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="270">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="276">
                <Item>'DirectExecutor.Main()'</Item>
                <Item>'Exception'</Item>
               </Issue>
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="283">
+              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="DirectExecutor.cs" Line="289">
                <Item>'DirectExecutor.Main()'</Item>
                <Item>'Exception'</Item>
               </Issue>
@@ -344,15 +334,6 @@
                 <Note Id="26" />
                </User>
               </Notes>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Tasks">
-            <Messages>
-             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-09-30 08:52:18Z">
-              <Issue>
-               <Item>'DirectExecutor.Tasks'</Item>
-              </Issue>
              </Message>
             </Messages>
            </Member>
@@ -414,19 +395,6 @@
            </Member>
           </Members>
          </Type>
-         <Type Name="Executor">
-          <Members>
-           <Member Name="#Tasks">
-            <Messages>
-             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-09-30 08:52:18Z">
-              <Issue>
-               <Item>'Executor.Tasks'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
          <Type Name="FileSystem">
           <Members>
            <Member Name="#GenerateRandomFileName(System.IO.DirectoryInfo,System.Int32)">
@@ -448,7 +416,7 @@
            <Member Name="#Register(Eraser.Manager.FileSystem)">
             <Messages>
              <Message Id="filesystem" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Excluded" Created="2009-09-30 08:52:18Z">
-              <Issue Name="MemberParameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="FileSystem.cs" Line="319">
+              <Issue Name="MemberParameter" Path="D:\Development\Projects\Eraser\Eraser.Manager" File="FileSystem.cs" Line="318">
                <Item>'FileSystemManager.Register(FileSystem)'</Item>
                <Item>filesystem</Item>
                <Item>'filesystem'</Item>
@@ -478,43 +446,20 @@
          </Type>
          <Type Name="LogEntry">
           <Messages>
-           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Created="2009-09-30 08:52:18Z">
+           <Message TypeName="OverrideEqualsAndOperatorEqualsOnValueTypes" Category="Microsoft.Performance" CheckId="CA1815" Status="Excluded" Created="2009-09-30 08:52:18Z">
             <Issue Name="Equals">
              <Item>'LogEntry'</Item>
             </Issue>
             <Issue Name="op_Equality">
              <Item>'LogEntry'</Item>
             </Issue>
+            <Notes>
+             <User Name="Joel">
+              <Note Id="0" />
+             </User>
+            </Notes>
            </Message>
           </Messages>
-         </Type>
-         <Type Name="ManagerSettings">
-          <Members>
-           <Member Name="#PlausibleDeniabilityFiles">
-            <Messages>
-             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-09-30 08:52:18Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="319">
-               <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
-              </Issue>
-             </Message>
-             <Message TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002" Created="2009-09-30 08:52:18Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="319">
-               <Item>'List&lt;string&gt;'</Item>
-               <Item>'ManagerSettings.PlausibleDeniabilityFiles'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#PluginApprovals">
-            <Messages>
-             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-09-30 08:52:18Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="Settings.cs" Line="452">
-               <Item>'ManagerSettings.PluginApprovals'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
          </Type>
          <Type Name="PassBasedErasureMethod">
           <Members>
@@ -523,29 +468,6 @@
              <Message TypeName="PropertiesShouldNotReturnArrays" Category="Microsoft.Performance" CheckId="CA1819" Created="2009-09-30 08:52:18Z">
               <Issue>
                <Item>'PassBasedErasureMethod.PassesSet'</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-          </Members>
-         </Type>
-         <Type Name="RemoteExecutorClient">
-          <Members>
-           <Member Name="#.ctor()">
-            <Messages>
-             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2009-09-30 08:52:18Z">
-              <Issue Path="D:\Development\Projects\Eraser\Eraser.Manager" File="RemoteExecutor.cs" Line="297">
-               <Item>'RemoteExecutorClient.RemoteExecutorClient()'</Item>
-               <Item>&#xD;&#xA;&#xD;&#xA;RemoteExecutorClient..ctor()&#xD;&#xA;Executor.set_Tasks(ExecutorTasksCollection):Void</Item>
-              </Issue>
-             </Message>
-            </Messages>
-           </Member>
-           <Member Name="#Tasks">
-            <Messages>
-             <Message TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227" Created="2009-09-30 08:52:18Z">
-              <Issue>
-               <Item>'RemoteExecutorClient.Tasks'</Item>
               </Issue>
              </Message>
             </Messages>
@@ -823,7 +745,7 @@
            <Member Name="#.ctor(Eraser.Util.VolumeInfo)">
             <Messages>
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2009-09-30 07:03:32Z">
-              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="34">
+              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="35">
                <Item>'FatApi.FatApi(VolumeInfo)'</Item>
                <Item>&#xD;&#xA;&#xD;&#xA;FatApi..ctor(VolumeInfo)&#xD;&#xA;FatApi.LoadFat():Void</Item>
               </Issue>
@@ -838,7 +760,7 @@
            <Member Name="#.ctor(Eraser.Util.VolumeInfo,System.IO.Stream)">
             <Messages>
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2009-09-30 07:03:32Z">
-              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="53">
+              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="54">
                <Item>'FatApi.FatApi(VolumeInfo, Stream)'</Item>
                <Item>&#xD;&#xA;&#xD;&#xA;FatApi..ctor(VolumeInfo, Stream)&#xD;&#xA;FatApi.LoadFat():Void</Item>
               </Issue>
@@ -849,7 +771,7 @@
               </Notes>
              </Message>
              <Message Id="info" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Status="Excluded" Created="2009-09-30 08:52:18Z" FixCategory="DependsOnFix">
-              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="53">
+              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="54">
                <Item>'info'</Item>
                <Item>'FatApi.FatApi(VolumeInfo, Stream)'</Item>
               </Issue>
@@ -868,7 +790,7 @@
            <Member Name="#.ctor(System.String,Eraser.Util.FatDirectoryBase,System.UInt32)">
             <Messages>
              <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Excluded" Created="2009-09-30 07:03:32Z">
-              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="166">
+              <Issue Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="161">
                <Item>'FatDirectoryBase.FatDirectoryBase(string, FatDirectoryBase, uint)'</Item>
                <Item>&#xD;&#xA;&#xD;&#xA;FatDirectoryBase..ctor(String, FatDirectoryBase, UInt32)&#xD;&#xA;FatDirectoryBase.ReadDirectory():Void</Item>
               </Issue>
@@ -883,7 +805,7 @@
            <Member Name="#ParseDirectory()">
             <Messages>
              <Message Id="&lt;Module&gt;.mbstowcs(System.Char*,System.optional(IsConst) optional(IsSignUnspecifiedByte) SByte*,System.UInt32)" TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806" Created="2009-09-30 07:03:32Z">
-              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="332">
+              <Issue Name="HResultOrErrorCode" Path="d:\development\projects\eraser\eraser.util.filesystem" File="fatapi.cpp" Line="327">
                <Item>'FatDirectoryBase.ParseDirectory()'</Item>
                <Item>'&lt;Module&gt;.mbstowcs(char*, sbyte*, uint)'</Item>
               </Issue>
@@ -901,6 +823,7 @@
   </Targets>
   <Notes>
    <User Name="Joel">
+    <Note Id="0" Modified="2009-10-01 02:00:16Z">We will do the same thing even if we overide Equals.</Note>
     <Note Id="2" Modified="2009-06-02 07:18:57Z">Build metadata</Note>
     <Note Id="3" Modified="2009-06-02 07:19:19Z">Used to force creation of window handle</Note>
     <Note Id="4" Modified="2009-06-02 07:19:33Z">British spelling</Note>
@@ -934,9 +857,6 @@
    <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
     <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
    </Rule>
-   <Rule TypeName="CollectionPropertiesShouldBeReadOnly" Category="Microsoft.Usage" CheckId="CA2227">
-    <Resolution Name="Default">Change {0} to be read-only by removing the property setter.</Resolution>
-   </Rule>
    <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
     <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
    </Rule>
@@ -951,9 +871,6 @@
    </Rule>
    <Rule TypeName="DoNotDeclareReadOnlyMutableReferenceTypes" Category="Microsoft.Security" CheckId="CA2104">
     <Resolution Name="Default">Remove the read-only designation from {0} or change the field to one that is an immutable reference type. If the reference type {1} is, in fact, immutable, exclude this message.</Resolution>
-   </Rule>
-   <Rule TypeName="DoNotExposeGenericLists" Category="Microsoft.Design" CheckId="CA1002">
-    <Resolution Name="Default">Change {0} in {1} to use Collection&lt;T&gt;, ReadOnlyCollection&lt;T&gt; or KeyedCollection&lt;K,V&gt;</Resolution>
    </Rule>
    <Rule TypeName="DoNotIgnoreMethodResults" Category="Microsoft.Usage" CheckId="CA1806">
     <Resolution Name="HResultOrErrorCode">{0} calls {1} but does not use the HRESULT or error code that the method returns. This could lead to unexpected behavior in error conditions or low-resource situations. Use the result in a conditional statement, assign the result to a variable, or pass it as an argument to another method.</Resolution>

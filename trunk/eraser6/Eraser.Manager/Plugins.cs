@@ -209,7 +209,7 @@ namespace Eraser.Manager.Plugin
 
 			//The plugin was not disabled or it was loaded for the first time. Check
 			//the plugin for the presence of a valid signature.
-			Dictionary<Guid, bool> approvals = ManagerLibrary.Settings.PluginApprovals;
+			IDictionary<Guid, bool> approvals = ManagerLibrary.Settings.PluginApprovals;
 			if ((reflectAssembly.GetName().GetPublicKey().Length == 0 ||
 				!MsCorEEApi.VerifyStrongName(filePath) ||
 				instance.AssemblyAuthenticode == null) &&

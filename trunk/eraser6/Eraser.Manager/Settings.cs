@@ -313,17 +313,11 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The files which are overwritten with when a file has been erased.
 		/// </summary>
-		public List<string> PlausibleDeniabilityFiles
+		public IList<string> PlausibleDeniabilityFiles
 		{
 			get
 			{
-				return settings["PlausibleDeniabilityFiles"] == null ?
-					new List<string>() :
-					(List<string>)settings["PlausibleDeniabilityFiles"];
-			}
-			set
-			{
-				settings["PlausibleDeniabilityFiles"] = value;
+				return new SettingsList<string>(settings, "PlausibleDeniabilityFiles");
 			}
 		}
 
@@ -446,17 +440,11 @@ namespace Eraser.Manager
 		/// Holds user decisions on whether the plugin will be loaded at the next
 		/// start up.
 		/// </summary>
-		public Dictionary<Guid, bool> PluginApprovals
+		public IDictionary<Guid, bool> PluginApprovals
 		{
 			get
 			{
-				if (settings["ApprovedPlugins"] == null)
-					return new Dictionary<Guid, bool>();
-				return (Dictionary<Guid, bool>)settings["ApprovedPlugins"];
-			}
-			set
-			{
-				settings["ApprovedPlugins"] = value;
+				return new SettingsDictionary<Guid, bool>(settings, "ApprovedPlugins");
 			}
 		}
 
@@ -464,5 +452,306 @@ namespace Eraser.Manager
 		/// The Settings object which is the data store of this object.
 		/// </summary>
 		private Settings settings;
+
+		/// <summary>
+		/// Encapsulates an abstract list that is used to store settings.
+		/// </summary>
+		/// <typeparam name="T">The type of the list element.</typeparam>
+		private class SettingsList<T> : IList<T>
+		{
+			public SettingsList(Settings settings, string settingName)
+			{
+				Settings = settings;
+				SettingName = settingName;
+				List = (List<T>)settings[settingName];
+				if (List == null)
+					List = new List<T>();
+			}
+
+			~SettingsList()
+			{
+				Save();
+			}
+
+			#region IList<T> Members
+
+			public int IndexOf(T item)
+			{
+				return List.IndexOf(item);
+			}
+
+			public void Insert(int index, T item)
+			{
+				List.Insert(index, item);
+				Save();
+			}
+
+			public void RemoveAt(int index)
+			{
+				List.RemoveAt(index);
+				Save();
+			}
+
+			public T this[int index]
+			{
+				get
+				{
+					return List[index];
+				}
+				set
+				{
+					List[index] = value;
+					Save();
+				}
+			}
+
+			#endregion
+
+			#region ICollection<T> Members
+
+			public void Add(T item)
+			{
+				List.Add(item);
+				Save();
+			}
+
+			public void Clear()
+			{
+				List.Clear();
+				Save();
+			}
+
+			public bool Contains(T item)
+			{
+				return List.Contains(item);
+			}
+
+			public void CopyTo(T[] array, int arrayIndex)
+			{
+				List.CopyTo(array, arrayIndex);
+			}
+
+			public int Count
+			{
+				get { return List.Count; }
+			}
+
+			public bool IsReadOnly
+			{
+				get { return false; }
+			}
+
+			public bool Remove(T item)
+			{
+				bool result = List.Remove(item);
+				Save();
+				return result;
+			}
+
+			#endregion
+
+			#region IEnumerable<T> Members
+
+			public IEnumerator<T> GetEnumerator()
+			{
+				return List.GetEnumerator();
+			}
+
+			#endregion
+
+			#region IEnumerable Members
+
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return List.GetEnumerator();
+			}
+
+			#endregion
+
+			/// <summary>
+			/// Saves changes made to the list to the settings manager.
+			/// </summary>
+			private void Save()
+			{
+				Settings[SettingName] = List;
+			}
+
+			/// <summary>
+			/// The settings object storing the settings.
+			/// </summary>
+			private Settings Settings;
+
+			/// <summary>
+			/// The name of the setting we are encapsulating.
+			/// </summary>
+			private string SettingName;
+
+			/// <summary>
+			/// The list we are using as scratch.
+			/// </summary>
+			private List<T> List;
+		}
+
+		/// <summary>
+		/// Encapsulates an abstract dictionary that is used to store settings.
+		/// </summary>
+		/// <typeparam name="TKey">The key type of the dictionary.</typeparam>
+		/// <typeparam name="TValue">The value type of the dictionary.</typeparam>
+		private class SettingsDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+		{
+			public SettingsDictionary(Settings settings, string settingName)
+			{
+				Settings = settings;
+				SettingName = settingName;
+				Dictionary = (Dictionary<TKey, TValue>)settings[settingName];
+				if (Dictionary == null)
+					Dictionary = new Dictionary<TKey, TValue>();
+			}
+
+			~SettingsDictionary()
+			{
+				Save();
+			}
+
+			#region IDictionary<TKey,TValue> Members
+
+			public void Add(TKey key, TValue value)
+			{
+				Dictionary.Add(key, value);
+				Save();
+			}
+
+			public bool ContainsKey(TKey key)
+			{
+				return Dictionary.ContainsKey(key);
+			}
+
+			public ICollection<TKey> Keys
+			{
+				get { return Dictionary.Keys; }
+			}
+
+			public bool Remove(TKey key)
+			{
+				bool result = Dictionary.Remove(key);
+				Save();
+				return result;
+			}
+
+			public bool TryGetValue(TKey key, out TValue value)
+			{
+				return Dictionary.TryGetValue(key, out value);
+			}
+
+			public ICollection<TValue> Values
+			{
+				get { return Dictionary.Values; }
+			}
+
+			public TValue this[TKey key]
+			{
+				get
+				{
+					return Dictionary[key];
+				}
+				set
+				{
+					Dictionary[key] = value;
+					Save();
+				}
+			}
+
+			#endregion
+
+			#region ICollection<KeyValuePair<TKey,TValue>> Members
+
+			public void Add(KeyValuePair<TKey, TValue> item)
+			{
+				Dictionary.Add(item.Key, item.Value);
+				Save();
+			}
+
+			public void Clear()
+			{
+				Dictionary.Clear();
+				Save();
+			}
+
+			public bool Contains(KeyValuePair<TKey, TValue> item)
+			{
+				return Dictionary.ContainsKey(item.Key) && Dictionary[item.Key].Equals(item.Value);
+			}
+
+			public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+			{
+				throw new NotImplementedException();
+			}
+
+			public int Count
+			{
+				get { return Dictionary.Count; }
+			}
+
+			public bool IsReadOnly
+			{
+				get { return false; }
+			}
+
+			public bool Remove(KeyValuePair<TKey, TValue> item)
+			{
+				if (Dictionary.ContainsKey(item.Key) && Dictionary[item.Key].Equals(item.Value))
+				{
+					bool result = Dictionary.Remove(item.Key);
+					Save();
+					return result;
+				}
+
+				return false;
+			}
+
+			#endregion
+
+			#region IEnumerable<KeyValuePair<TKey,TValue>> Members
+
+			public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+			{
+				return Dictionary.GetEnumerator();
+			}
+
+			#endregion
+
+			#region IEnumerable Members
+
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return Dictionary.GetEnumerator();
+			}
+
+			#endregion
+
+			/// <summary>
+			/// Saves changes made to the list to the settings manager.
+			/// </summary>
+			private void Save()
+			{
+				Settings[SettingName] = Dictionary;
+			}
+
+			/// <summary>
+			/// The settings object storing the settings.
+			/// </summary>
+			private Settings Settings;
+
+			/// <summary>
+			/// The name of the setting we are encapsulating.
+			/// </summary>
+			private string SettingName;
+
+			/// <summary>
+			/// The list we are using as scratch.
+			/// </summary>
+			private Dictionary<TKey, TValue> Dictionary;
+		}
+
 	}
 }

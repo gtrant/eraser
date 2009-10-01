@@ -113,8 +113,7 @@ namespace Eraser.Manager
 			FileInfo shadowFileInfo;
 			{
 				string shadowFile = null;
-				List<string> entries = ManagerLibrary.Settings.PlausibleDeniabilityFiles.GetRange(
-					0, ManagerLibrary.Settings.PlausibleDeniabilityFiles.Count);
+				IList<string> entries = ManagerLibrary.Settings.PlausibleDeniabilityFiles;
 				Prng prng = PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng);
 				do
 				{
