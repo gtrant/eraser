@@ -1512,7 +1512,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				Program.IFFSPath,
 				FileMode.OpenOrCreate,/* doesnt matter if it was not created before */
 				FileAccess.ReadWrite, /* we need IO for get/set */
-				FileShare.None);      /* make sure we fully lock this file */
+				FileShare.ReadWrite); /* make sure we fully lock this file? */
 			
 			IFFS newInstance = null;
 						
