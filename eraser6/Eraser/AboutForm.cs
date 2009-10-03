@@ -190,7 +190,7 @@ Eraser Project Members:
 				Process.Start("http://eraser.heidi.ie/");
 			else if (DonateRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
 				Process.Start("https://euro.swreg.org/cgi-bin/s.cgi?r=1&s=80181&db_key=1512312&x=0&lang=&lnk=");
-			else
+			else if ((DateTime.Now - mouseDownTime < mouseSpeedUpSpan))
 				//Dismiss the dialog.
 				Close();
 		}
@@ -217,10 +217,28 @@ Eraser Project Members:
 		{
 			if (ParentOpacity <= 128)
 				ParentOpacity += 8;
+
 			if (AboutTextBitmap.Height < -AboutTextScrollTop)
 				AboutTextScrollTop = AboutTextRect.Height;
+			else if (AboutTextBitmap.Height < AboutTextScrollTop)
+				AboutTextScrollTop = -AboutTextRect.Height;
 			else
-				AboutTextScrollTop -= 1;
+			{
+				if (mouseSpeed == 0.0)
+				{
+					AboutTextScrollTop -= 1;
+				}
+				else
+				{
+					int speed = (mouseBotton == MouseButtons.Left ? -1 : +1);
+					speed *= (int)mouseSpeed;
+
+					AboutTextScrollTop += speed;
+
+					// clamp so it doesnt go out of hand
+					mouseSpeed = Math.Min(8.0, mouseSpeed + 0.1);
+				}
+			}
 
 			using (Graphics g = CreateGraphics())
 				DrawComposite(g);
@@ -257,5 +275,24 @@ Eraser Project Members:
 					g.Clip = new Region(AboutTextRect);
 			g.DrawImageUnscaled(DoubleBufferBitmap, 0, 0);
 		}
+
+		private double mouseSpeed = 0.0;
+		private DateTime mouseDownTime = DateTime.MinValue;
+		private TimeSpan mouseSpeedUpSpan = new TimeSpan(0, 0, 0, 0, 230);
+		private MouseButtons mouseBotton;
+		private void AboutForm_MouseDown(object sender, MouseEventArgs e)
+		{
+			mouseSpeed = 2.0;
+			mouseBotton = e.Button;
+			animationTimer.Interval = 20;
+			mouseDownTime = DateTime.Now;
+		}
+
+		private void AboutForm_MouseUp(object sender, MouseEventArgs e)
+		{
+			mouseSpeed = 0.0;
+			animationTimer.Interval = 50;
+		}
+
 	}
 }
