@@ -22,6 +22,11 @@
 #pragma once
 #include <winternl.h>
 
+typedef enum _OBJECT_INFORMATION_CLASS {
+  ObjectBasicInformation=0,
+  ObjectTypeInformation=2,
+} OBJECT_INFORMATION_CLASS;
+
 typedef struct _SYSTEM_HANDLE_INFORMATION {
 	ULONG  ProcessId;
 	UCHAR  ObjectTypeNumber;
@@ -40,3 +45,17 @@ const int SystemHandleInformation = 16;
 const int ObjectNameInformation = 1;
 const int ObjectAllTypesInformation = 3;
 const int ObjectHandleInformation = 4;
+
+
+NTSTATUS __stdcall NtQuerySystemInformation(
+		__in       SYSTEM_INFORMATION_CLASS sic,
+		__inout    PVOID data,
+		__in       ULONG length,
+		__out_opt  PULONG outLength);
+
+NTSTATUS __stdcall NtQueryObject(
+		IN HANDLE handle OPTIONAL,
+		IN OBJECT_INFORMATION_CLASS oic,
+		OUT PVOID data OPTIONAL,
+		IN ULONG length,
+		OUT PULONG outLength OPTIONAL);
