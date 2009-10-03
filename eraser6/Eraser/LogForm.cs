@@ -298,6 +298,7 @@ namespace Eraser
 
 			//Set the list view size and update all the control states
 			this.log.VirtualListSize = entryCache.Count;
+			this.log.Refresh();
 			EnableButtons();
 			Application.UseWaitCursor = false;
 		}
