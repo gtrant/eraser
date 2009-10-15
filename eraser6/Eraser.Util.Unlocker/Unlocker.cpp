@@ -21,7 +21,6 @@
 
 #include "stdafx.h"
 #include "Eraser.Util.Unlocker.h"
-#include "NTApi.h"
 
 #pragma managed(push)
 #pragma unmanaged
