@@ -28,7 +28,6 @@
 
 #include <process.h>
 
-#include "targetver.h"
 #define _NTSYSTEM_
 #define WIN32_NO_STATUS 1
 #include <windows.h>
