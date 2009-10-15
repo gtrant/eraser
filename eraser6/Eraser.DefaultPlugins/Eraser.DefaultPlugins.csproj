@@ -136,7 +136,7 @@
   <PropertyGroup>
     <PostBuildEvent>signtool sign /a "$(TargetPath)"
 if ERRORLEVEL 0 exit 0</PostBuildEvent>
-    <PreBuildEvent>call $(SolutionDir)UpdateVersions.bat "$(SolutionDir)\" "$(SolutionDir)Version.cs.in" "$(SolutionDir)Version.cs"
+    <PreBuildEvent>call "$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\" "$(SolutionDir)Version.cs.in" "$(SolutionDir)Version.cs"
 csgettext --merge --recursive EN,NL "$(ProjectDir)\" Strings
 if ERRORLEVEL 0 exit 0</PreBuildEvent>
   </PropertyGroup>
