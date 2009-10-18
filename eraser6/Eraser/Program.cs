@@ -29,7 +29,6 @@ using System.Text;
 using System.Threading;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Permissions;
 using System.Globalization;
 using System.Reflection;
 using System.Diagnostics;
@@ -266,7 +265,7 @@ namespace Eraser
 		/// <summary>
 		/// File name of the Eraser task list.
 		/// </summary>
-		private static readonly string TaskListFileName = @"Task List.ersx";
+		private const string TaskListFileName = @"Task List.ersx";
 
 		/// <summary>
 		/// Path to the Eraser task list.
@@ -276,17 +275,7 @@ namespace Eraser
 		/// <summary>
 		/// Path to the Eraser settings key (relative to HKCU)
 		/// </summary>
-		public static readonly string SettingsPath = @"SOFTWARE\Eraser\Eraser 6";
-
-		/// <summary>
-		/// File name of the IFFS file container
-		/// </summary>
-		public static readonly string IFFSFileName = @"Settings.erdb";
-
-		/// <summary>
-		/// Path to eraser IFFS file container
-		/// </summary>
-		public static readonly string IFFSPath = Path.Combine(AppDataPath, IFFSFileName);
+		public const string SettingsPath = @"SOFTWARE\Eraser\Eraser 6";
 	}
 
 	class GUIProgram : IDisposable
@@ -358,7 +347,7 @@ namespace Eraser
 					//Handle the exit instance event. This will occur when the main form
 					//has been closed.
 					MainForm.FormClosed += OnExitInstance;
-				
+
 					if (ShowMainForm)
 						Application.Run(MainForm);
 					else
@@ -1030,7 +1019,7 @@ namespace Eraser
 				if (!System.IO.File.Exists(param))
 					throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
 						"The file {0} does not exist.", param));
-
+				
 				files.Add(param);
 				return true;
 			}
@@ -1201,10 +1190,10 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		private void AddTask()
 		{
 			AddTaskCommandLine taskArgs = (AddTaskCommandLine)Arguments;
-
+			
 			//Create the task, and set the method to use.
 			Task task = new Task();
-			ErasureMethod method = taskArgs.ErasureMethod == Guid.Empty ?
+			ErasureMethod method = taskArgs.ErasureMethod == Guid.Empty ? 
 				ErasureMethodManager.Default :
 				ErasureMethodManager.GetInstance(taskArgs.ErasureMethod);
 
@@ -1316,29 +1305,25 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			new Dictionary<Type, ActionHandler>();
 	}
 
-	/// <summary>
-	/// This class provides a File Based Win32 Registry using .NET
-	/// binary serialization.
-	/// </summary>
 	internal class Settings : Manager.SettingsManager
 	{
 		/// <summary>
-		/// IFFS based setting managment
+		/// Registry-based storage backing for the Settings class.
 		/// </summary>
-		private class IFFSSettings : Manager.Settings, IDisposable
+		private class RegistrySettings : Manager.Settings, IDisposable
 		{
 			/// <summary>
 			/// Constructor.
 			/// </summary>
 			/// <param name="key">The registry key to look for the settings in.</param>
-			public IFFSSettings(IFFS.Handle handle)
+			public RegistrySettings(RegistryKey key)
 			{
-				this.handle = handle;
+				this.key = key;
 			}
 
 			#region IDisposable Members
 
-			~IFFSSettings()
+			~RegistrySettings()
 			{
 				Dispose(false);
 			}
@@ -1352,262 +1337,107 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			private void Dispose(bool disposing)
 			{
 				if (disposing)
-					handle.Close();
-
-				foreach (var hFile in hFiles.Values)
-					hFile.Close();
-
-				hFiles.Clear();
+					key.Close();
 			}
 
 			#endregion
 
-			private Dictionary<String, IFFS.Handle> hFiles = new Dictionary<string, IFFS.Handle>();
 			public override object this[string setting]
 			{
 				get
 				{
-					IFFS.Handle hFile = null;
+					//Get the raw registry value
+					object rawResult = key.GetValue(setting, null);
 
-					// Open a handle to the settings file
-					if (hFiles.ContainsKey(setting))
+					//Check if it is a serialised object
+					byte[] resultArray = rawResult as byte[];
+					if (resultArray != null)
 					{
-						hFile = hFiles[setting];
+						using (MemoryStream stream = new MemoryStream(resultArray))
+							try
+							{
+								return new BinaryFormatter().Deserialize(stream);
+							}
+							catch (SerializationException)
+							{
+								key.DeleteValue(setting);
+								MessageBox.Show(S._("Could not load the setting {0} for plugin {1}. " +
+									"The setting has been lost.", key, pluginID.ToString()),
+									S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
+									MessageBoxDefaultButton.Button1,
+									S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+							}
 					}
 					else
 					{
-						hFiles.Add(setting, hFile = IFFS.Open(handle, setting));
-					}
-
-					try
-					{
-						if (hFile.IsValid)
-						{
-							return IFFS.GetFileData(hFile);
-						}
-					}
-					catch
-					{
-						hFiles.Remove(setting);
-						hFile.Close();
-						throw;
+						return rawResult;
 					}
 
 					return null;
 				}
 				set
 				{
-					IFFS.Handle hFile = null;
-
-					if (hFiles.ContainsKey(setting))
+					if (value == null)
 					{
-						hFile = hFiles[setting];
+						key.DeleteValue(setting);
 					}
 					else
 					{
-						hFiles.Add(setting, hFile = IFFS.CreateFile(handle, setting));
-					}
-
-					if (!hFile.IsValid && hFiles.ContainsKey(setting))
-					{
-						hFiles.Remove(setting);
-						hFile.Close();
-						this[setting] = value;
-					}
-					else
-						try
-						{
-							if (value == null)
+						if (value is bool)
+							key.SetValue(setting, value, RegistryValueKind.DWord);
+						else if ((value is int) || (value is uint))
+							key.SetValue(setting, value, RegistryValueKind.DWord);
+						else if ((value is long) || (value is ulong))
+							key.SetValue(setting, value, RegistryValueKind.QWord);
+						else if (value is string)
+							key.SetValue(setting, value, RegistryValueKind.String);
+						else
+							using (MemoryStream stream = new MemoryStream())
 							{
-								IFFS.Delete(hFile);
+								new BinaryFormatter().Serialize(stream, value);
+								key.SetValue(setting, stream.ToArray(), RegistryValueKind.Binary);
 							}
-							else
-							{
-								IFFS.FileNode file = IFFS.GetFile(hFile);
-								file.Data = value;
-								file.DataType = Type.GetTypeFromHandle(Type.GetTypeHandle(value));
-							}
-						}
-						catch
-						{
-							hFile.Close();
-							hFiles.Remove(setting);
-							throw;
-						}
+					}
 				}
 			}
 
 			/// <summary>
-			/// The handle where the data is stored.
+			/// The GUID of the plugin whose settings this object is storing.
 			/// </summary>
-			private IFFS.Handle handle;
+			private Guid pluginID;
+
+			/// <summary>
+			/// The registry key where the data is stored.
+			/// </summary>
+			private RegistryKey key;
 		}
 
 		public override void Save()
 		{
-			Stream.Position = 0;
-			Stream.SetLength(0);
-			Instance.Serialize(Stream);
 		}
-
-#if DEBUG
-		private static bool MonteCarloTestHasRun = false;
-
-		private void MonteCarloTest()
-		{
-			Random rand = new Random();
-			const int MAX_ITERATIONS = 64;
-
-			IFFS.Handle hMonteCarlo = IFFS.CreateDirectory(Instance.RootHandle, "MonteCarlo");
-
-			if (!MonteCarloTestHasRun)
-				for (int iterations = 0; iterations < MAX_ITERATIONS; iterations++)
-				{
-					const int MAX_VALUE = 1024 * 16;
-
-					for (int i = 0; i < MAX_VALUE; i++)
-						IFFS.CreateFile(hMonteCarlo, i.ToString());
-
-					for (int i = 0; i < MAX_VALUE; i++)
-					{
-						IFFS.Handle hFile = IFFS.Open(hMonteCarlo, rand.Next(0, MAX_VALUE).ToString());
-						IFFS.GetFile(hFile).Data = i;
-					}
-
-					Save();
-				}
-
-			if (!IFFS.Delete(hMonteCarlo) && !MonteCarloTestHasRun)
-				throw new Exception();
-			else
-				Save();
-
-			MonteCarloTestHasRun = true;
-		}
-#endif
 
 		protected override Manager.Settings GetSettings(Guid guid)
 		{
-			IFFS.Handle hPlugin = IFFS.CreateDirectory(Instance.RootHandle, guid.ToString());
+			RegistryKey eraserKey = null;
 
-			return new IFFSSettings(hPlugin);
-		}
-
-		/// <summary>
-		/// Our encrypted filestream handle
-		/// </summary>
-		protected static CryptoFileStream Stream { get; set; }
-
-		/// <summary>
-		/// Create a new instance of the IFFS manager.
-		/// </summary>
-		/// <param name="key">key for the underlying cryptostream</param>
-		/// <param name="iv">iv for the underlying cryptostream</param>
-		/// <throws>SerializationException</throws>
-		/// <returns></returns>
-		static IFFS CreateIFFSInstance(byte[] key, byte[] iv)
-		{			
-			// create a new file stream for our settings
-			Stream = new CryptoFileStream(key, iv,
-				Program.IFFSPath,
-				FileMode.OpenOrCreate,/* doesnt matter if it was not created before */
-				FileAccess.ReadWrite, /* we need IO for get/set */
-				FileShare.ReadWrite); /* make sure we fully lock this file? */
-			
-			IFFS newInstance = null;
-						
-			if (Stream.Length != 0)
+			try
 			{
-				long OriginalPosition = Stream.Position;
-				try
-				{
-					newInstance = new IFFS(Stream);
-				}
-				catch (SerializationException)
-				{
-					// XXX for future ref, if this happens could be
-					// due to invalid credentials dont erase the 
-					// settings. 
-					// lets roll back
-					Stream.Position = OriginalPosition;
-					throw;
-				}
+				//Open the registry key containing the settings
+				eraserKey = Registry.CurrentUser.OpenSubKey(Program.SettingsPath, true);
+				if (eraserKey == null)
+					eraserKey = Registry.CurrentUser.CreateSubKey(Program.SettingsPath);
+
+				RegistryKey pluginsKey = eraserKey.OpenSubKey(guid.ToString(), true);
+				if (pluginsKey == null)
+					pluginsKey = eraserKey.CreateSubKey(guid.ToString());
+
+				//Return the Settings object.
+				return new RegistrySettings(pluginsKey);
 			}
-
-			if (newInstance == null)
+			finally
 			{
-				return new IFFS();
-			}
-			else
-			{
-				return newInstance;
-			}
-		}
-
-		/// <summary>
-		/// Global IFFS instance management methods
-		/// </summary>
-		private static IFFS instance = null;
-		protected static IFFS Instance
-		{
-			get
-			{
-				if (instance != null)
-				{
-					return instance;
-				}
-
-				/// XXX currently no user login is implemented
-				/// predefined and determinable key and iv is
-				/// generated. 
-
-				// Hash algorithm
-				System.Security.Cryptography.SHA512Managed Hash = new System.Security.Cryptography.SHA512Managed();
-
-				// use a per user seed for our key/iv generation
-				string UserID = System.Security.Principal.WindowsIdentity.GetCurrent().User.Value;
-
-				// Key and IV for our CryptoStream
-				byte[] defaultKey = Hash.ComputeHash(Encoding.UTF8.GetBytes(UserID));
-				byte[] defaultIV = Hash.ComputeHash(defaultKey);
-
-				try
-				{
-					instance = CreateIFFSInstance(defaultKey, defaultIV);
-				}
-				catch (SerializationException)
-				{
-					// this happens when serialization fails
-					// howerver if the wrong credentials were
-					// supplied this is not a corrupt archive.
-					// lets ask the user on the appropriate action.
-
-					string message = S._("Could not load the setting. To clear current settings click 'ok'");
-					DialogResult answer = MessageBox.Show(message, S._("Eraser"),
-						MessageBoxButtons.RetryCancel, MessageBoxIcon.Error,
-						MessageBoxDefaultButton.Button1,
-						S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
-
-					if (answer == DialogResult.Cancel)
-					{
-						throw new NotImplementedException("Not Implemented");
-					}
-					else // (answer == DialogResult.Ok)
-					{
-						// nothing to do
-					}
-				}
-
-				if (instance == null)
-				{
-					return instance = new IFFS();
-				}
-				
-				return instance;
-			}
-			set
-			{
-				instance = value;
+				if (eraserKey != null)
+					eraserKey.Close();
 			}
 		}
 	}
