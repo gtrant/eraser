@@ -129,6 +129,8 @@ function GetDownloads($downloadID)
 					<li><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_setup.exe">Eraser 5.8.7</a></li>
 					<li><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_portable.zip">Eraser
 							5.8.7</a> (portable)</li>
+					<li><a href="http://downloads.sourceforge.net/eraser/Eraser57Setup.zip">Eraser 5.7
+							</a> (for Windows 9x/Me)</li>
 				</ul>
 				<h4>Beta versions</h4>
 				<ul>
@@ -174,6 +176,7 @@ function GetDownloads($downloadID)
 						</ul>
 					</li>
 					<li><a href="contributing.html">Interested in helping Eraser?</a></li>
+					<a href="http://www.ohloh.net/p/eraser?ref=WidgetProjectPartnerBadge" target="_top"><img alt="Ohloh project report for Eraser" border="0" height="33" src="http://www.ohloh.net/p/eraser/widgets/project_partner_badge.gif" width="193" /> </a>
 				</ul>
 			</div>
 			<!-- InstanceEndEditable -->
