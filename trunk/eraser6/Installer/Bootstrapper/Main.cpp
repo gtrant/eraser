@@ -344,6 +344,7 @@ void MainWindow::Show(bool show)
 void MainWindow::EnableCancellation(bool enable)
 {
 	EnableWindow(hWndCancelBtn, enable);
+	Application::Get().Yield();
 }
 
 void MainWindow::SetProgress(float progress)
@@ -352,6 +353,7 @@ void MainWindow::SetProgress(float progress)
 	if (pbStyle & PBS_MARQUEE)
 		SetWindowLongPtr(hWndProgressBar, GWL_STYLE, pbStyle & (~PBS_MARQUEE));
 	SendMessage(hWndProgressBar, PBM_SETPOS, (int)(progress * 1000), 0);
+	Application::Get().Yield();
 }
 
 void MainWindow::SetProgressIndeterminate()
@@ -359,11 +361,13 @@ void MainWindow::SetProgressIndeterminate()
 	SetWindowLongPtr(hWndProgressBar, GWL_STYLE,
 		GetWindowLongPtr(hWndProgressBar, GWL_STYLE) | PBS_MARQUEE);
 	SendMessage(hWndProgressBar, PBM_SETMARQUEE, true, 100);
+	Application::Get().Yield();
 }
 
 void MainWindow::SetMessage(std::wstring message)
 {
 	SetWindowTextW(hWndStatusLbl, message.c_str());
+	Application::Get().Yield();
 }
 
 LRESULT MainWindow::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM /*lParam*/,
