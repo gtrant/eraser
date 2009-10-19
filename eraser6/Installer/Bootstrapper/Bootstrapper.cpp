@@ -142,12 +142,18 @@ private:
 			return SZ_OK;
 
 		LZMemStream* s = static_cast<LZMemStream*>(object);
-		char* dstBuffer = reinterpret_cast<char*>(SzAlloc(object, *size));
 
 		//Copy the memory to the provided buffer.
-		*size = std::min(*size, s->BufferSize - s->CurrentOffset);
+		*size = std::min(std::min(*size, s->BufferSize - s->CurrentOffset),
+			static_cast<size_t>(32768));
+		char* dstBuffer = reinterpret_cast<char*>(SzAlloc(object, *size));
 		memcpy(dstBuffer, s->Buffer + s->CurrentOffset, *size);
+
 		*buf = dstBuffer;
+		s->BufferRead += *size;
+
+		MainWindow& mainWin = Application::Get().GetTopWindow();
+		mainWin.SetProgress((float)((double)s->BufferRead / s->BufferSize));
 		return SZ_OK;
 	}
 
@@ -156,7 +162,8 @@ private:
 		LZMemStream* s = static_cast<LZMemStream*>(object);
 
 		//Copy the memory to the provided buffer.
-		*size = std::min(*size, s->BufferSize - s->CurrentOffset);
+		*size = std::min(std::min(*size, s->BufferSize - s->CurrentOffset),
+			static_cast<size_t>(32768));
 		memcpy(buf, s->Buffer + s->CurrentOffset, *size);
 
 		s->CurrentOffset += *size;
@@ -193,7 +200,7 @@ private:
 
 		if (newPos > s->BufferSize || newPos < 0)
 			return SZ_ERROR_INPUT_EOF;
-		s->CurrentOffset = newPos;
+		s->CurrentOffset = static_cast<size_t>(newPos);
 		*position = newPos;
 		return SZ_OK;
 	}
@@ -240,7 +247,7 @@ void ExtractTempFiles(std::wstring pathToExtract)
 	//Read the database for files
 	unsigned blockIndex = 0;
 	Byte* outBuffer = NULL;
-    size_t outBufferSize = 0;
+	size_t outBufferSize = 0;
 	for (unsigned i = 0; i < db.db.NumFiles; ++i)
 	{
 		size_t offset = 0;
@@ -321,7 +328,7 @@ bool HasNetFramework()
 	return !highestVer.empty();
 }
 
-int CreateProcessAndWait(const std::wstring& commandLine)
+int CreateProcessAndWait(const std::wstring& commandLine, const std::wstring& appName)
 {
 	//Get a mutable version of the command line
 	wchar_t* cmdLine = new wchar_t[commandLine.length() + 1];
@@ -336,7 +343,7 @@ int CreateProcessAndWait(const std::wstring& commandLine)
 		&pInfo))
 	{
 		delete[] cmdLine;
-		throw GetErrorMessage(GetLastError());
+		throw L"Error while executing " + appName + L": " + GetErrorMessage(GetLastError());
 	}
 	delete[] cmdLine;
 
@@ -378,7 +385,7 @@ bool InstallNetFramework(std::wstring tempDir, bool quiet)
 		commandLine += L" /q";
 
 	//And the return code is true if the process exited with 0.
-	return CreateProcessAndWait(commandLine) == 0;
+	return CreateProcessAndWait(commandLine, L".NET Framework Installer") == 0;
 }
 
 bool InstallEraser(std::wstring tempDir, bool quiet)
@@ -414,5 +421,5 @@ bool InstallEraser(std::wstring tempDir, bool quiet)
 		commandLine += L" /quiet /norestart";
 	
 	//And the return code is true if the process exited with 0.
-	return CreateProcessAndWait(commandLine) == 0;
+	return CreateProcessAndWait(commandLine, L"Eraser") == 0;
 }
