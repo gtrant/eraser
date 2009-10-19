@@ -108,6 +108,8 @@ public:
 	///                            after the stream is destroyed.
 	LZMemStream(void* buffer, size_t bufferSize, bool deleteOnDestroy)
 	{
+		InStream.Look = LZMemStreamLook;
+		InStream.Skip = LzMemStreamSkip;
 		InStream.Read = LZMemStreamRead;
 		InStream.Seek = LzMemStreamSeek;
 
@@ -125,7 +127,7 @@ public:
 			delete[] Buffer;
 	}
 
-	ISzInStream InStream;
+	ILookInStream InStream;
 
 private:
 	bool DeleteOnDestroy;
@@ -134,38 +136,65 @@ private:
 	size_t BufferSize;
 	size_t CurrentOffset;
 
-	static SZ_RESULT LZMemStreamRead(void* object, void** bufferPtr, size_t size,
-		size_t* processedSize)
+	static SRes LZMemStreamLook(void* object, void** buf, size_t* size)
+	{
+		if (*size == 0)
+			return SZ_OK;
+
+		LZMemStream* s = static_cast<LZMemStream*>(object);
+		char* dstBuffer = reinterpret_cast<char*>(SzAlloc(object, *size));
+
+		//Copy the memory to the provided buffer.
+		*size = std::min(*size, s->BufferSize - s->CurrentOffset);
+		memcpy(dstBuffer, s->Buffer + s->CurrentOffset, *size);
+		*buf = dstBuffer;
+		return SZ_OK;
+	}
+
+	static SRes LZMemStreamRead(void* object, void* buf, size_t* size)
 	{
 		LZMemStream* s = static_cast<LZMemStream*>(object);
 
-		//Since we can allocate as much as we want to allocate, take a decent amount
-		//of memory and stop.
-		size = std::min(1048576u, size);
-		static char* dstBuffer = NULL;
-		if (dstBuffer)
-			delete[] dstBuffer;
-		dstBuffer = new char[size];
-
 		//Copy the memory to the provided buffer.
-		memcpy(dstBuffer, s->Buffer + s->CurrentOffset, size);
-		*bufferPtr = dstBuffer;
-		*processedSize = size;
-		s->BufferRead += size;
-		s->CurrentOffset += size;
+		*size = std::min(*size, s->BufferSize - s->CurrentOffset);
+		memcpy(buf, s->Buffer + s->CurrentOffset, *size);
+
+		s->CurrentOffset += *size;
+		s->BufferRead += *size;
 
 		MainWindow& mainWin = Application::Get().GetTopWindow();
 		mainWin.SetProgress((float)((double)s->BufferRead / s->BufferSize));
 		return SZ_OK;
 	}
 
-	static SZ_RESULT LzMemStreamSeek(void *object, CFileSize pos)
+	static SRes LzMemStreamSkip(void* object, size_t offset)
 	{
 		LZMemStream* s = static_cast<LZMemStream*>(object);
 
-		if (pos > s->BufferSize)
-			return SZE_FAIL;
-		s->CurrentOffset = static_cast<size_t>(pos);
+		if (offset + s->CurrentOffset > s->BufferSize)
+			return SZ_ERROR_INPUT_EOF;
+		s->CurrentOffset += offset;
+		return SZ_OK;
+	}
+
+	static SRes LzMemStreamSeek(void* object, long long* position, ESzSeek origin)
+	{
+		LZMemStream* s = static_cast<LZMemStream*>(object);
+		long long newPos = *position;
+		switch (origin)
+		{
+		case SZ_SEEK_CUR:
+			newPos += s->CurrentOffset;
+			break;
+		case SZ_SEEK_END:
+			newPos = s->BufferSize - *position;
+			break;
+		}
+
+		if (newPos > s->BufferSize || newPos < 0)
+			return SZ_ERROR_INPUT_EOF;
+		s->CurrentOffset = newPos;
+		*position = newPos;
 		return SZ_OK;
 	}
 };
@@ -193,7 +222,7 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		throw GetErrorMessage(GetLastError());
 
 	//7z archive database structure
-	CArchiveDatabaseEx db;
+	CSzArEx db;
 
 	//memory functions
 	ISzAlloc allocImp;
@@ -204,20 +233,20 @@ void ExtractTempFiles(std::wstring pathToExtract)
 	//Initialize the CRC and database structures
 	LZMemStream stream(resourceBuffer, resourceSize, false);
 	CrcGenerateTable();
-	SzArDbExInit(&db);
-	if (SzArchiveOpen(&stream.InStream, &db, &allocImp, &allocTempImp) != SZ_OK)
+	SzArEx_Init(&db);
+	if (SzArEx_Open(&db, &stream.InStream, &allocImp, &allocTempImp) != SZ_OK)
 		throw std::wstring(L"Could not open archive for reading.");
 
 	//Read the database for files
 	unsigned blockIndex = 0;
 	Byte* outBuffer = NULL;
     size_t outBufferSize = 0;
-	for (unsigned i = 0; i < db.Database.NumFiles; ++i)
+	for (unsigned i = 0; i < db.db.NumFiles; ++i)
 	{
 		size_t offset = 0;
 		size_t processedSize = 0;
-		CFileItem* file = db.Database.Files + i;
-		SZ_RESULT result = SZ_OK;
+		CSzFileItem* file = db.db.Files + i;
+		SRes result = SZ_OK;
 
 		//Create the output file
 		size_t convertedChars = 0;
@@ -232,7 +261,7 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		//Extract the file
 		while (result == SZ_OK && destFileSize)
 		{
-			result = SzExtract(&stream.InStream, &db, i, &blockIndex,
+			result = SzAr_Extract(&db, &stream.InStream, i, &blockIndex,
 				&outBuffer, &outBufferSize, &offset, &processedSize, &allocImp,
 				&allocTempImp);
 			if (result != SZ_OK)
@@ -247,7 +276,7 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		}
 	}
 
-	allocImp.Free(outBuffer);
+	SzArEx_Free(&db, &allocImp);
 }
 
 bool HasNetFramework()
