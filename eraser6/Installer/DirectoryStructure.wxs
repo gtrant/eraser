@@ -74,7 +74,7 @@
 						Source="..\Bin\Release\Win32\Eraser.Util.Unlocker.dll"
 						ProcessorArchitecture="x86" />
 					<File Id="EraserFileSystem" Name="Eraser.Util.FileSystem.dll"
-						Source="..\Bin\Release\x64\Eraser.Util.FileSystem.dll"
+						Source="..\Bin\Release\Win32\Eraser.Util.FileSystem.dll"
 						ProcessorArchitecture="x86" />
 					<?endif?>
 
