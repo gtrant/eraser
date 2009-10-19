@@ -57,9 +57,8 @@ Source: bin\win32\release_unicode\Eraserl.exe; DestDir: {syswow64}; Flags: resta
 Source: bin\win32\release_unicode\Eraser.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
 Source: bin\win32\release_unicode\Erasext.dll; DestDir: {syswow64}; Flags: restartreplace uninsrestartdelete 32bit; Components: arch32Bit archWoW
 Source: bin\win32\release_unicode\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 32bit; Components: Verify; Check: IsWin32
-#ifexist "bin\vcredist_x86.cab"
-Source: bin\vcredist_x86.cab; DestName: vc_red.cab; DestDir: {tmp}\vcredist_x86; Flags: deleteafterinstall; Components: arch32Bit archWoW
-Source: bin\vcredist_x86.msi; DestName: vc_red.msi; DestDir: {tmp}\vcredist_x86; Flags: deleteafterinstall; Components: arch32Bit archWoW
+#ifexist "bin\vcredist_x86.exe"
+Source: bin\vcredist_x86.exe; DestDir: {tmp}\vcredist; Flags: deleteafterinstall; Components: arch32Bit archWoW
 #endif
 
 Source: bin\x64\release_unicode\Eraser.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: arch64Bit
@@ -67,9 +66,8 @@ Source: bin\x64\release_unicode\Eraserl.exe; DestDir: {sys}; Flags: restartrepla
 Source: bin\x64\release_unicode\Eraser.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: bin\x64\release_unicode\Erasext.dll; DestDir: {sys}; Flags: restartreplace uninsrestartdelete 64bit; Components: arch64Bit
 Source: bin\x64\release_unicode\ErsChk.exe; DestDir: {app}; Flags: ignoreversion restartreplace uninsrestartdelete 64bit; Components: Verify; Check: IsWin64
-#ifexist "bin\vcredist_x64.cab"
-Source: bin\vcredist_x64.cab; DestName: vc_red.cab; DestDir: {tmp}\vcredist_x64; Flags: deleteafterinstall; Components: arch64Bit
-Source: bin\vcredist_x64.msi; DestName: vc_red.msi; DestDir: {tmp}\vcredist_x64; Flags: deleteafterinstall; Components: arch64Bit
+#ifexist "bin\vcredist_x64.exe"
+Source: bin\vcredist_x64.exe; DestDir: {tmp}\vcredist; Flags: deleteafterinstall; Components: arch64Bit
 #endif
 
 [Components]
@@ -133,8 +131,8 @@ Root: HKCU; SubKey: Software\Microsoft\Windows\CurrentVersion\Run; ValueType: st
 
 [Run]
 Filename: {app}\eraser.exe; WorkingDir: {app}; Flags: postinstall nowait skipifsilent; Description: Run Eraser
-Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime... (32-bit); Parameters: "/i ""{tmp}\vcredist_x86\vc_red.msi"""; Components: arch32Bit archWoW
-Filename: msiexec; StatusMsg: Installing Visual C++ 2008 Runtime... (64-bit); Parameters: "/i ""{tmp}\vcredist_x64\vc_red.msi"""; Components: arch64Bit
+Filename: {tmp}\vcredist\vcredist_x86.exe; StatusMsg: Installing Visual C++ 2008 Runtime... (32-bit); Parameters: "/q:a /c:""""msiexec /i vcredist.msi /qn"""""; Components: arch32Bit archWoW
+Filename: {tmp}\vcredist\vcredist_x64.exe; StatusMsg: Installing Visual C++ 2008 Runtime... (64-bit); Parameters: "/q:a /c:""""msiexec /i vcredist.msi /qn"""""; Components: arch64Bit
 
 [Code]
 function IsWin32: Boolean;
