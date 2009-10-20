@@ -1,9 +1,11 @@
 setlocal EnableDelayedExpansion 
-for /r %%i in (%1\bin\Release\*.dll) do set binaries=!binaries! "%%i"
-for /r %%i in (%1\bin\Release\*.exe) do (
+for /r "%~1\bin\Release\" %%i in (*.dll) do set binaries=!binaries! "%%i"
+for /r "%~1\bin\Release\" %%i in (*.exe) do (
 	set j=%%i
 	if "!j:~-10!" neq "vshost.exe" (
+	if "!j:~-16!" neq "Bootstrapper.exe" (
 		set binaries=!binaries! "%%i"
+	)
 	)
 )
 
