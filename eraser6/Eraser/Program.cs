@@ -351,13 +351,7 @@ namespace Eraser
 					if (ShowMainForm)
 						Application.Run(MainForm);
 					else
-					{
-						//If we aren't showing the form, force the creation of the window
-						//handle.
-						MainForm.CreateControl();
-						IntPtr handle = MainForm.Handle;
 						Application.Run();
-					}
 
 					return true;
 				}
