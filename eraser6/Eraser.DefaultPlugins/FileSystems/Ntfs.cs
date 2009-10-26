@@ -157,7 +157,6 @@ namespace Eraser.DefaultPlugins
 				using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
 					FileShare.None))
 				{
-					strm.SetLength(strm.Length + 1);
 					method.Erase(strm, long.MaxValue,
 						PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng), null);
 				}
