@@ -355,8 +355,8 @@ namespace Util {
 
 	void FatDirectory::WriteDirectory()
 	{
-		array<Byte>^ buffer = gcnew array<Byte>(static_cast<size_t>(DirectorySize) *
-			sizeof(::FatDirectoryEntry));
+		array<Byte>^ buffer = gcnew array<Byte>(static_cast<int>(DirectorySize *
+			sizeof(::FatDirectoryEntry)));
 		Marshal::Copy(static_cast<IntPtr>(Directory), buffer, 0, buffer->Length);
 		Api->SetFileContents(buffer, Cluster);
 	}
