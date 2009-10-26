@@ -148,9 +148,10 @@ namespace Eraser.DefaultPlugins
 		public override void EraseFileSystemObject(StreamInfo info, ErasureMethod method,
 			ErasureMethodProgressFunction callback)
 		{
-			//Check if the file fits in one MFT record
-			long mftRecordSize = NtfsApi.GetMftRecordSegmentSize(VolumeInfo.FromMountpoint(info.DirectoryName));
-			while (info.Length < mftRecordSize)
+			//Check if the file fits in one cluster - if it does it may be MFT resident
+			//TODO: any more deterministic way of finding out?
+			VolumeInfo volume = VolumeInfo.FromMountpoint(info.DirectoryName);
+			while (info.Length < Math.Max(volume.ClusterSize, 1024))
 			{
 				//Yes it does, erase exactly to the file length
 				using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
