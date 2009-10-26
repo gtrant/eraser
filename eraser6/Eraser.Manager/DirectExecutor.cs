@@ -711,6 +711,15 @@ namespace Eraser.Manager
 				StreamInfo info = new StreamInfo(paths[i]);
 				FileSystem fsManager = FileSystemManager.Get(
 					VolumeInfo.FromMountpoint(info.DirectoryName));
+
+				//Check that the file exists - we do not want to bother erasing nonexistant files
+				if (!info.Exists)
+				{
+					task.Log.LastSessionEntries.Add(new LogEntry(S._("The file {0} was not erased " +
+						"as the file does not exist.", paths[i]), LogLevel.Notice));
+					continue;
+				}
+
 				bool isReadOnly = false;
 				
 				try

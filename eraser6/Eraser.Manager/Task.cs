@@ -563,11 +563,16 @@ namespace Eraser.Manager
 
 		internal override List<string> GetPaths(out long totalSize)
 		{
-			List<string> result = new List<string>();
 			totalSize = 0;
-			GetPathADSes(result, out totalSize, Path);
+			List<string> result = new List<string>();
+			FileInfo fileInfo = new FileInfo(Path);
 
-			totalSize += new FileInfo(Path).Length;
+			if (fileInfo.Exists)
+			{
+				GetPathADSes(result, out totalSize, Path);
+				totalSize += fileInfo.Length;
+			}
+
 			result.Add(Path);
 			return result;
 		}
