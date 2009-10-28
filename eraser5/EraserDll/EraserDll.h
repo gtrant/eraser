@@ -44,6 +44,8 @@ const LPCTSTR ERASER_REGISTRY_BASE
 // settings for the library
 const LPCTSTR ERASER_REGISTRY_LIBRARY
     = _T("Library");
+const LPCTSTR ERASER_REGISTRY_LIBRARY_VERSION
+    = _T("LibraryVersion");
 // enable Shell Extension?
 const LPCTSTR ERASEXT_REGISTRY_ENABLED
     = _T("ErasextEnabled");

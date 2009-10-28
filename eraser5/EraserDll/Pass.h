@@ -88,6 +88,16 @@ public:
     LPPASS       m_lpPasses;                         // pointer to PASSes
 } BMETHOD, *LPBMETHOD;
 
+// Old ANSI Eraser Custom Method as stored in the registry
+struct MethodBaseA {
+	E_UINT8      m_nMethodID;                        // ID
+	char         m_szDescription[DESCRIPTION_SIZE];  // description
+	E_UINT16     m_nPasses;                          // number of PASSes
+	WIPEFUNCTION m_pwfFunction;                      // the wipe function
+
+	E_UINT8      m_bShuffle;                         // shuffle passes
+};
+
 #pragma pack()
 
 #define bmEntry(a, b, c, d, e, f)   { a, b, c, d, e, (LPPASS)f }
