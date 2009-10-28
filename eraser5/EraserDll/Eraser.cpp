@@ -725,7 +725,8 @@ eraserAddItem(E_IN ERASER_HANDLE param1, E_IN LPVOID param2, E_IN E_UINT16 param
             // if the item is a file, a fully qualified name is required,
             // drive must be given as "X:\\"
 
-            if (!isalpha(szItem[0]) || szItem[1] != ':' || szItem[2] != '\\') {
+            if (!(isalpha(szItem[0]) && szItem[1] == ':' && szItem[2] == '\\') &&
+            	!(_tcsncmp(_T("\\\\"), szItem, 2) == 0 && _tcschr(szItem + 2, '\\') != NULL)) {
                 return ERASER_ERROR_PARAM2;
             }
 
