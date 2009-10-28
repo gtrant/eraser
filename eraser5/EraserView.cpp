@@ -942,7 +942,7 @@ void CEraserView::OnProcessRun()
             CDWordArray daRemovedIfComplete;
             CItem       *piItem = 0;
             int         nItem = -1;
-            INT_PTR     nIndex = 0;
+            DWORD_PTR   nIndex = 0;
             INT_PTR     iSize = pDoc->m_paTasks.GetSize();
             POSITION    pos = lc.GetFirstSelectedItemPosition();
 
@@ -952,7 +952,7 @@ void CEraserView::OnProcessRun()
             while (pos)
             {
                 nItem = lc.GetNextSelectedItem(pos);
-				nIndex = static_cast<INT_PTR>(lc.GetItemData(nItem));
+				nIndex = lc.GetItemData(nItem);
 
                 if (nIndex >= 0 && nIndex < iSize)
                 {
@@ -969,7 +969,7 @@ void CEraserView::OnProcessRun()
                                 (piItem->GetType() == File && piItem->UseWildcards()) ||
                                 (piItem->GetType() == Folder && (!piItem->RemoveFolder() || piItem->OnlySubfolders())))
                             {
-                                daRemovedIfComplete.Add(nIndex);
+                                daRemovedIfComplete.Add(static_cast<DWORD>(nIndex));
                             }
                         }
 						if (piItem->FinishAction())
