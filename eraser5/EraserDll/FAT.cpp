@@ -812,8 +812,8 @@ clearDeletedEntries(wfeInfo *pwInfo, CEraserContext *context, E_PUINT8 pEntry, E
     E_UINT32  uReturn = WFE_SUCCESS;
     E_PUINT8  pEnd      = pEntry + uSize;
     PDIRENTRY pd        = 0;
-    TCHAR     szDeName[9];
-    TCHAR     szDeExtension[4];
+    char      szDeName[9];
+    char      szDeExtension[4];
     CString   strExtension;
     DIRINFO   diInfo;
 
@@ -834,13 +834,13 @@ clearDeletedEntries(wfeInfo *pwInfo, CEraserContext *context, E_PUINT8 pEntry, E
                 // long entry
             } else if (bitSet(pd->deAttributes, 0x10)) {
                 // directory
-                if (_tcsncmp(_T(".       "), (LPCTSTR)pd->deName, 8) != 0 &&
-                    _tcsncmp(_T("..      "), (LPCTSTR)pd->deName, 8) != 0) {
+                if (strncmp(".       ", reinterpret_cast<char*>(pd->deName), 8) != 0 &&
+                    strncmp("..      ", reinterpret_cast<char*>(pd->deName), 8) != 0) {
 
-                    _tcsncpy(szDeName, (LPCTSTR)pd->deName, 8);
-                    _tcsncpy(szDeExtension, (LPCTSTR)pd->deExtension, 3);
+                    strncpy(szDeName, reinterpret_cast<char*>(pd->deName), 8);
+                    strncpy(szDeExtension, reinterpret_cast<char*>(pd->deExtension), 3);
 
-                    diInfo.strPath = strBase + szDeName;
+                    diInfo.strPath = strBase + CString(szDeName);
                     diInfo.strPath.TrimRight();
 
                     strExtension = szDeExtension;
