@@ -28,6 +28,7 @@
 #define CMETHOD_SIZE             (sizeof(METHOD) - sizeof(LPPASS))
 #define MAX_CMETHOD_SIZE         (CMETHOD_SIZE + PASSES_MAX * sizeof(PASS))
 #define MAX_LIBRARYSETTINGS_SIZE (LIBRARYSETTINGS_SIZE + (MAX_CUSTOM_METHODS * MAX_CMETHOD_SIZE))
+#define LIBRARYVERSION           1 //Unicode library version. 0 is the ASCII one
 
 void
 setLibraryDefaults(LibrarySettings *pls)
@@ -57,6 +58,7 @@ loadLibrarySettings(LibrarySettings *pls)
 		CIniKey kReg_ini;
 		CKey &kReg = no_registry ? kReg_ini : kReg_reg;
         bool    bResult = FALSE;
+        DWORD   LibraryVersion = 0;
         E_UINT32  uSize;
         E_PUINT8  lpData;
 
@@ -65,6 +67,9 @@ loadLibrarySettings(LibrarySettings *pls)
         if (!kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE)) {
             return false;
         }
+
+        //Get the version of the library database
+        kReg.GetValue(LibraryVersion, ERASER_REGISTRY_LIBRARY_VERSION, 0);
 
         uSize = kReg.GetValueSize(ERASER_REGISTRY_LIBRARY);
 
@@ -81,6 +86,12 @@ loadLibrarySettings(LibrarySettings *pls)
                     pls->m_lpCMethods = new METHOD[pls->m_nCMethods];
 
                     E_UINT32 uPos = LIBRARYSETTINGS_SIZE;
+#ifdef _UNICODE
+					bool upgradeCustomMethods = LibraryVersion == LIBRARYVERSION ||
+						AfxMessageBox(_T("An old version of Eraser settings have been found.\n\n")
+						_T("Would you like to upgrade the settings to match the new format? Clicking no will likely ")
+						_T("result in corrupted custom erase methods."), MB_YESNO) == IDYES;
+#endif
 
                     for (E_UINT8 i = 0; i < pls->m_nCMethods; i++) {
                         // custom method fields
@@ -89,6 +100,34 @@ loadLibrarySettings(LibrarySettings *pls)
                                    CMETHOD_SIZE);
 
                         uPos += CMETHOD_SIZE;
+
+#ifdef _UNICODE
+						// upgrade the name of the method if this is an old library
+						if (LibraryVersion < LIBRARYVERSION && upgradeCustomMethods)
+						{
+							// Cast the raw data to the old method base class
+							MethodBaseA* ansiMethod = reinterpret_cast<MethodBaseA*>(&pls->m_lpCMethods[i]);
+							_MethodBase unicodeMethod;
+
+							// Migrate the data element by element
+							memset(&unicodeMethod, 0, sizeof(_MethodBase));
+							unicodeMethod.m_nMethodID = ansiMethod->m_nMethodID;
+							unicodeMethod.m_nPasses = ansiMethod->m_nPasses;
+							unicodeMethod.m_pwfFunction = ansiMethod->m_pwfFunction;
+							unicodeMethod.m_bShuffle = ansiMethod->m_bShuffle;
+
+							// Convert the method name to Unicode
+							size_t convCount = 0;
+							mbstowcs_s(&convCount, unicodeMethod.m_szDescription, DESCRIPTION_SIZE,
+								ansiMethod->m_szDescription, DESCRIPTION_SIZE - 1);
+
+							// Copy the new structure
+							memcpy(ansiMethod, &unicodeMethod, sizeof(_MethodBase));
+
+							// Move the buffer pointer backwards so that the passes loaded will be correct
+							uPos -= (sizeof(wchar_t) - sizeof(char)) * DESCRIPTION_SIZE;
+						}
+#endif
 
                         // actual pass information
                         if (pls->m_lpCMethods[i].m_nPasses > 0 &&
@@ -104,6 +143,11 @@ loadLibrarySettings(LibrarySettings *pls)
                             uPos += (pls->m_lpCMethods[i].m_nPasses * sizeof(PASS));
                         }
                     }
+
+#ifdef _UNICODE
+					if (LibraryVersion < LIBRARYVERSION && upgradeCustomMethods)
+						saveLibrarySettings(pls);
+#endif
                 }
 
                 bResult = true;
@@ -150,6 +194,9 @@ saveLibrarySettings(LibrarySettings *pls)
         if (!kReg.Open(HKEY_CURRENT_USER, ERASER_REGISTRY_BASE)) {
             return FALSE;
         }
+
+        // write the library version
+        kReg.SetValue(LIBRARYVERSION, ERASER_REGISTRY_LIBRARY_VERSION);
 
         // calculate data size
         uSize = LIBRARYSETTINGS_SIZE + (pls->m_nCMethods * CMETHOD_SIZE);

@@ -85,6 +85,7 @@
 #include <eh.h>                       // structured exception
 #include "..\shared\SeException.h"    // handling
 #include <Shlwapi.h>
+#include <vector>
 
 #ifndef _AFXDLL
 #define AfxLoadLibrary  ::LoadLibrary
