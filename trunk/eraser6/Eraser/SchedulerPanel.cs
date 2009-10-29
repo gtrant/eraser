@@ -364,8 +364,21 @@ namespace Eraser
 				bool isTaskList = true;
 				foreach (string file in files)
 				{
-					descriptionInsert += string.Format(CultureInfo.InvariantCulture, "{0}, ",
-						Path.GetFileNameWithoutExtension(file));
+					if (descriptionInsert.Length < 259 &&
+						(descriptionInsert.Length < 3 || descriptionInsert.Substring(descriptionInsert.Length - 3) != "..."))
+					{
+						string append = string.Format(CultureInfo.InvariantCulture, "{0}, ",
+							Path.GetFileNameWithoutExtension(file));
+						if (descriptionInsert.Length + append.Length > 259)
+						{
+							descriptionInsert += ".....";
+						}
+						else
+						{
+							descriptionInsert += append;
+						}
+					}
+
 					if (Path.GetExtension(file) != ".ersx")
 						isTaskList = false;
 				}
