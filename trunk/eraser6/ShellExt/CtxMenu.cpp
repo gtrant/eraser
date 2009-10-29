@@ -716,6 +716,23 @@ namespace Eraser {
 		return result;
 	}
 
+	std::wstring CCtxMenu::FormatError(DWORD lastError)
+	{
+		if (lastError == static_cast<DWORD>(-1))
+			lastError = GetLastError();
+
+		LPTSTR messageBuffer = NULL;
+		if (FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, 0,
+			lastError, 0, reinterpret_cast<LPWSTR>(&messageBuffer), 0, NULL) == 0)
+		{
+			return L"";
+		}
+
+		std::wstring result(messageBuffer);
+		LocalFree(messageBuffer);
+		return result;
+	}
+
 	std::wstring CCtxMenu::GetHKeyPath(HKEY handle)
 	{
 		if (NtQueryKey == NULL)
@@ -844,7 +861,10 @@ namespace Eraser {
 			if (!CreateProcess(NULL, &buffer.front(), NULL, NULL, true, CREATE_NO_WINDOW,
 				NULL, NULL, &startupInfo, &processInfo))
 			{
-				throw LoadString(IDS_ERROR_CANNOTFINDERASER);
+				if (GetLastError() == ERROR_FILENAME_EXCED_RANGE)
+					throw FormatString(LoadString(IDS_ERROR_TOO_MANY_FILES));
+				else
+					throw FormatString(LoadString(IDS_ERROR_MISC), FormatError().c_str());
 			}
 
 			//Wait for the process to finish.

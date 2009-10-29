@@ -133,11 +133,14 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_ERROR_UNKNOWN       "An unknown error has occurred."
     IDS_ERROR_UNKNOWNACTION "An invalid command with the ID %d was requested.\n\nEraser is unable to process the request."
     IDS_ERROR_CANNOTFINDERASER 
                             "The Eraser application could not be started. Ensure that your installation of Eraser is not corrupted: try running the Eraser Setup again to Repair the install."
-    IDS_ERROR_UNKNOWN       "An unknown error has occurred."
-    IDS_ERROR_ACCESSDENIED  "Access has been denied to Eraser. This may be due to you not having administrator permissions, or if you cancelled a request to elevate."
+    IDS_ERROR_ACCESSDENIED  "Access has been denied to Eraser. This may be due to you not having administrator permissions, or if you cancelled a request to Run the command as an Administrator."
+    IDS_ERROR_TOO_MANY_FILES 
+                            "The command could not be sent to the running Eraser instance because too many files were selected for erasure.\n\nSelect fewer files and try again."
+    IDS_ERROR_MISC          "An error has occurred:\n\n%s"
 END
 
 STRINGTABLE 

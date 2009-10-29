@@ -14,10 +14,12 @@
 #define IDS_HELPSTRING_ERASEONRESTART   301
 #define IDS_HELPSTRING_ERASEUNUSEDSPACE 302
 #define IDS_HELPSTRING_SECUREMOVE       303
-#define IDS_ERROR_UNKNOWNACTION         400
-#define IDS_ERROR_CANNOTFINDERASER      401
-#define IDS_ERROR_UNKNOWN               402
+#define IDS_ERROR_UNKNOWN               400
+#define IDS_ERROR_UNKNOWNACTION         401
+#define IDS_ERROR_CANNOTFINDERASER      402
 #define IDS_ERROR_ACCESSDENIED          403
+#define IDS_ERROR_TOO_MANY_FILES        404
+#define IDS_ERROR_MISC                  405
 
 // Next default values for new objects
 // 
