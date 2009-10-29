@@ -108,7 +108,7 @@ namespace Eraser
 			}
 
 			//Update the UI. Set everything to 100%
-			timeLeft.Text = item.Text = string.Empty;
+			timeLeft.Text = item.Text = pass.Text = string.Empty;
 			overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", 1.0);
 			overallProgress.Value = overallProgress.Maximum;
 			itemProgressLbl.Text = "100%";
