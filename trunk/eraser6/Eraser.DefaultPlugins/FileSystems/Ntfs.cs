@@ -151,7 +151,7 @@ namespace Eraser.DefaultPlugins
 			//Check if the file fits in one cluster - if it does it may be MFT resident
 			//TODO: any more deterministic way of finding out?
 			VolumeInfo volume = VolumeInfo.FromMountpoint(info.DirectoryName);
-			while (info.Length < Math.Max(volume.ClusterSize, 1024))
+			if (info.Length < Math.Max(volume.ClusterSize, 1024))
 			{
 				//Yes it does, erase exactly to the file length
 				using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
