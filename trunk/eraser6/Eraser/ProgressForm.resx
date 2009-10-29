@@ -174,7 +174,7 @@
     <value>Segoe UI, 9pt, style=Bold</value>
   </data>
   <data name="jobTitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>149, 8</value>
+    <value>147, 8</value>
   </data>
   <data name="jobTitle.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 15</value>
@@ -950,7 +950,7 @@
     <value>bevelLine1</value>
   </data>
   <data name="&gt;&gt;bevelLine1.Type" xml:space="preserve">
-    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3240.33061, Culture=neutral, PublicKeyToken=552aec48acab06da</value>
+    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3589.29050, Culture=neutral, PublicKeyToken=77979e16578a2d88</value>
   </data>
   <data name="&gt;&gt;bevelLine1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -971,7 +971,7 @@
     <value>bevelLine2</value>
   </data>
   <data name="&gt;&gt;bevelLine2.Type" xml:space="preserve">
-    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3240.33061, Culture=neutral, PublicKeyToken=552aec48acab06da</value>
+    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3589.29050, Culture=neutral, PublicKeyToken=77979e16578a2d88</value>
   </data>
   <data name="&gt;&gt;bevelLine2.Parent" xml:space="preserve">
     <value>$this</value>
