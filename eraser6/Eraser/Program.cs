@@ -346,7 +346,7 @@ namespace Eraser
 
 					//Handle the exit instance event. This will occur when the main form
 					//has been closed.
-					MainForm.FormClosed += OnExitInstance;
+					Application.ApplicationExit += OnExitInstance;
 
 					if (ShowMainForm)
 						Application.Run(MainForm);
@@ -570,11 +570,11 @@ namespace Eraser
 		}
 
 		/// <summary>
-		/// Broadcasts the ExitInstance event after getting the FormClosed event from
-		/// the application's main form.
+		/// Broadcasts the ExitInstance event after getting the notification that the
+		/// application is exiting.
 		/// </summary>
 		/// <param name="sender">The sender of the event.</param>
-		private void OnExitInstance(object sender, FormClosedEventArgs e)
+		private void OnExitInstance(object sender, EventArgs e)
 		{
 			if (ExitInstance != null)
 				ExitInstance(sender);
