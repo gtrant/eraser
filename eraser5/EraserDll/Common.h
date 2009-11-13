@@ -57,6 +57,7 @@ GLOBALVAR CCriticalSection csContextArray;
 GLOBALVAR CCriticalSection csReferenceCount;
 GLOBALVAR E_UINT16 uReferenceCount GLOBALINIT1(0);
 GLOBALVAR CEvent evLibraryInitialized GLOBALINIT2(FALSE, TRUE);
+const LPTSTR strEraserMutex = _T("Eraser-D309F296-B70C-473d-B2DE-2A1F9C7C9FB1");
 
 // helpers
 #define eraserIsLibraryInit() \
@@ -66,6 +67,20 @@ GLOBALVAR CEvent evLibraryInitialized GLOBALINIT2(FALSE, TRUE);
     evLibraryInitialized.SetEvent(); \
     csReferenceCount.Lock(); \
     uReferenceCount++; \
+	if (uReferenceCount == 1) \
+	{ \
+		SECURITY_DESCRIPTOR sc; \
+		InitializeSecurityDescriptor(&sc, SECURITY_DESCRIPTOR_REVISION); \
+		SetSecurityDescriptorDacl(&sc, TRUE, NULL, FALSE); \
+		\
+		SECURITY_ATTRIBUTES attr; \
+		attr.nLength = sizeof(attr); \
+		attr.lpSecurityDescriptor = &sc; \
+		attr.bInheritHandle = FALSE; \
+		\
+		CreateMutex(&attr, TRUE, strEraserMutex); \
+		CreateMutex(&attr, TRUE, CString(_T("Global\\")) + strEraserMutex); \
+	} \
     csReferenceCount.Unlock()
 
 #define eraserLibraryUninit() \
@@ -74,6 +89,10 @@ GLOBALVAR CEvent evLibraryInitialized GLOBALINIT2(FALSE, TRUE);
         uReferenceCount--; \
     } \
     if (uReferenceCount == 0) { \
+		CMutex localMutex(FALSE, _T("Eraser-D309F296-B70C-473d-B2DE-2A1F9C7C9FB1")); \
+		CMutex globalMutex(FALSE, _T("Global\\Eraser-D309F296-B70C-473d-B2DE-2A1F9C7C9FB1")); \
+		localMutex.Unlock(); \
+		globalMutex.Unlock(); \
         evLibraryInitialized.ResetEvent(); \
     } \
     csReferenceCount.Unlock()
