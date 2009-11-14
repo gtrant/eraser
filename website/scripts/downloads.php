@@ -241,7 +241,7 @@ class Build extends Download
 		//Ensure that only 3 builds are not superseded at any one time.
 		mysql_query('START TRANSACTION');
 		mysql_query(sprintf('UPDATE downloads SET Superseded=1
-			WHERE Name LIKE \'%s%%\'', $path));
+			WHERE Name LIKE \'%s%%\' AND Superseded=0', $path));
 		mysql_query(sprintf('UPDATE downloads SET Superseded=0
 			WHERE Name LIKE \'%s%%\'
 			ORDER BY DownloadID DESC
