@@ -107,8 +107,8 @@ if (!empty($_GET['id']))
 					</tr>
 					<tr>
 						<th>Build Name</th>
-						<th>Version</th>
-						<th>Release Date</th>
+						<th>Revision</th>
+						<th>Build Date</th>
 						<th>Downloads</th>
 					</tr>
 <?php
