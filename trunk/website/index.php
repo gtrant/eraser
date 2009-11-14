@@ -1,12 +1,3 @@
-<?php
-require('./scripts/database.php');
-function GetDownloads($downloadID)
-{
-	$query = mysql_query('SELECT COUNT(DownloadID) FROM download_statistics WHERE DownloadID=' . $downloadID);
-	$row = mysql_fetch_row($query);
-	echo $row ? $row[0] : 'unknown';
-}
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
@@ -18,11 +9,6 @@ function GetDownloads($downloadID)
 <link href="style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="scripts.js"></script>
 <!-- InstanceBeginEditable name="head" -->
-<style type="text/css">
-.downloads {
-	margin-left: 1.0em;
-}
-</style>
 <!-- InstanceEndEditable -->
 <!-- InstanceParam name="ArticlePoster" type="boolean" value="false" -->
 </head>
@@ -122,23 +108,7 @@ function GetDownloads($downloadID)
 			<!-- InstanceEndEditable -->
 			<!-- InstanceEndRepeatEntry --><!-- InstanceBeginRepeatEntry -->
 			<!-- InstanceBeginEditable name="RightContentEdit" -->
-			<div class="right_l">
-				<h3><a name="download" href="javascript: ;"></a><img src="images/ico_download.gif" alt="" />Download Eraser</h3>
-				<h4>Stable versions</h4>
-				<ul>
-					<li><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_setup.exe">Eraser 5.8.7</a></li>
-					<li><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_portable.zip">Eraser
-							5.8.7</a> (portable)</li>
-					<li><a href="http://downloads.sourceforge.net/eraser/Eraser57Setup.zip">Eraser 5.7
-							</a> (for Windows 9x/Me)</li>
-				</ul>
-				<h4>Beta versions</h4>
-				<ul>
-					<li><a href="announcements/20090706.html">Eraser 5.8.8</a> (beta1)<br />
-						<span class="downloads">&raquo; downloaded <?php GetDownloads(13); ?> times</span></li>
-					<li><a href="announcements/20090610.html">Eraser 6.0.5</a> (rc-5, build 1114)<br />
-						<span class="downloads">&raquo; downloaded <?php GetDownloads(12); ?> times</span></li>
-				</ul>
+			<div class="right_r">
 				<h3>Reviews &amp; Testimonials</h3>
 				<ul>
 					<li><a href="http://www.chip.de/downloads/c1_downloads_12994923.html" target="_blank">Chip.de</a></li>
@@ -151,7 +121,7 @@ function GetDownloads($downloadID)
 					<!--li><a href="http://www.paypal.com"><img src="images/paypal.jpg" alt="paypall" /></a></li-->
 				</ul>
 			</div>
-			<div class="right_r">
+			<div class="right_l">
 				<h3>The Eraser Team</h3>
 				<ul>
 					<li>
