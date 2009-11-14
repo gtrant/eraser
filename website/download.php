@@ -1,45 +1,183 @@
 <?php
-require('./scripts/database.php');
-if (empty($_GET['id']))
-	exit;
+require('scripts/downloads.php');
 
-//Get the download link associated with the download
-$query = mysql_query(sprintf('SELECT Link, Superseded FROM downloads WHERE DownloadID=%d', intval($_GET['id'])));
-if (!$query)
-	exit;
-if (!($row = mysql_fetch_array($query)))
-	exit;
-
-//Check for supercedence
-if (intval($row['Superseded']))
+if (!empty($_GET['id']))
 {
-	echo 'The requested download has been superseded with a newer version.';
+	$download = new Download(intval($_GET['id']));
+	
+	//Check for supercedence
+	if ($download->Superceded)
+	{
+		header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode('The requested download has been superseded with a newer version.'));
+		exit;
+	}
+	
+	$download->InitiateDownload();
 	exit;
-}
-
-//Register the download
-mysql_query(sprintf('INSERT INTO download_statistics (DownloadID) VALUES (%d)', intval($_GET['id'])));
-
-if (eregi('http(s{0,1})://)(.*)', $row['Link']))
-	header('location: ' . $row['Link']);
-else if (substr($row['Link'], 0, 1) == '?')
-{
-	$fileName = substr($row['Link'], 1);
-	header("Content-Type: application/octet-stream");
-	header('Content-Length: ' . filesize('./downloads/' . $fileName));
-	if (strpos($_SERVER['HTTP_USER_AGENT'], "MSIE") !== false)
-	{
-		//IE browser
-		header('Content-Disposition: inline; filename="' . $fileName . '"');
-		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-		header('Pragma: public');
-	}
-	else
-	{
-		header('Content-Disposition: attachment; filename="' . $fileName . '"');
-		header('Pragma: no-cache');
-	}
-
-	echo file_get_contents('./downloads/' . $fileName);
 }
 ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="Title" -->
+<title>Eraser :: Downloads</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="scripts.js"></script>
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+<!-- InstanceParam name="ArticlePoster" type="boolean" value="false" -->
+</head>
+
+<body onload="MM_preloadImages('images/btn_home_hov.gif', 'images/btn_download_hov.gif', 'images/btn_forum_hov.gif', 'images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="index.php"><img src="images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- InstanceBeginRepeat name="LeftContent" --><!-- InstanceBeginRepeatEntry -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="index.php">Eraser</a> Downloads<!-- InstanceEndEditable --></h2>
+						
+					</div>
+				</div>
+
+				<!-- InstanceBeginEditable name="LeftContentEdit" -->
+				<?php if (!empty($_GET['error'])) printf('<p class="error">%s</p>', $_GET['error']); ?>
+				<p>Thank for you having interest in Eraser. Eraser is available in a few flavours, the stable, the beta as well as the nightly builds.</p>
+				<p>Stable builds of Eraser are builds in which few, if any, bugs remain in the code and is suitable for use in all environments. If in doubt, choose the Stable version. The beta and nightly builds cater to a slightly different audience. Beta and nightly builds are built on the previous stable version released, but may contain new features or bug fixes to bugs discovered in the stable builds. Use the Beta and Nightly builds at your own risk<sup><a href="#footnote1" name="footnote1Src">1</a></sup>. </p>
+				<p>If you do discover bugs in the nightly builds, report them on <a href="trac/newticket">Trac</a>, citing the build number that you have used (the number after 'r', it can also be found in the About dialog for Eraser 6, it is <em>d</em> value in the version number <em>a.b.c.d</em>).</p>
+				<table>
+					<tr>
+						<td colspan="4"><h3>Stable Builds</h3></td>
+					</tr>
+					<tr>
+						<th>Build Name</th>
+						<th>Version</th>
+						<th>Release Date</th>
+						<th>&nbsp;</th>
+					</tr>
+					<tr>
+						<td><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_setup.exe">Eraser 5.8.7</a></td>
+						<td>5.8.7</td>
+						<td>11/6/09 1:57am</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_portable.zip">Eraser 5.8.7</a><br /><em>portable</em></td>
+						<td>5.8.7</td>
+						<td>11/6/09 1:45am</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><a href="http://downloads.sourceforge.net/eraser/Eraser57Setup.zip">Eraser 5.7</a><br /><em>for Windows 9x/Me</em></td>
+						<td>5.7</td>
+						<td>4/9/03 11:35pm</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td colspan="4"><h3>Beta Builds</h3></td>
+					</tr>
+					<tr>
+						<th>Build Name</th>
+						<th>Version</th>
+						<th>Release Date</th>
+						<th>Downloads</th>
+					</tr>
+					<tr><?php $download = new Download(13); ?>
+						<td><a href="announcements/20090706.html">Eraser 5.8.8</a> (beta1)</td>
+						<td>5.8.8-beta1</td>
+						<td><?php echo date('g/n/y g:ia', $download->Released); ?></td>
+						<td><?php echo $download->Downloads; ?></td>
+					</tr>
+					<tr><?php $download = new Download(12); ?>
+						<td><a href="announcements/20090610.html">Eraser 6.0.5</a> (rc-5, build 1114)</td>
+						<td>6.0.5.1114 (rc5)</td>
+						<td><?php echo date('g/n/y g:ia', $download->Released); ?></td>
+						<td><?php echo $download->Downloads; ?></td>
+					</tr>
+					<tr>
+						<td colspan="4"><h3>Nightly Builds</h3></td>
+					</tr>
+					<tr>
+						<th>Build Name</th>
+						<th>Version</th>
+						<th>Release Date</th>
+						<th>Downloads</th>
+					</tr>
+<?php
+					$builds = Build::Get();
+					foreach ($builds as $buildName => $build)
+					{
+?>
+					<tr>
+						<td colspan="4"><h4><?php echo $buildName; ?></h4></td>
+					</tr>
+<?php
+						foreach ($build as $revision)
+						{
+?>
+					<tr>
+						<td><a href="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $revision->ID; ?>"><?php echo $revision->Name; ?></a></td>
+						<td>r<?php echo $revision->Revision; ?></td>
+						<td><?php echo date('g/n/y g:ia', $revision->Released); ?></td>
+						<td><?php echo $revision->Downloads; ?></td>
+					</tr>
+<?php
+						}
+					}
+?>
+				</table>
+				<div style="height: 150px">&nbsp;</div><hr />
+				<p><a href="#footnote1Src" name="footnote1"></a>Disclaimer: The security of the erasures has not been verified by internal or external entities. The code may be still of <em>beta quality</em> and may not remove all traces of files. If you have security concerns, do use the stable versions.</p>
+				<!-- InstanceEndEditable -->
+			</div>
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="index.php"><img src="images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="index.php#download"><img src="images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', 'images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="http://bbs.heidi.ie/viewforum.php?f=30" target="_blank"><img src="images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', 'images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="trac/"><img src="images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', 'images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 5.8.8-beta1 released!</h2>
+					<div class="posted">Posted by: Joel, 6 July 2009, 11.15am, +800 GMT</div>
+					<p>Eraser 5.8.8-beta1 has been released, fixing a few bugs regarding the context menu extension. <a href="announcements/20090706.html">See the full announcement</a></p>
+					<h2>Eraser 5.8.7 released!</h2>
+					<div class="posted">Posted by: Joel, 11 June 2009, 9.15am, +800 GMT</div>
+					<p>Eraser 5.8.7 stable is finally released after being too long in the making! This version brings with it Unicode changes, allowing the erasure of file names containing non English characters as well as the Portable distribution being a supported distribution. <a href="announcements/20090611.html">See the full announcement.</a></p>
+					<h2>Eraser 6-rc5 released!</h2>
+					<div class="posted">Posted by: Joel, 10 June 2009, 7.00pm, +800 GMT</div>
+					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/20090610.html">See the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- InstanceBeginRepeat name="RightContent" --><!-- InstanceEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+<!-- InstanceEnd --></html>
