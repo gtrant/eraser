@@ -41,7 +41,7 @@ class Download
 
 			case 'Name':
 			case 'Released':
-			case 'Superceded':
+			case 'Superseded':
 			case 'Link':
 				$sql = sprintf($sql, $varName);
 				break;
@@ -66,6 +66,23 @@ class Download
 			}
 		
 		return $result;
+	}
+
+	public function __set($varName, $value)
+	{
+		$sql = sprintf('UPDATE downloads SET %%s=%%s WHERE DownloadID=%d', $this->ID);
+		switch ($varName)
+		{
+			case 'Superseded':
+				$sql = sprintf($sql, $varName, intval($value));
+				break;
+			default:
+				return;
+		}
+		
+		if (empty($sql))
+			return;
+		mysql_query($sql);
 	}
 	
 	private static function DownloadFile($path, $visibleName = null)
@@ -152,7 +169,13 @@ class Build extends Download
 			unset($build);
 		}
 		else
+		{
 			$this->ID = intval($row[0]);
+
+			//Check that the folder has not been removed. This may indicate supercedence.
+			if (!file_exists(Build::GetPath($this->Path, $this->Revision)))
+				$this->Superseded = 1;
+		}
 	}
 	
 	public static function Get()
@@ -180,6 +203,15 @@ class Build extends Download
 		}
 		
 		return $result;
+	}
+	
+	public static function GetBuildFromID($downloadID)
+	{
+		$query = mysql_query(sprintf('SELECT * FROM builds WHERE DownloadID=%d', intval($downloadID)));
+		if (($row = mysql_fetch_array($query)) === false || !$row[0])
+			return null;
+
+		return intval($row[0]) ? new Build($row['Path'], $row['Revision']) : null;
 	}
 	
 	public function __get($varName)
