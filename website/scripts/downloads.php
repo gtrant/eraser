@@ -172,7 +172,7 @@ class Build extends Download
 		{
 			$this->ID = intval($row[0]);
 
-			//Check that the folder has not been removed. This may indicate supercedence.
+			//Check that the folder has not been removed. This may indicate supersedence.
 			if (!file_exists(Build::GetPath($this->Path, $this->Revision)))
 				$this->Superseded = 1;
 		}
