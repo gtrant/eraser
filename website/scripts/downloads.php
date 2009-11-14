@@ -121,52 +121,7 @@ class Build extends Download
 		//See if the build already has a database entry
 		if (($row = mysql_fetch_row($query)) === false || !$row[0])
 		{
-			//It doesn't. Find the binary that users will get to download.
-			$directory = opendir(Build::GetPath($path, $revision));
-			$installer = null;
-			$installerFilesize = 0;
-			while (($file = readdir($directory)) !== false)
-			{
-				$filePath = Build::GetPath($path, $revision) . '/' . $file;
-				if (is_file($filePath))
-				{
-					$pathInfo = pathinfo($filePath);
-					if ($pathInfo['extension'] == 'exe')
-					{
-						$installer = sprintf('builds/%s/r%s/%s', $path, $revision, $file);
-						$installerFilesize = filesize($filePath);
-						break;
-					}
-				}
-			}
-			
-			if (empty($installer) || $installerFilesize == 0)
-			{
-				//It is a build in progress, don't create anything.
-				throw new Exception(sprintf('Build %s r%d is incomplete.', $path, $revision));
-			}
-			
-			mysql_query('START TRANSACTION');
-			mysql_query(sprintf('INSERT INTO downloads (Name, Released, `Type`, Version, PublisherID, Architecture, Filesize, Link)
-					VALUES (
-						\'%1$s r%2$d\', \'%4$s\' , \'build\', \'r%2$d\', 1, \'any\', %3$d, \'?%5$s\'
-					)',
-				mysql_real_escape_string($path), intval($revision), $installerFilesize,
-				PhpToMySqlTimestamp(filemtime(Build::GetPath($path, $revision))),
-				mysql_real_escape_string($installer)))
-					or die(mysql_error());
-			mysql_query(sprintf('INSERT INTO builds (DownloadID, Path, Revision)
-					VALUES (
-						LAST_INSERT_ID(), \'%1s\', %2$d
-					)',
-				mysql_real_escape_string($path), intval($revision))) or die(mysql_error());
-
-			if (!mysql_affected_rows())
-				throw new Exception(sprintf('Could not create new build %s r%d. MySQL Error: %s', $path, $revision, mysql_error()));
-			mysql_query('COMMIT');
-			$build = new Build($path, $revision);
-			$this->ID = $build->ID;
-			unset($build);
+			$this->ID = Build::InsertBuild($path, $revision);
 		}
 		else
 		{
@@ -232,6 +187,56 @@ class Build extends Download
 		$row = $query ? mysql_fetch_row($query) : null;
 		
 		return $row ? $row[0] : null;
+	}
+	
+	private static function InsertBuild($path, $revision)
+	{
+		//It doesn't. Find the binary that users will get to download.
+		$directory = opendir(Build::GetPath($path, $revision));
+		$installer = null;
+		$installerFilesize = 0;
+		while (($file = readdir($directory)) !== false)
+		{
+			$filePath = Build::GetPath($path, $revision) . '/' . $file;
+			if (is_file($filePath))
+			{
+				$pathInfo = pathinfo($filePath);
+				if ($pathInfo['extension'] == 'exe')
+				{
+					$installer = sprintf('builds/%s/r%s/%s', $path, $revision, $file);
+					$installerFilesize = filesize($filePath);
+					break;
+				}
+			}
+		}
+		
+		if (empty($installer) || $installerFilesize == 0)
+		{
+			//It is a build in progress, don't create anything.
+			throw new Exception(sprintf('Build %s r%d is incomplete.', $path, $revision));
+		}
+		
+		mysql_query('START TRANSACTION');
+		mysql_query(sprintf('INSERT INTO downloads (Name, Released, `Type`, Version, PublisherID, Architecture, Filesize, Link)
+				VALUES (
+					\'%1$s r%2$d\', \'%4$s\' , \'build\', \'r%2$d\', 1, \'any\', %3$d, \'?%5$s\'
+				)',
+			mysql_real_escape_string($path), intval($revision), $installerFilesize,
+			PhpToMySqlTimestamp(filemtime(Build::GetPath($path, $revision))),
+			mysql_real_escape_string($installer)))
+				or die(mysql_error());
+		mysql_query(sprintf('INSERT INTO builds (DownloadID, Path, Revision)
+				VALUES (
+					LAST_INSERT_ID(), \'%1s\', %2$d
+				)',
+			mysql_real_escape_string($path), intval($revision))) or die(mysql_error());
+
+		if (!mysql_affected_rows())
+			throw new Exception(sprintf('Could not create new build %s r%d. MySQL Error: %s', $path, $revision, mysql_error()));
+		$buildId = mysql_insert_id();
+		
+		mysql_query('COMMIT');
+		return $buildId;
 	}
 	
 	private static function GetPath($path, $revision = null)
