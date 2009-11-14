@@ -216,6 +216,7 @@ class Build extends Download
 			throw new Exception(sprintf('Build %s r%d is incomplete.', $path, $revision));
 		}
 		
+		//Insert the build into the database.
 		mysql_query('START TRANSACTION');
 		mysql_query(sprintf('INSERT INTO downloads (Name, Released, `Type`, Version, PublisherID, Architecture, Filesize, Link)
 				VALUES (
@@ -236,6 +237,17 @@ class Build extends Download
 		$buildId = mysql_insert_id();
 		
 		mysql_query('COMMIT');
+		
+		//Ensure that only 3 builds are not superseded at any one time.
+		mysql_query('START TRANSACTION');
+		mysql_query(sprintf('UPDATE downloads SET Superseded=1
+			WHERE Name LIKE \'%s%%\'', $path));
+		mysql_query(sprintf('UPDATE downloads SET Superseded=0
+			WHERE Name LIKE \'%s%%\'
+			ORDER BY DownloadID DESC
+			LIMIT 3', $path));
+		mysql_query('COMMIT');
+
 		return $buildId;
 	}
 	
