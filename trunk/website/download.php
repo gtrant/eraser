@@ -103,7 +103,14 @@ if (!empty($_GET['id']))
 						<td><?php echo $download->Downloads; ?></td>
 					</tr>
 					<tr>
-						<td colspan="4"><h3>Nightly Builds</h3></td>
+						<td colspan="4">
+							<div style="position: relative; width: 100%">
+								<div style="position: absolute; text-align: right; width: 100%; height: 100%; padding: 4px 2px 4px 0">
+									<a href="trac/timeline?changeset=on">(view changelog)</a>
+								</div>
+								<h3>Nightly Builds</h3>
+							</div>
+						</td>
 					</tr>
 					<tr>
 						<th>Build Name</th>
