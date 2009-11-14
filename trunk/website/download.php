@@ -3,10 +3,12 @@ require('scripts/downloads.php');
 
 if (!empty($_GET['id']))
 {
-	$download = new Download(intval($_GET['id']));
+	$download = Build::GetBuildFromID(intval($_GET['id']));
+	if (empty($download))
+		$download = new Download(intval($_GET['id']));
 	
 	//Check for supercedence
-	if ($download->Superceded)
+	if ($download->Superseded)
 	{
 		header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode('The requested download has been superseded with a newer version.'));
 		exit;
@@ -120,6 +122,8 @@ if (!empty($_GET['id']))
 <?php
 						foreach ($build as $revision)
 						{
+							if ($revision->Superseded)
+								continue;
 ?>
 					<tr>
 						<td><a href="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $revision->ID; ?>"><?php echo $revision->Name; ?></a></td>
