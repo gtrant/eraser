@@ -216,12 +216,12 @@ h4 {
 			}
 
 			.right_nav_bg {
-	min-height: 25px;
-	height: auto !important;
-	height: 25px;
-	background-repeat: no-repeat;
-	background-position: top center;
-	padding: 5px 0 0 0;
+				min-height: 25px;
+				height: auto !important;
+				height: 25px;
+				background-repeat: no-repeat;
+				background-position: top center;
+				padding: 5px 0 0 0;
 			}
 
 			.right_nav p {
@@ -379,3 +379,15 @@ h4 {
 			width: 35%;
 			text-align: right;
 		}
+
+table {
+	width: 100%;
+}
+
+th {
+	font-weight: bold;
+}
+
+.error {
+	color: #900;
+}
