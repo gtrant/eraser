@@ -29,6 +29,8 @@ using System.Collections.Generic;
 
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Principal;
+using System.Security.AccessControl;
 
 namespace Eraser.Manager
 {
@@ -88,7 +90,7 @@ namespace Eraser.Manager
 		/// </summary>
 		public static readonly string ServerName =
 			"Eraser-FB6C5A7D-E47F-475f-ABA4-58F4D24BB67E-RemoteExecutor-" +
-			System.Security.Principal.WindowsIdentity.GetCurrent().User.ToString();
+			WindowsIdentity.GetCurrent().User.ToString();
 
 		/// <summary>
 		/// Constructor.
@@ -135,10 +137,15 @@ namespace Eraser.Manager
 				if (!serverLock.WaitOne())
 					continue;
 
+				PipeSecurity security = new PipeSecurity();
+				security.AddAccessRule(new PipeAccessRule(
+					WindowsIdentity.GetCurrent().User,
+					PipeAccessRights.FullControl, AccessControlType.Allow));
+
 				//Otherwise, a new instance can be created. Create it and wait for connections.
 				NamedPipeServerStream server = new NamedPipeServerStream(ServerName,
 					PipeDirection.InOut, maxServerInstances, PipeTransmissionMode.Message,
-					PipeOptions.Asynchronous);
+					PipeOptions.Asynchronous, 128, 128, security);
 				server.BeginWaitForConnection(EndWaitForConnection, server);
 				
 				lock (servers)

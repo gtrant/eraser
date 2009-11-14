@@ -33,6 +33,8 @@ using System.Globalization;
 using System.Reflection;
 using System.Diagnostics;
 using System.ComponentModel;
+using System.Security.Principal;
+using System.Security.AccessControl;
 
 using Eraser.Manager;
 using Eraser.Util;
@@ -417,8 +419,13 @@ namespace Eraser
 		{
 			while (pipeServer.ThreadState != System.Threading.ThreadState.AbortRequested)
 			{
+				PipeSecurity security = new PipeSecurity();
+				security.AddAccessRule(new PipeAccessRule(
+					WindowsIdentity.GetCurrent().User,
+					PipeAccessRights.FullControl, AccessControlType.Allow));
 				using (NamedPipeServerStream server = new NamedPipeServerStream(instanceID,
-					PipeDirection.In, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous))
+					PipeDirection.In, 1, PipeTransmissionMode.Message, PipeOptions.Asynchronous,
+					128, 128, security))
 				{
 					ServerAsyncInfo async = new ServerAsyncInfo();
 					async.Server = server;
