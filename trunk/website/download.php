@@ -7,7 +7,7 @@ if (!empty($_GET['id']))
 	if (empty($download))
 		$download = new Download(intval($_GET['id']));
 	
-	//Check for supercedence
+	//Check for supersedence
 	if ($download->Superseded)
 	{
 		header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode('The requested download has been superseded with a newer version.'));
