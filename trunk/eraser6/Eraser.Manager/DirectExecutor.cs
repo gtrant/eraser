@@ -112,14 +112,18 @@ namespace Eraser.Manager
 		{
 			lock (tasksLock)
 				for (int i = 0; i != scheduledTasks.Count; ++i)
-					for (int j = 0; j < scheduledTasks.Values[i].Count; ++j)
+					for (int j = 0; j < scheduledTasks.Values[i].Count; )
 					{
 						Task currentTask = scheduledTasks.Values[i][j];
 						if (currentTask == task &&
 							(!(currentTask.Schedule is RecurringSchedule) ||
 								((RecurringSchedule)currentTask.Schedule).NextRun != scheduledTasks.Keys[i]))
 						{
-							scheduledTasks.Values[i].RemoveAt(i);
+							scheduledTasks.Values[i].RemoveAt(j);
+						}
+						else
+						{
+							++j;
 						}
 					}
 		}
