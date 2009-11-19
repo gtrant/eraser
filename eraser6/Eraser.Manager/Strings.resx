@@ -153,6 +153,9 @@
   <data name="Erasing files..." xml:space="preserve">
     <value>Erasing files...</value>
   </data>
+  <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
+    <value>The file {0} was not erased as the file does not exist.</value>
+  </data>
   <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
     <value>The file {0} could not be erased because the file was either compressed, encrypted or a sparse file.</value>
   </data>
