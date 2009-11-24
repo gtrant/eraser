@@ -1316,9 +1316,11 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			/// <summary>
 			/// Constructor.
 			/// </summary>
+			/// <param name="pluginId">The GUID of the plugin for which settings are stored.</param>
 			/// <param name="key">The registry key to look for the settings in.</param>
-			public RegistrySettings(RegistryKey key)
+			public RegistrySettings(Guid pluginId, RegistryKey key)
 			{
+				this.pluginID = pluginId;
 				this.key = key;
 			}
 
@@ -1433,7 +1435,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					pluginsKey = eraserKey.CreateSubKey(guid.ToString());
 
 				//Return the Settings object.
-				return new RegistrySettings(pluginsKey);
+				return new RegistrySettings(guid, pluginsKey);
 			}
 			finally
 			{
