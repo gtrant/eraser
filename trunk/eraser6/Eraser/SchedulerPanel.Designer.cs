@@ -77,7 +77,6 @@ namespace Eraser
             this.titleLabel.AccessibleDescription = null;
             this.titleLabel.AccessibleName = null;
             resources.ApplyResources(this.titleLabel, "titleLabel");
-            this.titleLabel.Font = null;
             // 
             // titleIcon
             // 
