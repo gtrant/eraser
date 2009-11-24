@@ -49,8 +49,8 @@ namespace Eraser
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.SuspendLayout();
-			this.ResumeLayout(false);
+            this.SuspendLayout();
+            this.ResumeLayout(false);
 
 		}
 
