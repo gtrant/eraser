@@ -149,6 +149,8 @@ namespace Eraser.Util
 		/// <returns>True if the file is protected.</returns>
 		public static bool IsProtectedSystemFile(string filePath)
 		{
+			if (filePath.Length > 255)
+				return false;
 			if (SfcIsFileProtected(IntPtr.Zero, filePath))
 				return true;
 
