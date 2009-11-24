@@ -114,6 +114,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BasePanel.it.resx">
+      <DependentUpon>BasePanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BasePanel.nl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BasePanel.cs</DependentUpon>
@@ -122,9 +125,15 @@
       <SubType>Designer</SubType>
       <DependentUpon>BasePanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LightGroup.it.resx">
+      <DependentUpon>LightGroup.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LightGroup.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LightGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogForm.it.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogForm.nl.resx">
       <SubType>Designer</SubType>
@@ -134,6 +143,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.it.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.nl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -141,6 +153,9 @@
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressForm.it.resx">
+      <DependentUpon>ProgressForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.nl.resx">
       <SubType>Designer</SubType>
@@ -183,6 +198,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>SettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TaskDataSelectionForm.it.resx">
+      <DependentUpon>TaskDataSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TaskDataSelectionForm.nl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TaskDataSelectionForm.cs</DependentUpon>
@@ -190,6 +208,9 @@
     <EmbeddedResource Include="TaskDataSelectionForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TaskDataSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TaskPropertiesForm.it.resx">
+      <DependentUpon>TaskPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TaskPropertiesForm.nl.resx">
       <SubType>Designer</SubType>
