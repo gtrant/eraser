@@ -118,64 +118,64 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Unknown erasure target." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Elemento da pulire sconosciuto.</value>
   </data>
   <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il programma non ha i permessi richiesti per pulire lo spazio non utilizzato sul disco. Eseguire il programma come amministratore e riprovare l'operazione</value>
   </data>
   <data name="The program does not have the required permissions to erase the unused space on disk" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il programma non ha i permessi richiesti per pulire lo spazio non utilizzato sul disco</value>
   </data>
   <data name="The drive which is having its unused space erased has disk quotas active. This will prevent the complete erasure of unused space and will pose a security concern" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il disco di cui deve essere pulito lo spazio libero ha abilitato il "disk quota". Ciò impedisce la pulizia completa dello spazio libero e può determinare problemi di sicurezza</value>
   </data>
   <data name="Searching for files' cluster tips..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ricerca dei cluster tips dei files...</value>
   </data>
   <data name="The task was cancelled." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>L'operazione è stata cancellata.</value>
   </data>
   <data name="Erasing cluster tips..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia dei cluster tips...</value>
   </data>
   <data name="Erasing unused space..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia dello spazioni non usato...</value>
   </data>
   <data name="Old resident file system table files" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Removing temporary files..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Rimozione files temporanei...</value>
   </data>
   <data name="Erasing unused directory structures..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia delle strutture di cartelle non usate...</value>
   </data>
   <data name="Erasing files..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia dei files...</value>
   </data>
   <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il file {0} non è stato pulito perchè il file non esiste.</value>
   </data>
   <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il file {0} non può essere pulito perchè è compresso, crittato o distribuito.</value>
   </data>
   <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il file {0} non può essere pulito perchè i permessi su di esso ne impediscono l'accesso.</value>
   </data>
   <data name="Could not force closure of file \&quot;{0}\&quot; (locked by {1})" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Impossibile forzare la chiusura del file \"{0}\" (bloccato da {1})</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Rimozione cartelle...</value>
   </data>
   <data name="Emptying recycle bin..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia del cestino...</value>
   </data>
   <data name="EntropySource GUID not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>EntropySource GUID non trovato: {0}</value>
   </data>
   <data name="Erasure method not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Metodo di pulizia non trovato: {0}</value>
   </data>
   <data name="PRNG not found: {0}" xml:space="preserve">
     <value>(Untranslated)</value>
@@ -184,111 +184,111 @@
     <value>(Untranslated)</value>
   </data>
   <data name="The file system on the drive {0} is not supported." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il tipo di file system sul disco {0} non è supportato.</value>
   </data>
   <data name="{0} (1 pass)" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>{0} (1 passo)</value>
   </data>
   <data name="{0} ({1} passes)" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>{0} ({1} passi)</value>
   </data>
   <data name="Random" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Casuale</value>
   </data>
   <data name="(default)" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="The DefaultMethod class should never be used and should instead be replaced before execution!" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La classe DefaultMethod non dovrebbe mai essere usata e dovrebbe essere sostituita prima della esecuzione!</value>
   </data>
   <data name="Registered erasure methods must contain a parameterless constructor that is called whenever clients request for an instance of the method. If a constructor requires parameters, specify it in the parameters parameter." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il metodi di pulizia registrati devono contenere un costrutture privo di parametri che viene chiamato ogni volta ne viene richiesta l'esecuzione di una istanza. Se il costrutture richiede paramentri, specificarli nel parametro parameters.</value>
   </data>
   <data name="The GUID of the erasure method to remove refers to an invalid erasure method." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il GUID del metodo di pulizia rimuove riferimenti a un metodo di pulizia non valido.</value>
   </data>
   <data name="minValue is greater than maxValue" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il minValue è maggiore del maxValue</value>
   </data>
   <data name="Running on restart" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Esecuzione al riavvio</value>
   </data>
   <data name="Once every {0} days" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni {0} giorni</value>
   </data>
   <data name="Once every day" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Una volta ogni giorno</value>
   </data>
   <data name="Every weekday" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>I giorni infrasettimanali</value>
   </data>
   <data name="Every Monday, {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni lunedì, {0}</value>
   </data>
   <data name="Every Tuesday, {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni martedì, {0}</value>
   </data>
   <data name="Every Wednesday, {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni mercoledì, {0}</value>
   </data>
   <data name="Every Thursday, {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni giovedì, {0}</value>
   </data>
   <data name="Every Friday, {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni venerdì, {0}</value>
   </data>
   <data name="Every Saturday, {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni sabato, {0}</value>
   </data>
   <data name="Every Sunday, {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ogni domenica, {0}</value>
   </data>
   <data name="once every {0} week." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Una volta ogni {0} settimana.</value>
   </data>
   <data name="once every {0} weeks." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Una volta ogni {0} settimane.</value>
   </data>
   <data name="On day {0} of every month" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il giorno {0} di ogni mese</value>
   </data>
   <data name="On day {0} of every {1} months" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il giorno {0} di ogni {1} mesi</value>
   </data>
   <data name=", at {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>, al {0}</value>
   </data>
   <data name="The ScheduleUnit of the schedule does not require a frequency value, this field would contain garbage." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La ScheduleUnit della pianificazione non richiede un valore di frequenza.</value>
   </data>
   <data name="The frequency of the recurrence should be greater than one" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La frequenza della ricorrenza dovrebbe essere maggiore di uno</value>
   </data>
   <data name="The ScheduleUnit of the schedule does not require the WeeklySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La ScheduleUnit della pianificazione non richiede un valore per il WeeklySchedule</value>
   </data>
   <data name="The WeeklySchedule should have at least one day where the task should be run." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La WeeklySchedule dovrebbe avere almeno un giorno in cui l'operazione deve essere eseguito.</value>
   </data>
   <data name="The ScheduleUnit of the schedule does not require the MonthlySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La ScheduleUnit della pianificazione non richiede un valore per il MonthlySchedule</value>
   </data>
   <data name="The ScheduleUnit of the schedule does not use the WeeklySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La ScheduleUnit della pianificazione non usa il valore per il WeeklySchedule</value>
   </data>
   <data name="An invalid type was found when loading the task schedule" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Un tipo non valido è stato trovato durante il caricamento della pianificazione dell'operazione</value>
   </data>
   <data name="The schedule provided can only belong to one task at a time" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La pianificazione definita può riferirsi solo ad un operazione alla volta</value>
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Spazio disco inutilizzato ({0})</value>
   </data>
   <data name="Could not erase {0} because {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Impossibile pulire {0} a causa di {1}</value>
   </data>
   <data name="Recycle Bin" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Cestino</value>
   </data>
 </root>
