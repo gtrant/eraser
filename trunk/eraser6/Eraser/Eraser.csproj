@@ -170,9 +170,15 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="SchedulerPanel.it.resx">
+      <DependentUpon>SchedulerPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SchedulerPanel.nl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>SchedulerPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsPanel.it.resx">
+      <DependentUpon>SettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.en.resx">
       <SubType>Designer</SubType>
