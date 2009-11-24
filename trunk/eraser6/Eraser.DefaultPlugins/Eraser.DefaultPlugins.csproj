@@ -98,13 +98,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CustomMethodEditorForm.it.resx">
+      <DependentUpon>CustomMethodEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomMethodEditorForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>CustomMethodEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CustomMethodPassEditor.it.resx">
+      <DependentUpon>CustomMethodPassEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CustomMethodPassEditor.resx">
       <DependentUpon>CustomMethodPassEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.it.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.en.resx">
       <SubType>Designer</SubType>
