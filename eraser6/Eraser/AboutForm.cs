@@ -112,8 +112,11 @@ Eraser Project Members:
 				SizeF eraserSize = g.MeasureString(S._("Eraser"), boldFont);
 				g.DrawString(S._("Eraser"), boldFont, textBrush, eraserPos);
 
+				#pragma warning disable 429
 				string versionString = BuildInfo.CustomBuild ?
 					S._("{0} (Built: {1:F}, special build)") : S._("{0} (Built: {1:F})");
+				#pragma warning restore 429
+
 				g.DrawString(string.Format(CultureInfo.CurrentCulture, versionString,
 					Assembly.GetExecutingAssembly().GetName().Version, BuildInfo.BuildDate),
 					Font, textBrush, new PointF(eraserPos.X + eraserSize.Width + 3, eraserPos.Y));
