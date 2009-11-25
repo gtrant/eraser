@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Random Data" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Random Data</value>
   </data>
   <data name="Constant ({0} bytes)" xml:space="preserve">
     <value>Costante ({0} bytes)</value>
@@ -133,7 +133,7 @@
     <value>Il passo costante non può essere mostrato come testo perchè contiene caratteri non validi.</value>
   </data>
   <data name="Eraser" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Eraser</value>
   </data>
   <data name="The input text is invalid for the current data type. Valid hexadecimal characters are the digits 0-9 and letters A-F" xml:space="preserve">
     <value>Il valore indicato non è valido per il tipo di dato. I caratteri esadecimali validi sono i numerii compresi fra 0 e 9 e le lettere fra A e F</value>
@@ -145,7 +145,7 @@
     <value>(Untranslated)</value>
   </data>
   <data name="RNGCryptoServiceProvider" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>RNGCryptoServiceProvider</value>
   </data>
   <data name="An invalid erasure method was selected." xml:space="preserve">
     <value>E' stato selezionato un metodo di pulizia non valido.</value>
@@ -184,51 +184,51 @@
     <value>Il metodo di pulizia custom può solo prevedere passi costanti oppure casuali</value>
   </data>
   <data name="US DoD 5220.22-M (8-306./E, C &amp; E)" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>US DoD 5220.22-M (8-306./E, C &amp; E)</value>
   </data>
   <data name="US DoD 5220.22-M (8-306./E)" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>US DoD 5220.22-M (8-306./E)</value>
   </data>
   <data name="The First/last 16KB erasure method requires another erasure method to erase the file.\n\nThis must be set in the Plugin Settings dialog." xml:space="preserve">
     <value>Il metodo di pulizia First/last 16KB richiede un altro metodo di pulizia per la cancellazione del file.\n\nQuesto deve essere indicato nelle impostazioni dell'estensione.</value>
   </data>
   <data name="First/last 16KB Erasure" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>First/last 16KB Erasure</value>
   </data>
   <data name="The amount of data erased should not be limited, since this is a self-limiting erasure method." xml:space="preserve">
     <value>La quantità di dati da pulire non dovrebbe venire limitata poichè il metodo di pulizia ha già una auto-limitazione.</value>
   </data>
   <data name="Russian GOST P50739-95" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Russian GOST P50739-95</value>
   </data>
   <data name="Gutmann" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Gutmann</value>
   </data>
   <data name="Gutmann Lite" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Gutmann Lite</value>
   </data>
   <data name="British HMG IS5 (Baseline)" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>British HMG IS5 (Baseline)</value>
   </data>
   <data name="British HMG IS5 (Enhanced)" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>British HMG IS5 (Enhanced)</value>
   </data>
   <data name="Pseudorandom Data" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pseudorandom Data</value>
   </data>
   <data name="RCMP TSSIT OPS-II" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>RCMP TSSIT OPS-II</value>
   </data>
   <data name="Schneier 7 pass" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Schneier 7 pass</value>
   </data>
   <data name="US Air Force 5020" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>US Air Force 5020</value>
   </data>
   <data name="US Army AR380-19" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>US Army AR380-19</value>
   </data>
   <data name="German VSITR" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>German VSITR</value>
   </data>
 </root>
