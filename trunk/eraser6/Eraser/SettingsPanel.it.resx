@@ -128,31 +128,37 @@
     <value>Rimuovi automaticamente operazioni eseguite immediatamente e con successo</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFolder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>525, 212</value>
+    <value>528, 212</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFolder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 23</value>
+    <value>109, 23</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFolder.Text" xml:space="preserve">
     <value>Agg. cartella...</value>
   </data>
   <data name="plausibleDeniabilityFilesRemove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>619, 212</value>
+    <value>643, 212</value>
   </data>
   <data name="plausibleDeniabilityFilesRemove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 23</value>
+    <value>66, 23</value>
   </data>
   <data name="plausibleDeniabilityFilesRemove.Text" xml:space="preserve">
     <value>Rimuovi</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>433, 212</value>
+    <value>410, 212</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 23</value>
+    <value>112, 23</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFile.Text" xml:space="preserve">
     <value>Aggiungi File...</value>
+  </data>
+  <data name="plausibleDeniabilityFiles.Location" type="System.Drawing.Point, System.Drawing">
+    <value>36, 265</value>
+  </data>
+  <data name="plausibleDeniabilityFiles.Size" type="System.Drawing.Size, System.Drawing">
+    <value>673, 121</value>
   </data>
   <data name="uiLanguageLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>127, 13</value>
@@ -160,8 +166,16 @@
   <data name="uiLanguageLbl.Text" xml:space="preserve">
     <value>Lingua interfaccia utente:</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="plausibleDeniability.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="plausibleDeniability.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="plausibleDeniability.Size" type="System.Drawing.Size, System.Drawing">
-    <value>401, 17</value>
+    <value>384, 34</value>
   </data>
   <data name="plausibleDeniability.Text" xml:space="preserve">
     <value>Sostituzione dei file puliti con i seguenti file per garantire la "plausible deniability"</value>
@@ -206,13 +220,13 @@
     <value>Percorso del file</value>
   </data>
   <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>157, 22</value>
+    <value>151, 22</value>
   </data>
   <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Impostazioni...</value>
   </data>
   <data name="pluginsMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 26</value>
+    <value>152, 26</value>
   </data>
   <data name="pluginsManager.Groups" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -238,22 +252,22 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABy
-        AwAAAk1TRnQBSQFMAwEBAAEcAQABHAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
-        ARADAAEBAQABIAYAARAuAANAAW0BLQFKAXkB/wM8AWL0AAEiAXkBxwH/AUMBzQH8Af8BNQFaAYcB//QA
-        ASIBeQHHAf8BPAGgAdIB/wNFAXn0AAEiAXkBxwH/AUUB0QH8Af8BNQFaAYcB//QAASIBeQHHAf8BPgGh
-        AdEB/wNFAXn0AAEiAXkBxwH/AU8B4gH9Af8BNgFWAYEB//QAASIBeQHHAf8BVgHXAfwB/wE2AVYBgQH/
-        8AADLgFGASIBeQHHAf8BbAHeAfwB/wE2AVYBgQH/AyUBNegAAzYBVgEvAYcBxwH/AVkBwAHwAf8BTgHL
-        Af4B/wFPAbMB3QH/AToBSwFkAf8DLAFB4AADMgFNAS8BhwHIAf8BUAG6AfcB/wFSAcIB+QH/AUgBtwH5
-        Af8BZgHWAfsB/wFDAaYB6AH/AToBSgFiAf8DJgE23AABXgFjAWoB4QFSAcEB+QH/AU4BtwH5Af8BkwHu
-        Af4B/wGPAewB/gH/AVABtAHzAf8BjQHjAf4B/wFNAboB4gH/AmABZAHa3AABNQF4AaMB/AFXAcYB+QH/
-        AWcBigGsAf8BZwGKAawB/wFnAYoBrAH/AWcBigGsAf8BZwGKAawB/wFgAdUB+gH/ATMBQQFjAfzcAAFd
-        AWUBbgHnAVoB0gH6Af8BSAFiAYQB/wwAAUsBkAHBAf8BUQG7AeEB/wNdAd/cAANNAZIBRAGdAdAB/wF4
-        AeMB+gH/AUgBhQGeAf8BTwFiAYcB/wFPAXQBnAH/AV4BagFuAeEBRgGMAaoB/wNJAYXcAAMTARgDVgGs
-        AUQBmgHNAf8BbAHVAfUB/wFvAekB/gH/AWsB1AHzAf8BSAGSAbIB/wNRAZwDGQEg4AADEwEYA0gBggJa
-        AVsBxwFJAYABmgH7AV8BYQFmAdsDSAGCAxkBINAAAUIBTQE+BwABPgMAASgDAAFAAwABEAMAAQEBAAEB
-        BQABgBcAA/8BAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH8AR8GAAH4
-        AQ8GAAHwAQcGAAHwAQcGAAHwAQcGAAHxAccGAAHwAQcGAAHwAQcGAAH4AQ8GAAs=
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABw
+        AwAAAk1TRnQBSQFMAwEBAAEkAQABJAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
+        ARADAAEBAQABIAYAARAuAAM/AW0BLAFJAXgB/wM6AWL0AAEhAXgBxwH/AUIBzQH8Af8BNAFZAYcB//QA
+        ASEBeAHHAf8BOwGgAdIB/wNEAXn0AAEhAXgBxwH/AUQB0QH8Af8BNAFZAYcB//QAASEBeAHHAf8BPQGh
+        AdEB/wNEAXn0AAEhAXgBxwH/AU4B4gH9Af8BNQFVAYEB//QAASEBeAHHAf8BVQHXAfwB/wE1AVUBgQH/
+        8AADLQFGASEBeAHHAf8BawHeAfwB/wE1AVUBgQH/AyQBNegAAzUBVgEuAYcBxwH/AVgBwAHwAf8BTQHL
+        Af4B/wFOAbMB3QH/ATkBSgFjAf8DKgFB4AADMQFNAS4BhwHIAf8BTwG6AfcB/wFRAcIB+QH/AUcBtwH5
+        Af8BZQHWAfsB/wFCAaYB6AH/ATkBSQFhAf8DJAE23AABXgFhAWgB4QFRAcEB+QH/AU0BtwH5Af8BkwHu
+        Af4B/wGPAewB/gH/AU8BtAHzAf8BjQHjAf4B/wFMAboB4gH/Al8BYgHa3AABNAF3AaAB/AFWAcYB+QH/
+        AWYBigGsAf8BZgGKAawB/wFmAYoBrAH/AWYBigGsAf8BZgGKAawB/wFfAdUB+gH/ATIBPwFiAfzcAAFc
+        AWQBbAHnAVkB0gH6Af8BRwFhAYQB/wwAAUoBkAHBAf8BUAG7AeEB/wNcAd/cAANMAZIBQwGdAdAB/wF3
+        AeMB+gH/AUcBhQGeAf8BTgFhAYcB/wFOAXMBnAH/AV4BaAFqAeEBRQGMAaoB/wNIAYXcAAMSARgDVAGs
+        AUMBmgHNAf8BawHVAfUB/wFuAekB/gH/AWoB1AHzAf8BRwGSAbIB/wNRAZwDFwEg4AADEgEYA0cBggJZ
+        AVoBxwFJAX8BmAH7Al8BZAHbA0cBggMXASDQAAFCAU0BPgcAAT4DAAEoAwABQAMAARADAAEBAQABAQUA
+        AYAXAAP/AQAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/AEfBgAB+AEP
+        BgAB8AEHBgAB8AEHBgAB8AEHBgAB8QHHBgAB8AEHBgAB8AEHBgAB+AEPBgAL
 </value>
   </data>
   <data name="plugins.Label" xml:space="preserve">
