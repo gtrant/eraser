@@ -178,10 +178,10 @@
     <value>Metodo di pulizia non trovato: {0}</value>
   </data>
   <data name="PRNG not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>PRNG not found: {0}</value>
   </data>
   <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>E' stata selezionata una "Plausible deniability", but no decoy files were found. The current file has been only replaced with random data.</value>
   </data>
   <data name="The file system on the drive {0} is not supported." xml:space="preserve">
     <value>Il tipo di file system sul disco {0} non è supportato.</value>
