@@ -33,12 +33,29 @@
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
+			<Directory Id="EraserLangItDir" Name="it">
+				<Component Id="EraserLangIt" Guid="CF4A007F-6619-4de4-B947-5F1113FB6F73">
+					<File Id="EraserIt" Name="Eraser.resources.dll"
+						Source="..\bin\Release\it\Eraser.resources.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserManagerIt" Name="Eraser.Manager.resources.dll"
+						Source="..\bin\Release\it\Eraser.Manager.resources.dll"
+						ProcessorArchitecture="msil" />
+				</Component>
+			</Directory>
 		</DirectoryRef>
 		<DirectoryRef Id="EraserPluginsDir">
 			<Directory Id="EraserPluginsLangNlDir" Name="nl">
 				<Component Id="EraserPluginsLangNl" Guid="CD85AC3F-2B4E-4ac8-8FF9-6BD3BC90BD3D">
 					<File Id="EraserDefaultPluginsNl" Name="Eraser.DefaultPlugins.resources.dll"
 						Source="..\bin\Release\Plugins\nl\Eraser.DefaultPlugins.resources.dll"
+						ProcessorArchitecture="msil" />
+				</Component>
+			</Directory>
+			<Directory Id="EraserPluginsLangItDir" Name="it">
+				<Component Id="EraserPluginsLangIt" Guid="26236C68-69E8-4cc6-B8AA-C6130A7EDB10">
+					<File Id="EraserDefaultPluginsIt" Name="Eraser.DefaultPlugins.resources.dll"
+						Source="..\bin\Release\Plugins\it\Eraser.DefaultPlugins.resources.dll"
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
@@ -51,6 +68,10 @@
 			<Feature Id="EraserLanguagesNl" Title="Dutch" Description="Dutch localisation" Level="10">
 				<ComponentRef Id="EraserLangNl" />
 				<ComponentRef Id="EraserPluginsLangNl" />
+			</Feature>
+			<Feature Id="EraserLanguagesIt" Title="Italian" Description="Italian localisation" Level="10">
+				<ComponentRef Id="EraserLangIt" />
+				<ComponentRef Id="EraserPluginsLangIt" />
 			</Feature>
 		</Feature>
 	</Fragment>
