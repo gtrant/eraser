@@ -259,6 +259,17 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		size_t convertedChars = 0;
 		wchar_t fileName[MAX_PATH];
 		mbstowcs_s(&convertedChars, fileName, file->Name, sizeof(fileName) / sizeof(fileName[0]));
+		
+		//Split the path to get the file name only.
+		wchar_t baseFileName[MAX_PATH];
+		wchar_t fileExt[MAX_PATH];
+		_wsplitpath_s(fileName, NULL, NULL, NULL, NULL, baseFileName,
+			sizeof(baseFileName) / sizeof(baseFileName[0]), fileExt,
+			sizeof(fileExt) / sizeof(fileExt[0]));
+		wcscpy_s(fileName, baseFileName);
+		wcscpy_s(fileName + wcslen(baseFileName),
+			sizeof(fileName) / sizeof(fileName[0]) - wcslen(baseFileName), fileExt);
+
 		Handle destFile(CreateFileW((pathToExtract + fileName).c_str(), GENERIC_WRITE, 0,
 			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL));
 		if (destFile == INVALID_HANDLE_VALUE)
