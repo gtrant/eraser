@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: Plugin.cs 1100 2009-06-03 02:49:33Z lowjoel $
+ * $Id$
  * Copyright 2008 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
