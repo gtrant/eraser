@@ -93,13 +93,13 @@ if (!empty($_GET['id']))
 					<tr><?php $download = new Download(13); ?>
 						<td><a href="announcements/20090706.html">Eraser 5.8.8</a> (beta1)</td>
 						<td>5.8.8-beta1</td>
-						<td><?php echo date('g/n/y g:ia', $download->Released); ?></td>
+						<td><?php echo date('j/n/y g:ia', $download->Released); ?></td>
 						<td><?php echo $download->Downloads; ?></td>
 					</tr>
 					<tr><?php $download = new Download(12); ?>
 						<td><a href="announcements/20090610.html">Eraser 6.0.5</a> (rc-5, build 1114)</td>
 						<td>6.0.5.1114 (rc5)</td>
-						<td><?php echo date('g/n/y g:ia', $download->Released); ?></td>
+						<td><?php echo date('j/n/y g:ia', $download->Released); ?></td>
 						<td><?php echo $download->Downloads; ?></td>
 					</tr>
 					<tr>
@@ -135,7 +135,7 @@ if (!empty($_GET['id']))
 					<tr>
 						<td><a href="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $revision->ID; ?>"><?php echo $revision->Name; ?></a></td>
 						<td>r<?php echo $revision->Revision; ?></td>
-						<td><?php echo date('g/n/y g:ia', $revision->Released); ?></td>
+						<td><?php echo date('j/n/y g:ia', $revision->Released); ?></td>
 						<td><?php echo $revision->Downloads; ?></td>
 					</tr>
 <?php
