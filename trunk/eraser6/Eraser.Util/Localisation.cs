@@ -133,7 +133,11 @@ namespace Eraser.Util
 				res = assemblies[assembly];
 
 			string result = res.GetString(Escape(str), Thread.CurrentThread.CurrentUICulture);
-			return result == null ? str : Unescape(result);
+#if DEBUG
+			return string.IsNullOrEmpty(result) ? str : Unescape(result);
+#else
+			return string.IsNullOrEmpty(result) || result == "(Untranslated)" ? str : Unescape(result);
+#endif
 		}
 
 		/// <summary>
