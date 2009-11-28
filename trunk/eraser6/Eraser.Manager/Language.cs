@@ -45,7 +45,7 @@ namespace Eraser.Manager
 
 		public override string ToString()
 		{
-			return culture.NativeName;
+			return culture.DisplayName;
 		}
 
 		/// <summary>
