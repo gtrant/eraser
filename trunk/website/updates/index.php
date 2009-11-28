@@ -28,6 +28,7 @@ $query = mysql_query(sprintf('SELECT downloads.*, publishers.Name as PublisherNa
 		downloads.PublisherID=publishers.PublisherID
 	WHERE
 		(Superseded = 0) AND
+		(`Type` <> \'build\') AND
 		(
 			(MinVersion IS NULL AND MaxVersion IS NULL) OR
 			(MinVersion IS NULL AND MaxVersion > \'%1$s\') OR
