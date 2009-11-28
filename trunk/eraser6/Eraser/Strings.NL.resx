@@ -153,9 +153,6 @@
   <data name="Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Could not load the setting {0} for plugin {1}. The setting has been lost." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="{0} out of {1}" xml:space="preserve">
     <value>{0} van {1}</value>
   </data>
@@ -223,6 +220,9 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Could not import task list from {0}. The error returned was: {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Could not load the setting {0} for plugin {1}. The setting has been lost." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="User interface language" xml:space="preserve">
