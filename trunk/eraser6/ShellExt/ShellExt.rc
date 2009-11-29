@@ -1,26 +1,6 @@
-/* 
- * $Id$
- * Copyright 2008-2009 The Eraser Project
- * Original Author: Kasra Nassiri <cjax@users.sourceforge.net>
- * Modified By: Joel Low <lowjoel@users.sourceforge.net>
- * 
- * This file is part of Eraser.
- * 
- * Eraser is free software: you can redistribute it and/or modify it under the
- * terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
- * version.
- * 
- * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
- * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
- * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
- * A copy of the GNU General Public License can be found at
- * <http://www.gnu.org/licenses/>.
- */
-
+// Microsoft Visual C++ generated resource script.
+//
 #include "resource.h"
-#include "../Version.rc"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -79,8 +59,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION ERASER_FILE_VERSION
- PRODUCTVERSION ERASER_PRODUCT_VERSION
+ FILEVERSION 6,0,6,1347
+ PRODUCTVERSION 6,0,6,1347
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -97,12 +77,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "The Eraser Project"
             VALUE "FileDescription", "Eraser Shell Extension"
-            VALUE "FileVersion", ERASER_STRING_FILE_VERSION
+            VALUE "FileVersion", "6.0.6.1347"
             VALUE "LegalCopyright", "(c) 2008 The Eraser Project"
             VALUE "InternalName", "ShellExt"
             VALUE "OriginalFilename", "ShellExt.dll"
             VALUE "ProductName", "Eraser"
-            VALUE "ProductVersion", ERASER_STRING_PRODUCT_VERSION
+            VALUE "ProductVersion", "6.0.6.1347"
         END
     END
     BLOCK "VarFileInfo"
@@ -118,6 +98,18 @@ END
 //
 
 IDR_ERASERSHELLEXT      REGISTRY                "ShellExt.rgs"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Italian (Italy) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
+#ifdef _WIN32
+LANGUAGE LANG_ITALIAN, SUBLANG_ITALIAN
+#pragma code_page(1252)
+#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -133,36 +125,36 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ERROR_UNKNOWN       "An unknown error has occurred."
-    IDS_ERROR_UNKNOWNACTION "An invalid command with the ID %d was requested.\n\nEraser is unable to process the request."
+    IDS_ERROR_UNKNOWN       "Si è verificato un errore sconosciuto."
+    IDS_ERROR_UNKNOWNACTION "E' stato richiesto un comando non valido con l'ID %d.\n\nEraser non è in grado di elaborare la richiesta."
     IDS_ERROR_CANNOTFINDERASER 
-                            "The Eraser application could not be started. Ensure that your installation of Eraser is not corrupted: try running the Eraser Setup again to Repair the install."
-    IDS_ERROR_ACCESSDENIED  "Access has been denied to Eraser. This may be due to you not having administrator permissions, or if you cancelled a request to Run the command as an Administrator."
+                            "Eraser non può essere avviato. Assicurarsi che l'installazione di Eraser non sia corrotta: provare ad eseguire il Setup di Eraser nuovamente per Riparare l'installazione."
+    IDS_ERROR_ACCESSDENIED  "E' stato impedito l'accesso ad Eraser. Ciò può essere perchè non hai i privilegi di Amministratore, oppure perchè è stata annullata la richiesta di Esegui il comando come Amministratore."
     IDS_ERROR_TOO_MANY_FILES 
-                            "The command could not be sent to the running Eraser instance because too many files were selected for erasure.\n\nSelect fewer files and try again."
-    IDS_ERROR_MISC          "An error has occurred:\n\n%s"
+                            "Non è possibile inviare il comando ad Eraser perchè troppi files sono stati selezionati per la pulizia.\n\nSelezionare meno files e riprovare."
+    IDS_ERROR_MISC          "Si è verificato un errore:\n\n%s"
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_HELPSTRING_ERASE    "Erases the selected items."
+    IDS_HELPSTRING_ERASE    "Pulisci gli elementi selezionati."
     IDS_HELPSTRING_ERASEONRESTART 
-                            "Erases the selected items when the computer is next restarted."
+                            "Pulisci gli elementi selezionati al prossimo riavvio del computer."
     IDS_HELPSTRING_ERASEUNUSEDSPACE 
-                            "Erases the unused space of the selected drives."
+                            "Pulisci lo spazio libero dei dischi selezionati."
     IDS_HELPSTRING_SECUREMOVE 
-                            "Securely moves the selected items to a new location."
+                            "Spostamento sicuro degli elementi selezionati in altra posizione."
 END
 
 STRINGTABLE 
 BEGIN
-    IDS_ACTION_ERASE        "&Erase"
-    IDS_ACTION_ERASERESTART "Erase on &Restart"
-    IDS_ACTION_ERASEUNUSEDSPACE "Erase &Unused Space"
-    IDS_ACTION_SECUREMOVE   "Secure &Move"
+    IDS_ACTION_ERASE        "&Pulisci"
+    IDS_ACTION_ERASERESTART "Pulisci al &Riavvio"
+    IDS_ACTION_ERASEUNUSEDSPACE "Pulisci &Spazio libero"
+    IDS_ACTION_SECUREMOVE   "&Spostamento sicuro"
 END
 
-#endif    // English (U.S.) resources
+#endif    // Italian (Italy) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
