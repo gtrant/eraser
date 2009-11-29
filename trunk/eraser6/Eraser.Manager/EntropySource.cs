@@ -343,7 +343,7 @@ namespace Eraser.Manager
 				}
 				catch (System.ComponentModel.Win32Exception e)
 				{
-					if (e.NativeErrorCode != 6) //ERROR_ACCESS_DENIED
+					if (e.NativeErrorCode != 5) //ERROR_ACCESS_DENIED
 						throw;
 				}
 			}
