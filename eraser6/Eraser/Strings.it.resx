@@ -187,7 +187,7 @@
     <value>Non pianificata</value>
   </data>
   <data name="New task added" xml:space="preserve">
-    <value>Nuova operaizone aggiunta</value>
+    <value>Nuova operazione aggiunta</value>
   </data>
   <data name="{0} has just been added to the list of tasks." xml:space="preserve">
     <value>{0} è stato aggiunto alla lista delle operazioni.</value>
