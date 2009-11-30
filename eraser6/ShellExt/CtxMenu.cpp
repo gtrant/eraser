@@ -663,14 +663,34 @@ namespace Eraser {
 
 	std::wstring CCtxMenu::LoadString(UINT stringID)
 	{
-		//Get a pointer to the buffer containing the string (we're copying it anyway)
-		wchar_t* buffer = NULL;
-		DWORD lastCount = ::LoadString(theApp.m_hInstance, stringID,
-			reinterpret_cast<wchar_t*>(&buffer), 0);
+		//Convert the resource ID to the block and item IDs.
+		UINT stringBlockId = (stringID >> 4) + 1;
+		UINT stringItemId = stringID % 16;
 
-		if (lastCount > 0)
-			return std::wstring(buffer, lastCount);
-		return std::wstring();
+		//Obtain a pointer to the memory holding the string table.
+		HRSRC resourceHandle = FindResourceEx(theApp.m_hInstance,
+			RT_STRING, MAKEINTRESOURCE(stringBlockId), MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL));
+		if (!resourceHandle)
+			AfxMessageBox(FormatError().c_str());
+
+		DWORD sizeOfResource = SizeofResource(theApp.m_hInstance, resourceHandle);
+		HGLOBAL resourceBlock = LoadResource(theApp.m_hInstance, resourceHandle);
+		if (!sizeOfResource || !resourceBlock)
+			AfxMessageBox(FormatError().c_str());
+
+		wchar_t* stringTable = reinterpret_cast<wchar_t*>(LockResource(resourceBlock));
+
+		//Iterate over the string table. The string table is null-delimited with
+		//the first byte storing the length of the string entry.
+		for ( ; stringItemId != 0; --stringItemId)
+		{
+			if (*stringTable == L'\0')
+				++stringTable;
+			else
+				stringTable += *stringTable + 1;
+		}
+
+		return std::wstring(stringTable + 1, *stringTable);
 	}
 
 	std::wstring CCtxMenu::EscapeString(const std::wstring& string)
