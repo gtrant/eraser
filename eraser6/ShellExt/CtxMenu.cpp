@@ -661,15 +661,78 @@ namespace Eraser {
 		return static_cast<Actions>(result);
 	}
 
+	LCID LocaleNameToLCID(const std::wstring& localeName)
+	{
+		LCID result = LOCALE_USER_DEFAULT;
+		IMultiLanguage* multiLanguage = NULL;
+
+		//Create an instance of the IMultiLanguage interface
+		if (SUCCEEDED(CoCreateInstance(CLSID_CMultiLanguage, NULL, CLSCTX_ALL,
+				IID_IMultiLanguage, (void**)&multiLanguage)))
+		{
+			//Convert our locale name to a BString
+			BSTR localeNameBStr = SysAllocString(localeName.c_str());
+			if (localeNameBStr)
+				multiLanguage->GetLcidFromRfc1766(&result, localeNameBStr);
+			SysFreeString(localeNameBStr);
+
+			//Clean up
+			multiLanguage->Release();
+		}
+
+		return result;
+	}
+
 	std::wstring CCtxMenu::LoadString(UINT stringID)
 	{
 		//Convert the resource ID to the block and item IDs.
-		UINT stringBlockId = (stringID >> 4) + 1;
-		UINT stringItemId = stringID % 16;
+		UINT stringBlockID = (stringID >> 4) + 1;
+		UINT stringItemID = stringID % 16;
+		WORD langID = LANG_USER_DEFAULT;
+		std::wstring localeName;
+
+		if (localeName.empty())
+		{
+			Handle<HKEY> eraserKey;
+			LONG openKeyResult = RegOpenKeyEx(HKEY_CURRENT_USER,
+				L"Software\\Eraser\\Eraser 6\\3460478d-ed1b-4ecc-96c9-2ca0e8500557\\", 0,
+				KEY_READ, &static_cast<HKEY&>(eraserKey));
+
+			if (openKeyResult == ERROR_NOT_FOUND)
+			{
+				//The language value was not defined, maintain defaults.
+				localeName.insert(localeName.begin(), 1, L'\0');
+			}
+			else
+			{
+				//Check the value of the Language value.
+				std::vector<wchar_t> value(256);
+				for ( ; ; )
+				{
+					DWORD valueType = 0;
+					DWORD valueSize = value.size();
+					DWORD error = RegQueryValueEx(eraserKey, L"Language", NULL, &valueType,
+						reinterpret_cast<BYTE*>(&value.front()), &valueSize);
+
+					if (error == ERROR_SUCCESS)
+						break;
+					else
+						switch (error)
+						{
+						case ERROR_INSUFFICIENT_BUFFER:
+							value.resize(value.size() * 2);
+							break;
+						}
+				}
+
+				localeName.assign(value.begin(), value.end());
+				langID = LANGIDFROMLCID(LocaleNameToLCID(localeName));
+			}
+		}
 
 		//Obtain a pointer to the memory holding the string table.
 		HRSRC resourceHandle = FindResourceEx(theApp.m_hInstance,
-			RT_STRING, MAKEINTRESOURCE(stringBlockId), MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL));
+			RT_STRING, MAKEINTRESOURCE(stringBlockID), langID);
 		if (!resourceHandle)
 			AfxMessageBox(FormatError().c_str());
 
@@ -682,7 +745,7 @@ namespace Eraser {
 
 		//Iterate over the string table. The string table is null-delimited with
 		//the first byte storing the length of the string entry.
-		for ( ; stringItemId != 0; --stringItemId)
+		for ( ; stringItemID != 0; --stringItemID)
 		{
 			if (*stringTable == L'\0')
 				++stringTable;
