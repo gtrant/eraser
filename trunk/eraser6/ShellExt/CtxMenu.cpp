@@ -693,21 +693,17 @@ namespace Eraser {
 
 		if (localeName.empty())
 		{
+			bool foundLanguage = false;
 			Handle<HKEY> eraserKey;
 			LONG openKeyResult = RegOpenKeyEx(HKEY_CURRENT_USER,
 				L"Software\\Eraser\\Eraser 6\\3460478d-ed1b-4ecc-96c9-2ca0e8500557\\", 0,
 				KEY_READ, &static_cast<HKEY&>(eraserKey));
 
-			if (openKeyResult == ERROR_NOT_FOUND)
-			{
-				//The language value was not defined, maintain defaults.
-				localeName.insert(localeName.begin(), 1, L'\0');
-			}
-			else
+			if (openKeyResult != ERROR_FILE_NOT_FOUND)
 			{
 				//Check the value of the Language value.
 				std::vector<wchar_t> value(256);
-				for ( ; ; )
+				while (!foundLanguage)
 				{
 					DWORD valueType = 0;
 					DWORD valueSize = value.size();
@@ -715,26 +711,38 @@ namespace Eraser {
 						reinterpret_cast<BYTE*>(&value.front()), &valueSize);
 
 					if (error == ERROR_SUCCESS)
-						break;
+						foundLanguage = true;
+					else if (error == ERROR_INSUFFICIENT_BUFFER)
+						value.resize(value.size() * 2);
 					else
-						switch (error)
-						{
-						case ERROR_INSUFFICIENT_BUFFER:
-							value.resize(value.size() * 2);
-							break;
-						}
+						break;
 				}
 
-				localeName.assign(value.begin(), value.end());
-				langID = LANGIDFROMLCID(LocaleNameToLCID(localeName));
+				if (foundLanguage)
+				{
+					localeName.assign(value.begin(), value.end());
+					langID = LANGIDFROMLCID(LocaleNameToLCID(localeName));
+				}
 			}
 		}
 
 		//Obtain a pointer to the memory holding the string table.
-		HRSRC resourceHandle = FindResourceEx(theApp.m_hInstance,
-			RT_STRING, MAKEINTRESOURCE(stringBlockID), langID);
-		if (!resourceHandle)
+		WORD langIDStack[] = { langID, PRIMARYLANGID(langID), LANG_USER_DEFAULT, LANG_ENGLISH };
+		HRSRC resourceHandle = NULL;
+		for (size_t i = 0; resourceHandle == NULL &&
+			i < sizeof(langIDStack) / sizeof(langIDStack[0]); ++i)
+		{
+			resourceHandle = FindResourceEx(theApp.m_hInstance,
+				RT_STRING, MAKEINTRESOURCE(stringBlockID), langIDStack[i]);
+			if (GetLastError() == ERROR_RESOURCE_LANG_NOT_FOUND)
+				continue;
+		}
+
+		if (resourceHandle == NULL)
+		{
 			AfxMessageBox(FormatError().c_str());
+			return std::wstring();
+		}
 
 		DWORD sizeOfResource = SizeofResource(theApp.m_hInstance, resourceHandle);
 		HGLOBAL resourceBlock = LoadResource(theApp.m_hInstance, resourceHandle);
