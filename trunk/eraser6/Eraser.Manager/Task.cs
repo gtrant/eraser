@@ -307,7 +307,7 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				throw new NotImplementedException();
+				return method;
 			}
 			set
 			{
