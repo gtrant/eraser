@@ -146,6 +146,10 @@ parseDirectory(LPCTSTR szDirectory, CStringArray& saFiles, CStringArray& saDirec
             strDirectory += "\\";
         }
 
+		TCHAR szFullPath[_MAX_PATH];
+		GetFullPathName(strDirectory, sizeof(szFullPath) / sizeof(szFullPath[0]), szFullPath, NULL);
+		strDirectory = szFullPath;
+
         // add current folder to the beginning of the list
         // --> subfolders will be removed first
         saDirectories.InsertAt(0, strDirectory);
