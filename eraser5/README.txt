@@ -1,17 +1,23 @@
-----------------------------------------------------------------
-NOTE: You MUST remove ALL EARLIER VERSIONS (including BETAS)
-before installing this version. When installing an earlier
-stable build, UNINSTALL the Beta first.
-----------------------------------------------------------------
-----------------------------------------------------------------
-Eraser 5.8.8-beta1
-----------------------------------------------------------------
-- Do not erase sparse, compressed or encrypted files when FL2KB erasure
-  is selected to prevent disk corruption.
+-----------------------------------------------------------------
+NOTE: You MUST remove ALL VERSIONS (including BETAS) earlier than
+      5.8.7 before installing this version.
+=================================================================
+In this Release: Eraser 5.8.8
+-----------------------------------------------------------------
+- Do not erase sparse, compressed or encrypted files when FL2KB
+  erasure is selected to prevent disk corruption.
 - Fix Win32 Eraser builds to be truly Unicode builds.
 - A few 64-bit fixes.
-- Ensure that Eraser uses the latest runtimes packaged with the installer.
-  This should fix hangs when using the Context menu.
+- Ensure that Eraser uses the latest runtimes packaged with the
+  installer. This should fix hangs when using the Context menu.
+- Fixed the About dialog after migrating to Unicode
+- Sign all binaries packaged with the installer
+- Allow erasing UNC paths
+- Fixed memory exhaustion when doing a free space erase for FAT
+  drives
+- Migrate non-Unicode custom erasure methods to the Unicode methods
+  so that old custom erasure methods are preserved upon upgrade
+- Ensure that Eraser is not running when the Eraser setup is run
 
 =================================================================
 CONTENTS
@@ -79,7 +85,7 @@ CONTENTS
    This version of Eraser runs on Windows 2000, XP and all editions
    of Vista. Windows XP x64 and all 64-bit SKUs of Vista can also
    be used (the 64-bit version will be chosen automatically).
-   Windows 7 installs may work but Eraser 5 is not currently tested
+   Windows 7 installs may work but Eraser 5 is not supported
    under that platform.
 
 ----------------------------------------------------------------
