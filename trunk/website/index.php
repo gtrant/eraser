@@ -85,12 +85,12 @@
 			<div class="right_news">
 				<h3>Latest News</h3>
 				<div class="right_news_bg">
-					<h2>Eraser 5.8.8-beta1 released!</h2>
-					<div class="posted">Posted by: Joel, 6 July 2009, 11.15am, +800 GMT</div>
-					<p>Eraser 5.8.8-beta1 has been released, fixing a few bugs regarding the context menu extension. <a href="announcements/20090706.html">See the full announcement</a></p>
-					<h2>Eraser 5.8.7 released!</h2>
-					<div class="posted">Posted by: Joel, 11 June 2009, 9.15am, +800 GMT</div>
-					<p>Eraser 5.8.7 stable is finally released after being too long in the making! This version brings with it Unicode changes, allowing the erasure of file names containing non English characters as well as the Portable distribution being a supported distribution. <a href="announcements/20090611.html">See the full announcement.</a></p>
+					<h2>Eraser 6 Stable released!</h2>
+					<div class="posted">Posted by: Joel, 15<sup>th</sup> December 2009, 10:15 am +800GMT</div>
+					<p>Eraser 6 stable has been released after being for  2 years in development. Eraser 6 sports a completely revamped user interface, and Windows XP/Vista/7 support out of the box. <a href="announcements/20090706.html">See the full announcement</a></p>
+					<h2>Eraser 5.8.8 released!</h2>
+					<div class="posted">Posted by: Joel, 15<sup>th</sup> December 2009, 10:15 am +800GMT</div>
+					<p>Eraser 5.8.8 is released. This release is mainly meant to fix the disk corruption which results from running a first/last 2KB erase on a sparse file as well as&nbsp;to fix the context menu causing Explorer to hang when&nbsp;installed with certain software which also inserts a context menu item. <a href="announcements/20090611.html">See the full announcement.</a></p>
 					<h2>Eraser 6-rc5 released!</h2>
 					<div class="posted">Posted by: Joel, 10 June 2009, 7.00pm, +800 GMT</div>
 					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/20090610.html">See the full announcement.</a></p>
