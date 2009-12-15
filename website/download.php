@@ -64,15 +64,21 @@ if (!empty($_GET['id']))
 						<th>&nbsp;</th>
 					</tr>
 					<tr>
-						<td><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_setup.exe">Eraser 5.8.7</a></td>
-						<td>5.8.7</td>
-						<td>11/6/09 1:57am</td>
+						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%206/Eraser%206.0.6.1376.exe/download">Eraser 6.0.6.1376</a></td>
+						<td>6.0.6.1376</td>
+						<td>15/12/09 10:15am</td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
-						<td><a href="http://downloads.sourceforge.net/eraser/Eraser-5.8.7_portable.zip">Eraser 5.8.7</a><br /><em>portable</em></td>
-						<td>5.8.7</td>
-						<td>11/6/09 1:45am</td>
+						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%205/5.8.8/Eraser%205.8.8.exe/download">Eraser 5.8.8</a></td>
+						<td>5.8.8</td>
+						<td>15/12/09 10:15am</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%205/5.8.8/Eraser%205.8.8%20Portable.zip/download">Eraser 5.8.8</a><br /><em>portable</em></td>
+						<td>5.8.8</td>
+						<td>15/12/09 10:15am</td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
@@ -161,10 +167,10 @@ if (!empty($_GET['id']))
 				<div class="right_news_bg">
 					<h2>Eraser 6 Stable released!</h2>
 					<div class="posted">Posted by: Joel, 15<sup>th</sup> December 2009, 10:15 am +800GMT</div>
-					<p>Eraser 6 stable has been released after being for  2 years in development. Eraser 6 sports a completely revamped user interface, and Windows XP/Vista/7 support out of the box. <a href="announcements/20090706.html">See the full announcement</a></p>
+					<p>Eraser 6 stable has been released after being for  2 years in development. Eraser 6 sports a completely revamped user interface, and Windows XP/Vista/7 support out of the box. <a href="announcements/20091215.html">See the full announcement</a></p>
 					<h2>Eraser 5.8.8 released!</h2>
 					<div class="posted">Posted by: Joel, 15<sup>th</sup> December 2009, 10:15 am +800GMT</div>
-					<p>Eraser 5.8.8 is released. This release is mainly meant to fix the disk corruption which results from running a first/last 2KB erase on a sparse file as well as&nbsp;to fix the context menu causing Explorer to hang when&nbsp;installed with certain software which also inserts a context menu item. <a href="announcements/20090611.html">See the full announcement.</a></p>
+					<p>Eraser 5.8.8 is released. This release is mainly meant to fix the disk corruption which results from running a first/last 2KB erase on a sparse file as well as&nbsp;to fix the context menu causing Explorer to hang when&nbsp;installed with certain software which also inserts a context menu item. <a href="announcements/20091215.html">See the full announcement.</a></p>
 					<h2>Eraser 6-rc5 released!</h2>
 					<div class="posted">Posted by: Joel, 10 June 2009, 7.00pm, +800 GMT</div>
 					<p>Having written almost 25,000 lines of code since the start of our project, v6 was due for a code review. So that's what I did, reviewed the code with the help of a static code analysis tool (FxCop for you developers out there :) ) and fixed all sorts of inconsistencies in the code. This should result in slightly higher performance and better behaviour when Eraser is in use. <a href="announcements/20090610.html">See the full announcement.</a></p>
