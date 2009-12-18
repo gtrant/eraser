@@ -99,7 +99,6 @@ namespace Eraser
             this.titleLabel.AccessibleName = null;
             resources.ApplyResources(this.titleLabel, "titleLabel");
             this.errorProvider.SetError(this.titleLabel, resources.GetString("titleLabel.Error"));
-            this.titleLabel.Font = null;
             this.errorProvider.SetIconAlignment(this.titleLabel, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("titleLabel.IconAlignment"))));
             this.errorProvider.SetIconPadding(this.titleLabel, ((int)(resources.GetObject("titleLabel.IconPadding"))));
             // 
