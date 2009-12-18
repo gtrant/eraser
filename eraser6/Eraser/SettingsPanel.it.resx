@@ -202,7 +202,7 @@
     <value>316, 13</value>
   </data>
   <data name="schedulerMissed.Text" xml:space="preserve">
-    <value>Quando un'operazione ricorrente ha mancato il suo orari odi inizio,</value>
+    <value>Quando un'operazione ricorrente ha mancato il suo orario di inizio,</value>
   </data>
   <data name="scheduler.Label" xml:space="preserve">
     <value>Impostazioni pianificazioni</value>
@@ -220,13 +220,13 @@
     <value>Percorso del file</value>
   </data>
   <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>151, 22</value>
+    <value>157, 22</value>
   </data>
   <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Impostazioni...</value>
   </data>
   <data name="pluginsMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 26</value>
+    <value>158, 26</value>
   </data>
   <data name="pluginsManager.Groups" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -252,22 +252,22 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABw
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABu
         AwAAAk1TRnQBSQFMAwEBAAEkAQABJAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
-        ARADAAEBAQABIAYAARAuAAM/AW0BLAFJAXgB/wM6AWL0AAEhAXgBxwH/AUIBzQH8Af8BNAFZAYcB//QA
-        ASEBeAHHAf8BOwGgAdIB/wNEAXn0AAEhAXgBxwH/AUQB0QH8Af8BNAFZAYcB//QAASEBeAHHAf8BPQGh
-        AdEB/wNEAXn0AAEhAXgBxwH/AU4B4gH9Af8BNQFVAYEB//QAASEBeAHHAf8BVQHXAfwB/wE1AVUBgQH/
-        8AADLQFGASEBeAHHAf8BawHeAfwB/wE1AVUBgQH/AyQBNegAAzUBVgEuAYcBxwH/AVgBwAHwAf8BTQHL
-        Af4B/wFOAbMB3QH/ATkBSgFjAf8DKgFB4AADMQFNAS4BhwHIAf8BTwG6AfcB/wFRAcIB+QH/AUcBtwH5
-        Af8BZQHWAfsB/wFCAaYB6AH/ATkBSQFhAf8DJAE23AABXgFhAWgB4QFRAcEB+QH/AU0BtwH5Af8BkwHu
-        Af4B/wGPAewB/gH/AU8BtAHzAf8BjQHjAf4B/wFMAboB4gH/Al8BYgHa3AABNAF3AaAB/AFWAcYB+QH/
-        AWYBigGsAf8BZgGKAawB/wFmAYoBrAH/AWYBigGsAf8BZgGKAawB/wFfAdUB+gH/ATIBPwFiAfzcAAFc
-        AWQBbAHnAVkB0gH6Af8BRwFhAYQB/wwAAUoBkAHBAf8BUAG7AeEB/wNcAd/cAANMAZIBQwGdAdAB/wF3
-        AeMB+gH/AUcBhQGeAf8BTgFhAYcB/wFOAXMBnAH/AV4BaAFqAeEBRQGMAaoB/wNIAYXcAAMSARgDVAGs
-        AUMBmgHNAf8BawHVAfUB/wFuAekB/gH/AWoB1AHzAf8BRwGSAbIB/wNRAZwDFwEg4AADEgEYA0cBggJZ
-        AVoBxwFJAX8BmAH7Al8BZAHbA0cBggMXASDQAAFCAU0BPgcAAT4DAAEoAwABQAMAARADAAEBAQABAQUA
-        AYAXAAP/AQAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/gE/BgAB/AEfBgAB+AEP
-        BgAB8AEHBgAB8AEHBgAB8AEHBgAB8QHHBgAB8AEHBgAB8AEHBgAB+AEPBgAL
+        ARADAAEBAQABIAYAARAuAANAAW0BLQFKAXkB/wM7AWL0AAEiAXkBxwH/AUMBzQH8Af8BNQFaAYcB//QA
+        ASIBeQHHAf8BPAGgAdIB/wNFAXn0AAEiAXkBxwH/AUUB0QH8Af8BNQFaAYcB//QAASIBeQHHAf8BPgGh
+        AdEB/wNFAXn0AAEiAXkBxwH/AU8B4gH9Af8BNgFWAYEB//QAASIBeQHHAf8BVgHXAfwB/wE2AVYBgQH/
+        8AADLgFGASIBeQHHAf8BbAHeAfwB/wE2AVYBgQH/AyUBNegAAzYBVgEvAYcBxwH/AVkBwAHwAf8BTgHL
+        Af4B/wFPAbMB3QH/AToBSwFkAf8DLAFB4AADMgFNAS8BhwHIAf8BUAG6AfcB/wFSAcIB+QH/AUgBtwH5
+        Af8BZgHWAfsB/wFDAaYB6AH/AToBSgFiAf8DJgE23AABYAFjAWgB4QFSAcEB+QH/AU4BtwH5Af8BkwHu
+        Af4B/wGPAewB/gH/AVABtAHzAf8BjQHjAf4B/wFNAboB4gH/AmABYwHa3AABNAF3AZ4B/AFXAcYB+QH/
+        AWcBigGsAf8BZwGKAawB/wFnAYoBrAH/AWcBigGsAf8BZwGKAawB/wFgAdUB+gH/ATIBPwFiAfzcAAFd
+        AWUBawHnAVoB0gH6Af8BSAFiAYQB/wwAAUsBkAHBAf8BUQG7AeEB/wNdAd/cAANNAZIBRAGdAdAB/wF4
+        AeMB+gH/AUgBhQGeAf8BTwFiAYcB/wFPAXQBnAH/AWABaAFqAeEBRgGMAaoB/wNJAYXcAAMTARgDVgGs
+        AUQBmgHNAf8BbAHVAfUB/wFvAekB/gH/AWsB1AHzAf8BSAGSAbIB/wNRAZwDGQEg4AADEwEYA0gBggNa
+        AccBSwF+AZcB+wJhAWQB2wNIAYIDGQEg0AABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEAAQEFAAGA
+        FwAD/wEAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAfwBHwYAAfgBDwYA
+        AfABBwYAAfABBwYAAfABBwYAAfEBxwYAAfABBwYAAfABBwYAAfgBDwYACw==
 </value>
   </data>
   <data name="plugins.Label" xml:space="preserve">
@@ -302,9 +302,6 @@
   </data>
   <data name="ui.Label" xml:space="preserve">
     <value>Integrazione con la shell</value>
-  </data>
-  <data name="titleLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 18pt</value>
   </data>
   <data name="titleLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>147, 29</value>
