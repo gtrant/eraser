@@ -72,13 +72,13 @@ if (!empty($_GET['id']))
 					<tr>
 						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%205/5.8.8/Eraser%205.8.8.exe/download">Eraser 5.8.8</a></td>
 						<td>5.8.8</td>
-						<td>15/12/09 10:15am</td>
+						<td>16/12/09 2:00pm</td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
 						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%205/5.8.8/Eraser%205.8.8%20Portable.zip/download">Eraser 5.8.8</a><br /><em>portable</em></td>
 						<td>5.8.8</td>
-						<td>15/12/09 10:15am</td>
+						<td>17/12/09 5:30pm</td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
