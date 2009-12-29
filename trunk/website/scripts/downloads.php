@@ -24,7 +24,8 @@ class Download
 			header('location: ' . $this->Link);
 		else if (substr($this->Link, 0, 1) == '?')
 			Download::DownloadFile(substr($this->Link, 1));
-		throw new Exception('Unknown download link');
+		else
+			throw new Exception('Unknown download link');
 	}
 	
 	public function __get($varName)
