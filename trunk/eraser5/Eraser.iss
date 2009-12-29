@@ -166,4 +166,4 @@ end;
 [_ISToolPreCompile]
 Name: SignBin.bat; Parameters: ; Flags: abortonerror
 [_ISToolPostCompile]
-Name: signtool; Parameters: sign /a /t http://timestamp.verisign.com/scripts/timestamp.dll bin\*.exe
+Name: signtool; Parameters: sign /a /t http://timestamp.verisign.com/scripts/timestamp.dll bin\*_setup.exe
