@@ -186,7 +186,6 @@ namespace Eraser
 
 			//Create the main form
 			program.MainForm = new MainForm();
-			program.MainForm.CreateControl();
 			bool showMainForm = true;
 			foreach (string param in program.CommandLine)
 			{
