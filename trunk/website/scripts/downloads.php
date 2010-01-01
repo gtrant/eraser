@@ -105,8 +105,8 @@ class Download
 			header('Content-Disposition: attachment; filename="' . $visibleName . '"');
 			header('Pragma: no-cache');
 		}
-	
-		echo file_get_contents($downloadFolder . $path);
+
+		readfile($downloadFolder . $path);
 	}
 };
 
