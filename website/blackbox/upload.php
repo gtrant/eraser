@@ -42,8 +42,8 @@ function QueryStatus($stackTrace)
 			continue;
 		
 		//Query for the list of exceptions containing the given functions
-		$query = mysql_query(sprintf('SELECT DISTINCT(BlackBoxExceptions.ID) FROM BlackBoxStackFrames
-			INNER JOIN BlackBoxExceptions ON BlackBoxStackFrames.ExceptionID=BlackBoxExceptions.ID
+		$query = mysql_query(sprintf('SELECT DISTINCT(BlackBox_Exceptions.ID) FROM BlackBox_StackFrames
+			INNER JOIN BlackBox_Exceptions ON BlackBox_StackFrames.ExceptionID=BlackBox_Exceptions.ID
 			WHERE (%s) AND ExceptionDepth=%d AND ExceptionType=\'%s\'',
 			substr($stackFrames, 0, strlen($stackFrames) - 4), $exceptionDepth,
 			mysql_real_escape_string($exception['exception'])));
@@ -60,14 +60,14 @@ function QueryStatus($stackTrace)
 function Upload($stackTrace, $crashReport)
 {
 	mysql_query('BEGIN TRANSACTION');
-	mysql_query(sprintf('INSERT INTO BlackBoxReports SET IPAddress=%u', ip2long($_SERVER['REMOTE_ADDR'])));
+	mysql_query(sprintf('INSERT INTO BlackBox_Reports SET IPAddress=%u', ip2long($_SERVER['REMOTE_ADDR'])));
 	if (mysql_affected_rows() != 1)
 		throw new Exception('Could not insert crash report into Reports table: ' . mysql_error());
 
 	$reportId = mysql_insert_id();
 	foreach ($stackTrace as $exceptionDepth => $exception)
 	{
-		mysql_query(sprintf('INSERT INTO BlackBoxExceptions SET ReportID=%d, ExceptionType=\'%s\', ExceptionDepth=%d',
+		mysql_query(sprintf('INSERT INTO BlackBox_Exceptions SET ReportID=%d, ExceptionType=\'%s\', ExceptionDepth=%d',
 			$reportId, mysql_real_escape_string($exception['exception']), $exceptionDepth));
 		if (mysql_affected_rows() != 1)
 			throw new Exception('Could not insert exception into Exceptions table: ' . mysql_error());
@@ -93,7 +93,7 @@ function Upload($stackTrace, $crashReport)
 				$function = $matches[1];
 			}
 			
-			mysql_query(sprintf('INSERT INTO BlackBoxStackFrames SET
+			mysql_query(sprintf('INSERT INTO BlackBox_StackFrames SET
 				ExceptionID=%d, StackFrameIndex=%d, Function=\'%s\', File=%s, Line=%s',
 				$exceptionId, $stackIndex, mysql_real_escape_string($function),
 				empty($file) ? 'null' : sprintf('\'%s\'', mysql_real_escape_string($file)),
