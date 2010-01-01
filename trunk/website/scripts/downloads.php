@@ -137,7 +137,7 @@ class Build extends Download
 	public static function Get()
 	{
 		$result = array();
-		$builds = array('Eraser5' => 'Eraser 5', 'Eraser6' => 'Eraser 6');
+		$builds = array('Eraser5' => 'Eraser 5', 'Eraser6' => 'Eraser 6', 'Eraser6.2' => 'Eraser 6.2');
 		foreach ($builds as $path => $buildName)
 		{
 			$revisions = opendir(Build::GetPath($path));
