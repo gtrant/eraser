@@ -217,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Handle.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Resource.h"
 				>
 			</File>

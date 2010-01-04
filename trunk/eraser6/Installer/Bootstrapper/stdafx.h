@@ -44,3 +44,6 @@ extern "C" {
 	#include <C/Archive/7z/7zDecode.h>
 	#include <C/Archive/7z/7zExtract.h>
 }
+
+//Boost
+#include <boost/lexical_cast.hpp>
