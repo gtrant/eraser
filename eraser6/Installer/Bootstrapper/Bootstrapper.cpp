@@ -21,28 +21,7 @@
 
 #include "stdafx.h"
 #include "Bootstrapper.h"
-
-class Handle
-{
-public:
-	Handle(HANDLE handle)
-	{
-		thisHandle = handle;
-	}
-
-	~Handle()
-	{
-		CloseHandle(thisHandle);
-	}
-
-	operator HANDLE()
-	{
-		return thisHandle;
-	}
-
-private:
-	HANDLE thisHandle;
-};
+#include "Handle.h"
 
 const wchar_t *ResourceName = MAKEINTRESOURCE(101);
 
@@ -51,13 +30,13 @@ int Integrate(const std::wstring& destItem, const std::wstring& package)
 	//Open a handle to ourselves
 	DWORD lastOperation = 0;
 	{
-		Handle srcFile(CreateFileW(Application::Get().GetPath().c_str(), GENERIC_READ,
+		Handle<HANDLE> srcFile(CreateFileW(Application::Get().GetPath().c_str(), GENERIC_READ,
 			FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL));
 		if (srcFile == INVALID_HANDLE_VALUE)
 			throw GetErrorMessage(GetLastError());
 
 		//Copy ourselves
-		Handle destFile(CreateFileW(destItem.c_str(), GENERIC_WRITE, 0, NULL,
+		Handle<HANDLE> destFile(CreateFileW(destItem.c_str(), GENERIC_WRITE, 0, NULL,
 			CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL));
 		if (destFile == INVALID_HANDLE_VALUE)
 			throw GetErrorMessage(GetLastError());
@@ -73,7 +52,7 @@ int Integrate(const std::wstring& destItem, const std::wstring& package)
 		throw GetErrorMessage(GetLastError());
 
 	//Read the package into memory
-	Handle packageFile(CreateFileW(package.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL,
+	Handle<HANDLE> packageFile(CreateFileW(package.c_str(), GENERIC_READ, FILE_SHARE_READ, NULL,
 		OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL));
 	if (packageFile == INVALID_HANDLE_VALUE)
 		throw GetErrorMessage(GetLastError());
@@ -270,8 +249,8 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		wcscpy_s(fileName + wcslen(baseFileName),
 			sizeof(fileName) / sizeof(fileName[0]) - wcslen(baseFileName), fileExt);
 
-		Handle destFile(CreateFileW((pathToExtract + fileName).c_str(), GENERIC_WRITE, 0,
-			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL));
+		Handle<HANDLE> destFile(CreateFileW((pathToExtract + fileName).c_str(), GENERIC_WRITE,
+			0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL));
 		if (destFile == INVALID_HANDLE_VALUE)
 			throw GetErrorMessage(GetLastError());
 		unsigned long long destFileSize = file->Size;
@@ -299,44 +278,68 @@ void ExtractTempFiles(std::wstring pathToExtract)
 
 bool HasNetFramework()
 {
-	HKEY key;
-	std::wstring highestVer;
-	std::wstring keys[] = { L"v3.5" };
+	const std::wstring versionKey(L"v3.5");
 
-	for (int i = 0, j = sizeof(keys) / sizeof(keys[0]); i != j; ++i)
+	//Open the key for reading
+	Handle<HKEY> key;
+	DWORD result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+		(L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\" + versionKey).c_str(),
+		0, KEY_READ, key);
+
+	//Retry for 64-bit WoW
+	if (result == ERROR_FILE_NOT_FOUND)
 	{
-		//Open the key for reading
-		DWORD result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-			(L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\" + keys[i]).c_str(),
-			0, KEY_READ, &key);
+		result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+			(L"SOFTWARE\\Wow6432Node\\Microsoft\\NET Framework Setup\\NDP\\" + versionKey).c_str(),
+			0, KEY_READ, key);
 
-		//Retry for 64-bit WoW
 		if (result == ERROR_FILE_NOT_FOUND)
-		{
-			result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-				(L"SOFTWARE\\Wow6432Node\\Microsoft\\NET Framework Setup\\NDP\\" + keys[i]).c_str(),
-				0, KEY_READ, &key);
-
-			if (result == ERROR_FILE_NOT_FOUND)
-				continue;
-		}
-
-		if (result != ERROR_SUCCESS)
-			throw GetErrorMessage(result);
-
-		//Query the Installed string
-		DWORD installedVal = 0;
-		DWORD bufferSize = sizeof(installedVal);
-		result = RegQueryValueExW(key, L"Install", NULL, NULL, (BYTE*)&installedVal,
-			&bufferSize);
-		if (result != ERROR_SUCCESS && result != ERROR_MORE_DATA)
-			throw GetErrorMessage(result);
-		if (installedVal == 1)
-			highestVer = keys[i].substr(1);
-		RegCloseKey(key);
+			return false;
 	}
 
-	return !highestVer.empty();
+	if (result != ERROR_SUCCESS)
+		throw GetErrorMessage(result);
+
+	//Query the Install string
+	wchar_t buffer[32];
+	DWORD bufferSize = sizeof(buffer);
+	::ZeroMemory(buffer, sizeof(buffer));
+	result = RegQueryValueExW(key, L"Install", NULL, NULL, reinterpret_cast<BYTE*>(buffer),
+		&bufferSize);
+	if (result != ERROR_SUCCESS && result != ERROR_MORE_DATA)
+		throw GetErrorMessage(result);
+	
+	//If we got more data than we wanted or if the value is not zero, it's invalid.
+	if (bufferSize != sizeof(DWORD) || *reinterpret_cast<DWORD*>(buffer) == 0)
+		return false;
+
+	//Next get the exact version installed
+	bufferSize = sizeof(buffer);
+	::ZeroMemory(buffer, sizeof(buffer));
+	result = RegQueryValueExW(key, L"Version", NULL, NULL, reinterpret_cast<BYTE*>(buffer),
+		&bufferSize);
+	if ((result != ERROR_SUCCESS && result != ERROR_MORE_DATA) || bufferSize == sizeof(buffer))
+		throw GetErrorMessage(result);
+
+	//Ensure that the version string is NULL terminated
+	buffer[bufferSize / sizeof(wchar_t)] = L'\0';
+
+	//Split the version into its four components
+	int versionComponents[] = { 0, 0, 0, 0 };
+	wchar_t* previousDot = buffer - 1;
+	wchar_t* nextDot = NULL;
+	for (unsigned i = 0; i < sizeof(versionComponents) / sizeof(versionComponents[0]); ++i)
+	{
+		nextDot = wcschr(previousDot + 1, L'.');
+		versionComponents[i] = boost::lexical_cast<int>(
+			nextDot ? std::wstring(++previousDot, nextDot) : std::wstring(++previousDot));
+		if (!nextDot)
+			break;
+
+		previousDot = nextDot;
+	}
+
+	return versionComponents[0] == 3 && versionComponents[1] == 5 && versionComponents[2] == 30729;
 }
 
 int CreateProcessAndWait(const std::wstring& commandLine, const std::wstring& appName)
