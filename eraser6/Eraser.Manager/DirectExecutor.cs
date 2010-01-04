@@ -637,7 +637,21 @@ namespace Eraser.Manager
 				//Erase old resident file system table files
 				progress.Event.CurrentItemName = S._("Old resident file system table files");
 				task.OnProgressChanged(progress.Event);
-				fsManager.EraseOldFileSystemResidentFiles(volInfo, info, method, null);
+				ProgressManager residentFilesProgress = new ProgressManager();
+				residentFilesProgress.Start();
+				fsManager.EraseOldFileSystemResidentFiles(volInfo, info, method,
+					delegate(int currentFile, int totalFiles)
+					{
+						residentFilesProgress.Completed = currentFile;
+						residentFilesProgress.Total = totalFiles;
+						progress.Event.CurrentItemProgress = residentFilesProgress.Progress;
+						progress.Event.TimeLeft = residentFilesProgress.TimeLeft;
+						task.OnProgressChanged(progress.Event);
+
+						if (currentTask.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
+					}
+				);
 			}
 			finally
 			{
