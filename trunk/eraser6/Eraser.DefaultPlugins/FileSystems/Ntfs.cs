@@ -102,9 +102,8 @@ namespace Eraser.DefaultPlugins
 				//Get the size of the MFT
 				long mftSize = NtfsApi.GetMftValidSize(info);
 				long mftRecordSegmentSize = NtfsApi.GetMftRecordSegmentSize(info);
-				int pollingInterval = (int)Math.Max(1, (mftSize / info.ClusterSize / 20));
-				int totalFiles = (int)Math.Max(1L, mftSize / mftRecordSegmentSize) *
-					(FileNameErasePasses + 1);
+				int pollingInterval = (int)Math.Min(Math.Max(1, mftSize / info.ClusterSize / 20), 128);
+				int totalFiles = (int)Math.Max(1L, mftSize / mftRecordSegmentSize);
 				int filesCreated = 0;
 
 				while (true)
@@ -117,8 +116,13 @@ namespace Eraser.DefaultPlugins
 
 					if (filesCreated % pollingInterval == 0)
 					{
+						//Call back to our progress function: this is the first half of the
+						//procedure so divide the effective progress by 2.
 						if (callback != null)
-							callback(filesCreated, totalFiles);
+						{
+							int halfFilesCreated = filesCreated / 2;
+							callback(halfFilesCreated, Math.Min(halfFilesCreated, totalFiles));
+						}
 
 						//Check if the MFT has grown.
 						if (mftSize < NtfsApi.GetMftValidSize(info))
@@ -133,11 +137,10 @@ namespace Eraser.DefaultPlugins
 			{
 				//Clear up all the temporary files
 				FileInfo[] files = tempDir.GetFiles("*", SearchOption.AllDirectories);
-				int totalFiles = files.Length * (FileNameErasePasses + 1);
 				for (int i = 0; i < files.Length; ++i)
 				{
 					if (callback != null && i % 50 == 0)
-						callback(files.Length + i * FileNameErasePasses, totalFiles);
+						callback(files.Length + i, files.Length * 2);
 					DeleteFile(files[i]);
 				}
 
