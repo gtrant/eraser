@@ -69,6 +69,11 @@ namespace Eraser.DefaultPlugins
 								method.Erase(strm, long.MaxValue,
 									PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng),
 									null);
+
+								//Call the callback function if one is provided. We'll provide a dummy
+								//value since we really have no idea how much of the MFT we can clean.
+								if (callback != null)
+									callback(0, 1);
 							}
 						}
 						catch (IOException)
@@ -85,7 +90,7 @@ namespace Eraser.DefaultPlugins
 			}
 			catch (IOException)
 			{
-				//OK, enough squeezing.
+				//OK, enough squeezing: there isn't enough space to even create a new MFT record.
 			}
 		}
 
