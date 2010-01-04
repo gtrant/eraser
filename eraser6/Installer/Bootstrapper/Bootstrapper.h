@@ -139,9 +139,6 @@ private:
 	MainWindow MainWin;
 };
 
-/// The offset where the package data is stored.
-const unsigned DataOffset = 192 * 1024;
-
 /// Formats the system error code using FormatMessage, returning the message as
 /// a std::wstring.
 std::wstring GetErrorMessage(DWORD lastError);
