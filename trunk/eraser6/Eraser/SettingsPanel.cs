@@ -352,7 +352,7 @@ namespace Eraser
 				Guid guid = plugin.AssemblyInfo.Guid;
 				if (!pluginApprovals.ContainsKey(guid))
 				{
-					if (plugin.Plugin.Loaded != item.Checked)
+					if (plugin.Loaded != item.Checked)
 					{
 						pluginApprovals.Add(guid, item.Checked);
 						pluginApprovalsChanged = true;
