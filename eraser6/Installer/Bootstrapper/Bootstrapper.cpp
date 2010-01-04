@@ -339,7 +339,7 @@ bool HasNetFramework()
 		previousDot = nextDot;
 	}
 
-	return versionComponents[0] == 3 && versionComponents[1] == 5 && versionComponents[2] == 30729;
+	return versionComponents[0] == 3 && versionComponents[1] == 5 && versionComponents[2] >= 30729;
 }
 
 int CreateProcessAndWait(const std::wstring& commandLine, const std::wstring& appName)
