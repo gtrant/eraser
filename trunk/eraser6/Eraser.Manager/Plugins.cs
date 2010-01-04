@@ -348,9 +348,18 @@ namespace Eraser.Manager.Plugin
 		public bool IsCore { get; internal set; }
 
 		/// <summary>
-		/// Gets the IPlugin interface which the plugin exposed.
+		/// Gets the IPlugin interface which the plugin exposed. This may be null
+		/// if the plugin was not loaded.
 		/// </summary>
 		public IPlugin Plugin { get; internal set; }
+
+		/// <summary>
+		/// Gets whether this particular plugin is currently loaded in memory.
+		/// </summary>
+		public bool Loaded
+		{
+			get { return Plugin != null; }
+		}
 
 		private Assembly assembly;
 	}
