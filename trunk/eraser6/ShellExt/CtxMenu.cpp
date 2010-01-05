@@ -327,6 +327,7 @@ namespace Eraser {
 			mii.fMask = MIIM_SUBMENU | MIIM_STRING | MIIM_ID;
 			mii.hSubMenu = hSubmenu;
 			mii.dwTypeData = const_cast<wchar_t*>(MenuTitle);
+			MenuID = mii.wID;
 
 			//Set the bitmap for the registered item. Vista machines will be set using a DIB,
 			//older machines will be ownerdrawn.
@@ -342,8 +343,8 @@ namespace Eraser {
 				mii.fType = MFT_OWNERDRAW;
 			}
 
-			MenuID = uMenuIndex++;
-			InsertMenuItem(hmenu, MenuID, TRUE, &mii);
+			UINT menuIndex = uMenuIndex++;
+			InsertMenuItem(hmenu, menuIndex, TRUE, &mii);
 
 			//Disable the menu item - IF the user selected the recycle bin AND the
 			//recycle bin is empty
@@ -354,7 +355,7 @@ namespace Eraser {
 				sqrbi.cbSize = sizeof(sqrbi);
 				if (SUCCEEDED(SHQueryRecycleBin(NULL, &sqrbi)))
 				{
-					EnableMenuItem(hmenu, MenuID, MF_BYPOSITION |
+					EnableMenuItem(hmenu, menuIndex, MF_BYPOSITION |
 						((sqrbi.i64NumItems != 0) ? MF_ENABLED : MF_DISABLED));
 				}
 			}
@@ -378,7 +379,7 @@ namespace Eraser {
 		case WM_MEASUREITEM:
 			{
 				MEASUREITEMSTRUCT* mis = reinterpret_cast<MEASUREITEMSTRUCT*>(lParam);
-				if (mis->CtlID == MenuID)
+				if (mis->itemID == MenuID)
 					handleResult = OnMeasureItem(mis->itemWidth, mis->itemHeight);
 				else
 					handleResult = false;
@@ -388,7 +389,7 @@ namespace Eraser {
 		case WM_DRAWITEM:
 			{
 				DRAWITEMSTRUCT* dis = reinterpret_cast<DRAWITEMSTRUCT*>(lParam);
-				if (dis->CtlID == MenuID)
+				if (dis->itemID == MenuID)
 					handleResult = OnDrawItem(dis->hDC, dis->rcItem, dis->itemAction, dis->itemState);
 				else
 					handleResult = false;
