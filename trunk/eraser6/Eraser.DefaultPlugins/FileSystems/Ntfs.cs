@@ -50,7 +50,7 @@ namespace Eraser.DefaultPlugins
 				//Squeeze one-byte files until the volume or the MFT is full.
 				long oldMFTSize = NtfsApi.GetMftValidSize(volume);
 
-				for (; ; )
+				for ( ; ; )
 				{
 					//Open this stream
 					using (FileStream strm = new FileStream(
@@ -126,7 +126,7 @@ namespace Eraser.DefaultPlugins
 						if (callback != null)
 						{
 							int halfFilesCreated = filesCreated / 2;
-							callback(halfFilesCreated, Math.Min(halfFilesCreated, totalFiles));
+							callback(halfFilesCreated, Math.Max(halfFilesCreated, totalFiles));
 						}
 
 						//Check if the MFT has grown.
