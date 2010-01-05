@@ -55,15 +55,27 @@ namespace Eraser.DefaultPlugins
 					info.MoveTo(newPath);
 					++i;
 				}
-				catch (IOException)
+				catch (IOException e)
 				{
-					Thread.Sleep(100);
+					switch (System.Runtime.InteropServices.Marshal.GetLastWin32Error())
+					{
+						case 5: //ERROR_ACCESS_DENIED
+							throw new UnauthorizedAccessException(S._("The file {0} could not " +
+								"be erased because the file's permissions prevent access to the file.",
+								info.FullName));
 
-					//If after FilenameEraseTries the file is still locked, some program is
-					//definitely using the file; throw an exception.
-					if (tries > FileNameEraseTries)
-						throw new IOException(S._("The file {0} is currently in use and " +
-							"cannot be removed.", info.FullName));
+						case 32: //ERROR_SHARING_VIOLATION
+							//Let the process locking the file release the lock
+							Thread.Sleep(100);
+
+							//If after FilenameEraseTries the file is still locked, some program is
+							//definitely using the file; throw an exception.
+							if (tries > FileNameEraseTries)
+								throw new IOException(S._("The file {0} is currently in use and " +
+									"cannot be removed.", info.FullName), e);
+						default:
+							throw;
+					}
 				}
 			}
 
@@ -81,12 +93,27 @@ namespace Eraser.DefaultPlugins
 					info.Delete();
 					break;
 				}
-				catch (IOException)
+				catch (IOException e)
 				{
-					if (i > FileNameEraseTries)
-						throw new IOException(S._("The file {0} is currently in use and " +
-							"cannot be removed.", info.FullName));
-					Thread.Sleep(100);
+					switch (System.Runtime.InteropServices.Marshal.GetLastWin32Error())
+					{
+						case 5: //ERROR_ACCESS_DENIED
+							throw new UnauthorizedAccessException(S._("The file {0} could not " +
+								"be erased because the file's permissions prevent access to the file.",
+								info.FullName), e);
+
+						case 32: //ERROR_SHARING_VIOLATION
+							//Let the process locking the file release the lock
+							Thread.Sleep(100);
+
+							//If after FilenameEraseTries the file is still locked, some program is
+							//definitely using the file; throw an exception.
+							if (i > FileNameEraseTries)
+								throw new IOException(S._("The file {0} is currently in use and " +
+									"cannot be removed.", info.FullName), e);
+						default:
+							throw;
+					}
 				}
 		}
 
@@ -103,7 +130,7 @@ namespace Eraser.DefaultPlugins
 				DeleteFile(file);
 
 			//Then clean up this folder.
-			for (int i = 0; i < FileNameErasePasses; ++i)
+			for (int i = 0, tries = 0; i < FileNameErasePasses; ++tries)
 			{
 				//Rename the folder.
 				string newPath = GenerateRandomFileName(info.Parent, info.Name.Length);
@@ -113,11 +140,29 @@ namespace Eraser.DefaultPlugins
 				try
 				{
 					info.MoveTo(newPath);
+					++i;
 				}
-				catch (IOException)
+				catch (IOException e)
 				{
-					Thread.Sleep(100);
-					--i;
+					switch (System.Runtime.InteropServices.Marshal.GetLastWin32Error())
+					{
+						case 5: //ERROR_ACCESS_DENIED
+							throw new UnauthorizedAccessException(S._("The file {0} could not " +
+								"be erased because the file's permissions prevent access to the file.",
+								info.FullName), e);
+
+						case 32: //ERROR_SHARING_VIOLATION
+							//Let the process locking the file release the lock
+							Thread.Sleep(100);
+
+							//If after FilenameEraseTries the file is still locked, some program is
+							//definitely using the file; throw an exception.
+							if (tries > FileNameEraseTries)
+								throw new IOException(S._("The file {0} is currently in use and " +
+									"cannot be removed.", info.FullName), e);
+						default:
+							throw;
+					}
 				}
 			}
 
