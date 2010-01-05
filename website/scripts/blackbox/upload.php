@@ -3,7 +3,7 @@ if (empty($_POST) || empty($_POST['action']))
 	exit;
 
 ob_start();
-require('../scripts/database.php');
+require('../database.php');
 
 function GetFunctionNameFromStackTrace($line)
 {
