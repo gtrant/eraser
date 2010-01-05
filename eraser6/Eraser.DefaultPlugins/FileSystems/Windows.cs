@@ -157,7 +157,7 @@ namespace Eraser.DefaultPlugins
 				{
 					log.LastSessionEntries.Add(new LogEntry(S._("{0} did not have its " +
 						"cluster tips erased because you do not have the required permissions to " +
-						"erase the file cluster tips.", files[i]), LogLevel.Error));
+						"erase the file cluster tips.", files[i]), LogLevel.Information));
 				}
 				catch (IOException e)
 				{
