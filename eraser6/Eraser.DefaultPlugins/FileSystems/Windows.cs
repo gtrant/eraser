@@ -65,14 +65,16 @@ namespace Eraser.DefaultPlugins
 								info.FullName));
 
 						case 32: //ERROR_SHARING_VIOLATION
-							//Let the process locking the file release the lock
-							Thread.Sleep(100);
-
 							//If after FilenameEraseTries the file is still locked, some program is
 							//definitely using the file; throw an exception.
 							if (tries > FileNameEraseTries)
 								throw new IOException(S._("The file {0} is currently in use and " +
 									"cannot be removed.", info.FullName), e);
+
+							//Let the process locking the file release the lock
+							Thread.Sleep(100);
+							break;
+
 						default:
 							throw;
 					}
@@ -103,14 +105,16 @@ namespace Eraser.DefaultPlugins
 								info.FullName), e);
 
 						case 32: //ERROR_SHARING_VIOLATION
-							//Let the process locking the file release the lock
-							Thread.Sleep(100);
-
 							//If after FilenameEraseTries the file is still locked, some program is
 							//definitely using the file; throw an exception.
 							if (i > FileNameEraseTries)
 								throw new IOException(S._("The file {0} is currently in use and " +
 									"cannot be removed.", info.FullName), e);
+
+							//Let the process locking the file release the lock
+							Thread.Sleep(100);
+							break;
+
 						default:
 							throw;
 					}
@@ -152,14 +156,16 @@ namespace Eraser.DefaultPlugins
 								info.FullName), e);
 
 						case 32: //ERROR_SHARING_VIOLATION
-							//Let the process locking the file release the lock
-							Thread.Sleep(100);
-
 							//If after FilenameEraseTries the file is still locked, some program is
 							//definitely using the file; throw an exception.
 							if (tries > FileNameEraseTries)
 								throw new IOException(S._("The file {0} is currently in use and " +
 									"cannot be removed.", info.FullName), e);
+
+							//Let the process locking the file release the lock
+							Thread.Sleep(100);
+							break;
+
 						default:
 							throw;
 					}
