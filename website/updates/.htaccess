@@ -1,3 +1,0 @@
-php_value log_errors On
-php_value display_errors Off
-php_value error_log ../scripts/error.log
