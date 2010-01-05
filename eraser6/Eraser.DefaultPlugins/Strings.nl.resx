@@ -150,6 +150,9 @@
   <data name="An invalid erasure method was selected." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The file {0} is currently in use and cannot be removed." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
