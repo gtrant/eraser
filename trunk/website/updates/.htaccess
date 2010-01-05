@@ -1,6 +1,3 @@
-php_value upload_max_filesize 256M
-php_value post_max_size 288M
-
 php_value log_errors On
 php_value display_errors Off
 php_value error_log ../scripts/error.log
