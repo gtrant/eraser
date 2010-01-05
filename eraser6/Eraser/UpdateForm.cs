@@ -530,8 +530,9 @@ namespace Eraser
 			WebRequest.DefaultCachePolicy = new HttpRequestCachePolicy(
 				HttpRequestCacheLevel.Refresh);
 			HttpWebRequest req = (HttpWebRequest)
-				WebRequest.Create(new Uri("http://eraser.heidi.ie/updates?action=listupdates&" +
-					"version=" + Assembly.GetExecutingAssembly().GetName().Version.ToString()));
+				WebRequest.Create(new Uri("http://eraser.heidi.ie/scripts/updates?" +
+					"action=listupdates&version=" +
+					Assembly.GetExecutingAssembly().GetName().Version.ToString()));
 			
 			using (WebResponse resp = req.GetResponse())
 			using (Stream strm = resp.GetResponseStream())
