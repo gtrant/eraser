@@ -55,6 +55,8 @@ namespace Eraser
 			this.logTimestampColumn = new System.Windows.Forms.ColumnHeader();
 			this.logSeverityColumn = new System.Windows.Forms.ColumnHeader();
 			this.logMessageColumn = new System.Windows.Forms.ColumnHeader();
+			this.logContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.copySelectedEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clear = new System.Windows.Forms.Button();
 			this.close = new System.Windows.Forms.Button();
 			this.filterSeverityLabel = new System.Windows.Forms.Label();
@@ -63,10 +65,8 @@ namespace Eraser
 			this.filterSessionLabel = new System.Windows.Forms.Label();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.filterSessionCombobox = new System.Windows.Forms.ComboBox();
-			this.logContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-			this.copySelectedEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.tableLayoutPanel1.SuspendLayout();
 			this.logContextMenuStrip.SuspendLayout();
+			this.tableLayoutPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// log
@@ -83,6 +83,7 @@ namespace Eraser
 			this.log.UseCompatibleStateImageBehavior = false;
 			this.log.View = System.Windows.Forms.View.Details;
 			this.log.VirtualMode = true;
+			this.log.ItemActivate += new System.EventHandler(this.log_ItemActivate);
 			this.log.VirtualItemsSelectionRangeChanged += new System.Windows.Forms.ListViewVirtualItemsSelectionRangeChangedEventHandler(this.log_VirtualItemsSelectionRangeChanged);
 			this.log.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.log_RetrieveVirtualItem);
 			this.log.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.log_ItemSelectionChanged);
@@ -98,6 +99,20 @@ namespace Eraser
 			// logMessageColumn
 			// 
 			resources.ApplyResources(this.logMessageColumn, "logMessageColumn");
+			// 
+			// logContextMenuStrip
+			// 
+			this.logContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copySelectedEntriesToolStripMenuItem});
+			this.logContextMenuStrip.Name = "logContextMenuStrip";
+			resources.ApplyResources(this.logContextMenuStrip, "logContextMenuStrip");
+			this.logContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.logContextMenuStrip_Opening);
+			// 
+			// copySelectedEntriesToolStripMenuItem
+			// 
+			this.copySelectedEntriesToolStripMenuItem.Name = "copySelectedEntriesToolStripMenuItem";
+			resources.ApplyResources(this.copySelectedEntriesToolStripMenuItem, "copySelectedEntriesToolStripMenuItem");
+			this.copySelectedEntriesToolStripMenuItem.Click += new System.EventHandler(this.copySelectedEntriesToolStripMenuItem_Click);
 			// 
 			// clear
 			// 
@@ -167,20 +182,6 @@ namespace Eraser
 			this.filterSessionCombobox.Name = "filterSessionCombobox";
 			this.filterSessionCombobox.SelectedIndexChanged += new System.EventHandler(this.filter_Changed);
 			// 
-			// logContextMenuStrip
-			// 
-			this.logContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copySelectedEntriesToolStripMenuItem});
-			this.logContextMenuStrip.Name = "logContextMenuStrip";
-			resources.ApplyResources(this.logContextMenuStrip, "logContextMenuStrip");
-			this.logContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.logContextMenuStrip_Opening);
-			// 
-			// copySelectedEntriesToolStripMenuItem
-			// 
-			this.copySelectedEntriesToolStripMenuItem.Name = "copySelectedEntriesToolStripMenuItem";
-			resources.ApplyResources(this.copySelectedEntriesToolStripMenuItem, "copySelectedEntriesToolStripMenuItem");
-			this.copySelectedEntriesToolStripMenuItem.Click += new System.EventHandler(this.copySelectedEntriesToolStripMenuItem_Click);
-			// 
 			// LogForm
 			// 
 			resources.ApplyResources(this, "$this");
@@ -195,9 +196,9 @@ namespace Eraser
 			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LogForm_FormClosed);
+			this.logContextMenuStrip.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			this.tableLayoutPanel1.PerformLayout();
-			this.logContextMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}

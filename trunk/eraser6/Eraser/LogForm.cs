@@ -161,6 +161,47 @@ namespace Eraser
 			}
 		}
 
+		private void log_ItemActivate(object sender, EventArgs e)
+		{
+			if (selectedEntries.Count < 1)
+				return;
+
+			int currentEntryIndex = 0;
+			LogEntry selectedEntry = new LogEntry();
+			foreach (LogEntry entry in task.Log.Entries[(DateTime)filterSessionCombobox.SelectedItem])
+			{
+				//Only copy entries which meet the display criteria and that they are selected
+				if (!MeetsCriteria(entry))
+					continue;
+				if (!selectedEntries.ContainsKey(currentEntryIndex++))
+					continue;
+
+				selectedEntry = entry;
+				break;
+			}
+
+			//Decide on the icon
+			MessageBoxIcon icon = MessageBoxIcon.None;
+			switch (selectedEntry.Level)
+			{
+				case LogLevel.Information:
+					icon = MessageBoxIcon.Information;
+					break;
+				case LogLevel.Warning:
+					icon = MessageBoxIcon.Warning;
+					break;
+				case LogLevel.Error:
+				case LogLevel.Fatal:
+					icon = MessageBoxIcon.Error;
+					break;
+			}
+
+			//Show the message
+			MessageBox.Show(this, selectedEntry.Message,
+				selectedEntry.Timestamp.ToString("F", CultureInfo.CurrentCulture),
+				MessageBoxButtons.OK, icon);
+		}
+
 		private void logContextMenuStrip_Opening(object sender, CancelEventArgs e)
 		{
 			copySelectedEntriesToolStripMenuItem.Enabled = selectedEntries.Count != 0;
