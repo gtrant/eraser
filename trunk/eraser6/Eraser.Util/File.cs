@@ -149,20 +149,7 @@ namespace Eraser.Util
 		/// <returns>True if the file is protected.</returns>
 		public static bool IsProtectedSystemFile(string filePath)
 		{
-			if (filePath.Length > 255)
-				return false;
-			if (SfcIsFileProtected(IntPtr.Zero, filePath))
-				return true;
-
-			switch (Marshal.GetLastWin32Error())
-			{
-				case 0: //ERROR_SUCCESS
-				case 2: //ERROR_FILE_NOT_FOUND
-					return false;
-
-				default:
-					throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
-			}
+			return SfcIsFileProtected(IntPtr.Zero, filePath);
 		}
 
 		/// <summary>
@@ -222,13 +209,8 @@ namespace Eraser.Util
 		/// </summary>
 		/// <param name="RpcHandle">This parameter must be NULL.</param>
 		/// <param name="ProtFileName">The name of the file.</param>
-		/// <returns>If the file is protected, the return value is true.
-		/// 
-		/// If the file is not protected, the return value is false and
-		/// Marshal.GetLastWin32Error() returns ERROR_FILE_NOT_FOUND. If the
-		/// function fails, Marshal.GetLastWin32Error() will return a different
-		/// error code.</returns>
-		[DllImport("Sfc.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+		/// <returns>If the file is protected, the return value is true.</returns>
+		[DllImport("Sfc.dll", CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		private static extern bool SfcIsFileProtected(IntPtr RpcHandle,
 			string ProtFileName);
