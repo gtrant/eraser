@@ -117,8 +117,7 @@ namespace Eraser.Util
 				//Load the resource DLL. The resource DLL is located in the <LanguageName-RegionName>
 				//subfolder of the folder containing the main assembly
 				string languageID = string.Empty;
-				Assembly languageAssembly = LoadLanguage(Path.GetDirectoryName(
-					Assembly.GetEntryAssembly().Location), Thread.CurrentThread.CurrentUICulture,
+				Assembly languageAssembly = LoadLanguage(Thread.CurrentThread.CurrentUICulture,
 					assembly, out languageID);
 
 				//If we found the language assembly to load, then we load it directly, otherwise
@@ -138,6 +137,19 @@ namespace Eraser.Util
 #else
 			return string.IsNullOrEmpty(result) || result == "(Untranslated)" ? str : Unescape(result);
 #endif
+		}
+
+		/// <summary>
+		/// Gets whether the provided translation exists for the provided assembly.
+		/// </summary>
+		/// <param name="culture">The exact language to check for.</param>
+		/// <param name="assembly">The assembly to check for the presence of a localisation.</param>
+		/// <returns>True if the resource assembly for the given culture and assembly exists.</returns>
+		public static bool LocalisationExists(CultureInfo culture, Assembly assembly)
+		{
+			return System.IO.File.Exists(Path.Combine(
+				Path.Combine(Path.GetDirectoryName(assembly.Location), culture.Name), //Directory
+				Path.GetFileNameWithoutExtension(assembly.Location) + ".resources.dll"));
 		}
 
 		/// <summary>
@@ -165,19 +177,17 @@ namespace Eraser.Util
 		/// resources for <paramref name="culture"/>. The name of the resource DLL will be the
 		/// culture name &gt;languagecode2-country/regioncode2&lt;.
 		/// </summary>
-		/// <param name="directory">The directory to look for assemblies in. Subfolders are not
-		/// included.</param>
 		/// <param name="culture">The culture to load.</param>
 		/// <param name="assembly">The assembly to look for localised resources for.</param>
 		/// <returns>An assembly containing the required resources, or null.</returns>
-		private static Assembly LoadLanguage(string directory, CultureInfo culture, Assembly assembly,
+		private static Assembly LoadLanguage(CultureInfo culture, Assembly assembly,
 			out string languageID)
 		{
 			languageID = string.Empty;
 			string path = string.Empty;
 			while (culture != CultureInfo.InvariantCulture)
 			{
-				path = Path.Combine(directory, culture.Name);
+				path = Path.Combine(Path.GetDirectoryName(assembly.Location), culture.Name);
 				if (System.IO.Directory.Exists(path))
 				{
 					string assemblyPath = Path.Combine(path,

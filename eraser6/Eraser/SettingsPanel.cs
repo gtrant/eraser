@@ -194,10 +194,12 @@ namespace Eraser
 			//Select an intelligent default if the settings are invalid.
 			if (uiLanguage.SelectedIndex == -1)
 			{
-				defaultsList.Add(S._("User interface language"));
-				foreach (Language lang in uiLanguage.Items)
-					if ((CultureInfo)lang == CultureInfo.CurrentUICulture)
+				foreach (Object lang in uiLanguage.Items)
+					if (((Language)lang).Name == "en")
+					{
 						uiLanguage.SelectedItem = lang;
+						break;
+					}
 			}
 			if (eraseFilesMethod.SelectedIndex == -1)
 			{
@@ -406,7 +408,7 @@ namespace Eraser
 				return;
 			}
 
-			if (((Language)uiLanguage.SelectedItem).Name != settings.Language)
+			if (CultureInfo.CurrentUICulture.Name != ((Language)uiLanguage.SelectedItem).Name)
 			{
 				settings.Language = ((Language)uiLanguage.SelectedItem).Name;
 				MessageBox.Show(this, S._("The new UI language will take only effect when " +
