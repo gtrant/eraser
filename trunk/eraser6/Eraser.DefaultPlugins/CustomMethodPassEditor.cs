@@ -115,8 +115,9 @@ namespace Eraser.DefaultPlugins
 		/// <param name="array">The array containing the constant to display.</param>
 		/// <param name="asHex">Sets whether the array should be displayed as a
 		/// hexadecimal string.</param>
-		/// <exception cref="System.FormatException">Thrown when the constant string
-		/// cannot be parsed as a hexadecimal string.</exception>
+		/// <exception cref="System.FormatException">Thrown when the hexadecimal string
+		/// cannot be parsed as a a UTF-8 string, including the presence of NULL
+		/// bytes</exception>
 		/// <returns>A string containing the user-visible representation of the
 		/// input array.</returns>
 		private static string GetConstantStr(byte[] array, bool asHex)
@@ -124,12 +125,19 @@ namespace Eraser.DefaultPlugins
 			if (array == null || array.Length == 0)
 				return string.Empty;
 
+			//Check for the presence of null bytes in the source string. If so,
+			//the display is always hexadecimal.
+			foreach (byte b in array)
+				if (b == 0)
+					throw new DecoderFallbackException("The custom pass constant contains " +
+						"embedded NULL bytes which cannot be represented as text.");
+
 			if (asHex)
 			{
 				StringBuilder displayText = new StringBuilder();
 				foreach (byte b in array)
 					displayText.Append(string.Format(CultureInfo.CurrentCulture,
-						"{0,2} ", Convert.ToString(b, 16)));
+						"{0:X2} ", b, 16));
 				return displayText.ToString();
 			}
 
@@ -179,7 +187,10 @@ namespace Eraser.DefaultPlugins
 					 MessageBoxButtons.OK, MessageBoxIcon.Information,
 					 MessageBoxDefaultButton.Button1,
 					 S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+
+				passTypeHex.CheckedChanged -= passType_CheckedChanged;
 				passTypeHex.Checked = true;
+				passTypeHex.CheckedChanged += passType_CheckedChanged;
 			}
 		}
 

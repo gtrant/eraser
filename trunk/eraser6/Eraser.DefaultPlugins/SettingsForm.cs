@@ -57,10 +57,13 @@ namespace Eraser.DefaultPlugins
 
 			if (fl16MethodCmb.SelectedIndex == -1)
 			{
-				Guid defaultMethodGuid =
+				Guid methodGuid =
 					ManagerLibrary.Settings.DefaultFileErasureMethod;
+				if (methodGuid == new FirstLast16KB().Guid)
+					methodGuid = new Gutmann().Guid;
+				
 				foreach (object item in fl16MethodCmb.Items)
-					if (((ErasureMethod)item).Guid == defaultMethodGuid)
+					if (((ErasureMethod)item).Guid == methodGuid)
 					{
 						fl16MethodCmb.SelectedItem = item;
 						break;
@@ -69,7 +72,8 @@ namespace Eraser.DefaultPlugins
 
 			if (DefaultPlugin.Settings.EraseCustom != null)
 			{
-				customMethods = DefaultPlugin.Settings.EraseCustom;
+				customMethods = new Dictionary<Guid,CustomErasureMethod>(
+					DefaultPlugin.Settings.EraseCustom);
 
 				//Display the whole set on the list.
 				foreach (Guid guid in customMethods.Keys)
@@ -90,14 +94,20 @@ namespace Eraser.DefaultPlugins
 			{
 				//Remove the old definition of the erasure method
 				CustomErasureMethod method = editorForm.Method;
-				removeCustomMethods.Add(method.Guid);
-				customMethod.Items.Remove(item);
-				customMethods.Remove(method.Guid);
+				if (removeCustomMethods.IndexOf(method.Guid) == -1)
+					removeCustomMethods.Add(method.Guid);
 
 				//Add the new definition
-				method = editorForm.Method;
+				foreach (CustomErasureMethod addMethod in addCustomMethods)
+					if (addMethod.Guid == method.Guid)
+					{
+						addCustomMethods.Remove(addMethod);
+						break;
+					}
+
+				customMethods[method.Guid] = method;
 				addCustomMethods.Add(method);
-				AddMethod(method);
+				item.Tag = method;
 			}
 		}
 
@@ -107,7 +117,6 @@ namespace Eraser.DefaultPlugins
 			if (form.ShowDialog() == DialogResult.OK)
 			{
 				CustomErasureMethod method = form.Method;
-				customMethods.Add(method.Guid, method);
 				addCustomMethods.Add(method);
 				AddMethod(method);
 			}
@@ -149,12 +158,15 @@ namespace Eraser.DefaultPlugins
 				ErasureMethodManager.Unregister(guid);
 			}
 
-			//Save the list of custom erasure methods
-			DefaultPlugin.Settings.EraseCustom = customMethods;
-
 			//Update the Erasure method manager on the methods
 			foreach (CustomErasureMethod method in addCustomMethods)
+			{
+				customMethods.Add(method.Guid, method);
 				ErasureMethodManager.Register(new EraseCustom(method), new object[] { method });
+			}
+
+			//Save the list of custom erasure methods
+			DefaultPlugin.Settings.EraseCustom = customMethods;
 
 			//Close the dialog
 			DialogResult = DialogResult.OK;

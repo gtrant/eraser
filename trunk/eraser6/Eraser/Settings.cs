@@ -92,8 +92,9 @@ namespace Eraser
 							catch (SerializationException)
 							{
 								key.DeleteValue(setting);
-								MessageBox.Show(S._("Could not load the setting {0} for plugin {1}. " +
-									"The setting has been lost.", key, pluginID.ToString()),
+								MessageBox.Show(S._("Could not load the setting {0}\\{1} for " +
+										"plugin {2}. The setting has been lost.", key, setting,
+										pluginID.ToString()),
 									S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
 									MessageBoxDefaultButton.Button1,
 									S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
@@ -265,15 +266,23 @@ namespace Eraser
 		}
 
 		/// <summary>
-		/// Gets the current UI culture, correct to the top-level culture (i.e., English
-		/// instead of English (United Kingdom))
+		/// Gets the most specific UI culture with a localisation available, defaulting to English
+		/// if none exist.
 		/// </summary>
 		/// <returns>The CultureInfo of the current UI culture, correct to the top level.</returns>
 		private static CultureInfo GetCurrentCulture()
 		{
+			System.Reflection.Assembly entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
 			CultureInfo culture = CultureInfo.CurrentUICulture;
-			while (culture.Parent != CultureInfo.InvariantCulture)
+			while (culture.Parent != CultureInfo.InvariantCulture &&
+				!S.LocalisationExists(culture, entryAssembly))
+			{
 				culture = culture.Parent;
+			}
+
+			//Default to English if any of our cultures don't exist.
+			if (!S.LocalisationExists(culture, entryAssembly))
+				culture = new CultureInfo("en");
 
 			return culture;
 		}
