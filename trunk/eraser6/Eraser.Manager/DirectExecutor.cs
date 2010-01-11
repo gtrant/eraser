@@ -506,14 +506,23 @@ namespace Eraser.Manager
 				}
 				else
 					throw new UnauthorizedAccessException(S._("The program does not have the " +
-						"required permissions to erase the unused space on disk"));
+						"required permissions to erase the unused space on disk."));
 			}
 
+			//Check whether System Restore has any available checkpoints.
+			if (SystemRestore.GetInstances().Count != 0)
+			{
+				task.Log.LastSessionEntries.Add(new LogEntry(S._("The drive {0} has System " +
+					"Restore or Volume Shadow Copies enabled. This may allow copies of files " +
+					"stored on the disk to be recovered and pose a security concern.",
+					target.Drive), LogLevel.Warning));
+			}
+			
 			//If the user is under disk quotas, log a warning message
 			if (VolumeInfo.FromMountpoint(target.Drive).HasQuota)
-				task.Log.LastSessionEntries.Add(new LogEntry(S._("The drive which is having its " +
-					"unused space erased has disk quotas active. This will prevent the complete " +
-					"erasure of unused space and will pose a security concern"), LogLevel.Warning));
+				task.Log.LastSessionEntries.Add(new LogEntry(S._("The drive {0} has disk quotas " +
+					"active. This will prevent the complete erasure of unused space and may pose " +
+					"a security concern.", target.Drive), LogLevel.Warning));
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = target.Method;
