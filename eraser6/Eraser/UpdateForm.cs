@@ -32,6 +32,7 @@ using System.IO;
 using System.Xml;
 using Eraser.Util;
 using System.Net.Cache;
+using System.Net.Mime;
 using System.Globalization;
 
 namespace Eraser
@@ -686,12 +687,20 @@ namespace Eraser
 					HttpWebRequest req = (HttpWebRequest)WebRequest.Create(reqUri);
 					using (WebResponse resp = req.GetResponse())
 					{
-						byte[] tempBuffer = new byte[16384];
+						//Check for a suggested filename.
+						ContentDisposition contentDisposition = null;
+						foreach (string header in resp.Headers.AllKeys)
+							if (header.ToLowerInvariant() == "content-disposition")
+								contentDisposition = new ContentDisposition(resp.Headers[header]);
+
 						string tempFilePath = Path.Combine(
 							tempDir.FullName, string.Format(CultureInfo.InvariantCulture, "{0}-{1}",
-							++currUpdate, Path.GetFileName(reqUri.GetComponents(UriComponents.Path,
-								UriFormat.Unescaped))));
+							++currUpdate,
+							contentDisposition == null ?
+								Path.GetFileName(reqUri.GetComponents(UriComponents.Path,
+								UriFormat.Unescaped)) : contentDisposition.FileName));
 
+						byte[] tempBuffer = new byte[16384];
 						using (Stream strm = resp.GetResponseStream())
 						using (FileStream tempStrm = new FileStream(tempFilePath, FileMode.CreateNew))
 						using (BufferedStream bufStrm = new BufferedStream(tempStrm))

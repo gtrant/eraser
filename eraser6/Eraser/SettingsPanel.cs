@@ -42,7 +42,6 @@ namespace Eraser
 		public SettingsPanel()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
 
 			//For new plugins, register the callback.
 			Host.Instance.PluginLoaded += OnNewPluginLoaded;
@@ -296,14 +295,9 @@ namespace Eraser
 			{
 				ListBox.SelectedObjectCollection items =
 					plausibleDeniabilityFiles.SelectedItems;
+
 				while (items.Count > 0)
-				{
-					for (int i = 0; i < items.Count; i++)
-						plausibleDeniabilityFiles.Items.Remove(items[i]);
-
-					items = plausibleDeniabilityFiles.SelectedItems;
-				}
-
+					plausibleDeniabilityFiles.Items.Remove(items[0]);
 				plausableDeniabilityFilesRemoveUpdate();
 			}
 		}

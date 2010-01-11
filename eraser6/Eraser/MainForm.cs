@@ -45,12 +45,12 @@ namespace Eraser
 		public MainForm()
 		{
 			InitializeComponent();
+			contentPanel.Controls.Add(SchedulerPage);
+			contentPanel.Controls.Add(SettingsPage);
+			CreateControl();
+
 			UXThemeApi.UpdateControlTheme(this);
 			UXThemeApi.UpdateControlTheme(notificationMenu);
-
-			CreateControl();
-			SettingsPage.CreateControl();
-			SchedulerPage.CreateControl();
 
 			//Connect to the executor task processing and processed events.
 			Program.eraserClient.TaskProcessing += OnTaskProcessing;
@@ -61,6 +61,7 @@ namespace Eraser
 
 			//Set the docking style for each of the pages
 			SchedulerPage.Dock = DockStyle.Fill;
+			SettingsPage.Visible = false;
 
 			//Show the default page.
 			ChangePage(MainFormPage.Scheduler);
@@ -101,9 +102,13 @@ namespace Eraser
 			if (oldPage != CurrPage)
 			{
 				contentPanel.SuspendLayout();
-				contentPanel.Controls.Remove(oldPage);
-				contentPanel.Controls.Add(CurrPage);
 
+				//Hide the old page before showing the new one
+				if (oldPage != null)
+					oldPage.Visible = false;
+
+				//If the page is not set to dock, we need to specify the dimensions of the page
+				//so it fits properly.
 				if (CurrPage.Dock == DockStyle.None)
 				{
 					CurrPage.Anchor = AnchorStyles.Left | AnchorStyles.Right |
@@ -112,6 +117,10 @@ namespace Eraser
 					CurrPage.Top = 0;
 					CurrPage.Width = contentPanel.Width;
 				}
+
+				//Show the new page then bring it to the top of the z-order.
+				CurrPage.Visible = true;
+				CurrPage.BringToFront();
 				contentPanel.ResumeLayout();
 			}
 		}

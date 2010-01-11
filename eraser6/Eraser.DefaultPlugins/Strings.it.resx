@@ -135,6 +135,9 @@
   <data name="Eraser" xml:space="preserve">
     <value>Eraser</value>
   </data>
+  <data name="The pass constant must not be empty." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The input text is invalid for the current data type. Valid hexadecimal characters are the digits 0-9 and letters A-F" xml:space="preserve">
     <value>Il valore indicato non è valido per il tipo di dato. I caratteri esadecimali validi sono i numerii compresi fra 0 e 9 e le lettere fra A e F</value>
   </data>

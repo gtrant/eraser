@@ -42,7 +42,6 @@ namespace Eraser
 		public SchedulerPanel()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
 			UXThemeApi.UpdateControlTheme(schedulerDefaultMenu);
 
 			//Populate the scheduler list-view with the current task list
@@ -253,7 +252,11 @@ namespace Eraser
 
 			//Show a balloon to inform the user
 			MainForm parent = (MainForm)FindForm();
-			if (parent != null && parent.WindowState == FormWindowState.Minimized || !parent.Visible)
+
+			//TODO: Is this still needed?
+			if (parent == null)
+				throw new InvalidOperationException();
+			if (parent.WindowState == FormWindowState.Minimized || !parent.Visible)
 			{
 				string message = null;
 				ToolTipIcon icon = ToolTipIcon.None;
