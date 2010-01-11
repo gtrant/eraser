@@ -282,6 +282,9 @@
   <data name="An invalid type was found when loading the task schedule" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="{0} and {1} other files" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The schedule provided can only belong to one task at a time" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
