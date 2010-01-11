@@ -132,7 +132,7 @@ namespace Eraser.Manager
 					result += Targets[Targets.Count / 2].UIText + ", ";
 					result += Targets[Targets.Count - 1].UIText;
 
-					return S._("{0} and {1} other files", result, Targets.Count - 3);
+					return S._("{0} and {1} other targets", result, Targets.Count - 3);
 				}
 			}
 		}
