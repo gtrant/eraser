@@ -117,15 +117,23 @@ namespace Eraser.Manager
 					return Name;
 
 				string result = string.Empty;
-				if (Targets.Count < 3)
+				if (Targets.Count < 5)
+				{
 					//Simpler case, small set of data.
 					foreach (ErasureTarget tgt in Targets)
 						result += tgt.UIText + ", ";
+
+					return result.Remove(result.Length - 2);
+				}
 				else
+				{
 					//Ok, we've quite a few entries, get the first, the mid and the end.
-					for (int i = 0; i < Targets.Count; i += Targets.Count / 3)
-						result += Targets[i].UIText + ", ";
-				return result.Substring(0, result.Length - 2);
+					result = Targets[0].UIText + ", ";
+					result += Targets[Targets.Count / 2].UIText + ", ";
+					result += Targets[Targets.Count - 1].UIText;
+
+					return S._("{0} and {1} other files", result, Targets.Count - 3);
+				}
 			}
 		}
 
@@ -455,7 +463,7 @@ namespace Eraser.Manager
 
 		public override string UIText
 		{
-			get { return Path; }
+			get { return System.IO.Path.GetFileName(Path); }
 		}
 
 		public override long TotalData
