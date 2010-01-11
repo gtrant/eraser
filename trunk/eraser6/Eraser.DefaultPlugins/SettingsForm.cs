@@ -94,20 +94,25 @@ namespace Eraser.DefaultPlugins
 			{
 				//Remove the old definition of the erasure method
 				CustomErasureMethod method = editorForm.Method;
-				if (removeCustomMethods.IndexOf(method.Guid) == -1)
+				if (customMethods.ContainsKey(method.Guid) &&
+					removeCustomMethods.IndexOf(method.Guid) == -1)
+				{
 					removeCustomMethods.Add(method.Guid);
+				}
 
 				//Add the new definition
 				foreach (CustomErasureMethod addMethod in addCustomMethods)
+				{
 					if (addMethod.Guid == method.Guid)
 					{
 						addCustomMethods.Remove(addMethod);
 						break;
 					}
+				}
 
-				customMethods[method.Guid] = method;
 				addCustomMethods.Add(method);
 				item.Tag = method;
+				UpdateMethod(item);
 			}
 		}
 
@@ -182,6 +187,17 @@ namespace Eraser.DefaultPlugins
 			ListViewItem item = customMethod.Items.Add(method.Name);
 			item.SubItems.Add(method.Passes.Length.ToString(CultureInfo.CurrentCulture));
 			item.Tag = method;
+		}
+
+		/// <summary>
+		/// Updates the UI which represents the given custom erasure method.
+		/// </summary>
+		/// <param name="item">The method to update.</param>
+		private void UpdateMethod(ListViewItem item)
+		{
+			CustomErasureMethod method = (CustomErasureMethod)item.Tag;
+			item.Text = method.Name;
+			item.SubItems[1].Text = method.Passes.Length.ToString(CultureInfo.CurrentCulture);
 		}
 
 		private Dictionary<Guid, CustomErasureMethod> customMethods;

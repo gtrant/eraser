@@ -169,13 +169,19 @@ namespace Eraser.DefaultPlugins
 
 		private void passesAddBtn_Click(object sender, EventArgs e)
 		{
+			//Save the current pass being edited
+			if (currentPass != null)
+				SavePass(currentPass);
+
+			//Then create a new, random pass, adding it to the list
 			ErasureMethodPass pass = new ErasureMethodPass(ErasureMethod.WriteRandom, null);
 			ListViewItem item = AddPass(pass);
 
+			//If a pass is currently selected, insert the pass after the currently selected one.
 			if (passesLv.SelectedIndices.Count > 0)
 			{
 				item.Remove();
-				passesLv.Items.Insert(passesLv.SelectedIndices[passesLv.SelectedIndices.Count - 1],
+				passesLv.Items.Insert(passesLv.SelectedIndices[passesLv.SelectedIndices.Count - 1] + 1,
 					item);
 				RenumberPasses();
 			}
@@ -191,6 +197,9 @@ namespace Eraser.DefaultPlugins
 
 		private void passesDuplicateBtn_Click(object sender, EventArgs e)
 		{
+			//Save the current pass to prevent data loss
+			SavePass(currentPass);
+
 			foreach (ListViewItem item in passesLv.SelectedItems)
 			{
 				ErasureMethodPass oldPass = (ErasureMethodPass)item.Tag;
@@ -252,7 +261,10 @@ namespace Eraser.DefaultPlugins
 			if (!e.Item.Selected)
 			{
 				if (e.Item == currentPass)
+				{
 					SavePass(e.Item);
+					currentPass = null;
+				}
 			}
 			else if (passesLv.SelectedIndices.Count == 1)
 			{

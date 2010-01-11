@@ -1,9 +1,28 @@
+/* 
+ * $Id$
+ * Copyright 2008-2009 The Eraser Project
+ * Original Author: Joel Low <lowjoel@users.sourceforge.net>
+ * Modified By:
+ * 
+ * This file is part of Eraser.
+ * 
+ * Eraser is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * A copy of the GNU General Public License can be found at
+ * <http://www.gnu.org/licenses/>.
+ */
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
@@ -93,11 +112,11 @@ namespace Eraser.DefaultPlugins
 				string str = text.Replace(" ", "").ToUpper(CultureInfo.CurrentCulture);
 				List<byte> passConstantList = new List<byte>();
 
-				if (str.Length >= 2)
+				if (!string.IsNullOrEmpty(str))
 				{
 					for (int i = 0, j = str.Length - 2; i < j; i += 2)
 						passConstantList.Add(Convert.ToByte(str.Substring(i, 2), 16));
-					passConstantList.Add(Convert.ToByte(str.Substring(str.Length - 2), 16));
+					passConstantList.Add(Convert.ToByte(str.Substring(Math.Max(0, str.Length - 2)), 16));
 				}
 
 				byte[] result = new byte[passConstantList.Count];
@@ -125,13 +144,6 @@ namespace Eraser.DefaultPlugins
 			if (array == null || array.Length == 0)
 				return string.Empty;
 
-			//Check for the presence of null bytes in the source string. If so,
-			//the display is always hexadecimal.
-			foreach (byte b in array)
-				if (b == 0)
-					throw new DecoderFallbackException("The custom pass constant contains " +
-						"embedded NULL bytes which cannot be represented as text.");
-
 			if (asHex)
 			{
 				StringBuilder displayText = new StringBuilder();
@@ -140,9 +152,19 @@ namespace Eraser.DefaultPlugins
 						"{0:X2} ", b, 16));
 				return displayText.ToString();
 			}
+			else
+			{
+				//Check for the presence of null bytes in the source string. If so,
+				//the display is always hexadecimal.
+				foreach (byte b in array)
+					if (b == 0)
+						throw new DecoderFallbackException("The custom pass constant contains " +
+							"embedded NULL bytes which cannot be represented as text.");
 
-			UTF8Encoding encoding = new UTF8Encoding(false, true);
-			return encoding.GetString(array);
+				//Parse the binary data as UTF-8
+				UTF8Encoding encoding = new UTF8Encoding(false, true);
+				return encoding.GetString(array);
+			}
 		}
 
 		/// <summary>
@@ -182,15 +204,26 @@ namespace Eraser.DefaultPlugins
 			}
 			catch (DecoderFallbackException)
 			{
+				passTypeHex.CheckedChanged -= passType_CheckedChanged;
+				passTypeHex.Checked = true;
+				passTypeHex.CheckedChanged += passType_CheckedChanged;
+
 				MessageBox.Show(this, S._("The pass constant cannot be displayed as " +
 					"text because it contains invalid characters."), S._("Eraser"),
 					 MessageBoxButtons.OK, MessageBoxIcon.Information,
 					 MessageBoxDefaultButton.Button1,
 					 S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+			}
+		}
 
-				passTypeHex.CheckedChanged -= passType_CheckedChanged;
-				passTypeHex.Checked = true;
-				passTypeHex.CheckedChanged += passType_CheckedChanged;
+		private void CustomMethodPassEditor_Validating(object sender, CancelEventArgs e)
+		{
+			if ((passTypeText.Checked || passTypeHex.Checked) &&
+				(passData == null || passData.Length == 0))
+			{
+				errorProvider.SetError(passTxt, S._("The pass constant must not be empty."));
+				errorProvider.SetIconPadding(passTxt, -errorProvider.Icon.Width);
+				e.Cancel = true;
 			}
 		}
 
@@ -208,6 +241,11 @@ namespace Eraser.DefaultPlugins
 					"for the current data type. Valid hexadecimal characters are the " +
 					"digits 0-9 and letters A-F"));
 			}
+		}
+
+		private void passTxt_Validated(object sender, EventArgs e)
+		{
+			errorProvider.Clear();
 		}
 
 		private void passType_CheckedChanged(object sender, EventArgs e)
