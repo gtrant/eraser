@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;nameLbl.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>9</value>
   </data>
   <data name="nameTxt.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -172,7 +172,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;nameTxt.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="passesLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -196,19 +196,19 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;passesLv.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>7</value>
   </data>
   <data name="passesColNumber.Text" xml:space="preserve">
-    <value>Pass Number</value>
+    <value />
   </data>
   <data name="passesColNumber.Width" type="System.Int32, mscorlib">
-    <value>90</value>
+    <value>30</value>
   </data>
   <data name="passesColType.Text" xml:space="preserve">
     <value>Data</value>
   </data>
   <data name="passesColType.Width" type="System.Int32, mscorlib">
-    <value>135</value>
+    <value>195</value>
   </data>
   <data name="passesAddBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -238,7 +238,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;passesAddBtn.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>6</value>
   </data>
   <data name="passesRemoveBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -271,7 +271,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;passesRemoveBtn.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="passesDuplicateBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -304,91 +304,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;passesDuplicateBtn.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="passesMoveUpBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="passesMoveUpBtn.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="passesMoveUpBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="passesMoveUpBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 147</value>
-  </data>
-  <data name="passesMoveUpBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 23</value>
-  </data>
-  <data name="passesMoveUpBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="passesMoveUpBtn.Text" xml:space="preserve">
-    <value>Move Up</value>
-  </data>
-  <data name="&gt;&gt;passesMoveUpBtn.Name" xml:space="preserve">
-    <value>passesMoveUpBtn</value>
-  </data>
-  <data name="&gt;&gt;passesMoveUpBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;passesMoveUpBtn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;passesMoveUpBtn.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="passesMoveDownBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="passesMoveDownBtn.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="passesMoveDownBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="passesMoveDownBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 176</value>
-  </data>
-  <data name="passesMoveDownBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 23</value>
-  </data>
-  <data name="passesMoveDownBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="passesMoveDownBtn.Text" xml:space="preserve">
-    <value>Move Down</value>
-  </data>
-  <data name="&gt;&gt;passesMoveDownBtn.Name" xml:space="preserve">
-    <value>passesMoveDownBtn</value>
-  </data>
-  <data name="&gt;&gt;passesMoveDownBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;passesMoveDownBtn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;passesMoveDownBtn.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="passGrp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="passEditor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 13</value>
-  </data>
-  <data name="passEditor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>335, 123</value>
-  </data>
-  <data name="passEditor.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;passEditor.Name" xml:space="preserve">
     <value>passEditor</value>
   </data>
   <data name="&gt;&gt;passEditor.Type" xml:space="preserve">
-    <value>Eraser.DefaultPlugins.CustomMethodPassEditor, Eraser.DefaultPlugins, Version=6.0.0.1, Culture=neutral, PublicKeyToken=4411c113eac74bb2</value>
+    <value>Eraser.DefaultPlugins.CustomMethodPassEditor, Eraser.DefaultPlugins, Version=6.0.6.1498, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
   </data>
   <data name="&gt;&gt;passEditor.Parent" xml:space="preserve">
     <value>passGrp</value>
@@ -422,6 +347,30 @@
   </data>
   <data name="&gt;&gt;passGrp.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="passEditor.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="passEditor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="passEditor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>335, 123</value>
+  </data>
+  <data name="passEditor.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;passEditor.Name" xml:space="preserve">
+    <value>passEditor</value>
+  </data>
+  <data name="&gt;&gt;passEditor.Type" xml:space="preserve">
+    <value>Eraser.DefaultPlugins.CustomMethodPassEditor, Eraser.DefaultPlugins, Version=6.0.6.1498, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
+  </data>
+  <data name="&gt;&gt;passEditor.Parent" xml:space="preserve">
+    <value>passGrp</value>
+  </data>
+  <data name="&gt;&gt;passEditor.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="randomizeChk.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
