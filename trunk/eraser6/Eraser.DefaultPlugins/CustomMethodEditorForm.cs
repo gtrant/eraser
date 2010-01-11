@@ -151,20 +151,8 @@ namespace Eraser.DefaultPlugins
 		/// </summary>
 		private void EnableButtons()
 		{
-			passesRemoveBtn.Enabled = passesDuplicateBtn.Enabled = passesMoveUpBtn.Enabled =
-				passesMoveDownBtn.Enabled = passesLv.SelectedItems.Count >= 1;
+			passesRemoveBtn.Enabled = passesDuplicateBtn.Enabled = passesLv.SelectedItems.Count >= 1;
 			passGrp.Enabled = passEditor.Enabled = passesLv.SelectedItems.Count == 1;
-
-			ListView.SelectedListViewItemCollection items = passesLv.SelectedItems;
-			if (items.Count > 0)
-			{
-				foreach (ListViewItem item in items)
-				{
-					int index = item.Index;
-					passesMoveUpBtn.Enabled = passesMoveUpBtn.Enabled && index > 0;
-					passesMoveDownBtn.Enabled = passesMoveDownBtn.Enabled && index < passesLv.Items.Count - 1;
-				}
-			}
 		}
 
 		private void passesAddBtn_Click(object sender, EventArgs e)
@@ -209,48 +197,114 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		private void passesMoveUpBtn_Click(object sender, EventArgs e)
+		private void passesLv_ItemDrag(object sender, ItemDragEventArgs e)
 		{
-			//Save the current pass to prevent data loss
+			//Save the currently edited pass before allowing the drag & drop operation.
 			SavePass(currentPass);
 
-			foreach (ListViewItem item in passesLv.SelectedItems)
-			{
-				//Insert the current item into the index before, only if the item has got
-				//space to move up!
-				int index = item.Index;
-				if (index >= 1)
-				{
-					passesLv.Items.RemoveAt(index);
-					passesLv.Items.Insert(index - 1, item);
-				}
-			}
-
-			RenumberPasses();
-			EnableButtons();
+			//Then initiate the drag & drop.
+			passesLv.DoDragDrop(passesLv.SelectedItems, DragDropEffects.All);
 		}
 
-		private void passesMoveDownBtn_Click(object sender, EventArgs e)
+		private void passesLv_DragEnter(object sender, DragEventArgs e)
 		{
-			//Save the current pass to prevent data loss
-			SavePass(currentPass);
+			ListView.SelectedListViewItemCollection items =
+				e.Data.GetData(typeof(ListView.SelectedListViewItemCollection)) as
+					ListView.SelectedListViewItemCollection;
+			if (items == null)
+				return;
 
-			ListView.SelectedListViewItemCollection items = passesLv.SelectedItems;
-			for (int i = items.Count; i-- != 0; )
+			e.Effect = DragDropEffects.Move;
+		}
+
+		ListViewItem lastInsertionPoint = null;
+		private void passesLv_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+		{
+			e.UseDefaultCursors = true;
+			Point mousePoint = passesLv.PointToClient(Cursor.Position);
+			ListViewItem insertionPoint = GetInsertionPoint(mousePoint);
+
+			if (insertionPoint != lastInsertionPoint)
 			{
-				//Insert the current item into the index after, only if the item has got
-				//space to move down.
-				ListViewItem item = items[i];
-				int index = item.Index;
-				if (index < passesLv.Items.Count - 1)
+				passesLv.Invalidate();
+				passesLv.Update();
+
+				using (Graphics g = passesLv.CreateGraphics())
 				{
-					passesLv.Items.RemoveAt(index);
-					passesLv.Items.Insert(index + 1, item);
+					//Only handle the exception: when insertionPoint is null, the item should
+					//be appended to the back of the listview.
+					if (insertionPoint == null)
+					{
+						if (passesLv.Items.Count > 0)
+						{
+							ListViewItem lastItem = passesLv.Items[passesLv.Items.Count - 1];
+							g.FillRectangle(new SolidBrush(Color.Black),
+								lastItem.Bounds.Left, lastItem.Bounds.Bottom - 1, passesLv.Width, 2);
+						}
+						else
+						{
+							g.FillRectangle(new SolidBrush(Color.Black),
+								   0, 0, passesLv.Width, 2);
+						}
+					}
+					else
+					{
+						g.FillRectangle(new SolidBrush(Color.Black),
+							insertionPoint.Bounds.Left, insertionPoint.Bounds.Top - 1, passesLv.Width, 2);
+					}
 				}
+
+				lastInsertionPoint = insertionPoint;
+			}
+		}
+
+		private void passesLv_DragDrop(object sender, DragEventArgs e)
+		{
+			//Remove the insertion mark
+			lastInsertionPoint = null;
+
+			//Get the item we dragged and the item we dropped over.
+			ListView.SelectedListViewItemCollection draggedItems =
+				e.Data.GetData(typeof(ListView.SelectedListViewItemCollection)) as
+					ListView.SelectedListViewItemCollection;
+			List<ListViewItem> items = new List<ListViewItem>(draggedItems.Count);
+			foreach (ListViewItem item in draggedItems)
+				items.Add(item);
+			Point mousePoint = passesLv.PointToClient(Cursor.Position);
+			ListViewItem dropItem = GetInsertionPoint(mousePoint);
+
+			//If we do not have an item, it is not a valid drag & drop operation.
+			if (items == null || items.Count == 0)
+				return;
+
+			//Ignore the operation if the drag source and the destination items match.
+			if (items.IndexOf(dropItem) != -1)
+				return;
+
+			//Prevent the listview from refreshing to speed things up.
+			passesLv.BeginUpdate();
+			passesLv.Invalidate();
+
+			//Remove the item we dragged
+			foreach (ListViewItem item in items)
+				item.Remove();
+
+			//If we don't have an item we dropped over, it's the last item in the list.
+			if (dropItem == null)
+			{
+				foreach (ListViewItem item in items)
+					passesLv.Items.Add(item);
+			}
+			else
+			{
+				foreach (ListViewItem item in items)
+					passesLv.Items.Insert(dropItem.Index, item);
 			}
 
+			//Renumber the passes for congruency
 			RenumberPasses();
 			EnableButtons();
+			passesLv.EndUpdate();
 		}
 
 		private void passesLv_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -271,7 +325,35 @@ namespace Eraser.DefaultPlugins
 				DisplayPass(passesLv.SelectedItems[0]);
 			}
 		}
-		
+
+		/// <summary>
+		/// Calculates the item to insert the new dragged item before, based on
+		/// mouse coordinates.
+		/// </summary>
+		/// <param name="point">The current location of the cursor.</param>
+		/// <returns>The item to insert the new item before, or null if the item
+		/// should be appended to the list.</returns>
+		private ListViewItem GetInsertionPoint(Point point)
+		{
+			ListViewItem item = passesLv.GetItemAt(0, point.Y);
+			if (item == null)
+				return null;
+
+			bool beforeItem = point.Y < item.Bounds.Height / 2 + item.Bounds.Y;
+			if (beforeItem)
+			{
+				return item;
+			}
+			else if (item.Index == passesLv.Items.Count - 1)
+			{
+				return null;
+			}
+			else
+			{
+				return passesLv.Items[item.Index + 1];
+			}
+		}
+
 		private void okBtn_Click(object sender, EventArgs e)
 		{
 			//Clear the errorProvider status
