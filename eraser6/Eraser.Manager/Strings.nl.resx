@@ -123,10 +123,13 @@
   <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk" xml:space="preserve">
+  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The drive which is having its unused space erased has disk quotas active. This will prevent the complete erasure of unused space and will pose a security concern" xml:space="preserve">
+  <data name="The drive {0} has System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The drive {0} has disk quotas active. This will prevent the complete erasure of unused space and may pose a security concern." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Searching for files' cluster tips..." xml:space="preserve">

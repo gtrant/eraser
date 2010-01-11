@@ -123,11 +123,14 @@
   <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
     <value>Il programma non ha i permessi richiesti per pulire lo spazio non utilizzato sul disco. Eseguire il programma come amministratore e riprovare l'operazione</value>
   </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk" xml:space="preserve">
-    <value>Il programma non ha i permessi richiesti per pulire lo spazio non utilizzato sul disco</value>
+  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
-  <data name="The drive which is having its unused space erased has disk quotas active. This will prevent the complete erasure of unused space and will pose a security concern" xml:space="preserve">
-    <value>Il disco di cui deve essere pulito lo spazio libero ha abilitato il "disk quota". Ciò impedisce la pulizia completa dello spazio libero e può determinare problemi di sicurezza</value>
+  <data name="The drive {0} has System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The drive {0} has disk quotas active. This will prevent the complete erasure of unused space and may pose a security concern." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Searching for files' cluster tips..." xml:space="preserve">
     <value>Ricerca dei cluster tips dei files...</value>
