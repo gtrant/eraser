@@ -43,7 +43,9 @@ namespace Eraser.Util
 				control.Font = new Font(SystemFonts.MessageBoxFont.FontFamily,
 					control.Font.Size, control.Font.Style);
 
-			if (control is ListView)
+			if (control is ButtonBase)
+				UpdateControlTheme((ButtonBase)control);
+			else if (control is ListView)
 				UpdateControlTheme((ListView)control);
 			else if (control is ToolStrip)
 				UpdateControlTheme((ToolStrip)control);
@@ -53,6 +55,16 @@ namespace Eraser.Util
 			
 			foreach (Control child in control.Controls)
 				UpdateControlTheme(child);
+		}
+
+		/// <summary>
+		/// Updates the control's theme to fit in with the latest Windows visuals.
+		/// </summary>
+		/// <param name="button">The ButtonBase control to set the theme on.</param>
+		public static void UpdateControlTheme(ButtonBase button)
+		{
+			if (button.FlatStyle == FlatStyle.Standard)
+				button.FlatStyle = FlatStyle.System;
 		}
 
 		/// <summary>
