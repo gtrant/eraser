@@ -21,7 +21,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
@@ -34,6 +33,8 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
+using System.ComponentModel;
+using ProgressChangedEventArgs = Eraser.Manager.ProgressChangedEventArgs;
 
 namespace Eraser
 {
@@ -206,18 +207,19 @@ namespace Eraser
 		/// <summary>
 		/// Handles the progress event by the task.
 		/// </summary>
-		void task_ProgressChanged(object sender, TaskProgressEventArgs e)
+		void task_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			//Make sure we handle the event in the main thread as this requires
 			//GUI calls.
 			if (scheduler.InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskProgressEventArgs>(task_ProgressChanged), sender, e);
+				Invoke((EventHandler<ProgressChangedEventArgs>)task_ProgressChanged, sender, e);
 				return;
 			}
 
 			//Update the progress bar
-			schedulerProgress.Value = (int)(e.OverallProgress * 1000.0);
+			ErasureTarget target = (ErasureTarget)sender;
+			schedulerProgress.Value = (int)(target.Task.Progress.Progress * 1000.0);
 		}
 
 		/// <summary>

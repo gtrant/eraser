@@ -535,29 +535,29 @@ namespace Eraser
 					"action=listupdates&version=" +
 					Assembly.GetExecutingAssembly().GetName().Version.ToString()));
 			
-			using (WebResponse resp = req.GetResponse())
-			using (Stream strm = resp.GetResponseStream())
+			using (WebResponse response = req.GetResponse())
+			using (Stream responseStream = response.GetResponseStream())
+			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				//Download the response
-				int bytesRead = 0;
-				byte[] buffer = new byte[16384];
-				List<byte> responseBuffer = new List<byte>();
-				while ((bytesRead = strm.Read(buffer, 0, buffer.Length)) != 0)
-				{
-					byte[] tmpDest = new byte[bytesRead];
-					Buffer.BlockCopy(buffer, 0, tmpDest, 0, bytesRead);
-					responseBuffer.AddRange(tmpDest);
+				Manager.ProgressManager progress = new Manager.ProgressManager();
+				progress.Total = response.ContentLength;
 
-					float progress = responseBuffer.Count / (float)resp.ContentLength;
-					OnProgress(new ProgressEventArgs(progress, progress, null,
+				//Download the response
+				int lastRead = 0;
+				byte[] buffer = new byte[16384];
+				while ((lastRead = responseStream.Read(buffer, 0, buffer.Length)) != 0)
+				{
+					memoryStream.Write(buffer, 0, lastRead);
+					progress.Completed = memoryStream.Position;
+					OnProgress(new ProgressEventArgs(progress.Progress, progress.Progress, null,
 						S._("{0} of {1} downloaded",
-							Util.File.GetHumanReadableFilesize(responseBuffer.Count),
-							Util.File.GetHumanReadableFilesize(resp.ContentLength))));
+							Util.File.GetHumanReadableFilesize(progress.Completed),
+							Util.File.GetHumanReadableFilesize(progress.Total))));
 				}
 
 				//Parse it.
-				using (MemoryStream mStrm = new MemoryStream(responseBuffer.ToArray()))
-					ParseUpdateList(mStrm);
+				memoryStream.Position = 0;
+				ParseUpdateList(memoryStream);
 			}
 		}
 
@@ -670,10 +670,16 @@ namespace Eraser
 
 			int currUpdate = 0;
 			Dictionary<string, UpdateInfo> tempFilesMap = new Dictionary<string, UpdateInfo>();
+			Manager.SteppedProgressManager progress = new Manager.SteppedProgressManager();
 			foreach (UpdateInfo update in downloadQueue)
 			{
 				try
 				{
+					//Add the update to the overall progress.
+					Manager.ProgressManager step = new Eraser.Manager.ProgressManager();
+					progress.Steps.Add(new Manager.SteppedProgressManager.Step(
+						step, 1.0f / downloadQueue.Count));
+
 					//Decide on the URL to connect to. The Link of the update may
 					//be a relative path (relative to the selected mirror) or an
 					//absolute path (which we have no choice)
@@ -700,21 +706,22 @@ namespace Eraser
 								Path.GetFileName(reqUri.GetComponents(UriComponents.Path,
 								UriFormat.Unescaped)) : contentDisposition.FileName));
 
-						byte[] tempBuffer = new byte[16384];
-						using (Stream strm = resp.GetResponseStream())
-						using (FileStream tempStrm = new FileStream(tempFilePath, FileMode.CreateNew))
-						using (BufferedStream bufStrm = new BufferedStream(tempStrm))
+						using (Stream responseStream = resp.GetResponseStream())
+						using (FileStream fileStream = new FileStream(tempFilePath, FileMode.CreateNew))
 						{
+							//Update the progress of this step
+							step.Total = resp.ContentLength;
+
 							//Copy the information into the file stream
-							int readBytes = 0;
-							while ((readBytes = strm.Read(tempBuffer, 0, tempBuffer.Length)) != 0)
+							int lastRead = 0;
+							byte[] buffer = new byte[16384];
+							while ((lastRead = responseStream.Read(buffer, 0, buffer.Length)) != 0)
 							{
-								bufStrm.Write(tempBuffer, 0, readBytes);
+								fileStream.Write(buffer, 0, lastRead);
 
 								//Compute progress
-								float itemProgress = tempStrm.Position / (float)resp.ContentLength;
-								float overallProgress = (currUpdate - 1 + itemProgress) / downloadQueue.Count;
-								OnProgress(new ProgressEventArgs(itemProgress, overallProgress,
+								step.Completed = fileStream.Position;
+								OnProgress(new ProgressEventArgs(step.Progress, progress.Progress,
 									update, S._("Downloading: {0}", update.Name)));
 							}
 						}
@@ -723,7 +730,8 @@ namespace Eraser
 						tempFilesMap.Add(tempFilePath, update);
 
 						//Let the event handler know the download is complete.
-						OnProgress(new ProgressEventArgs(1.0f, (float)currUpdate / downloadQueue.Count,
+						step.Completed = step.Total;
+						OnProgress(new ProgressEventArgs(step.Progress, progress.Progress,
 							update, S._("Downloaded: {0}", update.Name)));
 					}
 				}
@@ -746,17 +754,18 @@ namespace Eraser
 		/// <see cref="DownloadUpdates"/>.</param>
 		public void InstallUpdates(object value)
 		{
+			Manager.ProgressManager progress = new Manager.ProgressManager();
 			Dictionary<string, UpdateInfo> tempFiles = (Dictionary<string, UpdateInfo>)value;
 			Dictionary<string, UpdateInfo>.KeyCollection files = tempFiles.Keys;
-			int currItem = 0;
 
 			try
 			{
+				progress.Total = files.Count;
 				foreach (string path in files)
 				{
 					UpdateInfo item = tempFiles[path];
-					float progress = (float)currItem++ / files.Count;
-					OnProgress(new ProgressEventArgs(0.0f, progress,
+					++progress.Completed;
+					OnProgress(new ProgressEventArgs(0.0f, progress.Progress,
 						item, S._("Installing {0}", item.Name)));
 
 					System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo();
@@ -766,11 +775,11 @@ namespace Eraser
 					System.Diagnostics.Process process = System.Diagnostics.Process.Start(info);
 					process.WaitForExit(Int32.MaxValue);
 					if (process.ExitCode == 0)
-						OnProgress(new ProgressEventArgs(1.0f, progress,
+						OnProgress(new ProgressEventArgs(1.0f, progress.Progress,
 							item, S._("Installed {0}", item.Name)));
 					else
 						OnProgress(new ProgressErrorEventArgs(new ProgressEventArgs(1.0f,
-							progress, item, S._("Error installing {0}", item.Name)),
+							progress.Progress, item, S._("Error installing {0}", item.Name)),
 							new ApplicationException(S._("The installer exited with an error code {0}",
 								process.ExitCode))));
 				}

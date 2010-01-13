@@ -160,15 +160,8 @@ namespace Eraser.Manager
 		/// </summary>
 		public bool Canceled
 		{
-			get
-			{
-				return canceled;
-			}
-
-			internal set
-			{
-				canceled = value;
-			}
+			get;
+			internal set;
 		}
 
 		/// <summary>
@@ -205,10 +198,27 @@ namespace Eraser.Manager
 		/// </summary>
 		public Logger Log { get; private set; }
 
-		private Schedule schedule;
+		/// <summary>
+		/// The progress manager object which manages the progress of this task.
+		/// </summary>
+		public SteppedProgressManager Progress
+		{
+			get
+			{
+				if (!Executing)
+					throw new InvalidOperationException("The progress of an erasure can only " +
+						"be queried when the task is being executed.");
 
-		/// <see cref="Canceled"/>
-		private volatile bool canceled;
+				return progress;
+			}
+			private set
+			{
+				progress = value;
+			}
+		}
+
+		private Schedule schedule;
+		private SteppedProgressManager progress;
 
 		#region Events
 		/// <summary>
@@ -224,7 +234,7 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The event object holding all event handlers.
 		/// </summary>
-		public EventHandler<TaskProgressEventArgs> ProgressChanged { get; set; }
+		public EventHandler<ProgressChangedEventArgs> ProgressChanged { get; set; }
 
 		/// <summary>
 		/// The completion of the execution of a task.
@@ -249,16 +259,34 @@ namespace Eraser.Manager
 			if (TaskStarted != null)
 				TaskStarted(this, e);
 			Executing = true;
+			Progress = new SteppedProgressManager();
 		}
 
 		/// <summary>
-		/// Broadcasts a ProgressChanged event.
+		/// Broadcasts a ProgressChanged event. The sender will be the erasure target
+		/// which broadcast this event; e.UserState will contain extra information
+		/// about the progress which is stored as a TaskProgressChangedEventArgs
+		/// object.
 		/// </summary>
+		/// <param name="sender">The <see cref="ErasureTarget"/> which is reporting
+		/// progress.</param>
 		/// <param name="e">The new progress value.</param>
-		internal void OnProgressChanged(TaskProgressEventArgs e)
+		/// <exception cref="ArgumentException">e.UserState must be of the type
+		/// <see cref="TaskProgressEventargs"/></exception>
+		/// <exception cref="ArgumentNullException">Both sender and e cannot be null.</exception>
+		internal void OnProgressChanged(ErasureTarget sender, ProgressChangedEventArgs e)
 		{
+			if (sender == null)
+				throw new ArgumentNullException("sender");
+			if (e == null)
+				throw new ArgumentNullException("sender");
+			if (e.UserState.GetType() != typeof(TaskProgressChangedEventArgs))
+				throw new ArgumentException("The Task.OnProgressChanged event expects a " +
+					"TaskProgressEventArgs argument for the ProgressChangedEventArgs' UserState " +
+					"object.", "e");
+
 			if (ProgressChanged != null)
-				ProgressChanged(this, e);
+				ProgressChanged(sender, e);
 		}
 
 		/// <summary>
@@ -270,6 +298,7 @@ namespace Eraser.Manager
 			if (TaskFinished != null)
 				TaskFinished(this, e);
 			Executing = false;
+			Progress = null;
 		}
 		#endregion
 	}
@@ -357,6 +386,15 @@ namespace Eraser.Manager
 		/// Erasure method to use for the target.
 		/// </summary>
 		private ErasureMethod method;
+
+		/// <summary>
+		/// The progress of this target.
+		/// </summary>
+		public ProgressManagerBase Progress
+		{
+			get;
+			internal set;
+		}
 	}
 
 	/// <summary>
@@ -988,83 +1026,40 @@ namespace Eraser.Manager
 	}
 
 	/// <summary>
-	/// A Event argument object containing the progress of the task.
+	/// Stores extra information in the <see cref="ProgressChangedEventArgs"/>
+	/// structure that is not conveyed in the ProgressManagerBase classes.
 	/// </summary>
-	public class TaskProgressEventArgs : TaskEventArgs
+	public class TaskProgressChangedEventArgs
 	{
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		/// <param name="task">The task being run.</param>
-		public TaskProgressEventArgs(Task task)
-			: base(task)
+		/// <param name="itemName">The item whose erasure progress is being erased.</param>
+		/// <param name="itemPass">The current pass number for this item.</param>
+		/// <param name="itemTotalPasses">The total number of passes to complete erasure
+		/// of this item.</param>
+		public TaskProgressChangedEventArgs(string itemName, int itemPass,
+			int itemTotalPasses)
 		{
-			CurrentItemPass = 1;
+			ItemName = itemName;
+			ItemPass = itemPass;
+			ItemTotalPasses = itemTotalPasses;
 		}
 
 		/// <summary>
-		/// A number from 0 to 1 detailing the overall progress of the task.
+		/// The file name of the item being erased.
 		/// </summary>
-		public float OverallProgress
-		{
-			get { return overallProgress; }
-		}
+		public string ItemName { get; private set; }
 
 		/// <summary>
-		/// The amount of time left for the operation to complete, in seconds.
+		/// The pass number of a multi-pass erasure method.
 		/// </summary>
-		public TimeSpan TimeLeft { get; internal set; }
-
-		/// <summary>
-		/// The current erasure target - the current item being erased.
-		/// </summary>
-		public ErasureTarget CurrentTarget { get; internal set; }
-
-		/// <summary>
-		/// The current index of the target.
-		/// </summary>
-		public int CurrentTargetIndex { get; internal set; }
+		public int ItemPass { get; private set; }
 
 		/// <summary>
 		/// The total number of passes to complete before this erasure method is
 		/// completed.
 		/// </summary>
-		public int CurrentTargetTotalPasses { get; internal set; }
-
-		/// <summary>
-		/// The stage of the erasure the executor is at.
-		/// </summary>
-		public string CurrentTargetStatus { get; internal set; }
-
-		/// <summary>
-		/// A number from 0 to 1 detailing the overall progress of the item.
-		/// Negative numbers indicate indeterminate progress.
-		/// </summary>
-		public float CurrentItemProgress { get; internal set; }
-
-		/// <summary>
-		/// The file name of the item being erased.
-		/// </summary>
-		public string CurrentItemName { get; internal set; }
-
-		/// <summary>
-		/// The pass number of a multi-pass erasure method.
-		/// </summary>
-		public int CurrentItemPass { get; internal set; }
-
-		/// <summary>
-		/// The progress made by the current target.
-		/// </summary>
-		internal float CurrentTargetProgress
-		{
-			set
-			{
-				overallProgress = Math.Min(
-					(value + (float)(CurrentTargetIndex - 1)) / Task.Targets.Count,
-					1.0f);
-			}
-		}
-
-		private float overallProgress;
+		public int ItemTotalPasses { get; private set; }
 	}
 }

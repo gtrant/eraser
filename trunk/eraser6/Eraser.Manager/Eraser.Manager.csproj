@@ -60,6 +60,7 @@
     <Compile Include="Method.cs" />
     <Compile Include="Plugins.cs" />
     <Compile Include="PRNG.cs" />
+    <Compile Include="ProgressManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteExecutor.cs" />
     <Compile Include="Schedule.cs" />

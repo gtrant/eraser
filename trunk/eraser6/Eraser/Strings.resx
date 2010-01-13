@@ -153,15 +153,6 @@
   <data name="Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit." xml:space="preserve">
     <value>Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit.</value>
   </data>
-  <data name="{0} out of {1}" xml:space="preserve">
-    <value>{0} out of {1}</value>
-  </data>
-  <data name="About {0:T} left" xml:space="preserve">
-    <value>About {0:T} left</value>
-  </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Unknown</value>
-  </data>
   <data name="Total: {0,2:#0.00%}" xml:space="preserve">
     <value>Total: {0,2:#0.00%}</value>
   </data>
@@ -179,6 +170,15 @@
   </data>
   <data name="Close" xml:space="preserve">
     <value>Close</value>
+  </data>
+  <data name="{0} out of {1}" xml:space="preserve">
+    <value>{0} out of {1}</value>
+  </data>
+  <data name="About {0} left" xml:space="preserve">
+    <value>About {0} left</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
   </data>
   <data name="Queued for execution" xml:space="preserve">
     <value>Queued for execution</value>

@@ -153,15 +153,6 @@
   <data name="Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit." xml:space="preserve">
     <value>Un'altra occorrenza di Eraser è già in esecuzione, ma con privilegi più elevati di questa.\n\nEraser adesso si chiuderà.</value>
   </data>
-  <data name="{0} out of {1}" xml:space="preserve">
-    <value>{0} di {1}</value>
-  </data>
-  <data name="About {0:T} left" xml:space="preserve">
-    <value>Circa {0:T} rimasti</value>
-  </data>
-  <data name="Unknown" xml:space="preserve">
-    <value>Sconosciuto</value>
-  </data>
   <data name="Total: {0,2:#0.00%}" xml:space="preserve">
     <value>Totale: {0,2:#0.00%}</value>
   </data>
@@ -179,6 +170,15 @@
   </data>
   <data name="Close" xml:space="preserve">
     <value>Chiudi</value>
+  </data>
+  <data name="{0} out of {1}" xml:space="preserve">
+    <value>{0} di {1}</value>
+  </data>
+  <data name="About {0} left" xml:space="preserve">
+    <value>Circa {0} rimasti</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Sconosciuto</value>
   </data>
   <data name="Queued for execution" xml:space="preserve">
     <value>Pianificata per l'esecuzione</value>
