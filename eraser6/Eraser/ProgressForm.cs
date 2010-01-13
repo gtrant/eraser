@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using Eraser.Manager;
 using Eraser.Util;
 using System.Globalization;
+using ProgressChangedEventArgs = Eraser.Manager.ProgressChangedEventArgs;
 
 namespace Eraser
 {
@@ -50,6 +51,11 @@ namespace Eraser
 			jobTitle.Text = task.UIText;
 			task.ProgressChanged += task_ProgressChanged;
 			task.TaskFinished += task_TaskFinished;
+
+			//Set the current progress
+			if (task.Progress.CurrentStep != null)
+				UpdateProgress((SteppedProgressManager)task.Progress.CurrentStep.Progress,
+					new ProgressChangedEventArgs(task.Progress.CurrentStep.Progress, null));
 		}
 
 		private void ProgressForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -58,7 +64,7 @@ namespace Eraser
 			task.TaskFinished -= task_TaskFinished;
 		}
 
-		private void task_ProgressChanged(object sender, TaskProgressEventArgs e)
+		private void task_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			if (InvokeRequired)
 			{
@@ -67,36 +73,19 @@ namespace Eraser
 					return;
 
 				lastUpdate = DateTime.Now;
-				Invoke(new EventHandler<TaskProgressEventArgs>(task_ProgressChanged), sender, e);
+				Invoke((EventHandler<ProgressChangedEventArgs>)task_ProgressChanged, sender, e);
 				return;
 			}
 
-			status.Text = e.CurrentTargetStatus;
-			item.Text = WrapItemName(e.CurrentItemName);
-			pass.Text = e.CurrentTargetTotalPasses != 0 ?
-				S._("{0} out of {1}", e.CurrentItemPass, e.CurrentTargetTotalPasses) :
-				e.CurrentItemPass.ToString(CultureInfo.CurrentCulture);
+			ErasureTarget target = sender as ErasureTarget;
+			if (target == null)
+				return;
 
-			if (e.TimeLeft >= TimeSpan.Zero)
-				timeLeft.Text = S._("About {0:T} left", e.TimeLeft);
-			else
-				timeLeft.Text = S._("Unknown");
+			SteppedProgressManager progress = target.Progress as SteppedProgressManager;
+			if (progress == null)
+				return;
 
-			if (e.CurrentItemProgress >= 0.0f)
-			{
-				itemProgress.Style = ProgressBarStyle.Continuous;
-				itemProgress.Value = (int)(e.CurrentItemProgress * 1000);
-				itemProgressLbl.Text = e.CurrentItemProgress.ToString("#0%",
-					CultureInfo.CurrentCulture);
-			}
-			else
-			{
-				itemProgress.Style = ProgressBarStyle.Marquee;
-				itemProgressLbl.Text = string.Empty;
-			}
-
-			overallProgress.Value = (int)(e.OverallProgress * 1000);
-			overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", e.OverallProgress);
+			UpdateProgress(progress, e);
 		}
 
 		private void task_TaskFinished(object sender, TaskEventArgs e)
@@ -156,6 +145,41 @@ namespace Eraser
 			Close();
 		}
 
+		private void UpdateProgress(SteppedProgressManager targetProgress, ProgressChangedEventArgs e)
+		{
+			TaskProgressChangedEventArgs e2 = (TaskProgressChangedEventArgs)e.UserState;
+
+			status.Text = targetProgress.CurrentStep.Name;
+			if (e2 != null)
+			{
+				item.Text = WrapItemName(e2.ItemName);
+				pass.Text = e2.ItemTotalPasses != 0 ?
+					S._("{0} out of {1}", e2.ItemPass, e2.ItemTotalPasses) :
+					e2.ItemPass.ToString(CultureInfo.CurrentCulture);
+			}
+
+			if (targetProgress.TimeLeft >= TimeSpan.Zero)
+				timeLeft.Text = S._("About {0} left", RoundToSeconds(targetProgress.TimeLeft));
+			else
+				timeLeft.Text = S._("Unknown");
+
+			if (targetProgress.Progress >= 0.0f)
+			{
+				itemProgress.Style = ProgressBarStyle.Continuous;
+				itemProgress.Value = (int)(targetProgress.Progress * 1000);
+				itemProgressLbl.Text = targetProgress.Progress.ToString("#0%",
+					CultureInfo.CurrentCulture);
+			}
+			else
+			{
+				itemProgress.Style = ProgressBarStyle.Marquee;
+				itemProgressLbl.Text = string.Empty;
+			}
+
+			overallProgress.Value = (int)(task.Progress.Progress * 1000);
+			overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", task.Progress.Progress);
+		}
+
 		private string WrapItemName(string itemName)
 		{
 			StringBuilder result = new StringBuilder(itemName.Length);
@@ -183,6 +207,11 @@ namespace Eraser
 			}
 
 			return result.ToString();
+		}
+
+		private TimeSpan RoundToSeconds(TimeSpan span)
+		{
+			return new TimeSpan(span.Ticks - span.Ticks % TimeSpan.TicksPerSecond);
 		}
 	}
 }
