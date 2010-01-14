@@ -430,6 +430,7 @@ namespace Eraser
 			
 			managerSettings.PlausibleDeniability = plausibleDeniability.Checked;
 			IList<string> plausibleDeniabilityFilesList = managerSettings.PlausibleDeniabilityFiles;
+			plausibleDeniabilityFilesList.Clear();
 			foreach (string str in this.plausibleDeniabilityFiles.Items)
 				plausibleDeniabilityFilesList.Add(str);
 		}
