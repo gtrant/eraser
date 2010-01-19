@@ -276,6 +276,7 @@ namespace Eraser.Manager
 							catch (Exception e)
 							{
 								task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
+								BlackBox.Get().CreateReport(e);
 							}
 					}
 					catch (FatalException e)
@@ -289,6 +290,7 @@ namespace Eraser.Manager
 					catch (Exception e)
 					{
 						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
+						BlackBox.Get().CreateReport(e);
 					}
 					finally
 					{

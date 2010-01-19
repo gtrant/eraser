@@ -138,6 +138,30 @@
   <data name="Please help us to continue developing Eraser - donate some coffee!" xml:space="preserve">
     <value>Please help us to continue developing Eraser - donate some coffee!</value>
   </data>
+  <data name="Checking for status of report {0}..." xml:space="preserve">
+    <value>Checking for status of report {0}...</value>
+  </data>
+  <data name="Compressing Report {0}: {1}%" xml:space="preserve">
+    <value>Compressing Report {0}: {1}%</value>
+  </data>
+  <data name="Uploading Report {0}: {1}%" xml:space="preserve">
+    <value>Uploading Report {0}: {1}%</value>
+  </data>
+  <data name="Reports submitted successfully." xml:space="preserve">
+    <value>Reports submitted successfully.</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Submission was cancelled." xml:space="preserve">
+    <value>Submission was cancelled.</value>
+  </data>
+  <data name="Unknown crash report server response." xml:space="preserve">
+    <value>Unknown crash report server response.</value>
+  </data>
+  <data name="The server encountered a problem while processing the request: {0}" xml:space="preserve">
+    <value>The server encountered a problem while processing the request: {0}</value>
+  </data>
   <data name="Session: {0:F}" xml:space="preserve">
     <value>Session: {0:F}</value>
   </data>
@@ -167,9 +191,6 @@
   </data>
   <data name="Completed" xml:space="preserve">
     <value>Completed</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Close</value>
   </data>
   <data name="{0} out of {1}" xml:space="preserve">
     <value>{0} out of {1}</value>

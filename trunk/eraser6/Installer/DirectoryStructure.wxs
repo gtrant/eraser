@@ -58,6 +58,8 @@
 						ProcessorArchitecture="msil" />
 					<File Id="DragDropLib" Name="DragDropLib.dll" Source="..\bin\Release\DragDropLib.dll"
 						ProcessorArchitecture="msil" />
+					<File Id="SharpZipLib" Name="ICSharpCode.SharpZipLib.dll"
+						Source="..\bin\Release\ICSharpCode.SharpZipLib.dll" ProcessorArchitecture="msil" />
 					<File Id="EraserManager" Name="Eraser.Manager.dll"
 						Source="..\bin\Release\Eraser.Manager.dll" ProcessorArchitecture="msil" />
 					<File Id="EraserUtil" Name="Eraser.Util.dll"
