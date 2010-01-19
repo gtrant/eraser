@@ -48,6 +48,9 @@ namespace Eraser
 		[STAThread]
 		static int Main(string[] commandLine)
 		{
+			//Initialise our crash handler
+			BlackBox blackBox = BlackBox.Get();
+
 			//Trivial case: no command parameters
 			if (commandLine.Length == 0)
 				GUIMain(commandLine);
@@ -206,7 +209,30 @@ namespace Eraser
 
 			//Run the eraser client.
 			eraserClient.Run();
+
+			//Register to handle BlackBox reports when the application has loaded.
+			Application.Idle += OnGUIIdle;
 			return showMainForm;
+		}
+
+		private static void OnGUIIdle(object sender, EventArgs e)
+		{
+			Application.Idle -= OnGUIIdle;
+			BlackBox blackBox = BlackBox.Get();
+
+			bool allSubmitted = true;
+			foreach (BlackBoxReport report in blackBox.GetDumps())
+				if (!report.Submitted)
+				{
+					allSubmitted = false;
+					break;
+				}
+
+			if (allSubmitted)
+				return;
+
+			BlackBoxMainForm form = new BlackBoxMainForm();
+			form.Show();
 		}
 
 		/// <summary>

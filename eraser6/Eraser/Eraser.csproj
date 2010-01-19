@@ -58,6 +58,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\DragDropLib.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -83,6 +87,18 @@
     </Compile>
     <Compile Include="BasePanel.Designer.cs">
       <DependentUpon>BasePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlackBoxMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BlackBoxMainForm.Designer.cs">
+      <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BlackBoxUploadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BlackBoxUploadForm.Designer.cs">
+      <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LightGroup.cs">
       <SubType>UserControl</SubType>
@@ -124,6 +140,12 @@
     <EmbeddedResource Include="BasePanel.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BasePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackBoxMainForm.resx">
+      <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackBoxUploadForm.resx">
+      <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LightGroup.it.resx">
       <DependentUpon>LightGroup.cs</DependentUpon>

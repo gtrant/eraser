@@ -49,6 +49,7 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="AdvApi.cs" />
+    <Compile Include="BlackBox.cs" />
     <Compile Include="Localisation.cs" />
     <Compile Include="MsCorEEApi.cs" />
     <Compile Include="NtfsApi.cs" />
