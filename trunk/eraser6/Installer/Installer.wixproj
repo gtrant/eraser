@@ -74,8 +74,8 @@
 	</Target>
 	-->
   <PropertyGroup>
-    <PreBuildEvent>call "$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\" "$(SolutionDir)Version.wxs.in" "$(SolutionDir)Version.wxs"
-call "$(ProjectDir)\SignBin.bat" "$(SolutionDir)"</PreBuildEvent>
+    <PreBuildEvent>call "$(ProjectDir)..\UpdateVersions.bat" "$(ProjectDir)\..\\" "$(ProjectDir)..\Version.wxs.in" "$(ProjectDir)..\Version.wxs"
+call "$(ProjectDir)\SignBin.bat" "$(ProjectDir)..\\"</PreBuildEvent>
     <PostBuildEvent>signtool sign /a /t http://timestamp.verisign.com/scripts/timestamp.dll "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
