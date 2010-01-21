@@ -130,7 +130,7 @@ class Build extends Download
 
 			//Check that the folder has not been removed. This may indicate supersedence.
 			$downloadFolder = dirname(__FILE__) . '/../downloads/';
-			if (!file_exists($downloadFolder . $this->Link))
+			if (!file_exists($downloadFolder . substr($this->Link, 1)))
 				$this->Superseded = 1;
 		}
 	}
@@ -138,7 +138,7 @@ class Build extends Download
 	public static function Get()
 	{
 		$result = array();
-		$builds = array('Eraser5' => 'Eraser 5', 'Eraser6' => 'Eraser 6', 'Eraser6.2' => 'Eraser 6.2');
+		$builds = array('Eraser5' => 'Eraser 5', 'Eraser6' => 'Eraser 6.0', 'Eraser6.2' => 'Eraser 6.2');
 		foreach ($builds as $branchName => $buildName)
 		{
 			$revisions = opendir(Build::GetPath($branchName));
@@ -151,7 +151,7 @@ class Build extends Download
 				
 				try
 				{
-					$result[$buildName][] = new Build($path, intval(substr($revision, 1)));
+					$result[$buildName][] = new Build($branchName, intval(substr($revision, 1)));
 				}
 				catch (Exception $e)
 				{
@@ -168,7 +168,7 @@ class Build extends Download
 		if (($row = mysql_fetch_array($query)) === false || !$row[0])
 			return null;
 
-		return intval($row[0]) ? new Build($row['Path'], $row['Revision']) : null;
+		return intval($row[0]) ? new Build($row['Branch'], $row['Revision']) : null;
 	}
 	
 	public function __get($varName)
@@ -197,16 +197,10 @@ class Build extends Download
 		$buildPath = Build::GetPath($branch, $revision);
 		$installerPath = null;
 		
-		//If $buildPath is a file, it's the installer we want.
-		if (is_file($buildPath))
+		//If $buildPath is a directory, it contains the installer.
+		if (is_dir($buildPath))
 		{
-			$installerPath = $buildPath;
-		}
-		
-		//Otherwise, it's a directory containing the installer.
-		else
-		{
-			$directory = opendir();
+			$directory = opendir($buildPath);
 			
 			while (($file = readdir($directory)) !== false)
 			{
@@ -222,8 +216,13 @@ class Build extends Download
 				}
 			}
 		}
+		//If $buildPath.exe is a file, it's the installer we want.
+		else if (is_file($buildPath))
+		{
+			$installerPath = sprintf('builds/%s/r%s', $branch, $revision);
+		}
 
-		if (empty($installer))
+		if (empty($installerPath))
 		{
 			//It is a build in progress, don't create anything.
 			throw new Exception(sprintf('Build %s r%d is incomplete.', $branch, $revision));
@@ -238,12 +237,11 @@ class Build extends Download
 			mysql_real_escape_string($branch), intval($revision), filesize($installerPath),
 			PhpToMySqlTimestamp(filemtime($buildPath)), mysql_real_escape_string($installerPath)))
 				or die(mysql_error());
-		mysql_query(sprintf('INSERT INTO builds (DownloadID, Branch, Revision, Path)
+		mysql_query(sprintf('INSERT INTO builds (DownloadID, Branch, Revision)
 				VALUES (
-					LAST_INSERT_ID(), \'%s\', %d, \'%s\'
+					LAST_INSERT_ID(), \'%s\', %d
 				)',
-			mysql_real_escape_string($branch), intval($revision),
-			mysql_real_escape_string($installerPath)))
+			mysql_real_escape_string($branch), intval($revision)))
 				or die(mysql_error());
 
 		if (!mysql_affected_rows())
@@ -255,13 +253,17 @@ class Build extends Download
 		//Ensure that only 3 builds are not superseded at any one time.
 		mysql_query('START TRANSACTION');
 		mysql_query(sprintf('UPDATE downloads SET Superseded=1
-			WHERE Name LIKE \'%s%%\' AND Superseded=0', $path));
+			WHERE DownloadID IN (
+				SELECT DownloadID FROM builds where Branch=\'%s\'
+			)',
+			mysql_real_escape_string($branch)));
 		mysql_query(sprintf('UPDATE downloads SET Superseded=0
-			WHERE Name LIKE \'%s%%\'
+			WHERE DownloadID IN (
+				SELECT DownloadID FROM builds where Branch=\'%s\'
+			)
 			ORDER BY DownloadID DESC
-			LIMIT 3', $path));
+			LIMIT 3', mysql_real_escape_string($branch)));
 		mysql_query('COMMIT');
-
 		return $buildId;
 	}
 	
