@@ -112,24 +112,25 @@ class Download
 
 class Build extends Download
 {
-	public function Build($path, $revision)
+	public function Build($branch, $revision)
 	{
 		$query = mysql_query(sprintf('SELECT downloads.DownloadID FROM downloads INNER JOIN builds ON
 			downloads.DownloadID=builds.DownloadID WHERE
-				builds.Path=\'%s\' AND builds.Revision=%d',
-			mysql_real_escape_string($path), intval($revision)));
+				builds.Branch=\'%s\' AND builds.Revision=%d',
+			mysql_real_escape_string($branch), intval($revision)));
 		
 		//See if the build already has a database entry
 		if (($row = mysql_fetch_row($query)) === false || !$row[0])
 		{
-			$this->ID = Build::InsertBuild($path, $revision);
+			$this->ID = Build::InsertBuild($branch, $revision);
 		}
 		else
 		{
 			$this->ID = intval($row[0]);
 
 			//Check that the folder has not been removed. This may indicate supersedence.
-			if (!file_exists(Build::GetPath($this->Path, $this->Revision)))
+			$downloadFolder = dirname(__FILE__) . '/../downloads/';
+			if (!file_exists($downloadFolder . $this->Link))
 				$this->Superseded = 1;
 		}
 	}
@@ -138,14 +139,14 @@ class Build extends Download
 	{
 		$result = array();
 		$builds = array('Eraser5' => 'Eraser 5', 'Eraser6' => 'Eraser 6', 'Eraser6.2' => 'Eraser 6.2');
-		foreach ($builds as $path => $buildName)
+		foreach ($builds as $branchName => $buildName)
 		{
-			$revisions = opendir(Build::GetPath($path));
+			$revisions = opendir(Build::GetPath($branchName));
 			$result[$buildName] = array();
 
 			while (($revision = readdir($revisions)) !== false)
 			{
-				if (!sprintf('downloads/builds/%s/%s', $path, $revision) || $revision == '.' || $revision == '..')
+				if ($revision == '.' || $revision == '..')
 					continue;
 				
 				try
@@ -176,7 +177,7 @@ class Build extends Download
 		switch ($varName)
 		{
 			case 'Revision':
-			case 'Path':
+			case 'Branch':
 				$sql = sprintf($sql, $varName);
 				break;
 
@@ -190,31 +191,42 @@ class Build extends Download
 		return $row ? $row[0] : null;
 	}
 	
-	private static function InsertBuild($path, $revision)
+	private static function InsertBuild($branch, $revision)
 	{
-		//It doesn't. Find the binary that users will get to download.
-		$directory = opendir(Build::GetPath($path, $revision));
-		$installer = null;
-		$installerFilesize = 0;
-		while (($file = readdir($directory)) !== false)
+		//Find the binary that users will get to download.
+		$buildPath = Build::GetPath($branch, $revision);
+		$installerPath = null;
+		
+		//If $buildPath is a file, it's the installer we want.
+		if (is_file($buildPath))
 		{
-			$filePath = Build::GetPath($path, $revision) . '/' . $file;
-			if (is_file($filePath))
+			$installerPath = $buildPath;
+		}
+		
+		//Otherwise, it's a directory containing the installer.
+		else
+		{
+			$directory = opendir();
+			
+			while (($file = readdir($directory)) !== false)
 			{
-				$pathInfo = pathinfo($filePath);
-				if ($pathInfo['extension'] == 'exe')
+				$filePath = $buildPath . '/' . $file;
+				if (is_file($filePath))
 				{
-					$installer = sprintf('builds/%s/r%s/%s', $path, $revision, $file);
-					$installerFilesize = filesize($filePath);
-					break;
+					$pathInfo = pathinfo($filePath);
+					if ($pathInfo['extension'] == 'exe')
+					{
+						$installerPath = sprintf('builds/%s/r%s/%s', $branch, $revision, $file);
+						break;
+					}
 				}
 			}
 		}
-		
-		if (empty($installer) || $installerFilesize == 0)
+
+		if (empty($installer))
 		{
 			//It is a build in progress, don't create anything.
-			throw new Exception(sprintf('Build %s r%d is incomplete.', $path, $revision));
+			throw new Exception(sprintf('Build %s r%d is incomplete.', $branch, $revision));
 		}
 		
 		//Insert the build into the database.
@@ -223,15 +235,16 @@ class Build extends Download
 				VALUES (
 					\'%1$s r%2$d\', \'%4$s\' , \'build\', \'r%2$d\', 1, \'any\', %3$d, \'?%5$s\'
 				)',
-			mysql_real_escape_string($path), intval($revision), $installerFilesize,
-			PhpToMySqlTimestamp(filemtime(Build::GetPath($path, $revision))),
-			mysql_real_escape_string($installer)))
+			mysql_real_escape_string($branch), intval($revision), filesize($installerPath),
+			PhpToMySqlTimestamp(filemtime($buildPath)), mysql_real_escape_string($installerPath)))
 				or die(mysql_error());
-		mysql_query(sprintf('INSERT INTO builds (DownloadID, Path, Revision)
+		mysql_query(sprintf('INSERT INTO builds (DownloadID, Branch, Revision, Path)
 				VALUES (
-					LAST_INSERT_ID(), \'%1s\', %2$d
+					LAST_INSERT_ID(), \'%s\', %d, \'%s\'
 				)',
-			mysql_real_escape_string($path), intval($revision))) or die(mysql_error());
+			mysql_real_escape_string($branch), intval($revision),
+			mysql_real_escape_string($installerPath)))
+				or die(mysql_error());
 
 		if (!mysql_affected_rows())
 			throw new Exception(sprintf('Could not create new build %s r%d. MySQL Error: %s', $path, $revision, mysql_error()));
