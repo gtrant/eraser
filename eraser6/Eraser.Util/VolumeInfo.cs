@@ -177,6 +177,11 @@ namespace Eraser.Util
 			DirectoryInfo mountpointDir = new DirectoryInfo(mountpoint);
 			StringBuilder volumeID = new StringBuilder(50 * sizeof(char));
 
+			//Verify that the mountpoint given exists; if it doesn't we'll raise
+			//a PathNotFound exception.
+			if (!mountpointDir.Exists)
+				throw new DirectoryNotFoundException();
+
 			do
 			{
 				string currentDir = mountpointDir.FullName;

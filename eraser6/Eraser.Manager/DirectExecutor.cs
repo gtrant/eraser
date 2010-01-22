@@ -567,19 +567,19 @@ namespace Eraser.Manager
 				task.OnProgressChanged(target,
 					new ProgressChangedEventArgs(step,
 						new TaskProgressChangedEventArgs(paths[i], 0, method.Passes)));
-				
-				//Get the filesystem provider to handle the secure file erasures
-				StreamInfo info = new StreamInfo(paths[i]);
-				FileSystem fsManager = FileSystemManager.Get(
-					VolumeInfo.FromMountpoint(info.DirectoryName));
 
 				//Check that the file exists - we do not want to bother erasing nonexistant files
+				StreamInfo info = new StreamInfo(paths[i]);
 				if (!info.Exists)
 				{
 					task.Log.LastSessionEntries.Add(new LogEntry(S._("The file {0} was not erased " +
 						"as the file does not exist.", paths[i]), LogLevel.Notice));
 					continue;
 				}
+
+				//Get the filesystem provider to handle the secure file erasures
+				FileSystem fsManager = FileSystemManager.Get(
+					VolumeInfo.FromMountpoint(info.DirectoryName));
 
 				bool isReadOnly = false;
 				

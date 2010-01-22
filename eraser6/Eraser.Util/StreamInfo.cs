@@ -133,7 +133,8 @@ namespace Eraser.Util
 				{
 					if (!handle.IsInvalid)
 						return true;
-					else if (Marshal.GetLastWin32Error() == 2 /*ERROR_FILE_NOT_FOUND*/)
+					else if (Marshal.GetLastWin32Error() == 2 /*ERROR_FILE_NOT_FOUND*/ ||
+						Marshal.GetLastWin32Error() == 3 /*ERROR_PATH_NOT_FOUND*/)
 						return false;
 
 					throw KernelApi.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
