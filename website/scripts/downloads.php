@@ -216,6 +216,7 @@ class Build extends Download
 	{
 		//Find the binary that users will get to download.
 		$installerPath = null;
+		$installerSize = 0;
 		
 		//If $buildPath is a directory, it contains the installer.
 		if (is_dir($buildPath))
@@ -231,6 +232,7 @@ class Build extends Download
 					if ($pathInfo['extension'] == 'exe')
 					{
 						$installerPath = sprintf('builds/%s/r%s/%s', $branch, $revision, $file);
+						$installerSize = filesize($filePath);
 						break;
 					}
 				}
@@ -240,6 +242,7 @@ class Build extends Download
 		else if (is_file($buildPath))
 		{
 			$installerPath = sprintf('builds/%s/r%s', $branch, basename($buildPath));
+			$installerSize = filesize($buildPath);
 		}
 
 		if (empty($installerPath))
@@ -254,7 +257,7 @@ class Build extends Download
 				VALUES (
 					\'%1$s r%2$d\', \'%4$s\' , \'build\', \'r%2$d\', 1, \'any\', %3$d, \'?%5$s\'
 				)',
-			mysql_real_escape_string($branch), intval($revision), filesize($installerPath),
+			mysql_real_escape_string($branch), intval($revision), $installerSize,
 			PhpToMySqlTimestamp(filemtime($buildPath)), mysql_real_escape_string($installerPath)))
 				or die(mysql_error());
 		mysql_query(sprintf('INSERT INTO builds (DownloadID, Branch, Revision)
