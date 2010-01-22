@@ -636,14 +636,20 @@ namespace Eraser.Manager
 						if (handle.Path == paths[i])
 							processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
 
-					StringBuilder processStr = new StringBuilder();
-					foreach (System.Diagnostics.Process process in processes)
-						processStr.AppendFormat(System.Globalization.CultureInfo.InvariantCulture,
-							"{0}, ", process.MainModule.FileName);
+					string lockedBy = null;
+					if (processes.Count > 0)
+					{
+						StringBuilder processStr = new StringBuilder();
+						foreach (System.Diagnostics.Process process in processes)
+							processStr.AppendFormat(System.Globalization.CultureInfo.InvariantCulture,
+								"{0}, ", process.MainModule.FileName);
+
+						lockedBy = S._("(locked by {0})", processStr.ToString().Remove(processStr.Length - 2));
+					}
 
 					task.Log.LastSessionEntries.Add(new LogEntry(S._(
-						"Could not force closure of file \"{0}\" (locked by {1})",
-						paths[i], processStr.ToString().Remove(processStr.Length - 2)), LogLevel.Error));
+						"Could not force closure of file \"{0}\" {1}", paths[i],
+						lockedBy == null ? string.Empty : lockedBy).Trim(), LogLevel.Error));
 				}
 				finally
 				{
