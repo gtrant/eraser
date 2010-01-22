@@ -167,7 +167,7 @@ class Build extends Download
 				{
 					$result[$buildName][] = Build::GetBuildFromID(
 						Build::InsertBuild($branchName, $revisionID,
-							Build::GetPath($branchName, $revision)));
+							Build::GetPath($branchName) . '/' . $revision));
 				}
 			}
 		}
@@ -217,7 +217,7 @@ class Build extends Download
 		//Find the binary that users will get to download.
 		$installerPath = null;
 		$installerSize = 0;
-		
+
 		//If $buildPath is a directory, it contains the installer.
 		if (is_dir($buildPath))
 		{
@@ -241,7 +241,7 @@ class Build extends Download
 		//If $buildPath.exe is a file, it's the installer we want.
 		else if (is_file($buildPath))
 		{
-			$installerPath = sprintf('builds/%s/r%s', $branch, basename($buildPath));
+			$installerPath = sprintf('builds/%s/%s', $branch, basename($buildPath));
 			$installerSize = filesize($buildPath);
 		}
 
