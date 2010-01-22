@@ -8,10 +8,10 @@ require('../database.php');
 function GetFunctionNameFromStackTrace($line)
 {
 	$matches = array();
-	if (preg_match('/^at (.*) in (.*):line ([0-9]+)/', $line, $matches))
+	if (preg_match('/^(^[ 	]+) (.*) (^[ 	]+) (.*):(^[ 	]+) ([0-9]+)/', $line, $matches))
 	{
 	}
-	else if (preg_match('/^at (.*)/', $line, $matches))
+	else if (preg_match('/^(^[ 	]+) (.*)/', $line, $matches))
 	{
 	}
 	
