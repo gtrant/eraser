@@ -114,15 +114,14 @@ class Build extends Download
 {
 	public function Build($branch, $revision)
 	{
-		$query = mysql_query(sprintf('SELECT downloads.DownloadID FROM downloads INNER JOIN builds ON
-			downloads.DownloadID=builds.DownloadID WHERE
-				builds.Branch=\'%s\' AND builds.Revision=%d',
+		$query = mysql_query(sprintf('SELECT DownloadID FROM builds WHERE
+				Branch=\'%s\' AND Revision=%d',
 			mysql_real_escape_string($branch), intval($revision)));
 		
 		//See if the build already has a database entry
 		if (($row = mysql_fetch_row($query)) === false || !$row[0])
 		{
-			$this->ID = Build::InsertBuild($branch, $revision);
+			throw new Exception('Build does not exist');
 		}
 		else
 		{
@@ -149,17 +148,30 @@ class Build extends Download
 				if ($revision == '.' || $revision == '..')
 					continue;
 				
-				try
+				$pathInfo = pathinfo($revision);
+				$revisionID = intval(substr($pathInfo['filename'], 1));
+				if (Build::BuildExists($branchName, $revisionID))
 				{
-					$result[$buildName][] = new Build($branchName, intval(substr($revision, 1)));
+					$result[$buildName][] = new Build($branchName, $revisionID);
 				}
-				catch (Exception $e)
+				else
 				{
+					$result[$buildName][] = Build::GetBuildFromID(
+						Build::InsertBuild($branchName, $revisionID,
+							Build::GetPath($branchName, $revision)));
 				}
 			}
 		}
 		
 		return $result;
+	}
+	
+	public static function BuildExists($branch, $revision)
+	{
+		$query = mysql_query(sprintf('SELECT DownloadID FROM builds WHERE
+				Branch=\'%s\' AND Revision=%d',
+			mysql_real_escape_string($branch), intval($revision)));
+		return mysql_num_rows($query) == 1;
 	}
 	
 	public static function GetBuildFromID($downloadID)
@@ -191,10 +203,9 @@ class Build extends Download
 		return $row ? $row[0] : null;
 	}
 	
-	private static function InsertBuild($branch, $revision)
+	private static function InsertBuild($branch, $revision, $buildPath)
 	{
 		//Find the binary that users will get to download.
-		$buildPath = Build::GetPath($branch, $revision);
 		$installerPath = null;
 		
 		//If $buildPath is a directory, it contains the installer.
@@ -219,7 +230,7 @@ class Build extends Download
 		//If $buildPath.exe is a file, it's the installer we want.
 		else if (is_file($buildPath))
 		{
-			$installerPath = sprintf('builds/%s/r%s', $branch, $revision);
+			$installerPath = sprintf('builds/%s/r%s', $branch, basename($buildPath));
 		}
 
 		if (empty($installerPath))
