@@ -3,18 +3,26 @@ require('scripts/downloads.php');
 
 if (!empty($_GET['id']))
 {
-	$download = Build::GetBuildFromID(intval($_GET['id']));
-	if (empty($download))
-		$download = new Download(intval($_GET['id']));
-	
-	//Check for supersedence
-	if ($download->Superseded)
+	try
 	{
-		header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode('The requested download has been superseded with a newer version.'));
-		exit;
+		$download = Build::GetBuildFromID(intval($_GET['id']));
+		if (empty($download))
+			$download = new Download(intval($_GET['id']));
+		
+		//Check for supersedence
+		if ($download->Superseded)
+		{
+			header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode('The requested download has been superseded with a newer version.'));
+			exit;
+		}
+		
+		$download->InitiateDownload();
 	}
-	
-	$download->InitiateDownload();
+	catch (Exception $e)
+	{
+		header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode($e->getMessage()));
+	}
+
 	exit;
 }
 ?>
