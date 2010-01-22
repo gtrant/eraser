@@ -138,6 +138,9 @@
   <data name="Please help us to continue developing Eraser - donate some coffee!" xml:space="preserve">
     <value>Please help us to continue developing Eraser - donate some coffee!</value>
   </data>
+  <data name="Could not open the required web page. The error returned was: {0}" xml:space="preserve">
+    <value>Could not open the required web page. The error returned was: {0}</value>
+  </data>
   <data name="Checking for status of report {0}..." xml:space="preserve">
     <value>Checking for status of report {0}...</value>
   </data>

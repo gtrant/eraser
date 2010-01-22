@@ -189,13 +189,25 @@ Eraser Project Members:
 		private void AboutForm_Click(object sender, EventArgs e)
 		{
 			Point cursorPos = PointToClient(Cursor.Position);
-			if (WebsiteRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
-				Process.Start("http://eraser.heidi.ie/");
-			else if (DonateRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
-				Process.Start("https://euro.swreg.org/cgi-bin/s.cgi?r=1&s=80181&db_key=1512312&x=0&lang=&lnk=");
-			else if ((DateTime.Now - mouseDownTime < mouseSpeedUpSpan))
-				//Dismiss the dialog.
-				Close();
+			try
+			{
+				if (WebsiteRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
+					Process.Start("http://eraser.heidi.ie/");
+				else if (DonateRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
+					Process.Start("https://euro.swreg.org/cgi-bin/s.cgi?r=1&s=80181&db_key=1512312&x=0&lang=&lnk=");
+				else if ((DateTime.Now - mouseDownTime < mouseSpeedUpSpan))
+					//Dismiss the dialog.
+					Close();
+			}
+			catch (Win32Exception ex)
+			{
+				//We've got an error executing the the browser to pass the links: show an error
+				//to the user.
+				MessageBox.Show(S._("Could not open the required web page. The error returned " +
+					"was: {0}", ex.Message), S._("Eraser"), MessageBoxButtons.OK,
+					MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
+					S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+			}
 		}
 
 		private void AboutForm_Paint(object sender, PaintEventArgs e)
