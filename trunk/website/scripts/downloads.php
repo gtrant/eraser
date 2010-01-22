@@ -21,11 +21,20 @@ class Download
 		mysql_query(sprintf('INSERT INTO download_log (DownloadID) VALUES (%d)', $this->ID));
 		
 		if (preg_match('/http(s{0,1}):\/\/(.*)/', $this->Link))
+		{
 			header('location: ' . $this->Link);
+		}
 		else if (substr($this->Link, 0, 1) == '?')
-			Download::DownloadFile(substr($this->Link, 1));
+		{
+			//Get a name to call the file.
+			$pathInfo = pathinfo(substr($this->Link, 1));
+			Download::DownloadFile(substr($this->Link, 1),
+				sprintf('%s.%s', $this->Name, $pathInfo['extension']));
+		}
 		else
+		{
 			throw new Exception('Unknown download link');
+		}
 	}
 	
 	public function __get($varName)
