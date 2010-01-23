@@ -141,8 +141,14 @@
       <SubType>Designer</SubType>
       <DependentUpon>BasePanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BlackBoxMainForm.it.resx">
+      <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BlackBoxMainForm.resx">
       <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackBoxUploadForm.it.resx">
+      <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BlackBoxUploadForm.resx">
       <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
