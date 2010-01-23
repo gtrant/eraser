@@ -308,7 +308,7 @@
     <value>New Task</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Eraser.BasePanel, Eraser, Version=6.0.6.1333, Culture=neutral, PublicKeyToken=eb3f5d6738c31575</value>
+    <value>Eraser.BasePanel, Eraser, Version=6.0.6.1515, Culture=neutral, PublicKeyToken=514c17034910ac15</value>
   </data>
   <data name="&gt;&gt;schedulerColStatus.Name" xml:space="preserve">
     <value>schedulerColStatus</value>
