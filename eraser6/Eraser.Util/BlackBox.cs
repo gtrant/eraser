@@ -426,7 +426,7 @@ namespace Eraser.Util
 
 						//End the exception and get the inner exception.
 						stream.WriteLine();
-						currentException = exception.InnerException;
+						currentException = currentException.InnerException;
 					}
 				}
 			}
