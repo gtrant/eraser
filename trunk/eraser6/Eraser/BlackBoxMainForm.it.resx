@@ -117,110 +117,41 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;BlackBoxPic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SubmitBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="ReportsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>537, 186</value>
-  </data>
-  <data name="&gt;&gt;ReportsLvTimestampColumn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;BlackBoxPic.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="ReportsLvTimestampColumn.Text" xml:space="preserve">
-    <value>Report Created</value>
-  </data>
-  <data name="&gt;&gt;MainLbl.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;ReportsLv.Name" xml:space="preserve">
-    <value>ReportsLv</value>
-  </data>
-  <data name="BlackBoxPic.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="PostponeBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>449, 316</value>
-  </data>
-  <data name="SubmitBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="&gt;&gt;SubmitBtn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="ReportsLvErrorColumn.Width" type="System.Int32, mscorlib">
-    <value>250</value>
-  </data>
   <data name="MainLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>467, 112</value>
+    <value>483, 127</value>
   </data>
-  <data name="&gt;&gt;MainLbl.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="MainLbl.Text" xml:space="preserve">
+    <value>Eraser ha incontrato errori durante le esecuzioni precedenti.
+
+Lo stato del programma e altre informazioni riguardo l'errore è stato memorizzato sul computer in forma di report e può essere inviato agli sviluppatori di Eraser per le analisi. Selezionare i report da trasmettere verificando i nomi dei report sotto elencati; i contenuti di ogni report possono essere visualizzati con un doppio click sul relativo nome del report qui sotto. I report non selezionati per l'invio saranno scartati dopo che gli altri saranno stati trasmessi.</value>
   </data>
-  <data name="&gt;&gt;PostponeBtn.Name" xml:space="preserve">
-    <value>PostponeBtn</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="SubmitBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="&gt;&gt;ReportsLvErrorColumn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ReportsLvErrorColumn.Text" xml:space="preserve">
-    <value>Error Type</value>
-  </data>
-  <data name="ReportsLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;SubmitBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PostponeBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ReportsLv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 124</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;MainLbl.Name" xml:space="preserve">
-    <value>MainLbl</value>
-  </data>
-  <data name="PostponeBtn.Text" xml:space="preserve">
-    <value>Submit Later</value>
-  </data>
-  <data name="PostponeBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;MainLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
-  </data>
-  <data name="MainLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>82, 9</value>
-  </data>
-  <data name="MainLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="SubmitBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>359, 316</value>
   </data>
   <data name="SubmitBtn.Text" xml:space="preserve">
-    <value>Submit Now</value>
+    <value>Invia ora</value>
+  </data>
+  <data name="PostponeBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>465, 316</value>
+  </data>
+  <data name="PostponeBtn.Text" xml:space="preserve">
+    <value>Invia in seguito</value>
+  </data>
+  <data name="ReportsLvTimestampColumn.Text" xml:space="preserve">
+    <value>Report Creati</value>
+  </data>
+  <data name="ReportsLvErrorColumn.Text" xml:space="preserve">
+    <value>Tipo di errore</value>
+  </data>
+  <data name="ReportsLv.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 139</value>
+  </data>
+  <data name="ReportsLv.Size" type="System.Drawing.Size, System.Drawing">
+    <value>553, 171</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>561, 351</value>
-  </data>
-  <data name="&gt;&gt;ReportsLvTimestampColumn.Name" xml:space="preserve">
-    <value>ReportsLvTimestampColumn</value>
+    <value>577, 351</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1782,78 +1713,4 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACAAQAAwAMAAOAHAAD4HwAA
 </value>
   </data>
-  <data name="ReportsLvTimestampColumn.Width" type="System.Int32, mscorlib">
-    <value>280</value>
-  </data>
-  <data name="&gt;&gt;ReportsLv.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;SubmitBtn.Name" xml:space="preserve">
-    <value>SubmitBtn</value>
-  </data>
-  <data name="PostponeBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
-  </data>
-  <data name="&gt;&gt;SubmitBtn.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="BlackBoxPic.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="ReportsLv.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Eraser Crash Assistant</value>
-  </data>
-  <data name="MainLbl.Text" xml:space="preserve">
-    <value>Eraser has encountered problems while running earlier.
-
-The program's state and other information about the error have been stored on your computer as reports and can be sent to the Eraser developers for review. Select the reports you wish to submit by checking the name of the report below; the contents of each report can be viewed by double-clicking on the report name below. Reports not selected for submission will be discarded after the rest have been submitted.</value>
-  </data>
-  <data name="&gt;&gt;BlackBoxPic.Name" xml:space="preserve">
-    <value>BlackBoxPic</value>
-  </data>
-  <data name="&gt;&gt;ReportsLv.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ReportsLv.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="PostponeBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="&gt;&gt;ReportsLvErrorColumn.Name" xml:space="preserve">
-    <value>ReportsLvErrorColumn</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
-  </data>
-  <data name="&gt;&gt;PostponeBtn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="SubmitBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>343, 316</value>
-  </data>
-  <data name="BlackBoxPic.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 64</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>BlackBoxMainForm</value>
-  </data>
-  <data name="MainLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;PostponeBtn.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;BlackBoxPic.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Italian</value>
-  </metadata>
 </root>
