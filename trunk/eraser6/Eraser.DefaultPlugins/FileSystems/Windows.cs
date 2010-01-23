@@ -133,6 +133,11 @@ namespace Eraser.DefaultPlugins
 			foreach (FileInfo file in info.GetFiles())
 				DeleteFile(file);
 
+			//Check that this folder is not the root of a drive since we can't delete
+			//roots of drives.
+			if (info.Parent == null)
+				return;
+
 			//Then clean up this folder.
 			for (int i = 0, tries = 0; i < FileNameErasePasses; ++tries)
 			{
