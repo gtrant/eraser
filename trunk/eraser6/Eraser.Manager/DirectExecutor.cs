@@ -541,15 +541,16 @@ namespace Eraser.Manager
 		/// <param name="progress">The progress manager for the current task.</param>
 		private void EraseFilesystemObject(Task task, FileSystemObjectTarget target)
 		{
+			//Check that the target's path exists: if it doesn't, we can't do anything about it.
+			if (!(Directory.Exists(target.Path) || System.IO.File.Exists(target.Path)))
+				return;
+
 			//Retrieve the list of files to erase.
 			long dataTotal = 0;
 			List<string> paths = target.GetPaths(out dataTotal);
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = target.Method;
-
-			//Calculate the total amount of data required to finish the wipe.
-			//dataTotal = method.CalculateEraseDataSize(paths, dataTotal);
 
 			//Set the event's current target status.
 			TaskEventArgs eventArgs = new TaskEventArgs(task);
