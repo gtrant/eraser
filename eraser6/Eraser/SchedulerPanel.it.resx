@@ -118,9 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="titleLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Tahoma, 18pt</value>
-  </data>
   <data name="titleLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>219, 29</value>
   </data>
@@ -181,8 +178,8 @@
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
         ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
-        AwAAABdUYXNrcyBleGVjdXRlZCBtYW51YWxseQX8////KFN5c3RlbS5XaW5kb3dzLkZvcm1zLkhvcml6
-        b250YWxBbGlnbm1lbnQBAAAAB3ZhbHVlX18ACAIAAAAAAAAACgYFAAAABm1hbnVhbAs=
+        AwAAAB9PcGVyYXppb25pIGVzZWd1aXRlIG1hbnVhbG1lbnRlBfz///8oU3lzdGVtLldpbmRvd3MuRm9y
+        bXMuSG9yaXpvbnRhbEFsaWdubWVudAEAAAAHdmFsdWVfXwAIAgAAAAAAAAAKBgUAAAAGbWFudWFsCw==
 </value>
   </data>
   <data name="scheduler.Groups1" mimetype="application/x-microsoft.net.object.binary.base64">
@@ -191,8 +188,8 @@
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
         ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
-        AwAAABlUYXNrcyBleGVjdXRlZCBvbiByZXN0YXJ0Bfz///8oU3lzdGVtLldpbmRvd3MuRm9ybXMuSG9y
-        aXpvbnRhbEFsaWdubWVudAEAAAAHdmFsdWVfXwAIAgAAAAAAAAAKBgUAAAAHcmVzdGFydAs=
+        AwAAAB5PcGVyYXppb25pIGVzZWd1aXRlIGFsIHJpYXZ2aW8F/P///yhTeXN0ZW0uV2luZG93cy5Gb3Jt
+        cy5Ib3Jpem9udGFsQWxpZ25tZW50AQAAAAd2YWx1ZV9fAAgCAAAAAAAAAAoGBQAAAAdyZXN0YXJ0Cw==
 </value>
   </data>
   <data name="scheduler.Groups2" mimetype="application/x-microsoft.net.object.binary.base64">
@@ -201,8 +198,8 @@
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
         ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
-        AwAAAA9SZWN1cnJpbmcgdGFza3MF/P///yhTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxp
-        Z25tZW50AQAAAAd2YWx1ZV9fAAgCAAAAAAAAAAoGBQAAAAlyZWN1cnJpbmcL
+        AwAAABZPcGVyYXppb25pIHBpYW5pZmljYXRlBfz///8oU3lzdGVtLldpbmRvd3MuRm9ybXMuSG9yaXpv
+        bnRhbEFsaWdubWVudAEAAAAHdmFsdWVfXwAIAgAAAAAAAAAKBgUAAAAJcmVjdXJyaW5nCw==
 </value>
   </data>
   <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
