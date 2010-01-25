@@ -548,10 +548,6 @@ namespace Eraser.Manager
 		/// <param name="progress">The progress manager for the current task.</param>
 		private void EraseFilesystemObject(Task task, FileSystemObjectTarget target)
 		{
-			//Check that the target's path exists: if it doesn't, we can't do anything about it.
-			if (!(Directory.Exists(target.Path) || System.IO.File.Exists(target.Path)))
-				return;
-
 			//Retrieve the list of files to erase.
 			long dataTotal = 0;
 			List<string> paths = target.GetPaths(out dataTotal);
@@ -668,7 +664,7 @@ namespace Eraser.Manager
 			}
 
 			//If the user requested a folder removal, do it.
-			if (target is FolderTarget)
+			if ((target is FolderTarget) && Directory.Exists(target.Path))
 			{
 				ProgressManager step = new ProgressManager();
 				progress.Steps.Add(new SteppedProgressManager.Step(step,
