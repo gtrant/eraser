@@ -99,8 +99,19 @@ namespace Eraser.Manager
 		/// </summary>
 		public long Completed
 		{
-			get;
-			set;
+			get
+			{
+				return completed;
+			}
+			set
+			{
+				if (value > Total)
+					throw new ArgumentOutOfRangeException("value", value, "The Completed " +
+						"property of the Progress Manager cannot exceed the total work units for " +
+						"the task.");
+
+				completed = value;
+			}
 		}
 
 		/// <summary>
@@ -108,8 +119,19 @@ namespace Eraser.Manager
 		/// </summary>
 		public long Total
 		{
-			get;
-			set;
+			get
+			{
+				return Total;
+			}
+			set
+			{
+				if (value < Completed)
+					throw new ArgumentOutOfRangeException("value", value, "The Total property " +
+						"of the Progress Manager must be greater than or equal to the completed " +
+						"work units for the task.");
+
+				Total = value;
+			}
 		}
 
 		public override float Progress
@@ -171,6 +193,16 @@ namespace Eraser.Manager
 		/// The last calculated speed of the operation.
 		/// </summary>
 		private int lastSpeed;
+
+		/// <summary>
+		/// The backing field for <see cref="Completed"/>
+		/// </summary>
+		private long completed;
+
+		/// <summary>
+		/// The backing field for <see cref="Total"/>
+		/// </summary>
+		private long total;
 	}
 
 	/// <summary>
