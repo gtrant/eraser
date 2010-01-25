@@ -121,7 +121,7 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				return Total;
+				return total;
 			}
 			set
 			{
@@ -130,7 +130,7 @@ namespace Eraser.Manager
 						"of the Progress Manager must be greater than or equal to the completed " +
 						"work units for the task.");
 
-				Total = value;
+				total = value;
 			}
 		}
 
