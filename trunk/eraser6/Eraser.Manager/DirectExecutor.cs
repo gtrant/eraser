@@ -442,7 +442,8 @@ namespace Eraser.Manager
 					{
 						//Set the length of the file to be the amount of free space left
 						//or the maximum size of one of these dumps.
-						mainProgress.Total = mainProgress.Completed + volInfo.AvailableFreeSpace;
+						mainProgress.Total = mainProgress.Completed +
+							method.CalculateEraseDataSize(null, volInfo.AvailableFreeSpace);
 						long streamLength = Math.Min(ErasureMethod.FreeSpaceFileUnit,
 							mainProgress.Total);
 
