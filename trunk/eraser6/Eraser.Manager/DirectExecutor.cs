@@ -401,7 +401,7 @@ namespace Eraser.Manager
 				ClusterTipsEraseProgress eraseProgress =
 					delegate(int currentFile, int totalFiles, string currentFilePath)
 					{
-						tipSearch.Completed = tipSearch.Total;
+						tipSearch.MarkComplete();
 						tipProgress.Total = totalFiles;
 						tipProgress.Completed = currentFile;
 						task.OnProgressChanged(target,
@@ -481,7 +481,7 @@ namespace Eraser.Manager
 				}
 
 				//Mark the main bulk of the progress as complete
-				mainProgress.Completed = mainProgress.Total;
+				mainProgress.MarkComplete();
 
 				//Erase old resident file system table files
 				ProgressManager residentProgress = new ProgressManager();
@@ -501,7 +501,7 @@ namespace Eraser.Manager
 					}
 				);
 
-				residentProgress.Completed = residentProgress.Total = 1;
+				residentProgress.MarkComplete();
 			}
 			finally
 			{
@@ -512,7 +512,7 @@ namespace Eraser.Manager
 				task.OnProgressChanged(target, new ProgressChangedEventArgs(tempFiles,
 					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 				fsManager.DeleteFolder(info);
-				tempFiles.Completed = tempFiles.Total = 1;
+				tempFiles.Completed = tempFiles.Total;
 			}
 
 			//Then clean the old file system entries
@@ -536,7 +536,7 @@ namespace Eraser.Manager
 				}
 			);
 
-			structureProgress.Completed = structureProgress.Total;
+			structureProgress.MarkComplete();
 			target.Progress = null;
 		}
 
@@ -611,8 +611,8 @@ namespace Eraser.Manager
 							if (currentTask.Canceled)
 								throw new OperationCanceledException(S._("The task was cancelled."));
 
-							step.Completed += lastWritten;
 							step.Total = totalData;
+							step.Completed += lastWritten;
 							task.OnProgressChanged(target,
 								new ProgressChangedEventArgs(step,
 									new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
@@ -622,7 +622,7 @@ namespace Eraser.Manager
 					FileInfo fileInfo = info.File;
 					if (fileInfo != null)
 						fsManager.DeleteFile(fileInfo);
-					step.Completed = step.Total = 1;
+					step.MarkComplete();
 				}
 				catch (UnauthorizedAccessException)
 				{

@@ -730,7 +730,7 @@ namespace Eraser
 						tempFilesMap.Add(tempFilePath, update);
 
 						//Let the event handler know the download is complete.
-						step.Completed = step.Total;
+						step.MarkComplete();
 						OnProgress(new ProgressEventArgs(step.Progress, progress.Progress,
 							update, S._("Downloaded: {0}", update.Name)));
 					}

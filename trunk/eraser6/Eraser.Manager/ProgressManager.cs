@@ -95,6 +95,17 @@ namespace Eraser.Manager
 	public class ProgressManager : ProgressManagerBase
 	{
 		/// <summary>
+		/// Marks this task as complete.
+		/// </summary>
+		public void MarkComplete()
+		{
+			if (total == 0)
+				completed = total = 1;
+			else
+				completed = total;
+		}
+
+		/// <summary>
 		/// Gets or sets the number of work units already completed.
 		/// </summary>
 		public long Completed
