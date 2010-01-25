@@ -234,20 +234,20 @@ namespace Eraser.Manager
 					//Set the currently executing task.
 					currentTask = task;
 
+					//Prevent the system from sleeping.
+					KernelApi.SetThreadExecutionState(ThreadExecutionState.Continuous |
+						ThreadExecutionState.SystemRequired);
+
+					//Start a new log session to separate this session's events
+					//from previous ones.
+					task.Log.Entries.NewSession();
+
 					try
 					{
-						//Prevent the system from sleeping.
-						KernelApi.SetThreadExecutionState(ThreadExecutionState.Continuous |
-							ThreadExecutionState.SystemRequired);
-
 						//Broadcast the task started event.
 						task.Canceled = false;
 						task.OnTaskStarted(new TaskEventArgs(task));
 						OnTaskProcessing(new TaskEventArgs(task));
-
-						//Start a new log session to separate this session's events
-						//from previous ones.
-						task.Log.Entries.NewSession();
 
 						//Run the task
 						foreach (ErasureTarget target in task.Targets)
