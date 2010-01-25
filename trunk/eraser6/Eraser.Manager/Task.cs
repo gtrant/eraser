@@ -717,22 +717,21 @@ namespace Eraser.Manager
 			List<FileInfo> result = new List<FileInfo>();
 			if (info.Exists)
 			{
-				foreach (DirectoryInfo dir in info.GetDirectories())
-					try
-					{
+				try
+				{
+					foreach (DirectoryInfo dir in info.GetDirectories())
 						result.AddRange(GetFiles(dir));
-					}
-					catch (DirectoryNotFoundException e)
-					{
-						//Ignore, but log.
-						Task.Log.LastSessionEntries.Add(new LogEntry(S._("Could not erase {0} because {1}",
-							dir.FullName, e.Message), LogLevel.Error));
-					}
 
-				if (IncludeMask.Length == 0)
-					result.AddRange(info.GetFiles());
-				else
-					result.AddRange(info.GetFiles(IncludeMask, SearchOption.TopDirectoryOnly));
+					if (IncludeMask.Length == 0)
+						result.AddRange(info.GetFiles());
+					else
+						result.AddRange(info.GetFiles(IncludeMask, SearchOption.TopDirectoryOnly));
+				}
+				catch (UnauthorizedAccessException e)
+				{
+					Task.Log.LastSessionEntries.Add(new LogEntry(S._("Could not erase files and " +
+						"subfolders in {0} because {1}", info.FullName, e.Message), LogLevel.Error));
+				}
 			}
 
 			return result.ToArray();
