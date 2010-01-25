@@ -76,6 +76,8 @@ namespace Eraser
 
 		private void task_NewSession(object sender, EventArgs e)
 		{
+			if (!IsHandleCreated)
+				return;
 			if (InvokeRequired)
 			{
 				Invoke(new EventHandler<EventArgs>(task_NewSession), sender, e);
@@ -87,6 +89,8 @@ namespace Eraser
 
 		private void task_Logged(object sender, LogEventArgs e)
 		{
+			if (!IsHandleCreated)
+				return;
 			if (InvokeRequired)
 			{
 				Invoke(new EventHandler<LogEventArgs>(task_Logged), sender, e);
