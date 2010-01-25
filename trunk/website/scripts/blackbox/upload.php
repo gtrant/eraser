@@ -8,14 +8,14 @@ require('../database.php');
 function GetFunctionNameFromStackTrace($line)
 {
 	$matches = array();
-	if (preg_match('/^(^[ 	]+) (.*) (^[ 	]+) (.*):(^[ 	]+) ([0-9]+)/', $line, $matches))
+	if (preg_match('/^([^ 	]+) (.*) ([^ 	]+) (.*):([^ 	]+) ([0-9]+)/', $line, $matches))
 	{
 	}
-	else if (preg_match('/^(^[ 	]+) (.*)/', $line, $matches))
+	else if (preg_match('/^([^ 	]+) (.*)/', $line, $matches))
 	{
 	}
 	
-	return $matches[1];
+	return $matches[2];
 }
 
 function QueryStatus($stackTrace)
@@ -82,13 +82,13 @@ function Upload($stackTrace, $crashReport)
 			//at Eraser.Program.OnGUIInitInstance(Object sender) in D:\Development\Projects\Eraser 6.2\Eraser\Program.cs:line 191
 			$matches = array();
 			$function = $file = $line = null;
-			if (preg_match('/^at (.*) in (.*):line ([0-9]+)/', $stackFrame, $matches))
+			if (preg_match('/^([^ 	]+) (.*) ([^ 	]+) (.*):([^ 	]+) ([0-9]+)/', $stackFrame, $matches))
 			{
 				$function = $matches[1];
 				$file = $matches[2];
 				$line = intval($matches[3]);
 			}
-			else if (preg_match('/^at (.*)/', $stackFrame, $matches))
+			else if (preg_match('/^([^ 	]+) (.*)/', $stackFrame, $matches))
 			{
 				$function = $matches[1];
 			}
