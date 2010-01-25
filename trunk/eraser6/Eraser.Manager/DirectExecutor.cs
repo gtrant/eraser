@@ -287,6 +287,12 @@ namespace Eraser.Manager
 					{
 						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Fatal));
 					}
+					catch (ThreadAbortException)
+					{
+						//Do nothing. The exception will be rethrown after this block
+						//is executed. This is here mainly to ensure that no BlackBox
+						//report is created for this exception.
+					}
 					catch (Exception e)
 					{
 						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
