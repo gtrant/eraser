@@ -76,7 +76,7 @@ function Upload($stackTrace, $crashReport)
 		foreach ($exception as $stackIndex => $stackFrame)
 		{
 			//Ignore the exception key; that stores the exception type.
-			if ($stackIndex == 'exception')
+			if ((string)$stackIndex == 'exception')
 				continue;
 			
 			//at Eraser.Program.OnGUIInitInstance(Object sender) in D:\Development\Projects\Eraser 6.2\Eraser\Program.cs:line 191
@@ -84,13 +84,13 @@ function Upload($stackTrace, $crashReport)
 			$function = $file = $line = null;
 			if (preg_match('/^([^ 	]+) (.*) ([^ 	]+) (.*):([^ 	]+) ([0-9]+)/', $stackFrame, $matches))
 			{
-				$function = $matches[1];
-				$file = $matches[2];
-				$line = intval($matches[3]);
+				$function = $matches[2];
+				$file = $matches[4];
+				$line = intval($matches[6]);
 			}
 			else if (preg_match('/^([^ 	]+) (.*)/', $stackFrame, $matches))
 			{
-				$function = $matches[1];
+				$function = $matches[2];
 			}
 			
 			mysql_query(sprintf('INSERT INTO BlackBox_StackFrames SET
