@@ -66,6 +66,8 @@ namespace Eraser
 
 		private void task_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
+			if (!IsHandleCreated)
+				return;
 			if (InvokeRequired)
 			{
 				//Don't update too often - we can slow down the code.
@@ -90,6 +92,8 @@ namespace Eraser
 
 		private void task_TaskFinished(object sender, TaskEventArgs e)
 		{
+			if (!IsHandleCreated)
+				return;
 			if (InvokeRequired)
 			{
 				Invoke(new EventHandler<TaskEventArgs>(task_TaskFinished), sender, e);
@@ -183,27 +187,19 @@ namespace Eraser
 		private string WrapItemName(string itemName)
 		{
 			StringBuilder result = new StringBuilder(itemName.Length);
-
-			try
+			using (Graphics g = item.CreateGraphics())
 			{
-				using (Graphics g = item.CreateGraphics())
+				//Split the long file name into lines which fit into the width of the label
+				while (itemName.Length > 0)
 				{
-					//Split the long file name into lines which fit into the width of the label
-					while (itemName.Length > 0)
-					{
-						int chars = 0;
-						int lines = 0;
-						g.MeasureString(itemName, item.Font, new SizeF(item.Width - 2, 15),
-							StringFormat.GenericDefault, out chars, out lines);
+					int chars = 0;
+					int lines = 0;
+					g.MeasureString(itemName, item.Font, new SizeF(item.Width - 2, 15),
+						StringFormat.GenericDefault, out chars, out lines);
 
-						result.AppendLine(itemName.Substring(0, chars));
-						itemName = itemName.Remove(0, chars);
-					}
+					result.AppendLine(itemName.Substring(0, chars));
+					itemName = itemName.Remove(0, chars);
 				}
-			}
-			catch (ObjectDisposedException)
-			{
-				//Called when the user closes the form and the delegate call to Invoke was queued.
 			}
 
 			return result.ToString();
