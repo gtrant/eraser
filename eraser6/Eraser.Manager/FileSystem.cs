@@ -139,9 +139,10 @@ namespace Eraser.Manager
 				shadowFileInfo = new FileInfo(shadowFile);
 			}
 
-			//Dump the copy (the first 4MB, or less, depending on the file size and available
-			//user space)
-			long amountToCopy = Math.Min(4 * 1024 * 1024, shadowFileInfo.Length);
+			//Dump the copy (the first 4MB, or less, depending on the file size and size of
+			//the original file)
+			long amountToCopy = Math.Min(stream.Length,
+				Math.Min(4 * 1024 * 1024, shadowFileInfo.Length));
 			using (FileStream shadowFileStream = shadowFileInfo.OpenRead())
 			{
 				while (stream.Position < amountToCopy)
