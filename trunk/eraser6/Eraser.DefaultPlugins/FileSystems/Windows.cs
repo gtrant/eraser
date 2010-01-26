@@ -85,7 +85,8 @@ namespace Eraser.DefaultPlugins
 			//volume and write it over.
 			if (Manager.ManagerLibrary.Settings.PlausibleDeniability)
 			{
-				CopyPlausibleDeniabilityFile(info.OpenWrite());
+				using (FileStream fileStream = info.OpenWrite())
+					CopyPlausibleDeniabilityFile(fileStream);
 			}
 
 			//Then delete the file.
