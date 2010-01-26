@@ -136,15 +136,15 @@ namespace Eraser.Util
 					else
 						switch (Marshal.GetLastWin32Error())
 						{
-							case 2: /*ERROR_FILE_NOT_FOUND*/
-							case 3: /*ERROR_PATH_NOT_FOUND*/
-								return false;
-
+							case 5: /*ERROR_ACCESS_DENIED*/
 							case 32: /*ERROR_SHARING_VIOLATION*/
 								return true;
+
+							case 2: /*ERROR_FILE_NOT_FOUND*/
+							case 3: /*ERROR_PATH_NOT_FOUND*/
+							default:
+								return false;
 						}
-	
-					throw KernelApi.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 				}
 			}
 		}
