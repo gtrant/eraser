@@ -501,7 +501,14 @@ namespace Eraser.Manager
 
 		public override string UIText
 		{
-			get { return System.IO.Path.GetFileName(Path); }
+			get
+			{
+				string fileName = System.IO.Path.GetFileName(Path);
+				string directoryName = System.IO.Path.GetDirectoryName(Path);
+				return string.IsNullOrEmpty(fileName) ? 
+						(string.IsNullOrEmpty(directoryName) ? Path : directoryName)
+					: fileName;
+			}
 		}
 
 		public override long TotalData
