@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace Eraser.Util
 {
@@ -38,6 +39,30 @@ namespace Eraser.Util
 		{
 			NativeMethods.SHEmptyRecycleBin(IntPtr.Zero, null,
 				(NativeMethods.SHEmptyRecycleBinFlags)options);
+		}
+
+		/// <summary>
+		/// Gets or sets whether low disk space notifications are enabled for the
+		/// current user.
+		/// </summary>
+		public static bool LowDiskSpaceNotificationsEnabled
+		{
+			get
+			{
+				using (RegistryKey key = Registry.CurrentUser.OpenSubKey(
+					"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"))
+				{
+					return !Convert.ToBoolean(key.GetValue("NoLowDiskSpaceChecks", false));
+				}
+			}
+			set
+			{
+				using (RegistryKey key = Registry.CurrentUser.OpenSubKey(
+					"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", true))
+				{
+					key.SetValue("NoLowDiskSpaceChecks", !value);
+				}
+			}
 		}
 
 		/// <summary>
