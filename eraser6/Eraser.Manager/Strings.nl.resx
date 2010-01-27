@@ -294,7 +294,7 @@
   <data name="Unused disk space ({0})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Could not erase {0} because {1}" xml:space="preserve">
+  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Recycle Bin" xml:space="preserve">
