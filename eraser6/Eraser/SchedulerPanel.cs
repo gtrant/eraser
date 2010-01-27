@@ -651,6 +651,7 @@ namespace Eraser
 				return;
 
 			Rectangle rect = ((ListViewItem)schedulerProgress.Tag).SubItems[2].Bounds;
+			rect.Offset(2, 2);
 			schedulerProgress.Location = rect.Location;
 			schedulerProgress.Size = rect.Size;
 		}
