@@ -415,6 +415,7 @@ namespace Eraser.Manager
 				//Start counting statistics
 				fsManager.EraseClusterTips(VolumeInfo.FromMountpoint(target.Drive),
 					method, task.Log, searchProgress, eraseProgress);
+				tipProgress.MarkComplete();
 			}
 
 			bool lowDiskSpaceNotifications = ShellApi.LowDiskSpaceNotificationsEnabled;
