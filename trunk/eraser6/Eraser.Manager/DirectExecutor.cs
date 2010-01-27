@@ -417,6 +417,7 @@ namespace Eraser.Manager
 					method, task.Log, searchProgress, eraseProgress);
 			}
 
+			bool lowDiskSpaceNotifications = ShellApi.LowDiskSpaceNotificationsEnabled;
 			info = info.CreateSubdirectory(Path.GetFileName(
 				FileSystem.GenerateRandomFileName(info, 18)));
 			try
@@ -425,6 +426,9 @@ namespace Eraser.Manager
 				//space as possible
 				if (Eraser.Util.File.IsCompressed(info.FullName))
 					Eraser.Util.File.SetCompression(info.FullName, false);
+
+				//Disable the low disk space notifications
+				ShellApi.LowDiskSpaceNotificationsEnabled = false;
 
 				ProgressManager mainProgress = new ProgressManager();
 				progress.Steps.Add(new SteppedProgressManager.Step(mainProgress,
@@ -513,6 +517,9 @@ namespace Eraser.Manager
 					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 				fsManager.DeleteFolder(info);
 				tempFiles.Completed = tempFiles.Total;
+
+				//Reset the low disk space notifications
+				ShellApi.LowDiskSpaceNotificationsEnabled = lowDiskSpaceNotifications;
 			}
 
 			//Then clean the old file system entries
