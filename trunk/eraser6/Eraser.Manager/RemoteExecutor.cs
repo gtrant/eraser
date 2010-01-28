@@ -99,9 +99,6 @@ namespace Eraser.Manager
 		{
 			thread = new Thread(Main);
 			serverLock = new Semaphore(maxServerInstances, maxServerInstances);
-
-			thread.Start();
-			Thread.Sleep(0);
 		}
 
 		protected override void Dispose(bool disposing)
@@ -124,6 +121,13 @@ namespace Eraser.Manager
 			}
 
 			base.Dispose(disposing);
+		}
+
+		public override void Run()
+		{
+			thread.Start();
+			Thread.Sleep(0);
+			base.Run();
 		}
 
 		/// <summary>
