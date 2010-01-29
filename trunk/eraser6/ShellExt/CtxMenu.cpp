@@ -953,8 +953,15 @@ namespace Eraser {
 			if (!CreateProcess(NULL, &buffer.front(), NULL, NULL, true, CREATE_NO_WINDOW,
 				NULL, NULL, &startupInfo, &processInfo))
 			{
+				//Why did we fail? Is it because we have too many files
 				if (GetLastError() == ERROR_FILENAME_EXCED_RANGE)
 					throw FormatString(LoadString(IDS_ERROR_TOO_MANY_FILES));
+				
+				//Or if elevation is required for this operation
+				else if (GetLastError() == ERROR_ELEVATION_REQUIRED)
+					return RunEraser(action, parameters, true, parent, show);
+
+				//Or otherwise?
 				else
 					throw FormatString(LoadString(IDS_ERROR_MISC), FormatError().c_str());
 			}
