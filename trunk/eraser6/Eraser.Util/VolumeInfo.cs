@@ -292,7 +292,7 @@ namespace Eraser.Util
 					throw new DirectoryNotFoundException();
 
 				//Get the type of the drive
-				DriveType driveType = (DriveType)KernelApi.NativeMethods.GetDriveType(mountpoint);
+				DriveType driveType = (DriveType)KernelApi.NativeMethods.GetDriveType(currentDir);
 
 				//We do different things for different kinds of drives. Network drives
 				//will need us to resolve the drive to a UNC path. Local drives will
