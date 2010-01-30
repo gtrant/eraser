@@ -112,21 +112,29 @@ namespace Eraser.DefaultPlugins
 				throw new ArgumentException(S._("The amount of data erased should not be " +
 					"limited, since this is a self-limiting erasure method."));
 
-			//If the target stream is shorter than 16kb, just forward it to the default
-			//function.
-			if (strm.Length < dataSize)
+			//If the target stream is shorter than or equal to 32kb, just forward it to
+			//the default function.
+			if (strm.Length < dataSize * 2)
 			{
 				method.Erase(strm, erasureLength, prng, callback);
 				return;
 			}
 
+			//We need to intercept the callback function as we run the erasure method
+			//twice on two parts of the file.
+			ErasureMethodProgressFunction customCallback =
+				delegate(long lastWritten, long totalData, int currentPass)
+				{
+					callback(lastWritten, dataSize * 2, currentPass);
+				};
+
 			//Seek to the beginning and write 16kb.
 			strm.Seek(0, SeekOrigin.Begin);
-			method.Erase(strm, dataSize, prng, callback);
+			method.Erase(strm, dataSize, prng, callback == null ? null: customCallback);
 
 			//Seek to the end - 16kb, and write.
 			strm.Seek(-dataSize, SeekOrigin.End);
-			method.Erase(strm, long.MaxValue, prng, callback);
+			method.Erase(strm, long.MaxValue, prng, callback == null ? null : customCallback);
 		}
 
 		/// <summary>
