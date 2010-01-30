@@ -604,7 +604,7 @@ namespace Eraser.Util
 			get
 			{
 				return new FileStream(System.IO.Path.Combine(Path, BlackBox.DebugLogFileName),
-					FileMode.Open, FileAccess.Read);
+					FileMode.Open, FileAccess.Read, FileShare.Read);
 			}
 		}
 
