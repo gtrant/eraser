@@ -52,6 +52,8 @@ namespace Eraser.Util
 				using (RegistryKey key = Registry.CurrentUser.OpenSubKey(
 					"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer"))
 				{
+					if (key == null)
+						return true;
 					return !Convert.ToBoolean(key.GetValue("NoLowDiskSpaceChecks", false));
 				}
 			}
