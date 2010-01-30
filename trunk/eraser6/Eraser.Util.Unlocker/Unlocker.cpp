@@ -87,8 +87,6 @@ namespace {
 	}
 }
 
-#pragma managed(pop)
-
 void CreateNameThread(HANDLE& handle, NameResolutionThreadParams& params)
 {
 	//If the handle is valid terminate the thread
