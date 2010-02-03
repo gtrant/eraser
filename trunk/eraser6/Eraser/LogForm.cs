@@ -76,7 +76,7 @@ namespace Eraser
 
 		private void task_NewSession(object sender, EventArgs e)
 		{
-			if (!IsHandleCreated)
+			if (IsDisposed || !IsHandleCreated)
 				return;
 			if (InvokeRequired)
 			{
@@ -89,7 +89,7 @@ namespace Eraser
 
 		private void task_Logged(object sender, LogEventArgs e)
 		{
-			if (!IsHandleCreated)
+			if (IsDisposed || !IsHandleCreated)
 				return;
 			if (InvokeRequired)
 			{
