@@ -147,6 +147,7 @@ class Build extends Download
 	{
 		$result = array();
 		$builds = array('Eraser5' => 'Eraser 5', 'Eraser6' => 'Eraser 6.0', 'Eraser6.2' => 'Eraser 6.2');
+		$versions = array('Eraser5' => '5.8.9', 'Eraser6' => '6.0.6', 'Eraser6.2' => '6.1.0');
 		foreach ($builds as $branchName => $buildName)
 		{
 			$revisions = opendir(Build::GetPath($branchName));
@@ -166,7 +167,7 @@ class Build extends Download
 				else
 				{
 					$result[$buildName][] = Build::GetBuildFromID(
-						Build::InsertBuild($branchName, $revisionID,
+						Build::InsertBuild($branchName, $versions[$branchName], $revisionID,
 							Build::GetPath($branchName) . '/' . $revision));
 				}
 			}
@@ -212,7 +213,7 @@ class Build extends Download
 		return $row ? $row[0] : null;
 	}
 	
-	private static function InsertBuild($branch, $revision, $buildPath)
+	private static function InsertBuild($branch, $version, $revision, $buildPath)
 	{
 		//Find the binary that users will get to download.
 		$installerPath = null;
@@ -255,10 +256,11 @@ class Build extends Download
 		mysql_query('START TRANSACTION');
 		mysql_query(sprintf('INSERT INTO downloads (Name, Released, `Type`, Version, PublisherID, Architecture, Filesize, Link)
 				VALUES (
-					\'%1$s r%2$d\', \'%4$s\' , \'build\', \'r%2$d\', 1, \'any\', %3$d, \'?%5$s\'
+					\'%1$s %2$s.%3$d\', \'%5$s\' , \'build\', \'%2$s.%3$d\', 1, \'any\', %4$d, \'?%6$s\'
 				)',
-			mysql_real_escape_string($branch), intval($revision), $installerSize,
-			PhpToMySqlTimestamp(filemtime($buildPath)), mysql_real_escape_string($installerPath)))
+			mysql_real_escape_string($branch), mysql_real_escape_string($version), intval($revision),
+			$installerSize, PhpToMySqlTimestamp(filemtime($buildPath)),
+			mysql_real_escape_string($installerPath)))
 				or die(mysql_error());
 		mysql_query(sprintf('INSERT INTO builds (DownloadID, Branch, Revision)
 				VALUES (
