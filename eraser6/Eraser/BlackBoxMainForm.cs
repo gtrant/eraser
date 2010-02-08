@@ -57,6 +57,9 @@ namespace Eraser
 
 		private void ReportsLv_ItemActivate(object sender, EventArgs e)
 		{
+			if (ReportsLv.SelectedItems.Count == 0)
+				return;
+
 			Process.Start((ReportsLv.SelectedItems[0].Tag as BlackBoxReport).Path);
 		}
 
