@@ -256,9 +256,9 @@ class Build extends Download
 		mysql_query('START TRANSACTION');
 		mysql_query(sprintf('INSERT INTO downloads (Name, Released, `Type`, Version, PublisherID, Architecture, Filesize, Link)
 				VALUES (
-					\'%1$s %2$s.%3$d\', \'%5$s\' , \'build\', \'%2$s.%3$d\', 1, \'any\', %4$d, \'?%6$s\'
+					\'Eraser %1$s.%2$d\', \'%4$s\' , \'build\', \'%1$s.%2$d\', 1, \'any\', %3$d, \'?%5$s\'
 				)',
-			mysql_real_escape_string($branch), mysql_real_escape_string($version), intval($revision),
+			mysql_real_escape_string($version), intval($revision),
 			$installerSize, PhpToMySqlTimestamp(filemtime($buildPath)),
 			mysql_real_escape_string($installerPath)))
 				or die(mysql_error());
@@ -292,10 +292,11 @@ class Build extends Download
 		//as superseded.
 		mysql_query(sprintf('UPDATE downloads SET Superseded=1
 			WHERE DownloadID IN (
-				SELECT DownloadID FROM builds
+				SELECT downloads.DownloadID FROM downloads
+					INNER JOIN builds ON downloads.DownloadID=builds.DownloadID
 					WHERE Branch=\'%s\' AND
 					Superseded=0 AND
-					DownloadID NOT IN (%s)
+					downloads.DownloadID NOT IN (%s)
 			)',
 			mysql_real_escape_string($branch), $ignoredBuilds));
 		mysql_query('COMMIT');
