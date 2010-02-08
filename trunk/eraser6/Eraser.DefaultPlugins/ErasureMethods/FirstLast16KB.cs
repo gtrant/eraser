@@ -84,13 +84,13 @@ namespace Eraser.DefaultPlugins
 			long amountToWrite = 0;
 			if (paths == null)
 			{
-				if (targetSize <= dataSize)
+				if (targetSize <= DataSize)
 					amountToWrite = targetSize;
 				else
-					amountToWrite = dataSize * 2;
+					amountToWrite = DataSize * 2;
 			}
 			else
-				amountToWrite = paths.Count * dataSize * 2;
+				amountToWrite = paths.Count * DataSize * 2;
 
 			//The final amount has to be multiplied by the number of passes.
 			return amountToWrite * method.Passes;
@@ -114,7 +114,7 @@ namespace Eraser.DefaultPlugins
 
 			//If the target stream is shorter than or equal to 32kb, just forward it to
 			//the default function.
-			if (strm.Length < dataSize * 2)
+			if (strm.Length < DataSize * 2)
 			{
 				method.Erase(strm, erasureLength, prng, callback);
 				return;
@@ -122,10 +122,11 @@ namespace Eraser.DefaultPlugins
 
 			//We need to intercept the callback function as we run the erasure method
 			//twice on two parts of the file.
+			long dataSize = method.CalculateEraseDataSize(null, DataSize * 2);
 			ErasureMethodProgressFunction customCallback =
 				delegate(long lastWritten, long totalData, int currentPass)
 				{
-					callback(lastWritten, dataSize * 2, currentPass);
+					callback(lastWritten, dataSize, currentPass);
 				};
 
 			//Seek to the beginning and write 16kb.
@@ -140,7 +141,7 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// The amount of data to be erased from the header and the end of the file.
 		/// </summary>
-		private const long dataSize = 16 * 1024;
+		private const long DataSize = 16 * 1024;
 
 		private ErasureMethod method;
 	}
