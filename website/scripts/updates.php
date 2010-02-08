@@ -2,7 +2,7 @@
 abstract class UpdateListBase
 {
 	protected abstract function GetVersion();
-	protected abstract function GetDownloads($clientVersion);
+	protected abstract function GetUpdates($clientVersion);
 	protected abstract function OutputBodyXml($clientVersion);
 	
 	public function Output($clientVersion)
@@ -19,9 +19,9 @@ abstract class UpdateListBase
 ', $this->GetVersion());
 	}
 	
-	protected function OutputDownloads($clientVersion)
+	protected function OutputUpdates($clientVersion)
 	{
-		$query = $this->GetDownloads($clientVersion);
+		$query = $this->GetUpdates($clientVersion);
 
 		$lastItemType = null;
 		while ($row = mysql_fetch_array($query))
@@ -64,7 +64,7 @@ class UpdateList1 extends UpdateListBase
 		return "1.0";
 	}
 	
-	protected function GetDownloads($clientVersion)
+	protected function GetUpdates($clientVersion)
 	{
 		//Prepare the list of updates
 		return mysql_query(sprintf('SELECT downloads.*, publishers.Name as PublisherName
@@ -101,7 +101,7 @@ class UpdateList1 extends UpdateListBase
 	protected function OutputBodyXml($clientVersion)
 	{
 		$this->OutputMirrors();
-		$this->OutputDownloads($clientVersion);
+		$this->OutputUpdates($clientVersion);
 	}
 }
 
@@ -112,7 +112,7 @@ class UpdateList1_1 extends UpdateListBase
 		return "1.1";
 	}
 	
-	protected function GetDownloads($clientVersion)
+	protected function GetUpdates($clientVersion)
 	{
 		//Prepare the list of updates
 		return mysql_query(sprintf('SELECT downloads.*, publishers.Name as PublisherName
@@ -139,7 +139,7 @@ class UpdateList1_1 extends UpdateListBase
 	
 	protected function OutputBodyXml($clientVersion)
 	{
-		$this->OutputDownloads($clientVersion);
+		$this->OutputUpdates($clientVersion);
 	}
 }
 ?>
