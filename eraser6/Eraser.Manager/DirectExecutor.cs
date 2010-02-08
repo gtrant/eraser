@@ -55,6 +55,21 @@ namespace Eraser.Manager
 			{
 				thread.Abort();
 				schedulerInterrupt.Set();
+
+				//Wait for the executor thread to exit -- we call some event functions
+				//and these events may need invocation on the main thread. So,
+				//pump messages from the main thread until the thread exits.
+				if (System.Windows.Forms.Application.MessageLoop)
+				{
+					if (!thread.Join(new TimeSpan(0, 0, 0, 0, 100)))
+						System.Windows.Forms.Application.DoEvents();
+				}
+
+				//If we are disposing on a secondary thread, or a thread without
+				//a message loop, just wait for the thread to exit indefinitely
+				else
+					thread.Join();
+
 				schedulerInterrupt.Close();
 			}
 
@@ -614,6 +629,7 @@ namespace Eraser.Manager
 						task.Log.LastSessionEntries.Add(new LogEntry(S._("The file {0} could " +
 							"not be erased because the file was either compressed, encrypted or " +
 							"a sparse file.", info.FullName), LogLevel.Error));
+						continue;
 					}
 
 					fsManager.EraseFileSystemObject(info, method,
