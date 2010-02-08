@@ -277,17 +277,27 @@ class Build extends Download
 		
 		//Ensure that only 3 builds are not superseded at any one time.
 		mysql_query('START TRANSACTION');
+		
+		//Get the latest 3 builds and concatenate them into a MySQL set.
+		$builds = array();
+		$query = mysql_query(sprintf('SELECT builds.DownloadID FROM builds
+			INNER JOIN downloads ON builds.DownloadID=downloads.DownloadID
+			WHERE Branch=\'%s\' AND Superseded=0
+			ORDER BY builds.DownloadID DESC LIMIT 3', mysql_real_escape_string($branch)));
+		while (($row == mysql_fetch_array($query)) !== false)
+			$builds[] = intval($row['DownloadID']);
+		$ignoredBuilds = implode(', ', $builds);
+		
+		//Set the builds which aren't yet superseded and not in the latest 3 builds
+		//as superseded.
 		mysql_query(sprintf('UPDATE downloads SET Superseded=1
 			WHERE DownloadID IN (
-				SELECT DownloadID FROM builds where Branch=\'%s\'
+				SELECT DownloadID FROM builds
+					WHERE Branch=\'%s\' AND
+					Superseded=0 AND
+					DownloadID NOT IN (%s)
 			)',
-			mysql_real_escape_string($branch)));
-		mysql_query(sprintf('UPDATE downloads SET Superseded=0
-			WHERE DownloadID IN (
-				SELECT DownloadID FROM builds where Branch=\'%s\'
-			)
-			ORDER BY DownloadID DESC
-			LIMIT 3', mysql_real_escape_string($branch)));
+			mysql_real_escape_string($branch), $ignoredBuilds));
 		mysql_query('COMMIT');
 		return $buildId;
 	}
