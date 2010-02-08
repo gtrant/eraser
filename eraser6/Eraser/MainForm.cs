@@ -33,6 +33,7 @@ using Eraser.Properties;
 using System.IO;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace Eraser
 {
@@ -257,7 +258,26 @@ namespace Eraser
 					using (FileStream stream = new FileStream(dialog.FileName,
 						FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
 					{
-						Program.eraserClient.Tasks.LoadFromStream(stream);
+						try
+						{
+							Program.eraserClient.Tasks.LoadFromStream(stream);
+						}
+						catch (FileLoadException ex)
+						{
+							MessageBox.Show(S._("The task list could not be imported. The error " +
+								"returned was: {0}", ex.Message), S._("Eraser"),
+								MessageBoxButtons.OK, MessageBoxIcon.Error,
+								MessageBoxDefaultButton.Button1,
+								S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+						}
+						catch (SerializationException ex)
+						{
+							MessageBox.Show(S._("The task list could not be imported. The error " +
+								"returned was: {0}", ex.Message), S._("Eraser"),
+								MessageBoxButtons.OK, MessageBoxIcon.Error,
+								MessageBoxDefaultButton.Button1,
+								S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+						}
 					}
 				}
 			}
