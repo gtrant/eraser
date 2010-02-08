@@ -168,6 +168,9 @@
   <data name="Session: {0:F}" xml:space="preserve">
     <value>Sessione: {0:F}</value>
   </data>
+  <data name="The task list could not be imported. The error returned was: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The Eraser documentation file could not be opened. Check that Adobe Reader installed and that your Eraser install is not corrupt.\n\nThe error returned was: {0}" xml:space="preserve">
     <value>La documentazione di Eraser non può essere aperta. Verificare che Adobe Acrobat Reader sia installato e che la vostra installazione di Eraser non sia corrotta.\n\nL'errore è stato: {0}</value>
   </data>
@@ -179,6 +182,9 @@
   </data>
   <data name="Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit." xml:space="preserve">
     <value>Un'altra occorrenza di Eraser è già in esecuzione, ma con privilegi più elevati di questa.\n\nEraser adesso si chiuderà.</value>
+  </data>
+  <data name="Another instance of Eraser is already running but cannot be connected to.\n\nThe error returned was: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Total: {0,2:#0.00%}" xml:space="preserve">
     <value>Totale: {0,2:#0.00%}</value>
