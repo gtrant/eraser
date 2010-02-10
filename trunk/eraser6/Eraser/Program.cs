@@ -1254,6 +1254,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 						//that the server process isn't running. Start an instance.
 						Process eraserInstance = Process.Start(
 							Assembly.GetExecutingAssembly().Location, "--quiet");
+						Thread.Sleep(0);
 						eraserInstance.WaitForInputIdle();
 
 						client.Run();
