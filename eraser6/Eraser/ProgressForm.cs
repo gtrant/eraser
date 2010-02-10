@@ -146,8 +146,9 @@ namespace Eraser
 		private void UpdateProgress(SteppedProgressManager targetProgress, ProgressChangedEventArgs e)
 		{
 			TaskProgressChangedEventArgs e2 = (TaskProgressChangedEventArgs)e.UserState;
+			if (targetProgress.CurrentStep != null)
+				status.Text = targetProgress.CurrentStep.Name;
 
-			status.Text = targetProgress.CurrentStep.Name;
 			if (e2 != null)
 			{
 				item.Text = WrapItemName(e2.ItemName);
