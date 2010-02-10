@@ -158,13 +158,13 @@
     <value>Metodo pulizia</value>
   </data>
   <data name="deleteDataToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>169, 22</value>
+    <value>170, 22</value>
   </data>
   <data name="deleteDataToolStripMenuItem.Text" xml:space="preserve">
     <value>Rimuovi dalla lista</value>
   </data>
   <data name="dataContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 48</value>
+    <value>171, 26</value>
   </data>
   <data name="dataAdd.Text" xml:space="preserve">
     <value>Aggiungi</value>
