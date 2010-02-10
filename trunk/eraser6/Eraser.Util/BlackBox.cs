@@ -129,6 +129,10 @@ namespace Eraser.Util
 		/// </summary>
 		private BlackBox()
 		{
+			//If we have a debugger attached we shouldn't bother with exceptions.
+			if (Debugger.IsAttached)
+				return;
+
 			AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
 		}
