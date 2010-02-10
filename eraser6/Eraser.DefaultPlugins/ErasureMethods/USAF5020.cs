@@ -25,11 +25,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
+
 using Eraser.Manager;
 using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
+	[Guid("7BF5B185-8EA5-4e12-83F1-F6C2EFB3D2C2")]
 	sealed class USAF5020 : PassBasedErasureMethod
 	{
 		public override string Name
@@ -39,7 +42,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{7BF5B185-8EA5-4e12-83F1-F6C2EFB3D2C2}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses
@@ -51,7 +54,7 @@ namespace Eraser.DefaultPlugins
 		{
 			get
 			{
-				Prng prng = PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng);
+				Prng prng = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
 				int rand = prng.Next();
 
 				return new ErasureMethodPass[]

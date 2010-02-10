@@ -25,10 +25,11 @@ using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Runtime.Serialization;
-using System.ComponentModel;
-using Eraser.Util;
 using System.Security.Permissions;
 using System.Threading;
+
+using Eraser.Util;
+using Eraser.Util.ExtensionMethods;
 
 namespace Eraser.Manager
 {
@@ -45,7 +46,7 @@ namespace Eraser.Manager
 			Executor = context.Context as Executor;
 			Targets = (ErasureTargetsCollection)info.GetValue("Targets", typeof(ErasureTargetsCollection));
 			Targets.Owner = this;
-			Log = (Logger)info.GetValue("Log", typeof(Logger));
+			Log = (List<LogSink>)info.GetValue("Log", typeof(List<LogSink>));
 			Canceled = false;
 
 			Schedule schedule = (Schedule)info.GetValue("Schedule", typeof(Schedule));
@@ -81,7 +82,7 @@ namespace Eraser.Manager
 			Targets = new ErasureTargetsCollection(this);
 			Schedule = Schedule.RunNow;
 			Canceled = false;
-			Log = new Logger();
+			Log = new List<LogSink>();
 		}
 
 		/// <summary>
@@ -181,8 +182,8 @@ namespace Eraser.Manager
 			set
 			{
 				if (value.Owner != null)
-					throw new ArgumentException(S._("The schedule provided can only " +
-						"belong to one task at a time"));
+					throw new ArgumentException("The schedule provided can only " +
+						"belong to one task at a time");
 
 				if (schedule is RecurringSchedule)
 					((RecurringSchedule)schedule).Owner = null;
@@ -196,7 +197,7 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The log entries which this task has accumulated.
 		/// </summary>
-		public Logger Log { get; private set; }
+		public List<LogSink> Log { get; private set; }
 
 		/// <summary>
 		/// The progress manager object which manages the progress of this task.
@@ -224,12 +225,12 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The task has been edited.
 		/// </summary>
-		public EventHandler<TaskEventArgs> TaskEdited { get; set; }
+		public EventHandler TaskEdited { get; set; }
 
 		/// <summary>
 		/// The start of the execution of a task.
 		/// </summary>
-		public EventHandler<TaskEventArgs> TaskStarted { get; set; }
+		public EventHandler TaskStarted { get; set; }
 
 		/// <summary>
 		/// The event object holding all event handlers.
@@ -239,7 +240,7 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The completion of the execution of a task.
 		/// </summary>
-		public EventHandler<TaskEventArgs> TaskFinished { get; set; }
+		public EventHandler TaskFinished { get; set; }
 
 		/// <summary>
 		/// Broadcasts the task edited event.
@@ -247,17 +248,16 @@ namespace Eraser.Manager
 		internal void OnTaskEdited()
 		{
 			if (TaskEdited != null)
-				TaskEdited(this, new TaskEventArgs(this));
+				TaskEdited(this, EventArgs.Empty);
 		}
 
 		/// <summary>
 		/// Broadcasts the task execution start event.
 		/// </summary>
-		/// <param name="e"></param>
-		internal void OnTaskStarted(TaskEventArgs e)
+		internal void OnTaskStarted()
 		{
 			if (TaskStarted != null)
-				TaskStarted(this, e);
+				TaskStarted(this, EventArgs.Empty);
 			Executing = true;
 			Progress = new SteppedProgressManager();
 		}
@@ -292,11 +292,10 @@ namespace Eraser.Manager
 		/// <summary>
 		/// Broadcasts the task execution completion event.
 		/// </summary>
-		/// <param name="e"></param>
-		internal void OnTaskFinished(TaskEventArgs e)
+		internal void OnTaskFinished()
 		{
 			if (TaskFinished != null)
-				TaskFinished(this, e);
+				TaskFinished(this, EventArgs.Empty);
 			Executing = false;
 			Progress = null;
 		}
@@ -314,9 +313,9 @@ namespace Eraser.Manager
 		{
 			Guid methodGuid = (Guid)info.GetValue("Method", typeof(Guid));
 			if (methodGuid == Guid.Empty)
-				method = ErasureMethodManager.Default;
+				method = ErasureMethodRegistrar.Default;
 			else
-				method = ErasureMethodManager.GetInstance(methodGuid);
+				method = ManagerLibrary.Instance.ErasureMethodRegistrar[methodGuid];
 		}
 
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
@@ -349,7 +348,7 @@ namespace Eraser.Manager
 			set
 			{
 				method = value;
-				MethodDefined = method != ErasureMethodManager.Default;
+				MethodDefined = method != ErasureMethodRegistrar.Default;
 			}
 		}
 
@@ -424,7 +423,7 @@ namespace Eraser.Manager
 		protected FileSystemObjectTarget()
 			: base()
 		{
-			Method = ErasureMethodManager.Default;
+			Method = ErasureMethodRegistrar.Default;
 		}
 
 		/// <summary>
@@ -447,7 +446,7 @@ namespace Eraser.Manager
 			try
 			{
 				//Get the ADS names
-				ICollection<string> adses = Util.File.GetADSes(new FileInfo(file));
+				IList<string> adses = new FileInfo(file).GetADSes();
 
 				//Then prepend the path.
 				foreach (string adsName in adses)
@@ -458,24 +457,30 @@ namespace Eraser.Manager
 					totalSize += info.Length;
 				}
 			}
-			catch (FileLoadException)
+			catch (IOException)
 			{
-				//The system cannot open the file, try to force the file handle to close.
-				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
-					throw;
+				if (System.Runtime.InteropServices.Marshal.GetLastWin32Error() ==
+					Win32ErrorCode.SharingViolation)
+				{
+					//The system cannot open the file, try to force the file handle to close.
+					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+						throw;
 
-				foreach (OpenHandle handle in OpenHandle.Items)
-					if (handle.Path == file && handle.Close())
-					{
-						GetPathADSes(list, out totalSize, file);
-						return;
-					}
+					foreach (OpenHandle handle in OpenHandle.Items)
+						if (handle.Path == file && handle.Close())
+						{
+							GetPathADSes(list, out totalSize, file);
+							return;
+						}
+				}
+				else
+					throw;
 			}
 			catch (UnauthorizedAccessException e)
 			{
 				//The system cannot read the file, assume no ADSes for lack of
 				//more information.
-				Task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
+				Logger.Log(e.Message, LogLevel.Error);
 			}
 		}
 
@@ -490,8 +495,8 @@ namespace Eraser.Manager
 			{
 				if (base.MethodDefined)
 					return base.Method;
-				return ErasureMethodManager.GetInstance(
-					ManagerLibrary.Settings.DefaultFileErasureMethod);
+				return ManagerLibrary.Instance.ErasureMethodRegistrar[
+					ManagerLibrary.Settings.DefaultFileErasureMethod];
 			}
 			set
 			{
@@ -551,7 +556,7 @@ namespace Eraser.Manager
 		public UnusedSpaceTarget()
 			: base()
 		{
-			Method = ErasureMethodManager.Default;
+			Method = ErasureMethodRegistrar.Default;
 		}
 
 		public override sealed ErasureMethod Method
@@ -560,8 +565,8 @@ namespace Eraser.Manager
 			{
 				if (base.MethodDefined)
 					return base.Method;
-				return ErasureMethodManager.GetInstance(
-					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod);
+				return ManagerLibrary.Instance.ErasureMethodRegistrar[
+					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod];
 			}
 			set
 			{
@@ -578,7 +583,7 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				VolumeInfo info = VolumeInfo.FromMountpoint(Drive);
+				VolumeInfo info = VolumeInfo.FromMountPoint(Drive);
 				return Method.CalculateEraseDataSize(null, info.AvailableFreeSpace);
 			}
 		}
@@ -737,8 +742,8 @@ namespace Eraser.Manager
 				}
 				catch (UnauthorizedAccessException e)
 				{
-					Task.Log.LastSessionEntries.Add(new LogEntry(S._("Could not erase files and " +
-						"subfolders in {0} because {1}", info.FullName, e.Message), LogLevel.Error));
+					Logger.Log(S._("Could not erase files and subfolders in {0} because {1}",
+						info.FullName, e.Message), LogLevel.Error);
 				}
 			}
 
@@ -834,7 +839,7 @@ namespace Eraser.Manager
 			}
 			catch (UnauthorizedAccessException e)
 			{
-				Task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
+				Logger.Log(e.Message, LogLevel.Error);
 			}
 		}
 
@@ -854,8 +859,7 @@ namespace Eraser.Manager
 	/// Maintains a collection of erasure targets.
 	/// </summary>
 	[Serializable]
-	public class ErasureTargetsCollection : IList<ErasureTarget>, ICollection<ErasureTarget>,
-		IEnumerable<ErasureTarget>, ISerializable
+	public class ErasureTargetsCollection : IList<ErasureTarget>, ISerializable
 	{
 		#region Constructors
 		internal ErasureTargetsCollection(Task owner)

@@ -55,7 +55,7 @@ namespace Eraser.DefaultPlugins
 			foreach (Guid guid in methods.Keys)
 			{
 				CustomErasureMethod method = methods[guid];
-				ErasureMethodManager.Register(new EraseCustom(method), new object[] { method });
+				ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new EraseCustom(method));
 			}
 		}
 
@@ -86,7 +86,7 @@ namespace Eraser.DefaultPlugins
 	/// Contains information necessary to create user-defined erasure methods.
 	/// </summary>
 	[Serializable]
-	public class CustomErasureMethod : ISerializable
+	internal class CustomErasureMethod : ISerializable
 	{
 		public CustomErasureMethod()
 		{

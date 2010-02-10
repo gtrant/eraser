@@ -11,6 +11,10 @@
 			<Word>PRNGs</Word>
 			<Word>Prng</Word>
 			<Word>Rng</Word>
+			<Word>Util</Word>
+			<Word>Randomise</Word>
+			<Word>Localisation</Word>
+			<Word>Theming</Word>
 			
 			<!-- Proper nouns -->
 			<Word>Gutmann</Word>
@@ -35,6 +39,7 @@
 			<Acronym>PRNG</Acronym>
 			<Acronym>PRNGs</Acronym>
 			<Acronym>RNG</Acronym>
+			<Acronym>Mft</Acronym>
 		</CasingExceptions>
 	</Acronyms>
 </Dictionary>

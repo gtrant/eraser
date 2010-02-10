@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Unknown erasure target." xml:space="preserve">
-    <value>Elemento da pulire sconosciuto.</value>
-  </data>
   <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
     <value>Il programma non ha i permessi richiesti per pulire lo spazio non utilizzato sul disco. Eseguire il programma come amministratore e riprovare l'operazione</value>
   </data>
@@ -204,18 +201,6 @@
   <data name="(default)" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The DefaultMethod class should never be used and should instead be replaced before execution!" xml:space="preserve">
-    <value>La classe DefaultMethod non dovrebbe mai essere usata e dovrebbe essere sostituita prima della esecuzione!</value>
-  </data>
-  <data name="Registered erasure methods must contain a parameterless constructor that is called whenever clients request for an instance of the method. If a constructor requires parameters, specify it in the parameters parameter." xml:space="preserve">
-    <value>Il metodi di pulizia registrati devono contenere un costrutture privo di parametri che viene chiamato ogni volta ne viene richiesta l'esecuzione di una istanza. Se il costrutture richiede paramentri, specificarli nel parametro parameters.</value>
-  </data>
-  <data name="The GUID of the erasure method to remove refers to an invalid erasure method." xml:space="preserve">
-    <value>Il GUID del metodo di pulizia rimuove riferimenti a un metodo di pulizia non valido.</value>
-  </data>
-  <data name="minValue is greater than maxValue" xml:space="preserve">
-    <value>Il minValue è maggiore del maxValue</value>
-  </data>
   <data name="Running on restart" xml:space="preserve">
     <value>Esecuzione al riavvio</value>
   </data>
@@ -264,32 +249,17 @@
   <data name=", at {0}" xml:space="preserve">
     <value>, al {0}</value>
   </data>
-  <data name="The ScheduleUnit of the schedule does not require a frequency value, this field would contain garbage." xml:space="preserve">
-    <value>La ScheduleUnit della pianificazione non richiede un valore di frequenza.</value>
-  </data>
   <data name="The frequency of the recurrence should be greater than one" xml:space="preserve">
     <value>La frequenza della ricorrenza dovrebbe essere maggiore di uno</value>
   </data>
-  <data name="The ScheduleUnit of the schedule does not require the WeeklySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>La ScheduleUnit della pianificazione non richiede un valore per il WeeklySchedule</value>
-  </data>
   <data name="The WeeklySchedule should have at least one day where the task should be run." xml:space="preserve">
     <value>La WeeklySchedule dovrebbe avere almeno un giorno in cui l'operazione deve essere eseguito.</value>
-  </data>
-  <data name="The ScheduleUnit of the schedule does not require the MonthlySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>La ScheduleUnit della pianificazione non richiede un valore per il MonthlySchedule</value>
-  </data>
-  <data name="The ScheduleUnit of the schedule does not use the WeeklySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>La ScheduleUnit della pianificazione non usa il valore per il WeeklySchedule</value>
   </data>
   <data name="An invalid type was found when loading the task schedule" xml:space="preserve">
     <value>Un tipo non valido è stato trovato durante il caricamento della pianificazione dell'operazione</value>
   </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
     <value>(Untranslated)</value>
-  </data>
-  <data name="The schedule provided can only belong to one task at a time" xml:space="preserve">
-    <value>La pianificazione definita può riferirsi solo ad un operazione alla volta</value>
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">
     <value>Spazio disco inutilizzato ({0})</value>

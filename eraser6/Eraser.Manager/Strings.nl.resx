@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Unknown erasure target." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -204,18 +201,6 @@
   <data name="(default)" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The DefaultMethod class should never be used and should instead be replaced before execution!" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Registered erasure methods must contain a parameterless constructor that is called whenever clients request for an instance of the method. If a constructor requires parameters, specify it in the parameters parameter." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The GUID of the erasure method to remove refers to an invalid erasure method." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="minValue is greater than maxValue" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="Running on restart" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -264,31 +249,16 @@
   <data name=", at {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The ScheduleUnit of the schedule does not require a frequency value, this field would contain garbage." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="The frequency of the recurrence should be greater than one" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The ScheduleUnit of the schedule does not require the WeeklySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="The WeeklySchedule should have at least one day where the task should be run." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The ScheduleUnit of the schedule does not require the MonthlySchedule value, this field would contain garbage" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The ScheduleUnit of the schedule does not use the WeeklySchedule value, this field would contain garbage" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="An invalid type was found when loading the task schedule" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The schedule provided can only belong to one task at a time" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">

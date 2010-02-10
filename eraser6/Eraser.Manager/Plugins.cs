@@ -67,7 +67,7 @@ namespace Eraser.Manager.Plugin
 		/// Retrieves the list of currently loaded plugins.
 		/// </summary>
 		/// <remarks>The returned list is read-only</remarks>
-		public abstract ICollection<PluginInstance> Plugins
+		public abstract IList<PluginInstance> Plugins
 		{
 			get;
 		}
@@ -159,6 +159,9 @@ namespace Eraser.Manager.Plugin
 
 		protected override void Dispose(bool disposing)
 		{
+			if (plugins == null)
+				return;
+
 			if (disposing)
 			{
 				//Unload all the plugins. This will cause all the plugins to execute
@@ -167,6 +170,8 @@ namespace Eraser.Manager.Plugin
 					if (plugin.Plugin != null)
 						plugin.Plugin.Dispose();
 			}
+
+			plugins = null;
 		}
 
 		/// <summary>
@@ -174,7 +179,7 @@ namespace Eraser.Manager.Plugin
 		/// </summary>
 		public const string PLUGINSFOLDER = "Plugins";
 
-		public override ICollection<PluginInstance> Plugins
+		public override IList<PluginInstance> Plugins
 		{
 			get { return plugins.AsReadOnly(); }
 		}
@@ -211,7 +216,7 @@ namespace Eraser.Manager.Plugin
 			//the plugin for the presence of a valid signature.
 			IDictionary<Guid, bool> approvals = ManagerLibrary.Settings.PluginApprovals;
 			if ((reflectAssembly.GetName().GetPublicKey().Length == 0 ||
-				!MsCorEEApi.VerifyStrongName(filePath) ||
+				!Security.VerifyStrongName(filePath) ||
 				instance.AssemblyAuthenticode == null) &&
 				!approvals.ContainsKey(instance.AssemblyInfo.Guid))
 			{
@@ -297,7 +302,7 @@ namespace Eraser.Manager.Plugin
 			IsCore = false;
 
 			//Verify the certificate in the assembly.
-			if (WintrustApi.VerifyAuthenticode(assembly.Location))
+			if (Security.VerifyAuthenticode(assembly.Location))
 			{
 				X509Certificate2 cert = new X509Certificate2(
 					X509Certificate.CreateFromSignedFile(assembly.Location));

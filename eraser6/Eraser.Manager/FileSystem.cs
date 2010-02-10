@@ -2,7 +2,6 @@
  * $Id$
  * Copyright 2008-2010 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @17/10/2008
  * Modified By: 
  * 
  * This file is part of Eraser.
@@ -31,7 +30,7 @@ namespace Eraser.Manager
 	/// <summary>
 	/// Provides functions to handle erasures specfic to file systems.
 	/// </summary>
-	public abstract class FileSystem
+	public abstract class FileSystem : IRegisterable
 	{
 		/// <summary>
 		/// Generates a random file name with the given length.
@@ -44,7 +43,7 @@ namespace Eraser.Manager
 		public static string GenerateRandomFileName(DirectoryInfo info, int length)
 		{
 			//Get a random file name
-			Prng prng = PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng);
+			Prng prng = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
 			string resultPrefix = info == null ? string.Empty : info.FullName +
 				Path.DirectorySeparatorChar;
 			byte[] resultAry = new byte[length];
@@ -64,7 +63,7 @@ namespace Eraser.Manager
 				result = Encoding.UTF8.GetString(resultAry);
 			}
 			while (info != null && (Directory.Exists(resultPrefix + result) ||
-				System.IO.File.Exists(resultPrefix + result)));
+				File.Exists(resultPrefix + result)));
 			return resultPrefix + result;
 		}
 
@@ -89,7 +88,7 @@ namespace Eraser.Manager
 				return string.Empty;
 
 			//Find a random entry.
-			Prng prng = PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng);
+			Prng prng = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
 			string result = string.Empty;
 			while (result.Length == 0)
 			{
@@ -115,7 +114,7 @@ namespace Eraser.Manager
 				string shadowFile = null;
 				List<string> entries = new List<string>(
 					ManagerLibrary.Settings.PlausibleDeniabilityFiles);
-				Prng prng = PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng);
+				Prng prng = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
 				do
 				{
 					if (entries.Count == 0)
@@ -124,7 +123,7 @@ namespace Eraser.Manager
 							"replaced with random data."));
 
 					int index = prng.Next(entries.Count - 1);
-					if ((System.IO.File.GetAttributes(entries[index]) & FileAttributes.Directory) != 0)
+					if ((File.GetAttributes(entries[index]) & FileAttributes.Directory) != 0)
 					{
 						DirectoryInfo dir = new DirectoryInfo(entries[index]);
 						FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
@@ -136,8 +135,7 @@ namespace Eraser.Manager
 
 					entries.RemoveAt(index);
 				}
-				while (shadowFile == null || shadowFile.Length == 0 ||
-					!System.IO.File.Exists(shadowFile));
+				while (shadowFile == null || shadowFile.Length == 0 || !File.Exists(shadowFile));
 				shadowFileInfo = new FileInfo(shadowFile);
 			}
 
@@ -164,11 +162,20 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Checks whether the given file system is supported by the current provider.
+		/// The Guid of the current filesystem.
 		/// </summary>
-		/// <param name="fileSystemName">The file system name to check.</param>
-		/// <returns>True if the current provider supports the file system.</returns>
-		public abstract bool Supports(string fileSystemName);
+		public abstract Guid Guid
+		{
+			get; 
+		}
+
+		/// <summary>
+		/// The name of the current filesystem.
+		/// </summary>
+		public abstract string Name
+		{
+			get;
+		}
 
 		/// <summary>
 		/// Securely deletes the file reference from the directory structures
@@ -204,8 +211,7 @@ namespace Eraser.Manager
 		/// <param name="searchCallback">The callback function for search progress.</param>
 		/// <param name="eraseCallback">The callback function for erasure progress.</param>
 		public abstract void EraseClusterTips(VolumeInfo info, ErasureMethod method,
-			Logger log, ClusterTipsSearchProgress searchCallback,
-			ClusterTipsEraseProgress eraseCallback);
+			ClusterTipsSearchProgress searchCallback, ClusterTipsEraseProgress eraseCallback);
 
 		/// <summary>
 		/// Erases old file system table-resident files. This creates small one-byte
@@ -243,6 +249,7 @@ namespace Eraser.Manager
 		public abstract void EraseFileSystemObject(StreamInfo info, ErasureMethod method,
 			ErasureMethodProgressFunction callback);
 
+		//TODO: This is supposed to be in VolumeInfo!
 		/// <summary>
 		/// Retrieves the size of the file on disk, calculated by the amount of
 		/// clusters allocated by it.
@@ -289,9 +296,8 @@ namespace Eraser.Manager
 	/// erased.</param>
 	public delegate void FileSystemEntriesEraseProgress(int currentFile, int totalFiles);
 
-	public class FileSystemManager
+	public class FileSystemRegistrar : Registrar<FileSystem>
 	{
-		#region Registrar fields
 		/// <summary>
 		/// Gets the FileSystem object that implements the FileSystem interface
 		/// for the given file system.
@@ -301,35 +307,20 @@ namespace Eraser.Manager
 		/// given volume.</returns>
 		/// <exception cref="NotSupportedException">Thrown when an unimplemented
 		/// file system is requested.</exception>
-		public static FileSystem Get(VolumeInfo volume)
+		public FileSystem this[VolumeInfo volume]
 		{
-			lock (ManagerLibrary.Instance.FileSystemManager.FileSystems)
-				foreach (FileSystem filesystem in ManagerLibrary.Instance.FileSystemManager.FileSystems)
-					if (filesystem.Supports(volume.VolumeFormat))
-						return filesystem;
-
-			throw new NotSupportedException(S._("The file system on the drive {0} is not " +
-				"supported.", volume.IsMounted ? volume.MountPoints[0] : volume.VolumeId));
-		}
-
-		/// <summary>
-		/// Allows plug-ins to register file system providers with the main program.
-		/// Thread-safe.
-		/// </summary>
-		/// <param name="method">The filesystem to register.</param>
-		public static void Register(FileSystem filesystem)
-		{
-			//Insert the entry
-			lock (ManagerLibrary.Instance.FileSystemManager.FileSystems)
+			get
 			{
-				ManagerLibrary.Instance.FileSystemManager.FileSystems.Add(filesystem);
+				foreach (FileSystem filesystem in this)
+					if (filesystem.Name.ToUpperInvariant() ==
+						volume.VolumeFormat.ToUpperInvariant())
+					{
+						return filesystem;
+					}
+
+				throw new NotSupportedException(S._("The file system on the drive {0} is not " +
+					"supported.", volume));
 			}
 		}
-
-		/// <summary>
-		/// The list of currently registered erasure methods.
-		/// </summary>
-		private List<FileSystem> FileSystems = new List<FileSystem>();
-		#endregion
 	}
 }

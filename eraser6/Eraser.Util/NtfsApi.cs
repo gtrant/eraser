@@ -22,6 +22,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Win32.SafeHandles;
+using System.Runtime.InteropServices;
 
 namespace Eraser.Util
 {
@@ -34,9 +36,7 @@ namespace Eraser.Util
 		/// <returns>The size of the MFT.</returns>
 		public static long GetMftValidSize(VolumeInfo volume)
 		{
-			NTApi.NativeMethods.NTFS_VOLUME_DATA_BUFFER data =
-				NTApi.NativeMethods.GetNtfsVolumeData(volume);
-			return data.MftValidDataLength;
+			return GetNtfsVolumeData(volume).MftValidDataLength;
 		}
 
 		/// <summary>
@@ -46,9 +46,36 @@ namespace Eraser.Util
 		/// <returns>The size of one MFT record segment.</returns>
 		public static long GetMftRecordSegmentSize(VolumeInfo volume)
 		{
-			NTApi.NativeMethods.NTFS_VOLUME_DATA_BUFFER data =
-				NTApi.NativeMethods.GetNtfsVolumeData(volume);
-			return data.BytesPerFileRecordSegment;
+			return GetNtfsVolumeData(volume).BytesPerFileRecordSegment;
+		}
+
+		/// <summary>
+		/// Sends the FSCTL_GET_NTFS_VOLUME_DATA control code, returning the resuling
+		/// NTFS_VOLUME_DATA_BUFFER.
+		/// </summary>
+		/// <param name="volume">The volume to query.</param>
+		/// <returns>The NTFS_VOLUME_DATA_BUFFER structure representing the data
+		/// file systme structures for the volume.</returns>
+		internal static NativeMethods.NTFS_VOLUME_DATA_BUFFER GetNtfsVolumeData(VolumeInfo volume)
+		{
+			using (SafeFileHandle volumeHandle = NativeMethods.CreateFile(
+				volume.VolumeId.Remove(volume.VolumeId.Length - 1),
+				NativeMethods.GENERIC_READ, NativeMethods.FILE_SHARE_READ |
+				NativeMethods.FILE_SHARE_WRITE, IntPtr.Zero, NativeMethods.OPEN_EXISTING,
+				0, IntPtr.Zero))
+			{
+				uint resultSize = 0;
+				NativeMethods.NTFS_VOLUME_DATA_BUFFER volumeData =
+					new NativeMethods.NTFS_VOLUME_DATA_BUFFER();
+				if (NativeMethods.DeviceIoControl(volumeHandle,
+					NativeMethods.FSCTL_GET_NTFS_VOLUME_DATA, IntPtr.Zero, 0, out volumeData,
+					(uint)Marshal.SizeOf(volumeData), out resultSize, IntPtr.Zero))
+				{
+					return volumeData;
+				}
+
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			}
 		}
 	}
 }

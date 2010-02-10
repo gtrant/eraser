@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 using Eraser.Manager;
 using Eraser.Util;
@@ -31,6 +32,7 @@ using System.Windows.Forms;
 
 namespace Eraser.DefaultPlugins
 {
+	[Guid("0C2E07BF-0207-49a3-ADE8-46F9E1499C01")]
 	sealed class FirstLast16KB : ErasureMethod
 	{
 		public FirstLast16KB()
@@ -39,13 +41,13 @@ namespace Eraser.DefaultPlugins
 			{
 				//Try to retrieve the set erasure method
 				if (DefaultPlugin.Settings.FL16Method != Guid.Empty)
-					method = ErasureMethodManager.GetInstance(
-						DefaultPlugin.Settings.FL16Method);
+					method = ManagerLibrary.Instance.ErasureMethodRegistrar[
+						DefaultPlugin.Settings.FL16Method];
 				else if (ManagerLibrary.Settings.DefaultFileErasureMethod != Guid)
-					method = ErasureMethodManager.GetInstance(
-						ManagerLibrary.Settings.DefaultFileErasureMethod);
+					method = ManagerLibrary.Instance.ErasureMethodRegistrar[
+						ManagerLibrary.Settings.DefaultFileErasureMethod];
 				else
-					method = ErasureMethodManager.GetInstance(new Gutmann().Guid);
+					method = ManagerLibrary.Instance.ErasureMethodRegistrar[new Gutmann().Guid];
 			}
 			catch (ErasureMethodNotFoundException)
 			{
@@ -53,7 +55,8 @@ namespace Eraser.DefaultPlugins
 					"requires another erasure method to erase the file.\n\nThis must " +
 					"be set in the Plugin Settings dialog."), Name, MessageBoxButtons.OK,
 					MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(null) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 		}
 
@@ -69,7 +72,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{0C2E07BF-0207-49a3-ADE8-46F9E1499C01}"); }
+			get { return GetType().GUID; }
 		}
 
 		public override long CalculateEraseDataSize(ICollection<string> paths, long targetSize)
@@ -109,8 +112,8 @@ namespace Eraser.DefaultPlugins
 			//for the size of long, since we don't want to write extra or write
 			//less.
 			if (erasureLength != long.MaxValue)
-				throw new ArgumentException(S._("The amount of data erased should not be " +
-					"limited, since this is a self-limiting erasure method."));
+				throw new ArgumentException("The amount of data erased should not be " +
+					"limited, since this is a self-limiting erasure method.");
 
 			//If the target stream is shorter than or equal to 32kb, just forward it to
 			//the default function.

@@ -42,7 +42,7 @@ namespace Eraser.Manager
 	/// Provides an abstract interface to allow multiple sources of entropy into
 	/// the EntropyPoller class.
 	/// </summary>
-	public abstract class EntropySource
+	public abstract class EntropySource : IRegisterable
 	{
 		/// <summary>
 		/// Constructor.
@@ -101,7 +101,7 @@ namespace Eraser.Manager
 		/// </summary>
 		/// <typeparam name="T">Any value type</typeparam>
 		/// <param name="entropy">A value which will be XORed with pool contents.</param>
-		protected unsafe static byte[] StructToBuffer<T>(T entropy) where T : struct
+		protected static byte[] StructToBuffer<T>(T entropy) where T : struct
 		{
 			int sizeofObject = Marshal.SizeOf(entropy);
 			IntPtr memory = Marshal.AllocHGlobal(sizeofObject);
@@ -125,113 +125,27 @@ namespace Eraser.Manager
 	/// A class which manages all of the instances of the EntropySources
 	/// available. Plugins could register their entropy sources via this class.
 	/// </summary>
-	public class EntropySourceManager
+	public class EntropySourceRegistrar : Registrar<EntropySource>
 	{
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public EntropySourceManager()
+		internal EntropySourceRegistrar()
 		{
-			entropyThread.AddEntropySource(new KernelEntropySource());
-		}
-
-		/// <summary>
-		/// Retrieves all currently registered erasure methods.
-		/// </summary>
-		/// <returns>A mutable list, with an instance of each EntropySource.</returns>
-		public static Dictionary<Guid, EntropySource> Items
-		{
-			get
-			{
-				lock (ManagerLibrary.Instance.EntropySourceManager.sources)
-					return ManagerLibrary.Instance.EntropySourceManager.sources;
-			}
-		}
-
-		/// <summary>
-		/// Retrieves the instance of the EntropySource with the given GUID.
-		/// </summary>
-		/// <param name="value">The GUID of the EntropySource.</param>
-		/// <returns>The EntropySource instance.</returns>
-		public static EntropySource GetInstance(Guid value)
-		{
-			lock (ManagerLibrary.Instance.EntropySourceManager.sources)
-			{
-				if (!ManagerLibrary.Instance.EntropySourceManager.sources.ContainsKey(value))
-					throw new EntropySourceNotFoundException(value);
-				return ManagerLibrary.Instance.EntropySourceManager.sources[value];
-			}
-		}
-
-		/// <summary>
-		/// Allows plugins to register EntropySources with the main program. Thread-safe.
-		/// </summary>
-		/// <param name="source">The source of entropy to add.</param>
-		public static void Register(EntropySource source)
-		{
-			EntropySourceManager manager = ManagerLibrary.Instance.EntropySourceManager;
-			lock (ManagerLibrary.Instance.EntropySourceManager.sources)
-				manager.sources.Add(source.Guid, source);
-			manager.entropyThread.AddEntropySource(source);
-
-			OnEntropySourceRegistered(new EntropySourceRegistrationEventArgs(source.Guid));
-		}
-
-		/// <summary>
-		/// Calls the EntropySourceRegistered event handlers.
-		/// </summary>
-		private static void OnEntropySourceRegistered(EntropySourceRegistrationEventArgs e)
-		{
-			if (EntropySourceRegistered != null)
-				EntropySourceRegistered(ManagerLibrary.Instance.EntropySourceManager, e);
+			Poller = new EntropyPoller();
+			Poller.AddEntropySource(new KernelEntropySource());
 		}
 
 		/// <summary>
 		/// Gets the entropy poller instance associated with this manager.
 		/// </summary>
-		public EntropyPoller Poller
-		{
-			get
-			{
-				return entropyThread;
-			}
-		}
-
-		/// <summary>
-		/// Global static instance of the EntropySourceRegisteredFunction,
-		/// called whenever the EntropySourceManager.Register is invoked.
-		/// </summary>
-		public static EventHandler<EntropySourceRegistrationEventArgs>
-			EntropySourceRegistered { get; set; }
+		public EntropyPoller Poller { get; private set; }
 		
 		/// <summary>
 		/// The list of currently registered Entropy Sources.
 		/// </summary>
 		private Dictionary<Guid, EntropySource> sources = new Dictionary<Guid, EntropySource>();
-
-		/// <summary>
-		/// The entropy thread gathering entropy for the RNGs.
-		/// </summary>
-		private EntropyPoller entropyThread = new EntropyPoller();
 	};
-
-	public class EntropySourceRegistrationEventArgs : EventArgs
-	{
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		/// <param name="value">The GUID of the newly registered/unregistered entropy
-		/// source.</param>
-		public EntropySourceRegistrationEventArgs(Guid value)
-		{
-			Guid = value;
-		}
-
-		/// <summary>
-		/// The GUID of the newly registered/unregistered entropy source.
-		/// </summary>
-		public Guid Guid { get; private set; }
-	}
 		
 	/// <summary>
 	/// Provides means of generating random entropy from the system or user space
@@ -343,7 +257,7 @@ namespace Eraser.Manager
 				}
 				catch (System.ComponentModel.Win32Exception e)
 				{
-					if (e.NativeErrorCode != 5) //ERROR_ACCESS_DENIED
+					if (e.NativeErrorCode != Win32ErrorCode.AccessDenied)
 						throw;
 				}
 			}
@@ -352,14 +266,14 @@ namespace Eraser.Manager
 			result.AddRange(StructToBuffer(DateTime.Now.Ticks));
 
 			//The high resolution performance counter
-			result.AddRange(StructToBuffer(KernelApi.PerformanceCounter));
+			result.AddRange(StructToBuffer(SystemInfo.PerformanceCounter));
 
 			//Ticks since start up
 			result.AddRange(StructToBuffer(Environment.TickCount));
 
 			//CryptGenRandom
 			byte[] cryptGenRandom = new byte[160];
-			if (CryptApi.CryptGenRandom(cryptGenRandom))
+			if (Security.Randomise(cryptGenRandom))
 				result.AddRange(cryptGenRandom);
 
 			return result.ToArray();
@@ -419,7 +333,7 @@ namespace Eraser.Manager
 #endif
 			//Finally, our good friend CryptGenRandom()
 			byte[] cryptGenRandom = new byte[1536];
-			if (CryptApi.CryptGenRandom(cryptGenRandom))
+			if (Security.Randomise(cryptGenRandom))
 				result.AddRange(cryptGenRandom);
 
 			return result.ToArray();
@@ -487,7 +401,7 @@ namespace Eraser.Manager
 
 				// Send entropy to the PRNGs for new seeds.
 				if (DateTime.Now - lastAddedEntropy > managerEntropySpan)
-					ManagerLibrary.Instance.PRNGManager.AddEntropy(GetPool());
+					ManagerLibrary.Instance.PrngRegistrar.AddEntropy(GetPool());
 			}
 		}
 

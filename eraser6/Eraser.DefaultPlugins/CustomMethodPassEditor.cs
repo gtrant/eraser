@@ -35,7 +35,7 @@ namespace Eraser.DefaultPlugins
 		public CustomMethodPassEditor()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 		}
 
 		/// <summary>
@@ -212,7 +212,8 @@ namespace Eraser.DefaultPlugins
 					"text because it contains invalid characters."), S._("Eraser"),
 					 MessageBoxButtons.OK, MessageBoxIcon.Information,
 					 MessageBoxDefaultButton.Button1,
-					 S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					 Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 		}
 

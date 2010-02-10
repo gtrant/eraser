@@ -25,11 +25,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
+
 using Eraser.Manager;
 using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
+	[Guid("607632B2-651B-4935-883A-BDAA74FEBB54")]
 	class VSITR : PassBasedErasureMethod
 	{
 		public override string Name
@@ -39,7 +42,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{607632B2-651B-4935-883A-BDAA74FEBB54}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses

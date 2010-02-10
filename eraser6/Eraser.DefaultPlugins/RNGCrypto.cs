@@ -41,7 +41,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{6BF35B8E-F37F-476e-B6B2-9994A92C3B0C}"); }
+			get { return GetType().GUID; }
 		}
 
 		public override void NextBytes(byte[] buffer)

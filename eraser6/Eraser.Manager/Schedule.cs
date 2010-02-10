@@ -272,8 +272,8 @@ namespace Eraser.Manager
 			{
 				if (ScheduleType != RecurringScheduleUnit.Daily && ScheduleType != RecurringScheduleUnit.Weekly &&
 					ScheduleType != RecurringScheduleUnit.Monthly)
-					throw new InvalidOperationException(S._("The ScheduleUnit of the schedule " +
-						"does not require a frequency value, this field would contain garbage."));
+					throw new InvalidOperationException("The ScheduleUnit of the schedule " +
+						"does not require a frequency value, this field would contain garbage.");
 
 				return frequency;
 			}
@@ -313,8 +313,8 @@ namespace Eraser.Manager
 			get
 			{
 				if (ScheduleType != RecurringScheduleUnit.Weekly)
-					throw new InvalidOperationException(S._("The ScheduleUnit of the schedule " +
-						"does not require the WeeklySchedule value, this field would contain garbage"));
+					throw new InvalidOperationException("The ScheduleUnit of the schedule " +
+						"does not require the WeeklySchedule value, this field would contain garbage");
 
 				return weeklySchedule;
 			}
@@ -339,8 +339,8 @@ namespace Eraser.Manager
 			get
 			{
 				if (ScheduleType != RecurringScheduleUnit.Monthly)
-					throw new InvalidOperationException(S._("The ScheduleUnit of the schedule does " +
-						"not require the MonthlySchedule value, this field would contain garbage"));
+					throw new InvalidOperationException("The ScheduleUnit of the schedule does " +
+						"not require the MonthlySchedule value, this field would contain garbage");
 
 				return monthlySchedule;
 			}
@@ -469,8 +469,8 @@ namespace Eraser.Manager
 		private bool CanRunOnDay(DateTime date)
 		{
 			if (ScheduleType != RecurringScheduleUnit.Weekly)
-				throw new ArgumentException(S._("The ScheduleUnit of the schedule does " +
-					"not use the WeeklySchedule value, this field would contain garbage"));
+				throw new ArgumentException("The ScheduleUnit of the schedule does " +
+					"not use the WeeklySchedule value, this field would contain garbage");
 			return ((int)weeklySchedule & (1 << (int)date.DayOfWeek)) != 0;
 		}
 

@@ -22,11 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
+
 using Eraser.Manager;
 using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
+	[Guid("B1BFAB4A-31D3-43a5-914C-E9892C78AFD8")]
 	sealed class Schneier : PassBasedErasureMethod
 	{
 		public override string Name
@@ -36,7 +39,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{B1BFAB4A-31D3-43a5-914C-E9892C78AFD8}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses

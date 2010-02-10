@@ -30,26 +30,75 @@ using System.Runtime.InteropServices;
 
 namespace Eraser.Util
 {
-	public class StreamInfo
+	/// <summary>
+	/// Provides methods for the deletion, and opening of file alternate data streams,
+	/// and aids in the creation of <see cref="System.IO.FileStream"/> objects.
+	/// </summary>
+	public class StreamInfo : FileSystemInfo
 	{
 		/// <summary>
-		/// Initializes a new instance of the Eraser.Util.StreamInfo class, which
-		/// acts as a wrapper for a file path.
-		/// </summary>
-		/// <param name="path">The fully qualified name (with :ADSName for ADSes)
-		/// of the new file, or the relative file name.</param>
-		public StreamInfo(string path)
+		/// Constructor.
+		/// <param name="filename">The fully qualified name of the new file, or
+		/// the relative file name.</param>
+		public StreamInfo(string filename)
+			: this(filename, null)
 		{
-			//Separate the path into the ADS and the file.
-			if (path.IndexOf(':') != path.LastIndexOf(':'))
+		}
+
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="filename">The path to the file.</param>
+		/// <param name="streamName">The name of the alternate data stream, or null
+		/// to refer to the unnamed stream.</param>
+		public StreamInfo(string filename, string streamName)
+		{
+			OriginalPath = filename;
+			FullPath = Path.GetFullPath(filename);
+			FileName = FullPath;
+			StreamName = streamName;
+
+			if (!string.IsNullOrEmpty(streamName))
 			{
-				int streamNameColon = path.IndexOf(':', path.IndexOf(':') + 1);
-				fileName = path.Substring(0, streamNameColon);
-				streamName = path.Substring(streamNameColon + 1);
+				OriginalPath += ":" + streamName;
+				FullPath += ":" + streamName;
 			}
-			else
+
+			Refresh();
+		}
+
+		/// <summary>
+		/// The full name of the stream, including the stream name if provided.
+		/// </summary>
+		public override string FullName
+		{
+			get
 			{
-				fileName = path;
+				return FullPath;
+			}
+		}
+
+		/// <summary>
+		/// Gets a value indicating whether a file exists.
+		/// </summary>
+		public override bool Exists
+		{
+			get
+			{
+				bool result = System.IO.File.Exists(FullName);
+				return result &&
+					(string.IsNullOrEmpty(StreamName) || true/*verify the ADS exists*/);
+			}
+		}
+
+		/// <summary>
+		/// Gets a string representing the directory's full path.
+		/// </summary>
+		public String DirectoryName
+		{
+			get
+			{
+				return Path.GetDirectoryName(FullPath);
 			}
 		}
 
@@ -62,91 +111,34 @@ namespace Eraser.Util
 			{
 				return new DirectoryInfo(DirectoryName);
 			}
-		}
+		} 
 
 		/// <summary>
-		/// Gets a string representing the containing directory's full path.
-		/// </summary>
-		public string DirectoryName
-		{
-			get
-			{
-				return fileName.Substring(0, fileName.LastIndexOf(Path.DirectorySeparatorChar) + 1);
-			}
-		}
-
-		/// <summary>
-		/// Gets the full name of the file, including the stream name.
-		/// </summary>
-		public string FullName
-		{
-			get
-			{
-				if (streamName != null)
-					return fileName + ':' + streamName;
-				return fileName;
-			}
-		}
-
-		/// <summary>
-		/// Gets the name of the file.
-		/// </summary>
-		public string Name
-		{
-			get { return fileName; }
-		}
-
-		/// <summary>
-		/// Gets an instance of the main file. If this object refers to an ADS, the
-		/// result is null.
+		/// Gets the file which contains this stream.
 		/// </summary>
 		public FileInfo File
 		{
 			get
 			{
-				if (streamName == null)
-					return new FileInfo(fileName);
-				return null;
+				return new FileInfo(FileName);
 			}
 		}
 
 		/// <summary>
-		/// Gets or sets the file attributes on this stream.
+		/// The full path to the file we are encapsulating.
 		/// </summary>
-		public FileAttributes Attributes
+		public string FileName
 		{
-			get { return (FileAttributes)KernelApi.NativeMethods.GetFileAttributes(FullName); }
-			set { KernelApi.NativeMethods.SetFileAttributes(FullName, (uint)value); }
+			get;
+			private set;
 		}
-		
-		/// <summary>
-		/// Gets a value indicating whether the stream exists.
-		/// </summary>
-		public bool Exists
-		{
-			get
-			{
-				using (SafeFileHandle handle = KernelApi.NativeMethods.CreateFile(
-					FullName, KernelApi.NativeMethods.GENERIC_READ,
-					KernelApi.NativeMethods.FILE_SHARE_READ, IntPtr.Zero,
-					KernelApi.NativeMethods.OPEN_EXISTING, 0, IntPtr.Zero))
-				{
-					if (!handle.IsInvalid)
-						return true;
-					else
-						switch (Marshal.GetLastWin32Error())
-						{
-							case 5: /*ERROR_ACCESS_DENIED*/
-							case 32: /*ERROR_SHARING_VIOLATION*/
-								return true;
 
-							case 2: /*ERROR_FILE_NOT_FOUND*/
-							case 3: /*ERROR_PATH_NOT_FOUND*/
-							default:
-								return false;
-						}
-				}
-			}
+		/// <summary>
+		/// Gets the name of the stream.
+		/// </summary>
+		public override string Name
+		{
+			get { return StreamName; }
 		}
 
 		/// <summary>
@@ -154,147 +146,60 @@ namespace Eraser.Util
 		/// </summary>
 		public bool IsReadOnly
 		{
-			get
-			{
-				return (Attributes & FileAttributes.ReadOnly) != 0;
-			}
-
+			get { return (Attributes & FileAttributes.ReadOnly) != 0; }
 			set
 			{
-				if (value)
-					Attributes |= FileAttributes.ReadOnly;
-				else
-					Attributes &= ~FileAttributes.ReadOnly;
+				Attributes = value ?
+					(Attributes | FileAttributes.ReadOnly) :
+					(Attributes & ~FileAttributes.ReadOnly);
 			}
 		}
 
 		/// <summary>
-		/// Gets the size of the current stream.
+		/// Gets the size, in bytes, of the current stream.
 		/// </summary>
 		public long Length
 		{
 			get
 			{
 				long fileSize;
-				using (SafeFileHandle handle = fileHandle)
-					if (KernelApi.NativeMethods.GetFileSizeEx(handle, out fileSize))
+				using (SafeFileHandle handle = OpenHandle(
+					FileMode.Open, FileAccess.Read, FileShare.ReadWrite, FileOptions.None))
+				{
+					if (NativeMethods.GetFileSizeEx(handle, out fileSize))
 						return fileSize;
+				}
 
 				return 0;
 			}
 		}
 
-		public DateTime LastAccessTime
+		/// <summary>
+		/// Creates the file if it already does not exist, then creates the alternate
+		/// data stream.
+		/// </summary>
+		public FileStream Create()
 		{
-			get
-			{
-				DateTime creationTime, lastAccess, lastWrite;
-				GetFileTime(out creationTime, out lastAccess, out lastWrite);
-				return lastAccess;
-			}
-			set
-			{
-				SetFileTime(DateTime.MinValue, value, DateTime.MinValue);
-			}
-		}
-
-		public DateTime LastWriteTime
-		{
-			get
-			{
-				DateTime creationTime, lastAccess, lastWrite;
-				GetFileTime(out creationTime, out lastAccess, out lastWrite);
-				return lastWrite;
-			}
-			set
-			{
-				SetFileTime(DateTime.MinValue, DateTime.MinValue, value);
-			}
-		}
-
-		public DateTime CreationTime
-		{
-			get
-			{
-				DateTime creationTime, lastAccess, lastWrite;
-				GetFileTime(out creationTime, out lastAccess, out lastWrite);
-				return creationTime;
-			}
-			set
-			{
-				SetFileTime(value, DateTime.MinValue, DateTime.MinValue);
-			}
-		}
-
-		private void GetFileTime(out DateTime creationTime, out DateTime lastAccess,
-			out DateTime lastWrite)
-		{
-			SafeFileHandle handle = exclusiveHandle;
-			bool ownsHandle = false;
-			try
-			{
-				if (handle == null || handle.IsClosed || handle.IsInvalid)
-				{
-					handle = fileHandle;
-					ownsHandle = true;
-				}
-			}
-			catch (ObjectDisposedException)
-			{
-				handle = fileHandle;
-				ownsHandle = true;
-			}
-
-			try
-			{
-				KernelApi.GetFileTime(handle, out creationTime, out lastAccess, out lastWrite);
-			}
-			finally
-			{
-				if (ownsHandle)
-					handle.Close();
-			}
-		}
-
-		private void SetFileTime(DateTime creationTime, DateTime lastAccess, DateTime lastWrite)
-		{
-			SafeFileHandle handle = exclusiveHandle;
-			bool ownsHandle = false;
-			try
-			{
-				if (handle == null || handle.IsClosed || handle.IsInvalid)
-				{
-					handle = fileHandle;
-					ownsHandle = true;
-				}
-			}
-			catch (ObjectDisposedException)
-			{
-				handle = fileHandle;
-				ownsHandle = true;
-			}
-
-			try
-			{
-				KernelApi.SetFileTime(handle, creationTime, lastAccess, lastWrite);
-			}
-			finally
-			{
-				if (ownsHandle)
-					handle.Close();
-			}
+			return Open(FileMode.Create, FileAccess.ReadWrite, FileShare.None, FileOptions.None);
 		}
 
 		/// <summary>
-		/// Permanently deletes a file.
+		/// Permanently deletes the stream. If this refers to the unnamed stream, all
+		/// alternate data streams are also deleted.
 		/// </summary>
-		public void Delete()
+		public override void Delete()
 		{
-			if (streamName == null)
-				File.Delete();
-			else
-				if (!KernelApi.NativeMethods.DeleteFile(FullName))
-					throw KernelApi.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			if (!NativeMethods.DeleteFile(FullName))
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				switch (errorCode)
+				{
+					case Win32ErrorCode.PathNotFound:
+						break;
+					default:
+						throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+				}
+			}
 		}
 
 		/// <summary>
@@ -361,10 +266,28 @@ namespace Eraser.Util
 
 			//Check that the handle is valid
 			if (handle.IsInvalid)
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 
 			//Return the FileStream
 			return new FileStream(handle, access);
+		}
+
+		/// <summary>
+		/// Creates a read-only System.IO.FileStream.
+		/// </summary>
+		/// <returns>A new read-only System.IO.FileStream object.</returns>
+		public FileStream OpenRead()
+		{
+			return Open(FileMode.Open, FileAccess.Read, FileShare.Read, FileOptions.None);
+		}
+
+		/// <summary>
+		/// Creates a write-only System.IO.FileStream.
+		/// </summary>
+		/// <returns>A new write-only unshared System.IO.FileStream object.</returns>
+		public FileStream OpenWrite()
+		{
+			return Open(FileMode.OpenOrCreate, FileAccess.Write, FileShare.None, FileOptions.None);
 		}
 
 		private SafeFileHandle OpenHandle(FileMode mode, FileAccess access, FileShare share,
@@ -375,14 +298,13 @@ namespace Eraser.Util
 			switch (access)
 			{
 				case FileAccess.Read:
-					iAccess = KernelApi.NativeMethods.GENERIC_READ;
+					iAccess = NativeMethods.GENERIC_READ;
 					break;
 				case FileAccess.ReadWrite:
-					iAccess = KernelApi.NativeMethods.GENERIC_READ |
-						KernelApi.NativeMethods.GENERIC_WRITE;
+					iAccess = NativeMethods.GENERIC_READ | NativeMethods.GENERIC_WRITE;
 					break;
 				case FileAccess.Write:
-					iAccess = KernelApi.NativeMethods.GENERIC_WRITE;
+					iAccess = NativeMethods.GENERIC_WRITE;
 					break;
 			}
 
@@ -393,46 +315,32 @@ namespace Eraser.Util
 			//Advanced options
 			if ((options & FileOptions.Asynchronous) != 0)
 				throw new NotSupportedException("Asynchronous handles are not implemented.");
-			
+
 			//Create the handle
-			SafeFileHandle result = KernelApi.NativeMethods.CreateFile(FullName, iAccess,
+			SafeFileHandle result = NativeMethods.CreateFile(FullName, iAccess,
 				(uint)share, IntPtr.Zero, (uint)mode, (uint)options, IntPtr.Zero);
 			if (result.IsInvalid)
-				throw KernelApi.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				result.Close();
+				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+			}
 
-			//Cache the handle if we have an exclusive handle - this is used for things like
-			//file times.
-			if (share == FileShare.None)
-				exclusiveHandle = result;
 			return result;
 		}
 
 		/// <summary>
 		/// Returns the path as a string.
 		/// </summary>
-		/// <returns>A string representing the path.</returns>
+		/// <returns>A string containing the path given to the constructor.</returns>
 		public override string ToString()
 		{
-			return FullName;
+			return OriginalPath;
 		}
 
 		/// <summary>
-		/// Retrieves a file handle with read access and with all sharing enabled.
+		/// The name of the stream we are encapsulating.
 		/// </summary>
-		private SafeFileHandle fileHandle
-		{
-			get
-			{
-				return OpenHandle(FileMode.Open, FileAccess.Read, FileShare.ReadWrite |
-					FileShare.Delete, FileOptions.None);
-			}
-		}
-		
-		/// <summary>
-		/// Cached exclusive file handle. This is used for setting file access times
-		/// </summary>
-		private SafeFileHandle exclusiveHandle;
-		private string fileName;
-		private string streamName;
+		private string StreamName;
 	}
 }

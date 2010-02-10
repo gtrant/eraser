@@ -37,28 +37,28 @@ namespace Eraser.DefaultPlugins
 			Settings = new DefaultPluginSettings();
 
 			//Then register the erasure methods et al.
-			ErasureMethodManager.Register(new Gutmann());				//35 passes
-			ErasureMethodManager.Register(new GutmannLite());			//10 passes
-			ErasureMethodManager.Register(new DoD_EcE());				//7 passes
-			ErasureMethodManager.Register(new RCMP_TSSIT_OPS_II());		//7 passes
-			ErasureMethodManager.Register(new Schneier());				//7 passes
-			ErasureMethodManager.Register(new VSITR());					//7 passes
-			ErasureMethodManager.Register(new DoD_E());					//3 passes
-			ErasureMethodManager.Register(new HMGIS5Enhanced());		//3 passes
-			ErasureMethodManager.Register(new USAF5020());				//3 passes
-			ErasureMethodManager.Register(new USArmyAR380_19());		//3 passes
-			ErasureMethodManager.Register(new GOSTP50739());			//2 passes
-			ErasureMethodManager.Register(new HMGIS5Baseline());		//1 pass
-			ErasureMethodManager.Register(new Pseudorandom());			//1 pass
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Gutmann());			//35 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new GutmannLite());		//10 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new DoD_EcE());			//7 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new RCMP_TSSIT_OPS_II());	//7 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Schneier());			//7 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new VSITR());				//7 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new DoD_E());				//3 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new HMGIS5Enhanced());		//3 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new USAF5020());			//3 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new USArmyAR380_19());		//3 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new GOSTP50739());			//2 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new HMGIS5Baseline());		//1 pass
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Pseudorandom());		//1 pass
 			EraseCustom.RegisterAll();
-			ErasureMethodManager.Register(new FirstLast16KB());
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new FirstLast16KB());
 
-			PrngManager.Register(new RngCrypto());
+			ManagerLibrary.Instance.PrngRegistrar.Add(new RngCrypto());
 
-			FileSystemManager.Register(new Fat12FileSystem());
-			FileSystemManager.Register(new Fat16FileSystem());
-			FileSystemManager.Register(new Fat32FileSystem());
-			FileSystemManager.Register(new NtfsFileSystem());
+			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat12FileSystem());
+			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat16FileSystem());
+			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat32FileSystem());
+			ManagerLibrary.Instance.FileSystemRegistrar.Add(new NtfsFileSystem());
 		}
 
 		public void Dispose()

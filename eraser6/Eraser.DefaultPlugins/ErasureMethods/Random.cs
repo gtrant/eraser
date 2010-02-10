@@ -40,7 +40,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{BF8BA267-231A-4085-9BF9-204DE65A6641}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses

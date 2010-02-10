@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4AA1FBC2-DA5C-4204-B152-B5929516DC48}"
 	ProjectSection(SolutionItems) = preProject
 		CustomDictionary.xml = CustomDictionary.xml
+		Eraser Native.vsprops = Eraser Native.vsprops
 		Eraser.fxcop = Eraser.fxcop
 		Strong Name.snk = Strong Name.snk
 		UpdateVersions.bat = UpdateVersions.bat
@@ -43,9 +44,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Installer.Bootstrapper", "I
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShellExt", "ShellExt\ShellExt.vcproj", "{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.Unlocker", "Eraser.Util.Unlocker\Eraser.Util.Unlocker.vcproj", "{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.FileSystem", "Eraser.Util.FileSystem\Eraser.Util.FileSystem.vcproj", "{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.Native", "Eraser.Util.Native\Eraser.Util.Native.vcproj", "{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,34 +151,20 @@ Global
 		{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}.Release|Win32.Build.0 = Release|Win32
 		{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}.Release|x64.ActiveCfg = Release|x64
 		{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}.Release|x64.Build.0 = Release|x64
-		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|Mixed Platforms.Build.0 = Debug|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|Win32.ActiveCfg = Debug|Win32
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|Win32.Build.0 = Debug|Win32
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|x64.ActiveCfg = Debug|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Debug|x64.Build.0 = Debug|x64
-		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|Any CPU.ActiveCfg = Release|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|Mixed Platforms.ActiveCfg = Release|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|Mixed Platforms.Build.0 = Release|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|Win32.ActiveCfg = Release|Win32
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|Win32.Build.0 = Release|Win32
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|x64.ActiveCfg = Release|x64
 		{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}.Release|x64.Build.0 = Release|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Debug|Mixed Platforms.Build.0 = Debug|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Debug|Win32.ActiveCfg = Debug|Win32
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Debug|Win32.Build.0 = Debug|Win32
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Debug|x64.ActiveCfg = Debug|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Debug|x64.Build.0 = Debug|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Release|Any CPU.ActiveCfg = Release|Win32
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Release|Mixed Platforms.ActiveCfg = Release|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Release|Mixed Platforms.Build.0 = Release|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Release|Win32.ActiveCfg = Release|Win32
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Release|Win32.Build.0 = Release|Win32
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Release|x64.ActiveCfg = Release|x64
-		{70FB61E5-3F8C-4B6C-8D1B-E08FD8B957C1}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

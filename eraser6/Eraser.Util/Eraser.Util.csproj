@@ -12,13 +12,28 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Strong Name.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -34,6 +49,14 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonLibrary, Version=0.9.3.10, Culture=neutral, PublicKeyToken=3ac89a0351e689b6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\CommonLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.5.452, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -48,30 +71,82 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
-    <Compile Include="AdvApi.cs" />
+    <Compile Include="Security.cs" />
+    <Compile Include="ExtensionMethods\IO.cs" />
     <Compile Include="BlackBox.cs" />
     <Compile Include="Localisation.cs" />
-    <Compile Include="MsCorEEApi.cs" />
+    <Compile Include="NativeMethods\AdvApi.cs" />
+    <Compile Include="NativeMethods\Kernel.cs" />
+    <Compile Include="NativeMethods\MsCorEE.cs" />
+    <Compile Include="NativeMethods\NetApi.cs" />
+    <Compile Include="NativeMethods\NtDll.cs" />
+    <Compile Include="NativeMethods\Shell.cs" />
+    <Compile Include="NativeMethods\User.cs" />
+    <Compile Include="NativeMethods\UxTheme.cs" />
+    <Compile Include="NativeMethods\WinTrust.cs" />
     <Compile Include="NtfsApi.cs" />
-    <Compile Include="ShellApi.cs" />
-    <Compile Include="SystemRestoreApi.cs">
+    <Compile Include="RecycleBin.cs" />
+    <Compile Include="SystemRestore.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="StreamInfo.cs" />
-    <Compile Include="KernelApi.cs" />
-    <Compile Include="File.cs" />
-    <Compile Include="UxThemeApi.cs" />
+    <Compile Include="SystemInfo.cs" />
+    <Compile Include="Theming.cs" />
     <Compile Include="VolumeInfo.cs" />
     <Compile Include="NetApi.cs" />
-    <Compile Include="NTApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserApi.cs" />
-    <Compile Include="WintrustApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConsoleWindow.cs" />
+    <Compile Include="FileSize.cs" />
+    <Compile Include="Logger.cs" />
+    <Compile Include="NativeMethods\DbgHelp.cs" />
+    <Compile Include="NativeMethods\Mpr.cs" />
+    <Compile Include="PostDataBuilder.cs" />
+    <Compile Include="Power.cs" />
+    <Compile Include="NativeMethods\Gdi.cs" />
+    <Compile Include="NativeMethods\Sfc.cs" />
+    <Compile Include="ProgressManager.cs" />
+    <Compile Include="Shell.cs" />
+    <Compile Include="Win32ErrorCodes.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

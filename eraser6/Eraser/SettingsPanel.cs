@@ -45,8 +45,8 @@ namespace Eraser
 
 			//For new plugins, register the callback.
 			Host.Instance.PluginLoaded += OnNewPluginLoaded;
-			ErasureMethodManager.MethodRegistered += OnMethodRegistered;
-			ErasureMethodManager.MethodUnregistered += OnMethodUnregistered;
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Registered += OnMethodRegistered;
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Unregistered += OnMethodUnregistered;
 
 			//Load the values
 			LoadPluginDependantValues();
@@ -84,25 +84,26 @@ namespace Eraser
 			pluginsManager.Items.Add(item);
 		}
 
-		private void OnMethodRegistered(object sender, ErasureMethodRegistrationEventArgs e)
+		private void OnMethodRegistered(object sender, EventArgs e)
 		{
-			ErasureMethod method = ErasureMethodManager.GetInstance(e.Guid);
+			ErasureMethod method = (ErasureMethod)sender;
 			eraseFilesMethod.Items.Add(method);
 			if (method is UnusedSpaceErasureMethod)
 				eraseUnusedMethod.Items.Add(method);
 		}
 
-		private void OnMethodUnregistered(object sender, ErasureMethodRegistrationEventArgs e)
+		private void OnMethodUnregistered(object sender, EventArgs e)
 		{
+			ErasureMethod method = (ErasureMethod)sender;
 			foreach (object obj in eraseFilesMethod.Items)
-				if (((ErasureMethod)obj).Guid == e.Guid)
+				if (((ErasureMethod)obj).Guid == method.Guid)
 				{
 					eraseFilesMethod.Items.Remove(obj);
 					break;
 				}
 
 			foreach (object obj in eraseUnusedMethod.Items)
-				if (((ErasureMethod)obj).Guid == e.Guid)
+				if (((ErasureMethod)obj).Guid == method.Guid)
 				{
 					eraseUnusedMethod.Items.Remove(obj);
 					break;
@@ -123,13 +124,12 @@ namespace Eraser
 				OnNewPluginLoaded(this, new PluginLoadedEventArgs(i.Current));
 
 			//Refresh the list of languages
-			IList<Language> languages = LanguageManager.Items;
-			foreach (Language culture in languages)
+			IList<CultureInfo> languages = Localisation.Localisations;
+			foreach (CultureInfo culture in languages)
 				uiLanguage.Items.Add(culture);
 
 			//Refresh the list of erasure methods
-			Dictionary<Guid, ErasureMethod> methods = ErasureMethodManager.Items;
-			foreach (ErasureMethod method in methods.Values)
+			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
 			{
 				eraseFilesMethod.Items.Add(method);
 				if (method is UnusedSpaceErasureMethod)
@@ -137,37 +137,36 @@ namespace Eraser
 			}
 
 			//Refresh the list of PRNGs
-			Dictionary<Guid, Prng> prngs = PrngManager.Items;
-			foreach (Prng prng in prngs.Values)
+			foreach (Prng prng in ManagerLibrary.Instance.PrngRegistrar)
 				erasePRNG.Items.Add(prng);
 		}
 
 		private void LoadSettings()
 		{
 			EraserSettings settings = EraserSettings.Get();
-			foreach (Object lang in uiLanguage.Items)
-				if (((Language)lang).Name == settings.Language)
+			foreach (CultureInfo lang in uiLanguage.Items)
+				if (lang.Name == settings.Language)
 				{
 					uiLanguage.SelectedItem = lang;
 					break;
 				}
 
-			foreach (Object method in eraseFilesMethod.Items)
-				if (((ErasureMethod)method).Guid == ManagerLibrary.Settings.DefaultFileErasureMethod)
+			foreach (ErasureMethod method in eraseFilesMethod.Items)
+				if (method.Guid == ManagerLibrary.Settings.DefaultFileErasureMethod)
 				{
 					eraseFilesMethod.SelectedItem = method;
 					break;
 				}
 
-			foreach (Object method in eraseUnusedMethod.Items)
-				if (((ErasureMethod)method).Guid == ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod)
+			foreach (ErasureMethod method in eraseUnusedMethod.Items)
+				if (method.Guid == ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod)
 				{
 					eraseUnusedMethod.SelectedItem = method;
 					break;
 				}
 
-			foreach (Object prng in erasePRNG.Items)
-				if (((Prng)prng).Guid == ManagerLibrary.Settings.ActivePrng)
+			foreach (Prng prng in erasePRNG.Items)
+				if (prng.Guid == ManagerLibrary.Settings.ActivePrng)
 				{
 					erasePRNG.SelectedItem = prng;
 					break;
@@ -193,8 +192,8 @@ namespace Eraser
 			//Select an intelligent default if the settings are invalid.
 			if (uiLanguage.SelectedIndex == -1)
 			{
-				foreach (Object lang in uiLanguage.Items)
-					if (((Language)lang).Name == "en")
+				foreach (CultureInfo lang in uiLanguage.Items)
+					if (lang.Name == "en")
 					{
 						uiLanguage.SelectedItem = lang;
 						break;
@@ -242,7 +241,8 @@ namespace Eraser
 					"Please check that the new settings suit your required level of security.",
 					defaults), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Warning,
 					MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 				saveSettings_Click(null, null);
 			}
 		}
@@ -285,7 +285,8 @@ namespace Eraser
 			{
 				MessageBox.Show(this, S._("The path you selected is invalid."), S._("Eraser"),
 					MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 		}
 
@@ -366,7 +367,8 @@ namespace Eraser
 				MessageBox.Show(this, S._("Plugins which have just been approved will only be loaded " +
 					"the next time Eraser is started."), S._("Eraser"), MessageBoxButtons.OK,
 					MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 
 			//Error checks for the rest that do.
@@ -402,13 +404,14 @@ namespace Eraser
 				return;
 			}
 
-			if (CultureInfo.CurrentUICulture.Name != ((Language)uiLanguage.SelectedItem).Name)
+			if (CultureInfo.CurrentUICulture.Name != ((CultureInfo)uiLanguage.SelectedItem).Name)
 			{
-				settings.Language = ((Language)uiLanguage.SelectedItem).Name;
+				settings.Language = ((CultureInfo)uiLanguage.SelectedItem).Name;
 				MessageBox.Show(this, S._("The new UI language will take only effect when " +
 					"Eraser is restarted."), S._("Eraser"), MessageBoxButtons.OK,
 					MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 			settings.IntegrateWithShell = uiContextMenu.Checked;
 
@@ -424,7 +427,8 @@ namespace Eraser
 					"the next task is run.\nCurrently running tasks will use the old source."),
 					S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
 					MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 				managerSettings.ActivePrng = newPRNG.Guid;
 			}
 			

@@ -25,11 +25,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
+
 using Eraser.Manager;
 using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
+	[Guid("92681583-F484-415f-A66C-CC210222EDC5")]
 	sealed class GOSTP50739 : PassBasedErasureMethod
 	{
 		public override string Name
@@ -39,7 +42,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{92681583-F484-415f-A66C-CC210222EDC5}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses

@@ -144,11 +144,11 @@
   <data name="Checking for status of report {0}..." xml:space="preserve">
     <value>Checking for status of report {0}...</value>
   </data>
-  <data name="Compressing Report {0}: {1}%" xml:space="preserve">
-    <value>Compressing Report {0}: {1}%</value>
+  <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
+    <value>Compressing Report {0}: {1:#0.00%}</value>
   </data>
-  <data name="Uploading Report {0}: {1}%" xml:space="preserve">
-    <value>Uploading Report {0}: {1}%</value>
+  <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
+    <value>Uploading Report {0}: {1:#0.00%}</value>
   </data>
   <data name="Reports submitted successfully." xml:space="preserve">
     <value>Reports submitted successfully.</value>
@@ -158,12 +158,6 @@
   </data>
   <data name="Submission was cancelled." xml:space="preserve">
     <value>Submission was cancelled.</value>
-  </data>
-  <data name="Unknown crash report server response." xml:space="preserve">
-    <value>Unknown crash report server response.</value>
-  </data>
-  <data name="The server encountered a problem while processing the request: {0}" xml:space="preserve">
-    <value>The server encountered a problem while processing the request: {0}</value>
   </data>
   <data name="Session: {0:F}" xml:space="preserve">
     <value>Session: {0:F}</value>
@@ -321,6 +315,9 @@
   <data name="Plugins" xml:space="preserve">
     <value>Plugins</value>
   </data>
+  <data name="Nightly builds" xml:space="preserve">
+    <value>Nightly builds</value>
+  </data>
   <data name="There are no new updates or plugins available for Eraser." xml:space="preserve">
     <value>There are no new updates or plugins available for Eraser.</value>
   </data>
@@ -333,23 +330,14 @@
   <data name="Downloaded" xml:space="preserve">
     <value>Downloaded</value>
   </data>
+  <data name="Downloading: {0}" xml:space="preserve">
+    <value>Downloading: {0}</value>
+  </data>
   <data name="Overall progress: {0} left" xml:space="preserve">
     <value>Overall progress: {0} left</value>
   </data>
   <data name="Error: {0}" xml:space="preserve">
     <value>Error: {0}</value>
-  </data>
-  <data name="{0} of {1} downloaded" xml:space="preserve">
-    <value>{0} of {1} downloaded</value>
-  </data>
-  <data name="Downloading: {0}" xml:space="preserve">
-    <value>Downloading: {0}</value>
-  </data>
-  <data name="Downloaded: {0}" xml:space="preserve">
-    <value>Downloaded: {0}</value>
-  </data>
-  <data name="Error downloading {0}: {1}" xml:space="preserve">
-    <value>Error downloading {0}: {1}</value>
   </data>
   <data name="Installing {0}" xml:space="preserve">
     <value>Installing {0}</value>
@@ -357,13 +345,7 @@
   <data name="Installed {0}" xml:space="preserve">
     <value>Installed {0}</value>
   </data>
-  <data name="Error installing {0}" xml:space="preserve">
-    <value>Error installing {0}</value>
-  </data>
-  <data name="The installer exited with an error code {0}" xml:space="preserve">
-    <value>The installer exited with an error code {0}</value>
-  </data>
-  <data name="Unknown mirror selected." xml:space="preserve">
-    <value>Unknown mirror selected.</value>
+  <data name="{0} of {1} downloaded" xml:space="preserve">
+    <value>{0} of {1} downloaded</value>
   </data>
 </root>

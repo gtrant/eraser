@@ -103,10 +103,14 @@ namespace Eraser.Manager
 
 		protected override void Dispose(bool disposing)
 		{
+			if (thread == null || serverLock == null)
+				return;
+
 			if (disposing)
 			{
 				//Close the polling thread that creates new server instances
 				thread.Abort();
+				thread.Join();
 
 				//Close all waiting streams
 				lock (servers)
@@ -120,6 +124,8 @@ namespace Eraser.Manager
 				serverLock.Close();
 			}
 
+			thread = null;
+			serverLock = null;
 			base.Dispose(disposing);
 		}
 
@@ -314,11 +320,15 @@ namespace Eraser.Manager
 
 		protected override void Dispose(bool disposing)
 		{
+			if (client == null)
+				return;
+
 			if (disposing)
 			{
 				client.Close();
 			}
 
+			client = null;
 			base.Dispose(disposing);
 		}
 

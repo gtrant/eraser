@@ -33,7 +33,7 @@ namespace Eraser.Manager
 	/// inherit this class, then the method can only be used to erase abstract
 	/// streams, not unused drive space.
 	/// </summary>
-	public abstract class ErasureMethod
+	public abstract class ErasureMethod : IRegisterable
 	{
 		public override string ToString()
 		{
@@ -126,7 +126,7 @@ namespace Eraser.Manager
 			passes.CopyTo(result, 0);
 
 			//Randomize.
-			Prng rand = PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng);
+			Prng rand = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
 			for (int i = 0; i < result.Length; ++i)
 			{
 				int val = rand.Next(result.Length - 1);
@@ -351,7 +351,7 @@ namespace Eraser.Manager
 	/// instance is created. This is unique to erasure methods since the other managers
 	/// do not have run-time equivalents; they all are compile-time.
 	/// </summary>
-	public class ErasureMethodManager
+	public class ErasureMethodRegistrar : Registrar<ErasureMethod>
 	{
 		#region Default Erasure method
 		private class DefaultMethod : ErasureMethod
@@ -377,15 +377,15 @@ namespace Eraser.Manager
 
 			public override long CalculateEraseDataSize(ICollection<string> paths, long targetSize)
 			{
-				throw new InvalidOperationException(S._("The DefaultMethod class should never " +
-					"be used and should instead be replaced before execution!"));
+				throw new InvalidOperationException("The DefaultMethod class should never " +
+					"be used and should instead be replaced before execution!");
 			}
 
 			public override void Erase(Stream strm, long erasureLength, Prng prng,
 				ErasureMethodProgressFunction callback)
 			{
-				throw new InvalidOperationException(S._("The DefaultMethod class should never " +
-					"be used and should instead be replaced before execution!"));
+				throw new InvalidOperationException("The DefaultMethod class should never " +
+					"be used and should instead be replaced before execution!");
 			}
 		}
 
@@ -396,167 +396,6 @@ namespace Eraser.Manager
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes")]
 		public static readonly ErasureMethod Default = new DefaultMethod();
-		#endregion
-
-		#region Registrar fields
-		/// <summary>
-		/// Retrieves all currently registered erasure methods.
-		/// </summary>
-		/// <returns>A mutable list, with an instance of each method.</returns>
-		public static Dictionary<Guid, ErasureMethod> Items
-		{
-			get
-			{
-				Dictionary<Guid, ErasureMethod> result = new Dictionary<Guid, ErasureMethod>();
-
-				lock (ManagerLibrary.Instance.ErasureMethodManager.methods)
-				{
-					//Iterate over every item registered.
-					Dictionary<Guid, MethodConstructorInfo>.Enumerator iter =
-						ManagerLibrary.Instance.ErasureMethodManager.methods.GetEnumerator();
-					while (iter.MoveNext())
-					{
-						MethodConstructorInfo info = iter.Current.Value;
-						result.Add(iter.Current.Key,
-							(ErasureMethod)info.Constructor.Invoke(info.Parameters));
-					}
-				}
-
-				return result;
-			}
-		}
-
-		/// <summary>
-		/// Retrieves the instance of the erasure method with the given GUID.
-		/// </summary>
-		/// <param name="value">The GUID of the erasure method.</param>
-		/// <returns>The erasure method instance.</returns>
-		public static ErasureMethod GetInstance(Guid value)
-		{
-			lock (ManagerLibrary.Instance.ErasureMethodManager.methods)
-			{
-				if (!ManagerLibrary.Instance.ErasureMethodManager.methods.ContainsKey(value))
-					throw new ErasureMethodNotFoundException(value);
-				MethodConstructorInfo info = ManagerLibrary.Instance.ErasureMethodManager.methods[value];
-				return (ErasureMethod)info.Constructor.Invoke(info.Parameters);
-			}
-		}
-
-		/// <summary>
-		/// Allows plug-ins to register methods with the main program. Thread-safe.
-		/// </summary>
-		/// <param name="method">The method to register. Only the type is examined.</param>
-		public static void Register(ErasureMethod method)
-		{
-			Register(method, new object[0]);
-		}
-
-		/// <summary>
-		/// Allows plug-ins to register methods with the main program. Thread-safe.
-		/// </summary>
-		/// <param name="method">The method to register. Only the type is examined.</param>
-		/// <param name="parameters">The parameter list to be passed to the constructor.</param>
-		public static void Register(ErasureMethod method, object[] parameters)
-		{
-			//Get the constructor for the class.
-			ConstructorInfo ctor = null;
-			if (parameters == null || parameters.Length == 0)
-				ctor = method.GetType().GetConstructor(Type.EmptyTypes);
-			else
-			{
-				Type[] parameterTypes = new Type[parameters.Length];
-				for (int i = 0; i < parameters.Length; ++i)
-					parameterTypes[i] = parameters[i].GetType();
-				ctor = method.GetType().GetConstructor(parameterTypes);
-			}
-
-			//Check for a valid constructor.
-			if (ctor == null)
-				throw new ArgumentException(S._("Registered erasure methods must contain " +
-					"a parameterless constructor that is called whenever clients request " +
-					"for an instance of the method. If a constructor requires parameters, " +
-					"specify it in the parameters parameter."));
-
-			//Insert the entry
-			lock (ManagerLibrary.Instance.ErasureMethodManager.methods)
-			{
-				MethodConstructorInfo info = new MethodConstructorInfo();
-				info.Constructor = ctor;
-				info.Parameters = parameters == null || parameters.Length == 0 ? null : parameters;
-				ManagerLibrary.Instance.ErasureMethodManager.methods.Add(method.Guid, info);
-			}
-
-			//Broadcast the event
-			OnMethodRegistered(new ErasureMethodRegistrationEventArgs(method.Guid));
-		}
-
-		/// <summary>
-		/// Unregisters an erasure method from the registrar.
-		/// </summary>
-		/// <param name="value">The erasure method to unregister.</param>
-		public static void Unregister(Guid value)
-		{
-			if (!ManagerLibrary.Instance.ErasureMethodManager.methods.ContainsKey(value))
-				throw new ArgumentException(S._("The GUID of the erasure method to remove " +
-					"refers to an invalid erasure method."));
-
-			ManagerLibrary.Instance.ErasureMethodManager.methods.Remove(value);
-			OnMethodUnregistered(new ErasureMethodRegistrationEventArgs(value));
-		}
-
-		/// <summary>
-		/// Holds information on how to construct a new instance of an erasure method.
-		/// </summary>
-		private struct MethodConstructorInfo
-		{
-			/// <summary>
-			/// The reference to the constructor method.
-			/// </summary>
-			public ConstructorInfo Constructor;
-
-			/// <summary>
-			/// The parameter list.
-			/// </summary>
-			public object[] Parameters;
-		}
-
-		/// <summary>
-		/// The list of currently registered erasure methods.
-		/// </summary>
-		private Dictionary<Guid, MethodConstructorInfo> methods =
-			new Dictionary<Guid, MethodConstructorInfo>();
-
-		/// <summary>
-		/// Called whenever an erasure method is registered.
-		/// </summary>
-		public static EventHandler<ErasureMethodRegistrationEventArgs>
-			MethodRegistered { get; set; }
-		
-		/// <summary>
-		/// Called whenever an erasure method is unregistered.
-		/// </summary>
-		public static EventHandler<ErasureMethodRegistrationEventArgs>
-			MethodUnregistered { get; set; }
-
-		/// <summary>
-		/// Executes the MethodRegistered event handlers.
-		/// </summary>
-		/// <param name="guid">The GUID of the newly registered erasure method.</param>
-		private static void OnMethodRegistered(ErasureMethodRegistrationEventArgs e)
-		{
-			if (MethodRegistered != null)
-				MethodRegistered(ManagerLibrary.Instance.ErasureMethodManager, e);
-		}
-
-		/// <summary>
-		/// Performs the MethodUnregistered event handlers.
-		/// </summary>
-		/// <param name="guid">The GUID of the unregistered erasure method.</param>
-		private static void OnMethodUnregistered(ErasureMethodRegistrationEventArgs e)
-		{
-			if (MethodUnregistered != null)
-				MethodUnregistered(ManagerLibrary.Instance.ErasureMethodManager, e);
-		}
 		#endregion
 	}
 

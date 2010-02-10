@@ -39,7 +39,7 @@ namespace Eraser
 		/// <summary>
 		/// Registry-based storage backing for the Settings class.
 		/// </summary>
-		private class RegistrySettings : Manager.Settings, IDisposable
+		private sealed class RegistrySettings : Manager.Settings, IDisposable
 		{
 			/// <summary>
 			/// Constructor.
@@ -48,8 +48,8 @@ namespace Eraser
 			/// <param name="key">The registry key to look for the settings in.</param>
 			public RegistrySettings(Guid pluginId, RegistryKey key)
 			{
-				this.pluginID = pluginId;
-				this.key = key;
+				this.PluginID = pluginId;
+				this.Key = key;
 			}
 
 			#region IDisposable Members
@@ -67,8 +67,12 @@ namespace Eraser
 
 			private void Dispose(bool disposing)
 			{
+				if (Key == null)
+					return;
+
 				if (disposing)
-					key.Close();
+					Key.Close();
+				Key = null;
 			}
 
 			#endregion
@@ -78,7 +82,7 @@ namespace Eraser
 				get
 				{
 					//Get the raw registry value
-					object rawResult = key.GetValue(setting, null);
+					object rawResult = Key.GetValue(setting, null);
 
 					//Check if it is a serialised object
 					byte[] resultArray = rawResult as byte[];
@@ -91,13 +95,14 @@ namespace Eraser
 							}
 							catch (SerializationException)
 							{
-								key.DeleteValue(setting);
+								Key.DeleteValue(setting);
 								MessageBox.Show(S._("Could not load the setting {0}\\{1} for " +
-										"plugin {2}. The setting has been lost.", key, setting,
-										pluginID.ToString()),
+										"plugin {2}. The setting has been lost.", Key, setting,
+										PluginID.ToString()),
 									S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
 									MessageBoxDefaultButton.Button1,
-									S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+									Localisation.IsRightToLeft(null) ?
+										MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 							}
 					}
 					else
@@ -111,23 +116,23 @@ namespace Eraser
 				{
 					if (value == null)
 					{
-						key.DeleteValue(setting);
+						Key.DeleteValue(setting);
 					}
 					else
 					{
 						if (value is bool)
-							key.SetValue(setting, value, RegistryValueKind.DWord);
+							Key.SetValue(setting, value, RegistryValueKind.DWord);
 						else if ((value is int) || (value is uint))
-							key.SetValue(setting, value, RegistryValueKind.DWord);
+							Key.SetValue(setting, value, RegistryValueKind.DWord);
 						else if ((value is long) || (value is ulong))
-							key.SetValue(setting, value, RegistryValueKind.QWord);
+							Key.SetValue(setting, value, RegistryValueKind.QWord);
 						else if (value is string)
-							key.SetValue(setting, value, RegistryValueKind.String);
+							Key.SetValue(setting, value, RegistryValueKind.String);
 						else
 							using (MemoryStream stream = new MemoryStream())
 							{
 								new BinaryFormatter().Serialize(stream, value);
-								key.SetValue(setting, stream.ToArray(), RegistryValueKind.Binary);
+								Key.SetValue(setting, stream.ToArray(), RegistryValueKind.Binary);
 							}
 					}
 				}
@@ -136,12 +141,12 @@ namespace Eraser
 			/// <summary>
 			/// The GUID of the plugin whose settings this object is storing.
 			/// </summary>
-			private Guid pluginID;
+			private Guid PluginID;
 
 			/// <summary>
 			/// The registry key where the data is stored.
 			/// </summary>
-			private RegistryKey key;
+			private RegistryKey Key;
 		}
 
 		public override void Save()
@@ -275,13 +280,13 @@ namespace Eraser
 			System.Reflection.Assembly entryAssembly = System.Reflection.Assembly.GetEntryAssembly();
 			CultureInfo culture = CultureInfo.CurrentUICulture;
 			while (culture.Parent != CultureInfo.InvariantCulture &&
-				!S.LocalisationExists(culture, entryAssembly))
+				!Localisation.LocalisationExists(culture, entryAssembly))
 			{
 				culture = culture.Parent;
 			}
 
 			//Default to English if any of our cultures don't exist.
-			if (!S.LocalisationExists(culture, entryAssembly))
+			if (!Localisation.LocalisationExists(culture, entryAssembly))
 				culture = new CultureInfo("en");
 
 			return culture;
