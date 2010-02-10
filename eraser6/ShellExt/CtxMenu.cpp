@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "CtxMenu.h"
 #include "DllMain.h"
+#include "Utils.h"
 #include <sstream>
 
 extern "C"
@@ -58,48 +59,6 @@ extern "C"
 	typedef NTSTATUS (__stdcall *pNtQueryKey)(HANDLE KeyHandle, KEY_INFORMATION_CLASS KeyInformationClass,
 		PVOID KeyInformation, ULONG Length, PULONG ResultLength);
 	pNtQueryKey NtQueryKey = NULL;
-}
-
-template<typename handleType> class Handle
-{
-public:
-	Handle()
-	{
-		Object = NULL;
-	}
-
-	Handle(handleType handle)
-	{
-		Object = handle;
-	}
-
-	~Handle()
-	{
-		DeleteObject(Object);
-	}
-
-	operator handleType&()
-	{
-		return Object;
-	}
-
-private:
-	handleType Object;
-};
-
-Handle<HICON>::~Handle()
-{
-	DestroyIcon(Object);
-}
-
-Handle<HANDLE>::~Handle()
-{
-	CloseHandle(Object);
-}
-
-Handle<HKEY>::~Handle()
-{
-	CloseHandle(Object);
 }
 
 namespace Eraser {
@@ -608,6 +567,7 @@ namespace Eraser {
 
 		try
 		{
+			BusyCursor cursor;
 			RunEraser(commandAction, commandLine, commandElevate, pCmdInfo->hwnd,
 				pCmdInfo->nShow);
 		}
