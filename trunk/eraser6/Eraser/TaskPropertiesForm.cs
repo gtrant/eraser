@@ -38,7 +38,7 @@ namespace Eraser
 		public TaskPropertiesForm()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 			scheduleTime.CustomFormat = DateTimeFormatInfo.CurrentInfo.ShortTimePattern;
 
 			//Set a default task type

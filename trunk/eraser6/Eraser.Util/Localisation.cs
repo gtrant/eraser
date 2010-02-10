@@ -33,40 +33,8 @@ using System.Threading;
 
 namespace Eraser.Util
 {
-	/// <summary>
-	/// Internationalisation class. Instead of calling GetString on all strings, just
-	/// call S._(string) or S._(string, object) for plurals
-	/// </summary>
-	public static class S
+	public static class Localisation
 	{
-		/// <summary>
-		/// Translates the localisable string to the set localised string.
-		/// </summary>
-		/// <param name="str">The string to localise.</param>
-		/// <returns>A localised string, or str if no localisation exists.</returns>
-		public static string _(string str)
-		{
-			return TranslateText(str, Assembly.GetCallingAssembly());
-		}
-
-		/// <summary>
-		/// Translates the localisable string to the localised string, formatting all
-		/// placeholders using composite formatting. This is shorthand for
-		/// <code>string.Format(S._(str), args)</code>
-		/// </summary>
-		/// <param name="str">The string to localise.</param>
-		/// <param name="args">Arguments for the composite formatting call.</param>
-		/// <returns>The formatted and localised string.</returns>
-		/// <remarks>The localised string is retrieved before formatting.</remarks>
-		public static string _(string str, params object[] args)
-		{
-			//Get the localised version of the input string.
-			string localStr = TranslateText(str, Assembly.GetCallingAssembly());
-
-			//Format the string.
-			return string.Format(CultureInfo.CurrentCulture, localStr, args);
-		}
-
 		/// <summary>
 		/// Returns true if the given control is right-to-left reading.
 		/// </summary>
@@ -74,32 +42,43 @@ namespace Eraser.Util
 		/// <returns>True if the control is right-to-left reading.</returns>
 		public static bool IsRightToLeft(Control control)
 		{
-			if (control == null)
-				return CultureInfo.CurrentCulture.TextInfo.IsRightToLeft;
-
-			switch (control.RightToLeft)
+			while (control != null)
 			{
-				case RightToLeft.No:
-					return false;
-				case RightToLeft.Yes:
-					return true;
-				default:
-					return IsRightToLeft(control.Parent);
+				switch (control.RightToLeft)
+				{
+					case RightToLeft.No:
+						return false;
+					case RightToLeft.Yes:
+						return true;
+					default:
+						control = control.Parent;
+						break;
+				}
+			}
+
+			if (Application.OpenForms.Count > 0)
+			{
+				return IsRightToLeft(Application.OpenForms[0]);
+			}
+			else
+			{
+				using (Form form = new Form())
+					return IsRightToLeft(form);
 			}
 		}
 
 		/// <summary>
 		/// Translates the localisable string to the set localised string.
 		/// </summary>
-		/// <param name="str">The string to localise.</param>
+		/// <param name="text">The string to localise.</param>
 		/// <param name="assembly">The assembly from which localised resource satellite
 		/// assemblies should be loaded from.</param>
 		/// <returns>A localised string, or str if no localisation exists.</returns>
-		public static string TranslateText(string str, Assembly assembly)
+		public static string TranslateText(string text, Assembly assembly)
 		{
 			//If the string is empty, forget it!
-			if (str.Length == 0)
-				return str;
+			if (text.Length == 0)
+				return text;
 
 			//First get the dictionary mapping assemblies and ResourceManagers (i.e. pick out
 			//the dictionary with ResourceManagers representing the current culture.)
@@ -131,11 +110,11 @@ namespace Eraser.Util
 			else
 				res = assemblies[assembly];
 
-			string result = res.GetString(Escape(str), Thread.CurrentThread.CurrentUICulture);
+			string result = res.GetString(Escape(text), Thread.CurrentThread.CurrentUICulture);
 #if DEBUG
-			return string.IsNullOrEmpty(result) ? str : Unescape(result);
+			return string.IsNullOrEmpty(result) ? text : Unescape(result);
 #else
-			return string.IsNullOrEmpty(result) || result == "(Untranslated)" ? str : Unescape(result);
+			return string.IsNullOrEmpty(result) || result == "(Untranslated)" ? text : Unescape(result);
 #endif
 		}
 
@@ -147,9 +126,34 @@ namespace Eraser.Util
 		/// <returns>True if the resource assembly for the given culture and assembly exists.</returns>
 		public static bool LocalisationExists(CultureInfo culture, Assembly assembly)
 		{
-			return System.IO.File.Exists(Path.Combine(
+			return File.Exists(Path.Combine(
 				Path.Combine(Path.GetDirectoryName(assembly.Location), culture.Name), //Directory
 				Path.GetFileNameWithoutExtension(assembly.Location) + ".resources.dll"));
+		}
+
+		/// <summary>
+		/// Retrieves all present language plugins
+		/// </summary>
+		/// <returns>A list, with an instance of each Language class</returns>
+		public static IList<CultureInfo> Localisations
+		{
+			get
+			{
+				List<CultureInfo> result = new List<CultureInfo>();
+				Assembly assembly = Assembly.GetEntryAssembly();
+				foreach (CultureInfo info in CultureInfo.GetCultures(CultureTypes.AllCultures))
+				{
+					if (string.IsNullOrEmpty(info.Name))
+						continue;
+					else if (LocalisationExists(info, assembly))
+						result.Add(info);
+				}
+
+				//Last resort
+				if (result.Count == 0)
+					result.Add(CultureInfo.GetCultureInfo("EN"));
+				return result.AsReadOnly();
+			}
 		}
 
 		/// <summary>
@@ -188,14 +192,14 @@ namespace Eraser.Util
 			while (culture != CultureInfo.InvariantCulture)
 			{
 				path = Path.Combine(Path.GetDirectoryName(assembly.Location), culture.Name);
-				if (System.IO.Directory.Exists(path))
+				if (Directory.Exists(path))
 				{
 					string assemblyPath = Path.Combine(path,
 						Path.GetFileNameWithoutExtension(assembly.Location) + ".resources.dll");
-					if (System.IO.File.Exists(assemblyPath))
+					if (File.Exists(assemblyPath))
 					{
 						languageID = culture.Name;
-						return Assembly.LoadFile(assemblyPath);
+						return Assembly.LoadFrom(assemblyPath);
 					}
 				}
 				culture = culture.Parent;
@@ -206,5 +210,45 @@ namespace Eraser.Util
 
 		private static Dictionary<CultureInfo, Dictionary<Assembly, ResourceManager>> managers =
 			new Dictionary<CultureInfo, Dictionary<Assembly, ResourceManager>>();
+	}
+
+	/// <summary>
+	/// Internationalisation class. Instead of calling GetString on all strings, just
+	/// call S._(string) or S._(string, object) for plurals
+	/// </summary>
+	[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "S")]
+	public static class S
+	{
+		/// <summary>
+		/// Translates the localisable string to the set localised string.
+		/// </summary>
+		/// <param name="str">The string to localise.</param>
+		/// <returns>A localised string, or str if no localisation exists.</returns>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "_")]
+		public static string _(string text)
+		{
+			return Localisation.TranslateText(text, Assembly.GetCallingAssembly());
+		}
+
+		/// <summary>
+		/// Translates the localisable text to the localised text, formatting all
+		/// placeholders using composite formatting. This is shorthand for
+		/// <code>string.Format(S._(text), args)</code>
+		/// </summary>
+		/// <param name="text">The text to localise.</param>
+		/// <param name="args">Arguments for the composite formatting call.</param>
+		/// <returns>The formatted and localised string.</returns>
+		/// <remarks>The localised string is retrieved before formatting.</remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1707:IdentifiersShouldNotContainUnderscores")]
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1704:IdentifiersShouldBeSpelledCorrectly", MessageId = "_")]
+		public static string _(string text, params object[] args)
+		{
+			//Get the localised version of the input string.
+			string localStr = Localisation.TranslateText(text, Assembly.GetCallingAssembly());
+
+			//Format the string.
+			return string.Format(CultureInfo.CurrentCulture, localStr, args);
+		}
 	}
 }

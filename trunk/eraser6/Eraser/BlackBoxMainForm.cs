@@ -37,7 +37,7 @@ namespace Eraser
 		public BlackBoxMainForm()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 
 			ReportsLv.BeginUpdate();
 			foreach (BlackBoxReport report in BlackBox.GetDumps())

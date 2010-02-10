@@ -56,7 +56,7 @@ namespace Eraser
 		{
 			//Create and position the dialog
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 			ClientSize = new Size(parent.ClientSize.Width, parent.ClientSize.Height);
 			Point point = parent.PointToScreen(new Point(0, 0));
 			Left = point.X;
@@ -206,7 +206,8 @@ Eraser Project Members:
 				MessageBox.Show(S._("Could not open the required web page. The error returned " +
 					"was: {0}", ex.Message), S._("Eraser"), MessageBoxButtons.OK,
 					MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 		}
 
@@ -291,7 +292,7 @@ Eraser Project Members:
 			g.DrawImageUnscaled(DoubleBufferBitmap, 0, 0);
 		}
 
-		private double mouseSpeed = 0.0;
+		private double mouseSpeed;
 		private DateTime mouseDownTime = DateTime.MinValue;
 		private TimeSpan mouseSpeedUpSpan = new TimeSpan(0, 0, 0, 0, 230);
 		private MouseButtons mouseBotton;

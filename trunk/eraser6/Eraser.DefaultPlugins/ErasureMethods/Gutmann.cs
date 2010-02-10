@@ -43,7 +43,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{1407FC4E-FEFF-4375-B4FB-D7EFBB7E9922}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses
@@ -97,6 +97,7 @@ namespace Eraser.DefaultPlugins
 		}
 	}
 
+	[Guid("AE5EB764-41B0-4601-BDF2-326B5838D44A")]
 	sealed class GutmannLite : PassBasedErasureMethod
 	{
 		public override string Name
@@ -106,7 +107,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{AE5EB764-41B0-4601-BDF2-326B5838D44A}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses

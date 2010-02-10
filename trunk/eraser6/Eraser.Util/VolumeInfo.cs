@@ -54,12 +54,12 @@ namespace Eraser.Util
 			VolumeId = volumeId;
 
 			//Fill up the remaining members of the structure: file system, label, etc.
-			StringBuilder volumeName = new StringBuilder(KernelApi.NativeMethods.MaxPath);
-			StringBuilder fileSystemName = new StringBuilder(KernelApi.NativeMethods.MaxPath);
+			StringBuilder volumeName = new StringBuilder(NativeMethods.MaxPath * sizeof(char)),
+				fileSystemName = new StringBuilder(NativeMethods.MaxPath * sizeof(char));
 			uint serialNumber, maxComponentLength, filesystemFlags;
-			if (KernelApi.NativeMethods.GetVolumeInformation(volumeId, volumeName,
-				KernelApi.NativeMethods.MaxPath, out serialNumber, out maxComponentLength,
-				out filesystemFlags, fileSystemName, KernelApi.NativeMethods.MaxPath))
+			if (NativeMethods.GetVolumeInformation(volumeId, volumeName, NativeMethods.MaxPath,
+				out serialNumber, out maxComponentLength, out filesystemFlags, fileSystemName,
+				NativeMethods.MaxPath))
 			{
 				IsReady = true;
 			}
@@ -73,7 +73,7 @@ namespace Eraser.Util
 			if (VolumeFormat == "FAT")
 			{
 				uint clusterSize, sectorSize, freeClusters, totalClusters;
-				if (KernelApi.NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
+				if (NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
 					out sectorSize, out freeClusters, out totalClusters))
 				{
 					if (totalClusters <= 0xFF0)
@@ -93,32 +93,28 @@ namespace Eraser.Util
 			List<string> result = new List<string>();
 
 			//Get the paths of the said volume
-			IntPtr pathNamesBuffer = IntPtr.Zero;
-			string pathNames = string.Empty;
-			try
+			string pathNames;
 			{
-				uint currentBufferSize = KernelApi.NativeMethods.MaxPath;
 				uint returnLength = 0;
-				pathNamesBuffer = Marshal.AllocHGlobal((int)(currentBufferSize * sizeof(char)));
-				while (!KernelApi.NativeMethods.GetVolumePathNamesForVolumeName(VolumeId,
-					pathNamesBuffer, currentBufferSize, out returnLength))
+				StringBuilder pathNamesBuffer = new StringBuilder();
+				pathNamesBuffer.EnsureCapacity(NativeMethods.MaxPath);
+				while (!NativeMethods.GetVolumePathNamesForVolumeName(VolumeId,
+					pathNamesBuffer, (uint)pathNamesBuffer.Capacity, out returnLength))
 				{
-					if (Marshal.GetLastWin32Error() == 234/*ERROR_MORE_DATA*/)
+					int errorCode = Marshal.GetLastWin32Error();
+					switch (errorCode)
 					{
-						Marshal.FreeHGlobal(pathNamesBuffer);
-						currentBufferSize *= 2;
-						pathNamesBuffer = Marshal.AllocHGlobal((int)(currentBufferSize * sizeof(char)));
+						case Win32ErrorCode.MoreData:
+							pathNamesBuffer.EnsureCapacity((int)returnLength);
+							break;
+						default:
+							throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
 					}
-					else
-						throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
 				}
 
-				pathNames = Marshal.PtrToStringUni(pathNamesBuffer, (int)returnLength);
-			}
-			finally
-			{
-				if (pathNamesBuffer != IntPtr.Zero)
-					Marshal.FreeHGlobal(pathNamesBuffer);
+				if (pathNamesBuffer.Length < returnLength)
+					pathNamesBuffer.Length = (int)returnLength;
+				pathNames = pathNamesBuffer.ToString().Substring(0, (int)returnLength);
 			}
 
 			//OK, the marshalling is complete. Convert the pathNames string into a list
@@ -152,20 +148,97 @@ namespace Eraser.Util
 		private List<string> GetNetworkMountPoints()
 		{
 			List<string> result = new List<string>();
+			foreach (KeyValuePair<string, string> mountpoint in GetNetworkDrivesInternal())
+				if (mountpoint.Value == VolumeId)
+					result.Add(mountpoint.Key);
+
+			return result;
+		}
+
+		/// <summary>
+		/// Lists all the volumes in the system.
+		/// </summary>
+		/// <returns>Returns a list of volumes representing all volumes present in
+		/// the system.</returns>
+		public static IList<VolumeInfo> Volumes
+		{
+			get
+			{
+				List<VolumeInfo> result = new List<VolumeInfo>();
+				StringBuilder nextVolume = new StringBuilder(NativeMethods.LongPath * sizeof(char));
+				SafeHandle handle = NativeMethods.FindFirstVolume(nextVolume, NativeMethods.LongPath);
+				if (handle.IsInvalid)
+					return result;
+
+				try
+				{
+					//Iterate over the volume mountpoints
+					do
+						result.Add(new VolumeInfo(nextVolume.ToString()));
+					while (NativeMethods.FindNextVolume(handle, nextVolume, NativeMethods.LongPath));
+				}
+				finally
+				{
+					//Close the handle
+					NativeMethods.FindVolumeClose(handle);
+				}
+
+				return result.AsReadOnly();
+			}
+		}
+
+		/// <summary>
+		/// Lists all mounted network drives on the current computer.
+		/// </summary>
+		public static IList<VolumeInfo> NetworkDrives
+		{
+			get
+			{
+				Dictionary<string, string> localToRemote = GetNetworkDrivesInternal();
+				Dictionary<string, string> remoteToLocal = new Dictionary<string, string>();
+
+				//Flip the dictionary to be indexed by value so we can map UNC paths to
+				//drive letters/mount points.
+				foreach (KeyValuePair<string, string> mountpoint in localToRemote)
+				{
+					//If there are no UNC path for this current mount point, we just add it.
+					if (!remoteToLocal.ContainsKey(mountpoint.Value))
+						remoteToLocal.Add(mountpoint.Value, mountpoint.Key);
+
+					//Otherwise, we try to maintain the shortest path.
+					else if (remoteToLocal[mountpoint.Value].Length > mountpoint.Key.Length)
+						remoteToLocal[mountpoint.Value] = mountpoint.Key;
+				}
+
+				//Return the list of UNC paths mounted.
+				List<VolumeInfo> result = new List<VolumeInfo>();
+				foreach (string uncPath in remoteToLocal.Keys)
+					result.Add(new VolumeInfo(uncPath));
+
+				return result.AsReadOnly();
+			}
+		}
+
+		/// <summary>
+		/// Lists all mounted network drives on the current computer. The key is
+		/// the local path, the value is the remote path.
+		/// </summary>
+		private static Dictionary<string, string> GetNetworkDrivesInternal()
+		{
+			Dictionary<string, string> result = new Dictionary<string, string>();
 
 			//Open an enumeration handle to list mount points.
 			IntPtr enumHandle;
-			uint errorCode = KernelApi.NativeMethods.WNetOpenEnum(
-				KernelApi.NativeMethods.RESOURCE_CONNECTED,
-				KernelApi.NativeMethods.RESOURCETYPE_DISK, 0, IntPtr.Zero, out enumHandle);
-			if (errorCode != 0 /*ERROR_SUCCESS*/)
-				throw new Win32Exception((int)errorCode);
+			uint errorCode = NativeMethods.WNetOpenEnum(NativeMethods.RESOURCE_CONNECTED,
+				NativeMethods.RESOURCETYPE_DISK, 0, IntPtr.Zero, out enumHandle);
+			if (errorCode != Win32ErrorCode.Success)
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 
 			try
 			{
 				int resultBufferCount = 32;
 				int resultBufferSize = resultBufferCount *
-					Marshal.SizeOf(typeof(KernelApi.NativeMethods.NETRESOURCE));
+					Marshal.SizeOf(typeof(NativeMethods.NETRESOURCE));
 				IntPtr resultBuffer = Marshal.AllocHGlobal(resultBufferSize);
 
 				try
@@ -174,13 +247,13 @@ namespace Eraser.Util
 					{
 						uint resultBufferStored = (uint)resultBufferCount;
 						uint resultBufferRequiredSize = (uint)resultBufferSize;
-						errorCode = KernelApi.NativeMethods.WNetEnumResource(
-							enumHandle, ref resultBufferStored, resultBuffer,
+						errorCode = NativeMethods.WNetEnumResource(enumHandle,
+							ref resultBufferStored, resultBuffer,
 							ref resultBufferRequiredSize);
 
-						if (errorCode == 259 /*ERROR_NO_MORE_ITEMS*/)
+						if (errorCode == Win32ErrorCode.NoMoreItems)
 							break;
-						else if (errorCode != 0 /*ERROR_SUCCESS*/)
+						else if (errorCode != Win32ErrorCode.Success)
 							throw new Win32Exception((int)errorCode);
 
 						unsafe
@@ -189,11 +262,11 @@ namespace Eraser.Util
 							byte* pointer = (byte*)resultBuffer.ToPointer();
 
 							for (uint i = 0; i < resultBufferStored;
-								++i, pointer += Marshal.SizeOf(typeof(KernelApi.NativeMethods.NETRESOURCE)))
+								++i, pointer += Marshal.SizeOf(typeof(NativeMethods.NETRESOURCE)))
 							{
-								KernelApi.NativeMethods.NETRESOURCE resource =
-									(KernelApi.NativeMethods.NETRESOURCE)Marshal.PtrToStructure(
-										(IntPtr)pointer, typeof(KernelApi.NativeMethods.NETRESOURCE));
+								NativeMethods.NETRESOURCE resource =
+									(NativeMethods.NETRESOURCE)Marshal.PtrToStructure(
+										(IntPtr)pointer, typeof(NativeMethods.NETRESOURCE));
 
 								//Ensure that the path in the resource structure ends with a trailing
 								//backslash as out volume ID ends with one.
@@ -201,9 +274,7 @@ namespace Eraser.Util
 									continue;
 								if (resource.lpRemoteName[resource.lpRemoteName.Length - 1] != '\\')
 									resource.lpRemoteName += '\\';
-
-								if (resource.lpRemoteName == VolumeId)
-									result.Add(resource.lpLocalName);
+								result.Add(resource.lpLocalName, resource.lpRemoteName);
 							}
 						}
 					}
@@ -215,55 +286,23 @@ namespace Eraser.Util
 			}
 			finally
 			{
-				KernelApi.NativeMethods.WNetCloseEnum(enumHandle);
+				NativeMethods.WNetCloseEnum(enumHandle);
 			}
 
 			return result;
 		}
 
 		/// <summary>
-		/// Lists all the volumes in the system.
-		/// </summary>
-		/// <returns>Returns a list of volumes representing all volumes present in
-		/// the system.</returns>
-		public static ICollection<VolumeInfo> Volumes
-		{
-			get
-			{
-				List<VolumeInfo> result = new List<VolumeInfo>();
-				StringBuilder nextVolume = new StringBuilder(
-					KernelApi.NativeMethods.LongPath * sizeof(char));
-				SafeHandle handle = KernelApi.NativeMethods.FindFirstVolume(nextVolume,
-					KernelApi.NativeMethods.LongPath);
-				if (handle.IsInvalid)
-					return result;
-
-				//Iterate over the volume mountpoints
-				do
-					result.Add(new VolumeInfo(nextVolume.ToString()));
-				while (KernelApi.NativeMethods.FindNextVolume(handle, nextVolume,
-					KernelApi.NativeMethods.LongPath));
-
-				//Close the handle
-				if (Marshal.GetLastWin32Error() == 18 /*ERROR_NO_MORE_FILES*/)
-					KernelApi.NativeMethods.FindVolumeClose(handle);
-
-				return result.AsReadOnly();
-			}
-		}
-
-		/// <summary>
 		/// Creates a Volume object from its mountpoint.
 		/// </summary>
-		/// <param name="mountpoint">The path to the mountpoint.</param>
+		/// <param name="mountPoint">The path to the mountpoint.</param>
 		/// <returns>The volume object if such a volume exists, or an exception
 		/// is thrown.</returns>
-		public static VolumeInfo FromMountpoint(string mountpoint)
+		public static VolumeInfo FromMountPoint(string mountPoint)
 		{
-			DirectoryInfo mountpointDir = new DirectoryInfo(mountpoint);
-			
 			//Verify that the mountpoint given exists; if it doesn't we'll raise
 			//a DirectoryNotFound exception.
+			DirectoryInfo mountpointDir = new DirectoryInfo(mountPoint);
 			if (!mountpointDir.Exists)
 				throw new DirectoryNotFoundException();
 
@@ -279,26 +318,26 @@ namespace Eraser.Util
 					throw new DirectoryNotFoundException();
 
 				//Get the type of the drive
-				DriveType driveType = (DriveType)KernelApi.NativeMethods.GetDriveType(currentDir);
+				DriveType driveType = (DriveType)NativeMethods.GetDriveType(currentDir);
 
 				//We do different things for different kinds of drives. Network drives
 				//will need us to resolve the drive to a UNC path. Local drives will
 				//be resolved to a volume GUID
-				StringBuilder volumeID = new StringBuilder(KernelApi.NativeMethods.MaxPath);
+				StringBuilder volumeID = new StringBuilder(NativeMethods.MaxPath);
 				if (driveType == DriveType.Network)
 				{
 					//Resolve the mountpoint to a UNC path
 					uint bufferCapacity = (uint)volumeID.Capacity;
-					uint errorCode = KernelApi.NativeMethods.WNetGetConnection(
+					uint errorCode = NativeMethods.WNetGetConnection(
 						currentDir.Substring(0, currentDir.Length - 1),
 						volumeID, ref bufferCapacity);
 
 					switch (errorCode)
 					{
-						case 0: //ERROR_SUCCESS
+						case Win32ErrorCode.Success:
 							return new VolumeInfo(volumeID.ToString() + '\\');
 
-						case 1200: //ERROR_BAD_DEVICE: path is not a network share
+						case Win32ErrorCode.BadDevice: //Path is not a network share
 							break;
 
 						default:
@@ -307,23 +346,24 @@ namespace Eraser.Util
 				}
 				else
 				{
-					if (KernelApi.NativeMethods.GetVolumeNameForVolumeMountPoint(
-						currentDir, volumeID, 50))
+					if (!NativeMethods.GetVolumeNameForVolumeMountPoint(currentDir, volumeID, 50))
 					{
-						return new VolumeInfo(volumeID.ToString());
+						int errorCode = Marshal.GetLastWin32Error();
+						switch (errorCode)
+						{
+							case Win32ErrorCode.InvalidFunction:
+							case Win32ErrorCode.FileNotFound:
+							case Win32ErrorCode.PathNotFound:
+							case Win32ErrorCode.NotAReparsePoint:
+								break;
+							default:
+								throw Win32ErrorCode.GetExceptionForWin32Error(
+									Marshal.GetLastWin32Error());
+						}
 					}
 					else
 					{
-						switch (Marshal.GetLastWin32Error())
-						{
-							case 1: //ERROR_INVALID_FUNCTION
-							case 2: //ERROR_FILE_NOT_FOUND
-							case 3: //ERROR_PATH_NOT_FOUND
-							case 4390: //ERROR_NOT_A_REPARSE_POINT
-								break;
-							default:
-								throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
-						}
+						return new VolumeInfo(volumeID.ToString());
 					}
 				}
 
@@ -331,8 +371,7 @@ namespace Eraser.Util
 			}
 			while (mountpointDir != null);
 
-			throw Marshal.GetExceptionForHR(KernelApi.GetHRForWin32Error(
-				4390 /*ERROR_NOT_A_REPARSE_POINT*/));
+			throw Win32ErrorCode.GetExceptionForWin32Error(Win32ErrorCode.NotAReparsePoint);
 		}
 
 		/// <summary>
@@ -357,7 +396,7 @@ namespace Eraser.Util
 		{
 			get
 			{
-				return (DriveType)KernelApi.NativeMethods.GetDriveType(VolumeId);
+				return (DriveType)NativeMethods.GetDriveType(VolumeId);
 			}
 		}
 
@@ -369,13 +408,13 @@ namespace Eraser.Util
 			get
 			{
 				uint clusterSize, sectorSize, freeClusters, totalClusters;
-				if (KernelApi.NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
+				if (NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
 					out sectorSize, out freeClusters, out totalClusters))
 				{
 					return (int)(clusterSize * sectorSize);
 				}
 
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
 		}
 
@@ -387,13 +426,13 @@ namespace Eraser.Util
 			get
 			{
 				uint clusterSize, sectorSize, freeClusters, totalClusters;
-				if (KernelApi.NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
+				if (NativeMethods.GetDiskFreeSpace(VolumeId, out clusterSize,
 					out sectorSize, out freeClusters, out totalClusters))
 				{
 					return (int)sectorSize;
 				}
 
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
 		}
 
@@ -405,18 +444,18 @@ namespace Eraser.Util
 			get
 			{
 				ulong freeBytesAvailable, totalNumberOfBytes, totalNumberOfFreeBytes;
-				if (KernelApi.NativeMethods.GetDiskFreeSpaceEx(VolumeId, out freeBytesAvailable,
+				if (NativeMethods.GetDiskFreeSpaceEx(VolumeId, out freeBytesAvailable,
 					out totalNumberOfBytes, out totalNumberOfFreeBytes))
 				{
 					return totalNumberOfFreeBytes != freeBytesAvailable;
 				}
-				else if (Marshal.GetLastWin32Error() == 21 /*ERROR_NOT_READY*/)
+				else if (Marshal.GetLastWin32Error() == Win32ErrorCode.NotReady)
 				{
 					//For the lack of more appropriate responses.
 					return false;
 				}
 
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
 		}
 
@@ -433,13 +472,12 @@ namespace Eraser.Util
 			get
 			{
 				ulong result, dummy;
-				if (KernelApi.NativeMethods.GetDiskFreeSpaceEx(VolumeId, out dummy,
-					out dummy, out result))
+				if (NativeMethods.GetDiskFreeSpaceEx(VolumeId, out dummy, out dummy, out result))
 				{
 					return (long)result;
 				}
 
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
 		}
 		
@@ -451,13 +489,12 @@ namespace Eraser.Util
 			get
 			{
 				ulong result, dummy;
-				if (KernelApi.NativeMethods.GetDiskFreeSpaceEx(VolumeId, out dummy,
-					out result, out dummy))
+				if (NativeMethods.GetDiskFreeSpaceEx(VolumeId, out dummy, out result, out dummy))
 				{
 					return (long)result;
 				}
 
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
 		}
 
@@ -469,13 +506,12 @@ namespace Eraser.Util
 			get
 			{
 				ulong result, dummy;
-				if (KernelApi.NativeMethods.GetDiskFreeSpaceEx(VolumeId, out result,
-					out dummy, out dummy))
+				if (NativeMethods.GetDiskFreeSpaceEx(VolumeId, out result, out dummy, out dummy))
 				{
 					return (long)result;
 				}
 
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
 		}
 
@@ -483,29 +519,32 @@ namespace Eraser.Util
 		/// Retrieves all mountpoints in the current volume, if the current volume
 		/// contains volume mountpoints.
 		/// </summary>
-		public ICollection<VolumeInfo> MountedVolumes
+		public IList<VolumeInfo> MountedVolumes
 		{
 			get
 			{
 				List<VolumeInfo> result = new List<VolumeInfo>();
-				StringBuilder nextMountpoint = new StringBuilder(
-					KernelApi.NativeMethods.LongPath * sizeof(char));
+				StringBuilder nextMountpoint = new StringBuilder(NativeMethods.LongPath * sizeof(char));
 
-				SafeHandle handle = KernelApi.NativeMethods.FindFirstVolumeMountPoint(VolumeId,
-					nextMountpoint, KernelApi.NativeMethods.LongPath);
+				SafeHandle handle = NativeMethods.FindFirstVolumeMountPoint(VolumeId,
+					nextMountpoint, NativeMethods.LongPath);
 				if (handle.IsInvalid)
 					return result;
 
-				//Iterate over the volume mountpoints
-				while (KernelApi.NativeMethods.FindNextVolumeMountPoint(handle,
-					nextMountpoint, KernelApi.NativeMethods.LongPath))
+				try
 				{
-					result.Add(new VolumeInfo(nextMountpoint.ToString()));
+					//Iterate over the volume mountpoints
+					while (NativeMethods.FindNextVolumeMountPoint(handle, nextMountpoint,
+						NativeMethods.LongPath))
+					{
+						result.Add(new VolumeInfo(nextMountpoint.ToString()));
+					}
 				}
-
-				//Close the handle
-				if (Marshal.GetLastWin32Error() == 18 /*ERROR_NO_MORE_FILES*/)
-					KernelApi.NativeMethods.FindVolumeMountPointClose(handle);
+				finally
+				{
+					//Close the handle
+					NativeMethods.FindVolumeMountPointClose(handle);
+				}
 
 				return result.AsReadOnly();
 			}
@@ -580,7 +619,7 @@ namespace Eraser.Util
 
 			//Check that the handle is valid
 			if (handle.IsInvalid)
-				throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 
 			//Return the FileStream
 			return new FileStream(handle, access);
@@ -593,14 +632,13 @@ namespace Eraser.Util
 			switch (access)
 			{
 				case FileAccess.Read:
-					iAccess = KernelApi.NativeMethods.GENERIC_READ;
+					iAccess = NativeMethods.GENERIC_READ;
 					break;
 				case FileAccess.ReadWrite:
-					iAccess = KernelApi.NativeMethods.GENERIC_READ |
-						KernelApi.NativeMethods.GENERIC_WRITE;
+					iAccess = NativeMethods.GENERIC_READ | NativeMethods.GENERIC_WRITE;
 					break;
 				case FileAccess.Write:
-					iAccess = KernelApi.NativeMethods.GENERIC_WRITE;
+					iAccess = NativeMethods.GENERIC_WRITE;
 					break;
 			}
 
@@ -616,12 +654,59 @@ namespace Eraser.Util
 			string openPath = VolumeId;
 			if (openPath.Length > 0 && openPath[openPath.Length - 1] == '\\')
 				openPath = openPath.Remove(openPath.Length - 1);
-			SafeFileHandle result = KernelApi.NativeMethods.CreateFile(openPath, iAccess,
+			SafeFileHandle result = NativeMethods.CreateFile(openPath, iAccess,
 				(uint)share, IntPtr.Zero, (uint)FileMode.Open, (uint)options, IntPtr.Zero);
 			if (result.IsInvalid)
-				throw KernelApi.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				result.Close();
+				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+			}
 
 			return result;
+		}
+
+		/// <summary>
+		/// Queries the performance information for the given disk.
+		/// </summary>
+		public DiskPerformanceInfo Performance
+		{
+			get
+			{
+				using (SafeFileHandle handle = OpenHandle(FileAccess.Read,
+					FileShare.ReadWrite, FileOptions.None))
+				{
+					//Check that the handle is valid
+					if (handle.IsInvalid)
+						throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+
+					//This only works if the user has turned on the disk performance
+					//counters with 'diskperf -y'. These counters are off by default
+					NativeMethods.DiskPerformanceInfoInternal result =
+						new NativeMethods.DiskPerformanceInfoInternal();
+					uint bytesReturned = 0;
+					if (NativeMethods.DeviceIoControl(handle, NativeMethods.IOCTL_DISK_PERFORMANCE,
+						IntPtr.Zero, 0, out result, (uint)Marshal.SizeOf(result),
+						out bytesReturned, IntPtr.Zero))
+					{
+						return new DiskPerformanceInfo(result);
+					}
+
+					return null;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets the mount point of the volume, or the volume ID if the volume is
+		/// not currently mounted.
+		/// </summary>
+		/// <returns>A string containing the mount point of the volume or the volume
+		/// ID.</returns>
+		public override string ToString()
+		{
+			ReadOnlyCollection<string> mountPoints = MountPoints;
+			return mountPoints.Count == 0 ? VolumeId : mountPoints[0];
 		}
 
 		public VolumeLock LockVolume(FileStream stream)
@@ -630,13 +715,13 @@ namespace Eraser.Util
 		}
 	}
 
-	public class VolumeLock : IDisposable
+	public sealed class VolumeLock : IDisposable
 	{
 		internal VolumeLock(FileStream stream)
 		{
 			uint result = 0;
-			for (int i = 0; !KernelApi.NativeMethods.DeviceIoControl(stream.SafeFileHandle,
-					KernelApi.NativeMethods.FSCTL_LOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
+			for (int i = 0; !NativeMethods.DeviceIoControl(stream.SafeFileHandle,
+					NativeMethods.FSCTL_LOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
 					0, out result, IntPtr.Zero); ++i)
 			{
 				if (i > 100)
@@ -655,26 +740,63 @@ namespace Eraser.Util
 		public void Dispose()
 		{
 			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		void Dispose(bool disposing)
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "disposing")]
+		private void Dispose(bool disposing)
 		{
-			if (disposing)
-				GC.SuppressFinalize(this);
+			if (Stream == null)
+				return;
 
 			//Flush the contents of the buffer to disk since after we unlock the volume
 			//we can no longer write to the volume.
 			Stream.Flush();
 
 			uint result = 0;
-			if (!KernelApi.NativeMethods.DeviceIoControl(Stream.SafeFileHandle,
-				KernelApi.NativeMethods.FSCTL_UNLOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
+			if (!NativeMethods.DeviceIoControl(Stream.SafeFileHandle,
+				NativeMethods.FSCTL_UNLOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
 				0, out result, IntPtr.Zero))
 			{
 				throw new IOException("Could not unlock volume.");
 			}
+
+			//Set the stream to null so that we won't run this function again.
+			Stream = null;
 		}
 
 		private FileStream Stream;
+	}
+
+	public class DiskPerformanceInfo
+	{
+		internal DiskPerformanceInfo(NativeMethods.DiskPerformanceInfoInternal info)
+		{
+			BytesRead = info.BytesRead;
+			BytesWritten = info.BytesWritten;
+			ReadTime = info.ReadTime;
+			WriteTime = info.WriteTime;
+			IdleTime = info.IdleTime;
+			ReadCount = info.ReadCount;
+			WriteCount = info.WriteCount;
+			QueueDepth = info.QueueDepth;
+			SplitCount = info.SplitCount;
+			QueryTime = info.QueryTime;
+			StorageDeviceNumber = info.StorageDeviceNumber;
+			StorageManagerName = info.StorageManagerName;
+		}
+
+		public long BytesRead { get; private set; }
+		public long BytesWritten { get; private set; }
+		public long ReadTime { get; private set; }
+		public long WriteTime { get; private set; }
+		public long IdleTime { get; private set; }
+		public uint ReadCount { get; private set; }
+		public uint WriteCount { get; private set; }
+		public uint QueueDepth { get; private set; }
+		public uint SplitCount { get; private set; }
+		public long QueryTime { get; private set; }
+		public uint StorageDeviceNumber { get; private set; }
+		public string StorageManagerName { get; private set; }
 	}
 }

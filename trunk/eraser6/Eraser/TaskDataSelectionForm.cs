@@ -29,6 +29,7 @@ using System.Windows.Forms;
 
 using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Util.ExtensionMethods;
 using System.IO;
 
 namespace Eraser
@@ -51,12 +52,11 @@ namespace Eraser
 		{
 			//Create the UI
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 			file.Checked = true;
 
 			//Populate the drives list
-			ICollection<VolumeInfo> volumes = VolumeInfo.Volumes;
-			foreach (VolumeInfo volume in volumes)
+			foreach (VolumeInfo volume in VolumeInfo.Volumes)
 			{
 				DriveType driveType = volume.VolumeType;
 				if (driveType != DriveType.Unknown &&
@@ -70,9 +70,11 @@ namespace Eraser
 
 					DriveItem item = new DriveItem();
 					string volumePath = volume.MountPoints[0];
+					DirectoryInfo root = new DirectoryInfo(volumePath);
+
 					item.Drive = volumePath;
-					item.Label = Eraser.Util.File.GetFileDescription(volumePath);
-					item.Icon = Eraser.Util.File.GetFileIcon(volumePath);
+					item.Label = root.GetDescription();
+					item.Icon = root.GetIcon();
 					unusedDisk.Items.Add(item);
 				}
 			}
@@ -81,9 +83,8 @@ namespace Eraser
 				unusedDisk.SelectedIndex = 0;
 
 			//And the methods list
-			Dictionary<Guid, ErasureMethod> methods = ErasureMethodManager.Items;
-			this.method.Items.Add(ErasureMethodManager.Default);
-			foreach (ErasureMethod method in methods.Values)
+			this.method.Items.Add(ErasureMethodRegistrar.Default);
+			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
 				this.method.Items.Add(method);
 			if (this.method.Items.Count != 0)
 				this.method.SelectedIndex = 0;
@@ -184,7 +185,7 @@ namespace Eraser
 		private void method_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (!(method.SelectedItem is UnusedSpaceErasureMethod) &&
-				method.SelectedItem != ErasureMethodManager.Default)
+				method.SelectedItem != ErasureMethodRegistrar.Default)
 			{
 				if (unused.Checked)
 				{
@@ -230,7 +231,8 @@ namespace Eraser
 			{
 				MessageBox.Show(this, S._("The path you selected is invalid."), S._("Eraser"),
 					MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 		}
 

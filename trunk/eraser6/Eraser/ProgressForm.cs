@@ -21,8 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using System.Linq;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -30,7 +29,6 @@ using System.Windows.Forms;
 using Eraser.Manager;
 using Eraser.Util;
 using System.Globalization;
-using ProgressChangedEventArgs = Eraser.Manager.ProgressChangedEventArgs;
 
 namespace Eraser
 {
@@ -42,7 +40,7 @@ namespace Eraser
 		public ProgressForm(Task task)
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 			this.task = task;
 			this.lastUpdate = DateTime.Now;
 			this.ActiveControl = hide;
@@ -90,17 +88,18 @@ namespace Eraser
 			UpdateProgress(progress, e);
 		}
 
-		private void task_TaskFinished(object sender, TaskEventArgs e)
+		private void task_TaskFinished(object sender, EventArgs e)
 		{
 			if (IsDisposed || !IsHandleCreated)
 				return;
 			if (InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskEventArgs>(task_TaskFinished), sender, e);
+				Invoke((EventHandler)task_TaskFinished, sender, e);
 				return;
 			}
 
 			//Update the UI. Set everything to 100%
+			Task task = (Task)sender;
 			timeLeft.Text = item.Text = pass.Text = string.Empty;
 			overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", 1.0);
 			overallProgress.Value = overallProgress.Maximum;
@@ -109,12 +108,7 @@ namespace Eraser
 			itemProgress.Value = itemProgress.Maximum;
 
 			//Inform the user on the status of the task.
-			LogLevel highestLevel = LogLevel.Information;
-			LogEntryCollection entries = e.Task.Log.LastSessionEntries;
-			foreach (LogEntry log in entries)
-				if (log.Level > highestLevel)
-					highestLevel = log.Level;
-
+			LogLevel highestLevel = task.Log.Last().Highest;
 			switch (highestLevel)
 			{
 				case LogLevel.Warning:
@@ -205,7 +199,7 @@ namespace Eraser
 			return result.ToString();
 		}
 
-		private TimeSpan RoundToSeconds(TimeSpan span)
+		private static TimeSpan RoundToSeconds(TimeSpan span)
 		{
 			return new TimeSpan(span.Ticks - span.Ticks % TimeSpan.TicksPerSecond);
 		}

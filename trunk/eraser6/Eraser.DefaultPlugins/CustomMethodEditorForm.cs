@@ -32,12 +32,12 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class CustomMethodEditorForm : Form
+	internal partial class CustomMethodEditorForm : Form
 	{
 		public CustomMethodEditorForm()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 		}
 
 		/// <summary>
@@ -217,7 +217,7 @@ namespace Eraser.DefaultPlugins
 			e.Effect = DragDropEffects.Move;
 		}
 
-		ListViewItem lastInsertionPoint = null;
+		ListViewItem lastInsertionPoint;
 		private void passesLv_GiveFeedback(object sender, GiveFeedbackEventArgs e)
 		{
 			e.UseDefaultCursors = true;

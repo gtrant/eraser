@@ -79,43 +79,6 @@ namespace Eraser.Util
 
 			return null;
 		}
-
-		internal static class NativeMethods
-		{
-			[DllImport("Netapi32.dll", CharSet = CharSet.Unicode)]
-			public static extern uint NetStatisticsGet(string server, string service,
-				uint level, uint options, out IntPtr bufptr);
-
-			/// <summary>
-			/// The NetApiBufferSize function returns the size, in bytes, of a buffer
-			/// allocated by a call to the NetApiBufferAllocate function.
-			/// </summary>
-			/// <param name="Buffer">Pointer to a buffer returned by the NetApiBufferAllocate
-			/// function.</param>
-			/// <param name="ByteCount">Receives the size of the buffer, in bytes.</param>
-			/// <returns>If the function succeeds, the return value is NERR_Success.
-			/// 
-			/// If the function fails, the return value is a system error code. For
-			/// a list of error codes, see System Error Codes.</returns>
-			[DllImport("Netapi32.dll")]
-			public static extern uint NetApiBufferSize(IntPtr Buffer, out uint ByteCount);
-
-			/// <summary>
-			/// The NetApiBufferFree function frees the memory that the NetApiBufferAllocate
-			/// function allocates. Call NetApiBufferFree to free the memory that other
-			/// network management functions return.
-			/// </summary>
-			/// <param name="Buffer">Pointer to a buffer returned previously by another
-			/// network management function.</param>
-			/// <returns>If the function succeeds, the return value is NERR_Success.
-			/// 
-			/// If the function fails, the return value is a system error code. For
-			/// a list of error codes, see System Error Codes.</returns>
-			[DllImport("Netapi32.dll")]
-			public static extern uint NetApiBufferFree(IntPtr Buffer);
-
-			private const uint NERR_Success = 0;
-		}
 	}
 
 	public enum NetApiService

@@ -38,11 +38,11 @@ namespace Eraser.DefaultPlugins
 		public SettingsForm()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 
 			//Populate the list of erasure passes, except the FL16KB.
-			foreach (ErasureMethod method in ErasureMethodManager.Items.Values)
-				if (method.Guid != new Guid("{0C2E07BF-0207-49a3-ADE8-46F9E1499C01}"))
+			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+				if (method.Guid != typeof(FirstLast16KB).GUID)
 					fl16MethodCmb.Items.Add(method);
 
 			//Load the settings.
@@ -59,8 +59,8 @@ namespace Eraser.DefaultPlugins
 			{
 				Guid methodGuid =
 					ManagerLibrary.Settings.DefaultFileErasureMethod;
-				if (methodGuid == new FirstLast16KB().Guid)
-					methodGuid = new Gutmann().Guid;
+				if (methodGuid == typeof(FirstLast16KB).GUID)
+					methodGuid = typeof(Gutmann).GUID;
 				
 				foreach (object item in fl16MethodCmb.Items)
 					if (((ErasureMethod)item).Guid == methodGuid)
@@ -160,14 +160,14 @@ namespace Eraser.DefaultPlugins
 			foreach (Guid guid in removeCustomMethods)
 			{
 				customMethods.Remove(guid);
-				ErasureMethodManager.Unregister(guid);
+				ManagerLibrary.Instance.ErasureMethodRegistrar.Remove(guid);
 			}
 
 			//Update the Erasure method manager on the methods
 			foreach (CustomErasureMethod method in addCustomMethods)
 			{
 				customMethods.Add(method.Guid, method);
-				ErasureMethodManager.Register(new EraseCustom(method), new object[] { method });
+				ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new EraseCustom(method));
 			}
 
 			//Save the list of custom erasure methods
@@ -193,7 +193,7 @@ namespace Eraser.DefaultPlugins
 		/// Updates the UI which represents the given custom erasure method.
 		/// </summary>
 		/// <param name="item">The method to update.</param>
-		private void UpdateMethod(ListViewItem item)
+		private static void UpdateMethod(ListViewItem item)
 		{
 			CustomErasureMethod method = (CustomErasureMethod)item.Tag;
 			item.Text = method.Name;

@@ -60,23 +60,19 @@
 						ProcessorArchitecture="msil" />
 					<File Id="SharpZipLib" Name="ICSharpCode.SharpZipLib.dll"
 						Source="..\bin\Release\ICSharpCode.SharpZipLib.dll" ProcessorArchitecture="msil" />
+					<File Id="CommonLibrary" Name="CommonLibrary.dll" Source="..\bin\Release\CommonLibrary.dll"
+						ProcessorArchitecture="msil" />
 					<File Id="EraserManager" Name="Eraser.Manager.dll"
 						Source="..\bin\Release\Eraser.Manager.dll" ProcessorArchitecture="msil" />
 					<File Id="EraserUtil" Name="Eraser.Util.dll"
 						Source="..\bin\Release\Eraser.Util.dll" ProcessorArchitecture="msil" />
 					<?if $(sys.BUILDARCH) = "x64"?>
-					<File Id="EraserUnlocker" Name="Eraser.Util.Unlocker.dll"
-						Source="..\Bin\Release\x64\Eraser.Util.Unlocker.dll"
-						ProcessorArchitecture="x64" />
-					<File Id="EraserFileSystem" Name="Eraser.Util.FileSystem.dll"
-						Source="..\Bin\Release\x64\Eraser.Util.FileSystem.dll"
+					<File Id="EraserUtilNative" Name="Eraser.Util.Native.dll"
+						Source="..\Bin\Release\x64\Eraser.Util.Native.dll"
 						ProcessorArchitecture="x64" />
 					<?else?>
-					<File Id="EraserUnlocker" Name="Eraser.Util.Unlocker.dll"
-						Source="..\Bin\Release\Win32\Eraser.Util.Unlocker.dll"
-						ProcessorArchitecture="x86" />
-					<File Id="EraserFileSystem" Name="Eraser.Util.FileSystem.dll"
-						Source="..\Bin\Release\Win32\Eraser.Util.FileSystem.dll"
+					<File Id="EraserUtilNative" Name="Eraser.Util.Native.dll"
+						Source="..\Bin\Release\Win32\Eraser.Util.Native.dll"
 						ProcessorArchitecture="x86" />
 					<?endif?>
 

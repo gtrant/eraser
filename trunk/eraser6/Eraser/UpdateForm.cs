@@ -21,19 +21,23 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.Net;
+
+using System.Diagnostics;
 using System.Reflection;
 using System.IO;
+using System.Linq;
 using System.Xml;
-using Eraser.Util;
+
+using System.Net;
 using System.Net.Cache;
 using System.Net.Mime;
 using System.Globalization;
+
+using Eraser.Util;
+
+using DoWorkEventArgs = System.ComponentModel.DoWorkEventArgs;
+using RunWorkerCompletedEventArgs = System.ComponentModel.RunWorkerCompletedEventArgs;
 
 namespace Eraser
 {
@@ -45,7 +49,7 @@ namespace Eraser
 		public UpdateForm()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(this);
+			Theming.ApplyTheme(this);
 			updateListDownloader.RunWorkerAsync();
 		}
 
@@ -84,15 +88,7 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void updateListDownloader_DoWork(object sender, DoWorkEventArgs e)
 		{
-			try
-			{
-				updates.OnProgressEvent += updateListDownloader_ProgressChanged;
-				updates.DownloadUpdateList();
-			}
-			finally
-			{
-				updates.OnProgressEvent -= updateListDownloader_ProgressChanged;
-			}
+			e.Result = DownloadManager.GetDownloads(updateListDownloader_ProgressChanged);
 		}
 
 		/// <summary>
@@ -100,21 +96,21 @@ namespace Eraser
 		/// </summary>
 		/// <param name="sender">The object triggering this event/</param>
 		/// <param name="e">Event argument.</param>
-		private void updateListDownloader_ProgressChanged(object sender, ProgressEventArgs e)
+		private void updateListDownloader_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			if (InvokeRequired)
 			{
 				if (updateListDownloader.CancellationPending)
 					throw new OperationCanceledException();
 
-				Invoke(new EventHandler<ProgressEventArgs>(
-					updateListDownloader_ProgressChanged), sender, e);
+				Invoke((EventHandler<ProgressChangedEventArgs>)updateListDownloader_ProgressChanged,
+					sender, e);
 				return;
 			}
 
 			progressPb.Style = ProgressBarStyle.Continuous;
-			progressPb.Value = (int)(e.OverallProgressPercentage * 100);
-			progressProgressLbl.Text = e.Message;
+			progressPb.Value = (int)(e.Progress.Progress * 100);
+			progressProgressLbl.Text = e.UserState as string;
 
 			if (progressPb.Value == 100)
 				progressProgressLbl.Text = S._("Processing update list...");
@@ -134,7 +130,8 @@ namespace Eraser
 				if (!(e.Error is OperationCanceledException))
 					MessageBox.Show(this, e.Error.Message, S._("Eraser"), MessageBoxButtons.OK,
 						MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-						S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+						Localisation.IsRightToLeft(this) ?
+							MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 
 				Close();
 				return;
@@ -144,61 +141,54 @@ namespace Eraser
 			updatesPanel.Visible = true;
 
 			//First list all available mirrors
-			Dictionary<string, Mirror>.Enumerator iter = updates.Mirrors.GetEnumerator();
-			while (iter.MoveNext())
-				updatesMirrorCmb.Items.Add(iter.Current.Value);
-			updatesMirrorCmb.SelectedIndex = 0;
+			IList<DownloadInfo> downloads = (IList<DownloadInfo>)e.Result;
 
 			//Get a list of translatable categories (this will change as more categories
 			//are added)
-			Dictionary<string, string> updateCategories = new Dictionary<string, string>();
-			updateCategories.Add("update", S._("Updates"));
-			updateCategories.Add("plugin", S._("Plugins"));
+			updatesLv.Groups.Add(DownloadType.Update.ToString(), S._("Updates"));
+			updatesLv.Groups.Add(DownloadType.Plugin.ToString(), S._("Plugins"));
+			updatesLv.Groups.Add(DownloadType.Build.ToString(), S._("Nightly builds"));
 
 			//Only include those whose architecture is compatible with ours.
-			List<string> compatibleArchs = new List<string>();
+			List<string> architectures = new List<string>();
 			{
 				//any is always compatible.
-				compatibleArchs.Add("any");
+				architectures.Add("any");
 
-				switch (KernelApi.ProcessorArchitecture)
+				switch (SystemInfo.ProcessorArchitecture)
 				{
 					case ProcessorArchitecture.Amd64:
-						compatibleArchs.Add("x64");
+						architectures.Add("x64");
 						break;
 					case ProcessorArchitecture.IA64:
-						compatibleArchs.Add("ia64");
+						architectures.Add("ia64");
 						break;
 					case ProcessorArchitecture.X86:
-						compatibleArchs.Add("x86");
+						architectures.Add("x86");
 						break;
 				}
 			}
 
-			foreach (string key in updates.Categories)
+			foreach (DownloadInfo download in downloads)
 			{
-				ListViewGroup group = new ListViewGroup(updateCategories.ContainsKey(key) ?
-					updateCategories[key] : key);
-				updatesLv.Groups.Add(group);
+				//Skip this download if it is not for our current architecture.
+				if (architectures.IndexOf(download.Architecture) == -1)
+					continue;
 
-				foreach (UpdateInfo update in updates.Updates[key])
-				{
-					//Skip if this update won't work on our current architecture.
-					if (compatibleArchs.IndexOf(update.Architecture) == -1)
-						continue;
+				//Get the group this download belongs to.
+				ListViewGroup group = updatesLv.Groups[download.Type.ToString()];
 
-					ListViewItem item = new ListViewItem(update.Name);
-					item.SubItems.Add(update.Version.ToString());
-					item.SubItems.Add(update.Publisher);
-					item.SubItems.Add(Util.File.GetHumanReadableFilesize(update.FileSize));
+				//Add the item to the list of downloads available.
+				ListViewItem item = new ListViewItem(download.Name);
+				item.SubItems.Add(download.Version.ToString());
+				item.SubItems.Add(download.Publisher);
+				item.SubItems.Add(FileSize.ToString(download.FileSize));
 
-					item.Tag = update;
-					item.Group = group;
-					item.Checked = true;
+				item.Tag = download;
+				item.Group = group;
+				item.Checked = true;
 
-					updatesLv.Items.Add(item);
-					uiUpdates.Add(update, new UpdateData(update, item));
-				}
+				updatesLv.Items.Add(item);
 			}
 
 			updatesBtn.Enabled = updatesLv.Items.Count > 0;
@@ -209,7 +199,8 @@ namespace Eraser
 				MessageBox.Show(this, S._("There are no new updates or plugins available for " +
 					"Eraser."), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
 					MessageBoxDefaultButton.Button1,
-					S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 				Close();
 			}
 		}
@@ -223,17 +214,7 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void updatesLv_ItemChecked(object sender, ItemCheckedEventArgs e)
 		{
-			if (selectedUpdates == -1 || updatesCount != updatesLv.Items.Count)
-			{
-				updatesCount = updatesLv.Items.Count;
-				selectedUpdates = 0;
-				foreach (ListViewItem item in updatesLv.Items)
-					if (item.Checked)
-						++selectedUpdates;
-			}
-			else
-				selectedUpdates += e.Item.Checked ? 1 : -1;
-			updatesBtn.Text = selectedUpdates == 0 ? S._("Close") : S._("Install");
+			updatesBtn.Text = updatesLv.CheckedIndices.Count == 0 ? S._("Close") : S._("Install");
 		}
 
 		/// <summary>
@@ -245,24 +226,20 @@ namespace Eraser
 		{
 			updatesPanel.Visible = false;
 			downloadingPnl.Visible = true;
-			List<UpdateInfo> updatesToInstall = new List<UpdateInfo>();
-
-			//Set the mirror
-			updates.SelectedMirror = (Mirror)updatesMirrorCmb.SelectedItem;
+			List<DownloadInfo> updatesToInstall = new List<DownloadInfo>();
 
 			//Collect the items that need to be installed
-			foreach (ListViewItem item in updatesLv.Items)
-				if (item.Checked)
-				{
-					item.Remove();
-					item.SubItems.RemoveAt(1);
-					item.SubItems.RemoveAt(1);
-					downloadingLv.Items.Add(item);
+			foreach (ListViewItem item in updatesLv.CheckedItems)
+			{
+				item.Remove();
+				item.SubItems.RemoveAt(1);
+				item.SubItems.RemoveAt(1);
+				downloadingLv.Items.Add(item);
 
-					updatesToInstall.Add((UpdateInfo)item.Tag);
-				}
-				else
-					uiUpdates.Remove((UpdateInfo)item.Tag);
+				DownloadInfo download = (DownloadInfo)item.Tag;
+				updatesToInstall.Add(download);
+				DownloadItems.Add(download, new DownloadUIInfo(download, item));
+			}
 
 			//Then run the thread if there are updates.
 			if (updatesToInstall.Count > 0)
@@ -278,16 +255,35 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void downloader_DoWork(object sender, DoWorkEventArgs e)
 		{
-			try
+			List<DownloadInfo> downloads = (List<DownloadInfo>)e.Argument;
+			SteppedProgressManager overallProgress = new SteppedProgressManager();
+			long totalDownloadSize = downloads.Sum(delegate(DownloadInfo download)
+				{
+					return download.FileSize;
+				});
+			
+			foreach (DownloadInfo download in downloads)
 			{
-				updates.OnProgressEvent += downloader_ProgressChanged;
-				object downloadedUpdates = updates.DownloadUpdates((List<UpdateInfo>)e.Argument);
-				e.Result = downloadedUpdates;
+				ProgressManagerBase downloadProgress = null;
+				ProgressChangedEventHandler localHandler =
+					delegate(object sender2, ProgressChangedEventArgs e2)
+					{
+						DownloadInfo downloadInfo = (DownloadInfo)sender2;
+						if (downloadProgress == null)
+						{
+							downloadProgress = e2.Progress;
+							overallProgress.Steps.Add(new SteppedProgressManagerStep(
+								e2.Progress, download.FileSize / (float)totalDownloadSize));
+						}
+
+						downloader_ProgressChanged(sender2,
+							new ProgressChangedEventArgs(overallProgress, e2.UserState));
+					};
+
+				download.Download(localHandler);
 			}
-			finally
-			{
-				updates.OnProgressEvent -= downloader_ProgressChanged;
-			}
+
+			e.Result = e.Argument;
 		}
 
 		/// <summary>
@@ -295,56 +291,58 @@ namespace Eraser
 		/// </summary>
 		/// <param name="sender">The object triggering this event/</param>
 		/// <param name="e">Event argument.</param>
-		private void downloader_ProgressChanged(object sender, ProgressEventArgs e)
+		private void downloader_ProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			if (InvokeRequired)
 			{
 				if (updateListDownloader.CancellationPending)
 					throw new OperationCanceledException();
 
-				Invoke(new EventHandler<ProgressEventArgs>(downloader_ProgressChanged),
+				Invoke((EventHandler<ProgressChangedEventArgs>)downloader_ProgressChanged,
 					sender, e);
 				return;
 			}
 
-			UpdateData update = uiUpdates[(UpdateInfo)e.UserState];
+			DownloadInfo download = (DownloadInfo)sender;
+			DownloadUIInfo downloadUIInfo = DownloadItems[download];
+			SteppedProgressManager overallProgress = (SteppedProgressManager)e.Progress;
 
-			if (e is ProgressErrorEventArgs)
+			if (e.UserState is Exception)
 			{
-				update.Error = ((ProgressErrorEventArgs)e).Exception;
-				update.LVItem.ImageIndex = 3;
-				update.LVItem.SubItems[1].Text = S._("Error");
-				update.LVItem.ToolTipText = update.Error.Message;
+				downloadUIInfo.ListViewItem.ImageIndex = 3;
+				downloadUIInfo.ListViewItem.SubItems[1].Text = S._("Error");
+				downloadUIInfo.ListViewItem.ToolTipText = ((Exception)e.UserState).Message;
 			}
 			else
 			{
-				if (e.ProgressPercentage >= 1.0f)
+				if (overallProgress.CurrentStep.Progress.Progress >= 1.0f)
 				{
-					update.LVItem.ImageIndex = -1;
-					update.LVItem.SubItems[1].Text = S._("Downloaded");
+					downloadUIInfo.ListViewItem.ImageIndex = -1;
+					downloadUIInfo.ListViewItem.SubItems[1].Text = S._("Downloaded");
 				}
 				else
 				{
-					update.amountDownloaded = (long)(e.ProgressPercentage * update.Update.FileSize);
-					update.LVItem.ImageIndex = 0;
-					update.LVItem.SubItems[1].Text = Util.File.GetHumanReadableFilesize(
-						update.Update.FileSize - update.amountDownloaded);
+					downloadUIInfo.Downloaded = (long)
+						(overallProgress.CurrentStep.Progress.Progress * download.FileSize);
+					downloadUIInfo.ListViewItem.ImageIndex = 0;
+					downloadUIInfo.ListViewItem.SubItems[1].Text = FileSize.ToString(download.FileSize -
+						downloadUIInfo.Downloaded);
 				}
 			}
 
-			downloadingItemLbl.Text = e.Message;
-			downloadingItemPb.Value = (int)(e.ProgressPercentage * 100);
-			downloadingOverallPb.Value = (int)(e.OverallProgressPercentage * 100);
-
-			long amountToDownload = 0;
-			foreach (UpdateData upd in uiUpdates.Values)
-				amountToDownload += upd.Update.FileSize - upd.amountDownloaded;
+			downloadingItemLbl.Text = S._("Downloading: {0}", download.Name);
+			downloadingItemPb.Value = (int)(overallProgress.CurrentStep.Progress.Progress * 100);
+			downloadingOverallPb.Value = (int)(overallProgress.Progress * 100);
 			downloadingOverallLbl.Text = S._("Overall progress: {0} left",
-				Util.File.GetHumanReadableFilesize(amountToDownload));
+				FileSize.ToString(DownloadItems.Values.Sum(delegate(DownloadUIInfo item)
+					{
+						return item.Download.FileSize - item.Downloaded;
+					}
+			)));
 		}
 
 		/// <summary>
-		/// Handles the completion of updating event
+		/// Handles the completion of download event
 		/// </summary>
 		/// <param name="sender">The object triggering this event/</param>
 		/// <param name="e">Event argument.</param>
@@ -356,7 +354,8 @@ namespace Eraser
 					MessageBox.Show(this, e.Error.Message, S._("Eraser"),
 						MessageBoxButtons.OK, MessageBoxIcon.Error,
 						MessageBoxDefaultButton.Button1,
-						S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0);
+						Localisation.IsRightToLeft(this) ?
+							MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 
 				Close();
 				return;
@@ -365,16 +364,15 @@ namespace Eraser
 			downloadingPnl.Visible = false;
 			installingPnl.Visible = true;
 
-			foreach (ListViewItem item in downloadingLv.Items)
+			foreach (DownloadUIInfo download in DownloadItems.Values)
 			{
-				item.Remove();
-				installingLv.Items.Add(item);
+				download.ListViewItem.Remove();
+				installingLv.Items.Add(download.ListViewItem);
 
-				UpdateData update = uiUpdates[(UpdateInfo)item.Tag];
-				if (update.Error == null)
-					item.SubItems[1].Text = string.Empty;
+				if (download.Error == null)
+					download.ListViewItem.SubItems[1].Text = string.Empty;
 				else
-					item.SubItems[1].Text = S._("Error: {0}", update.Error.Message);
+					download.ListViewItem.SubItems[1].Text = S._("Error: {0}", download.Error.Message);
 			}
 
 			installer.RunWorkerAsync(e.Result);
@@ -389,15 +387,30 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void installer_DoWork(object sender, DoWorkEventArgs e)
 		{
-			try
+			List<DownloadInfo> downloads = (List<DownloadInfo>)e.Argument;
+			ProgressManager progress = new ProgressManager();
+			progress.Total = downloads.Count;
+
+			foreach (DownloadInfo download in downloads)
 			{
-				updates.OnProgressEvent += installer_ProgressChanged;
-				updates.InstallUpdates(e.Argument);
+				++progress.Completed;
+
+				try
+				{
+					installer_ProgressChanged(download,
+						new ProgressChangedEventArgs(progress, null));
+					download.Install();
+					installer_ProgressChanged(download,
+						new ProgressChangedEventArgs(progress, null));
+				}
+				catch (Exception ex)
+				{
+					installer_ProgressChanged(download,
+						new ProgressChangedEventArgs(progress, ex));
+				}
 			}
-			finally
-			{
-				updates.OnProgressEvent -= installer_ProgressChanged;
-			}
+
+			e.Result = e.Argument;
 		}
 
 		/// <summary>
@@ -412,28 +425,37 @@ namespace Eraser
 				if (updateListDownloader.CancellationPending)
 					throw new OperationCanceledException();
 
-				Invoke(new EventHandler<ProgressEventArgs>(installer_ProgressChanged),
+				Invoke((EventHandler<ProgressChangedEventArgs>)installer_ProgressChanged,
 					sender, e);
 				return;
 			}
 
-			UpdateData update = uiUpdates[(UpdateInfo)e.UserState];
-			if (e is ProgressErrorEventArgs)
+			DownloadInfo download = (DownloadInfo)sender;
+			DownloadUIInfo downloadUIInfo = DownloadItems[download];
+
+			if (e.UserState is Exception)
 			{
-				update.Error = ((ProgressErrorEventArgs)e).Exception;
-				update.LVItem.ImageIndex = 3;
-				update.LVItem.SubItems[1].Text = S._("Error: {0}", update.Error.Message);
+				downloadUIInfo.Error = (Exception)e.UserState;
+				downloadUIInfo.ListViewItem.ImageIndex = 3;
+				downloadUIInfo.ListViewItem.SubItems[1].Text =
+					S._("Error: {0}", downloadUIInfo.Error.Message);
 			}
 			else
-				switch (update.LVItem.ImageIndex)
+			{
+				switch (downloadUIInfo.ListViewItem.ImageIndex)
 				{
 					case -1:
-						update.LVItem.ImageIndex = 1;
+						downloadUIInfo.ListViewItem.SubItems[1].Text =
+							S._("Installing {0}", download.Name);
+						downloadUIInfo.ListViewItem.ImageIndex = 1;
 						break;
 					case 1:
-						update.LVItem.ImageIndex = 2;
+						downloadUIInfo.ListViewItem.SubItems[1].Text =
+							S._("Installed {0}", download.Name);
+						downloadUIInfo.ListViewItem.ImageIndex = 2;
 						break;
 				}
+			}
 		}
 
 		/// <summary>
@@ -451,95 +473,70 @@ namespace Eraser
 		#endregion
 
 		/// <summary>
-		/// The Update manager instance used by this form.
-		/// </summary>
-		UpdateManager updates = new UpdateManager();
-
-		/// <summary>
-		/// Maps listview items to the UpdateManager.Update object.
-		/// </summary>
-		Dictionary<UpdateInfo, UpdateData> uiUpdates = new Dictionary<UpdateInfo, UpdateData>();
-
-		/// <summary>
 		/// Manages information associated with the update.
 		/// </summary>
-		private class UpdateData
+		private class DownloadUIInfo
 		{
 			/// <summary>
 			/// Constructor.
 			/// </summary>
-			/// <param name="update">The UpdateManager.Update object containing the
-			/// internal representation of the update.</param>
+			/// <param name="update">The DownloadInfo object containing the
+			/// information about the download.</param>
 			/// <param name="item">The ListViewItem used for the display of the
 			/// update.</param>
-			public UpdateData(UpdateInfo update, ListViewItem item)
+			public DownloadUIInfo(DownloadInfo download, ListViewItem item)
 			{
-				Update = update;
-				LVItem = item;
+				Download = download;
+				ListViewItem = item;
 			}
 
 			/// <summary>
-			/// The UpdateManager.Update object containing the internal representation
-			/// of the update.
+			/// The DownloadInfo object containing information about the update.
 			/// </summary>
-			public UpdateInfo Update;
+			public DownloadInfo Download { get; private set; }
 
 			/// <summary>
 			/// The ListViewItem used for the display of the update.
 			/// </summary>
-			public ListViewItem LVItem;
+			public ListViewItem ListViewItem { get; private set; }
 
 			/// <summary>
 			/// The amount of the download already completed.
 			/// </summary>
-			public long amountDownloaded;
+			public long Downloaded { get; set; }
 
 			/// <summary>
 			/// The error raised when downloading/installing the update, if any. Null
 			/// otherwise.
 			/// </summary>
-			public Exception Error;
+			public Exception Error { get; set; }
 		}
 
 		/// <summary>
-		/// The number of updates selected for download.
+		/// Maps downloads to the list view items.
 		/// </summary>
-		private int selectedUpdates = -1;
-
-		/// <summary>
-		/// The number of updates present in the previous count, so the Selected
-		/// Updates number can be deemed invalid.
-		/// </summary>
-		private int updatesCount = -1;
+		private Dictionary<DownloadInfo, DownloadUIInfo> DownloadItems =
+			new Dictionary<DownloadInfo, DownloadUIInfo>();
 	}
 
-	public class UpdateManager
+	/// <summary>
+	/// Manages the list of downloads that can be retrieved from the Eraser update server.
+	/// </summary>
+	public static class DownloadManager
 	{
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public UpdateManager()
-		{
-			Updates = new UpdateCategoriesDictionary();
-		}
-
-		/// <summary>
-		/// Retrieves the update list from the server.
-		/// </summary>
-		public void DownloadUpdateList()
+		public static IList<DownloadInfo> GetDownloads(Eraser.Util.ProgressChangedEventHandler handler)
 		{
 			WebRequest.DefaultCachePolicy = new HttpRequestCachePolicy(
-				HttpRequestCacheLevel.Refresh);
-			HttpWebRequest req = (HttpWebRequest)
-				WebRequest.Create(new Uri("http://eraser.heidi.ie/scripts/updates?" +
-					"action=listupdates&version=" +
-					Assembly.GetExecutingAssembly().GetName().Version.ToString()));
-			
-			using (WebResponse response = req.GetResponse())
+				HttpRequestCacheLevel.Revalidate);
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(
+				new Uri("http://eraser.heidi.ie/scripts/updates?action=listupdates&version=6.1.0.0" /*+
+					Assembly.GetExecutingAssembly().GetName().Version.ToString()*/));
+
+			using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
 			using (Stream responseStream = response.GetResponseStream())
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				Manager.ProgressManager progress = new Manager.ProgressManager();
+				Util.ProgressManager progress = new Util.ProgressManager();
 				progress.Total = response.ContentLength;
 
 				//Download the response
@@ -549,15 +546,15 @@ namespace Eraser
 				{
 					memoryStream.Write(buffer, 0, lastRead);
 					progress.Completed = memoryStream.Position;
-					OnProgress(new ProgressEventArgs(progress.Progress, progress.Progress, null,
-						S._("{0} of {1} downloaded",
-							Util.File.GetHumanReadableFilesize(progress.Completed),
-							Util.File.GetHumanReadableFilesize(progress.Total))));
+					if (handler != null)
+						handler(null, new Eraser.Util.ProgressChangedEventArgs(progress,
+							S._("{0} of {1} downloaded", FileSize.ToString(progress.Completed),
+								FileSize.ToString(progress.Total))));
 				}
 
 				//Parse it.
 				memoryStream.Position = 0;
-				ParseUpdateList(memoryStream);
+				return ParseDownloadList(memoryStream).AsReadOnly();
 			}
 		}
 
@@ -565,60 +562,31 @@ namespace Eraser
 		/// Parses the list of updates provided by the server
 		/// </summary>
 		/// <param name="strm">The stream containing the XML data.</param>
-		private void ParseUpdateList(Stream strm)
+		private static List<DownloadInfo> ParseDownloadList(Stream strm)
 		{
 			//Move the XmlReader to the root node
-			Updates.Clear();
-			mirrors.Clear();
-			XmlReader rdr = XmlReader.Create(strm);
-			rdr.ReadToFollowing("updateList");
+			XmlReader reader = XmlReader.Create(strm);
+			reader.ReadToFollowing("updateList");
 
-			//Read the descendants of the updateList node (which are categories,
-			//except for the <mirrors> element)
-			XmlReader categories = rdr.ReadSubtree();
-			bool cont = categories.ReadToDescendant("mirrors");
-			while (cont)
-			{
-				if (categories.NodeType == XmlNodeType.Element)
-				{
-					if (categories.Name == "mirrors")
-					{
-						Dictionary<string, string> mirrorsList =
-							ParseMirror(categories.ReadSubtree());
-						Dictionary<string, string>.Enumerator e = mirrorsList.GetEnumerator();
-						while (e.MoveNext())
-							this.mirrors.Add(e.Current.Key,
-								new Mirror(e.Current.Value, e.Current.Key));
-					}
-					else
-						Updates.Add(categories.Name, ParseUpdateCategory(categories.ReadSubtree()));
-				}
+			//Read the descendants of the updateList node (ignoring the <mirrors> element)
+			//These are categories.
+			bool cont = reader.Read();
+			while (reader.NodeType != XmlNodeType.Element)
+				cont = reader.Read();
+			if (reader.NodeType != XmlNodeType.Element)
+				return new List<DownloadInfo>();
 
-				cont = categories.Read();
-			}
-		}
-
-		/// <summary>
-		/// Parses a list of mirrors.
-		/// </summary>
-		/// <param name="rdr">The XML reader object representing the &lt;mirrors&gt; node</param>
-		/// <returns>The list of mirrors defined by the element.</returns>
-		private static Dictionary<string, string> ParseMirror(XmlReader rdr)
-		{
-			Dictionary<string, string> result = new Dictionary<string,string>();
-			if (!rdr.ReadToDescendant("mirror"))
-				return result;
-
-			//Load every element.
+			List<DownloadInfo> result = new List<DownloadInfo>();
 			do
 			{
-				if (rdr.NodeType != XmlNodeType.Element || rdr.Name != "mirror")
-					continue;
+				if (reader.NodeType == XmlNodeType.Element)
+				{
+					result.AddRange(ParseDownloadCategory(reader.Name, reader.ReadSubtree()));
+				}
 
-				string location = rdr.GetAttribute("location");
-				result.Add(rdr.ReadElementContentAsString(), location);
+				cont = reader.Read();
 			}
-			while (rdr.ReadToNextSibling("mirror"));
+			while (cont);
 
 			return result;
 		}
@@ -626,11 +594,12 @@ namespace Eraser
 		/// <summary>
 		/// Parses a specific category and its assocaited updates.
 		/// </summary>
+		/// <param name="category">The name of the category.</param>
 		/// <param name="rdr">The XML reader object representing the element and its children.</param>
-		/// <returns>A list of updates in the category.</returns>
-		private static UpdateCollection ParseUpdateCategory(XmlReader rdr)
+		/// <returns>A list of downloads in the category.</returns>
+		private static List<DownloadInfo> ParseDownloadCategory(string category, XmlReader rdr)
 		{
-			UpdateCollection result = new UpdateCollection();
+			List<DownloadInfo> result = new List<DownloadInfo>();
 			if (!rdr.ReadToDescendant("item"))
 				return result;
 
@@ -640,597 +609,193 @@ namespace Eraser
 				if (rdr.Name != "item")
 					continue;
 
-				UpdateInfo update = new UpdateInfo();
-				update.Name = rdr.GetAttribute("name");
-				update.Version = new Version(rdr.GetAttribute("version"));
-				update.Publisher = rdr.GetAttribute("publisher");
-				update.Architecture = rdr.GetAttribute("architecture");
-				update.FileSize = Convert.ToInt64(rdr.GetAttribute("filesize"),
-					CultureInfo.InvariantCulture);
-				update.Link = rdr.ReadElementContentAsString();
-
-				result.Add(update);
+				result.Add(new DownloadInfo(rdr.GetAttribute("name"),
+					(DownloadType)Enum.Parse(typeof(DownloadType), category, true),
+					new Version(rdr.GetAttribute("version")), rdr.GetAttribute("publisher"),
+					rdr.GetAttribute("architecture"), Convert.ToInt64(rdr.GetAttribute("filesize")),
+					new Uri(rdr.ReadElementContentAsString())));
 			}
 			while (rdr.ReadToNextSibling("item"));
 
 			return result;
 		}
-
-		/// <summary>
-		/// Downloads the list of updates.
-		/// </summary>
-		/// <param name="updates">The updates to retrieve and install.</param>
-		/// <returns>An opaque object for use with InstallUpdates.</returns>
-		public object DownloadUpdates(ICollection<UpdateInfo> downloadQueue)
-		{
-			//Create a folder to hold all our updates.
-			DirectoryInfo tempDir = new DirectoryInfo(Path.GetTempPath());
-			tempDir = tempDir.CreateSubdirectory("eraser" + Environment.TickCount.ToString(
-				CultureInfo.InvariantCulture));
-
-			int currUpdate = 0;
-			Dictionary<string, UpdateInfo> tempFilesMap = new Dictionary<string, UpdateInfo>();
-			Manager.SteppedProgressManager progress = new Manager.SteppedProgressManager();
-			foreach (UpdateInfo update in downloadQueue)
-			{
-				try
-				{
-					//Add the update to the overall progress.
-					Manager.ProgressManager step = new Eraser.Manager.ProgressManager();
-					progress.Steps.Add(new Manager.SteppedProgressManager.Step(
-						step, 1.0f / downloadQueue.Count));
-
-					//Decide on the URL to connect to. The Link of the update may
-					//be a relative path (relative to the selected mirror) or an
-					//absolute path (which we have no choice)
-					Uri reqUri = null;
-					if (Uri.IsWellFormedUriString(update.Link, UriKind.Absolute))
-						reqUri = new Uri(update.Link);
-					else
-						reqUri = new Uri(new Uri(SelectedMirror.Link), new Uri(update.Link));
-					
-					//Then grab the download.
-					HttpWebRequest req = (HttpWebRequest)WebRequest.Create(reqUri);
-					using (WebResponse resp = req.GetResponse())
-					{
-						//Check for a suggested filename.
-						ContentDisposition contentDisposition = null;
-						foreach (string header in resp.Headers.AllKeys)
-							if (header.ToLowerInvariant() == "content-disposition")
-								contentDisposition = new ContentDisposition(resp.Headers[header]);
-
-						string tempFilePath = Path.Combine(
-							tempDir.FullName, string.Format(CultureInfo.InvariantCulture, "{0}-{1}",
-							++currUpdate,
-							contentDisposition == null ?
-								Path.GetFileName(reqUri.GetComponents(UriComponents.Path,
-								UriFormat.Unescaped)) : contentDisposition.FileName));
-
-						using (Stream responseStream = resp.GetResponseStream())
-						using (FileStream fileStream = new FileStream(tempFilePath, FileMode.CreateNew))
-						{
-							//Update the progress of this step
-							step.Total = resp.ContentLength;
-
-							//Copy the information into the file stream
-							int lastRead = 0;
-							byte[] buffer = new byte[16384];
-							while ((lastRead = responseStream.Read(buffer, 0, buffer.Length)) != 0)
-							{
-								fileStream.Write(buffer, 0, lastRead);
-
-								//Compute progress
-								step.Completed = fileStream.Position;
-								OnProgress(new ProgressEventArgs(step.Progress, progress.Progress,
-									update, S._("Downloading: {0}", update.Name)));
-							}
-						}
-
-						//Store the filename-to-update mapping
-						tempFilesMap.Add(tempFilePath, update);
-
-						//Let the event handler know the download is complete.
-						step.MarkComplete();
-						OnProgress(new ProgressEventArgs(step.Progress, progress.Progress,
-							update, S._("Downloaded: {0}", update.Name)));
-					}
-				}
-				catch (Exception e)
-				{
-					OnProgress(new ProgressErrorEventArgs(new ProgressEventArgs(1.0f,
-						(float)currUpdate / downloadQueue.Count, update,
-							S._("Error downloading {0}: {1}", update.Name, e.Message)),
-						e));
-				}
-			}
-
-			return tempFilesMap;
-		}
-
-		/// <summary>
-		/// Installs all updates downloaded.
-		/// </summary>
-		/// <param name="value">The value returned from a call to
-		/// <see cref="DownloadUpdates"/>.</param>
-		public void InstallUpdates(object value)
-		{
-			Manager.ProgressManager progress = new Manager.ProgressManager();
-			Dictionary<string, UpdateInfo> tempFiles = (Dictionary<string, UpdateInfo>)value;
-			Dictionary<string, UpdateInfo>.KeyCollection files = tempFiles.Keys;
-
-			try
-			{
-				progress.Total = files.Count;
-				foreach (string path in files)
-				{
-					UpdateInfo item = tempFiles[path];
-					++progress.Completed;
-					OnProgress(new ProgressEventArgs(0.0f, progress.Progress,
-						item, S._("Installing {0}", item.Name)));
-
-					System.Diagnostics.ProcessStartInfo info = new System.Diagnostics.ProcessStartInfo();
-					info.FileName = path;
-					info.UseShellExecute = true;
-
-					System.Diagnostics.Process process = System.Diagnostics.Process.Start(info);
-					process.WaitForExit(Int32.MaxValue);
-					if (process.ExitCode == 0)
-						OnProgress(new ProgressEventArgs(1.0f, progress.Progress,
-							item, S._("Installed {0}", item.Name)));
-					else
-						OnProgress(new ProgressErrorEventArgs(new ProgressEventArgs(1.0f,
-							progress.Progress, item, S._("Error installing {0}", item.Name)),
-							new ApplicationException(S._("The installer exited with an error code {0}",
-								process.ExitCode))));
-				}
-			}
-			finally
-			{
-				//Clean up after ourselves
-				foreach (string file in files)
-				{
-					DirectoryInfo tempDir = null;
-					{
-						FileInfo info = new FileInfo(file);
-						tempDir = info.Directory;
-					}
-
-					tempDir.Delete(true);
-					break;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Called when the progress of the operation changes.
-		/// </summary>
-		public EventHandler<ProgressEventArgs> OnProgressEvent { get; set; }
-
-		/// <summary>
-		/// Helper function: invokes the OnProgressEvent delegate.
-		/// </summary>
-		/// <param name="arg">The ProgressEventArgs object holding information
-		/// about the progress of the current operation.</param>
-		private void OnProgress(ProgressEventArgs arg)
-		{
-			if (OnProgressEvent != null)
-				OnProgressEvent(this, arg);
-		}
-
-		/// <summary>
-		/// Retrieves the list of mirrors which the server has indicated to exist.
-		/// </summary>
-		public Dictionary<string, Mirror> Mirrors
-		{
-			get
-			{
-				return mirrors;
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the active mirror to use to download mirrored updates.
-		/// </summary>
-		public Mirror SelectedMirror
-		{
-			get
-			{
-				if (selectedMirror.Link.Length == 0)
-				{
-					Dictionary<string, Mirror>.Enumerator iter = mirrors.GetEnumerator();
-					if (iter.MoveNext())
-						return iter.Current.Value;
-				}
-				return selectedMirror;
-			}
-			set
-			{
-				foreach (Mirror mirror in Mirrors.Values)
-					if (mirror.Equals(value))
-					{
-						selectedMirror = value;
-						return;
-					}
-
-				throw new ArgumentException(S._("Unknown mirror selected."));
-			}
-		}
-
-		/// <summary>
-		/// Retrieves the categories available.
-		/// </summary>
-		public ICollection<string> Categories
-		{
-			get
-			{
-				return Updates.Keys;
-			}
-		}
-
-		/// <summary>
-		/// Retrieves all updates available.
-		/// </summary>
-		public UpdateCategoriesDictionary Updates { get; private set; }
-
-		/// <summary>
-		/// The list of mirrors to download updates from.
-		/// </summary>
-		private Dictionary<string, Mirror> mirrors =
-			new Dictionary<string, Mirror>();
-
-		/// <summary>
-		/// The currently selected mirror.
-		/// </summary>
-		private Mirror selectedMirror;
 	}
 
 	/// <summary>
-	/// Manages a list of categories, mapping categories to a list of updates.
+	/// The types of downloads we support.
 	/// </summary>
-	public class UpdateCategoriesDictionary : IDictionary<string, UpdateCollection>,
-		ICollection<KeyValuePair<string, UpdateCollection>>,
-		IEnumerable<KeyValuePair<string, UpdateCollection>>
+	public enum DownloadType
 	{
-		#region IDictionary<string,UpdateList> Members
-		public void Add(string key, UpdateCollection value)
-		{
-			dictionary.Add(key, value);
-		}
-
-		public bool ContainsKey(string key)
-		{
-			return dictionary.ContainsKey(key);
-		}
-
-		public ICollection<string> Keys
-		{
-			get { return dictionary.Keys; }
-		}
-
-		public bool Remove(string key)
-		{
-			return dictionary.Remove(key);
-		}
-
-		public bool TryGetValue(string key, out UpdateCollection value)
-		{
-			return dictionary.TryGetValue(key, out value);
-		}
-
-		public ICollection<UpdateCollection> Values
-		{
-			get { return dictionary.Values; }
-		}
-
-		public UpdateCollection this[string key]
-		{
-			get
-			{
-				return dictionary[key];
-			}
-			set
-			{
-				dictionary[key] = value;
-			}
-		}
-		#endregion
-
-		#region ICollection<KeyValuePair<string,UpdateList>> Members
-		public void Add(KeyValuePair<string, UpdateCollection> item)
-		{
-			dictionary.Add(item.Key, item.Value);
-		}
-
-		public void Clear()
-		{
-			dictionary.Clear();
-		}
-
-		public bool Contains(KeyValuePair<string, UpdateCollection> item)
-		{
-			return dictionary.ContainsKey(item.Key) && dictionary[item.Key] == item.Value;
-		}
-
-		public void CopyTo(KeyValuePair<string, UpdateCollection>[] array, int arrayIndex)
-		{
-			throw new NotImplementedException();
-		}
-
-		public int Count
-		{
-			get { return dictionary.Count; }
-		}
-
-		public bool IsReadOnly
-		{
-			get { return true; }
-		}
-
-		public bool Remove(KeyValuePair<string, UpdateCollection> item)
-		{
-			return dictionary.Remove(item.Key);
-		}
-		#endregion
-
-		#region IEnumerable<KeyValuePair<string,UpdateList>> Members
-		public IEnumerator<KeyValuePair<string, UpdateCollection>> GetEnumerator()
-		{
-			return dictionary.GetEnumerator();
-		}
-		#endregion
-
-		#region IEnumerable Members
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
-		}
-		#endregion
+		/// <summary>
+		/// The type of the download is unknown.
+		/// </summary>
+		Unknown,
 
 		/// <summary>
-		/// The store for the current object.
+		/// The download is an update.
 		/// </summary>
-		private Dictionary<string, UpdateCollection> dictionary =
-			new Dictionary<string, UpdateCollection>();
-	}
-
-	/// <summary>
-	/// Manages a category, containing a list of updates.
-	/// </summary>
-	public class UpdateCollection : IList<UpdateInfo>, ICollection<UpdateInfo>,
-		IEnumerable<UpdateInfo>
-	{
-		#region IList<UpdateInfo> Members
-		public int IndexOf(UpdateInfo item)
-		{
-			return list.IndexOf(item);
-		}
-
-		public void Insert(int index, UpdateInfo item)
-		{
-			list.Insert(index, item);
-		}
-
-		public void RemoveAt(int index)
-		{
-			list.RemoveAt(index);
-		}
-
-		public UpdateInfo this[int index]
-		{
-			get
-			{
-				return list[index];
-			}
-			set
-			{
-				list[index] = value;
-			}
-		}
-		#endregion
-
-		#region ICollection<UpdateInfo> Members
-		public void Add(UpdateInfo item)
-		{
-			list.Add(item);
-		}
-
-		public void Clear()
-		{
-			list.Clear();
-		}
-
-		public bool Contains(UpdateInfo item)
-		{
-			return list.Contains(item);
-		}
-
-		public void CopyTo(UpdateInfo[] array, int arrayIndex)
-		{
-			list.CopyTo(array, arrayIndex);
-		}
-
-		public int Count
-		{
-			get { return list.Count; }
-		}
-
-		public bool IsReadOnly
-		{
-			get { return true; }
-		}
-
-		public bool Remove(UpdateInfo item)
-		{
-			return list.Remove(item);
-		}
-		#endregion
-
-		#region IEnumerable<UpdateInfo> Members
-		public IEnumerator<UpdateInfo> GetEnumerator()
-		{
-			return list.GetEnumerator();
-		}
-		#endregion
-
-		#region IEnumerable Members
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return list.GetEnumerator();
-		}
-		#endregion
+		Update,
 
 		/// <summary>
-		/// The store for this object.
+		/// The download is a plugin.
 		/// </summary>
-		private List<UpdateInfo> list = new List<UpdateInfo>();
-	}
-
-	/// <summary>
-	/// Represents a download mirror.
-	/// </summary>
-	public struct Mirror
-	{
-		public Mirror(string location, string link)
-			: this()
-		{
-			Location = location;
-			Link = link;
-		}
+		Plugin,
 
 		/// <summary>
-		/// The location where the mirror is at.
+		/// The download is a nightly build.
 		/// </summary>
-		public string Location { get; set; }
-
-		/// <summary>
-		/// The URL prefix to utilise the mirror.
-		/// </summary>
-		public string Link { get; set; }
-
-		public override string ToString()
-		{
-			return Location;
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (!(obj is Mirror))
-				return false;
-			return Equals((Mirror)obj);
-		}
-
-		public bool Equals(Mirror other)
-		{
-			return Link == other.Link;
-		}
-
-		public static bool operator ==(Mirror mirror1, Mirror mirror2)
-		{
-			return mirror1.Equals(mirror2);
-		}
-
-		public static bool operator !=(Mirror mirror1, Mirror mirror2)
-		{
-			return !mirror1.Equals(mirror2);
-		}
-
-		public override int GetHashCode()
-		{
-			return Link.GetHashCode();
-		}
+		Build
 	}
 
 	/// <summary>
 	/// Represents an update available on the server.
 	/// </summary>
-	public struct UpdateInfo
-	{
-		public string Name { get; set; }
-		public Version Version { get; set; }
-		public string Publisher { get; set; }
-		public string Architecture { get; set; }
-		public long FileSize { get; set; }
-		public string Link { get; set; }
-
-		public override bool Equals(object obj)
-		{
-			if (!(obj is UpdateInfo))
-				return false;
-			return Equals((UpdateInfo)obj);
-		}
-
-		public bool Equals(UpdateInfo other)
-		{
-			return Link == other.Link;
-		}
-
-		public static bool operator ==(UpdateInfo update1, UpdateInfo update2)
-		{
-			return update1.Equals(update2);
-		}
-
-		public static bool operator !=(UpdateInfo update1, UpdateInfo update2)
-		{
-			return !update1.Equals(update2);
-		}
-
-		public override int GetHashCode()
-		{
-			return Link.GetHashCode();
-		}
-	}
-
-	/// <summary>
-	/// Specialised progress event argument, containing message describing
-	/// current action, and overall progress percentage.
-	/// </summary>
-	public class ProgressEventArgs : ProgressChangedEventArgs
-	{
-		public ProgressEventArgs(float progressPercentage, float overallPercentage,
-			object userState, string message)
-			: base((int)(progressPercentage * 100), userState)
-		{
-			ProgressPercentage = progressPercentage;
-			OverallProgressPercentage = overallPercentage;
-			Message = message;
-		}
-
-		/// <summary>
-		/// Gets the asynchronous task progress percentage.
-		/// </summary>
-		public new float ProgressPercentage { get; private set; }
-
-		/// <summary>
-		/// Gets the asynchronous task overall progress percentage.
-		/// </summary>
-		public float OverallProgressPercentage { get; private set; }
-
-		/// <summary>
-		/// Gets the message associated with the current task.
-		/// </summary>
-		public string Message { get; private set; }
-	}
-
-	/// <summary>
-	/// Extends the ProgressEventArgs further by allowing for the inclusion of
-	/// an exception.
-	/// </summary>
-	public class ProgressErrorEventArgs : ProgressEventArgs
+	public class DownloadInfo
 	{
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		/// <param name="e">The base ProgressEventArgs object.</param>
-		/// <param name="ex">The exception</param>
-		public ProgressErrorEventArgs(ProgressEventArgs e, Exception ex)
-			: base(e.ProgressPercentage, e.OverallProgressPercentage, e.UserState, e.Message)
+		/// <param name="name">The name of the download.</param>
+		/// <param name="type">The type of the download.</param>
+		/// <param name="version">The version of the download.</param>
+		/// <param name="publisher">The publisher of the download.</param>
+		/// <param name="architecture">The architecture of the binaries.</param>
+		/// <param name="fileSize">The size of the download.</param>
+		/// <param name="link">The link to the download.</param>
+		internal DownloadInfo(string name, DownloadType type, Version version,
+			string publisher, string architecture, long fileSize, Uri link)
 		{
-			Exception = ex;
+			Name = name;
+			Type = type;
+			Version = version;
+			Publisher = publisher;
+			Architecture = architecture;
+			FileSize = fileSize;
+			Link = link;
+		}
+
+		public string Name { get; private set; }
+		public DownloadType Type { get; private set; }
+		public Version Version { get; private set; }
+		public string Publisher { get; private set; }
+		public string Architecture { get; private set; }
+		public long FileSize { get; private set; }
+		public Uri Link { get; private set; }
+
+		/// <summary>
+		/// Downloads the file to disk, storing the path into the DownloadedFile field.
+		/// </summary>
+		public void Download(Eraser.Util.ProgressChangedEventHandler handler)
+		{
+			if (DownloadedFile != null && DownloadedFile.Length > 0)
+				throw new InvalidOperationException("The Download method cannot be called " +
+					"before the Download method has been called.");
+
+			//Create a folder to hold all our updates.
+			lock (TempPathLock)
+			{
+				if (TempPath == null)
+				{
+					TempPath = new DirectoryInfo(Path.GetTempPath());
+					TempPath = TempPath.CreateSubdirectory("eraser" + Environment.TickCount.ToString(
+						CultureInfo.InvariantCulture));
+				}
+			}
+
+			//Create the progress manager for this download.
+			ProgressManager progress = new ProgressManager();
+
+			try
+			{
+				//Request the download.
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Link);
+				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+				{
+					//Do the progress calculations
+					progress.Total = response.ContentLength;
+
+					//Check for a suggested filename.
+					ContentDisposition contentDisposition = null;
+					foreach (string header in response.Headers.AllKeys)
+						if (header.ToUpperInvariant() == "CONTENT-DISPOSITION")
+							contentDisposition = new ContentDisposition(response.Headers[header]);
+
+					//Create the file name.
+					DownloadedFile = new FileInfo(Path.Combine(
+						TempPath.FullName, string.Format(CultureInfo.InvariantCulture,
+							"{0:00}-{1}", ++DownloadFileIndex, contentDisposition == null ?
+								Path.GetFileName(Link.GetComponents(UriComponents.Path, UriFormat.Unescaped)) :
+								contentDisposition.FileName)));
+
+					using (Stream responseStream = response.GetResponseStream())
+					using (FileStream fileStream = DownloadedFile.OpenWrite())
+					{
+						//Copy the information into the file stream
+						int lastRead = 0;
+						byte[] buffer = new byte[16384];
+						while ((lastRead = responseStream.Read(buffer, 0, buffer.Length)) != 0)
+						{
+							fileStream.Write(buffer, 0, lastRead);
+
+							//Compute progress
+							progress.Completed = fileStream.Position;
+
+							//Call the progress handler
+							if (handler != null)
+								handler(this, new ProgressChangedEventArgs(progress, null));
+						}
+					}
+
+					//Let the event handler know the download is complete.
+					progress.MarkComplete();
+					if (handler != null)
+						handler(this, new ProgressChangedEventArgs(progress, null));
+				}
+			}
+			catch (Exception e)
+			{
+				if (handler != null)
+					handler(this, new ProgressChangedEventArgs(progress, e));
+			}
 		}
 
 		/// <summary>
-		/// The exception associated with the progress event.
+		/// Installs the file, by calling Process.Start on the file.
 		/// </summary>
-		public Exception Exception { get; private set; }
+		/// <returns>The exit code of the program.</returns>
+		public void Install()
+		{
+			if (DownloadedFile == null || !DownloadedFile.Exists || DownloadedFile.Length == 0)
+				throw new InvalidOperationException("The Install method cannot be called " +
+					"before the Download method has been called.");
+
+			ProcessStartInfo info = new ProcessStartInfo();
+			info.FileName = DownloadedFile.FullName;
+			info.UseShellExecute = true;
+
+			Process process = Process.Start(info);
+			process.WaitForExit(Int32.MaxValue);
+		}
+
+		/// <summary>
+		/// The lock object for the TempPath field.
+		/// </summary>
+		private static object TempPathLock = new object();
+
+		/// <summary>
+		/// The temporary path we are storing our downloads in.
+		/// </summary>
+		private static DirectoryInfo TempPath;
+
+		/// <summary>
+		/// Counter to ensure that files downloaded with a similar name are not overwritten
+		/// over each other
+		/// </summary>
+		private static int DownloadFileIndex;
+
+		/// <summary>
+		/// Stores information about the temporary file which the download was stored into.
+		/// </summary>
+		private FileInfo DownloadedFile;
 	}
 }

@@ -53,8 +53,6 @@ namespace Eraser
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UpdateForm));
 			this.updateListDownloader = new System.ComponentModel.BackgroundWorker();
 			this.updatesPanel = new System.Windows.Forms.Panel();
-			this.updatesMirrorCmb = new System.Windows.Forms.ComboBox();
-			this.updatesMirrorLbl = new System.Windows.Forms.Label();
 			this.updatesLv = new System.Windows.Forms.ListView();
 			this.updatesLvNameCol = new System.Windows.Forms.ColumnHeader();
 			this.updatesLvVersionCol = new System.Windows.Forms.ColumnHeader();
@@ -101,25 +99,11 @@ namespace Eraser
 			// updatesPanel
 			// 
 			this.updatesPanel.BackColor = System.Drawing.SystemColors.Control;
-			this.updatesPanel.Controls.Add(this.updatesMirrorCmb);
-			this.updatesPanel.Controls.Add(this.updatesMirrorLbl);
 			this.updatesPanel.Controls.Add(this.updatesLv);
 			this.updatesPanel.Controls.Add(this.updatesBtn);
 			this.updatesPanel.Controls.Add(this.updatesLbl);
 			resources.ApplyResources(this.updatesPanel, "updatesPanel");
 			this.updatesPanel.Name = "updatesPanel";
-			// 
-			// updatesMirrorCmb
-			// 
-			resources.ApplyResources(this.updatesMirrorCmb, "updatesMirrorCmb");
-			this.updatesMirrorCmb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.updatesMirrorCmb.Name = "updatesMirrorCmb";
-			// 
-			// updatesMirrorLbl
-			// 
-			resources.ApplyResources(this.updatesMirrorLbl, "updatesMirrorLbl");
-			this.updatesMirrorLbl.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.updatesMirrorLbl.Name = "updatesMirrorLbl";
 			// 
 			// updatesLv
 			// 
@@ -393,8 +377,6 @@ namespace Eraser
 		private System.Windows.Forms.ColumnHeader installingLvNameCol;
 		private System.ComponentModel.BackgroundWorker installer;
 		private System.Windows.Forms.ColumnHeader installingLvStatusCol;
-		private System.Windows.Forms.Label updatesMirrorLbl;
-		private System.Windows.Forms.ComboBox updatesMirrorCmb;
 		private System.Windows.Forms.Label progressExplainLbl;
 		private System.Windows.Forms.Button progressCancelBtn;
 		private System.Windows.Forms.Button downloadingCancelBtn;

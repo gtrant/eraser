@@ -343,7 +343,7 @@ namespace Eraser.Manager
 
 			//We have not computed the value. Compute the default.
 			Plugin.Host pluginHost = ManagerLibrary.Instance.Host;
-			ICollection<Plugin.PluginInstance> plugins = pluginHost.Plugins;
+			IList<Plugin.PluginInstance> plugins = pluginHost.Plugins;
 			SortedList<int, Guid> priorities = new SortedList<int, Guid>();
 
 			foreach (Plugin.PluginInstance plugin in plugins)
@@ -353,7 +353,7 @@ namespace Eraser.Manager
 				byte[] ourKey = Assembly.GetExecutingAssembly().GetName().GetPublicKey();
 
 				if (pluginKey.Length != ourKey.Length ||
-					!MsCorEEApi.VerifyStrongName(plugin.Assembly.Location))
+					!Security.VerifyStrongName(plugin.Assembly.Location))
 					continue;
 				bool officialPlugin = true;
 				for (int i = 0, j = ourKey.Length; i != j; ++i)

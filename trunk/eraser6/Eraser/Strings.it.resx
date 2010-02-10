@@ -144,10 +144,10 @@
   <data name="Checking for status of report {0}..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Compressing Report {0}: {1}%" xml:space="preserve">
+  <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Uploading Report {0}: {1}%" xml:space="preserve">
+  <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Reports submitted successfully." xml:space="preserve">
@@ -157,12 +157,6 @@
     <value>Chiudi</value>
   </data>
   <data name="Submission was cancelled." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Unknown crash report server response." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The server encountered a problem while processing the request: {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Session: {0:F}" xml:space="preserve">
@@ -321,6 +315,9 @@
   <data name="Plugins" xml:space="preserve">
     <value>Estensioni</value>
   </data>
+  <data name="Nightly builds" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="There are no new updates or plugins available for Eraser." xml:space="preserve">
     <value>Non ci sono aggiornamenti per Eraser o per le estensioni.</value>
   </data>
@@ -333,37 +330,22 @@
   <data name="Downloaded" xml:space="preserve">
     <value>Scaricato</value>
   </data>
+  <data name="Downloading: {0}" xml:space="preserve">
+    <value>In corso di scaricamento: {0}</value>
+  </data>
   <data name="Overall progress: {0} left" xml:space="preserve">
     <value>Avanzamento complessivo: {0} rimasti</value>
   </data>
   <data name="Error: {0}" xml:space="preserve">
     <value>Errore: {0}</value>
   </data>
-  <data name="{0} of {1} downloaded" xml:space="preserve">
-    <value>scaricato {0} di {1}</value>
-  </data>
-  <data name="Downloading: {0}" xml:space="preserve">
-    <value>In corso di scaricamento: {0}</value>
-  </data>
-  <data name="Downloaded: {0}" xml:space="preserve">
-    <value>Scaricato: {0}</value>
-  </data>
-  <data name="Error downloading {0}: {1}" xml:space="preserve">
-    <value>Errore scaricando {0}: {1}</value>
-  </data>
   <data name="Installing {0}" xml:space="preserve">
-    <value>Installando {0}</value>
+    <value>(Untranslated)</value>
   </data>
   <data name="Installed {0}" xml:space="preserve">
     <value>Installato {0}</value>
   </data>
-  <data name="Error installing {0}" xml:space="preserve">
-    <value>Error installando {0}</value>
-  </data>
-  <data name="The installer exited with an error code {0}" xml:space="preserve">
-    <value>L'installazione è fallita con il codice {0}</value>
-  </data>
-  <data name="Unknown mirror selected." xml:space="preserve">
-    <value>Selezionato un sito di mirror sconosciuto.</value>
+  <data name="{0} of {1} downloaded" xml:space="preserve">
+    <value>scaricato {0} di {1}</value>
   </data>
 </root>

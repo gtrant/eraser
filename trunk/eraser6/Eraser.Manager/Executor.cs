@@ -125,38 +125,9 @@ namespace Eraser.Manager
 			if (TaskDeleted != null)
 				TaskDeleted(this, e);
 		}
-
-		/// <summary>
-		/// The task processing event object.
-		/// </summary>
-		public EventHandler<TaskEventArgs> TaskProcessing { get; set; }
-
-		/// <summary>
-		/// Helper function for the Task processing event.
-		/// </summary>
-		protected void OnTaskProcessing(TaskEventArgs e)
-		{
-			if (TaskProcessing != null)
-				TaskProcessing(this, e);
-		}
-
-		/// <summary>
-		/// The task processed event object.
-		/// </summary>
-		public EventHandler<TaskEventArgs> TaskProcessed { get; set; }
-
-		/// <summary>
-		/// Helper function for the Task processed event.
-		/// </summary>
-		protected void OnTaskProcessed(TaskEventArgs e)
-		{
-			if (TaskProcessed != null)
-				TaskProcessed(this, e);
-		}
 	}
 
-	public abstract class ExecutorTasksCollection : IList<Task>, ICollection<Task>,
-		IEnumerable<Task>
+	public abstract class ExecutorTasksCollection : IList<Task>
 	{
 		/// <summary>
 		/// Constructor.

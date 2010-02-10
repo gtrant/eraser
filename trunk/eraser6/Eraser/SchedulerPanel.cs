@@ -21,7 +21,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -34,7 +34,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.ComponentModel;
-using ProgressChangedEventArgs = Eraser.Manager.ProgressChangedEventArgs;
+using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
 
 namespace Eraser
 {
@@ -43,7 +43,7 @@ namespace Eraser
 		public SchedulerPanel()
 		{
 			InitializeComponent();
-			UXThemeApi.UpdateControlTheme(schedulerDefaultMenu);
+			Theming.ApplyTheme(schedulerDefaultMenu);
 			if (!IsHandleCreated)
 				CreateHandle();
 
@@ -126,7 +126,7 @@ namespace Eraser
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskEventArgs>(TaskAdded), sender, e);
+				Invoke((EventHandler<TaskEventArgs>)TaskAdded, sender, e);
 				return;
 			}
 
@@ -145,9 +145,10 @@ namespace Eraser
 		private void DeleteSelectedTasks()
 		{
 			if (MessageBox.Show(this, S._("Are you sure you want to delete the selected tasks?"),
-				   S._("Eraser"), MessageBoxButtons.YesNo, MessageBoxIcon.Question,
-				   MessageBoxDefaultButton.Button1,
-				   S.IsRightToLeft(this) ? MessageBoxOptions.RtlReading : 0) != DialogResult.Yes)
+					S._("Eraser"), MessageBoxButtons.YesNo, MessageBoxIcon.Question,
+					MessageBoxDefaultButton.Button1, Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0
+				) != DialogResult.Yes)
 			{
 				return;
 			}
@@ -167,7 +168,7 @@ namespace Eraser
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskEventArgs>(TaskDeleted), sender, e);
+				Invoke((EventHandler<TaskEventArgs>)TaskDeleted, sender, e);
 				return;
 			}
 
@@ -185,16 +186,17 @@ namespace Eraser
 		/// Handles the task start event.
 		/// </summary>
 		/// <param name="e">The task event object.</param>
-		void task_TaskStarted(object sender, TaskEventArgs e)
+		void task_TaskStarted(object sender, EventArgs e)
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskEventArgs>(task_TaskStarted), sender, e);
+				Invoke((EventHandler)task_TaskStarted, sender, e);
 				return;
 			}
 
 			//Get the list view item
-			ListViewItem item = GetTaskItem(e.Task);
+			Task task = (Task)sender;
+			ListViewItem item = GetTaskItem(task);
 
 			//Update the status.
 			item.SubItems[1].Text = S._("Running...");
@@ -227,16 +229,17 @@ namespace Eraser
 		/// <summary>
 		/// Handles the task completion event.
 		/// </summary>
-		void task_TaskFinished(object sender, TaskEventArgs e)
+		void task_TaskFinished(object sender, EventArgs e)
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskEventArgs>(task_TaskFinished), sender, e);
+				Invoke((EventHandler)task_TaskFinished, sender, e);
 				return;
 			}
 
 			//Get the list view item
-			ListViewItem item = GetTaskItem(e.Task);
+			Task task = (Task)sender;
+			ListViewItem item = GetTaskItem(task);
 			if (item == null)
 				return;
 
@@ -248,18 +251,10 @@ namespace Eraser
 			}
 
 			//Get the exit status of the task.
-			LogLevel highestLevel = LogLevel.Information;
-			LogEntryCollection logs = e.Task.Log.LastSessionEntries;
-			foreach (LogEntry log in logs)
-				if (log.Level > highestLevel)
-					highestLevel = log.Level;
+			LogLevel highestLevel = task.Log.Last().Highest;
 
 			//Show a balloon to inform the user
 			MainForm parent = (MainForm)FindForm();
-
-			//TODO: Is this still needed?
-			if (parent == null)
-				throw new InvalidOperationException();
 			if (parent.WindowState == FormWindowState.Minimized || !parent.Visible)
 			{
 				string message = null;
@@ -268,19 +263,19 @@ namespace Eraser
 				switch (highestLevel)
 				{
 					case LogLevel.Warning:
-						message = S._("The task {0} has completed with warnings.", e.Task.UIText);
+						message = S._("The task {0} has completed with warnings.", task.UIText);
 						icon = ToolTipIcon.Warning;
 						break;
 					case LogLevel.Error:
-						message = S._("The task {0} has completed with errors.", e.Task.UIText);
+						message = S._("The task {0} has completed with errors.", task.UIText);
 						icon = ToolTipIcon.Error;
 						break;
 					case LogLevel.Fatal:
-						message = S._("The task {0} did not complete.", e.Task.UIText);
+						message = S._("The task {0} did not complete.", task.UIText);
 						icon = ToolTipIcon.Error;
 						break;
 					default:
-						message = S._("The task {0} has completed.", e.Task.UIText);
+						message = S._("The task {0} has completed.", task.UIText);
 						icon = ToolTipIcon.Info;
 						break;
 				}
@@ -291,9 +286,9 @@ namespace Eraser
 
 			//If the user requested us to remove completed one-time tasks, do so.
 			if (EraserSettings.Get().ClearCompletedTasks &&
-				(e.Task.Schedule == Schedule.RunNow) && highestLevel < LogLevel.Warning)
+				(task.Schedule == Schedule.RunNow) && highestLevel < LogLevel.Warning)
 			{
-				Program.eraserClient.Tasks.Remove(e.Task);
+				Program.eraserClient.Tasks.Remove(task);
 			}
 
 			//Otherwise update the UI
@@ -318,7 +313,7 @@ namespace Eraser
 				//Recategorize the task. Do not assume the task has maintained the
 				//category since run-on-restart tasks will be changed to immediately
 				//run tasks.
-				CategorizeTask(e.Task, item);
+				CategorizeTask(task, item);
 
 				//Update the status of the task.
 				UpdateTask(item);
@@ -442,11 +437,12 @@ namespace Eraser
 							}
 							catch (SerializationException ex)
 							{
-								MessageBox.Show(S._("Could not import task list from {0}. The error " +
-									"returned was: {1}", file, ex.Message), S._("Eraser"),
+								MessageBox.Show(S._("Could not import task list from {0}. The " +
+									"error returned was: {1}", file, ex.Message), S._("Eraser"),
 									MessageBoxButtons.OK, MessageBoxIcon.Error,
 									MessageBoxDefaultButton.Button1,
-									S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+									Localisation.IsRightToLeft(this) ?
+										MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 							}
 						}
 				}

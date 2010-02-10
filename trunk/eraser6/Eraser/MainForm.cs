@@ -51,12 +51,15 @@ namespace Eraser
 			if (!IsHandleCreated)
 				CreateHandle();
 
-			UXThemeApi.UpdateControlTheme(this);
-			UXThemeApi.UpdateControlTheme(notificationMenu);
+			Theming.ApplyTheme(this);
+			Theming.ApplyTheme(notificationMenu);
 
-			//Connect to the executor task processing and processed events.
-			Program.eraserClient.TaskProcessing += OnTaskProcessing;
-			Program.eraserClient.TaskProcessed += OnTaskProcessed;
+			//For every task we need to register the Task Started and Task Finished
+			//event handlers for progress notifications
+			foreach (Task task in Program.eraserClient.Tasks)
+				OnTaskAdded(this, new TaskEventArgs(task));
+			Program.eraserClient.TaskAdded += OnTaskAdded;
+			Program.eraserClient.TaskDeleted += OnTaskDeleted;
 
 			//Check the notification area context menu's minimise to tray item.
 			hideWhenMinimisedToolStripMenuItem.Checked = EraserSettings.Get().HideWhenMinimised;
@@ -268,7 +271,8 @@ namespace Eraser
 								"returned was: {0}", ex.Message), S._("Eraser"),
 								MessageBoxButtons.OK, MessageBoxIcon.Error,
 								MessageBoxDefaultButton.Button1,
-								S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+								Localisation.IsRightToLeft(this) ?
+									MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 						}
 						catch (SerializationException ex)
 						{
@@ -276,7 +280,8 @@ namespace Eraser
 								"returned was: {0}", ex.Message), S._("Eraser"),
 								MessageBoxButtons.OK, MessageBoxIcon.Error,
 								MessageBoxDefaultButton.Button1,
-								S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+								Localisation.IsRightToLeft(this) ?
+									MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 						}
 					}
 				}
@@ -297,8 +302,8 @@ namespace Eraser
 					"opened. Check that Adobe Reader installed and that your Eraser " +
 					"install is not corrupt.\n\nThe error returned was: {0}", ex.Message),
 					S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
-					MessageBoxDefaultButton.Button1, S.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading : 0);
+					MessageBoxDefaultButton.Button1, Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 		}
 
@@ -324,15 +329,28 @@ namespace Eraser
 		}
 
 		#region Task processing code (for notification area animation)
-		void OnTaskProcessing(object sender, TaskEventArgs e)
+		void OnTaskAdded(object sender, TaskEventArgs e)
+		{
+			e.Task.TaskStarted += OnTaskProcessing;
+			e.Task.TaskFinished += OnTaskProcessed;
+		}
+
+		void OnTaskDeleted(object sender, TaskEventArgs e)
+		{
+			e.Task.TaskStarted -= OnTaskProcessing;
+			e.Task.TaskFinished -= OnTaskProcessed;
+		}
+
+		void OnTaskProcessing(object sender, EventArgs e)
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskEventArgs>(OnTaskProcessing), sender, e);
+				Invoke((EventHandler)OnTaskProcessing, sender, e);
 				return;
 			}
 
-			string iconText = S._("Eraser") + " - " + S._("Processing:") + ' ' + e.Task.UIText;
+			Task task = (Task)sender;
+			string iconText = S._("Eraser") + " - " + S._("Processing:") + ' ' + task.UIText;
 			if (iconText.Length >= 64)
 				iconText = iconText.Remove(60) + "...";
 
@@ -341,11 +359,11 @@ namespace Eraser
 			notificationIconTimer.Enabled = true;
 		}
 
-		void OnTaskProcessed(object sender, TaskEventArgs e)
+		void OnTaskProcessed(object sender, EventArgs e)
 		{
 			if (InvokeRequired)
 			{
-				Invoke(new EventHandler<TaskEventArgs>(OnTaskProcessed), sender, e);
+				Invoke((EventHandler)OnTaskProcessed, sender, e);
 				return;
 			}
 

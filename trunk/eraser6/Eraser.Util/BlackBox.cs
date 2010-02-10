@@ -22,17 +22,23 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 using System.Windows.Forms;
 using System.IO;
 using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
 using System.Diagnostics;
-using System.Threading;
+using System.Reflection;
+using Microsoft.Win32.SafeHandles;
+
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Reflection;
 using System.Collections.ObjectModel;
 using System.Globalization;
+
+using ICSharpCode.SharpZipLib.Tar;
+using ICSharpCode.SharpZipLib.BZip2;
+using System.Net;
+using System.Xml;
 
 namespace Eraser.Util
 {
@@ -42,209 +48,6 @@ namespace Eraser.Util
 	/// </summary>
 	public class BlackBox
 	{
-		/// <summary>
-		/// Stores DLL references for this class.
-		/// </summary>
-		private static class NativeMethods
-		{
-			/// <summary>
-			/// Writes user-mode minidump information to the specified file.
-			/// </summary>
-			/// <param name="hProcess">A handle to the process for which the information
-			/// is to be generated.</param>
-			/// <param name="ProcessId">The identifier of the process for which the information
-			/// is to be generated.</param>
-			/// <param name="hFile">A handle to the file in which the information is to be
-			/// written.</param>
-			/// <param name="DumpType">The type of information to be generated. This parameter
-			/// can be one or more of the values from the MINIDUMP_TYPE enumeration.</param>
-			/// <param name="ExceptionParam">A pointer to a MiniDumpExceptionInfo structure
-			/// describing the client exception that caused the minidump to be generated.
-			/// If the value of this parameter is NULL, no exception information is included
-			/// in the minidump file.</param>
-			/// <param name="UserStreamParam">Not supported. Use IntPtr.Zero</param>
-			/// <param name="CallbackParam">Not supported. Use IntPtr.Zero</param>
-			/// <returns>If the function succeeds, the return value is true; otherwise, the
-			/// return value is false. To retrieve extended error information, call GetLastError.
-			/// Note that the last error will be an HRESULT value.</returns>
-			[DllImport("dbghelp.dll", SetLastError = true)]
-			[return: MarshalAs(UnmanagedType.Bool)]
-			public static extern bool MiniDumpWriteDump(IntPtr hProcess, uint ProcessId,
-				SafeFileHandle hFile, MiniDumpType DumpType,
-				ref MiniDumpExceptionInfo ExceptionParam, IntPtr UserStreamParam,
-				IntPtr CallbackParam);
-
-			/// <summary>
-			/// Identifies the type of information that will be written to the minidump file
-			/// by the MiniDumpWriteDump function.
-			/// </summary>
-			public enum MiniDumpType
-			{
-				/// <summary>
-				/// Include just the information necessary to capture stack traces for all
-				/// existing threads in a process.
-				/// </summary>
-				MiniDumpNormal = 0x00000000,
-
-				/// <summary>
-				/// Include the data sections from all loaded modules. This results in the
-				/// inclusion of global variables, which can make the minidump file significantly
-				/// larger. For per-module control, use the ModuleWriteDataSeg enumeration
-				/// value from MODULE_WRITE_FLAGS.
-				/// </summary>
-				MiniDumpWithDataSegs = 0x00000001,
-
-				/// <summary>
-				/// Include all accessible memory in the process. The raw memory data is
-				/// included at the end, so that the initial structures can be mapped directly
-				/// without the raw memory information. This option can result in a very large
-				/// file.
-				/// </summary>
-				MiniDumpWithFullMemory = 0x00000002,
-
-				/// <summary>
-				/// Include high-level information about the operating system handles that are
-				/// active when the minidump is made.
-				/// </summary>
-				MiniDumpWithHandleData = 0x00000004,
-
-				/// <summary>
-				/// Stack and backing store memory written to the minidump file should be
-				/// filtered to remove all but the pointer values necessary to reconstruct a
-				/// stack trace. Typically, this removes any private information.
-				/// </summary>
-				MiniDumpFilterMemory = 0x00000008,
-
-				/// <summary>
-				/// Stack and backing store memory should be scanned for pointer references
-				/// to modules in the module list. If a module is referenced by stack or backing
-				/// store memory, the ModuleWriteFlags member of the MINIDUMP_CALLBACK_OUTPUT
-				/// structure is set to ModuleReferencedByMemory.
-				/// </summary>
-				MiniDumpScanMemory = 0x00000010,
-
-				/// <summary>
-				/// Include information from the list of modules that were recently unloaded,
-				/// if this information is maintained by the operating system.
-				/// </summary>
-				MiniDumpWithUnloadedModules = 0x00000020,
-
-				/// <summary>
-				/// Include pages with data referenced by locals or other stack memory.
-				/// This option can increase the size of the minidump file significantly.
-				/// </summary>
-				MiniDumpWithIndirectlyReferencedMemory = 0x00000040,
-
-				/// <summary>
-				/// Filter module paths for information such as user names or important
-				/// directories. This option may prevent the system from locating the image
-				/// file and should be used only in special situations.
-				/// </summary>
-				MiniDumpFilterModulePaths = 0x00000080,
-
-				/// <summary>
-				/// Include complete per-process and per-thread information from the operating
-				/// system.
-				/// </summary>
-				MiniDumpWithProcessThreadData = 0x00000100,
-
-				/// <summary>
-				/// Scan the virtual address space for PAGE_READWRITE memory to be included.
-				/// </summary>
-				MiniDumpWithPrivateReadWriteMemory = 0x00000200,
-
-				/// <summary>
-				/// Reduce the data that is dumped by eliminating memory regions that are not
-				/// essential to meet criteria specified for the dump. This can avoid dumping
-				/// memory that may contain data that is private to the user. However, it is
-				/// not a guarantee that no private information will be present.
-				/// </summary>
-				MiniDumpWithoutOptionalData = 0x00000400,
-
-				/// <summary>
-				/// Include memory region information. For more information, see
-				/// MINIDUMP_MEMORY_INFO_LIST.
-				/// </summary>
-				MiniDumpWithFullMemoryInfo = 0x00000800,
-
-				/// <summary>
-				/// Include thread state information. For more information, see
-				/// MINIDUMP_THREAD_INFO_LIST.
-				/// </summary>
-				MiniDumpWithThreadInfo = 0x00001000,
-
-				/// <summary>
-				/// Include all code and code-related sections from loaded modules to capture
-				/// executable content. For per-module control, use the ModuleWriteCodeSegs
-				/// enumeration value from MODULE_WRITE_FLAGS. 
-				/// </summary>
-				MiniDumpWithCodeSegs = 0x00002000,
-
-				/// <summary>
-				/// Turns off secondary auxiliary-supported memory gathering.
-				/// </summary>
-				MiniDumpWithoutAuxiliaryState = 0x00004000,
-
-				/// <summary>
-				/// Requests that auxiliary data providers include their state in the dump
-				/// image; the state data that is included is provider dependent. This option
-				/// can result in a large dump image.
-				/// </summary>
-				MiniDumpWithFullAuxiliaryState = 0x00008000,
-
-				/// <summary>
-				/// Scans the virtual address space for PAGE_WRITECOPY memory to be included.
-				/// </summary>
-				MiniDumpWithPrivateWriteCopyMemory = 0x00010000,
-
-				/// <summary>
-				/// If you specify MiniDumpWithFullMemory, the MiniDumpWriteDump function will
-				/// fail if the function cannot read the memory regions; however, if you include
-				/// MiniDumpIgnoreInaccessibleMemory, the MiniDumpWriteDump function will
-				/// ignore the memory read failures and continue to generate the dump. Note that
-				/// the inaccessible memory regions are not included in the dump.
-				/// </summary>
-				MiniDumpIgnoreInaccessibleMemory = 0x00020000,
-
-				/// <summary>
-				/// Adds security token related data. This will make the "!token" extension work
-				/// when processing a user-mode dump. 
-				/// </summary>
-				MiniDumpWithTokenInformation = 0x00040000
-			}
-
-			/// <summary>
-			/// Contains the exception information written to the minidump file by the
-			/// MiniDumpWriteDump function.
-			/// </summary>
-			[StructLayout(LayoutKind.Sequential, Pack = 4)]
-			public struct MiniDumpExceptionInfo
-			{
-				/// <summary>
-				/// The identifier of the thread throwing the exception.
-				/// </summary>
-				public uint ThreadId;
-
-				/// <summary>
-				///  A pointer to an EXCEPTION_POINTERS structure specifying a
-				///  computer-independent description of the exception and the processor
-				///  context at the time of the exception.
-				/// </summary>
-				public IntPtr ExceptionPointers;
-
-				/// <summary>
-				/// Determines where to get the memory regions pointed to by the
-				/// ExceptionPointers member. Set to TRUE if the memory resides in the
-				/// process being debugged (the target process of the debugger). Otherwise,
-				/// set to FALSE if the memory resides in the address space of the calling
-				/// program (the debugger process). If you are accessing local memory (in
-				/// the calling process) you should not set this member to TRUE.
-				/// </summary>
-				[MarshalAs(UnmanagedType.Bool)]
-				public bool ClientPointers;
-			}
-		}
-
 		/// <summary>
 		/// Initialises the BlackBox handler. Call this initialiser once throughout
 		/// the lifespan of the application.
@@ -500,7 +303,7 @@ namespace Eraser.Util
 			Path = path;
 
 			string stackTracePath = System.IO.Path.Combine(Path, StackTraceFileName);
-			if (!System.IO.File.Exists(stackTracePath))
+			if (!File.Exists(stackTracePath))
 			{
 				Delete();
 				throw new InvalidDataException("The BlackBox report is corrupt.");
@@ -719,5 +522,259 @@ namespace Eraser.Util
 		/// The backing variable for the <see cref="StackTrace"/> property.
 		/// </summary>
 		private List<string> StackTraceCache;
+	}
+
+	/// <summary>
+	/// Uploads <see cref="BlackBoxReport"/>s to the Eraser server.
+	/// </summary>
+	public class BlackBoxReportUploader
+	{
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="report">The report to upload.</param>
+		public BlackBoxReportUploader(BlackBoxReport report)
+		{
+			Report = report;
+			if (!Directory.Exists(UploadTempDir))
+				Directory.CreateDirectory(UploadTempDir);
+
+			ReportBaseName = Path.Combine(UploadTempDir, Report.Name);
+		}
+
+		/// <summary>
+		/// Gets from the server based on the stack trace whether this report is
+		/// new.
+		/// </summary>
+		public bool IsNew
+		{
+			get
+			{
+				PostDataBuilder builder = new PostDataBuilder();
+				builder.AddPart(new PostDataField("action", "status"));
+				AddStackTraceToRequest(Report.StackTrace, builder);
+
+				WebRequest reportRequest = HttpWebRequest.Create(BlackBoxServer);
+				reportRequest.ContentType = builder.ContentType;
+				reportRequest.Method = "POST";
+				using (Stream formStream = builder.Stream)
+				{
+					reportRequest.ContentLength = formStream.Length;
+					using (Stream requestStream = reportRequest.GetRequestStream())
+					{
+						int lastRead = 0;
+						byte[] buffer = new byte[32768];
+						while ((lastRead = formStream.Read(buffer, 0, buffer.Length)) != 0)
+							requestStream.Write(buffer, 0, lastRead);
+					}
+				}
+
+				try
+				{
+					HttpWebResponse response = reportRequest.GetResponse() as HttpWebResponse;
+					using (Stream responseStream = response.GetResponseStream())
+					{
+						XmlReader reader = XmlReader.Create(responseStream);
+						reader.ReadToFollowing("crashReport");
+						string reportStatus = reader.GetAttribute("status");
+						switch (reportStatus)
+						{
+							case "exists":
+								Report.Submitted = true;
+								return false;
+
+							case "new":
+								return true;
+
+							default:
+								throw new InvalidDataException(
+									"Unknown crash report server response.");
+						}
+					}
+				}
+				catch (WebException e)
+				{
+					using (Stream responseStream = e.Response.GetResponseStream())
+					{
+						try
+						{
+							XmlReader reader = XmlReader.Create(responseStream);
+							reader.ReadToFollowing("error");
+							throw new InvalidDataException(string.Format(CultureInfo.CurrentCulture,
+								"The server encountered a problem while processing the request: {0}",
+								reader.ReadString()));
+						}
+						catch (XmlException)
+						{
+						}
+					}
+
+					throw new InvalidDataException(((HttpWebResponse)e.Response).StatusDescription);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Compresses the report for uploading.
+		/// </summary>
+		/// <param name="progress">The <see cref="ProgressManager"/> instance that the
+		/// Upload function is using.</param>
+		/// <param name="progressChanged">The progress changed event handler that should
+		/// be called for upload progress updates.</param>
+		private void Compress(SteppedProgressManager progress,
+			ProgressChangedEventHandler progressChanged)
+		{
+			using (FileStream archiveStream = new FileStream(ReportBaseName + ".tar",
+					FileMode.Create, FileAccess.Write))
+			{
+				//Add the report into a tar file
+				TarArchive archive = TarArchive.CreateOutputTarArchive(archiveStream);
+				foreach (FileInfo file in Report.Files)
+				{
+					TarEntry entry = TarEntry.CreateEntryFromFile(file.FullName);
+					entry.Name = Path.GetFileName(entry.Name);
+					archive.WriteEntry(entry, false);
+				}
+				archive.Close();
+			}
+
+			ProgressManager step = new ProgressManager();
+			progress.Steps.Add(new SteppedProgressManagerStep(step, 0.5f, "Compressing"));
+			using (FileStream bzipFile = new FileStream(ReportBaseName + ".tbz",
+				FileMode.Create))
+			using (FileStream tarStream = new FileStream(ReportBaseName + ".tar",
+				FileMode.Open, FileAccess.Read, FileShare.Read, 262144, FileOptions.DeleteOnClose))
+			using (BZip2OutputStream bzipStream = new BZip2OutputStream(bzipFile, 262144))
+			{
+				//Compress the tar file
+				int lastRead = 0;
+				byte[] buffer = new byte[524288];
+				while ((lastRead = tarStream.Read(buffer, 0, buffer.Length)) != 0)
+				{
+					bzipStream.Write(buffer, 0, lastRead);
+					step.Completed = tarStream.Position;
+					step.Total = tarStream.Length;
+
+					if (progressChanged != null)
+						progressChanged(this, new ProgressChangedEventArgs(progress, null));
+				}
+			}
+		}
+
+		/// <summary>
+		/// Compresses the report, then uploads it to the server.
+		/// </summary>
+		/// <param name="progressChanged">The progress changed event handler that should
+		/// be called for upload progress updates.</param>
+		public void Submit(ProgressChangedEventHandler progressChanged)
+		{
+			SteppedProgressManager overallProgress = new SteppedProgressManager();
+			Compress(overallProgress, progressChanged);
+
+			using (FileStream bzipFile = new FileStream(ReportBaseName + ".tbz",
+				FileMode.Open, FileAccess.Read, FileShare.Read, 131072, FileOptions.DeleteOnClose))
+			using (Stream logFile = Report.DebugLog)
+			{
+				//Build the POST request
+				PostDataBuilder builder = new PostDataBuilder();
+				builder.AddPart(new PostDataField("action", "upload"));
+				builder.AddPart(new PostDataFileField("crashReport", "Report.tbz", bzipFile));
+				AddStackTraceToRequest(Report.StackTrace, builder);
+
+				//Upload the POST request
+				WebRequest reportRequest = HttpWebRequest.Create(BlackBoxServer);
+				reportRequest.ContentType = builder.ContentType;
+				reportRequest.Method = "POST";
+				reportRequest.Timeout = int.MaxValue;
+				using (Stream formStream = builder.Stream)
+				{
+					ProgressManager progress = new ProgressManager();
+					overallProgress.Steps.Add(new SteppedProgressManagerStep(
+						progress, 0.5f, "Uploading"));
+					reportRequest.ContentLength = formStream.Length;
+
+					using (Stream requestStream = reportRequest.GetRequestStream())
+					{
+						int lastRead = 0;
+						byte[] buffer = new byte[32768];
+						while ((lastRead = formStream.Read(buffer, 0, buffer.Length)) != 0)
+						{
+							requestStream.Write(buffer, 0, lastRead);
+
+							progress.Completed = formStream.Position;
+							progress.Total = formStream.Length;
+							progressChanged(this, new ProgressChangedEventArgs(overallProgress, null));
+						}
+					}
+				}
+
+				try
+				{
+					reportRequest.GetResponse();
+					Report.Submitted = true;
+				}
+				catch (WebException e)
+				{
+					using (Stream responseStream = e.Response.GetResponseStream())
+					{
+						try
+						{
+							XmlReader reader = XmlReader.Create(responseStream);
+							reader.ReadToFollowing("error");
+							throw new InvalidDataException(string.Format(CultureInfo.CurrentCulture,
+								"The server encountered a problem while processing the request: {0}",
+								reader.ReadString()));
+						}
+						catch (XmlException)
+						{
+						}
+					}
+
+					throw new InvalidDataException(((HttpWebResponse)e.Response).StatusDescription);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds the stack trace to the given form request.
+		/// </summary>
+		/// <param name="stackTrace">The stack trace to add.</param>
+		/// <param name="builder">The Form request builder to add the stack trace to.</param>
+		private static void AddStackTraceToRequest(IList<BlackBoxExceptionEntry> stackTrace,
+			PostDataBuilder builder)
+		{
+			int exceptionIndex = 0;
+			foreach (BlackBoxExceptionEntry exceptionStack in stackTrace)
+			{
+				foreach (string stackFrame in exceptionStack.StackTrace)
+					builder.AddPart(new PostDataField(
+						string.Format("stackTrace[{0}][]", exceptionIndex), stackFrame));
+				builder.AddPart(new PostDataField(string.Format(
+					"stackTrace[{0}][exception]", exceptionIndex), exceptionStack.ExceptionType));
+				++exceptionIndex;
+			}
+		}
+
+		/// <summary>
+		/// The path to where the temporary files are stored before uploading.
+		/// </summary>
+		private static readonly string UploadTempDir =
+			Path.Combine(Path.GetTempPath(), "Eraser Crash Reports");
+
+		/// <summary>
+		/// The URI to the BlackBox server.
+		/// </summary>
+		private static readonly Uri BlackBoxServer =
+			new Uri("http://eraser.heidi.ie/scripts/blackbox/upload.php");
+
+		/// <summary>
+		/// The report being uploaded.
+		/// </summary>
+		private BlackBoxReport Report;
+
+		/// <summary>
+		/// The base name of the report.
+		/// </summary>
+		private readonly string ReportBaseName;
 	}
 }

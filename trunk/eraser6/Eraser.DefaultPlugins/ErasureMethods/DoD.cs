@@ -22,11 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
+
 using Eraser.Manager;
 using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
+	[Guid("D1583631-702E-4dbf-A0E9-C35DBA481702")]
 	sealed class DoD_EcE : PassBasedErasureMethod
 	{
 		public override string Name
@@ -36,7 +39,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{D1583631-702E-4dbf-A0E9-C35DBA481702}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses
@@ -49,7 +52,7 @@ namespace Eraser.DefaultPlugins
 			get
 			{
 				//Set passes 1, 4 and 5 to be a random value
-				Prng prng = PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng);
+				Prng prng = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
 				int rand = prng.Next();
 
 				ErasureMethodPass[] result = new ErasureMethodPass[]
@@ -73,6 +76,7 @@ namespace Eraser.DefaultPlugins
 		}
 	}
 
+	[Guid("ECBF4998-0B4F-445c-9A06-23627659E419")]
 	sealed class DoD_E : PassBasedErasureMethod
 	{
 		public override string Name
@@ -82,7 +86,7 @@ namespace Eraser.DefaultPlugins
 
 		public override Guid Guid
 		{
-			get { return new Guid("{ECBF4998-0B4F-445c-9A06-23627659E419}"); }
+			get { return GetType().GUID; }
 		}
 
 		protected override bool RandomizePasses

@@ -26,12 +26,11 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Threading;
 using System.IO;
-
-using Eraser.Util;
-using System.Security.Principal;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Security.Permissions;
+
+using Eraser.Util;
+using Eraser.Util.ExtensionMethods;
 
 namespace Eraser.Manager
 {
@@ -51,6 +50,9 @@ namespace Eraser.Manager
 
 		protected override void Dispose(bool disposing)
 		{
+			if (thread == null || schedulerInterrupt == null)
+				return;
+
 			if (disposing)
 			{
 				thread.Abort();
@@ -73,6 +75,8 @@ namespace Eraser.Manager
 				schedulerInterrupt.Close();
 			}
 
+			thread = null;
+			schedulerInterrupt = null;
 			base.Dispose(disposing);
 		}
 
@@ -165,25 +169,26 @@ namespace Eraser.Manager
 			e.Task.TaskEdited += OnTaskEdited;
 		}
 
-		private void OnTaskEdited(object sender, TaskEventArgs e)
+		private void OnTaskEdited(object sender, EventArgs e)
 		{
 			//Find all schedule entries containing the task - since the user cannot make
 			//edits to the task when it is queued (only if it is scheduled) remove
 			//all task references and add them back
+			Task task = (Task)sender;
 			lock (tasksLock)
 				for (int i = 0; i != scheduledTasks.Count; ++i)
 					for (int j = 0; j < scheduledTasks.Values[i].Count; )
 					{
 						Task currentTask = scheduledTasks.Values[i][j];
-						if (currentTask == e.Task)
+						if (currentTask == task)
 							scheduledTasks.Values[i].RemoveAt(j);
 						else
 							j++;
 					}
 
 			//Then reschedule the task
-			if (e.Task.Schedule is RecurringSchedule)
-				ScheduleTask(e.Task);
+			if (task.Schedule is RecurringSchedule)
+				ScheduleTask(task);
 		}
 
 		private void OnTaskDeleted(object sender, TaskEventArgs e)
@@ -246,101 +251,110 @@ namespace Eraser.Manager
 
 				if (task != null)
 				{
-					//Set the currently executing task.
-					currentTask = task;
-
-					//Prevent the system from sleeping.
-					KernelApi.SetThreadExecutionState(ThreadExecutionState.Continuous |
-						ThreadExecutionState.SystemRequired);
-
 					//Start a new log session to separate this session's events
 					//from previous ones.
-					task.Log.Entries.NewSession();
-
-					try
+					LogSink sessionLog = new LogSink();
+					task.Log.Add(sessionLog);
+					using (new LogSession(sessionLog))
 					{
-						//Broadcast the task started event.
-						task.Canceled = false;
-						task.OnTaskStarted(new TaskEventArgs(task));
-						OnTaskProcessing(new TaskEventArgs(task));
-
-						//Run the task
-						foreach (ErasureTarget target in task.Targets)
-							try
-							{
-								UnusedSpaceTarget unusedSpaceTarget =
-									target as UnusedSpaceTarget;
-								FileSystemObjectTarget fileSystemObjectTarget =
-									target as FileSystemObjectTarget;
-
-								if (unusedSpaceTarget != null)
-									EraseUnusedSpace(task, unusedSpaceTarget);
-								else if (fileSystemObjectTarget != null)
-									EraseFilesystemObject(task, fileSystemObjectTarget);
-								else
-									throw new ArgumentException(S._("Unknown erasure target."));
-							}
-							catch (FatalException)
-							{
-								throw;
-							}
-							catch (OperationCanceledException)
-							{
-								throw;
-							}
-							catch (ThreadAbortException)
-							{
-							}
-							catch (Exception e)
-							{
-								task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
-								BlackBox.Get().CreateReport(e);
-							}
-					}
-					catch (FatalException e)
-					{
-						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Fatal));
-					}
-					catch (OperationCanceledException e)
-					{
-						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Fatal));
-					}
-					catch (ThreadAbortException)
-					{
-						//Do nothing. The exception will be rethrown after this block
-						//is executed. This is here mainly to ensure that no BlackBox
-						//report is created for this exception.
-					}
-					catch (Exception e)
-					{
-						task.Log.LastSessionEntries.Add(new LogEntry(e.Message, LogLevel.Error));
-						BlackBox.Get().CreateReport(e);
-					}
-					finally
-					{
-						//Allow the system to sleep again.
-						KernelApi.SetThreadExecutionState(ThreadExecutionState.Continuous);
-
-						//If the task is a recurring task, reschedule it since we are done.
-						if (task.Schedule is RecurringSchedule)
-							((RecurringSchedule)task.Schedule).Reschedule(DateTime.Now);
-
-						//If the task is an execute on restart task, it is only run
-						//once and can now be restored to an immediately executed task
-						if (task.Schedule == Schedule.RunOnRestart)
-							task.Schedule = Schedule.RunNow;
-
-						//And the task finished event.
-						task.OnTaskFinished(new TaskEventArgs(task));
-						OnTaskProcessed(new TaskEventArgs(task));
-
-						//Remove the actively executing task from our instance variable
-						currentTask = null;
+						ExecuteTask(task);
 					}
 				}
 
 				//Wait for half a minute to check for the next scheduled task.
 				schedulerInterrupt.WaitOne(30000, false);
+			}
+		}
+
+		/// <summary>
+		/// Executes the given task.
+		/// </summary>
+		/// <param name="task">The task to execute.</param>
+		private void ExecuteTask(Task task)
+		{
+			//Set the currently executing task.
+			currentTask = task;
+
+			//Prevent the system from sleeping.
+			Power.ExecutionState = ExecutionState.Continuous | ExecutionState.SystemRequired;
+
+			try
+			{
+				//Broadcast the task started event.
+				task.Canceled = false;
+				task.OnTaskStarted();
+
+				//Run the task
+				foreach (ErasureTarget target in task.Targets)
+					try
+					{
+						UnusedSpaceTarget unusedSpaceTarget =
+							target as UnusedSpaceTarget;
+						FileSystemObjectTarget fileSystemObjectTarget =
+							target as FileSystemObjectTarget;
+
+						if (unusedSpaceTarget != null)
+							EraseUnusedSpace(task, unusedSpaceTarget);
+						else if (fileSystemObjectTarget != null)
+							EraseFilesystemObject(task, fileSystemObjectTarget);
+						else
+							throw new ArgumentException("Unknown erasure target.");
+					}
+					catch (FatalException)
+					{
+						throw;
+					}
+					catch (OperationCanceledException)
+					{
+						throw;
+					}
+					catch (ThreadAbortException)
+					{
+					}
+					catch (Exception e)
+					{
+						Logger.Log(e.Message, LogLevel.Error);
+						BlackBox.Get().CreateReport(e);
+					}
+			}
+			catch (FatalException e)
+			{
+				Logger.Log(e.Message, LogLevel.Fatal);
+			}
+			catch (OperationCanceledException e)
+			{
+				Logger.Log(e.Message, LogLevel.Fatal);
+			}
+			catch (ThreadAbortException)
+			{
+				//Do nothing. The exception will be rethrown after this block
+				//is executed. This is here mainly to ensure that no BlackBox
+				//report is created for this exception.
+			}
+			catch (Exception e)
+			{
+				Logger.Log(e.Message, LogLevel.Error);
+				BlackBox.Get().CreateReport(e);
+			}
+			finally
+			{
+				//Allow the system to sleep again.
+				Power.ExecutionState = ExecutionState.Continuous;
+
+				//If the task is a recurring task, reschedule it since we are done.
+				if (task.Schedule is RecurringSchedule)
+					((RecurringSchedule)task.Schedule).Reschedule(DateTime.Now);
+
+				//If the task is an execute on restart task, it is only run
+				//once and can now be restored to an immediately executed task
+				if (task.Schedule == Schedule.RunOnRestart)
+					task.Schedule = Schedule.RunNow;
+
+				//And the task finished event.
+				task.OnTaskFinished();
+
+				//Remove the actively executing task from our instance variable
+				currentTask = null;
 			}
 		}
 
@@ -352,47 +366,50 @@ namespace Eraser.Manager
 		private void EraseUnusedSpace(Task task, UnusedSpaceTarget target)
 		{
 			//Check for sufficient privileges to run the unused space erasure.
-			if (!AdvApi.IsAdministrator())
+			if (!Security.IsAdministrator())
 			{
 				if (Environment.OSVersion.Platform == PlatformID.Win32NT &&
 					Environment.OSVersion.Version >= new Version(6, 0))
 				{
-					throw new UnauthorizedAccessException(S._("The program does not have the " +
-						"required permissions to erase the unused space on disk. Run the program " +
-						"as an administrator and retry the operation."));
+					Logger.Log(S._("The program does not have the required permissions to erase " +
+						"the unused space on disk. Run the program as an administrator and retry " +
+						"the operation."), LogLevel.Error);
 				}
 				else
-					throw new UnauthorizedAccessException(S._("The program does not have the " +
-						"required permissions to erase the unused space on disk."));
+				{
+					Logger.Log(S._("The program does not have the required permissions to erase " +
+						"the unused space on disk."), LogLevel.Error);
+				}
+
+				return;
 			}
 
 			//Check whether System Restore has any available checkpoints.
 			if (SystemRestore.GetInstances().Count != 0)
 			{
-				task.Log.LastSessionEntries.Add(new LogEntry(S._("The drive {0} has System " +
-					"Restore or Volume Shadow Copies enabled. This may allow copies of files " +
-					"stored on the disk to be recovered and pose a security concern.",
-					target.Drive), LogLevel.Warning));
+				Logger.Log(S._("The drive {0} has System Restore or Volume Shadow Copies " +
+					"enabled. This may allow copies of files stored on the disk to be recovered " +
+					"and pose a security concern.", target.Drive), LogLevel.Warning);
 			}
 			
 			//If the user is under disk quotas, log a warning message
-			if (VolumeInfo.FromMountpoint(target.Drive).HasQuota)
-				task.Log.LastSessionEntries.Add(new LogEntry(S._("The drive {0} has disk quotas " +
-					"active. This will prevent the complete erasure of unused space and may pose " +
-					"a security concern.", target.Drive), LogLevel.Warning));
+			if (VolumeInfo.FromMountPoint(target.Drive).HasQuota)
+				Logger.Log(S._("The drive {0} has disk quotas active. This will prevent the " +
+					"complete erasure of unused space and may pose a security concern.",
+					target.Drive), LogLevel.Warning);
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = target.Method;
 
 			//Make a folder to dump our temporary files in
 			DirectoryInfo info = new DirectoryInfo(target.Drive);
-			VolumeInfo volInfo = VolumeInfo.FromMountpoint(target.Drive);
-			FileSystem fsManager = FileSystemManager.Get(volInfo);
+			VolumeInfo volInfo = VolumeInfo.FromMountPoint(target.Drive);
+			FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[volInfo];
 
 			//Start sampling the speed of the task.
 			SteppedProgressManager progress = new SteppedProgressManager();
 			target.Progress = progress;
-			task.Progress.Steps.Add(new SteppedProgressManager.Step(
+			task.Progress.Steps.Add(new SteppedProgressManagerStep(
 				progress, 1.0f / task.Targets.Count));
 
 			//Erase the cluster tips of every file on the drive.
@@ -400,7 +417,7 @@ namespace Eraser.Manager
 			{
 				//Define the callback handlers
 				ProgressManager tipSearch = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(tipSearch, 
+				progress.Steps.Add(new SteppedProgressManagerStep(tipSearch, 
 					0.0f, S._("Searching for files' cluster tips...")));
 				tipSearch.Total = 1;
 				ClusterTipsSearchProgress searchProgress = delegate(string path)
@@ -414,7 +431,7 @@ namespace Eraser.Manager
 					};
 
 				ProgressManager tipProgress = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(tipProgress, 0.1f,
+				progress.Steps.Add(new SteppedProgressManagerStep(tipProgress, 0.1f,
 					S._("Erasing cluster tips...")));
 				ClusterTipsEraseProgress eraseProgress =
 					delegate(int currentFile, int totalFiles, string currentFilePath)
@@ -431,26 +448,26 @@ namespace Eraser.Manager
 					};
 
 				//Start counting statistics
-				fsManager.EraseClusterTips(VolumeInfo.FromMountpoint(target.Drive),
-					method, task.Log, searchProgress, eraseProgress);
+				fsManager.EraseClusterTips(VolumeInfo.FromMountPoint(target.Drive),
+					method, searchProgress, eraseProgress);
 				tipProgress.MarkComplete();
 			}
 
-			bool lowDiskSpaceNotifications = ShellApi.LowDiskSpaceNotificationsEnabled;
+			bool lowDiskSpaceNotifications = Shell.LowDiskSpaceNotificationsEnabled;
 			info = info.CreateSubdirectory(Path.GetFileName(
 				FileSystem.GenerateRandomFileName(info, 18)));
 			try
 			{
 				//Set the folder's compression flag off since we want to use as much
 				//space as possible
-				if (Eraser.Util.File.IsCompressed(info.FullName))
-					Eraser.Util.File.SetCompression(info.FullName, false);
+				if (info.IsCompressed())
+					info.Uncompress();
 
 				//Disable the low disk space notifications
-				ShellApi.LowDiskSpaceNotificationsEnabled = false;
+				Shell.LowDiskSpaceNotificationsEnabled = false;
 
 				ProgressManager mainProgress = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(mainProgress,
+				progress.Steps.Add(new SteppedProgressManagerStep(mainProgress,
 					target.EraseClusterTips ? 0.8f : 0.9f, S._("Erasing unused space...")));
 
 				//Continue creating files while there is free space.
@@ -488,7 +505,7 @@ namespace Eraser.Manager
 
 						//Then run the erase task
 						method.Erase(stream, long.MaxValue,
-							PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng),
+							ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
 							delegate(long lastWritten, long totalData, int currentPass)
 							{
 								mainProgress.Completed += lastWritten;
@@ -508,7 +525,7 @@ namespace Eraser.Manager
 
 				//Erase old resident file system table files
 				ProgressManager residentProgress = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(residentProgress,
+				progress.Steps.Add(new SteppedProgressManagerStep(residentProgress,
 					0.05f, S._("Old resident file system table files")));
 				fsManager.EraseOldFileSystemResidentFiles(volInfo, info, method,
 					delegate(int currentFile, int totalFiles)
@@ -530,7 +547,7 @@ namespace Eraser.Manager
 			{
 				//Remove the folder holding all our temporary files.
 				ProgressManager tempFiles = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(tempFiles,
+				progress.Steps.Add(new SteppedProgressManagerStep(tempFiles,
 					0.0f, S._("Removing temporary files...")));
 				task.OnProgressChanged(target, new ProgressChangedEventArgs(tempFiles,
 					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
@@ -538,12 +555,12 @@ namespace Eraser.Manager
 				tempFiles.Completed = tempFiles.Total;
 
 				//Reset the low disk space notifications
-				ShellApi.LowDiskSpaceNotificationsEnabled = lowDiskSpaceNotifications;
+				Shell.LowDiskSpaceNotificationsEnabled = lowDiskSpaceNotifications;
 			}
 
 			//Then clean the old file system entries
 			ProgressManager structureProgress = new ProgressManager();
-			progress.Steps.Add(new SteppedProgressManager.Step(structureProgress,
+			progress.Steps.Add(new SteppedProgressManagerStep(structureProgress,
 				0.05f, S._("Erasing unused directory structures...")));
 			fsManager.EraseDirectoryStructures(volInfo,
 				delegate(int currentFile, int totalFiles)
@@ -582,17 +599,16 @@ namespace Eraser.Manager
 			ErasureMethod method = target.Method;
 
 			//Set the event's current target status.
-			TaskEventArgs eventArgs = new TaskEventArgs(task);
 			SteppedProgressManager progress = new SteppedProgressManager();
 			target.Progress = progress;
-			task.Progress.Steps.Add(new SteppedProgressManager.Step(progress, 1.0f / task.Targets.Count));
+			task.Progress.Steps.Add(new SteppedProgressManagerStep(progress, 1.0f / task.Targets.Count));
 
 			//Iterate over every path, and erase the path.
 			for (int i = 0; i < paths.Count; ++i)
 			{
 				//Update the task progress
 				ProgressManager step = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(step,
+				progress.Steps.Add(new SteppedProgressManagerStep(step,
 					1.0f / paths.Count, S._("Erasing files...")));
 				task.OnProgressChanged(target,
 					new ProgressChangedEventArgs(step,
@@ -602,14 +618,14 @@ namespace Eraser.Manager
 				StreamInfo info = new StreamInfo(paths[i]);
 				if (!info.Exists)
 				{
-					task.Log.LastSessionEntries.Add(new LogEntry(S._("The file {0} was not erased " +
-						"as the file does not exist.", paths[i]), LogLevel.Notice));
+					Logger.Log(S._("The file {0} was not erased as the file does not exist.",
+						paths[i]), LogLevel.Notice);
 					continue;
 				}
 
 				//Get the filesystem provider to handle the secure file erasures
-				FileSystem fsManager = FileSystemManager.Get(
-					VolumeInfo.FromMountpoint(info.DirectoryName));
+				FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+					VolumeInfo.FromMountPoint(info.DirectoryName)];
 
 				bool isReadOnly = false;
 				
@@ -626,9 +642,9 @@ namespace Eraser.Manager
 						(info.Attributes & FileAttributes.SparseFile) != 0)
 					{
 						//Log the error
-						task.Log.LastSessionEntries.Add(new LogEntry(S._("The file {0} could " +
-							"not be erased because the file was either compressed, encrypted or " +
-							"a sparse file.", info.FullName), LogLevel.Error));
+						Logger.Log(S._("The file {0} could not be erased because the file was " +
+							"either compressed, encrypted or a sparse file.", info.FullName),
+							LogLevel.Error);
 						continue;
 					}
 
@@ -653,42 +669,47 @@ namespace Eraser.Manager
 				}
 				catch (UnauthorizedAccessException)
 				{
-					task.Log.LastSessionEntries.Add(new LogEntry(S._("The file {0} could not " +
-						"be erased because the file's permissions prevent access to the file.",
-						info.FullName), LogLevel.Error));
+					Logger.Log(S._("The file {0} could not be erased because the file's " +
+						"permissions prevent access to the file.", info.FullName), LogLevel.Error);
 				}
-				catch (FileLoadException)
+				catch (IOException)
 				{
-					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
-						throw;
-
-					List<System.Diagnostics.Process> processes = new List<System.Diagnostics.Process>();
-					foreach (OpenHandle handle in OpenHandle.Items)
-						if (handle.Path == paths[i])
-							processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
-
-					string lockedBy = null;
-					if (processes.Count > 0)
+					if (System.Runtime.InteropServices.Marshal.GetLastWin32Error() ==
+						Win32ErrorCode.SharingViolation)
 					{
-						StringBuilder processStr = new StringBuilder();
-						foreach (System.Diagnostics.Process process in processes)
+						if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+							throw;
+
+						List<System.Diagnostics.Process> processes =
+							new List<System.Diagnostics.Process>();
+						foreach (OpenHandle handle in OpenHandle.Items)
+							if (handle.Path == paths[i])
+								processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
+
+						string lockedBy = null;
+						if (processes.Count > 0)
 						{
-							try
+							StringBuilder processStr = new StringBuilder();
+							foreach (System.Diagnostics.Process process in processes)
 							{
-								processStr.AppendFormat(System.Globalization.CultureInfo.InvariantCulture,
-									"{0}, ", process.MainModule.FileName);
+								try
+								{
+									processStr.AppendFormat(System.Globalization.CultureInfo.InvariantCulture,
+										"{0}, ", process.MainModule.FileName);
+								}
+								catch (System.ComponentModel.Win32Exception)
+								{
+								}
 							}
-							catch (System.ComponentModel.Win32Exception)
-							{
-							}
+
+							lockedBy = S._("(locked by {0})", processStr.ToString().Remove(processStr.Length - 2));
 						}
 
-						lockedBy = S._("(locked by {0})", processStr.ToString().Remove(processStr.Length - 2));
+						Logger.Log(S._("Could not force closure of file \"{0}\" {1}", paths[i],
+							lockedBy == null ? string.Empty : lockedBy).Trim(), LogLevel.Error);
 					}
-
-					task.Log.LastSessionEntries.Add(new LogEntry(S._(
-						"Could not force closure of file \"{0}\" {1}", paths[i],
-						lockedBy == null ? string.Empty : lockedBy).Trim(), LogLevel.Error));
+					else
+						throw;
 				}
 				finally
 				{
@@ -702,12 +723,12 @@ namespace Eraser.Manager
 			if ((target is FolderTarget) && Directory.Exists(target.Path))
 			{
 				ProgressManager step = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(step,
+				progress.Steps.Add(new SteppedProgressManagerStep(step,
 					0.0f, S._("Removing folders...")));
 				
 				//Remove all subfolders which are empty.
 				FolderTarget fldr = (FolderTarget)target;
-				FileSystem fsManager = FileSystemManager.Get(VolumeInfo.FromMountpoint(fldr.Path));
+				FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[VolumeInfo.FromMountPoint(fldr.Path)];
 				Action<DirectoryInfo> eraseEmptySubFolders = null;
 				eraseEmptySubFolders = delegate(DirectoryInfo info)
 				{
@@ -749,13 +770,13 @@ namespace Eraser.Manager
 			if (target is RecycleBinTarget)
 			{
 				ProgressManager step = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManager.Step(step,
+				progress.Steps.Add(new SteppedProgressManagerStep(step,
 					0.0f, S._("Emptying recycle bin...")));
 				task.OnProgressChanged(target,
 					new ProgressChangedEventArgs(step,
 						new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 
-				ShellApi.EmptyRecycleBin(EmptyRecycleBinOptions.NoConfirmation |
+				RecycleBin.Empty(EmptyRecycleBinOptions.NoConfirmation |
 					EmptyRecycleBinOptions.NoProgressUI | EmptyRecycleBinOptions.NoSound);
 			}
 

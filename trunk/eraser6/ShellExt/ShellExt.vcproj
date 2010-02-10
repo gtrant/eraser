@@ -21,9 +21,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)\bin\$(ConfigurationName)\$(PlatformName)"
+			OutputDirectory="$(SolutionDir)bin\$(ConfigurationName)\$(PlatformName)"
 			IntermediateDirectory="obj\$(ConfigurationName)\$(PlatformName)"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Eraser Native.vsprops"
 			UseOfMFC="2"
 			UseOfATL="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -58,7 +59,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
@@ -113,9 +114,10 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(SolutionDir)\bin\$(ConfigurationName)\$(PlatformName)"
+			OutputDirectory="$(SolutionDir)bin\$(ConfigurationName)\$(PlatformName)"
 			IntermediateDirectory="obj\$(ConfigurationName)\$(PlatformName)"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Eraser Native.vsprops"
 			UseOfMFC="2"
 			UseOfATL="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -149,7 +151,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_USRDLL"
 				MinimalRebuild="true"
 				RuntimeLibrary="3"
 				EnableFunctionLevelLinking="true"
@@ -204,9 +206,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\bin\$(ConfigurationName)\$(PlatformName)"
+			OutputDirectory="$(SolutionDir)bin\$(ConfigurationName)\$(PlatformName)"
 			IntermediateDirectory="obj\$(ConfigurationName)\$(PlatformName)"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Eraser Native.vsprops"
 			UseOfMFC="2"
 			UseOfATL="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -242,7 +245,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -298,9 +301,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(SolutionDir)\bin\$(ConfigurationName)\$(PlatformName)"
+			OutputDirectory="$(SolutionDir)bin\$(ConfigurationName)\$(PlatformName)"
 			IntermediateDirectory="obj\$(ConfigurationName)\$(PlatformName)"
 			ConfigurationType="2"
+			InheritedPropertySheets="..\Eraser Native.vsprops"
 			UseOfMFC="2"
 			UseOfATL="2"
 			ATLMinimizesCRunTimeLibraryUsage="false"
@@ -335,7 +339,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL;_BIND_TO_CURRENT_VCLIBS_VERSION=1"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_USRDLL"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"

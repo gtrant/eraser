@@ -21,8 +21,8 @@
 using System;
 using System.Reflection;
 
-[assembly: AssemblyFileVersion("6.0.6.$WCREV$")]
-[assembly: AssemblyVersion("6.0.6.$WCREV$")]
+[assembly: AssemblyFileVersion("6.1.0.$WCREV$")]
+[assembly: AssemblyVersion("6.1.0.$WCREV$")]
 
 namespace Eraser {
 	internal static class BuildInfo

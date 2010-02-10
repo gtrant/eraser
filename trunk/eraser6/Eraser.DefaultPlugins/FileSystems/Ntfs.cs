@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.InteropServices;
 
 using System.IO;
 using Eraser.Manager;
@@ -32,13 +33,17 @@ namespace Eraser.DefaultPlugins
 	/// <summary>
 	/// Provides functions to handle erasures specific to NTFS volumes.
 	/// </summary>
+	[Guid("34399F62-0AD4-411c-8C71-5E1E6213545C")]
 	public class NtfsFileSystem : WindowsFileSystem
 	{
-		public override bool Supports(string fileSystemName)
+		public override Guid Guid
 		{
-			if (fileSystemName == "NTFS")
-				return true;
-			return false;
+			get { return GetType().GUID; }
+		}
+
+		public override string Name
+		{
+			get { return "NTFS"; }
 		}
 
 		public override void EraseOldFileSystemResidentFiles(VolumeInfo volume,
@@ -67,7 +72,7 @@ namespace Eraser.DefaultPlugins
 
 								//Then run the erase task
 								method.Erase(strm, long.MaxValue,
-									PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng),
+									ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
 									null);
 
 								//Call the callback function if one is provided. We'll provide a dummy
@@ -158,7 +163,7 @@ namespace Eraser.DefaultPlugins
 		{
 			//Check if the file fits in one cluster - if it does it may be MFT resident
 			//TODO: any more deterministic way of finding out?
-			VolumeInfo volume = VolumeInfo.FromMountpoint(info.DirectoryName);
+			VolumeInfo volume = VolumeInfo.FromMountPoint(info.DirectoryName);
 			if (info.Length < Math.Max(volume.ClusterSize, 1024))
 			{
 				//Yes it does, erase exactly to the file length
@@ -166,7 +171,8 @@ namespace Eraser.DefaultPlugins
 					FileShare.None))
 				{
 					method.Erase(strm, long.MaxValue,
-						PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng), null);
+						ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
+						null);
 				}
 			}
 
@@ -187,7 +193,7 @@ namespace Eraser.DefaultPlugins
 
 				//Then erase the file.
 				method.Erase(strm, long.MaxValue,
-					PrngManager.GetInstance(ManagerLibrary.Settings.ActivePrng),
+					ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
 					callback
 				);
 
