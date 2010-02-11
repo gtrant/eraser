@@ -80,4 +80,4 @@ private:
 	HANDLE Handle;
 };
 
-void CreateNameThread(HANDLE& handle, NameResolutionThreadParams& params);
+std::wstring ResolveHandleName(HANDLE handle, int pid);

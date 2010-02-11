@@ -92,9 +92,6 @@ namespace Util {
 		static String^ ResolveHandlePath(IntPtr handle, int pid);
 
 	private:
-		static HANDLE* NameResolutionThread;
-		static NameResolutionThreadParams* NameResolutionThreadParam;
-
 		IntPtr handle;
 		String^ path;
 		int processId;
