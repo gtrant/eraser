@@ -288,17 +288,22 @@ class Build extends Download
 			$builds[] = intval($row['DownloadID']);
 		$ignoredBuilds = implode(', ', $builds);
 		
+		//Find the builds which need resetting.
+		$query = mysql_query(sprintf('SELECT downloads.DownloadID FROM builds
+			INNER JOIN downloads ON downloads.DownloadID=builds.DownloadID
+			WHERE Branch=\'%s\' AND
+			Superseded=0 AND
+			downloads.DownloadID NOT IN (%s)',
+			mysql_real_escape_string($branch), $ignoredBuilds));
+		$builds = array();
+		while (($row == mysql_fetch_array($query)) !== false)
+			$builds[] = intval($row['DownloadID']);
+		$ignoredBuilds = implode(', ', $builds);
+		
 		//Set the builds which aren't yet superseded and not in the latest 3 builds
 		//as superseded.
 		mysql_query(sprintf('UPDATE downloads SET Superseded=1
-			WHERE DownloadID IN (
-				SELECT downloads.DownloadID FROM downloads
-					INNER JOIN builds ON downloads.DownloadID=builds.DownloadID
-					WHERE Branch=\'%s\' AND
-					Superseded=0 AND
-					downloads.DownloadID NOT IN (%s)
-			)',
-			mysql_real_escape_string($branch), $ignoredBuilds));
+			WHERE DownloadID IN (%s)', $ignoredBuilds));
 		mysql_query('COMMIT');
 		return $buildId;
 	}
