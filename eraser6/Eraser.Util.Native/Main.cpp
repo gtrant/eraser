@@ -21,6 +21,8 @@
 
 #include "stdafx.h"
 
+#pragma unmanaged
+
 namespace {
 	typedef NTSTATUS (__stdcall *fNtQuerySystemInformation)(
 		__in       SYSTEM_INFORMATION_CLASS,
