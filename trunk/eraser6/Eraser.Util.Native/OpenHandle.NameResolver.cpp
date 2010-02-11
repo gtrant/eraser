@@ -22,10 +22,12 @@
 #include "stdafx.h"
 #include "OpenHandle.h"
 
-#pragma managed(push)
 #pragma unmanaged
 
 namespace {
+	HANDLE NameResolutionThread;
+	NameResolutionThreadParams NameResolutionThreadParam;
+
 	DWORD __stdcall nameResolutionThread(void* data)
 	{
 		//Get the thread parameters
@@ -85,17 +87,54 @@ namespace {
 
 		return 0;
 	}
-}
 
-void CreateNameThread(HANDLE& handle, NameResolutionThreadParams& params)
-{
-	//If the handle is valid terminate the thread
-	if (handle)
+	void CreateNameThread(HANDLE& handle, NameResolutionThreadParams& params)
 	{
-		TerminateThread(handle, 1);
-		CloseHandle(handle);
+		//If the handle is valid terminate the thread
+		if (handle)
+		{
+			TerminateThread(handle, 1);
+			CloseHandle(handle);
+		}
+
+		//Create the thread
+		handle = CreateThread(NULL, 0, nameResolutionThread, &params, 0, NULL);
 	}
 
-	//Create the thread
-	handle = CreateThread(NULL, 0, nameResolutionThread, &params, 0, NULL);
+}
+
+std::wstring ResolveHandleName(HANDLE handle, int pid)
+{
+	//Start a name resolution thread (in case one entry hangs)
+	if (NameResolutionThread == NULL)
+		CreateNameThread(NameResolutionThread, NameResolutionThreadParam);
+
+	//Create a duplicate handle
+	HANDLE localHandle;
+	HANDLE processHandle = OpenProcess(PROCESS_DUP_HANDLE, false, pid);
+	DuplicateHandle(processHandle, static_cast<void*>(handle), GetCurrentProcess(),
+		&localHandle, 0, false, DUPLICATE_SAME_ACCESS);
+	CloseHandle(processHandle);
+
+	//We need a handle
+	if (!localHandle)
+		return std::wstring();
+
+	//Send the handle to the secondary thread for name resolution
+	NameResult result(localHandle);
+	NameResolutionThreadParam.Input.push_back(&result);
+	ReleaseSemaphore(NameResolutionThreadParam.Semaphore, 1, NULL);
+
+	//Wait for the result
+	if (WaitForSingleObject(result.Event, 50) != WAIT_OBJECT_0)
+	{
+		//The wait failed. Terminate the thread and recreate another.
+		CreateNameThread(NameResolutionThread, NameResolutionThreadParam);
+	}
+
+	//Close the handle which we duplicated
+	CloseHandle(localHandle);
+
+	//Return the result
+	return result.Name;
 }

@@ -72,46 +72,9 @@ namespace Util {
 
 	String^ OpenHandle::ResolveHandlePath(IntPtr handle, int pid)
 	{
-		//Start a name resolution thread (in case one entry hangs)
-		if (NameResolutionThread == NULL)
-		{
-			NameResolutionThread = new HANDLE(0);
-			NameResolutionThreadParam = new NameResolutionThreadParams;
-			CreateNameThread(*NameResolutionThread, *NameResolutionThreadParam);
-		}
-
-		//Create a duplicate handle
-		HANDLE localHandle(NULL);
-		HANDLE processHandle = OpenProcess(PROCESS_DUP_HANDLE, false, pid);
-		DuplicateHandle(processHandle, static_cast<void*>(handle), GetCurrentProcess(),
-			&localHandle, 0, false, DUPLICATE_SAME_ACCESS);
-		CloseHandle(processHandle);
-
-		//We need a handle
-		if (!localHandle)
-			return nullptr;
-
-		//Send the handle to the secondary thread for name resolution
-		NameResult result(localHandle);
-		NameResolutionThreadParam->Input.push_back(&result);
-		ReleaseSemaphore(NameResolutionThreadParam->Semaphore, 1, NULL);
-
-		//Wait for the result
-		if (WaitForSingleObject(result.Event, 50) != WAIT_OBJECT_0)
-		{
-			//The wait failed. Terminate the thread and recreate another.
-			CreateNameThread(*NameResolutionThread, *NameResolutionThreadParam);
-		}
-
-		//Close the handle which we duplicated
-		CloseHandle(localHandle);
-
-		//Return the result
-		if (result.Name.empty())
-			return nullptr;
-		else
-			return gcnew String(result.Name.c_str(), 0,
-				static_cast<int>(result.Name.length()));
+		std::wstring result(ResolveHandleName(static_cast<void*>(handle), pid));
+		return result.empty() ? nullptr :
+			gcnew String(result.c_str(), 0, static_cast<int>(result.length()));
 	}
 
 	bool OpenHandle::Close()
