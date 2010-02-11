@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Eraser.Util
@@ -60,10 +61,10 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
-		/// Computes the speed of the erase, in units of completion per second,
+		/// Computes the speed of the erase, in percentage of completion per second,
 		/// based on the information collected in the previous 15 seconds.
 		/// </summary>
-		public abstract int Speed
+		public abstract float Speed
 		{
 			get;
 		}
@@ -155,14 +156,11 @@ namespace Eraser.Util
 			}
 		}
 
-		public override int Speed
+		public override float Speed
 		{
 			get
 			{
-				if (DateTime.Now == StartTime)
-					return 0;
-
-				if ((DateTime.Now - lastSpeedCalc).Seconds < 5 && lastSpeed != 0)
+				if ((DateTime.Now - lastSpeedCalc).Seconds <= 1 && lastSpeed != 0)
 					return lastSpeed;
 
 				//Calculate how much time has passed
@@ -171,7 +169,7 @@ namespace Eraser.Util
 					return 0;
 
 				//Then compute the speed of the calculation
-				lastSpeed = (int)((Completed - lastCompleted) / timeElapsed);
+				lastSpeed = (float)((Completed - lastCompleted) / timeElapsed / total);
 				lastSpeedCalc = DateTime.Now;
 				lastCompleted = Completed;
 				return lastSpeed;
@@ -182,9 +180,11 @@ namespace Eraser.Util
 		{
 			get
 			{
-				if (Speed == 0)
+				float speed = Speed;
+				if (speed == 0.0)
 					return TimeSpan.Zero;
-				return new TimeSpan(0, 0, (int)((Total - Completed) / Speed));
+
+				return TimeSpan.FromSeconds((1.0f - Progress) / speed);
 			}
 		}
 
@@ -202,7 +202,7 @@ namespace Eraser.Util
 		/// <summary>
 		/// The last calculated speed of the operation.
 		/// </summary>
-		private int lastSpeed;
+		private float lastSpeed;
 
 		/// <summary>
 		/// The backing field for <see cref="Completed"/>
@@ -411,16 +411,12 @@ namespace Eraser.Util
 		{
 			get
 			{
-				float result = 0.0f;
 				lock (ListLock)
-					foreach (SteppedProgressManagerStep step in Steps)
-						result += step.Progress.Progress * step.Weight;
-
-				return result;
+					return Steps.Sum(step => step.Progress.Progress * step.Weight);
 			}
 		}
 
-		public override int Speed
+		public override float Speed
 		{
 			get
 			{
@@ -435,10 +431,11 @@ namespace Eraser.Util
 		{
 			get
 			{
-				long ticksElapsed = (DateTime.Now - StartTime).Ticks;
-				float progressRemaining = 1.0f - Progress;
-				return new TimeSpan((long)
-					(progressRemaining * (ticksElapsed / (double)Progress)));
+				float speed = Speed;
+				if (speed == 0.0)
+					return TimeSpan.Zero;
+
+				return TimeSpan.FromSeconds((1.0f - Progress) / speed);
 			}
 		}
 
@@ -686,25 +683,17 @@ namespace Eraser.Util
 		{
 			get
 			{
-				float result = 0.0f;
 				lock (TaskLock)
-					foreach (ProgressManagerBase subTask in Tasks)
-						result += subTask.Progress * (1.0f / Tasks.Count);
-
-				return result;
+					return Tasks.Sum(task => task.Progress * (1.0f / Tasks.Count));
 			}
 		}
 
-		public override int Speed
+		public override float Speed
 		{
 			get
 			{
-				int maxSpeed = 0;
 				lock (TaskLock)
-					foreach (ProgressManagerBase subTask in Tasks)
-						maxSpeed = Math.Max(subTask.Speed, maxSpeed);
-
-				return maxSpeed;
+					return Tasks.Max(task => task.Speed);
 			}
 		}
 
@@ -712,13 +701,8 @@ namespace Eraser.Util
 		{
 			get
 			{
-				TimeSpan maxTime = TimeSpan.MinValue;
 				lock (TaskLock)
-					foreach (ProgressManagerBase subTask in Tasks)
-						if (maxTime < subTask.TimeLeft)
-							maxTime = subTask.TimeLeft;
-
-				return maxTime;
+					return Tasks.Max(task => task.TimeLeft);
 			}
 		}
 
