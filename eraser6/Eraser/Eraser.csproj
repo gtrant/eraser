@@ -49,6 +49,13 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\bin\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BevelLine, Version=1.0.2859.29240, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
