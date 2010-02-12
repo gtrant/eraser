@@ -828,8 +828,10 @@ namespace Eraser.Manager
 					if (!fileInfo.Exists || (fileInfo.Attributes & FileAttributes.ReparsePoint) != 0)
 						continue;
 
+					long adsSize = 0;
+					GetPathADSes(paths, out adsSize, fileInfo.FullName);
+					totalSize += adsSize;
 					totalSize += fileInfo.Length;
-					GetPathADSes(paths, out totalSize, fileInfo.FullName);
 					paths.Add(fileInfo.FullName);
 				}
 
