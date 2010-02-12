@@ -497,7 +497,7 @@ namespace Eraser {
 		switch (VerbMenuIndices[LOWORD(pCmdInfo->lpVerb)])
 		{
 		case ACTION_ERASE_ON_RESTART:
-			commandLine += L"-s=restart ";
+			commandLine += L"/schedule=restart ";
 
 		case ACTION_ERASE:
 			{
@@ -508,7 +508,7 @@ namespace Eraser {
 				//then the list of selected files will be empty.
 				if (InvokeReason == INVOKEREASON_RECYCLEBIN)
 				{
-					commandLine += L"-r";
+					commandLine += L"/recyclebin";
 				}
 				else
 				{
@@ -528,9 +528,9 @@ namespace Eraser {
 
 						//Add the correct command line for the file type.
 						if (attributes & FILE_ATTRIBUTE_DIRECTORY)
-							commandLine += L"\"-d=" + escapedItem + L"\" ";
+							commandLine += L"\"/dir=" + escapedItem + L"\" ";
 						else
-							commandLine += L"\"-f=" + escapedItem + L"\" ";
+							commandLine += L"\"/file=" + escapedItem + L"\" ";
 					}
 				}
 
@@ -550,7 +550,7 @@ namespace Eraser {
 					i != SelectedFiles.end(); ++i)
 				{
 					std::wstring escapedItem(EscapeString(*i));
-					commandLine += L"\"-u=" + escapedItem + L",clusterTips\" ";
+					commandLine += L"\"/unused=" + escapedItem + L",clusterTips\" ";
 				}
 				
 				break;
@@ -855,7 +855,7 @@ namespace Eraser {
 		std::wstring finalParameters;
 		{
 			std::wostringstream parametersStrm;
-			parametersStrm << "\"" << action << L"\" -q " << parameters;
+			parametersStrm << "\"" << action << L"\" /quiet " << parameters;
 			finalParameters = parametersStrm.str();
 		}
 
