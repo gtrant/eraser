@@ -508,7 +508,7 @@ namespace Eraser {
 				//then the list of selected files will be empty.
 				if (InvokeReason == INVOKEREASON_RECYCLEBIN)
 				{
-					commandLine += L"/recyclebin";
+					commandLine += L"recyclebin";
 				}
 				else
 				{
@@ -528,9 +528,9 @@ namespace Eraser {
 
 						//Add the correct command line for the file type.
 						if (attributes & FILE_ATTRIBUTE_DIRECTORY)
-							commandLine += L"\"/dir=" + escapedItem + L"\" ";
+							commandLine += L"\"dir=" + escapedItem + L"\" ";
 						else
-							commandLine += L"\"/file=" + escapedItem + L"\" ";
+							commandLine += L"\"file=" + escapedItem + L"\" ";
 					}
 				}
 
@@ -550,7 +550,7 @@ namespace Eraser {
 					i != SelectedFiles.end(); ++i)
 				{
 					std::wstring escapedItem(EscapeString(*i));
-					commandLine += L"\"/unused=" + escapedItem + L",clusterTips\" ";
+					commandLine += L"\"unused=" + escapedItem + L",clusterTips\" ";
 				}
 				
 				break;
