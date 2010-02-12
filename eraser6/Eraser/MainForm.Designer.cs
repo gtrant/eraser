@@ -362,6 +362,7 @@ namespace Eraser
 			this.Name = "MainForm";
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
 			this.VisibleChanged += new System.EventHandler(this.MainForm_VisibleChanged);
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Resize += new System.EventHandler(this.MainForm_Resize);
 			this.notificationMenu.ResumeLayout(false);
