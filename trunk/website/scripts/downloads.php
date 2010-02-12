@@ -278,32 +278,29 @@ class Build extends Download
 		//Ensure that only 3 builds are not superseded at any one time.
 		mysql_query('START TRANSACTION');
 		
-		//Get the latest 3 builds and concatenate them into a MySQL set.
-		$builds = array();
+		//Get the number of unsuperseded builds for the branch.
+		$query = mysql_query(sprintf('SELECT COUNT(builds.DownloadID) FROM builds
+			INNER JOIN downloads ON builds.DownloadID=downloads.DownloadID
+			WHERE Branch=\'%s\' AND Superseded=0', mysql_real_escape_string($branch)));
+		$row = mysql_fetch_row($query);
+		$builds = intval($row[0]);
+		
+		//Get the builds which we need to mark superseded
 		$query = mysql_query(sprintf('SELECT builds.DownloadID FROM builds
 			INNER JOIN downloads ON builds.DownloadID=downloads.DownloadID
 			WHERE Branch=\'%s\' AND Superseded=0
-			ORDER BY builds.DownloadID DESC LIMIT 3', mysql_real_escape_string($branch)));
-		while (($row == mysql_fetch_array($query)) !== false)
-			$builds[] = intval($row['DownloadID']);
-		$ignoredBuilds = implode(', ', $builds);
-		
-		//Find the builds which need resetting.
-		$query = mysql_query(sprintf('SELECT downloads.DownloadID FROM builds
-			INNER JOIN downloads ON downloads.DownloadID=builds.DownloadID
-			WHERE Branch=\'%s\' AND
-			Superseded=0 AND
-			downloads.DownloadID NOT IN (%s)',
-			mysql_real_escape_string($branch), $ignoredBuilds));
+			ORDER BY Version ASC
+			LIMIT %d',
+			mysql_real_escape_string($branch), $builds - 3));
 		$builds = array();
-		while (($row == mysql_fetch_array($query)) !== false)
+		while (($row = mysql_fetch_array($query)) !== false)
 			$builds[] = intval($row['DownloadID']);
-		$ignoredBuilds = implode(', ', $builds);
-		
+		$builds = implode(', ', $builds);
+	
 		//Set the builds which aren't yet superseded and not in the latest 3 builds
 		//as superseded.
-		mysql_query(sprintf('UPDATE downloads SET Superseded=1
-			WHERE DownloadID IN (%s)', $ignoredBuilds));
+		mysql_query(sprintf('UPDATE downloads
+			SET Superseded=1 WHERE DownloadID IN (%s)', $builds));
 		mysql_query('COMMIT');
 		return $buildId;
 	}
