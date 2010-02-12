@@ -642,6 +642,11 @@ namespace Eraser.Util
 					break;
 			}
 
+			return OpenHandle(iAccess, share, options);
+		}
+
+		private SafeFileHandle OpenHandle(uint access, FileShare share, FileOptions options)
+		{
 			//Sharing mode
 			if ((share & FileShare.Inheritable) != 0)
 				throw new NotSupportedException("Inheritable handles are not supported.");
@@ -654,7 +659,7 @@ namespace Eraser.Util
 			string openPath = VolumeId;
 			if (openPath.Length > 0 && openPath[openPath.Length - 1] == '\\')
 				openPath = openPath.Remove(openPath.Length - 1);
-			SafeFileHandle result = NativeMethods.CreateFile(openPath, iAccess,
+			SafeFileHandle result = NativeMethods.CreateFile(openPath, access,
 				(uint)share, IntPtr.Zero, (uint)FileMode.Open, (uint)options, IntPtr.Zero);
 			if (result.IsInvalid)
 			{
@@ -673,7 +678,7 @@ namespace Eraser.Util
 		{
 			get
 			{
-				using (SafeFileHandle handle = OpenHandle(FileAccess.Read,
+				using (SafeFileHandle handle = OpenHandle(0x80u,
 					FileShare.ReadWrite, FileOptions.None))
 				{
 					//Check that the handle is valid
