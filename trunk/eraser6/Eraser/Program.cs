@@ -518,7 +518,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					}
 				}
 			}
-			catch (SerializationException ex)
+			catch (InvalidDataException ex)
 			{
 				File.Delete(TaskListPath);
 				MessageBox.Show(S._("Could not load task list. All task entries have " +

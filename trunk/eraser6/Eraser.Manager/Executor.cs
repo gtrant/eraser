@@ -176,6 +176,8 @@ namespace Eraser.Manager
 		/// <remarks>This will append the tasks in the given stream to the current list of
 		/// tasks instead of overwriting it.</remarks>
 		/// <param name="stream">The stream to save to.</param>
+		/// <exception cref="InvalidDataException">Thrown when the data in the stream is
+		/// invalid or unrecognised.</exception>
 		public abstract void LoadFromStream(Stream stream);
 
 		/// <summary>
