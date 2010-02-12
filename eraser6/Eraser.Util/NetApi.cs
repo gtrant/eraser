@@ -53,19 +53,19 @@ namespace Eraser.Util
 		public static byte[] NetStatisticsGet(string server, NetApiService service,
 			uint level, uint options)
 		{
-			IntPtr netAPIStats = IntPtr.Zero;
+			IntPtr netApiStats = IntPtr.Zero;
 			string serviceName = "Lanman" + service.ToString();
-			if (NativeMethods.NetStatisticsGet(server, serviceName, level, options, out netAPIStats) == 0)
+			if (NativeMethods.NetStatisticsGet(server, serviceName, level, options, out netApiStats) == 0)
 			{
 				try
 				{
 					//Get the size of the buffer
 					uint size = 0;
-					NativeMethods.NetApiBufferSize(netAPIStats, out size);
+					NativeMethods.NetApiBufferSize(netApiStats, out size);
 					byte[] result = new byte[size];
 
 					//Copy the buffer
-					Marshal.Copy(result, 0, netAPIStats, result.Length);
+					Marshal.Copy(netApiStats, result, 0, result.Length);
 
 					//Return the result
 					return result;
@@ -73,7 +73,7 @@ namespace Eraser.Util
 				finally
 				{
 					//Free the statistics buffer
-					NativeMethods.NetApiBufferFree(netAPIStats);
+					NativeMethods.NetApiBufferFree(netApiStats);
 				}
 			}
 
