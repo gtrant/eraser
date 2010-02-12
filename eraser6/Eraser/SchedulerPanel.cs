@@ -435,7 +435,7 @@ namespace Eraser
 							{
 								Program.eraserClient.Tasks.LoadFromStream(stream);
 							}
-							catch (SerializationException ex)
+							catch (InvalidDataException ex)
 							{
 								MessageBox.Show(S._("Could not import task list from {0}. The " +
 									"error returned was: {1}", file, ex.Message), S._("Eraser"),

@@ -265,16 +265,7 @@ namespace Eraser
 						{
 							Program.eraserClient.Tasks.LoadFromStream(stream);
 						}
-						catch (FileLoadException ex)
-						{
-							MessageBox.Show(S._("The task list could not be imported. The error " +
-								"returned was: {0}", ex.Message), S._("Eraser"),
-								MessageBoxButtons.OK, MessageBoxIcon.Error,
-								MessageBoxDefaultButton.Button1,
-								Localisation.IsRightToLeft(this) ?
-									MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-						}
-						catch (SerializationException ex)
+						catch (InvalidDataException ex)
 						{
 							MessageBox.Show(S._("The task list could not be imported. The error " +
 								"returned was: {0}", ex.Message), S._("Eraser"),

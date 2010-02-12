@@ -957,14 +957,26 @@ namespace Eraser.Manager
 				StreamingContext context = new StreamingContext(
 					StreamingContextStates.All, Owner);
 				BinaryFormatter formatter = new BinaryFormatter(null, context);
-				List<Task> deserialised = (List<Task>)formatter.Deserialize(stream);
-				list.AddRange(deserialised);
 
-				foreach (Task task in deserialised)
+				try
 				{
-					Owner.OnTaskAdded(new TaskEventArgs(task));
-					if (task.Schedule is RecurringSchedule)
-						Owner.ScheduleTask(task);
+					List<Task> deserialised = (List<Task>)formatter.Deserialize(stream);
+					list.AddRange(deserialised);
+
+					foreach (Task task in deserialised)
+					{
+						Owner.OnTaskAdded(new TaskEventArgs(task));
+						if (task.Schedule is RecurringSchedule)
+							Owner.ScheduleTask(task);
+					}
+				}
+				catch (FileLoadException e)
+				{
+					throw new InvalidDataException(e.Message, e);
+				}
+				catch (SerializationException e)
+				{
+					throw new InvalidDataException(e.Message, e);
 				}
 			}
 
