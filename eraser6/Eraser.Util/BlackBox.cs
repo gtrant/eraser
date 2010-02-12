@@ -656,8 +656,8 @@ namespace Eraser.Util
 				while ((lastRead = tarStream.Read(buffer, 0, buffer.Length)) != 0)
 				{
 					bzipStream.Write(buffer, 0, lastRead);
-					step.Completed = tarStream.Position;
 					step.Total = tarStream.Length;
+					step.Completed = tarStream.Position;
 
 					if (progressChanged != null)
 						progressChanged(this, new ProgressChangedEventArgs(progress, null));
@@ -705,8 +705,8 @@ namespace Eraser.Util
 						{
 							requestStream.Write(buffer, 0, lastRead);
 
-							progress.Completed = formStream.Position;
 							progress.Total = formStream.Length;
+							progress.Completed = formStream.Position;
 							progressChanged(this, new ProgressChangedEventArgs(overallProgress, null));
 						}
 					}
