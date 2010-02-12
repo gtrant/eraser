@@ -270,12 +270,6 @@ namespace Eraser.Manager
 
 			//Ticks since start up
 			result.AddRange(StructToBuffer(Environment.TickCount));
-
-			//CryptGenRandom
-			byte[] cryptGenRandom = new byte[160];
-			if (Security.Randomise(cryptGenRandom))
-				result.AddRange(cryptGenRandom);
-
 			return result.ToArray();
 		}
 
@@ -292,49 +286,22 @@ namespace Eraser.Manager
 			if (netApiStats != null)
 				result.AddRange(netApiStats);
 
-#if false
-			//Get disk I/O statistics for all the hard drives
-			try
+#false
+			foreach (VolumeInfo info in VolumeInfo.Volumes)
 			{
-				for (int drive = 0; ; ++drive)
-				{
-					//Try to open the drive.
-					StreamInfo info = new StreamInfo(string.Format(CultureInfo.InvariantCulture,
-						"\\\\.\\PhysicalDrive{0}", drive));
-					using (FileStream stream = info.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-					{
-						SafeFileHandle device = stream.SafeFileHandle;
-						KernelApi.DiskPerformanceInfo diskPerformance =
-							KernelApi.QueryDiskPerformanceInfo(device);
-						if (diskPerformance != null)
-						{
-							result.AddRange(StructToBuffer(diskPerformance.BytesRead));
-							result.AddRange(StructToBuffer(diskPerformance.BytesWritten));
-							result.AddRange(StructToBuffer(diskPerformance.IdleTime));
-							result.AddRange(StructToBuffer(diskPerformance.QueryTime));
-							result.AddRange(StructToBuffer(diskPerformance.QueueDepth));
-							result.AddRange(StructToBuffer(diskPerformance.ReadCount));
-							result.AddRange(StructToBuffer(diskPerformance.ReadTime));
-							result.AddRange(StructToBuffer(diskPerformance.SplitCount));
-							result.AddRange(StructToBuffer(diskPerformance.StorageDeviceNumber));
-							result.AddRange(Encoding.UTF8.GetBytes(diskPerformance.StorageManagerName));
-							result.AddRange(StructToBuffer(diskPerformance.WriteCount));
-							result.AddRange(StructToBuffer(diskPerformance.WriteTime));
-						}
-					}
-				}
-			}
-			catch (FileNotFoundException)
-			{
-			}
-			catch (UnauthorizedAccessException)
-			{
+				/*DiskPerformanceInfo performance = info.Performance;
+				result.AddRange(StructToBuffer(performance.BytesRead));
+				result.AddRange(StructToBuffer(performance.BytesWritten));
+				result.AddRange(StructToBuffer(performance.IdleTime));
+				result.AddRange(StructToBuffer(performance.QueryTime));
+				result.AddRange(StructToBuffer(performance.QueueDepth));
+				result.AddRange(StructToBuffer(performance.ReadCount));
+				result.AddRange(StructToBuffer(performance.ReadTime));
+				result.AddRange(StructToBuffer(performance.SplitCount));
+				result.AddRange(StructToBuffer(performance.WriteCount));
+				result.AddRange(StructToBuffer(performance.WriteTime));*/
 			}
 #endif
-			//Finally, our good friend CryptGenRandom()
-			byte[] cryptGenRandom = new byte[1536];
-			if (Security.Randomise(cryptGenRandom))
-				result.AddRange(cryptGenRandom);
 
 			return result.ToArray();
 		}

@@ -75,7 +75,6 @@
     <Compile Include="ExtensionMethods\IO.cs" />
     <Compile Include="BlackBox.cs" />
     <Compile Include="Localisation.cs" />
-    <Compile Include="NativeMethods\AdvApi.cs" />
     <Compile Include="NativeMethods\Kernel.cs" />
     <Compile Include="NativeMethods\MsCorEE.cs" />
     <Compile Include="NativeMethods\NetApi.cs" />
