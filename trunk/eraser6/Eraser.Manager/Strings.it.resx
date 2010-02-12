@@ -201,6 +201,12 @@
   <data name="(default)" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Could not load the plugin {0}.\n\nThe error returned was: {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Eraser" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Running on restart" xml:space="preserve">
     <value>Esecuzione al riavvio</value>
   </data>

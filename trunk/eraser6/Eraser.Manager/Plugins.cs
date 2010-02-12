@@ -257,14 +257,24 @@ namespace Eraser.Manager.Plugin
 				return;
 			}
 
-			//Initialize the plugin
-			IPlugin pluginInterface = (IPlugin)Activator.CreateInstance(
-				instance.Assembly.GetType(typePlugin.ToString()));
-			pluginInterface.Initialize(this);
-			instance.Plugin = pluginInterface;
+			try
+			{
+				//Initialize the plugin
+				IPlugin pluginInterface = (IPlugin)Activator.CreateInstance(
+					instance.Assembly.GetType(typePlugin.ToString()));
+				pluginInterface.Initialize(this);
+				instance.Plugin = pluginInterface;
 
-			//And broadcast the plugin load event
-			OnPluginLoaded(this, new PluginLoadedEventArgs(instance));
+				//And broadcast the plugin load event
+				OnPluginLoaded(this, new PluginLoadedEventArgs(instance));
+			}
+			catch (System.Security.SecurityException e)
+			{
+				MessageBox.Show(S._("Could not load the plugin {0}.\n\nThe error returned was: {1}",
+					filePath, e.Message), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
+					MessageBoxDefaultButton.Button1, Localisation.IsRightToLeft(null) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+			}
 		}
 
 		private Assembly AssemblyResolve(object sender, ResolveEventArgs args)
