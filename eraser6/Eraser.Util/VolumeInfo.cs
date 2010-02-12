@@ -678,13 +678,9 @@ namespace Eraser.Util
 		{
 			get
 			{
-				using (SafeFileHandle handle = OpenHandle(0x80u,
-					FileShare.ReadWrite, FileOptions.None))
+				using (SafeFileHandle handle = OpenHandle(0x80u, FileShare.ReadWrite,
+					FileOptions.None))
 				{
-					//Check that the handle is valid
-					if (handle.IsInvalid)
-						throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
-
 					//This only works if the user has turned on the disk performance
 					//counters with 'diskperf -y'. These counters are off by default
 					NativeMethods.DiskPerformanceInfoInternal result =
