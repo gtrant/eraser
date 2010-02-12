@@ -286,7 +286,7 @@ namespace Eraser.Manager
 			if (netApiStats != null)
 				result.AddRange(netApiStats);
 
-#false
+#if false
 			foreach (VolumeInfo info in VolumeInfo.Volumes)
 			{
 				/*DiskPerformanceInfo performance = info.Performance;
