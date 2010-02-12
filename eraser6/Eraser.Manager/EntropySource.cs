@@ -289,7 +289,10 @@ namespace Eraser.Manager
 #if false
 			foreach (VolumeInfo info in VolumeInfo.Volumes)
 			{
-				/*DiskPerformanceInfo performance = info.Performance;
+				DiskPerformanceInfo performance = info.Performance;
+				if (performance == null)
+					continue;
+
 				result.AddRange(StructToBuffer(performance.BytesRead));
 				result.AddRange(StructToBuffer(performance.BytesWritten));
 				result.AddRange(StructToBuffer(performance.IdleTime));
@@ -299,7 +302,7 @@ namespace Eraser.Manager
 				result.AddRange(StructToBuffer(performance.ReadTime));
 				result.AddRange(StructToBuffer(performance.SplitCount));
 				result.AddRange(StructToBuffer(performance.WriteCount));
-				result.AddRange(StructToBuffer(performance.WriteTime));*/
+				result.AddRange(StructToBuffer(performance.WriteTime));
 			}
 #endif
 
