@@ -597,6 +597,7 @@ namespace Eraser.Manager
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = target.Method;
+			dataTotal = method.CalculateEraseDataSize(paths, dataTotal);
 
 			//Set the event's current target status.
 			SteppedProgressManager progress = new SteppedProgressManager();
@@ -606,14 +607,6 @@ namespace Eraser.Manager
 			//Iterate over every path, and erase the path.
 			for (int i = 0; i < paths.Count; ++i)
 			{
-				//Update the task progress
-				ProgressManager step = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManagerStep(step,
-					1.0f / paths.Count, S._("Erasing files...")));
-				task.OnProgressChanged(target,
-					new ProgressChangedEventArgs(step,
-						new TaskProgressChangedEventArgs(paths[i], 0, method.Passes)));
-
 				//Check that the file exists - we do not want to bother erasing nonexistant files
 				StreamInfo info = new StreamInfo(paths[i]);
 				if (!info.Exists)
@@ -626,6 +619,14 @@ namespace Eraser.Manager
 				//Get the filesystem provider to handle the secure file erasures
 				FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
 					VolumeInfo.FromMountPoint(info.DirectoryName)];
+
+				//Update the task progress
+				ProgressManager step = new ProgressManager();
+				progress.Steps.Add(new SteppedProgressManagerStep(step,
+					info.Length / (float)dataTotal, S._("Erasing files...")));
+				task.OnProgressChanged(target,
+					new ProgressChangedEventArgs(step,
+						new TaskProgressChangedEventArgs(paths[i], 0, method.Passes)));
 
 				bool isReadOnly = false;
 				

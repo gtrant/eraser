@@ -150,11 +150,11 @@
   <data name="Erasing unused directory structures..." xml:space="preserve">
     <value>Pulizia delle strutture di cartelle non usate...</value>
   </data>
-  <data name="Erasing files..." xml:space="preserve">
-    <value>Pulizia dei files...</value>
-  </data>
   <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
     <value>Il file {0} non è stato pulito perchè il file non esiste.</value>
+  </data>
+  <data name="Erasing files..." xml:space="preserve">
+    <value>Pulizia dei files...</value>
   </data>
   <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
     <value>Il file {0} non può essere pulito perchè è compresso, crittato o distribuito.</value>
