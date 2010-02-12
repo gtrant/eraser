@@ -60,7 +60,7 @@ namespace Eraser.Util
 		{
 			using (SafeFileHandle volumeHandle = NativeMethods.CreateFile(
 				volume.VolumeId.Remove(volume.VolumeId.Length - 1),
-				NativeMethods.GENERIC_READ, NativeMethods.FILE_SHARE_READ |
+				NativeMethods.FILE_READ_ATTRIBUTES, NativeMethods.FILE_SHARE_READ |
 				NativeMethods.FILE_SHARE_WRITE, IntPtr.Zero, NativeMethods.OPEN_EXISTING,
 				0, IntPtr.Zero))
 			{

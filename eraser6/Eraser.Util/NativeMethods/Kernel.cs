@@ -297,6 +297,7 @@ namespace Eraser.Util
 			uint dwShareMode, IntPtr SecurityAttributes, uint dwCreationDisposition,
 			uint dwFlagsAndAttributes, IntPtr hTemplateFile);
 
+		public const uint FILE_READ_ATTRIBUTES = 0x0080;
 		public const uint GENERIC_READ = 0x80000000;
 		public const uint GENERIC_WRITE = 0x40000000;
 		public const uint GENERIC_EXECUTE = 0x20000000;
