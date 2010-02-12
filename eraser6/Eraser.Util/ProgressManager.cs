@@ -182,7 +182,7 @@ namespace Eraser.Util
 			{
 				float speed = Speed;
 				if (speed == 0.0)
-					return TimeSpan.Zero;
+					return TimeSpan.MinValue;
 
 				return TimeSpan.FromSeconds((1.0f - Progress) / speed);
 			}
@@ -433,7 +433,7 @@ namespace Eraser.Util
 			{
 				float speed = Speed;
 				if (speed == 0.0)
-					return TimeSpan.Zero;
+					return TimeSpan.MinValue;
 
 				return TimeSpan.FromSeconds((1.0f - Progress) / speed);
 			}
