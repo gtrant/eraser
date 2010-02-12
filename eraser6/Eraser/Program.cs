@@ -96,7 +96,7 @@ namespace Eraser
 			/// <summary>
 			/// The schedule for the current set of targets.
 			/// </summary>
-			[Arg("schedule", "The schedule to use", typeof(Schedule), true, null, null)]
+			[Arg("schedule", "The schedule to use", typeof(Schedule), false, null, null)]
 			public string Schedule { get; set; }
 		}
 
@@ -285,6 +285,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				ManagerLibrary.Instance.ErasureMethodRegistrar[arguments.ErasureMethod];
 			switch (arguments.Schedule.ToUpperInvariant())
 			{
+				case "":
 				case "NOW":
 					task.Schedule = Schedule.RunNow;
 					break;
