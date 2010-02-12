@@ -187,7 +187,7 @@ where action is
                       List.
 
 global parameters:
-  --quiet, -q	      Do not create a Console window to display progress.
+  /quiet              Do not create a Console window to display progress.
 
 parameters for help:
   eraser help
@@ -195,10 +195,10 @@ parameters for help:
   no parameters to set.
 
 parameters for addtask:
-  eraser addtask [--method=<methodGUID>] [--schedule=(now|manually|restart)] (recyclebin | unused=<volume> | dir=<directory> | file=<file>)[...]
+  eraser addtask [/method=<methodGUID>] [/schedule=(now|manually|restart)] (recyclebin | unused=<volume> | dir=<directory> | file=<file>)[...]
 
-  --method            The Erasure method to use.
-  --schedule          The schedule the task will follow. The value must be one
+  /method             The Erasure method to use.
+  /schedule           The schedule the task will follow. The value must be one
                       of:
       now             The task will be queued for immediate execution.
       manually        The task will be created but not queued for execution.
@@ -296,7 +296,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					break;
 				default:
 					throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
-						"Unknown schedule type: {0}", arguments.Schedule), "--schedule");
+						"Unknown schedule type: {0}", arguments.Schedule), "/schedule");
 			}
 
 			//Parse the rest of the command line parameters as target expressions.
@@ -394,7 +394,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 						//The client cannot connect to the server. This probably means
 						//that the server process isn't running. Start an instance.
 						Process eraserInstance = Process.Start(
-							Assembly.GetExecutingAssembly().Location, "--quiet");
+							Assembly.GetExecutingAssembly().Location, "/quiet");
 						Thread.Sleep(0);
 						eraserInstance.WaitForInputIdle();
 
@@ -437,7 +437,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 						//The client cannot connect to the server. This probably means
 						//that the server process isn't running. Start an instance.
 						Process eraserInstance = Process.Start(
-							Assembly.GetExecutingAssembly().Location, "--quiet");
+							Assembly.GetExecutingAssembly().Location, "/quiet");
 						eraserInstance.WaitForInputIdle();
 
 						client.Run();
