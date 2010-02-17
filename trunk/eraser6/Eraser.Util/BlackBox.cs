@@ -73,7 +73,12 @@ namespace Eraser.Util
 			string crashName = DateTime.Now.ToUniversalTime().ToString(
 				CrashReportName, CultureInfo.InvariantCulture);
 			string currentCrashReport = Path.Combine(CrashReportsPath, crashName);
+
+			//Create the report folder. If we can't create the report folder, we can't
+			//create the report contents.
 			Directory.CreateDirectory(currentCrashReport);
+			if (!Directory.Exists(currentCrashReport))
+				return;
 
 			//Store the steps which we have completed.
 			int currentStep = 0;
