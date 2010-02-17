@@ -104,15 +104,15 @@ namespace Eraser
 				{
 					try
 					{
-						//Create the pipe server which will handle connections to us
-						PipeServer = new Thread(ServerMain);
-						PipeServer.Start();
-
 						//Initialise and run the program.
 						InitInstanceEventArgs eventArgs = new InitInstanceEventArgs();
 						OnInitInstance(this, eventArgs);
 						if (MainForm == null)
 							return;
+
+						//Create the pipe server which will handle connections to us
+						PipeServer = new Thread(ServerMain);
+						PipeServer.Start();
 
 						//Handle the exit instance event. This will occur when the main form
 						//has been closed.
