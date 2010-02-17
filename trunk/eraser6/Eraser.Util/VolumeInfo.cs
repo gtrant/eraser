@@ -625,7 +625,7 @@ namespace Eraser.Util
 			return new FileStream(handle, access);
 		}
 
-		private SafeFileHandle OpenHandle(FileAccess access, FileShare share, FileOptions options)
+		internal SafeFileHandle OpenHandle(FileAccess access, FileShare share, FileOptions options)
 		{
 			//Access mode
 			uint iAccess = 0;
@@ -645,7 +645,7 @@ namespace Eraser.Util
 			return OpenHandle(iAccess, share, options);
 		}
 
-		private SafeFileHandle OpenHandle(uint access, FileShare share, FileOptions options)
+		internal SafeFileHandle OpenHandle(uint access, FileShare share, FileOptions options)
 		{
 			//Sharing mode
 			if ((share & FileShare.Inheritable) != 0)
