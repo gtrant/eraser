@@ -432,10 +432,14 @@ namespace Eraser.Util
 			get
 			{
 				float speed = Speed;
-				if (speed == 0.0)
-					return TimeSpan.MinValue;
+				float remaining = 1.0f - Progress;
 
-				return TimeSpan.FromSeconds((1.0f - Progress) / speed);
+				if (speed == 0)
+					return TimeSpan.MinValue;
+				else if (remaining <= 0)
+					return TimeSpan.Zero;
+				else
+					return TimeSpan.FromSeconds(remaining / speed);
 			}
 		}
 
