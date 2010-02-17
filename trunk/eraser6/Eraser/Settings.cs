@@ -48,6 +48,9 @@ namespace Eraser
 			/// <param name="key">The registry key to look for the settings in.</param>
 			public RegistrySettings(Guid pluginId, RegistryKey key)
 			{
+				if (key == null)
+					throw new ArgumentNullException("key");
+
 				this.PluginID = pluginId;
 				this.Key = key;
 			}
