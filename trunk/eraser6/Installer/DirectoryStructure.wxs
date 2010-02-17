@@ -95,7 +95,7 @@
 						Type="string" />
 					<RegistryValue Id="EraserErsxFileOpenAction" Root="HKCR"
 						Key="Eraser.Ersx\shell\open\command"
-						Value="&quot;[!EraserExe]&quot; importtasklist --quiet &quot;%1&quot;"
+						Value="&quot;[!EraserExe]&quot; importtasklist /quiet &quot;%1&quot;"
 						Type="string" />
 				</Component>
 				<Component Id="EraserShell" Guid="4C446C7E-BCBC-4561-B8F6-D406516D356F">
