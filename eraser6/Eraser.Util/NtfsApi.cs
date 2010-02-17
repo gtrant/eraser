@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Eraser.Util
 {
@@ -58,11 +59,8 @@ namespace Eraser.Util
 		/// file systme structures for the volume.</returns>
 		internal static NativeMethods.NTFS_VOLUME_DATA_BUFFER GetNtfsVolumeData(VolumeInfo volume)
 		{
-			using (SafeFileHandle volumeHandle = NativeMethods.CreateFile(
-				volume.VolumeId.Remove(volume.VolumeId.Length - 1),
-				NativeMethods.FILE_READ_ATTRIBUTES, NativeMethods.FILE_SHARE_READ |
-				NativeMethods.FILE_SHARE_WRITE, IntPtr.Zero, NativeMethods.OPEN_EXISTING,
-				0, IntPtr.Zero))
+			using (SafeFileHandle volumeHandle = volume.OpenHandle(
+				NativeMethods.FILE_READ_ATTRIBUTES, FileShare.ReadWrite, FileOptions.None))
 			{
 				uint resultSize = 0;
 				NativeMethods.NTFS_VOLUME_DATA_BUFFER volumeData =
