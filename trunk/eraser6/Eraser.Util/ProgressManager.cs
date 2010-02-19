@@ -438,8 +438,15 @@ namespace Eraser.Util
 					return TimeSpan.MinValue;
 				else if (remaining <= 0)
 					return TimeSpan.Zero;
-				else
+
+				try
+				{
 					return TimeSpan.FromSeconds(remaining / speed);
+				}
+				catch (OverflowException)
+				{
+					return TimeSpan.MaxValue;
+				}
 			}
 		}
 
