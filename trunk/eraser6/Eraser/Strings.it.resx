@@ -139,31 +139,31 @@
     <value>Aiutateci a continuare lo sviluppo di Eraser - offriteci un caffè!</value>
   </data>
   <data name="Could not open the required web page. The error returned was: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Impossibile aprire la pagina web richiesta. L'errore ricevuto era: {0}</value>
   </data>
   <data name="Checking for status of report {0}..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Verifica dello stato del report {0}...</value>
   </data>
   <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Compressione Report {0}: {1:#0.00%}</value>
   </data>
   <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Trasmissione Report {0}: {1:#0.00%}</value>
   </data>
   <data name="Reports submitted successfully." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>I report sono stati trasmessi con successo.</value>
   </data>
   <data name="Close" xml:space="preserve">
     <value>Chiudi</value>
   </data>
   <data name="Submission was cancelled." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La sottomissione è stata annullata.</value>
   </data>
   <data name="Session: {0:F}" xml:space="preserve">
     <value>Sessione: {0:F}</value>
   </data>
   <data name="The task list could not be imported. The error returned was: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Non è stato possibile importare la lista delle operazioni. L'errore ricevuto è stato: {0}</value>
   </data>
   <data name="The Eraser documentation file could not be opened. Check that Adobe Reader installed and that your Eraser install is not corrupt.\n\nThe error returned was: {0}" xml:space="preserve">
     <value>La documentazione di Eraser non può essere aperta. Verificare che Adobe Acrobat Reader sia installato e che la vostra installazione di Eraser non sia corrotta.\n\nL'errore è stato: {0}</value>
@@ -178,7 +178,7 @@
     <value>Un'altra occorrenza di Eraser è già in esecuzione, ma con privilegi più elevati di questa.\n\nEraser adesso si chiuderà.</value>
   </data>
   <data name="Another instance of Eraser is already running but cannot be connected to.\n\nThe error returned was: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Un'altra istanza di Eraser è in esecuzione, ma è impossibile stabilire una connessione con essa.\n\nL'errore ricevuto è: {0}</value>
   </data>
   <data name="Total: {0,2:#0.00%}" xml:space="preserve">
     <value>Totale: {0,2:#0.00%}</value>
@@ -247,7 +247,7 @@
     <value>Importazione della lista di operazioni da {0} non riuscita. L'errore è stato: {1}</value>
   </data>
   <data name="Could not load the setting {0}\\{1} for plugin {2}. The setting has been lost." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Impossibile caricare l'impostazione {0}\\{1} per il plugin {2}. L'impostazione è stata persa.</value>
   </data>
   <data name="Default file erasure method" xml:space="preserve">
     <value>Metodo di pulizia di default </value>
@@ -316,7 +316,7 @@
     <value>Estensioni</value>
   </data>
   <data name="Nightly builds" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Compilazioni non ufficiali</value>
   </data>
   <data name="There are no new updates or plugins available for Eraser." xml:space="preserve">
     <value>Non ci sono aggiornamenti per Eraser o per le estensioni.</value>
