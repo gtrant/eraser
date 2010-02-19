@@ -122,10 +122,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="TitleLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 20</value>
+    <value>201, 20</value>
   </data>
   <data name="TitleLbl.Text" xml:space="preserve">
-    <value>Upload del Crash Report</value>
+    <value>Trasmissione Crash Report</value>
   </data>
   <data name="ProgressLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>151, 15</value>
