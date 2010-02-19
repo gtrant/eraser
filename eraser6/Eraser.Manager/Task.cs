@@ -457,6 +457,9 @@ namespace Eraser.Manager
 					totalSize += info.Length;
 				}
 			}
+			catch (FileNotFoundException)
+			{
+			}
 			catch (IOException)
 			{
 				if (System.Runtime.InteropServices.Marshal.GetLastWin32Error() ==
