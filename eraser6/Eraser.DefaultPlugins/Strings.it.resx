@@ -130,13 +130,13 @@
     <value>Il metodo richiede di avere almeno un passo definito.</value>
   </data>
   <data name="The pass constant cannot be displayed as text because it contains invalid characters." xml:space="preserve">
-    <value>Il passo costante non può essere mostrato come testo perchè contiene caratteri non validi.</value>
+    <value>La costante di passo non può essere mostrata come testo perchè contiene caratteri non validi.</value>
   </data>
   <data name="Eraser" xml:space="preserve">
     <value>Eraser</value>
   </data>
   <data name="The pass constant must not be empty." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>La costante di passo non deve essere vuota.</value>
   </data>
   <data name="The input text is invalid for the current data type. Valid hexadecimal characters are the digits 0-9 and letters A-F" xml:space="preserve">
     <value>Il valore indicato non è valido per il tipo di dato. I caratteri esadecimali validi sono i numerii compresi fra 0 e 9 e le lettere fra A e F</value>
@@ -157,7 +157,7 @@
     <value>La cartella {0} non può essere cancellata perhcè non è vuota.</value>
   </data>
   <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Non è stato possibile pulire il file {0} perchè i permessi su di esso ne impediscono l'accesso.</value>
   </data>
   <data name="The file {0} is currently in use and cannot be removed." xml:space="preserve">
     <value>Il file {0} è attualmente in uso e non può essere rimosso.</value>
