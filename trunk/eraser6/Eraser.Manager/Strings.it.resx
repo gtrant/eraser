@@ -124,10 +124,10 @@
     <value>(Untranslated)</value>
   </data>
   <data name="The drive {0} has System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il disco {0} ha il System Restore o la copia Volume Shadow abilitata. Ciò può consentire che copie dei file memorizzati sul disco possano essere ripristinati e comporta problemi di sicurezza.</value>
   </data>
   <data name="The drive {0} has disk quotas active. This will prevent the complete erasure of unused space and may pose a security concern." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Il disco {0} ha il disk quota attivo. Ciò impedisce la pulitura completa dello spazio non usato e comporta problemi di sicurezza.</value>
   </data>
   <data name="Searching for files' cluster tips..." xml:space="preserve">
     <value>Ricerca dei cluster tips dei files...</value>
@@ -142,7 +142,7 @@
     <value>Pulizia dello spazioni non usato...</value>
   </data>
   <data name="Old resident file system table files" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Vecchia tabella di sistema dei file residenti</value>
   </data>
   <data name="Removing temporary files..." xml:space="preserve">
     <value>Rimozione files temporanei...</value>
@@ -163,10 +163,10 @@
     <value>Il file {0} non può essere pulito perchè i permessi su di esso ne impediscono l'accesso.</value>
   </data>
   <data name="(locked by {0})" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>(impegnata da {0})</value>
   </data>
   <data name="Could not force closure of file \&quot;{0}\&quot; {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Impossibile forzare la chiusura del file \"{0}\" {1}</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
     <value>Rimozione cartelle...</value>
@@ -202,7 +202,7 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Could not load the plugin {0}.\n\nThe error returned was: {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Impossibile caricare il plugin {0}.\n\nL'errore ricevuto è stato: {1}</value>
   </data>
   <data name="Eraser" xml:space="preserve">
     <value>(Untranslated)</value>
@@ -265,13 +265,13 @@
     <value>Un tipo non valido è stato trovato durante il caricamento della pianificazione dell'operazione</value>
   </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>{0} e {1} altri target</value>
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">
     <value>Spazio disco inutilizzato ({0})</value>
   </data>
   <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Impossibile pulire file e sottocartelle in {0} a causa di {1}</value>
   </data>
   <data name="Recycle Bin" xml:space="preserve">
     <value>Cestino</value>
