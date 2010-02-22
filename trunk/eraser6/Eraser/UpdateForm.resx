@@ -117,636 +117,489 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="updateListDownloader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="updatesLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>UpdateForm</value>
   </data>
-  <data name="updatesLvNameCol.Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="updatesLvNameCol.Width" type="System.Int32, mscorlib">
-    <value>150</value>
+  <data name="&gt;&gt;installingPnl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="updatesLvVersionCol.Text" xml:space="preserve">
     <value>Version</value>
   </data>
-  <data name="updatesLvVersionCol.Width" type="System.Int32, mscorlib">
-    <value>75</value>
+  <data name="&gt;&gt;downloadingLv.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="updatesLvPublisherCol.Text" xml:space="preserve">
-    <value>Publisher</value>
+  <data name="&gt;&gt;installingLbl.Name" xml:space="preserve">
+    <value>installingLbl</value>
   </data>
-  <data name="updatesLvPublisherCol.Width" type="System.Int32, mscorlib">
-    <value>90</value>
-  </data>
-  <data name="updatesLvFilesizeCol.Text" xml:space="preserve">
-    <value>Size</value>
-  </data>
-  <data name="updatesLvFilesizeCol.Width" type="System.Int32, mscorlib">
-    <value>80</value>
+  <data name="&gt;&gt;installingLbl.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="updatesLv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 47</value>
+  <data name="downloadingLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 9</value>
   </data>
-  <data name="updatesLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>422, 186</value>
+  <data name="installingLv.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 47</value>
+  </data>
+  <data name="installingPnl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="progressProgressLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="updatesPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="updatesLv.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;updatesLv.Name" xml:space="preserve">
-    <value>updatesLv</value>
-  </data>
-  <data name="&gt;&gt;updatesLv.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesLv.Parent" xml:space="preserve">
-    <value>updatesPanel</value>
-  </data>
-  <data name="&gt;&gt;updatesLv.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="updatesBtn.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="updatesBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>357, 239</value>
-  </data>
-  <data name="updatesBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="updatesBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="updatesBtn.Text" xml:space="preserve">
-    <value>Install</value>
-  </data>
-  <data name="&gt;&gt;updatesBtn.Name" xml:space="preserve">
-    <value>updatesBtn</value>
-  </data>
-  <data name="&gt;&gt;updatesBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesBtn.Parent" xml:space="preserve">
-    <value>updatesPanel</value>
-  </data>
-  <data name="&gt;&gt;updatesBtn.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="updatesLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="updatesLbl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 18pt</value>
-  </data>
-  <data name="updatesLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 9</value>
-  </data>
-  <data name="updatesLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 32</value>
-  </data>
-  <data name="updatesLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="updatesLbl.Text" xml:space="preserve">
-    <value>Available Updates</value>
-  </data>
-  <data name="&gt;&gt;updatesLbl.Name" xml:space="preserve">
-    <value>updatesLbl</value>
-  </data>
-  <data name="&gt;&gt;updatesLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesLbl.Parent" xml:space="preserve">
-    <value>updatesPanel</value>
-  </data>
-  <data name="&gt;&gt;updatesLbl.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="updatesPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="updatesPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="updatesPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 274</value>
-  </data>
-  <data name="updatesPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="updatesPanel.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;updatesPanel.Name" xml:space="preserve">
-    <value>updatesPanel</value>
-  </data>
-  <data name="&gt;&gt;updatesPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;updatesPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="progressCancelBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>357, 239</value>
-  </data>
-  <data name="progressCancelBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="progressCancelBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="progressCancelBtn.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;progressCancelBtn.Name" xml:space="preserve">
-    <value>progressCancelBtn</value>
-  </data>
-  <data name="&gt;&gt;progressCancelBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;progressCancelBtn.Parent" xml:space="preserve">
-    <value>progressPanel</value>
-  </data>
-  <data name="&gt;&gt;progressCancelBtn.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="progressExplainLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 47</value>
+  <data name="&gt;&gt;progressPb.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="progressExplainLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>417, 64</value>
   </data>
-  <data name="progressExplainLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="progressLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="progressExplainLbl.Text" xml:space="preserve">
-    <value>Eraser is connecting to the Update server and retrieving a list of available updates.</value>
-  </data>
-  <data name="&gt;&gt;progressExplainLbl.Name" xml:space="preserve">
-    <value>progressExplainLbl</value>
-  </data>
-  <data name="&gt;&gt;progressExplainLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;progressExplainLbl.Parent" xml:space="preserve">
-    <value>progressPanel</value>
-  </data>
-  <data name="&gt;&gt;progressExplainLbl.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="progressProgressLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="progressProgressLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="progressProgressLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 207</value>
-  </data>
-  <data name="progressProgressLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 19</value>
-  </data>
-  <data name="progressProgressLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="progressProgressLbl.Text" xml:space="preserve">
-    <value>Downloading update list...</value>
+  <data name="&gt;&gt;updatesLbl.Name" xml:space="preserve">
+    <value>updatesLbl</value>
   </data>
   <data name="progressProgressLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleLeft</value>
   </data>
-  <data name="&gt;&gt;progressProgressLbl.Name" xml:space="preserve">
-    <value>progressProgressLbl</value>
-  </data>
-  <data name="&gt;&gt;progressProgressLbl.Type" xml:space="preserve">
+  <data name="&gt;&gt;downloadingOverallLbl.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;progressProgressLbl.Parent" xml:space="preserve">
-    <value>progressPanel</value>
-  </data>
-  <data name="&gt;&gt;progressProgressLbl.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="progressPb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="progressPb.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="progressPb.Location" type="System.Drawing.Point, System.Drawing">
     <value>15, 180</value>
   </data>
-  <data name="progressPb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>417, 24</value>
+  <data name="installingPnl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>444, 274</value>
+  </data>
+  <data name="&gt;&gt;progressPanel.Name" xml:space="preserve">
+    <value>progressPanel</value>
+  </data>
+  <data name="&gt;&gt;downloadingLvColAmount.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;installingLvStatusCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="progressPb.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;progressPb.Name" xml:space="preserve">
-    <value>progressPb</value>
+  <data name="updatesPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;progressPb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;updatesLvFilesizeCol.Name" xml:space="preserve">
+    <value>updatesLvFilesizeCol</value>
   </data>
-  <data name="&gt;&gt;progressPb.Parent" xml:space="preserve">
-    <value>progressPanel</value>
+  <data name="downloadingOverallPb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;progressPb.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="updatesBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
-  <data name="progressLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="updatesImageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACk
+        EwAAAk1TRnQBSQFMAgEBBAEAAQwBAAEMAQABEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        AwABIAMAAQEBAAEgBgABIP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8ANgADOgFfA1YBrwFj
+        AlgB7wFRAgEB/wFjAlgB7wNWAa8DOgFfJAADOgFfA1YBrwFYAWMBWAHvAQEBUQEBAf8BWAFjAVgB7wNW
+        Aa8DOgFfJAADOgFfA1YBrwFQAWMBUAHvAQEBVgEBAf8BUAFjAVAB7wNWAa8DOgFfJAADOgFfA1YBrwJY
+        AWMB7wIbAawB/wJVAWYB8QNWAa8DOgFfHAADGAEfAV4CWwHPAVECAQH/AVECAQH/AVECAQH/AbICagH/
+        AVECAQH/AVECAQH/AVECAQH/AV4CWwHPAxgBHxQAAxgBHwFbAV4BWwHPAQEBUQEBAf8BAQFRAQEB/wEB
+        AVEBAQH/AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BWwFeAVsBzwMYAR8UAAMYAR8BWwFe
+        AVsBzwEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/
+        AVsBXgFbAc8DGAEfFAADGAEfAlsBXgHPAgEBmQH/AgEBmQH/AoEBzAn/AisBswH/AgEBmQH/AlsBXgHP
+        AxgBHxAAAxgBHwFjAlgB7wFRAgEB/wFRAgEB/wFRAgEB/wHFAp8F/wHFAp8B/wFRAgEB/wFRAgEB/wFR
+        AgEB/wFjAlgB7wMYAR8MAAMYAR8BWAFjAVgB7wEBAVEBAQH/AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/
+        AQEBUQEBAf8BjwG8AY8B/wEBAVoBAQH/AQEBUQEBAf8BAQFRAQEB/wFYAWMBWAHvAxgBHwwAAxgBHwFQ
+        AWMBUAHvAQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEB
+        Af8BAQFWAQEB/wEBAVYBAQH/AVABYwFQAe8DGAEfDAADGAEfAlgBYwHvAgEBmQH/AgEBmQH/AgEBmQH/
+        ArAB3wn/AoEBzAH/AgEBmQH/AgEBmQH/AlgBYwHvAxgBHwwAAV4CWwHPAVECAQH/AVECAQH/AVECAQH/
+        AakCWg3/AakCWgH/AVECAQH/AVECAQH/AVECAQH/AV4CWwHPDAABWwFeAVsBzwEBAVEBAQH/AQEBUQEB
+        Af8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFRAQEB/wG/AdkBvwH/Ac8B4gHPAf8BAQFaAQEB/wEB
+        AVEBAQH/AQEBUQEBAf8BWwFeAVsBzwwAAVsBXgFbAc8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BJQGG
+        ASUB/wFbAaYBWwH/ASUBhgElAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/
+        AVsBXgFbAc8MAAJbAV4BzwIBAZkB/wIBAZkB/wIBAZkB/wIBAZkB/wIbAawB/wKwAd8B/wKgAdkB/wIB
+        AZ8B/wIBAZkB/wIBAZkB/wIBAZkB/wJbAV4BzwgAAzoBXwFRAgEB/wFRAgEB/wFRAgEB/wGfAkoV/wGf
+        AkoB/wFRAgEB/wFRAgEB/wFRAgEB/wM6AV8EAAM6AV8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFR
+        AQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFRAQEB/wG/AdkBvwX/Ae8B9QHvAf8BGgGCARoB/wEBAVEBAQH/
+        AQEBUQEBAf8DOgFfBAADOgFfAQEBVgEBAf8BAQFWAQEB/wEBAVcBAQH/AUABlgFAAf8B3QHrAd0B/wP+
+        Af8B+gH8AfoB/wEsAYoBLAH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wM6
+        AV8EAAM6AV8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZ
+        Af8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8DOgFfBAADVgGvAVECAQH/AVECAQH/AYICGgH/AfUC7xX/
+        AfUC7wH/AYICGgH/AVECAQH/AVECAQH/A1YBrwQAA1YBrwEBAVEBAQH/AQEBWgEBAf8BKgGMASoB/wEq
+        AYwBKgH/ASoBjAEqAf8BKgGMASoB/wEqAYwBKgH/Ac8B4gHPCf8B7wH1Ae8B/wEaAYIBGgH/AQEBUQEB
+        Af8DVgGvBAADVgGvAQEBVgEBAf8BAQFWAQEB/wFkAawBZAH/AfsB/QH7Af8D/gH/AfoB/AH6Bf8B2gHp
+        AdoB/wEYAW4BGAH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8DVgGvBAADVgGvAgEBmQH/
+        AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/AisBswn/AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/
+        A1YBrwQAAWMCWAHvAVECAQH/AWQCCgH/AfUC7x3/AfUC7wH/AWQCCgH/AVECAQH/AWMCWAHvBAABWAFj
+        AVgB7wEBAVEBAQH/ASoBjAEqJf8B7wH1Ae8B/wEaAYIBGgH/AVgBYwFYAe8EAAFQAWMBUAHvAQEBVgEB
+        Af8BAQFWAQEB/wHXAecB1wH/Af0B/gH9Af8B2QHoAdkB/wFEAZgBRAH/AegB8QHoAf8B/QH+Af0B/wG9
+        AdcBvQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BUAFjAVAB7wQAAlgBYwHvAgEBmQH/
+        AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/AisBswn/AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/
+        AlgBYwHvBAABUQIBAf8BUQIBAf8BvAKQAf8B2QLAAf8B2QLAAf8B4gLPDf8B4gLPAf8B2QLAAf8B2QLA
+        Af8BvAKQAf8BUQIBAf8BUQIBAf8EAAEBAVEBAQH/AQEBUQEBAf8BKgGMASop/wHfAewB3wH/AQEBUQEB
+        Af8EAAEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wFaAaYBWgH/AWkBrwFpAf8BAQFfAQEB/wEBAVYBAQH/
+        AUUBmQFFAf8B+wH9AfsB/wH9Af4B/QH/AYsBuQGLAf8BAQFYAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFW
+        AQEB/wQAAgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/AisBswn/AisBswH/AgEBmQH/
+        AgEBmQH/AgEBmQH/AgEBmQH/AgEBmQH/BAABYwJYAe8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8BjAIq
+        Df8BjAIqAf8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8BYwJYAe8EAAFYAWMBWAHvAQEBUQEBAf8BKgGM
+        ASol/wHvAfUB7wH/ARsBgwEbAf8BWAFjAVgB7wQAAVABYwFQAe8BAQFWAQEB/wEBAVYBAQH/AQEBVgEB
+        Af8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wGWAcABlgH/Af0B/gH9Af8B/AH9AfwB/wFg
+        AakBYAH/AQEBVgEBAf8BAQFWAQEB/wFQAWMBUAHvBAACWAFjAe8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZ
+        Af8CAQGZAf8CKwGzCf8CKwGzAf8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8CWAFjAe8EAANWAa8BUQIB
+        Af8BUQIBAf8BUQIBAf8BUQIBAf8BjAIqDf8BjAIqAf8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8DVgGv
+        BAADVgGvAQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AQEBUQEB
+        Af8BvwHZAb8J/wHPAeIBzwH/AQEBWwEBAf8BAQFRAQEB/wNWAa8EAANWAa8BAQFWAQEB/wEBAVYBAQH/
+        AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAV0BAQH/Ab4B2AG+Af8D/gH/
+        Ae4B9QHuAf8BLQGLAS0B/wEBAVYBAQH/A1YBrwQAA1YBrwIBAZkB/wIBAZkB/wIBAZkB/wIBAZkB/wIB
+        AZkB/wJbAcYJ/wIrAbMB/wIBAZkB/wIBAZkB/wIBAZkB/wIBAZkB/wNWAa8EAAM6AV8BUQIBAf8BUQIB
+        Af8BUQIBAf8BUQIBAf8BjAIqDf8BjAIqAf8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8DOgFfBAADOgFf
+        AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BvwHZ
+        Ab8F/wHPAeIBzwH/AQEBWwEBAf8BAQFRAQEB/wEBAVEBAQH/AzoBXwQAAzoBXwEBAVYBAQH/AQEBVgEB
+        Af8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BBQFjAQUB/wHR
+        AeMB0QH/AfoB/AH6Af8BagGvAWoB/wEBAVYBAQH/AzoBXwQAAzoBXwIBAZkB/wIBAZkB/wIBAZkB/wIB
+        AZkB/wIBAZkB/wKBAcwJ/wIrAbMB/wIBAZkB/wIBAZkB/wIBAZkB/wIBAZkB/wM6AV8IAAFeAlsBzwFR
+        AgEB/wFRAgEB/wFRAgEB/wGMAioN/wGMAioB/wFRAgEB/wFRAgEB/wFRAgEB/wFeAlsBzwwAAVsBXgFb
+        Ac8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BvwHZAb8B/wHP
+        AeIBzwH/AQEBWwEBAf8BAQFRAQEB/wEBAVEBAQH/AVsBXgFbAc8MAAFbAV4BWwHPAQEBVgEBAf8BAQFW
+        AQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEsAYoBLAH/
+        AWkBrwFpAf8BLQGLAS0B/wFbAV4BWwHPDAACWwFeAc8CAQGZAf8CAQGZAf8CAQGZAf8CAQGZAf8CgQHM
+        Cf8CWwHGAf8CAQGZAf8CAQGZAf8CAQGZAf8CWwFeAc8MAAMZASABYwJYAe8BUQIBAf8BUQIBAf8BjAIq
+        Df8BjAIqAf8BUQIBAf8BUQIBAf8BYwJYAe8DGQEgDAADGQEgAVgBYwFYAe8BAQFRAQEB/wEBAVEBAQH/
+        AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AY8BvAGPAf8BAQFbAQEB/wEBAVEBAQH/AQEBUQEBAf8BWAFj
+        AVgB7wMZASAMAAMZASABUAFjAVAB7wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEB
+        Af8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BAQFWAQEB/wFQAWMBUAHvAxkBIAwAAxkBIAJYAWMB7wIB
+        AZkB/wIBAZkB/wIBAZkB/wKBAcwJ/wKBAcwB/wIBAZkB/wIBAZkB/wJYAWMB7wMZASAQAAMZASABXgJb
+        Ac8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8BUQIBAf8BXgJbAc8DGQEgFAADGQEg
+        AVsBXgFbAc8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFRAQEB/wEBAVEBAQH/AQEBUQEBAf8BAQFR
+        AQEB/wFbAV4BWwHPAxkBIBQAAxkBIAFbAV4BWwHPAQEBVgEBAf8BAQFWAQEB/wEBAVYBAQH/AQEBVgEB
+        Af8BAQFWAQEB/wEBAVYBAQH/AQEBVgEBAf8BWwFeAVsBzwMZASAUAAMZASACWwFeAc8CAQGZAf8CAQGZ
+        Af8CKwGzAf8CgQHMAf8CgQHMAf8CKwGzAf8CAQGZAf8CWwFeAc8DGQEgHAABOwI6AWABVgJVAbABYwJY
+        Ae8BUQIBAf8BYwJYAe8BVgJVAbABOwI6AWAkAAE6ATsBOgFgAVUBVgFVAbABWAFjAVgB7wEBAVEBAQH/
+        AVgBYwFYAe8BVQFWAVUBsAE6ATsBOgFgJAABOgE7AToBYAFVAVYBVQGwAVABYwFQAe8BAQFWAQEB/wFQ
+        AWMBUAHvAVUBVgFVAbABOgE7AToBYCQAAjoBOwFgAlUBVgGwAlgBYwHvAgEBmQH/AlgBYwHvAlUBVgGw
+        AjoBOwFg/wARAAFCAU0BPgcAAT4DAAEoAwABQAMAASADAAEBAQABAQYAAQEWAAP/gQAB+AEPAfgBDwH4
+        AQ8B+AEPAeABAwHgAQMB4AEDAeABAwHAAQEBwAEBAcABAQHAAQEBwAEBAcABAQHAAQEBwAEBAYABAAGA
+        AQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGA
+        AQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAHAAQEBwAEBAcABAQHA
+        AQEBwAEBAcABAQHAAQEBwAEBAeABAwHgAQMB4AEDAeABAwH4AQ8B+AEPAfgBDwH4AQ8I/ws=
+</value>
   </data>
-  <data name="progressLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="progressLbl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 18pt</value>
-  </data>
-  <data name="progressLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="progressLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 9</value>
-  </data>
-  <data name="progressLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 32</value>
-  </data>
-  <data name="progressLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="progressLbl.Text" xml:space="preserve">
-    <value>Checking for updates...</value>
-  </data>
-  <data name="progressLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleLeft</value>
-  </data>
-  <data name="&gt;&gt;progressLbl.Name" xml:space="preserve">
-    <value>progressLbl</value>
-  </data>
-  <data name="&gt;&gt;progressLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;progressLbl.Parent" xml:space="preserve">
-    <value>progressPanel</value>
-  </data>
-  <data name="&gt;&gt;progressLbl.ZOrder" xml:space="preserve">
+  <data name="installingPnl.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="progressPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="progressPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="progressPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 274</value>
-  </data>
-  <data name="progressPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;progressPanel.Name" xml:space="preserve">
-    <value>progressPanel</value>
-  </data>
-  <data name="&gt;&gt;progressPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;progressPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;progressPanel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <metadata name="downloader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>192, 17</value>
-  </metadata>
-  <data name="downloadingCancelBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="downloadingCancelBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>357, 239</value>
-  </data>
-  <data name="downloadingCancelBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="downloadingCancelBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="downloadingCancelBtn.Text" xml:space="preserve">
-    <value>Cancel</value>
-  </data>
-  <data name="&gt;&gt;downloadingCancelBtn.Name" xml:space="preserve">
-    <value>downloadingCancelBtn</value>
-  </data>
-  <data name="&gt;&gt;downloadingCancelBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingCancelBtn.Parent" xml:space="preserve">
-    <value>downloadingPnl</value>
-  </data>
-  <data name="&gt;&gt;downloadingCancelBtn.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="downloadingOverallPb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="downloadingOverallPb.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 203</value>
-  </data>
-  <data name="downloadingOverallPb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 24</value>
-  </data>
-  <data name="downloadingOverallPb.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallPb.Name" xml:space="preserve">
-    <value>downloadingOverallPb</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallPb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallPb.Parent" xml:space="preserve">
-    <value>downloadingPnl</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallPb.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="downloadingOverallLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="downloadingOverallLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 181</value>
-  </data>
-  <data name="downloadingOverallLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 19</value>
-  </data>
-  <data name="downloadingOverallLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="downloadingOverallLbl.Text" xml:space="preserve">
-    <value>Overall Progress:</value>
-  </data>
-  <data name="downloadingOverallLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallLbl.Name" xml:space="preserve">
-    <value>downloadingOverallLbl</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallLbl.Parent" xml:space="preserve">
-    <value>downloadingPnl</value>
-  </data>
-  <data name="&gt;&gt;downloadingOverallLbl.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="downloadingItemPb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="downloadingItemPb.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 150</value>
-  </data>
-  <data name="downloadingItemPb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 24</value>
-  </data>
-  <data name="downloadingItemPb.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;downloadingItemPb.Name" xml:space="preserve">
-    <value>downloadingItemPb</value>
-  </data>
-  <data name="&gt;&gt;downloadingItemPb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingItemPb.Parent" xml:space="preserve">
-    <value>downloadingPnl</value>
-  </data>
-  <data name="&gt;&gt;downloadingItemPb.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="downloadingItemLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="downloadingItemLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 128</value>
-  </data>
-  <data name="downloadingItemLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>423, 19</value>
-  </data>
-  <data name="downloadingItemLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="downloadingItemLbl.Text" xml:space="preserve">
-    <value>Downloading: </value>
-  </data>
-  <data name="downloadingItemLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleCenter</value>
-  </data>
-  <data name="&gt;&gt;downloadingItemLbl.Name" xml:space="preserve">
-    <value>downloadingItemLbl</value>
-  </data>
-  <data name="&gt;&gt;downloadingItemLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingItemLbl.Parent" xml:space="preserve">
-    <value>downloadingPnl</value>
-  </data>
   <data name="&gt;&gt;downloadingItemLbl.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="downloadingLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="&gt;&gt;updatesLv.Name" xml:space="preserve">
+    <value>updatesLv</value>
   </data>
-  <data name="downloadingLvColName.Text" xml:space="preserve">
-    <value>Name</value>
+  <data name="&gt;&gt;updatesLbl.Parent" xml:space="preserve">
+    <value>updatesPanel</value>
   </data>
-  <data name="downloadingLvColName.Width" type="System.Int32, mscorlib">
-    <value>280</value>
+  <data name="updatesLv.Size" type="System.Drawing.Size, System.Drawing">
+    <value>422, 186</value>
   </data>
-  <data name="downloadingLvColAmount.Text" xml:space="preserve">
-    <value>Amount</value>
+  <data name="&gt;&gt;progressLbl.Name" xml:space="preserve">
+    <value>progressLbl</value>
   </data>
-  <data name="downloadingLvColAmount.Width" type="System.Int32, mscorlib">
-    <value>110</value>
-  </data>
-  <data name="downloadingLv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 47</value>
-  </data>
-  <data name="downloadingLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 78</value>
-  </data>
-  <metadata name="updatesImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>309, 17</value>
-  </metadata>
-  <data name="updatesImageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACe
-        EwAAAk1TRnQBSQFMAgEBBAEAAQwBAAEMAQABEAEAARABAAT/ASEBAAj/AUIBTQE2BwABNgMAASgDAAFA
-        AwABIAMAAQEBAAEgBgABIP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AP8ANgADOQFfA1QBrwFi
-        AlUB7wFQAgAB/wFiAlUB7wNUAa8DOQFfJAADOQFfA1QBrwFVAWIBVQHvAQABUAEAAf8BVQFiAVUB7wNU
-        Aa8DOQFfJAADOQFfA1QBrwFOAWIBTgHvAQABVQEAAf8BTgFiAU4B7wNUAa8DOQFfJAADOQFfA1QBrwJV
-        AWIB7wIaAawB/wJTAWQB8QNUAa8DOQFfHAADFgEfAVwCWQHPAVACAAH/AVACAAH/AVACAAH/AbICaQH/
-        AVACAAH/AVACAAH/AVACAAH/AVwCWQHPAxYBHxQAAxYBHwFZAVwBWQHPAQABUAEAAf8BAAFQAQAB/wEA
-        AVABAAH/AQABUAEAAf8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BWQFcAVkBzwMWAR8UAAMWAR8BWQFc
-        AVkBzwEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/
-        AVkBXAFZAc8DFgEfFAADFgEfAlkBXAHPAgABmQH/AgABmQH/AoABzAn/AioBswH/AgABmQH/AlkBXAHP
-        AxYBHxAAAxYBHwFiAlUB7wFQAgAB/wFQAgAB/wFQAgAB/wHFAp8F/wHFAp8B/wFQAgAB/wFQAgAB/wFQ
-        AgAB/wFiAlUB7wMWAR8MAAMWAR8BVQFiAVUB7wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wEAAVABAAH/
-        AQABUAEAAf8BjwG8AY8B/wEAAVkBAAH/AQABUAEAAf8BAAFQAQAB/wFVAWIBVQHvAxYBHwwAAxYBHwFO
-        AWIBTgHvAQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEA
-        Af8BAAFVAQAB/wEAAVUBAAH/AU4BYgFOAe8DFgEfDAADFgEfAlUBYgHvAgABmQH/AgABmQH/AgABmQH/
-        ArAB3wn/AoABzAH/AgABmQH/AgABmQH/AlUBYgHvAxYBHwwAAVwCWQHPAVACAAH/AVACAAH/AVACAAH/
-        AakCWQ3/AakCWQH/AVACAAH/AVACAAH/AVACAAH/AVwCWQHPDAABWQFcAVkBzwEAAVABAAH/AQABUAEA
-        Af8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wG/AdkBvwH/Ac8B4gHPAf8BAAFZAQAB/wEA
-        AVABAAH/AQABUAEAAf8BWQFcAVkBzwwAAVkBXAFZAc8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BJAGG
-        ASQB/wFaAaYBWgH/ASQBhgEkAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/
-        AVkBXAFZAc8MAAJZAVwBzwIAAZkB/wIAAZkB/wIAAZkB/wIAAZkB/wIaAawB/wKwAd8B/wKgAdkB/wIA
-        AZ8B/wIAAZkB/wIAAZkB/wIAAZkB/wJZAVwBzwgAAzkBXwFQAgAB/wFQAgAB/wFQAgAB/wGfAkkV/wGf
-        AkkB/wFQAgAB/wFQAgAB/wFQAgAB/wM5AV8EAAM5AV8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BAAFQ
-        AQAB/wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wG/AdkBvwX/Ae8B9QHvAf8BGQGCARkB/wEAAVABAAH/
-        AQABUAEAAf8DOQFfBAADOQFfAQABVQEAAf8BAAFVAQAB/wEAAVYBAAH/AT8BlgE/Af8B3QHrAd0B/wP+
-        Af8B+gH8AfoB/wErAYoBKwH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wM5
-        AV8EAAM5AV8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZ
-        Af8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8DOQFfBAADVAGvAVACAAH/AVACAAH/AYICGQH/AfUC7xX/
-        AfUC7wH/AYICGQH/AVACAAH/AVACAAH/A1QBrwQAA1QBrwEAAVABAAH/AQABWQEAAf8BKQGMASkB/wEp
-        AYwBKQH/ASkBjAEpAf8BKQGMASkB/wEpAYwBKQH/Ac8B4gHPCf8B7wH1Ae8B/wEZAYIBGQH/AQABUAEA
-        Af8DVAGvBAADVAGvAQABVQEAAf8BAAFVAQAB/wFjAawBYwH/AfsB/QH7Af8D/gH/AfoB/AH6Bf8B2gHp
-        AdoB/wEXAW0BFwH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8DVAGvBAADVAGvAgABmQH/
-        AgABmQH/AgABmQH/AgABmQH/AgABmQH/AioBswn/AgABmQH/AgABmQH/AgABmQH/AgABmQH/AgABmQH/
-        A1QBrwQAAWICVQHvAVACAAH/AWMCCQH/AfUC7x3/AfUC7wH/AWMCCQH/AVACAAH/AWICVQHvBAABVQFi
-        AVUB7wEAAVABAAH/ASkBjAEpJf8B7wH1Ae8B/wEZAYIBGQH/AVUBYgFVAe8EAAFOAWIBTgHvAQABVQEA
-        Af8BAAFVAQAB/wHXAecB1wH/Af0B/gH9Af8B2QHoAdkB/wFDAZgBQwH/AegB8QHoAf8B/QH+Af0B/wG9
-        AdcBvQH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BTgFiAU4B7wQAAlUBYgHvAgABmQH/
-        AgABmQH/AgABmQH/AgABmQH/AgABmQH/AioBswn/AgABmQH/AgABmQH/AgABmQH/AgABmQH/AgABmQH/
-        AlUBYgHvBAABUAIAAf8BUAIAAf8BvAKQAf8B2QLAAf8B2QLAAf8B4gLPDf8B4gLPAf8B2QLAAf8B2QLA
-        Af8BvAKQAf8BUAIAAf8BUAIAAf8FAAFQAQAB/wEAAVABAAH/ASkBjAEpKf8B3wHsAd8B/wEAAVABAAH/
-        BQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AVkBpgFZAf8BaAGvAWgB/wEAAV4BAAH/AQABVQEAAf8BRAGZ
-        AUQB/wH7Af0B+wH/Af0B/gH9Af8BiwG5AYsB/wEAAVcBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/
-        BgABmQH/AgABmQH/AgABmQH/AgABmQH/AgABmQH/AgABmQH/AioBswn/AioBswH/AgABmQH/AgABmQH/
-        AgABmQH/AgABmQH/AgABmQH/BAABYgJVAe8BUAIAAf8BUAIAAf8BUAIAAf8BUAIAAf8BjAIpDf8BjAIp
-        Af8BUAIAAf8BUAIAAf8BUAIAAf8BUAIAAf8BYgJVAe8EAAFVAWIBVQHvAQABUAEAAf8BKQGMASkl/wHv
-        AfUB7wH/ARoBgwEaAf8BVQFiAVUB7wQAAU4BYgFOAe8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFV
-        AQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wGWAcABlgH/Af0B/gH9Af8B/AH9AfwB/wFfAakBXwH/
-        AQABVQEAAf8BAAFVAQAB/wFOAWIBTgHvBAACVQFiAe8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZ
-        Af8CKgGzCf8CKgGzAf8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CVQFiAe8EAANUAa8BUAIAAf8BUAIA
-        Af8BUAIAAf8BUAIAAf8BjAIpDf8BjAIpAf8BUAIAAf8BUAIAAf8BUAIAAf8BUAIAAf8DVAGvBAADVAGv
-        AQABUAEAAf8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BvwHZ
-        Ab8J/wHPAeIBzwH/AQABWgEAAf8BAAFQAQAB/wNUAa8EAANUAa8BAAFVAQAB/wEAAVUBAAH/AQABVQEA
-        Af8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVwBAAH/Ab4B2AG+Af8D/gH/Ae4B9QHu
-        Af8BLAGLASwB/wEAAVUBAAH/A1QBrwQAA1QBrwIAAZkB/wIAAZkB/wIAAZkB/wIAAZkB/wIAAZkB/wJa
-        AcYJ/wIqAbMB/wIAAZkB/wIAAZkB/wIAAZkB/wIAAZkB/wNUAa8EAAM5AV8BUAIAAf8BUAIAAf8BUAIA
-        Af8BUAIAAf8BjAIpDf8BjAIpAf8BUAIAAf8BUAIAAf8BUAIAAf8BUAIAAf8DOQFfBAADOQFfAQABUAEA
-        Af8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BvwHZAb8F/wHP
-        AeIBzwH/AQABWgEAAf8BAAFQAQAB/wEAAVABAAH/AzkBXwQAAzkBXwEAAVUBAAH/AQABVQEAAf8BAAFV
-        AQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BBAFiAQQB/wHRAeMB0QH/
-        AfoB/AH6Af8BaQGvAWkB/wEAAVUBAAH/AzkBXwQAAzkBXwIAAZkB/wIAAZkB/wIAAZkB/wIAAZkB/wIA
-        AZkB/wKAAcwJ/wIqAbMB/wIAAZkB/wIAAZkB/wIAAZkB/wIAAZkB/wM5AV8IAAFcAlkBzwFQAgAB/wFQ
-        AgAB/wFQAgAB/wGMAikN/wGMAikB/wFQAgAB/wFQAgAB/wFQAgAB/wFcAlkBzwwAAVkBXAFZAc8BAAFQ
-        AQAB/wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BvwHZAb8B/wHPAeIBzwH/
-        AQABWgEAAf8BAAFQAQAB/wEAAVABAAH/AVkBXAFZAc8MAAFZAVwBWQHPAQABVQEAAf8BAAFVAQAB/wEA
-        AVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wErAYoBKwH/AWgBrwFo
-        Af8BLAGLASwB/wFZAVwBWQHPDAACWQFcAc8CAAGZAf8CAAGZAf8CAAGZAf8CAAGZAf8CgAHMCf8CWgHG
-        Af8CAAGZAf8CAAGZAf8CAAGZAf8CWQFcAc8MAAMXASABYgJVAe8BUAIAAf8BUAIAAf8BjAIpDf8BjAIp
-        Af8BUAIAAf8BUAIAAf8BYgJVAe8DFwEgDAADFwEgAVUBYgFVAe8BAAFQAQAB/wEAAVABAAH/AQABUAEA
-        Af8BAAFQAQAB/wEAAVABAAH/AY8BvAGPAf8BAAFaAQAB/wEAAVABAAH/AQABUAEAAf8BVQFiAVUB7wMX
-        ASAMAAMXASABTgFiAU4B7wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFV
-        AQAB/wEAAVUBAAH/AQABVQEAAf8BAAFVAQAB/wFOAWIBTgHvAxcBIAwAAxcBIAJVAWIB7wIAAZkB/wIA
-        AZkB/wIAAZkB/wKAAcwJ/wKAAcwB/wIAAZkB/wIAAZkB/wJVAWIB7wMXASAQAAMXASABXAJZAc8BUAIA
-        Af8BUAIAAf8BUAIAAf8BUAIAAf8BUAIAAf8BUAIAAf8BUAIAAf8BXAJZAc8DFwEgFAADFwEgAVkBXAFZ
-        Ac8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wEAAVABAAH/AQABUAEAAf8BAAFQAQAB/wFZ
-        AVwBWQHPAxcBIBQAAxcBIAFZAVwBWQHPAQABVQEAAf8BAAFVAQAB/wEAAVUBAAH/AQABVQEAAf8BAAFV
-        AQAB/wEAAVUBAAH/AQABVQEAAf8BWQFcAVkBzwMXASAUAAMXASACWQFcAc8CAAGZAf8CAAGZAf8CKgGz
-        Af8CgAHMAf8CgAHMAf8CKgGzAf8CAAGZAf8CWQFcAc8DFwEgHAABOgI5AWABVQJTAbABYgJVAe8BUAIA
-        Af8BYgJVAe8BVQJTAbABOgI5AWAkAAE5AToBOQFgAVMBVQFTAbABVQFiAVUB7wEAAVABAAH/AVUBYgFV
-        Ae8BUwFVAVMBsAE5AToBOQFgJAABOQE6ATkBYAFTAVUBUwGwAU4BYgFOAe8BAAFVAQAB/wFOAWIBTgHv
-        AVMBVQFTAbABOQE6ATkBYCQAAjkBOgFgAlMBVQGwAlUBYgHvAgABmQH/AlUBYgHvAlMBVQGwAjkBOgFg
-        /wARAAFCAU0BPgcAAT4DAAEoAwABQAMAASADAAEBAQABAQYAAQEWAAP/gQAB+AEPAfgBDwH4AQ8B+AEP
-        AeABAwHgAQMB4AEDAeABAwHAAQEBwAEBAcABAQHAAQEBwAEBAcABAQHAAQEBwAEBAYABAAGAAQABgAEA
-        AYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEA
-        AYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAGAAQABgAEAAYABAAHAAQEBwAEBAcABAQHAAQEBwAEB
-        AcABAQHAAQEBwAEBAeABAwHgAQMB4AEDAeABAwH4AQ8B+AEPAfgBDwH4AQ8I/ws=
-</value>
-  </data>
-  <data name="downloadingLv.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;downloadingLv.Name" xml:space="preserve">
-    <value>downloadingLv</value>
-  </data>
-  <data name="&gt;&gt;downloadingLv.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingLv.Parent" xml:space="preserve">
-    <value>downloadingPnl</value>
-  </data>
-  <data name="&gt;&gt;downloadingLv.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="progressCancelBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>357, 239</value>
   </data>
   <data name="downloadingLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="downloadingLbl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 18pt</value>
+  <data name="updatesLv.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 47</value>
   </data>
-  <data name="downloadingLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="&gt;&gt;updatesLvNameCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="downloadingLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 9</value>
-  </data>
-  <data name="downloadingLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>251, 32</value>
-  </data>
-  <data name="downloadingLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="downloadingLbl.Text" xml:space="preserve">
-    <value>Downloading Updates</value>
-  </data>
-  <data name="&gt;&gt;downloadingLbl.Name" xml:space="preserve">
-    <value>downloadingLbl</value>
-  </data>
-  <data name="&gt;&gt;downloadingLbl.Type" xml:space="preserve">
+  <data name="&gt;&gt;installingLbl.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;downloadingLbl.Parent" xml:space="preserve">
+  <data name="downloadingLvColName.Width" type="System.Int32, mscorlib">
+    <value>280</value>
+  </data>
+  <data name="updatesLbl.Text" xml:space="preserve">
+    <value>Available Updates</value>
+  </data>
+  <data name="&gt;&gt;installingLv.Parent" xml:space="preserve">
+    <value>installingPnl</value>
+  </data>
+  <data name="&gt;&gt;progressExplainLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingOverallLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="downloadingOverallLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="progressLbl.Text" xml:space="preserve">
+    <value>Checking for updates...</value>
+  </data>
+  <data name="updatesPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>444, 274</value>
+  </data>
+  <data name="&gt;&gt;progressProgressLbl.Name" xml:space="preserve">
+    <value>progressProgressLbl</value>
+  </data>
+  <data name="&gt;&gt;downloadingCancelBtn.Parent" xml:space="preserve">
     <value>downloadingPnl</value>
   </data>
-  <data name="&gt;&gt;downloadingLbl.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="installingLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="downloadingPnl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;updateListDownloader.Type" xml:space="preserve">
+    <value>System.ComponentModel.BackgroundWorker, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="updatesLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 9</value>
+  </data>
+  <data name="downloadingCancelBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>357, 239</value>
+  </data>
+  <data name="downloadingCancelBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="progressPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;updatesBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingItemLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="downloadingLvColAmount.Width" type="System.Int32, mscorlib">
+    <value>110</value>
+  </data>
+  <data name="&gt;&gt;progressCancelBtn.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="downloadingPnl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="downloadingPnl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 274</value>
+  <data name="&gt;&gt;downloadingLvColName.Name" xml:space="preserve">
+    <value>downloadingLvColName</value>
   </data>
   <data name="downloadingPnl.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="downloadingPnl.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="progressProgressLbl.Text" xml:space="preserve">
+    <value>Downloading update list...</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
+  <data name="&gt;&gt;updatesPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="downloadingOverallPb.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="downloadingOverallLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;downloadingItemLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;downloadingLbl.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;updatesLvVersionCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="progressLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="downloadingItemLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 128</value>
+  </data>
+  <data name="&gt;&gt;updatesLv.Parent" xml:space="preserve">
+    <value>updatesPanel</value>
+  </data>
+  <data name="updatesLvFilesizeCol.Width" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="updatesLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;downloadingItemLbl.Name" xml:space="preserve">
+    <value>downloadingItemLbl</value>
+  </data>
+  <data name="&gt;&gt;installingLvStatusCol.Name" xml:space="preserve">
+    <value>installingLvStatusCol</value>
+  </data>
+  <data name="&gt;&gt;downloadingCancelBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="updatesBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;progressCancelBtn.Parent" xml:space="preserve">
+    <value>progressPanel</value>
+  </data>
+  <data name="progressLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingItemLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;downloadingOverallLbl.Name" xml:space="preserve">
+    <value>downloadingOverallLbl</value>
+  </data>
+  <data name="installingLvStatusCol.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="installingLvNameCol.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="&gt;&gt;installingPnl.Name" xml:space="preserve">
+    <value>installingPnl</value>
+  </data>
+  <data name="&gt;&gt;downloadingOverallPb.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="installingLbl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 18pt</value>
+  </data>
+  <data name="downloadingItemLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>423, 19</value>
+  </data>
+  <data name="&gt;&gt;downloadingLv.Name" xml:space="preserve">
+    <value>downloadingLv</value>
+  </data>
+  <data name="&gt;&gt;downloadingOverallLbl.Parent" xml:space="preserve">
+    <value>downloadingPnl</value>
+  </data>
+  <data name="&gt;&gt;progressPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;progressLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="progressProgressLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="installingLv.Size" type="System.Drawing.Size, System.Drawing">
+    <value>417, 211</value>
+  </data>
+  <data name="downloadingLv.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 47</value>
+  </data>
+  <data name="updatesLvFilesizeCol.Text" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="progressCancelBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="downloadingOverallLbl.Text" xml:space="preserve">
+    <value>Overall Progress:</value>
+  </data>
+  <data name="updatesLvPublisherCol.Text" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="&gt;&gt;installer.Type" xml:space="preserve">
+    <value>System.ComponentModel.BackgroundWorker, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingPnl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>444, 274</value>
+  </data>
+  <data name="updatesLvNameCol.Width" type="System.Int32, mscorlib">
+    <value>150</value>
+  </data>
+  <data name="&gt;&gt;updatesImageList.Name" xml:space="preserve">
+    <value>updatesImageList</value>
   </data>
   <data name="&gt;&gt;downloadingPnl.Name" xml:space="preserve">
     <value>downloadingPnl</value>
   </data>
-  <data name="&gt;&gt;downloadingPnl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;updatesPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="updatesLvPublisherCol.Width" type="System.Int32, mscorlib">
+    <value>90</value>
+  </data>
+  <data name="&gt;&gt;updatesLv.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="updatesBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>357, 239</value>
+  </data>
+  <data name="updatesLvVersionCol.Width" type="System.Int32, mscorlib">
+    <value>75</value>
+  </data>
+  <data name="progressPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>444, 274</value>
+  </data>
+  <data name="&gt;&gt;updatesImageList.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingPnl.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="progressExplainLbl.Text" xml:space="preserve">
+    <value>Eraser is connecting to the Update server and retrieving a list of available updates.</value>
+  </data>
+  <data name="progressPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="progressLbl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 18pt</value>
+  </data>
+  <data name="progressLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="updatesPanel.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="downloadingCancelBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;downloader.Type" xml:space="preserve">
+    <value>System.ComponentModel.BackgroundWorker, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;installingLvNameCol.Name" xml:space="preserve">
+    <value>installingLvNameCol</value>
+  </data>
+  <data name="downloadingOverallPb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>420, 24</value>
+  </data>
+  <data name="downloadingItemLbl.Text" xml:space="preserve">
+    <value>Downloading: </value>
+  </data>
+  <data name="progressProgressLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>420, 19</value>
+  </data>
+  <data name="&gt;&gt;downloadingItemPb.Parent" xml:space="preserve">
+    <value>downloadingPnl</value>
+  </data>
+  <data name="&gt;&gt;progressPb.Name" xml:space="preserve">
+    <value>progressPb</value>
   </data>
   <data name="&gt;&gt;downloadingPnl.Parent" xml:space="preserve">
     <value>$this</value>
@@ -754,190 +607,340 @@
   <data name="&gt;&gt;downloadingPnl.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="installingLvNameCol.Text" xml:space="preserve">
-    <value>Name</value>
-  </data>
-  <data name="installingLvNameCol.Width" type="System.Int32, mscorlib">
-    <value>300</value>
-  </data>
-  <data name="installingLvStatusCol.Text" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="installingLvStatusCol.Width" type="System.Int32, mscorlib">
-    <value>90</value>
-  </data>
-  <data name="installingLv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 47</value>
-  </data>
-  <data name="installingLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>417, 211</value>
-  </data>
-  <data name="installingLv.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;installingLv.Name" xml:space="preserve">
-    <value>installingLv</value>
-  </data>
-  <data name="&gt;&gt;installingLv.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;installingLv.Parent" xml:space="preserve">
-    <value>installingPnl</value>
-  </data>
-  <data name="&gt;&gt;installingLv.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="installingLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="installingLbl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 18pt</value>
-  </data>
-  <data name="installingLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 9</value>
-  </data>
-  <data name="installingLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>205, 32</value>
-  </data>
-  <data name="installingLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="installingLbl.Text" xml:space="preserve">
     <value>Installing Updates</value>
   </data>
-  <data name="&gt;&gt;installingLbl.Name" xml:space="preserve">
-    <value>installingLbl</value>
+  <data name="downloadingLbl.Text" xml:space="preserve">
+    <value>Downloading Updates</value>
   </data>
-  <data name="&gt;&gt;installingLbl.Type" xml:space="preserve">
+  <data name="progressCancelBtn.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;downloadingLvColAmount.Name" xml:space="preserve">
+    <value>downloadingLvColAmount</value>
+  </data>
+  <data name="downloadingCancelBtn.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;downloadingLv.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;downloadingLbl.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;installingLbl.Parent" xml:space="preserve">
-    <value>installingPnl</value>
+  <data name="downloadingLvColAmount.Text" xml:space="preserve">
+    <value>Amount</value>
   </data>
-  <data name="&gt;&gt;installingLbl.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="progressLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>258, 29</value>
   </data>
-  <data name="installingPnl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="downloadingLv.Size" type="System.Drawing.Size, System.Drawing">
+    <value>420, 78</value>
+  </data>
+  <data name="downloadingOverallLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>423, 19</value>
+  </data>
+  <data name="downloadingPnl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
-  </data>
-  <data name="installingPnl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="installingPnl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>444, 274</value>
-  </data>
-  <data name="installingPnl.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="installingPnl.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;installingPnl.Name" xml:space="preserve">
-    <value>installingPnl</value>
-  </data>
-  <data name="&gt;&gt;installingPnl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;installingPnl.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
+  <data name="downloadingItemPb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;progressProgressLbl.Parent" xml:space="preserve">
+    <value>progressPanel</value>
+  </data>
+  <data name="installingPnl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;updatesPanel.Name" xml:space="preserve">
+    <value>updatesPanel</value>
+  </data>
+  <data name="updatesLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>207, 29</value>
+  </data>
+  <data name="progressProgressLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 207</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="downloadingLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="progressPb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="downloadingOverallPb.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 203</value>
+  </data>
+  <data name="progressCancelBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="progressProgressLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="installingLv.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="updatesBtn.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;downloadingCancelBtn.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;updateListDownloader.Name" xml:space="preserve">
+    <value>updateListDownloader</value>
+  </data>
+  <data name="&gt;&gt;progressExplainLbl.Name" xml:space="preserve">
+    <value>progressExplainLbl</value>
+  </data>
+  <data name="&gt;&gt;downloadingItemPb.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;downloadingLbl.Parent" xml:space="preserve">
+    <value>downloadingPnl</value>
+  </data>
+  <data name="&gt;&gt;progressPb.Parent" xml:space="preserve">
+    <value>progressPanel</value>
+  </data>
+  <data name="&gt;&gt;progressPb.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="progressLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 9</value>
+  </data>
+  <data name="downloadingLv.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;progressPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="installingLvNameCol.Width" type="System.Int32, mscorlib">
+    <value>300</value>
+  </data>
+  <data name="&gt;&gt;downloadingOverallPb.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;downloadingCancelBtn.Name" xml:space="preserve">
+    <value>downloadingCancelBtn</value>
+  </data>
+  <data name="&gt;&gt;progressExplainLbl.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="progressExplainLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;installingLv.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;progressCancelBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingOverallLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 181</value>
+  </data>
+  <data name="&gt;&gt;updatesBtn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;updatesLbl.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;updatesLvPublisherCol.Name" xml:space="preserve">
+    <value>updatesLvPublisherCol</value>
+  </data>
+  <data name="installingLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 9</value>
+  </data>
+  <data name="installingLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;downloadingOverallLbl.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;downloadingPnl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;updatesLvFilesizeCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingLvColName.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="&gt;&gt;progressLbl.Parent" xml:space="preserve">
+    <value>progressPanel</value>
+  </data>
+  <data name="&gt;&gt;installingLbl.Parent" xml:space="preserve">
+    <value>installingPnl</value>
+  </data>
+  <data name="&gt;&gt;updatesLvVersionCol.Name" xml:space="preserve">
+    <value>updatesLvVersionCol</value>
+  </data>
+  <data name="&gt;&gt;installingLv.Name" xml:space="preserve">
+    <value>installingLv</value>
+  </data>
+  <data name="&gt;&gt;progressProgressLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;updatesLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="downloadingItemPb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>420, 24</value>
+  </data>
+  <data name="&gt;&gt;downloadingOverallPb.Name" xml:space="preserve">
+    <value>downloadingOverallPb</value>
+  </data>
   <data name="&gt;&gt;installingPnl.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="&gt;&gt;downloadingItemLbl.Parent" xml:space="preserve">
+    <value>downloadingPnl</value>
+  </data>
+  <data name="updatesLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;updatesBtn.Parent" xml:space="preserve">
+    <value>updatesPanel</value>
+  </data>
+  <data name="&gt;&gt;updatesPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="installingLvStatusCol.Width" type="System.Int32, mscorlib">
+    <value>90</value>
+  </data>
+  <data name="downloadingLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;downloadingOverallPb.Parent" xml:space="preserve">
+    <value>downloadingPnl</value>
+  </data>
+  <data name="&gt;&gt;updatesLvPublisherCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="progressExplainLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 47</value>
+  </data>
+  <data name="updatesLvNameCol.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="downloadingItemLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;installer.Name" xml:space="preserve">
+    <value>installer</value>
+  </data>
+  <data name="&gt;&gt;installingLvNameCol.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="installingPnl.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;updatesLv.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="downloadingLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>251, 29</value>
+  </data>
+  <data name="downloadingCancelBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="updatesBtn.Text" xml:space="preserve">
+    <value>Install</value>
+  </data>
+  <data name="&gt;&gt;downloadingItemPb.Name" xml:space="preserve">
+    <value>downloadingItemPb</value>
+  </data>
+  <data name="&gt;&gt;progressExplainLbl.Parent" xml:space="preserve">
+    <value>progressPanel</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>444, 274</value>
+  </data>
+  <data name="downloadingItemPb.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 150</value>
+  </data>
+  <data name="&gt;&gt;updatesBtn.Name" xml:space="preserve">
+    <value>updatesBtn</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Eraser Updater</value>
+  </data>
+  <data name="downloadingItemPb.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;progressLbl.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="installingLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>204, 29</value>
+  </data>
+  <data name="&gt;&gt;downloadingItemPb.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;downloader.Name" xml:space="preserve">
+    <value>downloader</value>
+  </data>
+  <data name="downloadingLbl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 18pt</value>
+  </data>
+  <data name="&gt;&gt;updatesLvNameCol.Name" xml:space="preserve">
+    <value>updatesLvNameCol</value>
+  </data>
+  <data name="&gt;&gt;downloadingLvColName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;progressProgressLbl.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="updatesLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="progressLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;downloadingLbl.Name" xml:space="preserve">
+    <value>downloadingLbl</value>
+  </data>
+  <data name="updatesPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="&gt;&gt;installingLv.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="updatesLbl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 18pt</value>
+  </data>
+  <data name="&gt;&gt;progressCancelBtn.Name" xml:space="preserve">
+    <value>progressCancelBtn</value>
+  </data>
+  <data name="progressPb.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="progressPb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>417, 24</value>
+  </data>
+  <data name="&gt;&gt;downloadingLv.Parent" xml:space="preserve">
+    <value>downloadingPnl</value>
+  </data>
+  <metadata name="updateListDownloader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="installer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>456, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>444, 274</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Eraser Updater</value>
-  </data>
-  <data name="&gt;&gt;updateListDownloader.Name" xml:space="preserve">
-    <value>updateListDownloader</value>
-  </data>
-  <data name="&gt;&gt;updateListDownloader.Type" xml:space="preserve">
-    <value>System.ComponentModel.BackgroundWorker, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesLvNameCol.Name" xml:space="preserve">
-    <value>updatesLvNameCol</value>
-  </data>
-  <data name="&gt;&gt;updatesLvNameCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesLvVersionCol.Name" xml:space="preserve">
-    <value>updatesLvVersionCol</value>
-  </data>
-  <data name="&gt;&gt;updatesLvVersionCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesLvPublisherCol.Name" xml:space="preserve">
-    <value>updatesLvPublisherCol</value>
-  </data>
-  <data name="&gt;&gt;updatesLvPublisherCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesLvFilesizeCol.Name" xml:space="preserve">
-    <value>updatesLvFilesizeCol</value>
-  </data>
-  <data name="&gt;&gt;updatesLvFilesizeCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloader.Name" xml:space="preserve">
-    <value>downloader</value>
-  </data>
-  <data name="&gt;&gt;downloader.Type" xml:space="preserve">
-    <value>System.ComponentModel.BackgroundWorker, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingLvColName.Name" xml:space="preserve">
-    <value>downloadingLvColName</value>
-  </data>
-  <data name="&gt;&gt;downloadingLvColName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;downloadingLvColAmount.Name" xml:space="preserve">
-    <value>downloadingLvColAmount</value>
-  </data>
-  <data name="&gt;&gt;downloadingLvColAmount.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;updatesImageList.Name" xml:space="preserve">
-    <value>updatesImageList</value>
-  </data>
-  <data name="&gt;&gt;updatesImageList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;installingLvNameCol.Name" xml:space="preserve">
-    <value>installingLvNameCol</value>
-  </data>
-  <data name="&gt;&gt;installingLvNameCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;installingLvStatusCol.Name" xml:space="preserve">
-    <value>installingLvStatusCol</value>
-  </data>
-  <data name="&gt;&gt;installingLvStatusCol.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;installer.Name" xml:space="preserve">
-    <value>installer</value>
-  </data>
-  <data name="&gt;&gt;installer.Type" xml:space="preserve">
-    <value>System.ComponentModel.BackgroundWorker, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>UpdateForm</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
+  <metadata name="downloader.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>192, 17</value>
+  </metadata>
+  <metadata name="updatesImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>309, 17</value>
+  </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Italian</value>
+  </metadata>
 </root>
