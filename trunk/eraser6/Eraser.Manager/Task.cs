@@ -460,24 +460,18 @@ namespace Eraser.Manager
 			catch (FileNotFoundException)
 			{
 			}
-			catch (IOException)
+			catch (SharingViolationException)
 			{
-				if (System.Runtime.InteropServices.Marshal.GetLastWin32Error() ==
-					Win32ErrorCode.SharingViolation)
-				{
-					//The system cannot open the file, try to force the file handle to close.
-					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
-						throw;
-
-					foreach (OpenHandle handle in OpenHandle.Items)
-						if (handle.Path == file && handle.Close())
-						{
-							GetPathADSes(list, out totalSize, file);
-							return;
-						}
-				}
-				else
+				//The system cannot open the file, try to force the file handle to close.
+				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
 					throw;
+
+				foreach (OpenHandle handle in OpenHandle.Items)
+					if (handle.Path == file && handle.Close())
+					{
+						GetPathADSes(list, out totalSize, file);
+						return;
+					}
 			}
 			catch (UnauthorizedAccessException e)
 			{
