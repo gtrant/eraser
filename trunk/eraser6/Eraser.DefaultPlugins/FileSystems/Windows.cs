@@ -75,9 +75,19 @@ namespace Eraser.DefaultPlugins
 			if (!info.Exists)
 				return;
 
-			//Set the date of the file to be invalid to prevent forensic
-			//detection
-			info.Attributes = FileAttributes.NotContentIndexed;
+			//Reset the file attributes to non-content indexed so indexing
+			//services will not lock the file.
+			try
+			{
+				info.Attributes = FileAttributes.NotContentIndexed;
+			}
+			catch (ArgumentException e)
+			{
+				//This is an undocumented exception: when the path we are setting
+				//cannot be accessed (ERROR_ACCESS_DENIED is returned) an
+				//ArgumentException is raised (no idea why!)
+				throw new UnauthorizedAccessException(e.Message, e);
+			}
 
 			//Rename the file a few times to erase the entry from the file system
 			//table.
