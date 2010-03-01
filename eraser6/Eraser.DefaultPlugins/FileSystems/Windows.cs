@@ -21,6 +21,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 using System.IO;
@@ -119,8 +120,45 @@ namespace Eraser.DefaultPlugins
 							//If after FilenameEraseTries the file is still locked, some program is
 							//definitely using the file; throw an exception.
 							if (tries > FileNameEraseTries)
-								throw new IOException(S._("The file {0} is currently in use and " +
-									"cannot be removed.", info.FullName), e);
+							{
+								//Try to force the handle closed.
+								if (tries > FileNameEraseTries + 1 ||
+									!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+								{
+									throw new IOException(S._("The file {0} is currently in use " +
+										"and cannot be removed.", info.FullName), e);
+								}
+
+								IEnumerable<OpenHandle> handles = OpenHandle.Items.Where(
+									handle => handle.Path == info.FullName);
+								List<System.Diagnostics.Process> processes =
+									new List<System.Diagnostics.Process>();
+								foreach (OpenHandle handle in handles)
+									if (!handle.Close())
+										processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
+
+								if (processes.Count > 0)
+								{
+									StringBuilder processStr = new StringBuilder();
+									foreach (System.Diagnostics.Process process in processes)
+									{
+										try
+										{
+											processStr.AppendFormat(
+												System.Globalization.CultureInfo.InvariantCulture,
+												"{0}, ", process.MainModule.FileName);
+										}
+										catch (System.ComponentModel.Win32Exception)
+										{
+										}
+									}
+
+									Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
+											info.FullName, S._("(locked by {0})",
+												processStr.ToString().Remove(processStr.Length - 2)).Trim()),
+										LogLevel.Error);
+								}
+							}
 
 							//Let the process locking the file release the lock
 							Thread.Sleep(100);
