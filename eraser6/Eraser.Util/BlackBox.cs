@@ -308,6 +308,9 @@ namespace Eraser.Util
 			Graphics bitmap = Graphics.FromImage(screenShot);
 			bitmap.CopyFromScreen(0, 0, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
 
+			//Place the mouse pointer
+			Cursor.Current.Draw(bitmap, new Rectangle(Cursor.Position, Cursor.Current.Size));
+
 			//Save the bitmap to disk
 			screenShot.Save(Path.Combine(dumpFolder, ScreenshotFileName), ImageFormat.Png);
 		}
