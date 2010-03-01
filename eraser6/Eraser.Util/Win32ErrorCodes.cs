@@ -31,6 +31,16 @@ namespace Eraser.Util
 	public static class Win32ErrorCode
 	{
 		/// <summary>
+		/// Gets the error message associated with the provided system error code.
+		/// </summary>
+		/// <param name="code">The system error code which should have the message queried.</param>
+		/// <returns>The string describing the error with the given error code.</returns>
+		public static string GetSystemErrorMessage(int code)
+		{
+			return new System.ComponentModel.Win32Exception(code).Message;
+		}
+
+		/// <summary>
 		/// Converts a Win32 Error code to a HRESULT.
 		/// </summary>
 		/// <param name="errorCode">The error code to convert.</param>
@@ -52,7 +62,7 @@ namespace Eraser.Util
 			switch (errorCode)
 			{
 				case NoError:			return null;
-				case SharingViolation:	return new IOException();
+				case SharingViolation:	return new SharingViolationException();
 			}
 
 			int HR = GetHRForWin32Error(errorCode);

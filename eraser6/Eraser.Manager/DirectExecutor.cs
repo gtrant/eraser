@@ -308,6 +308,9 @@ namespace Eraser.Manager
 					{
 						throw;
 					}
+					catch (SharingViolationException)
+					{
+					}
 					catch (ThreadAbortException)
 					{
 					}
@@ -330,6 +333,9 @@ namespace Eraser.Manager
 				//Do nothing. The exception will be rethrown after this block
 				//is executed. This is here mainly to ensure that no BlackBox
 				//report is created for this exception.
+			}
+			catch (SharingViolationException)
+			{
 			}
 			catch (Exception e)
 			{
@@ -673,44 +679,38 @@ namespace Eraser.Manager
 					Logger.Log(S._("The file {0} could not be erased because the file's " +
 						"permissions prevent access to the file.", info.FullName), LogLevel.Error);
 				}
-				catch (IOException)
+				catch (SharingViolationException)
 				{
-					if (System.Runtime.InteropServices.Marshal.GetLastWin32Error() ==
-						Win32ErrorCode.SharingViolation)
+					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+						throw;
+
+					List<System.Diagnostics.Process> processes =
+						new List<System.Diagnostics.Process>();
+					foreach (OpenHandle handle in OpenHandle.Items)
+						if (handle.Path == paths[i])
+							processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
+
+					string lockedBy = null;
+					if (processes.Count > 0)
 					{
-						if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
-							throw;
-
-						List<System.Diagnostics.Process> processes =
-							new List<System.Diagnostics.Process>();
-						foreach (OpenHandle handle in OpenHandle.Items)
-							if (handle.Path == paths[i])
-								processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
-
-						string lockedBy = null;
-						if (processes.Count > 0)
+						StringBuilder processStr = new StringBuilder();
+						foreach (System.Diagnostics.Process process in processes)
 						{
-							StringBuilder processStr = new StringBuilder();
-							foreach (System.Diagnostics.Process process in processes)
+							try
 							{
-								try
-								{
-									processStr.AppendFormat(System.Globalization.CultureInfo.InvariantCulture,
-										"{0}, ", process.MainModule.FileName);
-								}
-								catch (System.ComponentModel.Win32Exception)
-								{
-								}
+								processStr.AppendFormat(System.Globalization.CultureInfo.InvariantCulture,
+									"{0}, ", process.MainModule.FileName);
 							}
-
-							lockedBy = S._("(locked by {0})", processStr.ToString().Remove(processStr.Length - 2));
+							catch (System.ComponentModel.Win32Exception)
+							{
+							}
 						}
 
-						Logger.Log(S._("Could not force closure of file \"{0}\" {1}", paths[i],
-							lockedBy == null ? string.Empty : lockedBy).Trim(), LogLevel.Error);
+						lockedBy = S._("(locked by {0})", processStr.ToString().Remove(processStr.Length - 2));
 					}
-					else
-						throw;
+
+					Logger.Log(S._("Could not force closure of file \"{0}\" {1}", paths[i],
+						lockedBy == null ? string.Empty : lockedBy).Trim(), LogLevel.Error);
 				}
 				finally
 				{

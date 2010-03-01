@@ -112,6 +112,7 @@
     <Compile Include="NativeMethods\Gdi.cs" />
     <Compile Include="NativeMethods\Sfc.cs" />
     <Compile Include="ProgressManager.cs" />
+    <Compile Include="ExtensionClasses\SharingViolationException.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="Win32ErrorCodes.cs" />
   </ItemGroup>
