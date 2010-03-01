@@ -726,7 +726,7 @@ namespace Eraser.Util
 					0, out result, IntPtr.Zero); ++i)
 			{
 				if (i > 100)
-					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error()));
+					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 				System.Threading.Thread.Sleep(100);
 			}
 
