@@ -22,8 +22,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Eraser.Util;
 using System.IO;
+using Eraser.Util;
 
 namespace Eraser.Manager
 {
@@ -42,12 +42,21 @@ namespace Eraser.Manager
 		/// <returns>A full path to a file containing random file name.</returns>
 		public static string GenerateRandomFileName(DirectoryInfo info, int length)
 		{
-			//Get a random file name
+			//Get the PRNG we are going to use
 			Prng prng = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
+
+			//Initialsie the base name, if any.
 			string resultPrefix = info == null ? string.Empty : info.FullName +
 				Path.DirectorySeparatorChar;
+
+			//Variables to store the intermediates.
 			byte[] resultAry = new byte[length];
 			string result = string.Empty;
+			List<string> prohibitedFileNames = new List<string>(new string[] {
+				"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4",
+				"COM5", "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3",
+				"LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+			});
 
 			do
 			{
@@ -62,8 +71,9 @@ namespace Eraser.Manager
 
 				result = Encoding.UTF8.GetString(resultAry);
 			}
-			while (info != null && (Directory.Exists(resultPrefix + result) ||
-				File.Exists(resultPrefix + result)));
+			while (info != null &&
+				prohibitedFileNames.IndexOf(Path.GetFileNameWithoutExtension(result)) != -1 ||
+				(Directory.Exists(resultPrefix + result) || File.Exists(resultPrefix + result)));
 			return resultPrefix + result;
 		}
 
