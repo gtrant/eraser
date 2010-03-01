@@ -153,6 +153,9 @@
   <data name="An invalid erasure method was selected." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Could not erase directory entries on the volume {0} because the volume is currently in use." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The folder {0} cannot be deleted as it is not empty." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -160,6 +163,9 @@
     <value>(Untranslated)</value>
   </data>
   <data name="The file {0} is currently in use and cannot be removed." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Could not erase cluster tips in {0} as the volume is not mounted." xml:space="preserve">
