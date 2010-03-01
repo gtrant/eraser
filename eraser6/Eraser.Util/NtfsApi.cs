@@ -37,7 +37,11 @@ namespace Eraser.Util
 		/// <returns>The size of the MFT.</returns>
 		public static long GetMftValidSize(VolumeInfo volume)
 		{
-			return GetNtfsVolumeData(volume).MftValidDataLength;
+			NativeMethods.NTFS_VOLUME_DATA_BUFFER? volumeData = GetNtfsVolumeData(volume);
+			if (volumeData == null)
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+
+			return volumeData.Value.MftValidDataLength;
 		}
 
 		/// <summary>
@@ -47,14 +51,11 @@ namespace Eraser.Util
 		/// <returns>The size of one MFT record segment.</returns>
 		public static long GetMftRecordSegmentSize(VolumeInfo volume)
 		{
-			try
-			{
-				return GetNtfsVolumeData(volume).BytesPerFileRecordSegment;
-			}
-			catch (UnauthorizedAccessException)
-			{
+			NativeMethods.NTFS_VOLUME_DATA_BUFFER? volumeData = GetNtfsVolumeData(volume);
+			if (volumeData == null)
 				return Math.Min(volume.ClusterSize, 1024);
-			}
+
+			return volumeData.Value.BytesPerFileRecordSegment;
 		}
 
 		/// <summary>
@@ -63,14 +64,16 @@ namespace Eraser.Util
 		/// </summary>
 		/// <param name="volume">The volume to query.</param>
 		/// <returns>The NTFS_VOLUME_DATA_BUFFER structure representing the data
-		/// file systme structures for the volume.</returns>
-		/// <exception cref="UnauthorizedAccessException">Thrown when the current user
-		/// does not have the permissions required to obtain the volume information.</exception>
-		internal static NativeMethods.NTFS_VOLUME_DATA_BUFFER GetNtfsVolumeData(VolumeInfo volume)
+		/// file system structures for the volume, or null if the data could not be
+		/// retrieved.</returns>
+		internal static NativeMethods.NTFS_VOLUME_DATA_BUFFER? GetNtfsVolumeData(VolumeInfo volume)
 		{
 			using (SafeFileHandle volumeHandle = volume.OpenHandle(
 				FileAccess.Read, FileShare.ReadWrite, FileOptions.None))
 			{
+				if (volumeHandle.IsInvalid)
+					return null;
+
 				uint resultSize = 0;
 				NativeMethods.NTFS_VOLUME_DATA_BUFFER volumeData =
 					new NativeMethods.NTFS_VOLUME_DATA_BUFFER();
