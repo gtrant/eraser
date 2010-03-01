@@ -619,7 +619,11 @@ namespace Eraser.Util
 
 			//Check that the handle is valid
 			if (handle.IsInvalid)
-				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				handle.Close();
+				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+			}
 
 			//Return the FileStream
 			return new FileStream(handle, access);
@@ -659,16 +663,8 @@ namespace Eraser.Util
 			string openPath = VolumeId;
 			if (openPath.Length > 0 && openPath[openPath.Length - 1] == '\\')
 				openPath = openPath.Remove(openPath.Length - 1);
-			SafeFileHandle result = NativeMethods.CreateFile(openPath, access,
-				(uint)share, IntPtr.Zero, (uint)FileMode.Open, (uint)options, IntPtr.Zero);
-			if (result.IsInvalid)
-			{
-				int errorCode = Marshal.GetLastWin32Error();
-				result.Close();
-				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
-			}
-
-			return result;
+			return NativeMethods.CreateFile(openPath, access, (uint)share, IntPtr.Zero,
+				(uint)FileMode.Open, (uint)options, IntPtr.Zero);
 		}
 
 		/// <summary>
