@@ -620,25 +620,25 @@ namespace Eraser.Manager
 				FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
 					VolumeInfo.FromMountPoint(info.DirectoryName)];
 
-				//Update the task progress
-				ProgressManager step = new ProgressManager();
-				progress.Steps.Add(new SteppedProgressManagerStep(step,
-					info.Length / (float)dataTotal, S._("Erasing files...")));
-				task.OnProgressChanged(target,
-					new ProgressChangedEventArgs(step,
-						new TaskProgressChangedEventArgs(paths[i], 0, method.Passes)));
-
 				bool isReadOnly = false;
-				
+
 				try
 				{
+					//Update the task progress
+					ProgressManager step = new ProgressManager();
+					progress.Steps.Add(new SteppedProgressManagerStep(step,
+						info.Length / (float)dataTotal, S._("Erasing files...")));
+					task.OnProgressChanged(target,
+						new ProgressChangedEventArgs(step,
+							new TaskProgressChangedEventArgs(paths[i], 0, method.Passes)));
+
 					//Remove the read-only flag, if it is set.
 					if (isReadOnly = info.IsReadOnly)
 						info.IsReadOnly = false;
 
 					//Make sure the file does not have any attributes which may affect
 					//the erasure process
-					if ((info.Attributes & FileAttributes.Compressed) != 0 || 
+					if ((info.Attributes & FileAttributes.Compressed) != 0 ||
 						(info.Attributes & FileAttributes.Encrypted) != 0 ||
 						(info.Attributes & FileAttributes.SparseFile) != 0)
 					{
