@@ -28,18 +28,20 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Reflection;
-using Microsoft.Win32.SafeHandles;
 
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
-using ICSharpCode.SharpZipLib.Tar;
-using ICSharpCode.SharpZipLib.BZip2;
 using System.Net;
 using System.Xml;
 using System.ComponentModel;
+
+using ICSharpCode.SharpZipLib.Tar;
+using ICSharpCode.SharpZipLib.BZip2;
+using Microsoft.Win32.SafeHandles;
+using Microsoft.VisualBasic.Devices;
 
 namespace Eraser.Util
 {
@@ -188,8 +190,8 @@ namespace Eraser.Util
 			using (StreamWriter stream = new StreamWriter(file))
 			{
 				//Application information
-				string separator = new string('-', 76);
-				string lineFormat = "{0,17}: {1}";
+				string separator = new string('-', 100);
+				string lineFormat = "{0,20}: {1}";
 				stream.WriteLine("Application Information");
 				stream.WriteLine(separator);
 				stream.WriteLine(string.Format(lineFormat, "Version",
@@ -206,21 +208,30 @@ namespace Eraser.Util
 					Environment.CurrentDirectory));
 
 				//System Information
+				ComputerInfo info = new ComputerInfo();
 				stream.WriteLine();
 				stream.WriteLine("System Information");
 				stream.WriteLine(separator);
 				stream.WriteLine(string.Format(lineFormat, "Operating System",
-					string.Format("{0} {2} {3}{1}",
-						Environment.OSVersion.VersionString,
+					string.Format("{0} {1}{2} {4}",
+						info.OSFullName.Trim(), info.OSVersion.Trim(),
 						string.IsNullOrEmpty(Environment.OSVersion.ServicePack) ?
 							string.Empty :
-							string.Format("(Service Pack {2})", Environment.OSVersion.ServicePack),
+							string.Format("(Service Pack {0})", Environment.OSVersion.ServicePack),
 						SystemInfo.WindowsEdition == WindowsEditions.Undefined ?
 							"" : SystemInfo.WindowsEdition.ToString(),
 						SystemInfo.ProcessorArchitecture)));
+				stream.WriteLine(string.Format(lineFormat, ".NET Runtime version",
+					Environment.Version));
 				stream.WriteLine(string.Format(lineFormat, "Processor Count",
 					Environment.ProcessorCount));
-				
+				stream.WriteLine(string.Format(lineFormat, "Physical Memory",
+					string.Format("{0}/{1}", info.AvailablePhysicalMemory,
+						info.TotalPhysicalMemory)));
+				stream.WriteLine(string.Format(lineFormat, "Virtual Memory",
+					string.Format("{0}/{1}", info.AvailableVirtualMemory,
+						info.TotalVirtualMemory)));
+
 				//Running processes
 				stream.WriteLine();
 				stream.WriteLine("Running Processes");
