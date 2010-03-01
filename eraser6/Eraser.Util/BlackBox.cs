@@ -39,6 +39,7 @@ using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.BZip2;
 using System.Net;
 using System.Xml;
+using System.ComponentModel;
 
 namespace Eraser.Util
 {
@@ -188,7 +189,7 @@ namespace Eraser.Util
 			{
 				//Application information
 				string separator = new string('-', 76);
-				string lineFormat = "{0,15}: {1}";
+				string lineFormat = "{0,17}: {1}";
 				stream.WriteLine("Application Information");
 				stream.WriteLine(separator);
 				stream.WriteLine(string.Format(lineFormat, "Version",
@@ -201,6 +202,53 @@ namespace Eraser.Util
 				}
 				stream.WriteLine(string.Format(lineFormat, "Command Line",
 					commandLine.ToString().Trim()));
+				stream.WriteLine(string.Format(lineFormat, "Current Directory",
+					Environment.CurrentDirectory));
+
+				//System Information
+				stream.WriteLine();
+				stream.WriteLine("System Information");
+				stream.WriteLine(separator);
+				stream.WriteLine(string.Format(lineFormat, "Operating System",
+					string.Format("{0} {2} {3}{1}",
+						Environment.OSVersion.VersionString,
+						string.IsNullOrEmpty(Environment.OSVersion.ServicePack) ?
+							string.Empty :
+							string.Format("(Service Pack {2})", Environment.OSVersion.ServicePack),
+						SystemInfo.WindowsEdition == WindowsEditions.Undefined ?
+							"" : SystemInfo.WindowsEdition.ToString(),
+						SystemInfo.ProcessorArchitecture)));
+				stream.WriteLine(string.Format(lineFormat, "Processor Count",
+					Environment.ProcessorCount));
+				
+				//Running processes
+				stream.WriteLine();
+				stream.WriteLine("Running Processes");
+				stream.WriteLine(separator);
+				{
+					int i = 0;
+					foreach (Process process in Process.GetProcesses())
+					{
+						try
+						{
+							ProcessModule mainModule = process.MainModule;
+							stream.WriteLine(string.Format(lineFormat,
+								string.Format("Process[{0}]", ++i),
+								string.Format("{0} [{1}.{2}.{3}.{4}{5}]", mainModule.FileName,
+									mainModule.FileVersionInfo.FileMajorPart,
+									mainModule.FileVersionInfo.FileMinorPart,
+									mainModule.FileVersionInfo.FileBuildPart,
+									mainModule.FileVersionInfo.FilePrivatePart,
+									string.IsNullOrEmpty(mainModule.FileVersionInfo.FileVersion) ?
+										string.Empty :
+										string.Format(" <{0}>",
+											mainModule.FileVersionInfo.FileVersion))));
+						}
+						catch (Win32Exception)
+						{
+						}
+					}
+				}
 
 				//Exception Information
 				stream.WriteLine();

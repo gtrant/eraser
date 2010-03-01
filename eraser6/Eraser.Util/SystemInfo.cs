@@ -69,5 +69,275 @@ namespace Eraser.Util
 				}
 			}
 		}
+
+		/// <summary>
+		/// Gets the edition of Windows that is currently running. This will only
+		/// return a valid result for operating systems later than or equal to
+		/// Windows Vista (RTM). All other operating systems will return
+		/// <see cref="WindowsEditions.Undefined"/>.
+		/// </summary>
+		public static WindowsEditions WindowsEdition
+		{
+			get
+			{
+				if (Environment.OSVersion.Platform != PlatformID.Win32NT ||
+					Environment.OSVersion.Version.Major < 6)
+				{
+					return WindowsEditions.Undefined;
+				}
+
+				WindowsEditions result;
+				NativeMethods.GetProductInfo(6u, 1u, 0u, 0u, out result);
+				return result;
+			}
+		}
+	}
+
+	public enum WindowsEditions
+	{
+		/// <summary>
+		/// Business
+		/// </summary>
+		Business = 0x00000006,
+
+		/// <summary>
+		/// Business N
+		/// </summary>
+		BusinessN = 0x00000010,
+
+		/// <summary>
+		/// HPC Edition
+		/// </summary>
+		ClusterServer = 0x00000012,
+
+		/// <summary>
+		/// Server Datacenter (full installation)
+		/// </summary>
+		DatacenterServer = 0x00000008,
+
+		/// <summary>
+		/// Server Datacenter (core installation)
+		/// </summary>
+		DatacenterServerCore = 0x0000000C,
+
+		/// <summary>
+		/// Server Datacenter without Hyper-V (core installation)
+		/// </summary>
+		DatacenterServerCoreV = 0x00000027,
+
+		/// <summary>
+		/// Server Datacenter without Hyper-V (full installation)
+		/// </summary>
+		DatacenterServerV = 0x00000025,
+
+		/// <summary>
+		/// Enterprise
+		/// </summary>
+		Enterprise = 0x00000004,
+
+		/// <summary>
+		/// Enterprise E
+		/// </summary>
+		EnterpriseE = 0x00000046,
+
+		/// <summary>
+		/// Enterprise N
+		/// </summary>
+		EnterpriseN = 0x0000001B,
+
+		/// <summary>
+		/// Server Enterprise (full installation)
+		/// </summary>
+		EnterpriseServer = 0x0000000A,
+
+		/// <summary>
+		/// Server Enterprise (core installation)
+		/// </summary>
+		EnterpriseServerCore = 0x0000000E,
+
+		/// <summary>
+		/// Server Enterprise without Hyper-V (core installation)
+		/// </summary>
+		EnterpriseServerCoreV = 0x00000029,
+
+		/// <summary>
+		/// Server Enterprise for Itanium-based Systems
+		/// </summary>
+		EnterpriseServerIA64 = 0x0000000F,
+
+		/// <summary>
+		/// Server Enterprise without Hyper-V (full installation)
+		/// </summary>
+		EnterpriseServerV = 0x00000026,
+
+		/// <summary>
+		/// Home Basic
+		/// </summary>
+		HomeBasic = 0x00000002,
+
+		/// <summary>
+		/// Home Basic E
+		/// </summary>
+		HomeBasicE = 0x00000043,
+
+		/// <summary>
+		/// Home Basic N
+		/// </summary>
+		HomeBasicN = 0x00000005,
+
+		/// <summary>
+		/// Home Premium
+		/// </summary>
+		HomePremium = 0x00000003,
+
+		/// <summary>
+		/// Home Premium E
+		/// </summary>
+		HomePremiumE = 0x00000044,
+
+		/// <summary>
+		/// Home Premium N
+		/// </summary>
+		HomePremiumN = 0x0000001A,
+
+		/// <summary>
+		/// Microsoft Hyper-V Server
+		/// </summary>
+		HyperV = 0x0000002A,
+
+		/// <summary>
+		/// Windows Essential Business Server Management Server
+		/// </summary>
+		MediumBusinessServerManagement = 0x0000001E,
+
+		/// <summary>
+		/// Windows Essential Business Server Messaging Server
+		/// </summary>
+		MediumBusinessServerMessaging = 0x00000020,
+
+		/// <summary>
+		/// Windows Essential Business Server Security Server
+		/// </summary>
+		MediumBusinessServerSecurity = 0x0000001F,
+
+		/// <summary>
+		/// Professional
+		/// </summary>
+		Professional = 0x00000030,
+
+		/// <summary>
+		/// Professional E
+		/// </summary>
+		ProfessionalE = 0x00000045,
+
+		/// <summary>
+		/// Professional N
+		/// </summary>
+		ProfessionalN = 0x00000031,
+
+		/// <summary>
+		/// Windows Server 2008 for Windows Essential Server Solutions
+		/// </summary>
+		ServerForSmallBusiness = 0x00000018,
+
+		/// <summary>
+		/// Windows Server 2008 without Hyper-V for Windows Essential Server Solutions
+		/// </summary>
+		ServerForSmallBusinessV = 0x00000023,
+
+		/// <summary>
+		/// Server Foundation
+		/// </summary>
+		ServerFoundation = 0x00000021,
+
+		/// <summary>
+		/// Windows Small Business Server
+		/// </summary>
+		SmallBusinessServer = 0x00000009,
+
+		/// <summary>
+		/// Server Standard (full installation)
+		/// </summary>
+		StandardServer = 0x00000007,
+
+		/// <summary>
+		/// Server Standard (core installation)
+		/// </summary>
+		StandardServerCore = 0x0000000D,
+
+		/// <summary>
+		/// Server Standard without Hyper-V (core installation)
+		/// </summary>
+		StandardServerCoreV = 0x00000028,
+
+		/// <summary>
+		/// Server Standard without Hyper-V (full installation)
+		/// </summary>
+		StandardServerV = 0x00000024,
+
+		/// <summary>
+		/// Starter
+		/// </summary>
+		Starter = 0x0000000B,
+
+		/// <summary>
+		/// Starter E
+		/// </summary>
+		StarterE = 0x00000042,
+
+		/// <summary>
+		/// Starter N
+		/// </summary>
+		StarterN = 0x0000002F,
+
+		/// <summary>
+		/// Storage Server Enterprise
+		/// </summary>
+		StorageEnterpriseServer = 0x00000017,
+
+		/// <summary>
+		/// Storage Server Express
+		/// </summary>
+		StorageExpressServer = 0x00000014,
+
+		/// <summary>
+		/// Storage Server Standard
+		/// </summary>
+		StorageStandardServer = 0x00000015,
+
+		/// <summary>
+		/// Storage Server Workgroup
+		/// </summary>
+		StorageWorkgroupServer = 0x00000016,
+
+		/// <summary>
+		/// An unknown product
+		/// </summary>
+		Undefined = 0x00000000,
+
+		/// <summary>
+		/// Ultimate
+		/// </summary>
+		Ultimate = 0x00000001,
+
+		/// <summary>
+		/// Ultimate E
+		/// </summary>
+		UltimateE = 0x00000047,
+
+		/// <summary>
+		/// Ultimate N
+		/// </summary>
+		UltimateN = 0x0000001C,
+
+		/// <summary>
+		/// Web Server (full installation)
+		/// </summary>
+		WebServer = 0x00000011,
+
+		/// <summary>
+		/// Web Server (core installation)
+		/// </summary>
+		WebServerCore = 0x0000001D
 	}
 }

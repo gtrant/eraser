@@ -859,5 +859,44 @@ namespace Eraser.Util
 
 		public const int MaxPath = 260;
 		public const int LongPath = 32768;
+
+		/// <summary>
+		/// Retrieves the product type for the operating system on the local computer, and
+		/// maps the type to the product types supported by the specified operating system.
+		/// </summary>
+		/// <param name="dwOSMajorVersion">The major version number of the operating system.
+		/// The minimum value is 6.
+		/// 
+		/// The combination of the dwOSMajorVersion, dwOSMinorVersion, dwSpMajorVersion,
+		/// and dwSpMinorVersion parameters describes the maximum target operating system
+		/// version for the application. For example, Windows Vista and Windows Server
+		/// 2008 are version 6.0.0.0 and Windows 7 and Windows Server 2008 R2 are version
+		/// 6.1.0.0.</param>
+		/// <param name="dwOSMinorVersion">The minor version number of the operating
+		/// system. The minimum value is 0.</param>
+		/// <param name="dwSpMajorVersion">The major version number of the operating
+		/// system service pack. The minimum value is 0.</param>
+		/// <param name="dwSpMinorVersion">The minor version number of the operating
+		/// system service pack. The minimum value is 0.</param>
+		/// <param name="pdwReturnedProductType">The product type. This parameter
+		/// cannot be NULL. If the specified operating system is less than the
+		/// current operating system, this information is mapped to the types
+		/// supported by the specified operating system. If the specified operating
+		/// system is greater than the highest supported operating system, this
+		/// information is mapped to the types supported by the current operating system.
+		/// 
+		/// If the product has not been activated and is no longer in the grace period,
+		/// this parameter is set to PRODUCT_UNLICENSED (0xABCDABCD).</param>
+		/// <returns>If the function succeeds, the return value is a nonzero value.
+		/// If the software license is invalid or expired, the function succeeds
+		/// but the pdwReturnedProductType parameter is set to PRODUCT_UNLICENSED.
+		/// 
+		/// If the function fails, the return value is zero. This function fails if
+		/// one of the input parameters is invalid.</returns>
+		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+		public static extern bool GetProductInfo(uint dwOSMajorVersion,
+			uint dwOSMinorVersion, uint dwSpMajorVersion, uint dwSpMinorVersion,
+			out WindowsEditions pdwReturnedProductType);
+
 	}
 }
