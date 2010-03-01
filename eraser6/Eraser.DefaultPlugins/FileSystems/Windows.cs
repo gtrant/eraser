@@ -78,7 +78,6 @@ namespace Eraser.DefaultPlugins
 			//Set the date of the file to be invalid to prevent forensic
 			//detection
 			info.Attributes = FileAttributes.NotContentIndexed;
-			info.CreationTime = info.LastWriteTime = info.LastAccessTime = MinTimestamp;
 
 			//Rename the file a few times to erase the entry from the file system
 			//table.
@@ -89,6 +88,9 @@ namespace Eraser.DefaultPlugins
 
 				try
 				{
+					//Reset the file access times: after every rename the file times may change.
+					info.CreationTime = info.LastWriteTime = info.LastAccessTime = MinTimestamp;
+
 					//Try to rename the file. If it fails, it is probably due to another
 					//process locking the file. Defer, then rename again.
 					info.MoveTo(newPath);
