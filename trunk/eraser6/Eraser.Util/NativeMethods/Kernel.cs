@@ -382,7 +382,7 @@ namespace Eraser.Util
 			public string StorageManagerName;
 		}
 
-		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode)]
+		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DeviceIoControl(SafeFileHandle hDevice,
 			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
