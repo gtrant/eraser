@@ -47,7 +47,14 @@ namespace Eraser.Util
 		/// <returns>The size of one MFT record segment.</returns>
 		public static long GetMftRecordSegmentSize(VolumeInfo volume)
 		{
-			return GetNtfsVolumeData(volume).BytesPerFileRecordSegment;
+			try
+			{
+				return GetNtfsVolumeData(volume).BytesPerFileRecordSegment;
+			}
+			catch (UnauthorizedAccessException)
+			{
+				return Math.Min(volume.ClusterSize, 1024);
+			}
 		}
 
 		/// <summary>
@@ -57,10 +64,12 @@ namespace Eraser.Util
 		/// <param name="volume">The volume to query.</param>
 		/// <returns>The NTFS_VOLUME_DATA_BUFFER structure representing the data
 		/// file systme structures for the volume.</returns>
+		/// <exception cref="UnauthorizedAccessException">Thrown when the current user
+		/// does not have the permissions required to obtain the volume information.</exception>
 		internal static NativeMethods.NTFS_VOLUME_DATA_BUFFER GetNtfsVolumeData(VolumeInfo volume)
 		{
 			using (SafeFileHandle volumeHandle = volume.OpenHandle(
-				NativeMethods.FILE_READ_ATTRIBUTES, FileShare.ReadWrite, FileOptions.None))
+				FileAccess.Read, FileShare.ReadWrite, FileOptions.None))
 			{
 				uint resultSize = 0;
 				NativeMethods.NTFS_VOLUME_DATA_BUFFER volumeData =
