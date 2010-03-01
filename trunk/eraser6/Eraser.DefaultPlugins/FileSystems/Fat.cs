@@ -116,7 +116,7 @@ namespace Eraser.DefaultPlugins
 						}
 					}
 				}
-				catch (SharingViolationException e)
+				catch (SharingViolationException)
 				{
 					Logger.Log(S._("Could not erase directory entries on the volume {0} because" +
 						"the volume is currently in use."));
