@@ -342,29 +342,35 @@ namespace Eraser.DefaultPlugins
 
 			//Otherwise, create the stream, lengthen the file, then tell the erasure
 			//method to erase the cluster tips.
-			using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
-				FileShare.None, FileOptions.WriteThrough))
+			try
 			{
-				try
+				using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
+					FileShare.None, FileOptions.WriteThrough))
 				{
-					stream.SetLength(fileArea);
-					stream.Seek(fileLength, SeekOrigin.Begin);
+					try
+					{
+						stream.SetLength(fileArea);
+						stream.Seek(fileLength, SeekOrigin.Begin);
 
-					//Erase the file
-					method.Erase(stream, long.MaxValue,
-						ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
-						null);
+						//Erase the file
+						method.Erase(stream, long.MaxValue,
+							ManagerLibrary.Instance.PrngRegistrar[
+								ManagerLibrary.Settings.ActivePrng],
+							null);
+					}
+					finally
+					{
+						//Make sure the file length is restored!
+						stream.SetLength(fileLength);
+					}
 				}
-				finally
-				{
-					//Make sure the file length is restored!
-					stream.SetLength(fileLength);
-
-					//Reset the file times
-					streamInfo.LastAccessTime = lastAccess;
-					streamInfo.LastWriteTime = lastWrite;
-					streamInfo.CreationTime = created;
-				}
+			}
+			finally
+			{
+				//Reset the file times
+				streamInfo.LastAccessTime = lastAccess;
+				streamInfo.LastWriteTime = lastWrite;
+				streamInfo.CreationTime = created;
 			}
 		}
 
