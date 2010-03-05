@@ -393,7 +393,7 @@ namespace Eraser.Manager
 			//Check whether System Restore has any available checkpoints.
 			if (SystemRestore.GetInstances().Count != 0)
 			{
-				Logger.Log(S._("The drive {0} has System Restore or Volume Shadow Copies " +
+				Logger.Log(S._("This computer has had System Restore or Volume Shadow Copies " +
 					"enabled. This may allow copies of files stored on the disk to be recovered " +
 					"and pose a security concern.", target.Drive), LogLevel.Warning);
 			}
