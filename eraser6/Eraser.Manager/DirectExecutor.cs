@@ -491,7 +491,7 @@ namespace Eraser.Manager
 						mainProgress.Total = mainProgress.Completed +
 							method.CalculateEraseDataSize(null, volInfo.AvailableFreeSpace);
 						long streamLength = Math.Min(ErasureMethod.FreeSpaceFileUnit,
-							mainProgress.Total);
+							volInfo.AvailableFreeSpace);
 
 						//Handle IO exceptions gracefully, because the filesystem
 						//may require more space than demanded by us for file allocation.
