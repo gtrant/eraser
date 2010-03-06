@@ -66,8 +66,16 @@ namespace Eraser.Manager
 				string validFileNameChars = "0123456789abcdefghijklmnopqrstuvwxyz" +
 					"ABCDEFGHIJKLMNOPQRSTUVWXYZ _+=-()[]{}',`~!";
 				for (int j = 0, k = resultAry.Length; j < k; ++j)
+				{
 					resultAry[j] = (byte)validFileNameChars[
 						(int)resultAry[j] % validFileNameChars.Length];
+
+					if (j == 0 || j == k - 1)
+						//The first or last character cannot be whitespace
+						while (Char.IsWhiteSpace((char)resultAry[j]))
+							resultAry[j] = (byte)validFileNameChars[
+								(int)resultAry[j] % validFileNameChars.Length];
+				}
 
 				result = Encoding.UTF8.GetString(resultAry);
 			}
