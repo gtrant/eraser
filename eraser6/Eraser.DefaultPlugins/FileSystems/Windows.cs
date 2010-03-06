@@ -291,7 +291,7 @@ namespace Eraser.DefaultPlugins
 						{
 							Logger.Log(S._("{0} did not have its cluster tips erased because of " +
 								"the following error: {1}", info.FullName, e.Message),
-								LogLevel.Error);
+								LogLevel.Information);
 						}
 						catch (IOException e)
 						{
@@ -310,7 +310,7 @@ namespace Eraser.DefaultPlugins
 			catch (UnauthorizedAccessException e)
 			{
 				Logger.Log(S._("{0} did not have its cluster tips erased because of the " +
-					"following error: {1}", info.FullName, e.Message), LogLevel.Error);
+					"following error: {1}", info.FullName, e.Message), LogLevel.Information);
 			}
 			catch (IOException e)
 			{
