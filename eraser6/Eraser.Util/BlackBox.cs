@@ -217,7 +217,7 @@ namespace Eraser.Util
 						info.OSFullName.Trim(), info.OSVersion.Trim(),
 						string.IsNullOrEmpty(Environment.OSVersion.ServicePack) ?
 							string.Empty :
-							string.Format("(Service Pack {0})", Environment.OSVersion.ServicePack),
+							string.Format("({0})", Environment.OSVersion.ServicePack),
 						SystemInfo.WindowsEdition == WindowsEditions.Undefined ?
 							"" : SystemInfo.WindowsEdition.ToString(),
 						SystemInfo.ProcessorArchitecture)));
