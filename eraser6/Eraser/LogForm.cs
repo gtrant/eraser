@@ -196,7 +196,7 @@ namespace Eraser
 				csvText.AppendFormat("\"{0}\",\"{1}\",\"{2}\"\n",
 					timeStamp.Replace("\"", "\"\""), entry.Level.ToString(),
 					message.Replace("\"", "\"\""));
-				rawText.AppendFormat("{0}	{1}	{2}\n", timeStamp, entry.Level.ToString(),
+				rawText.AppendFormat("{0}	{1}	{2}\r\n", timeStamp, entry.Level.ToString(),
 					message);
 			}
 
