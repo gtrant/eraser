@@ -221,13 +221,20 @@ namespace Eraser.DefaultPlugins
 				if (!streamInfo.Exists)
 					continue;
 
-				FileAttributes fileAttr = streamInfo.Attributes;
-
 				try
 				{
 					//Reset the file attributes.
+					FileAttributes fileAttr = streamInfo.Attributes;
 					streamInfo.Attributes = FileAttributes.Normal;
-					EraseFileClusterTips(files[i], method);
+
+					try
+					{
+						EraseFileClusterTips(files[i], method);
+					}
+					finally
+					{
+						streamInfo.Attributes = fileAttr;
+					}
 				}
 				catch (UnauthorizedAccessException)
 				{
@@ -239,10 +246,6 @@ namespace Eraser.DefaultPlugins
 				{
 					Logger.Log(S._("{0} did not have its cluster tips erased. The error returned " +
 						"was: {1}", files[i], e.Message), LogLevel.Error);
-				}
-				finally
-				{
-					streamInfo.Attributes = fileAttr;
 				}
 
 				eraseCallback(i, files.Count, files[i]);
