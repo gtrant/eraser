@@ -245,7 +245,7 @@ namespace Eraser.DefaultPlugins
 				catch (IOException e)
 				{
 					Logger.Log(S._("{0} did not have its cluster tips erased. The error returned " +
-						"was: {1}", files[i], e.Message), LogLevel.Error);
+						"was: {1}", files[i], e.Message), LogLevel.Warning);
 				}
 
 				eraseCallback(i, files.Count, files[i]);
@@ -300,7 +300,7 @@ namespace Eraser.DefaultPlugins
 						{
 							Logger.Log(S._("{0} did not have its cluster tips erased because of " +
 								"the following error: {1}", info.FullName, e.Message),
-								LogLevel.Error);
+								LogLevel.Warning);
 						}
 					}
 
@@ -318,7 +318,7 @@ namespace Eraser.DefaultPlugins
 			catch (IOException e)
 			{
 				Logger.Log(S._("{0} did not have its cluster tips erased because of the " +
-					"following error: {1}", info.FullName, e.Message), LogLevel.Error);
+					"following error: {1}", info.FullName, e.Message), LogLevel.Warning);
 			}
 		}
 
