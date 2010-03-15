@@ -340,7 +340,7 @@
     <value>Error: {0}</value>
   </data>
   <data name="Installing {0}" xml:space="preserve">
-    <value>Installing {0</value>
+    <value>Installing {0}</value>
   </data>
   <data name="Installed {0}" xml:space="preserve">
     <value>Installed {0}</value>
