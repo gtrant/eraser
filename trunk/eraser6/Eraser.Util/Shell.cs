@@ -46,10 +46,20 @@ namespace Eraser.Util
 			}
 			set
 			{
-				using (RegistryKey key = Registry.CurrentUser.OpenSubKey(
-					"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", true))
+				RegistryKey key = null;
+				try
 				{
+					key = Registry.CurrentUser.OpenSubKey(
+						"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer", true);
+					if (key == null)
+						key = Registry.CurrentUser.CreateSubKey(
+							"Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer");
 					key.SetValue("NoLowDiskSpaceChecks", !value);
+				}
+				finally
+				{
+					if (key != null)
+						key.Close();
 				}
 			}
 		}
