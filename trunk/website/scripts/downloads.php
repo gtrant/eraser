@@ -146,11 +146,14 @@ class Build extends Download
 	public static function Get()
 	{
 		$result = array();
-		$builds = array('Eraser5' => 'Eraser 5', 'Eraser6' => 'Eraser 6.0', 'Eraser6.2' => 'Eraser 6.2');
-		$versions = array('Eraser5' => '5.8.9', 'Eraser6' => '6.0.6', 'Eraser6.2' => '6.1.0');
+		$builds = array('Eraser6' => 'Eraser 6.0', 'Eraser6.2' => 'Eraser 6.2');
+		$versions = array('Eraser6' => '6.0.6', 'Eraser6.2' => '6.1.0');
 		foreach ($builds as $branchName => $buildName)
 		{
 			$revisions = opendir(Build::GetPath($branchName));
+			if (!$revisions)
+				continue;
+
 			$result[$buildName] = array();
 
 			while (($revision = readdir($revisions)) !== false)
