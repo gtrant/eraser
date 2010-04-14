@@ -286,7 +286,6 @@ namespace Eraser.Manager
 			if (netApiStats != null)
 				result.AddRange(netApiStats);
 
-#if false
 			foreach (VolumeInfo info in VolumeInfo.Volumes)
 			{
 				DiskPerformanceInfo performance = info.Performance;
@@ -304,7 +303,6 @@ namespace Eraser.Manager
 				result.AddRange(StructToBuffer(performance.WriteCount));
 				result.AddRange(StructToBuffer(performance.WriteTime));
 			}
-#endif
 
 			return result.ToArray();
 		}
