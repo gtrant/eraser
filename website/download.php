@@ -72,27 +72,9 @@ if (!empty($_GET['id']))
 						<th>&nbsp;</th>
 					</tr>
 					<tr>
-						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%206/Eraser%206.0.6.1376.exe/download">Eraser 6.0.6.1376</a></td>
-						<td>6.0.6.1376</td>
-						<td>15/12/09 10:15am</td>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%205/5.8.8/Eraser%205.8.8.exe/download">Eraser 5.8.8</a></td>
-						<td>5.8.8</td>
-						<td>16/12/09 2:00pm</td>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%205/5.8.8/Eraser%205.8.8%20Portable.zip/download">Eraser 5.8.8</a><br /><em>portable</em></td>
-						<td>5.8.8</td>
-						<td>17/12/09 5:30pm</td>
-						<td>&nbsp;</td>
-					</tr>
-					<tr>
-						<td><a href="http://downloads.sourceforge.net/eraser/Eraser57Setup.zip">Eraser 5.7</a><br /><em>for Windows 9x/Me</em></td>
-						<td>5.7</td>
-						<td>4/9/03 11:35pm</td>
+						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser 6/6.0.7/Eraser 6.0.7.1893.exe/download">Eraser 6.0.7.1893</a></td>
+						<td>6.0.7.1893</td>
+						<td>14/4/2010 8:00am</td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
