@@ -220,6 +220,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.it.resx" />
+    <EmbeddedResource Include="Strings.pl.resx" />
     <EmbeddedResource Include="Strings.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
@@ -398,7 +399,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
     <PreBuildEvent>call "$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\." "$(SolutionDir)Version.cs.in" "$(SolutionDir)Version.cs"
-csgettext --merge --recursive EN,NL,IT "$(ProjectDir)\." Strings
+csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
 if ERRORLEVEL 0 exit 0</PreBuildEvent>
   </PropertyGroup>
 </Project>

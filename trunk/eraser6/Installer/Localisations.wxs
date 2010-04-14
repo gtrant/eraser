@@ -43,6 +43,16 @@
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
+			<Directory Id="EraserLangPlDir" Name="pl">
+				<Component Id="EraserLangPl" Guid="83E40D11-60DC-4d5d-8072-1B814B85D3FC">
+					<File Id="EraserPl" Name="Eraser.resources.dll"
+						Source="..\bin\Release\pl\Eraser.resources.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserManagerPl" Name="Eraser.Manager.resources.dll"
+						Source="..\bin\Release\pl\Eraser.Manager.resources.dll"
+						ProcessorArchitecture="msil" />
+				</Component>
+			</Directory>
 		</DirectoryRef>
 		<DirectoryRef Id="EraserPluginsDir">
 			<Directory Id="EraserPluginsLangNlDir" Name="nl">
@@ -59,6 +69,13 @@
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
+			<Directory Id="EraserPluginsLangPlDir" Name="pl">
+				<Component Id="EraserPluginsLangPl" Guid="138E9CF4-17B9-498a-B476-0A1F91FFB64B">
+					<File Id="EraserDefaultPluginsPl" Name="Eraser.DefaultPlugins.resources.dll"
+						Source="..\bin\Release\Plugins\pl\Eraser.DefaultPlugins.resources.dll"
+						ProcessorArchitecture="msil" />
+				</Component>
+			</Directory>
 		</DirectoryRef>
 
 		<!-- Reference all languages in Localisations.wxs -->
@@ -72,6 +89,10 @@
 			<Feature Id="EraserLanguagesIt" Title="Italian" Description="Italian localisation" Level="10">
 				<ComponentRef Id="EraserLangIt" />
 				<ComponentRef Id="EraserPluginsLangIt" />
+			</Feature>
+			<Feature Id="EraserLanguagesPl" Title="Polish" Description="Polish localisation" Level="10">
+				<ComponentRef Id="EraserLangPl"/>
+				<ComponentRef Id="EraserPluginsLangPl"/>
 			</Feature>
 		</Feature>
 	</Fragment>
