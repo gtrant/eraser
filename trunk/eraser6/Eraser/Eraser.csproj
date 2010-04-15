@@ -145,11 +145,17 @@
       <SubType>Designer</SubType>
       <DependentUpon>BasePanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BasePanel.pl.resx">
+      <DependentUpon>BasePanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BasePanel.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BasePanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BlackBoxMainForm.it.resx">
+      <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BlackBoxMainForm.pl.resx">
       <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BlackBoxMainForm.resx">
@@ -158,10 +164,16 @@
     <EmbeddedResource Include="BlackBoxUploadForm.it.resx">
       <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BlackBoxUploadForm.pl.resx">
+      <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BlackBoxUploadForm.resx">
       <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LightGroup.it.resx">
+      <DependentUpon>LightGroup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LightGroup.pl.resx">
       <DependentUpon>LightGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LightGroup.resx">
@@ -175,6 +187,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LogForm.pl.resx">
+      <DependentUpon>LogForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>LogForm.cs</DependentUpon>
@@ -186,6 +201,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.pl.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -195,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.nl.resx">
       <SubType>Designer</SubType>
+      <DependentUpon>ProgressForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressForm.pl.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
@@ -248,6 +269,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>TaskDataSelectionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TaskDataSelectionForm.pl.resx">
+      <DependentUpon>TaskDataSelectionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TaskDataSelectionForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TaskDataSelectionForm.cs</DependentUpon>
@@ -259,6 +283,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>TaskPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TaskPropertiesForm.pl.resx">
+      <DependentUpon>TaskPropertiesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TaskPropertiesForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>TaskPropertiesForm.cs</DependentUpon>
@@ -268,6 +295,9 @@
       <DependentUpon>ToolBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UpdateForm.it.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UpdateForm.pl.resx">
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UpdateForm.resx">
