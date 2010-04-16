@@ -1,6 +1,5 @@
 <?php
-require('../database.php');
-require('../updates.php');
+require_once('../UpdateList.php');
 
 $action = $_GET['action'];
 $version = $_GET['version'];
