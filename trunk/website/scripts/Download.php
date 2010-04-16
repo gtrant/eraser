@@ -7,6 +7,7 @@
  */
 
 require_once('Database.php');
+require_once('Publisher.php');
 
 /**
  * Represents a download for Eraser.
@@ -15,9 +16,15 @@ class Download
 {
 	protected $ID;
 	protected $Downloads;
+	protected $Superseded;
+
 	protected $Name;
 	protected $Released;
-	protected $Superseded;
+	protected $Type;
+	protected $Version;
+	protected $Publisher;
+	protected $Architecture;
+	protected $Filesize;
 	protected $Link;
 
 	/**
@@ -28,14 +35,20 @@ class Download
 	public function __construct($downloadId)
 	{
 		$pdo = new Database();
-		$statement = $pdo->prepare('SELECT Name, Released, Superseded, Link FROM downloads WHERE DownloadID=?');
+		$statement = $pdo->prepare('SELECT Name, Superseded, Released, Type, Version, PublisherID,
+			Architecture, Filesize, Link FROM downloads WHERE DownloadID=?');
 		$statement->bindParam(1, $downloadId);
 		$statement->execute();
 
 		//Set the name, release date and supersedence as well as the link.
 		$statement->bindColumn('Name', $this->Name);
-		$statement->bindColumn('Released', $this->Released);
 		$statement->bindColumn('Superseded', $this->Superseded);
+		$statement->bindColumn('Released', $this->Released);
+		$statement->bindColumn('Type', $this->Type);
+		$statement->bindColumn('Version', $this->Version);
+		$statement->bindColumn('PublisherID', $this->Publisher);
+		$statement->bindColumn('Architecture', $this->Architecture);
+		$statement->bindColumn('Filesize', $this->Filesize);
 		$statement->bindColumn('Link', $this->Link);
 		if ($statement->fetch() === false)
 			throw new Exception('The given Download could not be found.');
@@ -55,7 +68,13 @@ class Download
 
 	public function __get($name)
 	{
-		return $this->$name;
+		switch ($name)
+		{
+			case 'Publisher':
+				return new Publisher($this->Publisher);
+			default:
+				return $this->$name;
+		}
 	}
 
 	public function __set($name, $value)
@@ -75,6 +94,27 @@ class Download
 
 			default:
 				throw new ErrorException(sprintf('The property %s does not exist or cannot be writte to.', $name));
+		}
+	}
+
+	/**
+	 * Gets the link to the download that can be referenced publicly.
+	 *
+	 * @return string The URL to this download.
+	 */
+	public function GetDisplayedLink()
+	{
+		if (preg_match('/http(s{0,1}):\/\/(.*)/', $this->Link))
+		{
+			return $this->Link;
+		}
+		else if (substr($this->Link, 0, 1) == '?')
+		{
+			return sprintf('http://%s/download.php?id=%d', $_SERVER['SERVER_NAME'], $this->ID);
+		}
+		else
+		{
+			throw new Exception('Unknown download link');
 		}
 	}
 
