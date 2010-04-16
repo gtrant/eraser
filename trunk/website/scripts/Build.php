@@ -58,7 +58,8 @@ class Build extends Download
 	}
 
 	/**
-	 * Gets the Builds which are still active for the given branch.
+	 * Gets the Builds which are still active for the given branch. The result is ordered by
+	 * decreasing age.
 	 *
 	 * @param string $branch The name of the Build branch.
 	 */
@@ -67,7 +68,8 @@ class Build extends Download
 		$pdo = new Database();
 		$statement = $pdo->prepare('SELECT builds.DownloadID FROM builds
 			INNER JOIN downloads ON builds.DownloadID=downloads.DownloadID
-			WHERE downloads.Superseded=0 AND builds.Branch=?');
+			WHERE downloads.Superseded=0 AND builds.Branch=?
+			ORDER BY builds.DownloadID');
 		$statement->bindParam(1, $branch);
 		$statement->execute();
 
@@ -89,12 +91,55 @@ class Build extends Download
 	 * Creates a new build to be published to the website. This function will first upload
 	 * to the public web server before allowing the build to be downloaded.
 	 *
-	 * @param string $branch   The name of the Build branch.
-	 * @param <type> $revision The revision of the Build.
+	 * @param mixed $branch    The name of the Build branch or a BuildBranch object containing the
+	 *                         branch.
+	 * @param int $revision    The revision of the Build.
+	 * @param int $filesize    The size of the file, in bytes.
+	 * @param string $link     The link to the download.
 	 */
-	public static function CreateBuild($branch, $revision)
+	public static function CreateBuild($branch, $revision, $filesize, $link)
 	{
-		
+		$pdo = new Database();
+		$pdo->beginTransaction();
+
+		//Define the download properties.
+		$statement = $pdo->prepare('INSERT INTO downloads (
+				Name, Released, `Type`, Version, PublisherID, Architecture, Filesize, Link
+			)
+			VALUES
+			(
+				CONCAT(\'Eraser \', :Version), NOW(), \'build\', :Version, 1,
+				\'any\', :Filesize, :Link
+			)');
+
+		if (is_string($branch))
+		{
+			$branches = BuildBranch::Get();
+			$branchName = $branch;
+			$branch = $branches[$branchName];
+			if (!$branch)
+				throw new Exception('The provided branch ' . $branchName . ' does not exist.');
+		}
+		else if (!is_a($branch, 'BuildBranch'))
+			throw new Exception('The provided branch is invalid.');
+
+		$statement->bindParam('Version', sprintf('%s.%s', $branch->Version, $revision));
+		$statement->bindParam('Filesize', $filesize);
+		$statement->bindParam('Link', $link);
+		$statement->execute();
+
+		//Define the build properties.
+		$statement = $pdo->prepare('INSERT INTO builds (
+				DownloadID, Branch, Revision
+			) VALUES (
+				LAST_INSERT_ID(), ?, ?
+			)');
+		$statement->bindParam(1, $branch->ID);
+		$statement->bindParam(2, $revision);
+		$statement->execute();
+
+		//Commit to the database.
+		$pdo->commit();
 	}
 }
 
