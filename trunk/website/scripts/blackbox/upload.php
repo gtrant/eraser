@@ -3,7 +3,7 @@ if (empty($_POST) || empty($_POST['action']))
 	exit;
 
 ob_start();
-require('../database.php');
+require('../Database.php');
 
 function GetFunctionNameFromStackTrace($line)
 {
@@ -22,6 +22,7 @@ function QueryStatus($stackTrace)
 {
 	//Check that a similar stack trace hasn't been uploaded.
 	$status = 'exists';
+	$pdo = new Database();
 	foreach ($stackTrace as $exceptionDepth => $exception)
 	{
 		if ($status != 'exists')
@@ -35,20 +36,22 @@ function QueryStatus($stackTrace)
 				continue;
 
 			$stackFrames .= sprintf('(StackFrameIndex=%d AND Function=\'%s\') OR ',
-				$stackIndex, mysql_real_escape_string(GetFunctionNameFromStackTrace($stackFrame)));
+				$stackIndex, $pdo->quote(GetFunctionNameFromStackTrace($stackFrame)));
 		}
 		
 		if (empty($stackFrames))
 			continue;
 		
 		//Query for the list of exceptions containing the given functions
-		$query = mysql_query(sprintf('SELECT DISTINCT(BlackBox_Exceptions.ID) FROM BlackBox_StackFrames
+		$statement = $pdo->query(sprintf('SELECT DISTINCT(BlackBox_Exceptions.ID) FROM BlackBox_StackFrames
 			INNER JOIN BlackBox_Exceptions ON BlackBox_StackFrames.ExceptionID=BlackBox_Exceptions.ID
-			WHERE (%s) AND ExceptionDepth=%d AND ExceptionType=\'%s\'',
-			substr($stackFrames, 0, strlen($stackFrames) - 4), $exceptionDepth,
-			mysql_real_escape_string($exception['exception'])));
-		
-		if (mysql_num_rows($query) == 0)
+			WHERE (%s) AND ExceptionDepth=? AND ExceptionType=?',
+			substr($stackFrames, 0, strlen($stackFrames) - 4)));
+		$statement->bindParam(1, $exceptionDepth);
+		$statement->bindParam(2, $exception['exception']);
+		$statement->execute();
+
+		if ($statement->rowCount() == 0)
 			$status = 'new';
 	}
 	
@@ -59,20 +62,40 @@ function QueryStatus($stackTrace)
 
 function Upload($stackTrace, $crashReport)
 {
-	mysql_query('BEGIN TRANSACTION');
-	mysql_query(sprintf('INSERT INTO BlackBox_Reports SET IPAddress=%u', ip2long($_SERVER['REMOTE_ADDR'])));
-	if (mysql_affected_rows() != 1)
-		throw new Exception('Could not insert crash report into Reports table: ' . mysql_error());
+	$pdo = new Database();
+	$pdo->beginTransaction();
 
-	$reportId = mysql_insert_id();
+	$statement = $pdo->prepare('INSERT INTO BlackBox_Reports SET IPAddress=?');
+	$statement->bindParam(1, sprintf('%u', ip2long($_SERVER['REMOTE_ADDR'])));
+	try
+	{
+		$statement->execute();
+	}
+	catch (PDOException $e)
+	{
+		throw new Exception('Could not insert crash report into Reports table', null, $e);
+	}
+
+	$reportId = $pdo->lastInsertId();
+	$exceptionInsert = $pdo->prepare('INSERT INTO BlackBox_Exceptions
+		SET ReportID=?, ExceptionType=?, ExceptionDepth=?');
+	$exceptionInsert->bindParam(1, $reportId);
+	$stackFrameInsert = $pdo->prepare('INSERT INTO BlackBox_StackFrames SET
+		ExceptionID=?, StackFrameIndex=?, Function=?, File=?, Line=?');
 	foreach ($stackTrace as $exceptionDepth => $exception)
 	{
-		mysql_query(sprintf('INSERT INTO BlackBox_Exceptions SET ReportID=%d, ExceptionType=\'%s\', ExceptionDepth=%d',
-			$reportId, mysql_real_escape_string($exception['exception']), $exceptionDepth));
-		if (mysql_affected_rows() != 1)
-			throw new Exception('Could not insert exception into Exceptions table: ' . mysql_error());
-
-		$exceptionId = mysql_insert_id();
+		$exceptionInsert->bindParam(2, $exception['exception']);
+		$exceptionInsert->bindParam(3, $exceptionDepth);
+		try
+		{
+			$exceptionInsert->execute();
+		}
+		catch (PDOException $e)
+		{
+			throw new Exception('Could not insert exception into Exceptions table', null, $e);
+		}
+		
+		$exceptionId = $pdo->lastInsertId();
 		foreach ($exception as $stackIndex => $stackFrame)
 		{
 			//Ignore the exception key; that stores the exception type.
@@ -92,20 +115,25 @@ function Upload($stackTrace, $crashReport)
 			{
 				$function = $matches[2];
 			}
-			
-			mysql_query(sprintf('INSERT INTO BlackBox_StackFrames SET
-				ExceptionID=%d, StackFrameIndex=%d, Function=\'%s\', File=%s, Line=%s',
-				$exceptionId, $stackIndex, mysql_real_escape_string($function),
-				empty($file) ? 'null' : sprintf('\'%s\'', mysql_real_escape_string($file)),
-				$line == null ? 'null' : intval($line)));
-			
-			if (mysql_affected_rows() != 1)
-				throw new Exception('Could not insert stack frame into Stack Frames table: ' . mysql_error());
+
+			$stackFrameInsert->bindParam(1, $exceptionId);
+			$stackFrameInsert->bindParam(2, $stackIndex);
+			$stackFrameInsert->bindParam(3, $function);
+			$stackFrameInsert->bindParam(4, $file);
+			$stackFrameInsert->bindParam(5, $line);
+			try
+			{
+				$stackFrameInsert->execute();
+			}
+			catch (PDOException $e)
+			{
+				throw new Exception('Could not insert stack frame into Stack Frames table', null, $e);
+			}
 		}
 	}
 	
-	mysql_query('COMMIT');
-	
+	$pdo->commit();
+
 	//Move the temporary file to out dumps folder for later inspection
 	if (!move_uploaded_file($crashReport['tmp_name'], 'dumps/' . $reportId . '.tbz'))
 		throw new Exception('Could not store crash dump onto server.');
