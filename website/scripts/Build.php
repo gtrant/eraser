@@ -6,7 +6,7 @@
  * @version $Id$
  */
 
-require_once('./Download.php');
+require_once('Download.php');
 
 /**
  * Represents a nightly build generated from Trac Slaves.
