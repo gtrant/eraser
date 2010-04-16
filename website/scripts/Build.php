@@ -134,7 +134,8 @@ class Build extends Download
 			) VALUES (
 				LAST_INSERT_ID(), ?, ?
 			)');
-		$statement->bindParam(1, $branch->ID);
+		$branchId = $branch->ID;
+		$statement->bindParam(1, $branchId);
 		$statement->bindParam(2, $revision);
 		$statement->execute();
 
