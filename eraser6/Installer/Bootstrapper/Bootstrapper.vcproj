@@ -65,7 +65,6 @@
 				AdditionalDependencies="comctl32.lib 7zd.lib"
 				OutputFile="$(OutDir)\Bootstrapper.exe"
 				LinkIncremental="2"
-				UACExecutionLevel="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -142,7 +141,6 @@
 				AdditionalDependencies="comctl32.lib 7z.lib"
 				OutputFile="$(OutDir)\Bootstrapper.exe"
 				LinkIncremental="1"
-				UACExecutionLevel="2"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -236,6 +234,26 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+			<File
+				RelativePath=".\Bootstrapper.manifest"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+					/>
+				</FileConfiguration>
+			</File>
 			<File
 				RelativePath=".\Bootstrapper.rc"
 				>
