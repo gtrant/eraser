@@ -3,7 +3,7 @@
  * Defines the Download class.
  *
  * @author Joel Low <lowjoel@users.sourceforge.net>
- * @version $Id $
+ * @version $Id$
  */
 
 require_once('Database.php');
@@ -13,12 +13,12 @@ require_once('Database.php');
  */
 class Download
 {
-	private $ID;
-	private $Downloads;
-	private $Name;
-	private $Released;
-	private $Superseded;
-	private $Link;
+	protected $ID;
+	protected $Downloads;
+	protected $Name;
+	protected $Released;
+	protected $Superseded;
+	protected $Link;
 
 	/**
 	 * Constructor.
@@ -39,6 +39,9 @@ class Download
 		$statement->bindColumn('Link', $this->Link);
         if ($statement->fetch() === false)
 			throw new Exception('The given Download could not be found.');
+
+		//Convert the release date to a DateTime object
+		$this->Released = new DateTime($this->Released);
 
 		//Get the number of downloads
 		$statement = $pdo->prepare('SELECT COUNT(*) FROM download_log WHERE DownloadID=?');
