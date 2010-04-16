@@ -3,7 +3,7 @@
  * Defines the Build class.
  *
  * @author Joel Low <lowjoel@users.sourceforge.net>
- * @version $Id $
+ * @version $Id$
  */
 
 require_once('./Download.php');

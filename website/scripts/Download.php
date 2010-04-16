@@ -37,7 +37,7 @@ class Download
 		$statement->bindColumn('Released', $this->Released);
 		$statement->bindColumn('Superseded', $this->Superseded);
 		$statement->bindColumn('Link', $this->Link);
-        if ($statement->fetch() === false)
+		if ($statement->fetch() === false)
 			throw new Exception('The given Download could not be found.');
 
 		//Convert the release date to a DateTime object
@@ -45,13 +45,13 @@ class Download
 
 		//Get the number of downloads
 		$statement = $pdo->prepare('SELECT COUNT(*) FROM download_log WHERE DownloadID=?');
-		$statement->bindParam(1, $this->ID);
+		$statement->bindParam(1, $downloadId);
 		$statement->execute();
 		$row = $statement->fetch();
 		$this->Downloads = $row ? $row[0] : 0;
 
-        $this->ID = intval($downloadId);
-    }
+		$this->ID = intval($downloadId);
+	}
 
 	public function __get($name)
 	{
@@ -63,19 +63,19 @@ class Download
 		switch ($name)
 		{
 			case 'Superseded':
-                if (!is_bool($value))
+				if (!is_bool($value))
 					throw new Exception('Download::Superseded expects bool; but $value is not boolean.');
 
 				$pdo = new Database();
 				$statement = $pdo->prepare('UPDATE downloads SET Superseded=? WHERE DownloadID=?');
-                $statement->bindParam(1, $this->Superseded);
+				$statement->bindParam(1, $this->Superseded);
 				$statement->bindParam(2, $this->ID);
 				$statement->execute();
 				break;
 
 			default:
 				throw new ErrorException(sprintf('The property %s does not exist or cannot be writte to.', $name));
-        }
+		}
 	}
 
 	/**
