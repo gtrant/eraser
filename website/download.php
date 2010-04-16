@@ -9,20 +9,18 @@ if (!empty($_GET['id']))
 		$download = new Download(intval($_GET['id']));	
 		
 		//Check for supersedence
-		if ($download->Superseded)
+		if (!$download->Superseded)
 		{
-			header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode('The requested download has been superseded with a newer version.'));
+			$download->InitiateDownload();
 			exit;
 		}
-		
-		$download->InitiateDownload();
+
+		$error = 'The requested download has been superseded with a newer version.';
 	}
 	catch (Exception $e)
 	{
-		header('location: ' . $_SERVER['PHP_SELF'] . '?error=' . urlencode($e->getMessage()));
+		$error =$e->getMessage();
 	}
-
-	exit;
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -56,7 +54,7 @@ if (!empty($_GET['id']))
 				</div>
 
 				<!-- InstanceBeginEditable name="LeftContentEdit" -->
-				<?php if (!empty($_GET['error'])) printf('<p class="error">%s</p>', $_GET['error']); ?>
+				<?php if (!empty($error)) printf('<p class="error">%s</p>', $error); ?>
 				<p>Thank for you having interest in Eraser. Eraser is available in a few flavours, the stable, the beta as well as the nightly builds.</p>
 				<p>Stable builds of Eraser are builds in which few, if any, bugs remain in the code and is suitable for use in all environments. If in doubt, choose the Stable version. The beta and nightly builds cater to a slightly different audience. Beta and nightly builds are built on the previous stable version released, but may contain new features or bug fixes to bugs discovered in the stable builds. Use the Beta and Nightly builds at your own risk<sup><a href="#footnote1" name="footnote1Src">1</a></sup>. </p>
 				<p>If you do discover bugs in the nightly builds, report them on <a href="trac/newticket">Trac</a>, citing the build number that you have used (the number after 'r', it can also be found in the About dialog for Eraser 6, it is <em>d</em> value in the version number <em>a.b.c.d</em>).</p>
