@@ -7,7 +7,11 @@
  */
 
 if (count($argv) < 4)
-	die('There are insufficient arguments for BuildPublish.php.' . "\n\n" . 'Usage: BuildPublish.php <branch name> <revision> <installer>');
+{
+	echo 'There are insufficient arguments for BuildPublish.php.' . "\n\n" .
+		'Usage: BuildPublish.php <branch name> <revision> <installer>';
+	exit(1);
+}
 
 require_once('Credentials.php');
 require_once('Database.php');
@@ -57,14 +61,17 @@ function Delete($url, $username = '', $password = '')
 
 $file = fopen($argv[3], 'rb');
 if (!$file)
-	die('The file ' . $argv[3] . ' could not be opened for reading.');
+{
+	echo 'The file ' . $argv[3] . ' could not be opened for reading.';
+	exit(1);
+}
 
 try
 {
 	//Generate a filename for the installer.
 	$branches = BuildBranch::Get();
 	if (!array_key_exists($argv[1], $branches))
-		die('The branch ' . $argv[1] . ' does not exist.');
+		throw new Exception('The branch ' . $argv[1] . ' does not exist.');
 
 	define('SHELL_WEB_ROOT', 'sftp://web.sourceforge.net/home/groups/e/er/eraser/htdocs');
 	define('HTTP_WEB_ROOT', 'http://eraser.sourceforge.net');
@@ -102,7 +109,8 @@ try
 }
 catch (Exception $e)
 {
-	die($e->getMessage());
+	echo $e->getMessage();
+	exit(1);
 }
 
 fclose($file);
