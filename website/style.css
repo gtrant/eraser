@@ -391,3 +391,9 @@ th {
 .error {
 	color: #900;
 }
+
+p.error {
+	background-color: #ffdede;
+	border: 1px solid #ff8080;
+	padding: 0.3em 1em 0.3em 1em;
+}
