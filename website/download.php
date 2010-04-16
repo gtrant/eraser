@@ -1,13 +1,12 @@
 <?php
-require('scripts/downloads.php');
+require('scripts/Download.php');
+require('scripts/Build.php');
 
 if (!empty($_GET['id']))
 {
 	try
 	{
-		$download = Build::GetBuildFromID(intval($_GET['id']));
-		if (empty($download))
-			$download = new Download(intval($_GET['id']));
+		$download = new Download(intval($_GET['id']));	
 		
 		//Check for supersedence
 		if ($download->Superseded)
@@ -106,24 +105,21 @@ if (!empty($_GET['id']))
 						<th>Downloads</th>
 					</tr>
 <?php
-					$builds = Build::Get();
-					foreach ($builds as $buildName => $build)
+					foreach (BuildBranch::Get() as $branch)
 					{
 ?>
 					<tr>
-						<td colspan="4"><h4><?php echo $buildName; ?></h4></td>
+						<td colspan="4"><h4><?php echo $branch->Title; ?></h4></td>
 					</tr>
 <?php
-						foreach ($build as $revision)
+						foreach (Build::GetActive($branch->ID) as $build)
 						{
-							if ($revision->Superseded)
-								continue;
 ?>
 					<tr>
-						<td><a href="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $revision->ID; ?>"><?php echo $revision->Name; ?></a></td>
-						<td>r<?php echo $revision->Revision; ?></td>
-						<td><?php echo date('j/n/y g:ia', $revision->Released); ?></td>
-						<td><?php echo $revision->Downloads; ?></td>
+						<td><a href="<?php echo $_SERVER['PHP_SELF'] . '?id=' . $build->ID; ?>"><?php echo $build->Name; ?></a></td>
+						<td>r<?php echo $build->Revision; ?></td>
+						<td><?php echo $build->Released->format('j/n/y g:ia'); ?></td>
+						<td><?php echo $build->Downloads; ?></td>
 					</tr>
 <?php
 						}
