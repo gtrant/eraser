@@ -10,6 +10,7 @@ if (count($argv) < 4)
 	die('There are insufficient arguments for BuildPublish.php.' . "\n\n" . 'Usage: BuildPublish.php <branch name> <revision> <installer>');
 
 require_once('Credentials.php');
+require_once('Database.php');
 require_once('Build.php');
 
 /**
@@ -65,13 +66,36 @@ try
 	if (!array_key_exists($argv[1], $branches))
 		die('The branch ' . $argv[1] . ' does not exist.');
 
+	define('SHELL_WEB_ROOT', 'sftp://web.sourceforge.net/home/groups/e/er/eraser/htdocs');
+	define('HTTP_WEB_ROOT', 'http://eraser.sourceforge.net');
+
 	$branch = $branches[$argv[1]];
 	$pathInfo = pathinfo($argv[3]);
 	$fileName = sprintf('Eraser %s.%d.%s', $branch->Version, $argv[2], $pathInfo['extension']);
-	$uploadURL = sprintf('sftp://web.sourceforge.net/home/groups/e/er/eraser/htdocs/builds/%s/%s',
-		$branch->ID, $fileName);
-	Upload($uploadURL, $file, $sftp_username, $sftp_password);
-    Delete($uploadURL, $sftp_username, $sftp_password);
+	$installerPath = sprintf('/builds/%s/%s', $branch->ID, $fileName);
+
+	//Then upload the installer to the URL.
+	Upload(SHELL_WEB_ROOT . $installerPath, $file, $sftp_username, $sftp_password);
+
+	//Insert the build to the database.
+	printf('Inserting build into database... ');
+	Build::CreateBuild($branch->ID, intval($argv[2]), filesize($argv[3]), HTTP_WEB_ROOT . $installerPath);
+	printf("Inserted.\n");
+
+	//Remove old builds
+	printf('Removing old builds from database... ');
+
+	$pdo = new Database();
+	$pdo->beginTransaction();
+	$statement = $pdo->prepare('UPDATE downloads SET Superseded=1 WHERE DownloadID=?');
+
+	$builds = Build::GetActive($branch->ID);
+	for ($i = 0, $j = count($builds) - 3; $i < $j; ++$i)
+	{
+		$statement->bindParam(1, $builds[$i]->ID);
+		$statement->execute();
+	}
+	$pdo->commit();
 }
 catch (Exception $e)
 {
