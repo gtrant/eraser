@@ -86,16 +86,19 @@ try
 	printf('Removing old builds from database... ');
 
 	$pdo = new Database();
-	$pdo->beginTransaction();
 	$statement = $pdo->prepare('UPDATE downloads SET Superseded=1 WHERE DownloadID=?');
 
 	$builds = Build::GetActive($branch->ID);
 	for ($i = 0, $j = count($builds) - 3; $i < $j; ++$i)
 	{
+		//Delete the copy on the SourceForge web server.
+		Delete(SHELL_WEB_ROOT . parse_url($builds[$i]->Link, PHP_URL_PATH), $sftp_username,
+			$sftp_password);
+
+		//Remove from the database
 		$statement->bindParam(1, $builds[$i]->ID);
 		$statement->execute();
 	}
-	$pdo->commit();
 }
 catch (Exception $e)
 {
