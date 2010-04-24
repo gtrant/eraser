@@ -194,7 +194,7 @@ Eraser Project Members:
 				if (WebsiteRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
 					Process.Start("http://eraser.heidi.ie/");
 				else if (DonateRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
-					Process.Start("https://euro.swreg.org/cgi-bin/s.cgi?r=1&s=80181&db_key=1512312&x=0&lang=&lnk=");
+					Process.Start("http://sourceforge.net/donate/index.php?group_id=37015");
 				else if ((DateTime.Now - mouseDownTime < mouseSpeedUpSpan))
 					//Dismiss the dialog.
 					Close();
