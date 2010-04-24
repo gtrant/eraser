@@ -175,10 +175,10 @@
     <value>Nie można było załadować listy zadań. Wszystkie wpisy zadań zostały utracone. Wystąpił błąd: {0}</value>
   </data>
   <data name="Another instance of Eraser is already running but it is running with higher privileges than this instance of Eraser.\n\nEraser will now exit." xml:space="preserve">
-    <value>Inne wystąpienia Erasera już działa i jest z wyższymi uprawnieniami niż to wystąpienie.\n\nEraser się zamknie.</value>
+    <value>Już działa inne wystąpienie Erasera i jest z wyższymi uprawnieniami niż to wystąpienie.\n\nEraser się zamknie.</value>
   </data>
   <data name="Another instance of Eraser is already running but cannot be connected to.\n\nThe error returned was: {0}" xml:space="preserve">
-    <value>Inne wystąpienie Erasera już działa, ale nie można się z nim połączyć.\n\nWystąpił błąd: {0}</value>
+    <value>Już działa inne wystąpienie Erasera, ale nie można się z nim połączyć.\n\nWystąpił błąd: {0}</value>
   </data>
   <data name="Total: {0,2:#0.00%}" xml:space="preserve">
     <value>Razem: {0,2:#0.00%}</value>
@@ -190,7 +190,7 @@
     <value>Ukończony z błędami</value>
   </data>
   <data name="Not completed" xml:space="preserve">
-    <value>Nie kompletny</value>
+    <value>Niekompletny</value>
   </data>
   <data name="Completed" xml:space="preserve">
     <value>Ukończony</value>
@@ -242,6 +242,7 @@
   </data>
   <data name="Erase {0}" xml:space="preserve">
     <value>Wymazywanie {0}</value>
+    <comment>Maybe "Wymaż" is more appropriate, it depends on its context</comment>
   </data>
   <data name="Could not import task list from {0}. The error returned was: {1}" xml:space="preserve">
     <value>Nie można było zaimportować listy zadań z {0}. Wystąpił błąd: {1}</value>
