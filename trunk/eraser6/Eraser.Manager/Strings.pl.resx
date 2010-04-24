@@ -124,10 +124,10 @@
     <value>Program nie wystarczających praw dostępu do wymazania nieużywanego miejsca dysku.</value>
   </data>
   <data name="This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
-    <value>Komputer miał włączony system przywracania systemu lub kopiowania woluminów w tle. To mogło stworzyć kopię plików przechowywanych na dysku i spowodować ich przywrócenie, co powinno wzbudzić zaniepokojenie o bezpieczeństwo.</value>
+    <value>Komputer miał włączoną opcję przywracania systemu lub kopiowania woluminów w tle. To mogło stworzyć kopię plików przechowywanych na dysku oraz ich przywrócenie, co powinno alarmować o zagrożonym bezpieczeństwie.</value>
   </data>
   <data name="The drive {0} has disk quotas active. This will prevent the complete erasure of unused space and may pose a security concern." xml:space="preserve">
-    <value>Dysk {0} ma włączone ograniczenie rozmiaru (quota). Przeszkodzi to całkowitemu wymazaniu nieużywanego miejsca, co powinno wzbudzić zaniepokojenie o bezpieczeństwo.</value>
+    <value>Dysk {0} ma włączone ograniczenie rozmiaru (quota). Uniemożliwi to całkowite wymazanie nieużywanego miejsca, co powinno alarmować o zagrożonym bezpieczeństwie.</value>
   </data>
   <data name="Searching for files' cluster tips..." xml:space="preserve">
     <value>Poszukiwanie resztek klastrów...</value>
