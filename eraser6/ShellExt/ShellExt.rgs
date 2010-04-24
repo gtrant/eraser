@@ -62,6 +62,16 @@ HKCR
 			}
 		}
 	}
+	NoRemove lnkfile
+	{
+		NoRemove shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+			}
+		}
+	}
 
 	EraserShellExt.ShellExt.1 = s 'Eraser Shell Extension'
 	{
@@ -83,6 +93,17 @@ HKCR
 				val ThreadingModel = s 'Apartment'
 			}
 			'TypeLib' = s '{BBAA6A86-48FB-4F7B-B06F-7FACD6AFBD25}'
+		}
+		
+		NoRemove {645FF040-5081-101B-9F08-00AA002F954E}
+		{
+			NoRemove shellex
+			{
+				NoRemove ContextMenuHandlers
+				{
+					ForceRemove {BC9B776A-90D7-4476-A791-79D835F30650}
+				}
+			}
 		}
 	}
 }

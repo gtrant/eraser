@@ -152,6 +152,11 @@
 						Key="InternetShortcut\shellex\ContextMenuHandlers\Eraser"
 						Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
 						Type="string" />
+					<!-- Shortcuts -->
+					<RegistryValue Id="EraserShellHKCRLnkFile" Root="HKCR"
+						Key="lnkfile\shellex\ContextMenuHandlers\Eraser"
+						Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+						Type="string" />
 					<!-- Recycle Bin -->
 					<RegistryValue Id="EraserShellHKCRRecycleBin" Root="HKCR"
 						Key="CLSID\{645FF040-5081-101B-9F08-00AA002F954E}\shellex\ContextMenuHandlers\{BC9B776A-90D7-4476-A791-79D835F30650}"
