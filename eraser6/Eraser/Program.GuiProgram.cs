@@ -366,6 +366,9 @@ namespace Eraser
 				Exited = true;
 				if (ExitInstance != null)
 					ExitInstance(sender, e);
+
+				if (!MainForm.Disposing)
+					MainForm.Dispose();
 			}
 			#endregion
 
