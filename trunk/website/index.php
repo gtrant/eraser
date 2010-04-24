@@ -111,7 +111,7 @@
 				</ul>
 				<h3>Donate</h3>
 				<ul>
-					<li>Please help out the Eraser team by donating some coffee!</li>
+					<li>Please help out the Eraser team by <a href="http://sourceforge.net/donate/index.php?group_id=37015">donating some coffee</a>!</li>
 					<!--li><a href="http://www.paypal.com"><img src="images/paypal.jpg" alt="paypall" /></a></li-->
 				</ul>
 			</div>
