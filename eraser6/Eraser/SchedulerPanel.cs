@@ -398,8 +398,9 @@ namespace Eraser
 				}
 			}
 
-			DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect,
-				descriptionMessage, descriptionInsert);
+			if (e.Data.GetDataPresent("DragImageBits"))
+				DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect,
+					descriptionMessage, descriptionInsert);
 		}
 
 		private void scheduler_DragLeave(object sender, EventArgs e)
