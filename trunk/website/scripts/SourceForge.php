@@ -23,7 +23,7 @@ class SourceForge
 	/**
 	 * Gets the number of downloads for the given URL.
 	 *
-	 * @param string $url The URL of the download.
+	 * @param string $url The URL of the download. The URL must be decoded already (literal comparison)
 	 * @return int        The number of downloads.
 	 */
 	public static function GetDownloads($url)
@@ -45,7 +45,6 @@ class SourceForge
 		$document = new DOMDocument();
 
 		//Get the download page, using the cache if it exists.
-		printf('Loading ' .'http://sourceforge.net' . $downloadPage . "\n");
 		$document->loadHTML(SourceForge::Download('http://sourceforge.net' . $downloadPage, 60 * 60));
 		file_put_contents('test.xml', $document->saveXML());
 
@@ -58,7 +57,7 @@ class SourceForge
 			$parent = $element->parentNode;
 			if (is_a($parent, 'DOMElement') && $parent->tagName == 'td' &&
 				$parent->getAttribute('class') == 'tree' &&
-				$element->getAttribute('href') == implode('/', $pathComponents))
+				urldecode($element->getAttribute('href')) == implode('/', $pathComponents))
 			{
 				//$grandParent is the <tr> node.
 				$grandParent = $parent->parentNode;
