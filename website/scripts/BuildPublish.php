@@ -48,12 +48,17 @@ function Delete($url, $username = '', $password = '')
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_USERPWD, sprintf('%s:%s', $username, $password));
 
+	//Don't output to stdout
+	$tempOutput = fopen('php://temp', 'w');
+	curl_setopt($curl, CURLOPT_FILE, $tempOutput);
+
 	//Parse the URL to get the path to delete
-    $path = parse_url($url, PHP_URL_PATH);
-    curl_setopt($curl, CURLOPT_POSTQUOTE, array(sprintf('rm "%s"', $path)));
+	$path = parse_url($url, PHP_URL_PATH);
+	curl_setopt($curl, CURLOPT_QUOTE, array(sprintf('rm "%s"', $path)));
 
 	if (curl_exec($curl) === false)
 		throw new Exception('cURL Error: ' . curl_error($curl));
+	fclose($tempOutput);
 	curl_close($curl);
 
 	printf("File deleted.\n");
@@ -98,6 +103,8 @@ try
 	$builds = Build::GetActive($branch->ID);
 	for ($i = 0, $j = count($builds) - 3; $i < $j; ++$i)
 	{
+		printf('Removing build %s' . "\n\t", $builds[i]->Name);
+
 		//Delete the copy on the SourceForge web server.
 		Delete(SHELL_WEB_ROOT . parse_url($builds[$i]->Link, PHP_URL_PATH), $sftp_username,
 			$sftp_password);
