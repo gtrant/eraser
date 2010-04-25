@@ -1,6 +1,7 @@
 <?php
 require('scripts/Download.php');
 require('scripts/Build.php');
+require('scripts/SourceForge.php');
 
 if (!empty($_GET['id']))
 {
@@ -19,7 +20,7 @@ if (!empty($_GET['id']))
 	}
 	catch (Exception $e)
 	{
-		$error =$e->getMessage();
+		$error = $e->getMessage();
 	}
 }
 ?>
@@ -66,13 +67,13 @@ if (!empty($_GET['id']))
 						<th>Build Name</th>
 						<th>Version</th>
 						<th>Release Date</th>
-						<th>&nbsp;</th>
+						<th>Downloads</th>
 					</tr>
 					<tr>
 						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser 6/6.0.7/Eraser 6.0.7.1893.exe/download">Eraser 6.0.7.1893</a></td>
 						<td>6.0.7.1893</td>
 						<td>14/4/2010 8:00am</td>
-						<td>&nbsp;</td>
+						<td><?php echo SourceForge::GetDownloads('http://sourceforge.net/projects/eraser/files/Eraser 6/6.0.7/Eraser 6.0.7.1893.exe/download'); ?></td>
 					</tr>
 					<tr>
 						<td colspan="4"><h3>Beta Builds</h3></td>
