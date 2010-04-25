@@ -30,7 +30,7 @@
 				</div>
 
 				<!-- InstanceBeginEditable name="LeftContentEdit" -->
-				<p>Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Works with Windows  98, ME, NT, 2000, XP, Vista, Windows Server 2003 and Server 2008.</p>
+				<p>Eraser is an advanced security tool for Windows which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Eraser is currently supported under Windows XP (with Service Pack 3), Windows Server 2003 (with Service Pack 2), Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2.</p>
 				<p>Eraser is Free software and its source code is released under <a href="http://www.fsf.org/licensing/licenses/gpl.html">GNU General Public License</a>.</p>
 				<!-- InstanceEndEditable -->
 			</div>
@@ -44,7 +44,7 @@
 				</div>
 
 				<!-- InstanceBeginEditable name="LeftContentEdit" -->
-				<p>Most people have some data that they would rather not share with others - passwords, personal information, classified documents from work, financial records, self-written poems, the list can be continued forever.</p>
+				<p>Most people have some data that they would rather not share with others - passwords, personal information, classified documents from work, financial records, self-written poems, the list continues.</p>
 				<p>Perhaps you have saved some of this information on your computer where it is conveniently at your reach, but when the time comes to remove the data from your hard disk, things get a bit more complicated and maintaining your privacy is not as simple as it may have seemed at first.</p>
 				<p><strong>Your first thought may be that when you 'delete' the file, the data is gone. Not quite</strong>, when you delete a file, the operating system does not really remove the file from the disk; it only removes the reference of the file from the file system table. The file remains on the disk until another file is created over it, and even after that, it might be possible to recover data by studying the magnetic fields on the disk platter surface.</p>
 				<p>Before the file is overwritten, anyone can easily retrieve it with a disk maintenance or an undelete utility.</p>
@@ -62,13 +62,13 @@
 
 				<!-- InstanceBeginEditable name="LeftContentEdit" -->
 				<ul>
-					<li>It works with Windows XP, Windows Vista, Windows Server 2003 and Windows Server 2008.</li>
+					<li>It works with Windows XP (with Service Pack 3), Windows Server 2003 (with Service Pack 2), Windows Vista, Windows Server 2008, Windows 7 and Windows Server 2008 R2</li>
 					<ul>
 						<li>Windows 98, ME, NT, 2000 can still be used with version 5.7!</li>
 					</ul>
 					<li>It works with any drive that works with Windows</li>
 					<li>Secure drive erasure methods are supported out of the box</li>
-					<li>Erases files, folders and their previous deleted counterparts</li>
+					<li>Erases files, folders and their previously deleted counterparts</li>
 					<li>Works with an extremely customisable Scheduler</li>
 				</ul>
 				<!-- InstanceEndEditable -->
@@ -122,13 +122,12 @@
 						<img src="images/usr_admin.gif" alt="" width="17" height="17" />Project Admins:
 						<ul>
 							<li><a href="http://www.heidi.ie/" target="_blank">Garrett Trant</a> (Admin, Researcher)</li>
-							<li><a href="http://www.tolvanen.com/" target="_blank">Sami Tolvanen</a> (Founder)</li>
+							<li><a href="http://joelsplace.sg/" target="_blank">Joel Low</a> (Admin, Lead Developer)</li>
 						</ul>
 					</li>
 					<li>
 						<img src="images/usr_developer.gif" alt="" width="17" height="17" />Developers:
 						<ul>
-							<li><a href="http://joelsplace.sg/" target="_blank">Joel Low</a> (Lead)</li>
 							<li>Kasra Nassiri</li>
 							<li><a href="http://lemarquis.deviantart.com/" target="_blank">Dennis van Lith</a> (UX)</li>
 						</ul>
