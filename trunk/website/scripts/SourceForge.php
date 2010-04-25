@@ -15,7 +15,9 @@ class SourceForge
 
 	public static function Init()
 	{
-		$CacheDir = dirname(__FILE__) . '/cache';
+		SourceForge::$CacheDir = dirname(__FILE__) . '/cache/SourceForge';
+		if (!file_exists(SourceForge::$CacheDir))
+			mkdir(SourceForge::$CacheDir, null, true);
 	}
 
 	/**
@@ -25,7 +27,7 @@ class SourceForge
 	 * @return int        The number of downloads.
 	 */
 	public static function GetDownloads($url)
-	{//projects/eraser/files/Eraser%206/6.0.7/Eraser%206.0.7.1893.exe/download
+	{
 		//Parse the URL to get the path to the download.
 		$urlInfo = parse_url($url);
 
@@ -39,10 +41,13 @@ class SourceForge
 		//The first three components is the page we need to download.
 		$downloadPage = implode('/', array_slice($pathComponents, 0, 4));
 
-		//Parse the download page
+		//Parse the download page.
 		$document = new DOMDocument();
+
+		//Get the download page, using the cache if it exists.
 		printf('Loading ' .'http://sourceforge.net' . $downloadPage . "\n");
-		$document->loadHTMLFile('http://sourceforge.net' . $downloadPage);
+		$document->loadHTML(SourceForge::Download('http://sourceforge.net' . $downloadPage, 60 * 60));
+		file_put_contents('test.xml', $document->saveXML());
 
 		foreach ($document->getElementsByTagName('a') as $element)
 		{
@@ -73,6 +78,32 @@ class SourceForge
 		}
 
 		throw new Exception('Could not find the node containing the download.');
+	}
+
+	/**
+	 * Downloads the contents of the given URL, storing it in our cache and returning it to the
+	 * caller as the return result. The result returned will be cached if the age of the cache
+	 * is less than the $age parameter.
+	 *
+	 * @param string $url The fully-qualified URL to download.
+	 * @param int $age    The age of the cache before the URL is downloaded again.
+	 * @return string     The contents of the URL.
+	 */
+	private static function Download($url, $age)
+	{
+		//Hash the URL to get the cache file name.
+		$hash = sha1($url);
+		$cacheFile = SourceForge::$CacheDir . '/' . $hash;
+
+		//Does the cache need refreshing?
+		if (!file_exists($cacheFile) || time() - filemtime($cacheFile) > $age)
+		{
+			//Yes, the cache doesn't exist or the cache is stale.
+			copy($url, $cacheFile);
+		}
+
+		//Return the cached copy.
+		return file_get_contents($cacheFile);
 	}
 }
 
