@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Text;
+using System.Linq;
 
 using System.IO;
 using System.Globalization;
@@ -84,6 +85,8 @@ namespace Eraser
 			{
 				//Get the raw registry value
 				object rawResult = Key.GetValue(name, null);
+				if (rawResult == null)
+					return defaultValue;
 
 				//Check if it is a serialised object
 				byte[] resultArray = rawResult as byte[];
@@ -111,6 +114,10 @@ namespace Eraser
 				else if (typeof(T) == typeof(Guid))
 				{
 					return (T)(object)new Guid((string)rawResult);
+				}
+				else if (typeof(T).GetInterfaces().Any(x => x == typeof(IConvertible)))
+				{
+					return (T)Convert.ChangeType(rawResult, typeof(T));
 				}
 				else
 				{
