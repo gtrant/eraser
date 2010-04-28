@@ -71,7 +71,7 @@
 			<ComponentRef Id="EraserPluginsLangEn" />
 
 			<Feature Id="EraserMainBlackBox" Title="Eraser BlackBox"
-					Description="Eraser BlackBox error reporting component" Level="5">
+					Description="Eraser BlackBox error reporting component" Level="1">
 				<ComponentRef Id="EraserBlackBox"/>
 			</Feature>
 			<Feature Id="EraserMainShell" Title="Eraser Shell Extension"
