@@ -169,16 +169,7 @@ namespace Eraser.BlackBox
 				FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
 			{
 				//Store the exception information
-				NativeMethods.MiniDumpExceptionInfo exception =
-					new NativeMethods.MiniDumpExceptionInfo();
-				exception.ClientPointers = false;
-				exception.ExceptionPointers = Marshal.GetExceptionPointers();
-				exception.ThreadId = (uint)AppDomain.GetCurrentThreadId();
-
-				NativeMethods.MiniDumpWriteDump(Process.GetCurrentProcess().Handle,
-					(uint)Process.GetCurrentProcess().Id, stream.SafeFileHandle,
-					NativeMethods.MiniDumpType.MiniDumpWithFullMemory,
-					ref exception, IntPtr.Zero, IntPtr.Zero);
+				MiniDump.Dump(stream);
 			}
 		}
 

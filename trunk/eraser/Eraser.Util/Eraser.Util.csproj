@@ -104,6 +104,7 @@
     <Compile Include="ConsoleWindow.cs" />
     <Compile Include="FileSize.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="MiniDump.cs" />
     <Compile Include="NativeMethods\DbgHelp.cs" />
     <Compile Include="NativeMethods\Mpr.cs" />
     <Compile Include="PostDataBuilder.cs" />
