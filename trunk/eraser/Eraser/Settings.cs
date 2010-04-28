@@ -80,64 +80,75 @@ namespace Eraser
 
 			#endregion
 
-			public override object this[string setting]
+			public override T GetValue<T>(string name, T defaultValue)
 			{
-				get
+				//Get the raw registry value
+				object rawResult = key.GetValue(name, null);
+
+				//Check if it is a serialised object
+				byte[] resultArray = rawResult as byte[];
+				if (resultArray != null)
 				{
-					//Get the raw registry value
-					object rawResult = Key.GetValue(setting, null);
-
-					//Check if it is a serialised object
-					byte[] resultArray = rawResult as byte[];
-					if (resultArray != null)
-					{
-						using (MemoryStream stream = new MemoryStream(resultArray))
-							try
-							{
-								return new BinaryFormatter().Deserialize(stream);
-							}
-							catch (SerializationException)
-							{
-								Key.DeleteValue(setting);
-								MessageBox.Show(S._("Could not load the setting {0}\\{1} for " +
-										"plugin {2}. The setting has been lost.", Key, setting,
-										PluginID.ToString()),
-									S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
-									MessageBoxDefaultButton.Button1,
-									Localisation.IsRightToLeft(null) ?
-										MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-							}
-					}
-					else
-					{
-						return rawResult;
-					}
-
-					return null;
+					using (MemoryStream stream = new MemoryStream(resultArray))
+						try
+						{
+							BinaryFormatter formatter = new BinaryFormatter();
+							if (typeof(T) != typeof(object))
+								formatter.Binder = new TypeNameSerializationBinder(typeof(T));
+							return (T)formatter.Deserialize(stream);
+						}
+						catch (SerializationException)
+						{
+							key.DeleteValue(name);
+							MessageBox.Show(S._("Could not load the setting {0}\\{1} for " +
+									"plugin {2}. The setting has been lost.", key, name,
+									pluginID.ToString()),
+								S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
+								MessageBoxDefaultButton.Button1,
+								S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+						}
 				}
-				set
+				else if (typeof(T) == typeof(Guid))
 				{
-					if (value == null)
+					return (T)(object)new Guid((string)rawResult);
+				}
+				else
+				{
+					return (T)rawResult;
+				}
+
+				return defaultValue;
+			}
+
+			public override void SetValue(string name, object value)
+			{
+				if (value == null)
+				{
+					key.DeleteValue(name);
+				}
+				else
+				{
+					if (value is bool)
+						key.SetValue(name, value, RegistryValueKind.DWord);
+					else if ((value is int) || (value is uint))
+						key.SetValue(name, value, RegistryValueKind.DWord);
+					else if ((value is long) || (value is ulong))
+						key.SetValue(name, value, RegistryValueKind.QWord);
+					else if ((value is string) || (value is Guid))
+						key.SetValue(name, value, RegistryValueKind.String);
+					else if (value is ICollection<string>)
 					{
-						Key.DeleteValue(setting);
+						ICollection<string> collection = (ICollection<string>)value;
+						string[] temp = new string[collection.Count];
+						collection.CopyTo(temp, 0);
+						key.SetValue(name, temp, RegistryValueKind.MultiString);
 					}
 					else
-					{
-						if (value is bool)
-							Key.SetValue(setting, value, RegistryValueKind.DWord);
-						else if ((value is int) || (value is uint))
-							Key.SetValue(setting, value, RegistryValueKind.DWord);
-						else if ((value is long) || (value is ulong))
-							Key.SetValue(setting, value, RegistryValueKind.QWord);
-						else if (value is string)
-							Key.SetValue(setting, value, RegistryValueKind.String);
-						else
-							using (MemoryStream stream = new MemoryStream())
-							{
-								new BinaryFormatter().Serialize(stream, value);
-								Key.SetValue(setting, stream.ToArray(), RegistryValueKind.Binary);
-							}
-					}
+						using (MemoryStream stream = new MemoryStream())
+						{
+							new BinaryFormatter().Serialize(stream, value);
+							key.SetValue(name, stream.ToArray(), RegistryValueKind.Binary);
+						}
 				}
 			}
 
@@ -210,13 +221,11 @@ namespace Eraser
 		{
 			get
 			{
-				return settings["Language"] == null ?
-					GetCurrentCulture().Name :
-					(string)settings["Language"];
+				return settings.GetValue("Language", GetCurrentCulture().Name);
 			}
 			set
 			{
-				settings["Language"] = value;
+				settings.SetValue("Language", value);
 			}
 		}
 
@@ -227,13 +236,11 @@ namespace Eraser
 		{
 			get
 			{
-				return settings["IntegrateWithShell"] == null ?
-					true : Convert.ToBoolean(settings["IntegrateWithShell"],
-						CultureInfo.InvariantCulture);
+				return settings.GetValue("IntegrateWithShell", true);
 			}
 			set
 			{
-				settings["IntegrateWithShell"] = value;
+				settings.SetValue("IntegrateWithShell", value);
 			}
 		}
 
@@ -245,13 +252,11 @@ namespace Eraser
 		{
 			get
 			{
-				return settings["HideWhenMinimised"] == null ?
-					true : Convert.ToBoolean(settings["HideWhenMinimised"],
-						CultureInfo.InvariantCulture);
+				return settings.GetValue("HideWhenMinimised", true);
 			}
 			set
 			{
-				settings["HideWhenMinimised"] = value;
+				settings.SetValue("HideWhenMinimised", value);
 			}
 		}
 
@@ -263,13 +268,11 @@ namespace Eraser
 		{
 			get
 			{
-				return settings["ClearCompletedTasks"] == null ?
-					true : Convert.ToBoolean(settings["ClearCompletedTasks"],
-						CultureInfo.InvariantCulture);
+				return settings.GetValue("ClearCompletedTasks", true);
 			}
 			set
 			{
-				settings["ClearCompletedTasks"] = value;
+				settings.SetValue("ClearCompletedTasks", value);
 			}
 		}
 
