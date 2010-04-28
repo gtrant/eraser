@@ -178,7 +178,8 @@ int Install(bool quiet)
 
 	//Install the .NET framework
 	if (!HasNetFramework())
-		InstallNetFramework(tempDir, quiet);
+		if (!InstallNetFramework(tempDir, quiet))
+			return 0;
 
 	//Then install Eraser!
 	mainWin.Show(false);
