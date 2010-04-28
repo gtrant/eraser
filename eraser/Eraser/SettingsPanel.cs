@@ -76,8 +76,8 @@ namespace Eraser
 
 			//Visually display the other metadata associated with the assembly
 			item.ImageIndex = e.Instance.AssemblyAuthenticode == null ? -1 : 0;
-			item.Group = e.Instance.IsCore ? pluginsManager.Groups[0] :
-				pluginsManager.Groups[1];
+			item.Group = e.Instance.LoadingPolicy == LoadingPolicy.Core ?
+				pluginsManager.Groups[0] : pluginsManager.Groups[1];
 			item.SubItems.Add(e.Instance.Assembly.GetName().Version.ToString());
 			item.SubItems.Add(e.Instance.Assembly.Location);
 			item.Tag = e.Instance;
@@ -307,7 +307,7 @@ namespace Eraser
 		{
 			ListViewItem item = pluginsManager.Items[e.Index];
 			PluginInstance instance = (PluginInstance)item.Tag;
-			if (instance.IsCore)
+			if (instance.LoadingPolicy == LoadingPolicy.Core)
 				e.NewValue = CheckState.Checked;
 		}
 

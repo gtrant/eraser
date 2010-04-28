@@ -25,4 +25,4 @@ using System.Resources;
 [assembly: Guid("e2e55c15-f188-4293-a4b2-1d8a016103b5")]
 
 // The plugin is a Core Eraser plugin, declare it so.
-[assembly: Eraser.Manager.Plugin.Core]
+[assembly: Eraser.Manager.Plugin.LoadingPolicy(Eraser.Manager.Plugin.LoadingPolicy.Core)]

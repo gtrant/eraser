@@ -22,6 +22,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -212,68 +214,74 @@ namespace Eraser.Manager.Plugin
 			lock (plugins)
 				plugins.Add(instance);
 
-			//The plugin was not disabled or it was loaded for the first time. Check
-			//the plugin for the presence of a valid signature.
+			//If the plugin does not have an approval or denial, check for the presence of
+			//a valid signature.
 			IDictionary<Guid, bool> approvals = ManagerLibrary.Settings.PluginApprovals;
-			if ((reflectAssembly.GetName().GetPublicKey().Length == 0 ||
+			if (!approvals.ContainsKey(instance.AssemblyInfo.Guid) &&
+				(reflectAssembly.GetName().GetPublicKey().Length == 0 ||
 				!Security.VerifyStrongName(filePath) ||
-				instance.AssemblyAuthenticode == null) &&
-				!approvals.ContainsKey(instance.AssemblyInfo.Guid))
+				instance.AssemblyAuthenticode == null))
 			{
 				return;
 			}
 
-			//Load the plugin
+			//The plugin either is explicitly allowed or disallowed to load, or
+			//it has an Authenticode Signature as well as a Strong Name. Get the
+			//loading policy of the plugin.
 			instance.Assembly = Assembly.LoadFrom(filePath);
-
-			//See if the plugin belongs to us (same signature) and if the assembly
-			//declares an IsCore attribute.
-			if (reflectAssembly.GetName().GetPublicKey().Length ==
-				Assembly.GetExecutingAssembly().GetName().GetPublicKey().Length)
+			LoadingPolicy policy = LoadingPolicy.None;
 			{
-				bool sameKey = true;
-				byte[] reflectAssemblyKey = reflectAssembly.GetName().GetPublicKey();
-				byte[] thisAssemblyKey = Assembly.GetExecutingAssembly().GetName().GetPublicKey();
-				for (int i = 0, j = reflectAssemblyKey.Length; i != j; ++i)
-					if (reflectAssemblyKey[i] != thisAssemblyKey[i])
-					{
-						sameKey = false;
-						break;
-					}
-
-				//Check for the IsCore attribute.
-				if (sameKey)
+				object[] attr = instance.Assembly.GetCustomAttributes(typeof(LoadingPolicyAttribute), true);
+				if (attr.Length != 0)
 				{
-					object[] attr = instance.Assembly.GetCustomAttributes(typeof(CoreAttribute), true);
-					if (attr.Length != 0)
-						instance.IsCore = true;
+					policy = ((LoadingPolicyAttribute)attr[0]).Policy;
+
+					//If the loading policy is that the plugin is Core, we need to verify
+					//the public key of the assembly.
+					if (policy == LoadingPolicy.Core &&
+						!reflectAssembly.GetName().GetPublicKey().SequenceEqual(
+							Assembly.GetExecutingAssembly().GetName().GetPublicKey()))
+					{
+						policy = LoadingPolicy.None;
+					}
 				}
 			}
 
-			//See if the user disabled this plugin (users cannot disable Core plugins)
-			if (approvals.ContainsKey(instance.AssemblyInfo.Guid) &&
-				!approvals[instance.AssemblyInfo.Guid] && !instance.IsCore)
-			{
-				return;
-			}
+			bool loadPlugin = false;
 
-			try
-			{
-				//Initialize the plugin
-				IPlugin pluginInterface = (IPlugin)Activator.CreateInstance(
-					instance.Assembly.GetType(typePlugin.ToString()));
-				pluginInterface.Initialize(this);
-				instance.Plugin = pluginInterface;
+			//If the loading policy is such that the plugin is a core plugin, ALWAYS load it.
+			if (policy == LoadingPolicy.Core)
+				loadPlugin = true;
 
-				//And broadcast the plugin load event
-				OnPluginLoaded(this, new PluginLoadedEventArgs(instance));
-			}
-			catch (System.Security.SecurityException e)
+			//The plugin is not a core plugin, is there an approval or denial?
+			else if (approvals.ContainsKey(instance.AssemblyInfo.Guid))
+				loadPlugin = approvals[instance.AssemblyInfo.Guid];
+
+			//There's no approval or denial, what is the specified loading policy?
+			else
+				loadPlugin = policy != LoadingPolicy.DefaultOff;
+
+
+			if (loadPlugin)
 			{
-				MessageBox.Show(S._("Could not load the plugin {0}.\n\nThe error returned was: {1}",
-					filePath, e.Message), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
-					MessageBoxDefaultButton.Button1, Localisation.IsRightToLeft(null) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+				try
+				{
+					//Initialize the plugin
+					IPlugin pluginInterface = (IPlugin)Activator.CreateInstance(
+						instance.Assembly.GetType(typePlugin.ToString()));
+					pluginInterface.Initialize(this);
+					instance.Plugin = pluginInterface;
+
+					//And broadcast the plugin load event
+					OnPluginLoaded(this, new PluginLoadedEventArgs(instance));
+				}
+				catch (System.Security.SecurityException e)
+				{
+					MessageBox.Show(S._("Could not load the plugin {0}.\n\nThe error returned was: {1}",
+						filePath, e.Message), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
+						MessageBoxDefaultButton.Button1, Localisation.IsRightToLeft(null) ?
+							MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+				}
 			}
 		}
 
@@ -309,7 +317,6 @@ namespace Eraser.Manager.Plugin
 		{
 			Assembly = assembly;
 			Plugin = plugin;
-			IsCore = false;
 
 			//Verify the certificate in the assembly.
 			if (Security.VerifyAuthenticode(assembly.Location))
@@ -360,7 +367,7 @@ namespace Eraser.Manager.Plugin
 		/// Gets whether the plugin is required for the functioning of Eraser (and
 		/// therefore cannot be disabled.)
 		/// </summary>
-		public bool IsCore { get; internal set; }
+		public LoadingPolicy LoadingPolicy { get; internal set; }
 
 		/// <summary>
 		/// Gets the IPlugin interface which the plugin exposed. This may be null
@@ -476,12 +483,58 @@ namespace Eraser.Manager.Plugin
 	}
 
 	/// <summary>
-	/// Declares that the entity referenced is a core plugin and cannot be unloaded.
-	/// Only plugins signed with the same signature as the Manager library will be
-	/// considered to be safe and therefore checked for this attribute.
+	/// Loading policies applicable for a given plugin.
 	/// </summary>
-	[AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
-	public sealed class CoreAttribute : Attribute
+	public enum LoadingPolicy
 	{
+		/// <summary>
+		/// The host decides the best policy for loading the plugin.
+		/// </summary>
+		None,
+
+		/// <summary>
+		/// The host will enable the plugin by default.
+		/// </summary>
+		DefaultOn,
+
+		/// <summary>
+		/// The host will disable the plugin by default
+		/// </summary>
+		DefaultOff,
+
+		/// <summary>
+		/// The host must always load the plugin.
+		/// </summary>
+		/// <remarks>For this policy to have an effect, the plugin assembly must
+		/// have the same Strong Name as the loading assembly, otherwise it defaults
+		/// to None.</remarks>
+		Core
+	}
+
+	/// <summary>
+	/// Declares the loading policy for the assembly containing the plugin. Only
+	/// plugins signed with an Authenticode signature will be trusted and have
+	/// this attribute checked at initialisation.
+	/// </summary>
+	[AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = false)]
+	public sealed class LoadingPolicyAttribute : Attribute
+	{
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="policy">The policy used for loading the plugin.</param>
+		public LoadingPolicyAttribute(LoadingPolicy policy)
+		{
+			Policy = policy;
+		}
+
+		/// <summary>
+		/// The loading policy to be applied to the assembly.
+		/// </summary>
+		public LoadingPolicy Policy
+		{
+			get;
+			set;
+		}
 	}
 }

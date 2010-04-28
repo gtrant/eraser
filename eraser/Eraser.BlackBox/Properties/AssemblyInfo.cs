@@ -23,3 +23,6 @@ using System.Resources;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("3460478d-ed1b-4ecc-96c9-2ca0e8500557")]
+
+// The plugin is an optional Eraser plugin, which should default to not load.
+[assembly: Eraser.Manager.Plugin.LoadingPolicy(Eraser.Manager.Plugin.LoadingPolicy.DefaultOff)]
