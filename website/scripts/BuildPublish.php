@@ -103,7 +103,7 @@ try
 	$builds = Build::GetActive($branch->ID);
 	for ($i = 0, $j = count($builds) - 3; $i < $j; ++$i)
 	{
-		printf('Removing build %s' . "\n\t", $builds[i]->Name);
+		printf('Removing build %s' . "\n\t", $builds[$i]->Name);
 
 		//Delete the copy on the SourceForge web server.
 		Delete(SHELL_WEB_ROOT . parse_url($builds[$i]->Link, PHP_URL_PATH), $sftp_username,
