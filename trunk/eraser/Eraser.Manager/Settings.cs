@@ -494,7 +494,7 @@ namespace Eraser.Manager
 			{
 				Settings = settings;
 				SettingName = settingName;
-				List = settings.GetValue<List<T>>(settingName);
+				List = new List<T>(settings.GetValue<T[]>(settingName));
 				if (List == null)
 					List = new List<T>();
 			}
