@@ -79,7 +79,6 @@ namespace Eraser
 			else if (typeRecurring.Checked)
 			{
 				RecurringSchedule schedule = new RecurringSchedule();
-				task.Schedule = schedule;
 				schedule.ExecutionTime = new DateTime(1, 1, 1, scheduleTime.Value.Hour,
 					scheduleTime.Value.Minute, scheduleTime.Value.Second);
 
@@ -124,6 +123,8 @@ namespace Eraser
 				}
 				else
 					throw new ArgumentException("No such scheduling method.");
+
+				task.Schedule = schedule;
 			}
 		}
 
