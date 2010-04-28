@@ -29,16 +29,6 @@
 			Description="Eraser Installer" Manufacturer="The Eraser Project" />
 		<Media Id="1" Cabinet="Installer.cab" CompressionLevel="none" EmbedCab="yes" />
 
-		<!-- Check for .NET 3.5 -->
-		<Property Id="FRAMEWORK35">
-			<RegistrySearch Id="Framework35Registry" Type="raw"
-				Root="HKLM" Key="Software\Microsoft\NET Framework Setup\NDP\v3.5"
-				Name="Install" />
-		</Property>
-		<Condition Message="Eraser requires the .NET Framework 3.5 or higher to be installed.">
-			FRAMEWORK35 = "#1"
-		</Condition>
-		
 		<!-- Prevent those pesky MSI shortcuts which prevent running as Administrator -->
 		<Property Id="DISABLEADVTSHORTCUTS" Value="1" />
 
