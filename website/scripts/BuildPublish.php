@@ -113,8 +113,7 @@ try
 			$sftp_password);
 
 		//Remove from the database
-		$statement->bindParam(1, $builds[$i]->ID);
-		$statement->execute();
+		$statement->execute(array($builds[$i]->ID));
 	}
 }
 catch (Exception $e)
