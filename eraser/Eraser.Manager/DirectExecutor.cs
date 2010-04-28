@@ -317,7 +317,6 @@ namespace Eraser.Manager
 					catch (Exception e)
 					{
 						Logger.Log(e.Message, LogLevel.Error);
-						BlackBox.Get().CreateReport(e);
 					}
 			}
 			catch (FatalException e)
@@ -340,7 +339,6 @@ namespace Eraser.Manager
 			catch (Exception e)
 			{
 				Logger.Log(e.Message, LogLevel.Error);
-				BlackBox.Get().CreateReport(e);
 			}
 			finally
 			{
