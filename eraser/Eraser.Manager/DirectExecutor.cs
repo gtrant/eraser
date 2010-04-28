@@ -844,10 +844,6 @@ namespace Eraser.Manager
 				lock (list)
 					list.Insert(index, item);
 
-				//Call all the event handlers who registered to be notified of tasks
-				//being added.
-				Owner.OnTaskAdded(new TaskEventArgs(item));
-
 				//If the task is scheduled to run now, break the waiting thread and
 				//run it immediately
 				if (item.Schedule == Schedule.RunNow)
@@ -860,6 +856,10 @@ namespace Eraser.Manager
 				{
 					Owner.ScheduleTask(item);
 				}
+
+				//Call all the event handlers who registered to be notified of tasks
+				//being added.
+				Owner.OnTaskAdded(new TaskEventArgs(item));
 			}
 
 			public override void RemoveAt(int index)
