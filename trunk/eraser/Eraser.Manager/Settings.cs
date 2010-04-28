@@ -62,14 +62,57 @@ namespace Eraser.Manager
 	public abstract class Settings
 	{
 		/// <summary>
-		/// Gets the setting
+		/// Gets the setting for the given name, coercing the object stored in the backend
+		/// to the given type <typeparamref name="T"/>.
+		/// </summary>
+		/// <typeparam name="T">The type of the setting that is currently stored in the
+		/// backend.</typeparam>
+		/// <param name="name">The name of the setting that is used to uniquely refer
+		/// to the value.</param>
+		/// <param name="defaultValue">The default to return if the no data is assocated
+		/// with the given setting.</param>
+		/// <returns>The value stored in the backend, or null if none exists.</returns>
+		public abstract T GetValue<T>(string name, T defaultValue);
+
+		/// <summary>
+		/// Overload for <see cref="GetValue"/> which returns a default for the given type.
+		/// </summary>
+		/// <typeparam name="T">The type of the setting that is currently stored in the
+		/// backend.</typeparam>
+		/// <param name="name">The name of the setting that is used to uniquely refer
+		/// to the value.</param>
+		/// <param name="defaultValue">The default to return if the no data is assocated
+		/// with the given setting.</param>
+		/// <returns>The value stored in the backend, or null if none exists.</returns>
+		public T GetValue<T>(string name)
+		{
+			return GetValue<T>(name, default(T));
+		}
+
+		/// <summary>
+		/// Sets the setting with the given name.
+		/// </summary>
+		/// <param name="name">The name of the setting.</param>
+		/// <param name="value">The value to store in the backend. This may be serialised.</param>
+		public abstract void SetValue(string name, object value);
+
+		/// <summary>
+		/// Gets or sets the given setting, without type hinting. This will not attempt to coerce
+		/// a type from an old version of the assembly to its current type.
 		/// </summary>
 		/// <param name="setting">The name of the setting.</param>
 		/// <returns>The object stored in the settings database, or null if undefined.</returns>
-		public abstract object this[string setting]
+		[Obsolete("Use the GetValue<T> and SetValue functions instead")]
+		public object this[string setting]
 		{
-			get;
-			set;
+			get
+			{
+				return GetValue<object>(setting);
+			}
+			set
+			{
+				SetValue(setting, value);
+			}
 		}
 	}
 
@@ -190,19 +233,18 @@ namespace Eraser.Manager
 				//If the user did not define anything for this field, check all plugins
 				//and use the method which was declared by us to be the highest
 				//priority default
-				if (settings["DefaultFileErasureMethod"] == null)
-				{
-					Guid result = FindHighestPriorityDefault(typeof(ErasureMethod),
+				Guid result = settings.GetValue<Guid>("DefaultFileErasureMethod");
+				if (result == Guid.Empty)
+					result = FindHighestPriorityDefault(typeof(ErasureMethod),
 						typeof(DefaultFileErasureAttribute));
-					return result == Guid.Empty ? new Guid("{1407FC4E-FEFF-4375-B4FB-D7EFBB7E9922}") :
-						result;
-				}
-				else
-					return (Guid)settings["DefaultFileErasureMethod"];
+				if (result == Guid.Empty)
+					result = new Guid("{1407FC4E-FEFF-4375-B4FB-D7EFBB7E9922}");
+
+				return result;
 			}
 			set
 			{
-				settings["DefaultFileErasureMethod"] = value;
+				settings.SetValue("DefaultFileErasureMethod", value);
 			}
 		}
 
@@ -215,19 +257,17 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				if (settings["DefaultUnusedSpaceErasureMethod"] == null)
-				{
-					Guid result = FindHighestPriorityDefault(typeof(UnusedSpaceErasureMethod),
+				Guid result = settings.GetValue<Guid>("DefaultUnusedSpaceErasureMethod");
+				if (result == Guid.Empty)
+					result = FindHighestPriorityDefault(typeof(UnusedSpaceErasureMethod),
 						typeof(DefaultUnusedSpaceErasureAttribute));
-					return result == Guid.Empty ? new Guid("{BF8BA267-231A-4085-9BF9-204DE65A6641}") :
-						result;
-				}
-				else
-					return (Guid)settings["DefaultUnusedSpaceErasureMethod"];
+				if (result == Guid.Empty)
+					result = new Guid("{BF8BA267-231A-4085-9BF9-204DE65A6641}");
+				return result;
 			}
 			set
 			{
-				settings["DefaultUnusedSpaceErasureMethod"] = value;
+				settings.SetValue("DefaultUnusedSpaceErasureMethod", value);
 			}
 		}
 
@@ -239,19 +279,16 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				if (settings["ActivePRNG"] == null)
-				{
-					Guid result = FindHighestPriorityDefault(typeof(Prng),
-						typeof(DefaultPrngAttribute));
-					return result == Guid.Empty ? new Guid("{6BF35B8E-F37F-476e-B6B2-9994A92C3B0C}") :
-						result;
-				}
-				else
-					return (Guid)settings["ActivePRNG"];
+				Guid result = settings.GetValue<Guid>("ActivePRNG");
+				if (result == Guid.Empty)
+					result = FindHighestPriorityDefault(typeof(Prng), typeof(DefaultPrngAttribute));
+				if (result == Guid.Empty)
+					result = new Guid("{6BF35B8E-F37F-476e-B6B2-9994A92C3B0C}");
+				return result;
 			}
 			set
 			{
-				settings["ActivePRNG"] = value;
+				settings.SetValue("ActivePRNG", value);
 			}
 		}
 
@@ -263,13 +300,11 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				return settings["ForceUnlockLockedFiles"] == null ? true :
-					Convert.ToBoolean(settings["ForceUnlockLockedFiles"],
-						CultureInfo.InvariantCulture);
+				return settings.GetValue("ForceUnlockLockedFiles", true);
 			}
 			set
 			{
-				settings["ForceUnlockLockedFiles"] = value;
+				settings.SetValue("ForceUnlockLockedFiles", value);
 			}
 		}
 
@@ -280,13 +315,11 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				return settings["ExecuteMissedTasksImmediately"] == null ?
-					true : Convert.ToBoolean(settings["ExecuteMissedTasksImmediately"],
-						CultureInfo.InvariantCulture);
+				return settings.GetValue("ExecuteMissedTasksImmediately", true);
 			}
 			set
 			{
-				settings["ExecuteMissedTasksImmediately"] = value;
+				settings.SetValue("ExecuteMissedTasksImmediately", value);
 			}
 		}
 
@@ -300,13 +333,11 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				return settings["PlausibleDeniability"] == null ? false :
-					Convert.ToBoolean(settings["PlausibleDeniability"],
-						CultureInfo.InvariantCulture);
+				return settings.GetValue("PlausibleDeniability", false);
 			}
 			set
 			{
-				settings["PlausibleDeniability"] = value;
+				settings.SetValue("PlausibleDeniability", value);
 			}
 		}
 
@@ -463,7 +494,7 @@ namespace Eraser.Manager
 			{
 				Settings = settings;
 				SettingName = settingName;
-				List = (List<T>)settings[settingName];
+				List = settings.GetValue<List<T>>(settingName);
 				if (List == null)
 					List = new List<T>();
 			}
@@ -573,7 +604,7 @@ namespace Eraser.Manager
 			/// </summary>
 			private void Save()
 			{
-				Settings[SettingName] = List;
+				Settings.SetValue(SettingName, List);
 			}
 
 			/// <summary>
@@ -603,7 +634,7 @@ namespace Eraser.Manager
 			{
 				Settings = settings;
 				SettingName = settingName;
-				Dictionary = (Dictionary<TKey, TValue>)settings[settingName];
+				Dictionary = settings.GetValue<Dictionary<TKey, TValue>>(settingName);
 				if (Dictionary == null)
 					Dictionary = new Dictionary<TKey, TValue>();
 			}
@@ -734,7 +765,7 @@ namespace Eraser.Manager
 			/// </summary>
 			private void Save()
 			{
-				Settings[SettingName] = Dictionary;
+				Settings.SetValue(SettingName, Dictionary);
 			}
 
 			/// <summary>
