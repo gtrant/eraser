@@ -101,7 +101,7 @@
 						Type="string" />
 				</Component>
 				<Component Id="EraserBlackBox" Guid="3C9273B0-7A35-479b-BBEE-12AA3AB141EE">
-					<File Id="EraserBlackBoxDll" Name="Eraser.Blackbox.dll"
+					<File Id="EraserBlackBoxDll" Name="Eraser.BlackBox.dll"
 						Source="..\Bin\Release\Eraser.BlackBox.dll"
 						ProcessorArchitecture="msil" />
 				</Component>
