@@ -43,7 +43,11 @@ using ICSharpCode.SharpZipLib.BZip2;
 using Microsoft.Win32.SafeHandles;
 using Microsoft.VisualBasic.Devices;
 
-namespace Eraser.Util
+using Eraser.Util;
+using ProgressChangedEventHandler = Eraser.Util.ProgressChangedEventHandler;
+using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
+
+namespace Eraser.BlackBox
 {
 	/// <summary>
 	/// Handles application exceptions, stores minidumps and uploads them to the

@@ -33,7 +33,7 @@ using Eraser.Util;
 using ProgressChangedEventArgs = System.ComponentModel.ProgressChangedEventArgs;
 using EraserProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
 
-namespace Eraser
+namespace Eraser.BlackBox
 {
 	public partial class BlackBoxUploadForm : Form
 	{
