@@ -81,13 +81,6 @@ namespace Eraser.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap BlackBox {
-            get {
-                object obj = ResourceManager.GetObject("BlackBox", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap Information {
             get {
                 object obj = ResourceManager.GetObject("Information", resourceCulture);
