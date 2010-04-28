@@ -51,8 +51,8 @@ namespace Eraser
 				if (key == null)
 					throw new ArgumentNullException("key");
 
-				this.PluginID = pluginId;
-				this.Key = key;
+				PluginID = pluginId;
+				Key = key;
 			}
 
 			#region IDisposable Members
@@ -83,7 +83,7 @@ namespace Eraser
 			public override T GetValue<T>(string name, T defaultValue)
 			{
 				//Get the raw registry value
-				object rawResult = key.GetValue(name, null);
+				object rawResult = Key.GetValue(name, null);
 
 				//Check if it is a serialised object
 				byte[] resultArray = rawResult as byte[];
@@ -99,13 +99,13 @@ namespace Eraser
 						}
 						catch (SerializationException)
 						{
-							key.DeleteValue(name);
+							Key.DeleteValue(name);
 							MessageBox.Show(S._("Could not load the setting {0}\\{1} for " +
-									"plugin {2}. The setting has been lost.", key, name,
-									pluginID.ToString()),
+									"plugin {2}. The setting has been lost.", Key, name,
+									PluginID.ToString()),
 								S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
 								MessageBoxDefaultButton.Button1,
-								S.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
+								Localisation.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
 						}
 				}
 				else if (typeof(T) == typeof(Guid))
@@ -124,30 +124,30 @@ namespace Eraser
 			{
 				if (value == null)
 				{
-					key.DeleteValue(name);
+					Key.DeleteValue(name);
 				}
 				else
 				{
 					if (value is bool)
-						key.SetValue(name, value, RegistryValueKind.DWord);
+						Key.SetValue(name, value, RegistryValueKind.DWord);
 					else if ((value is int) || (value is uint))
-						key.SetValue(name, value, RegistryValueKind.DWord);
+						Key.SetValue(name, value, RegistryValueKind.DWord);
 					else if ((value is long) || (value is ulong))
-						key.SetValue(name, value, RegistryValueKind.QWord);
+						Key.SetValue(name, value, RegistryValueKind.QWord);
 					else if ((value is string) || (value is Guid))
-						key.SetValue(name, value, RegistryValueKind.String);
+						Key.SetValue(name, value, RegistryValueKind.String);
 					else if (value is ICollection<string>)
 					{
 						ICollection<string> collection = (ICollection<string>)value;
 						string[] temp = new string[collection.Count];
 						collection.CopyTo(temp, 0);
-						key.SetValue(name, temp, RegistryValueKind.MultiString);
+						Key.SetValue(name, temp, RegistryValueKind.MultiString);
 					}
 					else
 						using (MemoryStream stream = new MemoryStream())
 						{
 							new BinaryFormatter().Serialize(stream, value);
-							key.SetValue(name, stream.ToArray(), RegistryValueKind.Binary);
+							Key.SetValue(name, stream.ToArray(), RegistryValueKind.Binary);
 						}
 				}
 			}
