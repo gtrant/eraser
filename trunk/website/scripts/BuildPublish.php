@@ -48,17 +48,20 @@ function Delete($url, $username = '', $password = '')
 	$curl = curl_init($url);
 	curl_setopt($curl, CURLOPT_USERPWD, sprintf('%s:%s', $username, $password));
 
-	//Don't output to stdout
-	$tempOutput = fopen('php://temp', 'w');
-	curl_setopt($curl, CURLOPT_FILE, $tempOutput);
+	//Create a temp stream to upload to the old path (to zero the length)
+	$stream = fopen('php://temp', 'r');
+	curl_setopt($curl, CURLOPT_UPLOAD, true);
+	curl_setopt($curl, CURLOPT_INFILE, $stream);
 
 	//Parse the URL to get the path to delete
 	$path = parse_url($url, PHP_URL_PATH);
-	curl_setopt($curl, CURLOPT_QUOTE, array(sprintf('rm "%s"', $path)));
+	curl_setopt($curl, CURLOPT_POSTQUOTE, array(
+		sprintf('rm "%s"', $path)
+	));
 
 	if (curl_exec($curl) === false)
 		throw new Exception('cURL Error: ' . curl_error($curl));
-	fclose($tempOutput);
+	fclose($stream);
 	curl_close($curl);
 
 	printf("File deleted.\n");
