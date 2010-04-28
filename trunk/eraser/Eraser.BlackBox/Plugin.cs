@@ -46,17 +46,17 @@ namespace Eraser.BlackBox
 
 		public string Name
 		{
-			get { throw new NotImplementedException(); }
+			get { return "Eraser BlackBox"; }
 		}
 
 		public string Author
 		{
-			get { throw new NotImplementedException(); }
+			get { return "The Eraser Project <eraser-development@lists.sourceforge.net>"; }
 		}
 
 		public bool Configurable
 		{
-			get { throw new NotImplementedException(); }
+			get { return false; }
 		}
 
 		public void DisplaySettings(Control parent)
