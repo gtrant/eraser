@@ -311,13 +311,6 @@ namespace Eraser.Manager
 					catch (SharingViolationException)
 					{
 					}
-					catch (ThreadAbortException)
-					{
-					}
-					catch (Exception e)
-					{
-						Logger.Log(e.Message, LogLevel.Error);
-					}
 			}
 			catch (FatalException e)
 			{
@@ -327,18 +320,8 @@ namespace Eraser.Manager
 			{
 				Logger.Log(e.Message, LogLevel.Fatal);
 			}
-			catch (ThreadAbortException)
-			{
-				//Do nothing. The exception will be rethrown after this block
-				//is executed. This is here mainly to ensure that no BlackBox
-				//report is created for this exception.
-			}
 			catch (SharingViolationException)
 			{
-			}
-			catch (Exception e)
-			{
-				Logger.Log(e.Message, LogLevel.Error);
 			}
 			finally
 			{
