@@ -54,6 +54,8 @@
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Eraser.exe"
 						Type="string" Value="[!EraserExe]" />
 
+					<File Id="Alglib" Name="alglib.dll" Source="..\bin\Release\alglib.dll"
+						ProcessorArchitecture="msil" />
 					<File Id="BevelLine" Name="BevelLine.dll" Source="..\bin\Release\BevelLine.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="DragDropLib" Name="DragDropLib.dll" Source="..\bin\Release\DragDropLib.dll"

@@ -49,6 +49,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="alglib, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3ac89a0351e689b6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\alglib.dll</HintPath>
+    </Reference>
     <Reference Include="CommonLibrary, Version=0.9.3.10, Culture=neutral, PublicKeyToken=3ac89a0351e689b6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\CommonLibrary.dll</HintPath>
@@ -113,6 +117,7 @@
     <Compile Include="NativeMethods\Gdi.cs" />
     <Compile Include="NativeMethods\Sfc.cs" />
     <Compile Include="ProgressManager.cs" />
+    <Compile Include="Sampler.cs" />
     <Compile Include="ExtensionClasses\SharingViolationException.cs" />
     <Compile Include="Shell.cs" />
     <Compile Include="Win32ErrorCodes.cs" />

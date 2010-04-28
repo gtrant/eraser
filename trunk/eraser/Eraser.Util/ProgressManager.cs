@@ -50,6 +50,8 @@ namespace Eraser.Util
 		public void Restart()
 		{
 			StartTime = DateTime.Now;
+			lock (Speeds)
+				Speeds.Reset();
 		}
 
 		/// <summary>
@@ -86,6 +88,45 @@ namespace Eraser.Util
 			get;
 			private set;
 		}
+
+		/// <summary>
+		/// Samples the current speed of the task.
+		/// </summary>
+		/// <param name="speed">The speed of the task.</param>
+		protected void SampleSpeed(float speed)
+		{
+			lock (Speeds)
+			{
+				IList<KeyValuePair<DateTime, double>> outliers = Speeds.GetOutliers(0.95);
+				if (outliers != null)
+				{
+					List<KeyValuePair<DateTime, double>> recentOutliers = outliers.Where(
+						sample => (DateTime.Now - sample.Key).TotalSeconds <= 60).ToList();
+					if (recentOutliers.Count >= 5)
+					{
+						Speeds.Reset();
+						recentOutliers.ForEach(sample => Speeds.Add(sample.Value));
+					}
+				}
+
+				Speeds.Add(speed);
+				PredictedSpeed = Speeds.Predict(0.95);
+			}
+		}
+
+		/// <summary>
+		/// Predicts the speed of the operation, given the current samples.
+		/// </summary>
+		protected Interval PredictedSpeed
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// The speed sampler.
+		/// </summary>
+		private Sampler Speeds = new Sampler();
 	}
 
 	/// <summary>
@@ -169,9 +210,33 @@ namespace Eraser.Util
 					return 0;
 
 				//Then compute the speed of the calculation
-				lastSpeed = (float)((Completed - lastCompleted) / timeElapsed / total);
+				long progressDelta = Completed - lastCompleted;
+				float currentSpeed = (float)(progressDelta / timeElapsed / total);
 				lastSpeedCalc = DateTime.Now;
 				lastCompleted = Completed;
+
+				//We won't update the speed of the task if the current speed is within
+				//the lower and upper prediction interval.
+				Interval interval = PredictedSpeed;
+				if (interval != null)
+				{
+					if (currentSpeed < interval.Minimum)
+					{
+						Restart();
+						lastSpeed = currentSpeed;
+					}
+					else if (currentSpeed > interval.Maximum)
+					{
+						Restart();
+						lastSpeed = currentSpeed;
+					}
+					else if (lastSpeed == 0.0f)
+					{
+						lastSpeed = currentSpeed;
+					}
+				}
+
+				SampleSpeed(currentSpeed);
 				return lastSpeed;
 			}
 		}
@@ -420,10 +485,52 @@ namespace Eraser.Util
 		{
 			get
 			{
-				if (CurrentStep == null)
-					return 0;
+				if ((DateTime.Now - lastSpeedCalc).TotalSeconds < SpeedCalcInterval)
+					return lastSpeed;
 
-				return CurrentStep.Progress.Speed;
+				//Calculate how much time has passed
+				double timeElapsed = (DateTime.Now - lastSpeedCalc).TotalSeconds;
+
+				//Then compute the speed of the calculation
+				float currentProgress = Progress;
+				float progressDelta = currentProgress - lastCompleted;
+				float currentSpeed = (float)(progressDelta / timeElapsed);
+				lastSpeedCalc = DateTime.Now;
+				lastCompleted = Progress;
+
+				//If the progress delta is zero, it usually means that the amount
+				//completed within the calculatin interval is too short -- lengthen
+				//the interval so we can get a small difference, significant to make
+				//a speed calculation. Likewise, if it is too great a difference,
+				//we need to shorten the interval to get more accurate calculations
+				if (progressDelta == 0.0)
+					SpeedCalcInterval *= 2;
+				else if (progressDelta > 3.0)
+					SpeedCalcInterval -= 3;
+
+				//We won't update the speed of the task if the current speed is within
+				//the lower and upper prediction interval.
+				Interval interval = PredictedSpeed;
+				if (interval != null)
+				{
+					if (currentSpeed < interval.Minimum)
+					{
+						Restart();
+						lastSpeed = currentSpeed;
+					}
+					else if (currentSpeed > interval.Maximum)
+					{
+						Restart();
+						lastSpeed = currentSpeed;
+					}
+					else if (lastSpeed == 0.0f)
+					{
+						lastSpeed = currentSpeed;
+					}
+				}
+
+				SampleSpeed(currentSpeed);
+				return lastSpeed;
 			}
 		}
 
@@ -486,6 +593,27 @@ namespace Eraser.Util
 		/// The lock object guarding the list of steps against concurrent read and write.
 		/// </summary>
 		private object ListLock;
+
+		/// <summary>
+		/// The amount of time elapsed before a new speed calculation is made.
+		/// </summary>
+		private int SpeedCalcInterval = 15;
+
+		/// <summary>
+		/// The last time a speed calculation was computed so that speed is not
+		/// computed too often.
+		/// </summary>
+		private DateTime lastSpeedCalc;
+
+		/// <summary>
+		/// The amount of the operation completed at the last speed computation.
+		/// </summary>
+		private float lastCompleted;
+
+		/// <summary>
+		/// The last calculated speed of the operation.
+		/// </summary>
+		private float lastSpeed;
 	}
 
 	/// <summary>
