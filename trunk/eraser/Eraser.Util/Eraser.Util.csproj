@@ -76,6 +76,7 @@
     </Compile>
     <Compile Include="Security.cs" />
     <Compile Include="ExtensionMethods\IO.cs" />
+    <Compile Include="Binders.cs" />
     <Compile Include="Localisation.cs" />
     <Compile Include="NativeMethods\Kernel.cs" />
     <Compile Include="NativeMethods\MsCorEE.cs" />
