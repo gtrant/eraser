@@ -80,6 +80,10 @@
 			<ComponentRef Id="EraserPlugins" />
 			<ComponentRef Id="EraserPluginsLangEn" />
 
+			<Feature Id="EraserMainBlackBox" Title="Eraser BlackBox"
+					Description="Eraser BlackBox error reporting component" Level="5">
+				<ComponentRef Id="EraserBlackBox"/>
+			</Feature>
 			<Feature Id="EraserMainShell" Title="Eraser Shell Extension"
 					Description="Eraser shell integration" Level="1">
 				<ComponentRef Id="EraserShell" />
