@@ -141,24 +141,6 @@
   <data name="Could not open the required web page. The error returned was: {0}" xml:space="preserve">
     <value>Impossibile aprire la pagina web richiesta. L'errore ricevuto era: {0}</value>
   </data>
-  <data name="Checking for status of report {0}..." xml:space="preserve">
-    <value>Verifica dello stato del report {0}...</value>
-  </data>
-  <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
-    <value>Compressione Report {0}: {1:#0.00%}</value>
-  </data>
-  <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
-    <value>Trasmissione Report {0}: {1:#0.00%}</value>
-  </data>
-  <data name="Reports submitted successfully." xml:space="preserve">
-    <value>I report sono stati trasmessi con successo.</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Chiudi</value>
-  </data>
-  <data name="Submission was cancelled." xml:space="preserve">
-    <value>La sottomissione è stata annullata.</value>
-  </data>
   <data name="Session: {0:F}" xml:space="preserve">
     <value>Sessione: {0:F}</value>
   </data>
@@ -194,6 +176,9 @@
   </data>
   <data name="Completed" xml:space="preserve">
     <value>Completata</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Chiudi</value>
   </data>
   <data name="{0} out of {1}" xml:space="preserve">
     <value>{0} di {1}</value>

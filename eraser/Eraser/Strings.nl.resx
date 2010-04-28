@@ -141,24 +141,6 @@
   <data name="Could not open the required web page. The error returned was: {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Checking for status of report {0}..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Reports submitted successfully." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Close" xml:space="preserve">
-    <value>Sluiten</value>
-  </data>
-  <data name="Submission was cancelled." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="Session: {0:F}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -194,6 +176,9 @@
   </data>
   <data name="Completed" xml:space="preserve">
     <value>Afgerond</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Sluiten</value>
   </data>
   <data name="{0} out of {1}" xml:space="preserve">
     <value>{0} van {1}</value>

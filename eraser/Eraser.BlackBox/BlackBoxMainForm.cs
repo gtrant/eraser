@@ -30,7 +30,7 @@ using Eraser.Util;
 using System.Diagnostics;
 using System.Globalization;
 
-namespace Eraser
+namespace Eraser.BlackBox
 {
 	public partial class BlackBoxMainForm : Form
 	{
