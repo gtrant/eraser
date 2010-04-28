@@ -110,12 +110,11 @@ namespace Eraser.DefaultPlugins
 		{
 			get
 			{
-				return settings["FL16Method"] == null ? Guid.Empty :
-					(Guid)settings["FL16Method"];
+				return settings.GetValue<Guid>("FL16Method");
 			}
 			set
 			{
-				settings["FL16Method"] = value;
+				settings.SetValue("FL16Method", value);
 			}
 		}
 
@@ -126,11 +125,11 @@ namespace Eraser.DefaultPlugins
 		{
 			get
 			{
-				return (Dictionary<Guid, CustomErasureMethod>)settings["EraseCustom"];
+				return settings.GetValue<Dictionary<Guid, CustomErasureMethod>>("EraseCustom");
 			}
 			set
 			{
-				settings["EraseCustom"] = value;
+				settings.SetValue("EraseCustom", value);
 			}
 		}
 
