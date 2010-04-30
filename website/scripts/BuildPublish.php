@@ -98,7 +98,7 @@ try
 	printf("Inserted.\n");
 
 	//Remove old builds
-	printf('Removing old builds from database... ');
+	printf('Removing old builds from database...' . "\n");
 
 	$pdo = new Database();
 	$statement = $pdo->prepare('UPDATE downloads SET Superseded=1 WHERE DownloadID=?');
@@ -106,7 +106,7 @@ try
 	$builds = Build::GetActive($branch->ID);
 	for ($i = 0, $j = count($builds) - 3; $i < $j; ++$i)
 	{
-		printf('Removing build %s' . "\n\t", $builds[$i]->Name);
+		printf("\n\t" . 'Removing build %s' . "\n\t\t", $builds[$i]->Name);
 
 		//Delete the copy on the SourceForge web server.
 		Delete(SHELL_WEB_ROOT . parse_url($builds[$i]->Link, PHP_URL_PATH), $sftp_username,
