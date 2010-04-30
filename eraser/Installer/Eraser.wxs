@@ -68,11 +68,12 @@
 			<ComponentRef Id="EraserMain" />
 			<ComponentRef Id="EraserLangEn" />
 			<ComponentRef Id="EraserPlugins" />
-			<ComponentRef Id="EraserPluginsLangEn" />
+			<ComponentRef Id="EraserDefaultPluginsLangEn" />
 
 			<Feature Id="EraserMainBlackBox" Title="Eraser BlackBox"
 					Description="Eraser BlackBox error reporting component" Level="1">
 				<ComponentRef Id="EraserBlackBox"/>
+				<ComponentRef Id="EraserBlackBoxLangEn" />
 			</Feature>
 			<Feature Id="EraserMainShell" Title="Eraser Shell Extension"
 					Description="Eraser shell integration" Level="1">
