@@ -102,6 +102,11 @@
     <EmbeddedResource Include="BlackBoxUploadForm.resx">
       <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Strings.en.resx" />
+    <EmbeddedResource Include="Strings.it.resx" />
+    <EmbeddedResource Include="Strings.nl.resx" />
+    <EmbeddedResource Include="Strings.pl.resx" />
+    <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eraser.Manager\Eraser.Manager.csproj">
