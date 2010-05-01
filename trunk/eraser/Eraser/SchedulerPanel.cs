@@ -26,14 +26,16 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using Eraser.Manager;
-using Eraser.Util;
 using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization;
 using System.ComponentModel;
+
+using Eraser.Manager;
+using Eraser.Util;
+using Microsoft.Samples;
 using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
 
 namespace Eraser
@@ -420,55 +422,98 @@ namespace Eraser
 		{
 			if (!e.Data.GetDataPresent(DataFormats.FileDrop))
 				e.Effect = DragDropEffects.None;
-			else
+			DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
+
+			//Schedule the task dialog to be shown (to get to the event loop so that
+			//ComCtl32.dll v6 is used.)
+			BeginInvoke((Action<DragDropEffects, string[]>)scheduler_DragDropConfirm,
+				e.Effect, e.Data.GetData(DataFormats.FileDrop, false));
+		}
+
+		/// <summary>
+		/// Called after the files have been dropped into Eraser.
+		/// </summary>
+		/// <param name="effect">The Drag/drop effect of the operation.</param>
+		/// <param name="files">The files which were dropped into the program.</param>
+		private void scheduler_DragDropConfirm(DragDropEffects effect, string[] files)
+		{
+			//Determine whether we are importing a task list or dragging files for
+			//erasure.
+			if (effect == DragDropEffects.Copy)
 			{
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-
-				//Determine whether we are importing a task list or dragging files for
-				//erasure.
-				if (e.Effect == DragDropEffects.Copy)
-				{
-					foreach (string file in files)
-						using (FileStream stream = new FileStream(file, FileMode.Open,
-							FileAccess.Read, FileShare.Read))
-						{
-							try
-							{
-								Program.eraserClient.Tasks.LoadFromStream(stream);
-							}
-							catch (InvalidDataException ex)
-							{
-								MessageBox.Show(S._("Could not import task list from {0}. The " +
-									"error returned was: {1}", file, ex.Message), S._("Eraser"),
-									MessageBoxButtons.OK, MessageBoxIcon.Error,
-									MessageBoxDefaultButton.Button1,
-									Localisation.IsRightToLeft(this) ?
-										MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-							}
-						}
-				}
-				else if (e.Effect == DragDropEffects.Move)
-				{
-					//Create a task with the default settings
-					Task task = new Task();
-					foreach (string file in files)
+				foreach (string file in files)
+					using (FileStream stream = new FileStream(file, FileMode.Open,
+						FileAccess.Read, FileShare.Read))
 					{
-						FileSystemObjectTarget target;
-						if (Directory.Exists(file))
-							target = new FolderTarget();
-						else
-							target = new FileTarget();
-						target.Path = file;
-
-						task.Targets.Add(target);
+						try
+						{
+							Program.eraserClient.Tasks.LoadFromStream(stream);
+						}
+						catch (InvalidDataException ex)
+						{
+							MessageBox.Show(S._("Could not import task list from {0}. The " +
+								"error returned was: {1}", file, ex.Message), S._("Eraser"),
+								MessageBoxButtons.OK, MessageBoxIcon.Error,
+								MessageBoxDefaultButton.Button1,
+								Localisation.IsRightToLeft(this) ?
+									MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+						}
 					}
+			}
+			else if (effect == DragDropEffects.Move)
+			{
+				//Create a task with the default settings
+				Task task = new Task();
+				foreach (string file in files)
+				{
+					FileSystemObjectTarget target;
+					if (Directory.Exists(file))
+						target = new FolderTarget();
+					else
+						target = new FileTarget();
+					target.Path = file;
 
-					//Add the task.
-					Program.eraserClient.Tasks.Add(task);
+					task.Targets.Add(target);
+				}
+
+				//Add the task, asking the user for his intent.
+				DialogResult action = DialogResult.No;
+				if (TaskDialog.IsAvailableOnThisOS)
+				{
+					TaskDialog dialog = new TaskDialog();
+					dialog.WindowTitle = S._("Eraser");
+					dialog.MainIcon = TaskDialogIcon.Information;
+					dialog.MainInstruction = S._("You have dropped a set of files and folders into Eraser. What do you want to do with them?");
+					dialog.AllowDialogCancellation = true;
+					dialog.Buttons = new TaskDialogButton[] {
+						new TaskDialogButton((int)DialogResult.Yes, S._("Erase the selected items\nSchedules the selected items for immediate erasure.")),
+						new TaskDialogButton((int)DialogResult.OK, S._("Create a new Task\nA task will be created containing the selected items.")),
+						new TaskDialogButton((int)DialogResult.No, S._("Cancel the drag-and-drop operation"))
+					};
+					dialog.RightToLeftLayout = Localisation.IsRightToLeft(this);
+					dialog.UseCommandLinks = true;
+					action = (DialogResult)dialog.Show(this);
+				}
+				else
+				{
+					action = MessageBox.Show(S._("Are you sure you wish to erase the selected "
+						+ "items?"), S._("Eraser"), MessageBoxButtons.YesNo,
+						MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
+						Localisation.IsRightToLeft(this) ?
+							MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+				}
+
+				switch (action)
+				{
+					case DialogResult.OK:
+						task.Schedule = Schedule.RunManually;
+						goto case DialogResult.Yes;
+
+					case DialogResult.Yes:
+						Program.eraserClient.Tasks.Add(task);
+						break;
 				}
 			}
-
-			DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
 		}
 
 		/// <summary>
