@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -56,13 +57,12 @@ namespace Eraser
 			file.Checked = true;
 
 			//Populate the drives list
-			foreach (VolumeInfo volume in VolumeInfo.Volumes)
+			foreach (VolumeInfo volume in VolumeInfo.Volumes.Concat(VolumeInfo.NetworkDrives))
 			{
 				DriveType driveType = volume.VolumeType;
 				if (driveType != DriveType.Unknown &&
 					driveType != DriveType.NoRootDirectory &&
-					driveType != DriveType.CDRom &&
-					driveType != DriveType.Network)
+					driveType != DriveType.CDRom)
 				{
 					//Skip drives which are not mounted: we cannot erase their unused space.
 					if (!volume.IsMounted)
