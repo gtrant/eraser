@@ -29,6 +29,49 @@ namespace Eraser.Util
 	internal static partial class NativeMethods
 	{
 		/// <summary>
+		/// Parses a Unicode command line string and returns an array of pointers to the command
+		/// line arguments, along with a count of such arguments, in a way that is similar to
+		/// the standard C run-time argv and argc values.
+		/// </summary>
+		/// <param name="lpCmdLine">Pointer to a null-terminated Unicode string that contains
+		/// the full command line. If this parameter is an empty string the function returns the
+		/// path to the current executable file.</param>
+		/// <param name="pNumArgs">Pointer to an int that receives the number of array elements
+		/// returned, similar to argc.</param>
+		/// <returns>A pointer to an array of strings, similar to argv.</returns>
+		/// <remarks>The address returned by CommandLineToArgvW is the address of the first
+		/// element in an array of LPWSTR values; the number of pointers in this array is
+		/// indicated by pNumArgs. Each pointer to a null-terminated Unicode string represents
+		/// an individual argument found on the command line.
+		/// 
+		/// CommandLineToArgvW allocates a block of contiguous memory for pointers to the
+		/// argument strings, and for the argument strings themselves; the calling application
+		/// must free the memory used by the argument list when it is no longer needed. To free
+		/// the memory, use a single call to the LocalFree function.
+		/// 
+		/// For more information about the argv and argc argument convention, see Argument
+		/// Definitions and Parsing C++ Command-Line Arguments.
+		/// 
+		/// The GetCommandLineW function can be used to get a command line string that is
+		/// suitable for use as the lpCmdLine parameter.
+		/// 
+		/// This function accepts command lines that contain a program name; the program name
+		/// can be enclosed in quotation marks or not.
+		/// 
+		/// CommandLineToArgvW has a special interpretation of backslash characters when they
+		/// are followed by a quotation mark character ("), as follows:
+		/// 
+		///     * 2n backslashes followed by a quotation mark produce n backslashes
+		///       followed by a quotation mark.
+		///     * (2n) + 1 backslashes followed by a quotation mark again produce n
+		///       backslashes followed by a quotation mark.
+		///     * n backslashes not followed by a quotation mark simply produce n
+		///       backslashes.
+		/// </remarks>
+		[DllImport("Shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		public static extern IntPtr CommandLineToArgvW(string lpCmdLine, out int pNumArgs);
+
+		/// <summary>
 		/// Truncates a path to fit within a certain number of characters by
 		/// replacing path components with ellipses.
 		/// </summary>

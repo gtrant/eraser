@@ -22,6 +22,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+
+using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
 namespace Eraser.Util
@@ -62,6 +64,27 @@ namespace Eraser.Util
 						key.Close();
 				}
 			}
+		}
+
+		/// <summary>
+		/// Parses the provided command line into its constituent arguments.
+		/// </summary>
+		/// <param name="commandLine">The command line to parse.</param>
+		/// <returns>The arguments specified in the command line</returns>
+		public static string[] ParseCommandLine(string commandLine)
+		{
+			int argc = 0;
+			IntPtr argv = NativeMethods.CommandLineToArgvW(commandLine, out argc);
+			string[] result = new string[argc];
+
+			//Get the pointers to the arguments, then read the string.
+			for (int i = 0; i < argc; ++i)
+				result[i] = Marshal.PtrToStringUni(Marshal.ReadIntPtr(argv, i * IntPtr.Size));
+
+			//Free the memory
+			NativeMethods.LocalFree(argv);
+
+			return result;
 		}
 	}
 }

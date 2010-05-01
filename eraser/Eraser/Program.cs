@@ -104,10 +104,27 @@ namespace Eraser
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static int Main(string[] commandLine)
+		static int Main(string[] rawCommandLine)
 		{
-			//Immediately parse command line arguments
-			ComLib.BoolMessageItem argumentParser = Args.Parse(commandLine,
+			//Immediately parse command line arguments. Start by substituting all
+			//response files ("@filename") arguments with the arguments found in the
+			//file
+			List<string> commandLine = new List<string>();
+			foreach (string argument in rawCommandLine)
+			{
+				if (argument[0] == '@' && File.Exists(argument.Substring(1)))
+				{
+					//The current parameter is a response file, parse the file
+					//for arguments and substitute it.
+					using (TextReader reader = new StreamReader(argument.Substring(1)))
+					{
+						commandLine.AddRange(Shell.ParseCommandLine(reader.ReadToEnd()));
+					}
+				}
+			}
+
+			string[] finalCommandLine = commandLine.ToArray();
+			ComLib.BoolMessageItem argumentParser = Args.Parse(finalCommandLine,
 				CommandLinePrefixes, CommandLineSeparators);
 			Args parsedArguments = (Args)argumentParser.Item;
 
@@ -121,11 +138,11 @@ namespace Eraser
 				parsedArguments.Positional.Count == 0 ||
 				parsedArguments.Positional[0] != parsedArguments.Raw[0])
 			{
-				GUIMain(commandLine);
+				GUIMain(finalCommandLine);
 			}
 			else
 			{
-				return CommandMain(commandLine);
+				return CommandMain(finalCommandLine);
 			}
 
 			//Return zero to signify success
