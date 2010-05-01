@@ -99,7 +99,7 @@ namespace Util {
 	array<Byte>^ FatApi::GetFileContents(unsigned cluster)
 	{
 		if (!IsClusterAllocated(cluster))
-			throw gcnew ArgumentException(L"The specified cluster is not used.");
+			throw gcnew ArgumentException(S::_(L"The specified cluster is not used."));
 
 		array<Byte>^ result = gcnew array<Byte>(FileSize(cluster));
 		const int clusterSize = ClusterSizeToSize(1);
@@ -119,10 +119,10 @@ namespace Util {
 	void FatApi::SetFileContents(array<Byte>^ buffer, unsigned cluster)
 	{
 		if (!IsClusterAllocated(cluster))
-			throw gcnew ArgumentException(L"The specified cluster is not used.");
+			throw gcnew ArgumentException(S::_(L"The specified cluster is not used."));
 		if (static_cast<unsigned>(buffer->Length) != FileSize(cluster))
-			throw gcnew ArgumentException(L"The provided file contents will not fit in the " +
-				gcnew String(L"allocated file."));
+			throw gcnew ArgumentException(S::_(L"The provided file contents will not fit in the "
+				L"allocated file."));
 
 		int clusterSize = static_cast<int>(ClusterSizeToSize(1));
 		for (int i = 0; i < buffer->Length; i += clusterSize)
@@ -195,7 +195,7 @@ namespace Util {
 
 						//Check that the sequence is one less than the previous one.
 						if (sequence != i->LongFileName.Sequence + 1)
-							throw gcnew ArgumentException(L"Invalid directory entry.");
+							throw gcnew ArgumentException(S::_(L"Invalid directory entry."));
 					}
 					
 					sequence = i->LongFileName.Sequence & ~0x40;
@@ -268,7 +268,7 @@ namespace Util {
 
 						//Check that the sequence is one less than the previous one.
 						if (sequence != i->LongFileName.Sequence + 1)
-							throw gcnew ArgumentException(L"Invalid directory entry.");
+							throw gcnew ArgumentException(S::_(L"Invalid directory entry."));
 					}
 					else
 						longFileName.clear();

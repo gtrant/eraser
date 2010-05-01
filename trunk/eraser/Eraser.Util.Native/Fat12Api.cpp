@@ -31,14 +31,14 @@ namespace Util {
 	{
 		//Sanity checks: check that this volume is FAT16!
 		if (!IsFat12() || info->VolumeFormat == L"FAT16")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT12 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT12 volume."));
 	}
 
 	Fat12Api::Fat12Api(VolumeInfo^ info, IO::Stream^ stream) : Fat12Or16Api(info, stream)
 	{
 		//Sanity checks: check that this volume is FAT16!
 		if (!IsFat12() || info->VolumeFormat == L"FAT16")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT12 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT12 volume."));
 	}
 
 	bool Fat12Api::IsClusterAllocated(unsigned cluster)
@@ -59,9 +59,9 @@ namespace Util {
 	{
 		unsigned nextCluster = GetFatValue(cluster);
 		if (nextCluster <= 0x001 || (nextCluster >= 0xFF0 && nextCluster <= 0xFF6))
-			throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked free.");
+			throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked free."));
 		else if (nextCluster == 0xFF7)
-			throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
+			throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked bad."));
 		else if (nextCluster >= 0xFF8)
 			return 0xFFFFFFFF;
 		else
@@ -74,9 +74,9 @@ namespace Util {
 		{
 			unsigned nextCluster = GetFatValue(cluster);
 			if (nextCluster <= 0x001 || (nextCluster >= 0xFFF0 && nextCluster <= 0xFF6))
-				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked free.");
+				throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked free."));
 			else if (nextCluster == 0xFF7)
-				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
+				throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked bad."));
 			else if (nextCluster >= 0xFF8)
 				return ClusterSizeToSize(result);
 			else

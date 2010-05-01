@@ -31,14 +31,14 @@ namespace Util {
 	{
 		//Sanity checks: check that this volume is FAT16!
 		if (IsFat12() || info->VolumeFormat == L"FAT12")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT16 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT16 volume."));
 	}
 
 	Fat16Api::Fat16Api(VolumeInfo^ info, IO::Stream^ stream) : Fat12Or16Api(info, stream)
 	{
 		//Sanity checks: check that this volume is FAT16!
 		if (IsFat12() || info->VolumeFormat == L"FAT12")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT16 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT16 volume."));
 	}
 
 	bool Fat16Api::IsClusterAllocated(unsigned cluster)
@@ -58,9 +58,9 @@ namespace Util {
 	{
 		unsigned short* fatPtr = reinterpret_cast<unsigned short*>(Fat);
 		if (fatPtr[cluster] <= 0x0001 || (fatPtr[cluster] >= 0xFFF0 && fatPtr[cluster] <= 0xFFF6))
-			throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked free.");
+			throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked free."));
 		else if (fatPtr[cluster] == 0xFFF7)
-			throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
+			throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked bad."));
 		else if (fatPtr[cluster] >= 0xFFF8)
 			return 0xFFFFFFFF;
 		else
@@ -73,9 +73,9 @@ namespace Util {
 		for (unsigned result = 1; ; ++result)
 		{
 			if (fatPtr[cluster] <= 0x0001 || (fatPtr[cluster] >= 0xFFF0 && fatPtr[cluster] <= 0xFFF6))
-				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked free.");
+				throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked free."));
 			else if (fatPtr[cluster] == 0xFFF7)
-				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
+				throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked bad."));
 			else if (fatPtr[cluster] >= 0xFFF8)
 				return ClusterSizeToSize(result);
 			else

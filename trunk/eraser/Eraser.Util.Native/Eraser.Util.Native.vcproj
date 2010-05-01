@@ -30,7 +30,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;"
+				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;&#x0D;&#x0A;csgettext --merge --recursive EN,NL,IT,PL &quot;$(ProjectDir)\.&quot; Strings&#x0D;&#x0A;if ERRORLEVEL 0 exit 0"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -56,6 +56,7 @@
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
+				ResourceFileName="$(IntDir)\$(ProjectName).$(InputName).resources"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
@@ -105,7 +106,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;"
+				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;&#x0D;&#x0A;csgettext --merge --recursive EN,NL,IT,PL &quot;$(ProjectDir)\.&quot; Strings&#x0D;&#x0A;if ERRORLEVEL 0 exit 0"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -132,6 +133,7 @@
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
+				ResourceFileName="$(IntDir)\$(ProjectName).$(InputName).resources"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
@@ -182,7 +184,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;"
+				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;&#x0D;&#x0A;csgettext --merge --recursive EN,NL,IT,PL &quot;$(ProjectDir)\.&quot; Strings&#x0D;&#x0A;if ERRORLEVEL 0 exit 0"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -207,6 +209,7 @@
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
+				ResourceFileName="$(IntDir)\$(ProjectName).$(InputName).resources"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
@@ -256,7 +259,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
-				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;"
+				CommandLine="&quot;$(SolutionDir)UpdateVersions.bat&quot; &quot;$(SolutionDir)\&quot; &quot;$(SolutionDir)Version.rc.in&quot; &quot;$(SolutionDir)Version.rc&quot;&#x0D;&#x0A;csgettext --merge --recursive EN,NL,IT,PL &quot;$(ProjectDir)\.&quot; Strings&#x0D;&#x0A;if ERRORLEVEL 0 exit 0"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
@@ -282,6 +285,7 @@
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
+				ResourceFileName="$(IntDir)\$(ProjectName).$(InputName).resources"
 			/>
 			<Tool
 				Name="VCResourceCompilerTool"
@@ -338,6 +342,8 @@
 		/>
 		<ProjectReference
 			ReferencedProjectIdentifier="{D083E1A8-3A4C-4683-9B3F-D5FEDE61B9C9}"
+			CopyLocal="false"
+			CopyLocalDependencies="false"
 			RelativePathToProject=".\Eraser.Util\Eraser.Util.csproj"
 		/>
 	</References>
@@ -457,6 +463,26 @@
 			>
 			<File
 				RelativePath=".\Eraser.Util.Native.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\Strings.en.resx"
+				>
+			</File>
+			<File
+				RelativePath=".\Strings.it.resx"
+				>
+			</File>
+			<File
+				RelativePath=".\Strings.nl.resx"
+				>
+			</File>
+			<File
+				RelativePath=".\Strings.pl.resx"
+				>
+			</File>
+			<File
+				RelativePath=".\Strings.resx"
 				>
 			</File>
 		</Filter>
