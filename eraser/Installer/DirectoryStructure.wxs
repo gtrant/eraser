@@ -218,6 +218,12 @@
 						<File Id="EraserManagerEn" Name="Eraser.Manager.resources.dll"
 							Source="..\bin\Release\en\Eraser.Manager.resources.dll"
 							ProcessorArchitecture="msil" />
+						<File Id="EraserUtilEn" Name="Eraser.Util.resources.dll"
+							Source="..\bin\Release\en\Eraser.Util.resources.dll"
+							ProcessorArchitecture="msil" />
+						<File Id="EraserUtilNativeEn" Name="Eraser.Util.Native.resources.dll"
+							Source="..\bin\Release\$(sys.BUILDARCH)\en\Eraser.Util.Native.resources.dll"
+							ProcessorArchitecture="msil" />
 					</Component>
 				</Directory>
 
