@@ -50,6 +50,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;CODE_ANALYSIS"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
+				GenerateXMLDocumentationFiles="true"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -125,6 +126,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;CODE_ANALYSIS"
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="2"
+				GenerateXMLDocumentationFiles="true"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -199,6 +201,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
+				GenerateXMLDocumentationFiles="true"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>
@@ -273,6 +276,7 @@
 				PreprocessorDefinitions="WIN32;NDEBUG"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="2"
+				GenerateXMLDocumentationFiles="true"
 				WarningLevel="4"
 				DebugInformationFormat="3"
 			/>

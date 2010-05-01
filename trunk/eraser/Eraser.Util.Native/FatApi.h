@@ -29,85 +29,111 @@ namespace Eraser {
 namespace Util {
 	ref class FatDirectoryBase;
 
-	/// Represents an abstract API to interface with FAT file systems.
+	/// <summary>
+	/// Represents an abstract API to interface with FAT file systems
+	/// </summary>
 	public ref class FatApi abstract
 	{
 	protected:
+		/// <summary>
 		/// Constructor.
+		/// </summary>
 		/// 
-		/// \param[in] info   The volume to create the FAT API for. The volume handle
-		///                   created has read access only.
+		/// <param name="info">The volume to create the FAT API for. The volume
+		/// handle created has read access only.</param>
 		FatApi(VolumeInfo^ info);
 
+		/// <summary>
 		/// Constructor.
+		/// </summary>
 		/// 
-		/// \param[in] stream The stream to use to read/write to the disk.
+		/// <param name="stream">The stream to use to read/write to the disk.</param>
 		FatApi(IO::Stream^ stream);
 
 	public:
+		/// <summary>
 		/// Loads the File Allocation Table from disk.
+		/// </summary>
 		virtual void LoadFat() = 0;
 		
+		/// <summary>
 		/// Helper function to loads the directory structure representing the
 		/// directory with the given volume-relative path.
-		///
-		/// \overload LoadDirectory
+		/// </summary>
 		FatDirectoryBase^ LoadDirectory(String^ directory);
 
+		/// <summary>
 		/// Loads the directory structure at the given cluster.
+		/// </summary>
 		virtual FatDirectoryBase^ LoadDirectory(unsigned cluster, String^ name,
 			FatDirectoryBase^ parent) = 0;
 
 	internal:
+		/// <summary>
 		/// Converts a sector-based address to a byte offset relative to the start
 		/// of the volume.
+		/// </summary>
 		virtual unsigned long long SectorToOffset(unsigned long long sector);
 
+		/// <summary>
 		/// Converts a cluster-based address to a byte offset relative to the start
 		/// of the volume.
+		/// </summary>
 		virtual long long ClusterToOffset(unsigned cluster) = 0;
 
 		/// Converts a sector-based file size fo the actual size of the file in bytes.
 		unsigned SectorSizeToSize(unsigned size);
 
+		/// <summary>
 		/// Converts a cluster-based file size fo the actual size of the file in bytes.
+		/// </summary>
 		unsigned ClusterSizeToSize(unsigned size);
 
+		/// <summary>
 		/// Verifies that the given cluster is allocated and in use.
-		/// 
-		/// \param[in] cluster The cluster to verify.
+		/// </summary>
+		/// <param name="cluster">The cluster to verify.</param>
 		virtual bool IsClusterAllocated(unsigned cluster) = 0;
 
+		/// <summary>
 		/// Gets the next cluster in the file.
-		///
-		/// \param[in] cluster The current cluster to check.
-		/// \return            0xFFFFFFFF if the cluster given is the last one,
-		///                    otherwise the next cluster in the file.
+		/// </summary>
+		/// <param name="cluster">The current cluster to check.</param>
+		/// <return>0xFFFFFFFF if the cluster given is the last one, otherwise
+		/// the next cluster in the file.</return>
 		virtual unsigned GetNextCluster(unsigned cluster) = 0;
 
+		/// <summary>
 		/// Gets the size of the file in bytes starting at the given cluster.
 		/// Make sure that the given cluster is the first one, there is no way
 		/// to verify it is indeed the first one and if later clusters are given
 		/// the calculated size will be wrong.
+		/// </summary>
 		virtual unsigned FileSize(unsigned cluster) = 0;
 
+		/// <summary>
 		/// Gets the contents of the file starting at the given cluster.
+		/// </summary>
 		array<Byte>^ GetFileContents(unsigned cluster);
 
+		/// <summary>
 		/// Set the contents of the file starting at the given cluster. The length
 		/// of the contents must exactly match the length of the file.
-		/// 
-		/// \param[in] buffer  The data to write.
-		/// \param[in] cluster The cluster to begin writing to.
+		/// </summary>
+		/// <param name="buffer">The data to write.</param>
+		/// <param name="cluster">The cluster to begin writing to.</param>
 		void SetFileContents(array<Byte>^ buffer, unsigned cluster);
 
+		/// <summary>
 		/// Resolves a directory to the position on-disk
-		///
-		/// \param[in] path A volume-relative path to the directory.
+		/// </summary>
+		/// <param name="path">A volume-relative path to the directory.</param>
 		virtual unsigned DirectoryToCluster(String^ path) = 0;
 
 	protected:
+		/// <summary>
 		/// The stream used to access the volume.
+		/// </summary>
 		property IO::Stream^ VolumeStream
 		{
 			IO::Stream^ get() { return volumeStream; }
@@ -134,18 +160,24 @@ namespace Util {
 		char* fat;
 	};
 
+	/// <summary>
 	/// Represents the types of FAT directory entries.
+	/// </summary>
 	public enum class FatDirectoryEntryType
 	{
 		File,
 		Directory
 	};
 
+	/// <summary>
 	/// Represents a FAT directory entry.
+	/// </summary>
 	public ref class FatDirectoryEntry
 	{
 	public:
+		/// <summary>
 		/// Gets the name of the file or directory.
+		/// </summary>
 		property String^ Name
 		{
 			String^ get() { return name; }
@@ -153,13 +185,17 @@ namespace Util {
 			void set(String^ value) { name = value; }
 		}
 
+		/// <summary>
 		/// Gets the full path to the file or directory.
+		/// </summary>
 		property String^ FullName
 		{
 			String^ get();
 		}
 
+		/// <summary>
 		/// Gets the parent directory of this entry.
+		/// </summary>
 		property FatDirectoryBase^ Parent
 		{
 			FatDirectoryBase^ get() { return parent; }
@@ -167,7 +203,9 @@ namespace Util {
 			void set(FatDirectoryBase^ value) { parent = value; }
 		}
 
+		/// <summary>
 		/// Gets the type of this entry.
+		/// </summary>
 		property FatDirectoryEntryType EntryType
 		{
 			FatDirectoryEntryType get() { return type; }
@@ -175,7 +213,9 @@ namespace Util {
 			void set(FatDirectoryEntryType value) { type = value; }
 		}
 
+		/// <summary>
 		/// Gets the first cluster of this entry.
+		/// </summary>
 		property unsigned Cluster
 		{
 			unsigned get() { return cluster; }
@@ -184,12 +224,13 @@ namespace Util {
 		}
 
 	internal:
+		/// <summary>
 		/// Constructor.
-		/// 
-		/// \param[in] name    The name of the entry.
-		/// \param[in] parent  The parent directory containing this file.
-		/// \param[in] type    The type of this entry.
-		/// \param[in] cluster The first cluster of the file.
+		/// </summary>
+		/// <param name="name">The name of the entry.</param>
+		/// <param name="parent">The parent directory containing this file.</param>
+		/// <param name="type">The type of this entry.</param>
+		/// <param name="cluster">The first cluster of the file.</param>
 		FatDirectoryEntry(String^ name, FatDirectoryBase^ parent, FatDirectoryEntryType type,
 			unsigned cluster);
 
@@ -200,23 +241,30 @@ namespace Util {
 		unsigned cluster;
 	};
 
+	/// <summary>
 	/// Represents an abstract FAT directory (can also represent the root directory of
 	/// FAT12 and FAT16 volumes.)
+	/// </summary>
 	public ref class FatDirectoryBase abstract : FatDirectoryEntry
 	{
 	protected:
+		/// <summary>
 		/// Constructor.
-		/// 
-		/// \param[in] name    The name of the current directory.
-		/// \param[in] parent  The parent directory containing this directory.
-		/// \param[in] cluster The cluster at which the directory list starts.
+		/// </summary>
+		/// <param name="name">The name of the current directory.</param>
+		/// <param name="parent">The parent directory containing this directory.</param>
+		/// <param name="cluster">The cluster at which the directory list starts.</param>
 		FatDirectoryBase(String^ name, FatDirectoryBase^ parent, unsigned cluster);
 
 	public:
+		/// <summary>
 		/// Compacts the directory structure, updating the structure on-disk as well.
+		/// </summary>
 		void ClearDeletedEntries();
 
+		/// <summary>
 		/// The list of files and subfolders in this directory.
+		/// </summary>
 		property Collections::Generic::Dictionary<String^, FatDirectoryEntry^>^ Items
 		{
 			Collections::Generic::Dictionary<String^, FatDirectoryEntry^>^ get()
@@ -226,32 +274,45 @@ namespace Util {
 		}
 
 	protected:
+		/// <summary>
 		/// Reads the directory structures from disk.
-		/// 
-		/// \remarks This function must set the \see Directory instance as well as the
-		///          \see DirectorySize fields. Furthermore, call the \see ParseDirectory
-		///          function to initialise the directory entries on-disk.
+		/// </summary>
+		/// <remarks>This function must set the <see cref="Directory" /> instance
+		/// as well as the <see cref="DirectorySize" /> fields. Furthermore, call
+		/// the <see cref="ParseDirectory" /> function to initialise the directory
+		/// entries on-disk.</remarks>
 		virtual void ReadDirectory() = 0;
 
+		/// <summary>
 		/// Writes the directory to disk.
+		/// </summary>
 		virtual void WriteDirectory() = 0;
 
-		/// This function reads the raw directory structures in \see Directory and
-		/// sets the \see Entries field for easier access to the directory entries.
+		/// <summary>
+		/// This function reads the raw directory structures in <see cref="Directory" />
+		/// and sets the <see cref="Entries" /> field for easier access to the directory
+		/// entries.
+		/// </summary>
 		void ParseDirectory();
 
+		/// <summary>
 		/// Gets the start cluster from the given directory entry.
+		/// </summary>
 		virtual unsigned GetStartCluster(::FatDirectoryEntry& directory) = 0;
 
 	protected:
+		/// <summary>
 		/// A pointer to the directory structure.
+		/// </summary>
 		property ::FatDirectory Directory
 		{
 			::FatDirectory get() { return directory; }
 			void set(::FatDirectory value) { directory = value; }
 		}
 
+		/// <summary>
 		/// The number of entries in the directory
+		/// </summary>
 		property size_t DirectorySize
 		{
 			size_t get() { return directorySize; }
@@ -259,23 +320,28 @@ namespace Util {
 		}
 
 	private:
+		/// <summary>
 		/// The list of parsed entries in the folder.
+		/// </summary>
 		Collections::Generic::Dictionary<String^, FatDirectoryEntry^>^ Entries;
 
 		size_t directorySize;
 		::FatDirectory directory;
 	};
 
+	/// <summary>
 	/// Represents a FAT directory file.
+	/// </summary>
 	public ref class FatDirectory abstract : FatDirectoryBase
 	{
 	protected:
+		/// <summary>
 		/// Constructor.
-		/// 
-		/// \param[in] name    The name of the current directory.
-		/// \param[in] parent  The parent directory containing this directory.
-		/// \param[in] cluster The cluster at which the directory list starts.
-		/// \param[in] api     The FAT API object which is creating this object.
+		/// </summary>
+		/// <param name="name">The name of the current directory.</param>
+		/// <param name="parent">The parent directory containing this directory.</param>
+		/// <param name="cluster">The cluster at which the directory list starts.</param>
+		/// <param name="api">The FAT API object which is creating this object.</param>
 		FatDirectory(String^ name, FatDirectoryBase^ parent, unsigned cluster, FatApi^ api);
 
 		virtual void ReadDirectory() override;
@@ -340,7 +406,9 @@ namespace Util {
 		virtual unsigned FileSize(unsigned cluster) override;
 
 	private:
+		/// <summary>
 		/// Retrieves the FAT value for the given cluster.
+		/// </summary>
 		unsigned GetFatValue(unsigned cluster);
 	};
 

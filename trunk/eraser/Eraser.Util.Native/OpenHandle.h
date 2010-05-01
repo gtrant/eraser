@@ -30,15 +30,18 @@ using namespace Microsoft::Win32::SafeHandles;
 
 namespace Eraser {
 namespace Util {
+	/// <summary>
 	/// Represents one open handle in the system.
+	/// </summary>
 	public ref class OpenHandle
 	{
 	internal:
+		/// <summary>
 		/// Constructor.
-		/// 
-		/// \param[in] handle The handle to wrap.
-		/// \param[in] pid The Process ID of the handle.
-		/// \param[in] path The path to the file.
+		/// </summary>
+		/// <param name="handle">The handle to wrap.</param>
+		/// <param name="pid">The Process ID of the handle.</param>
+		/// <param name="path">The path to the file.</param>
 		OpenHandle(IntPtr handle, int pid, String^ path)
 		{
 			this->handle = handle;
@@ -47,16 +50,22 @@ namespace Util {
 		}
 
 	public:
+		/// <summary>
 		/// Retrieves all open handles on the system
+		/// </summary>
 		static property IList<OpenHandle^>^ Items
 		{
 			IList<OpenHandle^>^ get();
 		}
 
+		/// <summary>
 		/// Force the handle to close.
+		/// </summary>
 		bool Close();
 
+		/// <summary>
 		/// The handle to the file, in the context of the owning process.
+		/// </summary>
 		property IntPtr Handle
 		{
 			IntPtr get()
@@ -65,7 +74,9 @@ namespace Util {
 			}
 		}
 
+		/// <summary>
 		/// The path to the file.
+		/// </summary>
 		property String^ Path
 		{
 			String^ get()
@@ -74,7 +85,9 @@ namespace Util {
 			}
 		}
 
+		/// <summary>
 		/// The process ID of the process owning the handle.
+		/// </summary>
 		property int ProcessId
 		{
 			int get()
@@ -84,11 +97,12 @@ namespace Util {
 		};
 
 	private:
+		/// <summary>
 		/// Resolves a handle to a file name.
-		///
-		/// \param[in] handle The file handle to resolve.
-		/// \param[in] pid The process ID of the owning process.
-		/// \return A string containing the path to the file, or null.
+		/// </summary>
+		/// <param name="handle">The file handle to resolve.</param>
+		/// <param name="pid">The process ID of the owning process.</param>
+		/// <returns>A string containing the path to the file, or null.</returns>
 		static String^ ResolveHandlePath(IntPtr handle, int pid);
 
 	private:

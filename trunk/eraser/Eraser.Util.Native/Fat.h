@@ -132,10 +132,10 @@ struct Fat8Dot3DirectoryEntry
 
 	union
 	{
-		/// EA-Index (used by OS/2 and NT) in FAT12 and FAT16
+		// EA-Index (used by OS/2 and NT) in FAT12 and FAT16
 		unsigned short EAIndex;
 
-		/// High 2 bytes of first cluster number in FAT32
+		// High 2 bytes of first cluster number in FAT32
 		unsigned short StartClusterHigh;
 	};
 
