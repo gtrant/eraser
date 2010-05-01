@@ -41,7 +41,7 @@ namespace Util {
 				handlesList.get(), bufferSize, &bufferSize);
 
 			if (bufferSize == 0)
-				throw gcnew InvalidOperationException("The list of open system handles could not be retrieved.");
+				throw gcnew InvalidOperationException(S::_(L"The list of open system handles could not be retrieved."));
 		}
 
 		//Iterate over the handles

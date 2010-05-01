@@ -31,14 +31,14 @@ namespace Util {
 	{
 		//Sanity checks: check that this volume is FAT32!
 		if (info->VolumeFormat != L"FAT32")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT32 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT32 volume."));
 	}
 
 	Fat32Api::Fat32Api(VolumeInfo^ info, Stream^ stream) : FatApi( stream)
 	{
 		//Sanity checks: check that this volume is FAT32!
 		if (info->VolumeFormat != L"FAT32")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT32 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT32 volume."));
 	}
 
 	void Fat32Api::LoadFat()
@@ -85,9 +85,9 @@ namespace Util {
 	{
 		unsigned* fatPtr = reinterpret_cast<unsigned*>(Fat);
 		if (fatPtr[cluster] <= 0x00000001 || (fatPtr[cluster] >= 0x0FFFFFF0 && fatPtr[cluster] <= 0x0FFFFFF6))
-			throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked free.");
+			throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked free."));
 		else if (fatPtr[cluster] == 0x0FFFFFF7)
-			throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
+			throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked bad."));
 		else if (fatPtr[cluster] >= 0x0FFFFFF8)
 			return 0xFFFFFFFF;
 		else
@@ -100,9 +100,9 @@ namespace Util {
 		for (unsigned result = 1; ; ++result)
 		{
 			if (fatPtr[cluster] <= 0x00000001 || (fatPtr[cluster] >= 0x0FFFFFF0 && fatPtr[cluster] <= 0x0FFFFFF6))
-				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked free.");
+				throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked free."));
 			else if (fatPtr[cluster] == 0x0FFFFFF7)
-				throw gcnew ArgumentException(L"Invalid FAT cluster: cluster is marked bad.");
+				throw gcnew ArgumentException(S::_(L"Invalid FAT cluster: cluster is marked bad."));
 			else if (fatPtr[cluster] >= 0x0FFFFFF8)
 				return ClusterSizeToSize(result);
 			else
@@ -116,8 +116,8 @@ namespace Util {
 		if (path->Length != 0)
 		{
 			if (path[0] != L'\\')
-				throw gcnew ArgumentException(L"The path provided is not volume relative. " +
-					gcnew String(L"Volume relative paths must begin with a backslash."));
+				throw gcnew ArgumentException(S::_(L"The path provided is not volume relative. " +
+					L"Volume relative paths must begin with a backslash."));
 			path = path->Remove(0, 1);
 		}
 

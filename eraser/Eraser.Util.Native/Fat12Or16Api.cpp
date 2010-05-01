@@ -31,14 +31,14 @@ namespace Util {
 	{
 		//Sanity checks: check that this volume is FAT12 or FAT16!
 		if (info->VolumeFormat != L"FAT12" && info->VolumeFormat != "FAT16")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT12 or FAT16 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT12 or FAT16 volume."));
 	}
 
 	Fat12Or16Api::Fat12Or16Api(VolumeInfo^ info, IO::Stream^ stream) : FatApi(stream)
 	{
 		//Sanity checks: check that this volume is FAT12 or FAT16!
 		if (info->VolumeFormat != L"FAT12" && info->VolumeFormat != "FAT16")
-			throw gcnew ArgumentException(L"The volume provided is not a FAT12 or FAT16 volume.");
+			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT12 or FAT16 volume."));
 	}
 
 	void Fat12Or16Api::LoadFat()
@@ -79,8 +79,8 @@ namespace Util {
 		if (path->Length != 0)
 		{
 			if (path[0] != L'\\')
-				throw gcnew ArgumentException(L"The path provided is not volume relative. " +
-					gcnew String(L"Volume relative paths must begin with a backslash."));
+				throw gcnew ArgumentException(S::_(L"The path provided is not volume relative. "
+					L"Volume relative paths must begin with a backslash."));
 			path = path->Remove(0, 1);
 		}
 
@@ -161,7 +161,7 @@ namespace Util {
 	unsigned Fat12Or16Api::RootDirectory::GetStartCluster(::FatDirectoryEntry& directory)
 	{
 		if (directory.Short.Attributes == 0x0F)
-			throw gcnew ArgumentException(L"The provided directory is a long file name.");
+			throw gcnew ArgumentException(S::_(L"The provided directory is a long file name."));
 		return directory.Short.StartClusterLow;
 	}
 
@@ -173,7 +173,7 @@ namespace Util {
 	unsigned Fat12Or16Api::Directory::GetStartCluster(::FatDirectoryEntry& directory)
 	{
 		if (directory.Short.Attributes == 0x0F)
-			throw gcnew ArgumentException(L"The provided directory is a long file name.");
+			throw gcnew ArgumentException(S::_(L"The provided directory is a long file name."));
 		return directory.Short.StartClusterLow;
 	}
 }
