@@ -229,20 +229,19 @@ namespace Eraser.Manager.Plugin
 			//it has an Authenticode Signature as well as a Strong Name. Get the
 			//loading policy of the plugin.
 			instance.Assembly = Assembly.LoadFrom(filePath);
-			LoadingPolicy policy = LoadingPolicy.None;
 			{
 				object[] attr = instance.Assembly.GetCustomAttributes(typeof(LoadingPolicyAttribute), true);
 				if (attr.Length != 0)
 				{
-					policy = ((LoadingPolicyAttribute)attr[0]).Policy;
+					instance.LoadingPolicy = ((LoadingPolicyAttribute)attr[0]).Policy;
 
 					//If the loading policy is that the plugin is Core, we need to verify
 					//the public key of the assembly.
-					if (policy == LoadingPolicy.Core &&
+					if (instance.LoadingPolicy == LoadingPolicy.Core &&
 						!reflectAssembly.GetName().GetPublicKey().SequenceEqual(
 							Assembly.GetExecutingAssembly().GetName().GetPublicKey()))
 					{
-						policy = LoadingPolicy.None;
+						instance.LoadingPolicy = LoadingPolicy.None;
 					}
 				}
 			}
@@ -250,7 +249,7 @@ namespace Eraser.Manager.Plugin
 			bool loadPlugin = false;
 
 			//If the loading policy is such that the plugin is a core plugin, ALWAYS load it.
-			if (policy == LoadingPolicy.Core)
+			if (instance.LoadingPolicy == LoadingPolicy.Core)
 				loadPlugin = true;
 
 			//The plugin is not a core plugin, is there an approval or denial?
@@ -259,7 +258,7 @@ namespace Eraser.Manager.Plugin
 
 			//There's no approval or denial, what is the specified loading policy?
 			else
-				loadPlugin = policy != LoadingPolicy.DefaultOff;
+				loadPlugin = instance.LoadingPolicy != LoadingPolicy.DefaultOff;
 
 
 			if (loadPlugin)
