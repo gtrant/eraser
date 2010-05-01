@@ -31,6 +31,12 @@
 					<File Id="EraserManagerNl" Name="Eraser.Manager.resources.dll"
 						Source="..\bin\Release\nl\Eraser.Manager.resources.dll"
 						ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNl" Name="Eraser.Util.resources.dll"
+						Source="..\bin\Release\nl\Eraser.Util.resources.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNativeNl" Name="Eraser.Util.Native.resources.dll"
+						Source="..\bin\Release\$(sys.BUILDARCH)\nl\Eraser.Util.Native.resources.dll"
+						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 			<Directory Id="EraserLangItDir" Name="it">
@@ -41,6 +47,12 @@
 					<File Id="EraserManagerIt" Name="Eraser.Manager.resources.dll"
 						Source="..\bin\Release\it\Eraser.Manager.resources.dll"
 						ProcessorArchitecture="msil" />
+					<File Id="EraserUtilIt" Name="Eraser.Util.resources.dll"
+						Source="..\bin\Release\it\Eraser.Util.resources.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNativeIt" Name="Eraser.Util.Native.resources.dll"
+						Source="..\bin\Release\$(sys.BUILDARCH)\it\Eraser.Util.Native.resources.dll"
+						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 			<Directory Id="EraserLangPlDir" Name="pl">
@@ -50,6 +62,12 @@
 						ProcessorArchitecture="msil" />
 					<File Id="EraserManagerPl" Name="Eraser.Manager.resources.dll"
 						Source="..\bin\Release\pl\Eraser.Manager.resources.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserUtilPl" Name="Eraser.Util.resources.dll"
+						Source="..\bin\Release\pl\Eraser.Util.resources.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNativePl" Name="Eraser.Util.Native.resources.dll"
+						Source="..\bin\Release\$(sys.BUILDARCH)\pl\Eraser.Util.Native.resources.dll"
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
