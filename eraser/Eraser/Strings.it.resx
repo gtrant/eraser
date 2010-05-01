@@ -231,6 +231,21 @@
   <data name="Could not import task list from {0}. The error returned was: {1}" xml:space="preserve">
     <value>Importazione della lista di operazioni da {0} non riuscita. L'errore è stato: {1}</value>
   </data>
+  <data name="You have dropped a set of files and folders into Eraser. What do you want to do with them?" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Erase the selected items\nSchedules the selected items for immediate erasure." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Create a new Task\nA task will be created containing the selected items." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Cancel the drag-and-drop operation" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Are you sure you wish to erase the selected items?" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Could not load the setting {0}\\{1} for plugin {2}. The setting has been lost." xml:space="preserve">
     <value>Impossibile caricare l'impostazione {0}\\{1} per il plugin {2}. L'impostazione è stata persa.</value>
   </data>

@@ -64,7 +64,9 @@
 						ProcessorArchitecture="msil" />
 					<File Id="SharpZipLib" Name="ICSharpCode.SharpZipLib.dll"
 						Source="..\bin\Release\Plugins\ICSharpCode.SharpZipLib.dll" ProcessorArchitecture="msil" />
-					
+					<File Id="TaskDialog" Name="TaskDialog.dll"
+						Source="..\bin\Release\TaskDialog.dll" ProcessorArchitecture="msil" />
+
 					<File Id="EraserManager" Name="Eraser.Manager.dll"
 						Source="..\bin\Release\Eraser.Manager.dll" ProcessorArchitecture="msil" />
 					<File Id="EraserUtil" Name="Eraser.Util.dll"
