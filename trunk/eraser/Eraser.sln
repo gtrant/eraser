@@ -43,7 +43,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Installer.Bootstrapper", "I
 		{318964CF-278D-41B2-A825-B9A0D1F5D766} = {318964CF-278D-41B2-A825-B9A0D1F5D766}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ShellExt", "ShellExt\ShellExt.vcproj", "{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Shell", "Eraser.Shell\ShellExt.vcproj", "{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.Native", "Eraser.Util.Native\Eraser.Util.Native.vcproj", "{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}"
 EndProject
