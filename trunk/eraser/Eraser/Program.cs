@@ -246,7 +246,13 @@ parameters for importtasklist:
 
   [file]              A list of one or more files to import.
 
-All arguments are case sensitive.");
+All arguments are case sensitive.
+
+Response files can be used for very long command lines (generally, anything
+involving more than 32,000 characters.) Response files are used by prepending
+""@"" to the path to the file, and passing it into the command line. The
+contents of the response files' will be substituted at the same position into
+the command line.");
 			Console.Out.Flush();
 		}
 
