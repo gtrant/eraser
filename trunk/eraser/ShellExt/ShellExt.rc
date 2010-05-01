@@ -36,7 +36,63 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROJNAME            "EraserShellExt"
+    IDS_ERASER              "Eraser"
+    IDS_ERASERSHELLEXT      "Eraser Shell Extension"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_UNKNOWN       "Wyst¹pi³ nieznany b³¹d."
+    IDS_ERROR_UNKNOWNACTION "Wyst¹pi³o niew³aœciwe ¿¹danie polecenia o ID %d .\n\nEraser nie móg³ przetworzyæ ¿¹dania."
+    IDS_ERROR_CANNOTFINDERASER 
+                            "Aplikacja Eraser nie mog³abyæ uruchomiona. Upewnij siê, ¿e twoja instalacja Erasera nie jest uszkodzona: spróbuj ponownie uruchomiæ kreatora instalacji Eraser i wybierz opcjê napraw instlacje."
+    IDS_ERROR_ACCESSDENIED  "Odmówiono dostêpu do Erasera. To mo¿e byæ z powodu braku uprawnieñ administratora, lub odwo³ano ¿¹danie Uruchom jako administrator."
+    IDS_ERROR_TOO_MANY_FILES 
+                            "Polecenie nie mog³o zrealizowane przez bie¿¹ce wyst¹pienie Erasera, poniewa¿ zbyt wiele plików by³o wybranych do wymazania.\n\nWybierz mniej plików i spróbuj ponownie."
+    IDS_ERROR_MISC          "Wyst¹pi³ b³¹d:\n\n%s"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_HELPSTRING_ERASE    "Wymazuje wybrane elementy."
+    IDS_HELPSTRING_ERASEONRESTART 
+                            "Wymazuje wybrane elementy przy ponownym uruchomieniu komputera."
+    IDS_HELPSTRING_ERASEUNUSEDSPACE 
+                            "Wymazuje nieu¿ywane miejsce wybranych napêdów."
+    IDS_HELPSTRING_SECUREMOVE 
+                            "Przenieœ bezpiecznie zaznaczone elementy do nowej lokalizacji."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ACTION_ERASE        "W&yma¿"
+    IDS_ACTION_ERASERESTART "Wyma¿ przy ponownym u&ruchomieniu"
+    IDS_ACTION_ERASEUNUSEDSPACE "Wyma¿ Nnie&u¿ywane miejsce"
+    IDS_ACTION_SECUREMOVE   "Bezpieczne przeniesienie"
+END
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Neutral) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
@@ -118,7 +174,6 @@ END
 //
 
 IDR_ERASERSHELLEXT      REGISTRY                "ShellExt.rgs"
-/////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -142,6 +197,8 @@ BEGIN
     IDS_ERROR_TOO_MANY_FILES 
                             "The command could not be sent to the running Eraser instance because too many files were selected for erasure.\n\nSelect fewer files and try again."
     IDS_ERROR_MISC          "An error has occurred:\n\n%s"
+    IDS_ERROR_CANNOT_GENERATE_TEMP_FILE 
+                            "Eraser could not generate a temporary file to store the list of files selected for erasure."
 END
 
 STRINGTABLE 
@@ -163,11 +220,12 @@ BEGIN
     IDS_ACTION_SECUREMOVE   "Secure &Move"
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (Neutral) resources
+/////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Italian (Italy) resources
+// Italian (Neutral) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ITA)
 #ifdef _WIN32
@@ -218,62 +276,7 @@ BEGIN
     IDS_ACTION_SECUREMOVE   "&Spostamento sicuro"
 END
 
-#endif    // Italian (Italy) resources
-/////////////////////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////////////////
-// Polish (Poland) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_POL)
-#ifdef _WIN32
-LANGUAGE LANG_POLISH, SUBLANG_NEUTRAL
-#pragma code_page(1250)
-#endif //_WIN32
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// String Table
-//
-
-STRINGTABLE 
-BEGIN
-    IDS_PROJNAME            "EraserShellExt"
-    IDS_ERASER              "Eraser"
-    IDS_ERASERSHELLEXT      "Eraser Shell Extension"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_ERROR_UNKNOWN       "Wyst¹pi³ nieznany b³¹d."
-    IDS_ERROR_UNKNOWNACTION "Wyst¹pi³o niew³aœciwe ¿¹danie polecenia o ID %d .\n\nEraser nie móg³ przetworzyæ ¿¹dania."
-    IDS_ERROR_CANNOTFINDERASER 
-                            "Aplikacja Eraser nie mog³abyæ uruchomiona. Upewnij siê, ¿e twoja instalacja Erasera nie jest uszkodzona: spróbuj ponownie uruchomiæ kreatora instalacji Eraser i wybierz opcjê napraw instlacje."
-    IDS_ERROR_ACCESSDENIED  "Odmówiono dostêpu do Erasera. To mo¿e byæ z powodu braku uprawnieñ administratora, lub odwo³ano ¿¹danie Uruchom jako administrator."
-    IDS_ERROR_TOO_MANY_FILES 
-                            "Polecenie nie mog³o zrealizowane przez bie¿¹ce wyst¹pienie Erasera, poniewa¿ zbyt wiele plików by³o wybranych do wymazania.\n\nWybierz mniej plików i spróbuj ponownie."
-    IDS_ERROR_MISC          "Wyst¹pi³ b³¹d:\n\n%s"
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_HELPSTRING_ERASE    "Wymazuje wybrane elementy."
-    IDS_HELPSTRING_ERASEONRESTART 
-                            "Wymazuje wybrane elementy przy ponownym uruchomieniu komputera."
-    IDS_HELPSTRING_ERASEUNUSEDSPACE 
-                            "Wymazuje nieu¿ywane miejsce wybranych napêdów."
-    IDS_HELPSTRING_SECUREMOVE 
-                            "Przenieœ bezpiecznie zaznaczone elementy do nowej lokalizacji."
-END
-
-STRINGTABLE 
-BEGIN
-    IDS_ACTION_ERASE        "W&yma¿"
-    IDS_ACTION_ERASERESTART "Wyma¿ przy ponownym u&ruchomieniu"
-    IDS_ACTION_ERASEUNUSEDSPACE "Wyma¿ Nnie&u¿ywane miejsce"
-    IDS_ACTION_SECUREMOVE   "Bezpieczne przeniesienie"
-END
-
-#endif    // Polish (Poland) resources
+#endif    // Italian (Neutral) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

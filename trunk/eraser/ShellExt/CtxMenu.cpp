@@ -835,9 +835,34 @@ namespace Eraser {
 
 		std::wstring finalParameters;
 		{
-			std::wostringstream parametersStrm;
-			parametersStrm << "\"" << action << L"\" /quiet " << parameters;
-			finalParameters = parametersStrm.str();
+			//Depending on the length of the argument, we either use a response file
+			//or pass the arguments directly.
+			if (parameters.length() > 8192)
+			{
+				//The parameters are greater than 8kb, the response file would be
+				//more efficient.
+				wchar_t buffer[MAX_PATH];
+				wchar_t tempPath[MAX_PATH];
+				if (!GetTempPath(sizeof(tempPath) / sizeof(tempPath[0]), tempPath) ||
+					!GetTempFileName(tempPath, L"ers", 0, buffer))
+				{
+					throw LoadString(IDS_ERROR_CANNOT_GENERATE_TEMP_FILE);
+				}
+
+				std::wofstream stream(buffer);
+				stream << "\"" << action << L"\" /quiet " << parameters;
+
+				finalParameters = L"\"@";
+				finalParameters += buffer;
+				finalParameters += '"';
+			}
+			else
+			{
+				//Short command line, pass directly to the program
+				std::wostringstream stream;
+				stream << "\"" << action << L"\" /quiet " << parameters;
+				finalParameters = stream.str();
+			}
 		}
 
 		//If the process must be elevated we use ShellExecute with the runas verb
