@@ -161,13 +161,13 @@ namespace Eraser.Util
 		{
 			//List of units, in ascending scale
 			string[] units = new string[] {
-				"bytes",
-				"KB",
-				"MB",
-				"GB",
-				"TB",
-				"PB",
-				"EB"
+				S._("bytes"),
+				S._("KB"),
+				S._("MB"),
+				S._("GB"),
+				S._("TB"),
+				S._("PB"),
+				S._("EB")
 			};
 
 			double dSize = (double)size;
