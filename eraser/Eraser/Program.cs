@@ -109,7 +109,7 @@ namespace Eraser
 			//Immediately parse command line arguments. Start by substituting all
 			//response files ("@filename") arguments with the arguments found in the
 			//file
-			List<string> commandLine = new List<string>();
+			List<string> commandLine = new List<string>(rawCommandLine.Length);
 			foreach (string argument in rawCommandLine)
 			{
 				if (argument[0] == '@' && File.Exists(argument.Substring(1)))
@@ -121,6 +121,8 @@ namespace Eraser
 						commandLine.AddRange(Shell.ParseCommandLine(reader.ReadToEnd()));
 					}
 				}
+				else
+					commandLine.Add(argument);
 			}
 
 			string[] finalCommandLine = commandLine.ToArray();
