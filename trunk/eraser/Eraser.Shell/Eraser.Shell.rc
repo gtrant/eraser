@@ -155,8 +155,8 @@ BEGIN
             VALUE "FileDescription", "Eraser Shell Extension"
             VALUE "FileVersion", ERASER_STRING_FILE_VERSION
             VALUE "LegalCopyright", "Copyright © 2008-2010 The Eraser Project"
-            VALUE "InternalName", "ShellExt"
-            VALUE "OriginalFilename", "ShellExt.dll"
+            VALUE "InternalName", "Eraser.Shell"
+            VALUE "OriginalFilename", "Eraser.Shell.dll"
             VALUE "ProductName", "Eraser"
             VALUE "ProductVersion", ERASER_STRING_PRODUCT_VERSION
         END
@@ -173,7 +173,7 @@ END
 // REGISTRY
 //
 
-IDR_ERASERSHELLEXT      REGISTRY                "ShellExt.rgs"
+IDR_ERASERSHELLEXT      REGISTRY                "Eraser.Shell.rgs"
 
 /////////////////////////////////////////////////////////////////////////////
 //
