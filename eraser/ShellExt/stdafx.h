@@ -23,6 +23,7 @@
 
 #include "targetver.h"
 
+#ifndef NOMINMAX
 #define _ATL_APARTMENT_THREADED
 #define _ATL_NO_AUTOMATIC_NAMESPACE
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
@@ -51,6 +52,3 @@ using namespace ATL;
 #include <string>
 #include <sstream>
 #include <fstream>
-
-#undef max
-#undef min
