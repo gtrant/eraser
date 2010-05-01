@@ -506,7 +506,7 @@ namespace Eraser.Util
 			}
 
 			Target.OnEventLogged(this, new LogEventArgs(
-				new LogEntry(/*S._*/("Session started"), LogLevel.Information)));
+				new LogEntry(S._("Session started"), LogLevel.Information)));
 		}
 
 		/// <summary>
@@ -539,7 +539,7 @@ namespace Eraser.Util
 			}
 
 			Target.OnEventLogged(this, new LogEventArgs(
-				new LogEntry(/*S._*/("Session ended"), LogLevel.Information)));
+				new LogEntry(S._("Session ended"), LogLevel.Information)));
 			Threads = null;
 			Target = null;
 		}
