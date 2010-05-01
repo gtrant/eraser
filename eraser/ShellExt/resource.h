@@ -20,6 +20,7 @@
 #define IDS_ERROR_ACCESSDENIED          403
 #define IDS_ERROR_TOO_MANY_FILES        404
 #define IDS_ERROR_MISC                  405
+#define IDS_ERROR_CANNOT_GENERATE_TEMP_FILE 406
 
 // Next default values for new objects
 // 

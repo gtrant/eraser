@@ -50,6 +50,7 @@ using namespace ATL;
 #include <vector>
 #include <string>
 #include <sstream>
+#include <fstream>
 
 #undef max
 #undef min
