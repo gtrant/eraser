@@ -490,67 +490,25 @@ namespace Eraser {
 			return E_INVALIDARG;
 
 		//Build the command line
-		std::wstring commandAction;
 		std::wstring commandLine;
 		bool commandElevate = false;
-		HRESULT result = E_INVALIDARG;
 		switch (VerbMenuIndices[LOWORD(pCmdInfo->lpVerb)])
 		{
 		case ACTION_ERASE_ON_RESTART:
-			commandLine += L"/schedule=restart ";
-
 		case ACTION_ERASE:
+			//See the invocation context: if it is executed from the recycle bin
+			//then the list of selected files will be empty.
+			if (InvokeReason == INVOKEREASON_RECYCLEBIN)
 			{
-				//Add Task command.
-				commandAction = L"addtask";
-
-				//See the invocation context: if it is executed from the recycle bin
-				//then the list of selected files will be empty.
-				if (InvokeReason == INVOKEREASON_RECYCLEBIN)
-				{
-					commandLine += L"recyclebin";
-				}
-				else
-				{
-					//Okay, we were called from an item right-click; iterate over every
-					//selected file
-					for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
-						i != SelectedFiles.end(); ++i)
-					{
-						//Check if the current item is a file or folder.
-						std::wstring item(*i);
-						if (item.length() > 2 && item[item.length() - 1] == '\\')
-							item.erase(item.end() - 1);
-						DWORD attributes = GetFileAttributes(item.c_str());
-
-						//Add the correct command line for the file type.
-						if (attributes & FILE_ATTRIBUTE_DIRECTORY)
-							commandLine += L"\"dir=" + item + L"\" ";
-						else
-							commandLine += L"\"file=" + item + L"\" ";
-					}
-				}
-
-				break;
+				commandLine += L"/recyclebin";
 			}
+
+			break;
 
 		case ACTION_ERASE_UNUSED_SPACE:
-			{
-				//We want to add a new task
-				commandAction = L"addtask";
-
-				//Erasing unused space requires elevation
-				commandElevate = true;
-
-				//Add every item onto the command line
-				for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
-					i != SelectedFiles.end(); ++i)
-				{
-					commandLine += L"\"unused=" + *i + L",clusterTips\" ";
-				}
-				
-				break;
-			}
+			//Erasing unused space requires elevation
+			commandElevate = true;
+			break;
 
 		default:
 			if (!(pCmdInfo->fMask & CMIC_MASK_FLAG_NO_UI))
@@ -558,14 +516,22 @@ namespace Eraser {
 				MessageBox(pCmdInfo->hwnd, FormatString(LoadString(IDS_ERROR_UNKNOWNACTION),
 					VerbMenuIndices[LOWORD(pCmdInfo->lpVerb)]).c_str(),
 					LoadString(IDS_ERASERSHELLEXT).c_str(), MB_OK | MB_ICONERROR);
+				return E_INVALIDARG;
 			}
+		}
+
+		//Add the list of items selected.
+		for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
+			i != SelectedFiles.end(); ++i)
+		{
+			commandLine += L"\"" + *i + L"\" ";
 		}
 
 		try
 		{
 			BusyCursor cursor;
-			RunEraser(commandAction, commandLine, commandElevate, pCmdInfo->hwnd,
-				pCmdInfo->nShow);
+			RunEraser(VerbMenuIndices[LOWORD(pCmdInfo->lpVerb)], commandLine, commandElevate,
+				pCmdInfo->hwnd, pCmdInfo->nShow);
 		}
 		catch (const std::wstring& e)
 		{
@@ -576,7 +542,7 @@ namespace Eraser {
 			}
 		}
 
-		return result;
+		return S_OK;
 	}
 
 	CCtxMenu::Actions CCtxMenu::GetApplicableActions()
@@ -811,8 +777,8 @@ namespace Eraser {
 		return false;
 	}
 
-	void CCtxMenu::RunEraser(const std::wstring& action, const std::wstring& parameters,
-		bool elevated, HWND parent, int show)
+	void CCtxMenu::RunEraser(Actions action, const std::wstring& parameters, bool elevated,
+		HWND parent, int show)
 	{
 		//Get the path to this DLL so we can look for Eraser.exe
 		wchar_t fileName[MAX_PATH];
@@ -833,7 +799,26 @@ namespace Eraser {
 
 		eraserPath += L"Eraser.exe";
 
-		std::wstring finalParameters;
+		//Compile the final set of parameters we are going to pass to Eraser.
+		std::wstring finalParameters(L"shell /quiet ");
+
+		//Set the action selected by the user.
+		switch (action)
+		{
+		case ACTION_ERASE:
+			finalParameters += L"/action=EraseNow ";
+			break;
+		case ACTION_ERASE_ON_RESTART:
+			finalParameters += L"/action=EraseOnRestart ";
+			break;
+		case ACTION_ERASE_UNUSED_SPACE:
+			finalParameters += L"/action=EraseUnusedSpace ";
+			break;
+		default:
+			return;
+		}
+
+		//Then append the rest of the arguments, depending on the length.
 		{
 			//Depending on the length of the argument, we either use a response file
 			//or pass the arguments directly.
@@ -850,18 +835,16 @@ namespace Eraser {
 				}
 
 				std::wofstream stream(buffer);
-				stream << "\"" << action << L"\" /quiet " << parameters;
+				stream << parameters;
 
-				finalParameters = L"\"@";
+				finalParameters += L"\"@";
 				finalParameters += buffer;
 				finalParameters += '"';
 			}
 			else
 			{
 				//Short command line, pass directly to the program
-				std::wostringstream stream;
-				stream << "\"" << action << L"\" /quiet " << parameters;
-				finalParameters = stream.str();
+				finalParameters += parameters;
 			}
 		}
 

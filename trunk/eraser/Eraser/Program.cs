@@ -100,6 +100,39 @@ namespace Eraser
 			public string Schedule { get; set; }
 		}
 
+		class ShellArguments : ConsoleArguments
+		{
+			/// <summary>
+			/// The action which the shell extension has requested.
+			/// </summary>
+			[Arg("action", "The action selected by the user", typeof(string), true, null, null)]
+			public ShellActions ShellAction { get; set; }
+
+			/// <summary>
+			/// Whether the recycle bin was specified on the command line.
+			/// </summary>
+			[Arg("recycleBin", "The recycle bin as an erasure target", typeof(string), false, null, null)]
+			public bool RecycleBin { get; set; }
+		}
+
+		public enum ShellActions
+		{
+			/// <summary>
+			/// Erase the selected items now.
+			/// </summary>
+			EraseNow,
+
+			/// <summary>
+			/// Erase the selected items on restart.
+			/// </summary>
+			EraseOnRestart,
+
+			/// <summary>
+			/// Erase the unused space on the drive.
+			/// </summary>
+			EraseUnusedSpace
+		}
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
@@ -153,6 +186,46 @@ namespace Eraser
 
 		#region Console Program code
 		/// <summary>
+		/// Connects to the running Eraser instance for erasures.
+		/// </summary>
+		/// <returns>The connectin with the remote instance.</returns>
+		private static RemoteExecutorClient CommandConnect()
+		{
+			try
+			{
+				RemoteExecutorClient result = new RemoteExecutorClient();
+				result.Run();
+				if (!result.IsConnected)
+				{
+					//The client cannot connect to the server. This probably means
+					//that the server process isn't running. Start an instance.
+					Process eraserInstance = Process.Start(
+						Assembly.GetExecutingAssembly().Location, "/quiet");
+					Thread.Sleep(0);
+					eraserInstance.WaitForInputIdle();
+
+					result.Run();
+					if (!result.IsConnected)
+						throw new IOException("Eraser cannot connect to the running " +
+							"instance for erasures.");
+				}
+
+				return result;
+			}
+			catch (UnauthorizedAccessException e)
+			{
+				//We can't connect to the pipe because the other instance of Eraser
+				//is running with higher privileges than this instance.
+				throw new UnauthorizedAccessException("Another instance of Eraser " +
+					"is already running but it is running with higher privileges than " +
+					"this instance of Eraser. Tasks cannot be added in this manner.\n\n" +
+					"Close the running instance of Eraser and start it again without " +
+					"administrator privileges, or run the command again as an " +
+					"administrator.", e);
+			}
+		}
+
+		/// <summary>
 		/// Runs Eraser as a command-line application.
 		/// </summary>
 		/// <param name="commandLine">The command line parameters passed to Eraser.</param>
@@ -170,6 +243,8 @@ namespace Eraser
 						new ConsoleActionData(CommandAddTask, new AddTaskArguments()));
 					program.Handlers.Add("importtasklist",
 						new ConsoleActionData(CommandImportTaskList, new ConsoleArguments()));
+					program.Handlers.Add("shell",
+						new ConsoleActionData(CommandShell, new ShellArguments()));
 					program.Run();
 					return 0;
 				}
@@ -407,40 +482,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				throw new ArgumentException("Tasks must contain at least one erasure target.");
 
 			//Send the task out.
-			try
-			{
-				using (RemoteExecutorClient client = new RemoteExecutorClient())
-				{
-					client.Run();
-					if (!client.IsConnected)
-					{
-						//The client cannot connect to the server. This probably means
-						//that the server process isn't running. Start an instance.
-						Process eraserInstance = Process.Start(
-							Assembly.GetExecutingAssembly().Location, "/quiet");
-						Thread.Sleep(0);
-						eraserInstance.WaitForInputIdle();
-
-						client.Run();
-						if (!client.IsConnected)
-							throw new IOException("Eraser cannot connect to the running " +
-								"instance for erasures.");
-					}
-
-					client.Tasks.Add(task);
-				}
-			}
-			catch (UnauthorizedAccessException e)
-			{
-				//We can't connect to the pipe because the other instance of Eraser
-				//is running with higher privileges than this instance.
-				throw new UnauthorizedAccessException("Another instance of Eraser " +
-					"is already running but it is running with higher privileges than " +
-					"this instance of Eraser. Tasks cannot be added in this manner.\n\n" +
-					"Close the running instance of Eraser and start it again without " +
-					"administrator privileges, or run the command again as an " +
-					"administrator.", e);
-			}
+			using (eraserClient = CommandConnect())
+				eraserClient.Tasks.Add(task);
 		}
 
 		/// <summary>
@@ -450,41 +493,70 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		private static void CommandImportTaskList(ConsoleArguments args)
 		{
 			//Import the task list
-			try
-			{
-				using (RemoteExecutorClient client = new RemoteExecutorClient())
-				{
-					client.Run();
-					if (!client.IsConnected)
-					{
-						//The client cannot connect to the server. This probably means
-						//that the server process isn't running. Start an instance.
-						Process eraserInstance = Process.Start(
-							Assembly.GetExecutingAssembly().Location, "/quiet");
-						eraserInstance.WaitForInputIdle();
+			using (eraserClient = CommandConnect())
+				foreach (string path in args.PositionalArguments)
+					using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+						eraserClient.Tasks.LoadFromStream(stream);
+		}
 
-						client.Run();
-						if (!client.IsConnected)
-							throw new IOException("Eraser cannot connect to the running " +
-								"instance for erasures.");
+		/// <summary>
+		/// Handles the files from the Shell extension.
+		/// </summary>
+		/// <param name="args">The command line parameters passed to the program.</param>
+		private static void CommandShell(ConsoleArguments args)
+		{
+			//Construct a draft task.
+			Task task = new Task();
+			switch (((ShellArguments)args).ShellAction)
+			{
+				case ShellActions.EraseOnRestart:
+					task.Schedule = Schedule.RunOnRestart;
+					goto case ShellActions.EraseNow;
+
+				case ShellActions.EraseNow:
+					foreach (string path in args.PositionalArguments)
+					{
+						FileSystemObjectTarget target = null;
+						if (Directory.Exists(path))
+						{
+							target = new FolderTarget();
+							target.Path = path;
+						} 
+						else
+						{
+							target = new FileTarget();
+							target.Path = path;
+						}
+
+						task.Targets.Add(target);
 					}
 
+					//Was the recycle bin specified?
+					if (((ShellArguments)args).RecycleBin)
+						task.Targets.Add(new RecycleBinTarget());
+					break;
+
+				case ShellActions.EraseUnusedSpace:
 					foreach (string path in args.PositionalArguments)
-						using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
-							client.Tasks.LoadFromStream(stream);
-				}
+					{
+						UnusedSpaceTarget target = new UnusedSpaceTarget();
+						target.Drive = path;
+						task.Targets.Add(target);
+					}
+					break;
 			}
-			catch (UnauthorizedAccessException e)
+
+			//Confirm that the user wants the erase.
+			Application.EnableVisualStyles();
+			using (Form dialog = new ShellConfirmationDialog(task))
 			{
-				//We can't connect to the pipe because the other instance of Eraser
-				//is running with higher privileges than this instance.
-				throw new UnauthorizedAccessException("Another instance of Eraser " +
-					"is already running but it is running with higher privileges than " +
-					"this instance of Eraser. Tasks cannot be added in this manner.\n\n" +
-					"Close the running instance of Eraser and start it again without " +
-					"administrator privileges, or run the command again as an " +
-					"administrator.", e);
+				if (dialog.ShowDialog() != DialogResult.Yes)
+					return;
 			}
+
+			//Then queue for erasure.
+			using (eraserClient = CommandConnect())
+				eraserClient.Tasks.Add(task);
 		}
 		#endregion
 
