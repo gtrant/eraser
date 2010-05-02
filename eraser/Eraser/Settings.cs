@@ -100,7 +100,7 @@ namespace Eraser
 								formatter.Binder = new TypeNameSerializationBinder(typeof(T));
 							return (T)formatter.Deserialize(stream);
 						}
-						catch (SerializationException)
+						catch (InvalidCastException)
 						{
 							Key.DeleteValue(name);
 							MessageBox.Show(S._("Could not load the setting {0}\\{1} for " +
