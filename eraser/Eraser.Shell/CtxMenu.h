@@ -53,6 +53,7 @@ namespace Eraser
 			INVOKEREASON_RECYCLEBIN
 		};
 
+		/// This has the equivalent in Eraser.Program.ShellActions
 		enum Actions
 		{
 			ACTION_ERASE				= 1 << 0,
@@ -85,7 +86,7 @@ namespace Eraser
 		static std::wstring GetHKeyPath(HKEY handle);
 
 		static bool IsUserAdmin();
-		static void RunEraser(const std::wstring& action, const std::wstring& parameters,
+		static void RunEraser(Actions action, const std::wstring& parameters,
 			bool elevated, HWND parent, int show);
 
 		static void InsertSeparator(HMENU menu);

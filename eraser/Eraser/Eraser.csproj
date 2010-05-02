@@ -211,6 +211,9 @@
     <EmbeddedResource Include="SettingsPanel.it.resx">
       <DependentUpon>SettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ShellConfirmationDialog.resx">
+      <DependentUpon>ShellConfirmationDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Strings.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -332,6 +335,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.ConsoleProgram.cs" />
+    <Compile Include="ShellConfirmationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShellConfirmationDialog.Designer.cs">
+      <DependentUpon>ShellConfirmationDialog.cs</DependentUpon>
+    </Compile>
     <None Include="Resources\AboutDialog.png" />
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>
