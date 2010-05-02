@@ -915,41 +915,10 @@ namespace Eraser {
 					throw FormatString(LoadString(IDS_ERROR_MISC), FormatError().c_str());
 			}
 
-			//Wait for the process to finish.
+			//Clean up all the opened handles -- our job is done.
 			Handle<HANDLE> hProcess(processInfo.hProcess),
 						   hThread(processInfo.hThread);
 			CloseHandle(writePipe);
-			WaitForSingleObject(hProcess, static_cast<DWORD>(-1));
-			DWORD exitCode = 0;
-			
-			if (GetExitCodeProcess(processInfo.hProcess, &exitCode))
-				if (exitCode == ERROR_ACCESS_DENIED)
-				{
-					//The spawned instance could not connect with the master instance
-					//because it is running as an administrator. Spawn the new instance
-					//again, this time as an administrator
-					RunEraser(action, parameters, true, parent, show);
-				}
-				else if (exitCode)
-				{
-					char buffer[8192];
-					DWORD lastRead = 0;
-					std::wstring output;
-
-					while (ReadFile(readPipe, buffer, sizeof(buffer), &lastRead, NULL) && lastRead != 0)
-					{
-						size_t lastConvert = 0;
-						wchar_t wBuffer[8192];
-						if (!mbstowcs_s(&lastConvert, wBuffer, sizeof(wBuffer) / sizeof(wBuffer[0]),
-							buffer, lastRead))
-						{
-							output += std::wstring(wBuffer, lastConvert);
-						}
-					}
-
-					//Show the error message.
-					throw output;
-				}
 		}
 	}
 
