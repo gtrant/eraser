@@ -222,7 +222,7 @@
 							Source="..\bin\Release\en\Eraser.Util.resources.dll"
 							ProcessorArchitecture="msil" />
 						<File Id="EraserUtilNativeEn" Name="Eraser.Util.Native.resources.dll"
-							Source="..\bin\Release\$(sys.BUILDARCH)\en\Eraser.Util.Native.resources.dll"
+							Source="..\bin\Release\$(var.PLATFORMDIR)\en\Eraser.Util.Native.resources.dll"
 							ProcessorArchitecture="msil" />
 					</Component>
 				</Directory>

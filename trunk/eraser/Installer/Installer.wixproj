@@ -19,6 +19,9 @@
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <SuppressIces>ICE03;ICE82</SuppressIces>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>PLATFORMDIR=Win32</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DefineConstants>Debug</DefineConstants>
@@ -30,6 +33,9 @@
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
     <SuppressIces>ICE03;ICE82;ICE80</SuppressIces>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>PLATFORMDIR=x64</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DirectoryStructure.wxs" />

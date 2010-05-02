@@ -35,7 +35,7 @@
 						Source="..\bin\Release\nl\Eraser.Util.resources.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="EraserUtilNativeNl" Name="Eraser.Util.Native.resources.dll"
-						Source="..\bin\Release\$(sys.BUILDARCH)\nl\Eraser.Util.Native.resources.dll"
+						Source="..\bin\Release\$(var.PLATFORMDIR)\nl\Eraser.Util.Native.resources.dll"
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
@@ -51,7 +51,7 @@
 						Source="..\bin\Release\it\Eraser.Util.resources.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="EraserUtilNativeIt" Name="Eraser.Util.Native.resources.dll"
-						Source="..\bin\Release\$(sys.BUILDARCH)\it\Eraser.Util.Native.resources.dll"
+						Source="..\bin\Release\$(var.PLATFORMDIR)\it\Eraser.Util.Native.resources.dll"
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
@@ -67,7 +67,7 @@
 						Source="..\bin\Release\pl\Eraser.Util.resources.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="EraserUtilNativePl" Name="Eraser.Util.Native.resources.dll"
-						Source="..\bin\Release\$(sys.BUILDARCH)\pl\Eraser.Util.Native.resources.dll"
+						Source="..\bin\Release\$(var.PLATFORMDIR)\pl\Eraser.Util.Native.resources.dll"
 						ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
