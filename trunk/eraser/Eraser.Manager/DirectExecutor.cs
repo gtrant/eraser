@@ -386,7 +386,7 @@ namespace Eraser.Manager
 					target.Drive), LogLevel.Warning);
 
 			//Get the erasure method if the user specified he wants the default.
-			ErasureMethod method = target.Method;
+			ErasureMethod method = target.EffectiveMethod;
 
 			//Make a folder to dump our temporary files in
 			DirectoryInfo info = new DirectoryInfo(target.Drive);
@@ -583,7 +583,7 @@ namespace Eraser.Manager
 			List<string> paths = target.GetPaths(out dataTotal);
 
 			//Get the erasure method if the user specified he wants the default.
-			ErasureMethod method = target.Method;
+			ErasureMethod method = target.EffectiveMethod;
 			dataTotal = method.CalculateEraseDataSize(paths, dataTotal);
 
 			//Set the event's current target status.
