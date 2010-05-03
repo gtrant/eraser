@@ -70,6 +70,19 @@ namespace Util {
 		return handles->AsReadOnly();
 	}
 
+	List<OpenHandle^>^ OpenHandle::Close(String^ path)
+	{
+		List<OpenHandle^>^ result = gcnew List<OpenHandle^>();
+		for each (OpenHandle^ handle in Items)
+		{
+			if (handle->Path == path)
+				if (!handle->Close())
+					result->Add(handle);
+		}
+		
+		return result;
+	}
+
 	String^ OpenHandle::ResolveHandlePath(IntPtr handle, int pid)
 	{
 		std::wstring result(ResolveHandleName(static_cast<void*>(handle), pid));

@@ -129,35 +129,28 @@ namespace Eraser.DefaultPlugins
 										"and cannot be removed.", info.FullName), e);
 								}
 
-								IEnumerable<OpenHandle> handles = OpenHandle.Items.Where(
-									handle => handle.Path == info.FullName);
-								List<System.Diagnostics.Process> processes =
-									new List<System.Diagnostics.Process>();
-								foreach (OpenHandle handle in handles)
-									if (!handle.Close())
-										processes.Add(System.Diagnostics.Process.GetProcessById(handle.ProcessId));
-
-								if (processes.Count > 0)
+								StringBuilder processStr = new StringBuilder();
+								foreach (OpenHandle handle in OpenHandle.Close(info.FullName))
 								{
-									StringBuilder processStr = new StringBuilder();
-									foreach (System.Diagnostics.Process process in processes)
+									try
 									{
-										try
-										{
-											processStr.AppendFormat(
-												System.Globalization.CultureInfo.InvariantCulture,
-												"{0}, ", process.MainModule.FileName);
-										}
-										catch (System.ComponentModel.Win32Exception)
-										{
-										}
+										processStr.AppendFormat(
+											System.Globalization.CultureInfo.InvariantCulture,
+											"{0}, ", (System.Diagnostics.Process.GetProcessById(handle.ProcessId)).MainModule.FileName);
 									}
+									catch (System.ComponentModel.Win32Exception)
+									{
+										processStr.AppendFormat(
+											System.Globalization.CultureInfo.InvariantCulture,
+											"Process ID {0}, ", handle.ProcessId);
+									}
+								}
 
+								if (processStr.Length != 0)
 									Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
 											info.FullName, S._("(locked by {0})",
 												processStr.ToString().Remove(processStr.Length - 2)).Trim()),
 										LogLevel.Error);
-								}
 							}
 
 							//Let the process locking the file release the lock

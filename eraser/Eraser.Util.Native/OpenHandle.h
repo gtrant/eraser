@@ -59,6 +59,13 @@ namespace Util {
 		}
 
 		/// <summary>
+		/// Closes all handles matching the given path.
+		/// </summary>
+		/// <param name="path">The path to close handles for.</param>
+		/// <returns>A list of handles which could not be closed</returns>
+		static List<OpenHandle^>^ Close(String^ path);
+
+		/// <summary>
 		/// Force the handle to close.
 		/// </summary>
 		bool Close();
