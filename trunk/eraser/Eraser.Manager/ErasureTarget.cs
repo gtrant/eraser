@@ -276,7 +276,7 @@ namespace Eraser.Manager
 		{
 			get
 			{
-				if (Method == ErasureMethodRegistrar.Default)
+				if (Method != ErasureMethodRegistrar.Default)
 					return base.EffectiveMethod;
 
 				return ManagerLibrary.Instance.ErasureMethodRegistrar[
