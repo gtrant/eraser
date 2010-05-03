@@ -162,17 +162,26 @@
   <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
     <value>The file {0} could not be erased because the file's permissions prevent access to the file.</value>
   </data>
-  <data name="(locked by {0})" xml:space="preserve">
-    <value>(locked by {0})</value>
-  </data>
-  <data name="Could not force closure of file \&quot;{0}\&quot; {1}" xml:space="preserve">
-    <value>Could not force closure of file \"{0}\" {1}</value>
+  <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
+    <value>Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
     <value>Removing folders...</value>
   </data>
   <data name="Emptying recycle bin..." xml:space="preserve">
     <value>Emptying recycle bin...</value>
+  </data>
+  <data name="The selected erasure method is not supported for this erasure target." xml:space="preserve">
+    <value>The selected erasure method is not supported for this erasure target.</value>
+  </data>
+  <data name="Unused disk space ({0})" xml:space="preserve">
+    <value>Unused disk space ({0})</value>
+  </data>
+  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
+    <value>Could not erase files and subfolders in {0} because {1}</value>
+  </data>
+  <data name="Recycle Bin" xml:space="preserve">
+    <value>Recycle Bin</value>
   </data>
   <data name="EntropySource GUID not found: {0}" xml:space="preserve">
     <value>EntropySource GUID not found: {0}</value>
@@ -183,11 +192,23 @@
   <data name="PRNG not found: {0}" xml:space="preserve">
     <value>PRNG not found: {0}</value>
   </data>
+  <data name="Invalid file path" xml:space="preserve">
+    <value>Invalid file path</value>
+  </data>
   <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
     <value>Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data.</value>
   </data>
   <data name="The file system on the drive {0} is not supported." xml:space="preserve">
     <value>The file system on the drive {0} is not supported.</value>
+  </data>
+  <data name="Invalid folder path" xml:space="preserve">
+    <value>Invalid folder path</value>
+  </data>
+  <data name="The path you selected is invalid." xml:space="preserve">
+    <value>The path you selected is invalid.</value>
+  </data>
+  <data name="Eraser" xml:space="preserve">
+    <value>Eraser</value>
   </data>
   <data name="{0} (1 pass)" xml:space="preserve">
     <value>{0} (1 pass)</value>
@@ -203,9 +224,6 @@
   </data>
   <data name="Could not load the plugin {0}.\n\nThe error returned was: {1}" xml:space="preserve">
     <value>Could not load the plugin {0}.\n\nThe error returned was: {1}</value>
-  </data>
-  <data name="Eraser" xml:space="preserve">
-    <value>Eraser</value>
   </data>
   <data name="Running on restart" xml:space="preserve">
     <value>Running on restart</value>
@@ -266,14 +284,5 @@
   </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
     <value>{0} and {1} other targets</value>
-  </data>
-  <data name="Unused disk space ({0})" xml:space="preserve">
-    <value>Unused disk space ({0})</value>
-  </data>
-  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
-    <value>Could not erase files and subfolders in {0} because {1}</value>
-  </data>
-  <data name="Recycle Bin" xml:space="preserve">
-    <value>Recycle Bin</value>
   </data>
 </root>
