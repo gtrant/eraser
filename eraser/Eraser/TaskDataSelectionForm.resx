@@ -123,13 +123,13 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="methodLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 9</value>
+    <value>5, 38</value>
   </data>
   <data name="methodLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>93, 15</value>
   </data>
   <data name="methodLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="methodLbl.Text" xml:space="preserve">
     <value>Erasure method:</value>
@@ -151,13 +151,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="methodCmb.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 6</value>
+    <value>129, 35</value>
   </data>
   <data name="methodCmb.Size" type="System.Drawing.Size, System.Drawing">
     <value>189, 23</value>
   </data>
   <data name="methodCmb.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;methodCmb.Name" xml:space="preserve">
     <value>methodCmb</value>
@@ -171,62 +171,62 @@
   <data name="&gt;&gt;methodCmb.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="ok.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="okBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="ok.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="okBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>162, 340</value>
   </data>
-  <data name="ok.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="okBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="ok.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+  <data name="okBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="ok.Text" xml:space="preserve">
+  <data name="okBtn.Text" xml:space="preserve">
     <value>OK</value>
   </data>
-  <data name="&gt;&gt;ok.Name" xml:space="preserve">
-    <value>ok</value>
+  <data name="&gt;&gt;okBtn.Name" xml:space="preserve">
+    <value>okBtn</value>
   </data>
-  <data name="&gt;&gt;ok.Type" xml:space="preserve">
+  <data name="&gt;&gt;okBtn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ok.Parent" xml:space="preserve">
+  <data name="&gt;&gt;okBtn.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;ok.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;okBtn.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="cancelBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="cancel.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cancelBtn.Location" type="System.Drawing.Point, System.Drawing">
     <value>243, 340</value>
   </data>
-  <data name="cancel.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cancelBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="cancel.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+  <data name="cancelBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
   </data>
-  <data name="cancel.Text" xml:space="preserve">
+  <data name="cancelBtn.Text" xml:space="preserve">
     <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;cancel.Name" xml:space="preserve">
-    <value>cancel</value>
+  <data name="&gt;&gt;cancelBtn.Name" xml:space="preserve">
+    <value>cancelBtn</value>
   </data>
-  <data name="&gt;&gt;cancel.Type" xml:space="preserve">
+  <data name="&gt;&gt;cancelBtn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cancel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cancelBtn.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cancel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cancelBtn.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <metadata name="errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>276, 17</value>
+    <value>17, 17</value>
   </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -237,23 +237,26 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>330, 375</value>
   </data>
-  <data name="typeSettingsPnl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
   <data name="typeSettingsPnl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 64</value>
+    <value>8, 71</value>
+  </data>
+  <data name="typeSettingsPnl.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>10, 10, 10, 10</value>
   </data>
   <data name="typeSettingsPnl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 270</value>
+    <value>310, 263</value>
   </data>
   <data name="typeSettingsPnl.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>5</value>
+  </data>
+  <data name="typeSettingsPnl.Text" xml:space="preserve">
+    <value>Settings</value>
   </data>
   <data name="&gt;&gt;typeSettingsPnl.Name" xml:space="preserve">
     <value>typeSettingsPnl</value>
   </data>
   <data name="&gt;&gt;typeSettingsPnl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;typeSettingsPnl.Parent" xml:space="preserve">
     <value>$this</value>
@@ -265,13 +268,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="typeCmb.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 35</value>
+    <value>129, 6</value>
   </data>
   <data name="typeCmb.Size" type="System.Drawing.Size, System.Drawing">
     <value>189, 23</value>
   </data>
   <data name="typeCmb.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;typeCmb.Name" xml:space="preserve">
     <value>typeCmb</value>
@@ -289,13 +292,13 @@
     <value>True</value>
   </data>
   <data name="typeLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 38</value>
+    <value>5, 9</value>
   </data>
   <data name="typeLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>70, 15</value>
   </data>
   <data name="typeLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>1</value>
   </data>
   <data name="typeLbl.Text" xml:space="preserve">
     <value>Target type:</value>
