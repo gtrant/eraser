@@ -110,6 +110,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="FileErasureTargetSettings.resx">
+      <DependentUpon>FileErasureTargetSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FolderErasureTargetSettings.resx">
+      <DependentUpon>FolderErasureTargetSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Strings.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -120,6 +126,9 @@
     <EmbeddedResource Include="Strings.pl.resx" />
     <EmbeddedResource Include="Strings.resx">
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UnusedSpaceErasureTargetSettings.resx">
+      <DependentUpon>UnusedSpaceErasureTargetSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
