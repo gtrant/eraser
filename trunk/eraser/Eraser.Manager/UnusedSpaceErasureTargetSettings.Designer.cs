@@ -61,7 +61,7 @@ namespace Eraser.Manager
 			this.unusedClusterTips.ImeMode = System.Windows.Forms.ImeMode.NoControl;
 			this.unusedClusterTips.Location = new System.Drawing.Point(0, 30);
 			this.unusedClusterTips.Name = "unusedClusterTips";
-			this.unusedClusterTips.Size = new System.Drawing.Size(106, 17);
+			this.unusedClusterTips.Size = new System.Drawing.Size(113, 19);
 			this.unusedClusterTips.TabIndex = 18;
 			this.unusedClusterTips.Text = "Erase cluster tips";
 			this.unusedClusterTips.UseVisualStyleBackColor = true;
@@ -75,16 +75,16 @@ namespace Eraser.Manager
 			this.unusedDisk.FormattingEnabled = true;
 			this.unusedDisk.Location = new System.Drawing.Point(0, 0);
 			this.unusedDisk.Name = "unusedDisk";
-			this.unusedDisk.Size = new System.Drawing.Size(345, 21);
+			this.unusedDisk.Size = new System.Drawing.Size(345, 24);
 			this.unusedDisk.TabIndex = 17;
 			this.unusedDisk.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.unusedDisk_DrawItem);
 			// 
 			// UnusedSpaceErasureTargetSettings
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
 			this.Controls.Add(this.unusedClusterTips);
 			this.Controls.Add(this.unusedDisk);
+			this.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.Name = "UnusedSpaceErasureTargetSettings";
 			this.Size = new System.Drawing.Size(345, 49);
 			this.ResumeLayout(false);

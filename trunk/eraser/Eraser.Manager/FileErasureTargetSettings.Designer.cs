@@ -61,7 +61,7 @@ namespace Eraser.Manager
 			// 
 			this.fileBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.fileBrowse.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.fileBrowse.Location = new System.Drawing.Point(75, 0);
+			this.fileBrowse.Location = new System.Drawing.Point(75, -1);
 			this.fileBrowse.Name = "fileBrowse";
 			this.fileBrowse.Size = new System.Drawing.Size(75, 23);
 			this.fileBrowse.TabIndex = 7;
@@ -73,9 +73,9 @@ namespace Eraser.Manager
 			// 
 			this.filePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.filePath.Location = new System.Drawing.Point(0, 2);
+			this.filePath.Location = new System.Drawing.Point(0, 0);
 			this.filePath.Name = "filePath";
-			this.filePath.Size = new System.Drawing.Size(69, 20);
+			this.filePath.Size = new System.Drawing.Size(69, 23);
 			this.filePath.TabIndex = 6;
 			// 
 			// fileDialog
@@ -88,10 +88,10 @@ namespace Eraser.Manager
 			// 
 			// FileErasureTargetSettings
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
 			this.Controls.Add(this.fileBrowse);
 			this.Controls.Add(this.filePath);
+			this.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.Name = "FileErasureTargetSettings";
 			this.Size = new System.Drawing.Size(150, 23);
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
