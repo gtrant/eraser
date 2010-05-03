@@ -288,6 +288,9 @@
   <data name="The new randomness data source will only be used when the next task is run.\nCurrently running tasks will use the old source." xml:space="preserve">
     <value>The new randomness data source will only be used when the next task is run.\nCurrently running tasks will use the old source.</value>
   </data>
+  <data name="(This erasure type does not have any settings to define.)" xml:space="preserve">
+    <value>(This erasure type does not have any settings to define.)</value>
+  </data>
   <data name="The erasure target type could be configured, but it does not provide a user interface for configuring." xml:space="preserve">
     <value>The erasure target type could be configured, but it does not provide a user interface for configuring.</value>
   </data>

@@ -136,8 +136,8 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Gets an <see cref="IErasureTargetConfigurer"/> which contains settings for configuring this task, or
-		/// null if this erasure target has no settings to be set.
+		/// Gets an <see cref="IErasureTargetConfigurer"/> which contains settings for
+		/// configuring this task, or null if this erasure target has no settings to be set.
 		/// </summary>
 		/// <remarks>The result should be able to be passed to the <see cref="Configure"/>
 		/// function, and settings for this task will be according to the returned
