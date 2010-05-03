@@ -162,17 +162,26 @@
   <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
     <value>Plik {0} nie mógł być wymazany z powodu ograniczonego prawa dostępu do pliku.</value>
   </data>
-  <data name="(locked by {0})" xml:space="preserve">
-    <value>(zablokowane przez {0})</value>
-  </data>
-  <data name="Could not force closure of file \&quot;{0}\&quot; {1}" xml:space="preserve">
-    <value>Nie można wymusić zamknięcia pliku \"{0}\" {1}</value>
+  <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
     <value>Usuwanie katalogów...</value>
   </data>
   <data name="Emptying recycle bin..." xml:space="preserve">
     <value>Opróżnianie kosza...</value>
+  </data>
+  <data name="The selected erasure method is not supported for this erasure target." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Unused disk space ({0})" xml:space="preserve">
+    <value>Nieużywane miejsce dysku ({0})</value>
+  </data>
+  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
+    <value>Nie można było wymazać plików i podkatalogów w {0} ponieważ {1}</value>
+  </data>
+  <data name="Recycle Bin" xml:space="preserve">
+    <value>Kosz</value>
   </data>
   <data name="EntropySource GUID not found: {0}" xml:space="preserve">
     <value>Nie znaleziono źródła entropii GUID: {0}</value>
@@ -183,11 +192,23 @@
   <data name="PRNG not found: {0}" xml:space="preserve">
     <value>Nie znaleziono PRNG: {0}</value>
   </data>
+  <data name="Invalid file path" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
     <value>Wybrano wymazywanie z opcją prawdopodobnego zaprzeczenia, ale nie wybrano żadnych plików na przynęte. Obecny plik został zastąpiony danymi losowymi.</value>
   </data>
   <data name="The file system on the drive {0} is not supported." xml:space="preserve">
     <value>System plików napędu {0} nie jest wspierany.</value>
+  </data>
+  <data name="Invalid folder path" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The path you selected is invalid." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Eraser" xml:space="preserve">
+    <value>Eraser</value>
   </data>
   <data name="{0} (1 pass)" xml:space="preserve">
     <value>{0} (1 przebieg)</value>
@@ -203,9 +224,6 @@
   </data>
   <data name="Could not load the plugin {0}.\n\nThe error returned was: {1}" xml:space="preserve">
     <value>Nie można było załadować wtyczki {0}.\n\nWystąpił błąd: {1}</value>
-  </data>
-  <data name="Eraser" xml:space="preserve">
-    <value>Eraser</value>
   </data>
   <data name="Running on restart" xml:space="preserve">
     <value>Uruchomienie po restarcie</value>
@@ -266,14 +284,5 @@
   </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
     <value>{0} i {1} inne cele</value>
-  </data>
-  <data name="Unused disk space ({0})" xml:space="preserve">
-    <value>Nieużywane miejsce dysku ({0})</value>
-  </data>
-  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
-    <value>Nie można było wymazać plików i podkatalogów w {0} ponieważ {1}</value>
-  </data>
-  <data name="Recycle Bin" xml:space="preserve">
-    <value>Kosz</value>
   </data>
 </root>

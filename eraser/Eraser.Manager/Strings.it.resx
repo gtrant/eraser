@@ -162,17 +162,26 @@
   <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
     <value>Il file {0} non può essere pulito perchè i permessi su di esso ne impediscono l'accesso.</value>
   </data>
-  <data name="(locked by {0})" xml:space="preserve">
-    <value>(impegnata da {0})</value>
-  </data>
-  <data name="Could not force closure of file \&quot;{0}\&quot; {1}" xml:space="preserve">
-    <value>Impossibile forzare la chiusura del file \"{0}\" {1}</value>
+  <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
     <value>Rimozione cartelle...</value>
   </data>
   <data name="Emptying recycle bin..." xml:space="preserve">
     <value>Pulizia del cestino...</value>
+  </data>
+  <data name="The selected erasure method is not supported for this erasure target." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Unused disk space ({0})" xml:space="preserve">
+    <value>Spazio disco inutilizzato ({0})</value>
+  </data>
+  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
+    <value>Impossibile pulire file e sottocartelle in {0} a causa di {1}</value>
+  </data>
+  <data name="Recycle Bin" xml:space="preserve">
+    <value>Cestino</value>
   </data>
   <data name="EntropySource GUID not found: {0}" xml:space="preserve">
     <value>EntropySource GUID non trovato: {0}</value>
@@ -183,11 +192,23 @@
   <data name="PRNG not found: {0}" xml:space="preserve">
     <value>PRNG not found: {0}</value>
   </data>
+  <data name="Invalid file path" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
     <value>E' stata selezionata una "Plausible deniability", but no decoy files were found. The current file has been only replaced with random data.</value>
   </data>
   <data name="The file system on the drive {0} is not supported." xml:space="preserve">
     <value>Il tipo di file system sul disco {0} non è supportato.</value>
+  </data>
+  <data name="Invalid folder path" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The path you selected is invalid." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Eraser" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="{0} (1 pass)" xml:space="preserve">
     <value>{0} (1 passo)</value>
@@ -203,9 +224,6 @@
   </data>
   <data name="Could not load the plugin {0}.\n\nThe error returned was: {1}" xml:space="preserve">
     <value>Impossibile caricare il plugin {0}.\n\nL'errore ricevuto è stato: {1}</value>
-  </data>
-  <data name="Eraser" xml:space="preserve">
-    <value>(Untranslated)</value>
   </data>
   <data name="Running on restart" xml:space="preserve">
     <value>Esecuzione al riavvio</value>
@@ -266,14 +284,5 @@
   </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
     <value>{0} e {1} altri target</value>
-  </data>
-  <data name="Unused disk space ({0})" xml:space="preserve">
-    <value>Spazio disco inutilizzato ({0})</value>
-  </data>
-  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
-    <value>Impossibile pulire file e sottocartelle in {0} a causa di {1}</value>
-  </data>
-  <data name="Recycle Bin" xml:space="preserve">
-    <value>Cestino</value>
   </data>
 </root>
