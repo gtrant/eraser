@@ -114,6 +114,33 @@ namespace Eraser.Manager
 			get;
 			internal set;
 		}
+
+		/// <summary>
+		/// Gets a control which contains settings for configuring this task.
+		/// </summary>
+		/// <remarks>The result should be able to be passed to the <see cref="Configure"/>
+		/// function, and settings for this task will be according to the returned
+		/// control.</remarks>
+		public abstract System.Windows.Forms.Control SettingsPanel
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Configures the current task based on settings specified in the control
+		/// returned by the <see cref="SettingsPanel"/> property.
+		/// </summary>
+		/// <param name="settingsPanel">A settings panel returned by the
+		/// <see cref="SettingsPanel"/> property, which contains the user-selected
+		/// settings.</param>
+		public abstract void Configure(System.Windows.Forms.Control settingsPanel);
+
+		/// <summary>
+		/// Executes the given task.
+		/// </summary>
+		/// <param name="progress">The progress manager instance which is used to
+		/// track the progress of the current target's erasure.</param>
+		public virtual void Execute(ProgressManagerBase progress);
 	}
 
 	/// <summary>
