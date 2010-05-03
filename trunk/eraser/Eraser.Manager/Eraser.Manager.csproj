@@ -84,7 +84,7 @@
     </Compile>
     <Compile Include="IRegistrar.cs" />
     <Compile Include="ManagerLibrary.cs" />
-    <Compile Include="Method.cs" />
+    <Compile Include="ErasureMethod.cs" />
     <Compile Include="Plugins.cs" />
     <Compile Include="PRNG.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
