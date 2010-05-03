@@ -53,12 +53,12 @@ namespace Eraser
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TaskDataSelectionForm));
 			this.methodLbl = new System.Windows.Forms.Label();
 			this.methodCmb = new System.Windows.Forms.ComboBox();
-			this.ok = new System.Windows.Forms.Button();
-			this.cancel = new System.Windows.Forms.Button();
+			this.okBtn = new System.Windows.Forms.Button();
+			this.cancelBtn = new System.Windows.Forms.Button();
 			this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.typeLbl = new System.Windows.Forms.Label();
 			this.typeCmb = new System.Windows.Forms.ComboBox();
-			this.typeSettingsPnl = new System.Windows.Forms.Panel();
+			this.typeSettingsPnl = new System.Windows.Forms.GroupBox();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -74,19 +74,19 @@ namespace Eraser
 			this.methodCmb.FormattingEnabled = true;
 			this.methodCmb.Name = "methodCmb";
 			// 
-			// ok
+			// okBtn
 			// 
-			resources.ApplyResources(this.ok, "ok");
-			this.ok.Name = "ok";
-			this.ok.UseVisualStyleBackColor = true;
-			this.ok.Click += new System.EventHandler(this.ok_Click);
+			resources.ApplyResources(this.okBtn, "okBtn");
+			this.okBtn.Name = "okBtn";
+			this.okBtn.UseVisualStyleBackColor = true;
+			this.okBtn.Click += new System.EventHandler(this.ok_Click);
 			// 
-			// cancel
+			// cancelBtn
 			// 
-			resources.ApplyResources(this.cancel, "cancel");
-			this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.cancel.Name = "cancel";
-			this.cancel.UseVisualStyleBackColor = true;
+			resources.ApplyResources(this.cancelBtn, "cancelBtn");
+			this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.cancelBtn.Name = "cancelBtn";
+			this.cancelBtn.UseVisualStyleBackColor = true;
 			// 
 			// errorProvider
 			// 
@@ -109,18 +109,19 @@ namespace Eraser
 			// 
 			resources.ApplyResources(this.typeSettingsPnl, "typeSettingsPnl");
 			this.typeSettingsPnl.Name = "typeSettingsPnl";
+			this.typeSettingsPnl.TabStop = false;
 			// 
 			// TaskDataSelectionForm
 			// 
-			this.AcceptButton = this.ok;
+			this.AcceptButton = this.okBtn;
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-			this.CancelButton = this.cancel;
+			this.CancelButton = this.cancelBtn;
 			this.Controls.Add(this.typeSettingsPnl);
 			this.Controls.Add(this.typeCmb);
 			this.Controls.Add(this.typeLbl);
-			this.Controls.Add(this.cancel);
-			this.Controls.Add(this.ok);
+			this.Controls.Add(this.cancelBtn);
+			this.Controls.Add(this.okBtn);
 			this.Controls.Add(this.methodCmb);
 			this.Controls.Add(this.methodLbl);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -138,11 +139,11 @@ namespace Eraser
 
 		private System.Windows.Forms.Label methodLbl;
 		private System.Windows.Forms.ComboBox methodCmb;
-		private System.Windows.Forms.Button ok;
-		private System.Windows.Forms.Button cancel;
+		private System.Windows.Forms.Button okBtn;
+		private System.Windows.Forms.Button cancelBtn;
 		private System.Windows.Forms.ErrorProvider errorProvider;
 		private System.Windows.Forms.ComboBox typeCmb;
 		private System.Windows.Forms.Label typeLbl;
-		private System.Windows.Forms.Panel typeSettingsPnl;
+		private System.Windows.Forms.GroupBox typeSettingsPnl;
 	}
 }
