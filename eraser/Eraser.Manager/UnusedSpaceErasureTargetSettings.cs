@@ -1,4 +1,25 @@
-﻿using System;
+﻿/* 
+ * $Id$
+ * Copyright 2008-2010 The Eraser Project
+ * Original Author: Joel Low <lowjoel@users.sourceforge.net>
+ * Modified By:
+ * 
+ * This file is part of Eraser.
+ * 
+ * Eraser is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * A copy of the GNU General Public License can be found at
+ * <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -6,14 +27,125 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
+using Eraser.Util;
+using Eraser.Util.ExtensionMethods;
 
 namespace Eraser.Manager
 {
-	public partial class UnusedSpaceErasureTargetSettings : UserControl
+	public partial class UnusedSpaceErasureTargetSettings : UserControl, IErasureTargetConfigurer
 	{
+		/// <summary>
+		/// Represents an item in the list of drives.
+		/// </summary>
+		private class DriveItem
+		{
+			public override string ToString()
+			{
+				return Label;
+			}
+
+			/// <summary>
+			/// The drive selected.
+			/// </summary>
+			public string Drive;
+
+			/// <summary>
+			/// The label of the drive.
+			/// </summary>
+			public string Label;
+
+			/// <summary>
+			/// The icon of the drive.
+			/// </summary>
+			public Icon Icon;
+		}
+
 		public UnusedSpaceErasureTargetSettings()
 		{
 			InitializeComponent();
+
+			//Populate the drives list
+			foreach (VolumeInfo volume in VolumeInfo.Volumes.Concat(VolumeInfo.NetworkDrives))
+			{
+				DriveType driveType = volume.VolumeType;
+				if (driveType != DriveType.Unknown &&
+					driveType != DriveType.NoRootDirectory &&
+					driveType != DriveType.CDRom)
+				{
+					//Skip drives which are not mounted: we cannot erase their unused space.
+					if (!volume.IsMounted)
+						continue;
+
+					DriveItem item = new DriveItem();
+					string volumePath = volume.MountPoints[0];
+					DirectoryInfo root = new DirectoryInfo(volumePath);
+
+					item.Drive = volumePath;
+					item.Label = root.GetDescription();
+					item.Icon = root.GetIcon();
+					unusedDisk.Items.Add(item);
+				}
+			}
+
+			if (unusedDisk.Items.Count != 0)
+				unusedDisk.SelectedIndex = 0;
+		}
+
+		#region IErasureTargetConfigurer Members
+
+		public void LoadFrom(ErasureTarget target)
+		{
+			UnusedSpaceTarget unused = target as UnusedSpaceTarget;
+			if (unused == null)
+				throw new ArgumentException("The provided erasure target type is not " +
+					"supported by this configurer.");
+
+			foreach (object item in unusedDisk.Items)
+				if (((DriveItem)item).Drive == unused.Drive)
+					unusedDisk.SelectedItem = item;
+			unusedClusterTips.Checked = unused.EraseClusterTips;
+		}
+
+		public bool SaveTo(ErasureTarget target)
+		{
+			UnusedSpaceTarget unused = target as UnusedSpaceTarget;
+			if (unused == null)
+				throw new ArgumentException("The provided erasure target type is not " +
+					"supported by this configurer.");
+
+			unused.Drive = ((DriveItem)unusedDisk.SelectedItem).Drive;
+			unused.EraseClusterTips = unusedClusterTips.Checked;
+			return true;
+		}
+
+		#endregion
+
+		private void unusedDisk_DrawItem(object sender, DrawItemEventArgs e)
+		{
+			if (e.Index == -1)
+				return;
+
+			Graphics g = e.Graphics;
+			DriveItem item = (DriveItem)unusedDisk.Items[e.Index];
+			Color textColour = e.ForeColor;
+			PointF textPos = e.Bounds.Location;
+			textPos.X += item.Icon.Width + 4;
+			textPos.Y += 2;
+
+			//Set the text colour and background colour if the control is disabled
+			if ((e.State & DrawItemState.Disabled) == 0)
+				e.DrawBackground();
+			else
+			{
+				g.FillRectangle(new SolidBrush(SystemColors.ButtonFace), e.Bounds);
+				textColour = SystemColors.GrayText;
+			}
+
+			g.DrawIcon(item.Icon, e.Bounds.X + 2, e.Bounds.Y);
+			g.DrawString(item.Label, e.Font, new SolidBrush(textColour), textPos);
+			if ((e.State & DrawItemState.Focus) != 0)
+				e.DrawFocusRectangle();
 		}
 	}
 }

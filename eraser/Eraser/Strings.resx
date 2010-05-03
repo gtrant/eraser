@@ -288,14 +288,14 @@
   <data name="The new randomness data source will only be used when the next task is run.\nCurrently running tasks will use the old source." xml:space="preserve">
     <value>The new randomness data source will only be used when the next task is run.\nCurrently running tasks will use the old source.</value>
   </data>
+  <data name="The erasure target type could be configured, but it does not provide a user interface for configuring." xml:space="preserve">
+    <value>The erasure target type could be configured, but it does not provide a user interface for configuring.</value>
+  </data>
+  <data name="Select Data to Erase " xml:space="preserve">
+    <value>Select Data to Erase </value>
+  </data>
   <data name="The erasure method selected does not support unused disk space erasures." xml:space="preserve">
     <value>The erasure method selected does not support unused disk space erasures.</value>
-  </data>
-  <data name="Invalid file path" xml:space="preserve">
-    <value>Invalid file path</value>
-  </data>
-  <data name="Invalid folder path" xml:space="preserve">
-    <value>Invalid folder path</value>
   </data>
   <data name="(default)" xml:space="preserve">
     <value>(default)</value>

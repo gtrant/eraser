@@ -118,347 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="file.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="file.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 44</value>
-  </data>
-  <data name="file.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 19</value>
-  </data>
-  <data name="file.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="file.Text" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="&gt;&gt;file.Name" xml:space="preserve">
-    <value>file</value>
-  </data>
-  <data name="&gt;&gt;file.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;file.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;file.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="folder.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="folder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 98</value>
-  </data>
-  <data name="folder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 19</value>
-  </data>
-  <data name="folder.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="folder.Text" xml:space="preserve">
-    <value>Files in folder</value>
-  </data>
-  <data name="&gt;&gt;folder.Name" xml:space="preserve">
-    <value>folder</value>
-  </data>
-  <data name="&gt;&gt;folder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folder.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folder.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="unused.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="unused.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 235</value>
-  </data>
-  <data name="unused.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 19</value>
-  </data>
-  <data name="unused.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="unused.Text" xml:space="preserve">
-    <value>Unused disk space</value>
-  </data>
-  <data name="&gt;&gt;unused.Name" xml:space="preserve">
-    <value>unused</value>
-  </data>
-  <data name="&gt;&gt;unused.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;unused.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;unused.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="filePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="filePath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 69</value>
-  </data>
-  <data name="filePath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 23</value>
-  </data>
-  <data name="filePath.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;filePath.Name" xml:space="preserve">
-    <value>filePath</value>
-  </data>
-  <data name="&gt;&gt;filePath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;filePath.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;filePath.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="fileBrowse.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="fileBrowse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>243, 68</value>
-  </data>
-  <data name="fileBrowse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="fileBrowse.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="fileBrowse.Text" xml:space="preserve">
-    <value>Browse...</value>
-  </data>
-  <data name="&gt;&gt;fileBrowse.Name" xml:space="preserve">
-    <value>fileBrowse</value>
-  </data>
-  <data name="&gt;&gt;fileBrowse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;fileBrowse.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;fileBrowse.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="folderPath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="folderPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 123</value>
-  </data>
-  <data name="folderPath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 23</value>
-  </data>
-  <data name="folderPath.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;folderPath.Name" xml:space="preserve">
-    <value>folderPath</value>
-  </data>
-  <data name="&gt;&gt;folderPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderPath.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folderPath.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="folderBrowse.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="folderBrowse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>243, 123</value>
-  </data>
-  <data name="folderBrowse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="folderBrowse.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="folderBrowse.Text" xml:space="preserve">
-    <value>Browse...</value>
-  </data>
-  <data name="&gt;&gt;folderBrowse.Name" xml:space="preserve">
-    <value>folderBrowse</value>
-  </data>
-  <data name="&gt;&gt;folderBrowse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderBrowse.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folderBrowse.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="folderIncludeLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="folderIncludeLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 155</value>
-  </data>
-  <data name="folderIncludeLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 15</value>
-  </data>
-  <data name="folderIncludeLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="folderIncludeLbl.Text" xml:space="preserve">
-    <value>Include Mask:</value>
-  </data>
-  <data name="&gt;&gt;folderIncludeLbl.Name" xml:space="preserve">
-    <value>folderIncludeLbl</value>
-  </data>
-  <data name="&gt;&gt;folderIncludeLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderIncludeLbl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folderIncludeLbl.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="folderInclude.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="folderInclude.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 152</value>
-  </data>
-  <data name="folderInclude.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 23</value>
-  </data>
-  <data name="folderInclude.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;folderInclude.Name" xml:space="preserve">
-    <value>folderInclude</value>
-  </data>
-  <data name="&gt;&gt;folderInclude.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderInclude.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folderInclude.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="folderExcludeLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="folderExcludeLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 184</value>
-  </data>
-  <data name="folderExcludeLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>81, 15</value>
-  </data>
-  <data name="folderExcludeLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="folderExcludeLbl.Text" xml:space="preserve">
-    <value>Exclude Mask:</value>
-  </data>
-  <data name="&gt;&gt;folderExcludeLbl.Name" xml:space="preserve">
-    <value>folderExcludeLbl</value>
-  </data>
-  <data name="&gt;&gt;folderExcludeLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderExcludeLbl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folderExcludeLbl.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="folderExclude.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="folderExclude.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 181</value>
-  </data>
-  <data name="folderExclude.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 23</value>
-  </data>
-  <data name="folderExclude.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;folderExclude.Name" xml:space="preserve">
-    <value>folderExclude</value>
-  </data>
-  <data name="&gt;&gt;folderExclude.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderExclude.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folderExclude.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="folderDelete.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="folderDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 210</value>
-  </data>
-  <data name="folderDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>140, 19</value>
-  </data>
-  <data name="folderDelete.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="folderDelete.Text" xml:space="preserve">
-    <value>Delete folder if empty</value>
-  </data>
-  <data name="&gt;&gt;folderDelete.Name" xml:space="preserve">
-    <value>folderDelete</value>
-  </data>
-  <data name="&gt;&gt;folderDelete.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderDelete.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;folderDelete.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="unusedDisk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="unusedDisk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 260</value>
-  </data>
-  <data name="unusedDisk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>287, 24</value>
-  </data>
-  <data name="unusedDisk.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;unusedDisk.Name" xml:space="preserve">
-    <value>unusedDisk</value>
-  </data>
-  <data name="&gt;&gt;unusedDisk.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;unusedDisk.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;unusedDisk.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
   <data name="methodLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="methodLbl.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 9</value>
   </data>
@@ -481,31 +144,32 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;methodLbl.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
-  <data name="method.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="methodCmb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="method.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="methodCmb.Location" type="System.Drawing.Point, System.Drawing">
     <value>129, 6</value>
   </data>
-  <data name="method.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="methodCmb.Size" type="System.Drawing.Size, System.Drawing">
     <value>189, 23</value>
   </data>
-  <data name="method.TabIndex" type="System.Int32, mscorlib">
+  <data name="methodCmb.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;method.Name" xml:space="preserve">
-    <value>method</value>
+  <data name="&gt;&gt;methodCmb.Name" xml:space="preserve">
+    <value>methodCmb</value>
   </data>
-  <data name="&gt;&gt;method.Type" xml:space="preserve">
+  <data name="&gt;&gt;methodCmb.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;method.Parent" xml:space="preserve">
+  <data name="&gt;&gt;methodCmb.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;method.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;methodCmb.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="ok.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -532,7 +196,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ok.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -559,19 +223,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cancel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <metadata name="fileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="fileDialog.Filter" xml:space="preserve">
-    <value>All files (*.*)|*.*</value>
-  </data>
-  <metadata name="folderDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>157, 17</value>
-  </metadata>
-  <data name="folderDialog.Description" xml:space="preserve">
-    <value>Select a folder to erase.</value>
+    <value>3</value>
   </data>
   <metadata name="errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>276, 17</value>
@@ -585,59 +237,80 @@
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>330, 375</value>
   </data>
-  <data name="recycleBin.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="typeSettingsPnl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="recycleBin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 315</value>
+  <data name="typeSettingsPnl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 64</value>
   </data>
-  <data name="recycleBin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 19</value>
+  <data name="typeSettingsPnl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>310, 270</value>
   </data>
-  <data name="recycleBin.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+  <data name="typeSettingsPnl.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
   </data>
-  <data name="recycleBin.Text" xml:space="preserve">
-    <value>Recycle Bin</value>
+  <data name="&gt;&gt;typeSettingsPnl.Name" xml:space="preserve">
+    <value>typeSettingsPnl</value>
   </data>
-  <data name="&gt;&gt;recycleBin.Name" xml:space="preserve">
-    <value>recycleBin</value>
+  <data name="&gt;&gt;typeSettingsPnl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;recycleBin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;recycleBin.Parent" xml:space="preserve">
+  <data name="&gt;&gt;typeSettingsPnl.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;recycleBin.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;typeSettingsPnl.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="unusedClusterTips.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="typeCmb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="unusedClusterTips.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 290</value>
+  <data name="typeCmb.Location" type="System.Drawing.Point, System.Drawing">
+    <value>129, 35</value>
   </data>
-  <data name="unusedClusterTips.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 19</value>
+  <data name="typeCmb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>189, 23</value>
   </data>
-  <data name="unusedClusterTips.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+  <data name="typeCmb.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
   </data>
-  <data name="unusedClusterTips.Text" xml:space="preserve">
-    <value>Erase cluster tips</value>
+  <data name="&gt;&gt;typeCmb.Name" xml:space="preserve">
+    <value>typeCmb</value>
   </data>
-  <data name="&gt;&gt;unusedClusterTips.Name" xml:space="preserve">
-    <value>unusedClusterTips</value>
+  <data name="&gt;&gt;typeCmb.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;unusedClusterTips.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;unusedClusterTips.Parent" xml:space="preserve">
+  <data name="&gt;&gt;typeCmb.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;unusedClusterTips.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;typeCmb.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="typeLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="typeLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 38</value>
+  </data>
+  <data name="typeLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 15</value>
+  </data>
+  <data name="typeLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="typeLbl.Text" xml:space="preserve">
+    <value>Target type:</value>
+  </data>
+  <data name="&gt;&gt;typeLbl.Name" xml:space="preserve">
+    <value>typeLbl</value>
+  </data>
+  <data name="&gt;&gt;typeLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;typeLbl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;typeLbl.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
@@ -647,18 +320,6 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Select Data to Erase</value>
-  </data>
-  <data name="&gt;&gt;fileDialog.Name" xml:space="preserve">
-    <value>fileDialog</value>
-  </data>
-  <data name="&gt;&gt;fileDialog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;folderDialog.Name" xml:space="preserve">
-    <value>folderDialog</value>
-  </data>
-  <data name="&gt;&gt;folderDialog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;errorProvider.Name" xml:space="preserve">
     <value>errorProvider</value>

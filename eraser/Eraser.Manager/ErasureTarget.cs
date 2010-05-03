@@ -75,8 +75,17 @@ namespace Eraser.Manager
 		/// </summary>
 		public ErasureMethod Method
 		{
-			get;
-			set;
+			get
+			{
+				return method;
+			}
+			set
+			{
+				if (!SupportsMethod(value))
+					throw new ArgumentException(S._("The selected erasure method is not " +
+						"supported for this erasure target."));
+				method = value;
+			}
 		}
 
 		/// <summary>
@@ -99,6 +108,17 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
+		/// Checks whether the provided erasure method is supported by this current
+		/// target.
+		/// </summary>
+		/// <param name="method">The erasure method to check.</param>
+		/// <returns>True if the erasure method is supported, false otherwise.</returns>
+		public virtual bool SupportsMethod(ErasureMethod method)
+		{
+			return true;
+		}
+
+		/// <summary>
 		/// Retrieves the text to display representing this task.
 		/// </summary>
 		public abstract string UIText
@@ -116,25 +136,16 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Gets a control which contains settings for configuring this task, or
+		/// Gets an <see cref="IErasureTargetConfigurer"/> which contains settings for configuring this task, or
 		/// null if this erasure target has no settings to be set.
 		/// </summary>
 		/// <remarks>The result should be able to be passed to the <see cref="Configure"/>
 		/// function, and settings for this task will be according to the returned
 		/// control.</remarks>
-		public abstract System.Windows.Forms.Control SettingsPanel
+		public abstract IErasureTargetConfigurer Configurer
 		{
 			get;
 		}
-
-		/// <summary>
-		/// Configures the current task based on settings specified in the control
-		/// returned by the <see cref="SettingsPanel"/> property.
-		/// </summary>
-		/// <param name="settingsPanel">A settings panel returned by the
-		/// <see cref="SettingsPanel"/> property, which contains the user-selected
-		/// settings.</param>
-		public abstract void Configure(System.Windows.Forms.Control settingsPanel);
 
 		/// <summary>
 		/// Executes the given task.
@@ -144,6 +155,32 @@ namespace Eraser.Manager
 		public virtual void Execute(ProgressManagerBase progress)
 		{
 		}
+
+		/// <summary>
+		/// The backing variable for the <see cref="Method"/> property.
+		/// </summary>
+		private ErasureMethod method;
+	}
+
+	/// <summary>
+	/// Represents an interface for an abstract erasure target configuration
+	/// object.
+	/// </summary>
+	public interface IErasureTargetConfigurer
+	{
+		/// <summary>
+		/// Loads the configuration from the provided erasure target.
+		/// </summary>
+		/// <param name="target">The erasure target to load the configuration from.</param>
+		void LoadFrom(ErasureTarget target);
+
+		/// <summary>
+		/// Configures the provided erasure target.
+		/// </summary>
+		/// <param name="target">The erasure target to configure.</param>
+		/// <returns>True if the configuration was valid and the save operation
+		/// succeeded.</returns>
+		bool SaveTo(ErasureTarget target);
 	}
 
 	/// <summary>
@@ -303,19 +340,20 @@ namespace Eraser.Manager
 			}
 		}
 
+		public override bool SupportsMethod(ErasureMethod method)
+		{
+			return method == ErasureMethodRegistrar.Default ||
+				method is UnusedSpaceErasureMethod;
+		}
+
 		public override string UIText
 		{
 			get { return S._("Unused disk space ({0})", Drive); }
 		}
 
-		public override System.Windows.Forms.Control SettingsPanel
+		public override IErasureTargetConfigurer Configurer
 		{
 			get { return new UnusedSpaceErasureTargetSettings(); }
-		}
-
-		public override void Configure(System.Windows.Forms.Control settingsPanel)
-		{
-			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -349,14 +387,9 @@ namespace Eraser.Manager
 		{
 		}
 
-		public override System.Windows.Forms.Control SettingsPanel
+		public override IErasureTargetConfigurer Configurer
 		{
 			get { return new FileErasureTargetSettings(); }
-		}
-
-		public override void Configure(System.Windows.Forms.Control settingsPanel)
-		{
-			throw new NotImplementedException();
 		}
 
 		internal override List<string> GetPaths(out long totalSize)
@@ -411,14 +444,9 @@ namespace Eraser.Manager
 			DeleteIfEmpty = true;
 		}
 
-		public override System.Windows.Forms.Control SettingsPanel
+		public override IErasureTargetConfigurer Configurer
 		{
 			get { return new FolderErasureTargetSettings(); }
-		}
-
-		public override void Configure(System.Windows.Forms.Control settingsPanel)
-		{
-			throw new NotImplementedException();
 		}
 
 		internal override List<string> GetPaths(out long totalSize)
@@ -534,15 +562,9 @@ namespace Eraser.Manager
 		{
 		}
 
-		public override System.Windows.Forms.Control SettingsPanel
+		public override IErasureTargetConfigurer Configurer
 		{
 			get { return null; }
-		}
-
-		public override void Configure(System.Windows.Forms.Control settingsPanel)
-		{
-			throw new InvalidOperationException("The RecycleBinTarget class has no settings to " +
-				"be set.");
 		}
 
 		internal override List<string> GetPaths(out long totalSize)
