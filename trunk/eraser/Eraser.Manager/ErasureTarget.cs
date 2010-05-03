@@ -116,7 +116,8 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Gets a control which contains settings for configuring this task.
+		/// Gets a control which contains settings for configuring this task, or
+		/// null if this erasure target has no settings to be set.
 		/// </summary>
 		/// <remarks>The result should be able to be passed to the <see cref="Configure"/>
 		/// function, and settings for this task will be according to the returned
@@ -140,7 +141,9 @@ namespace Eraser.Manager
 		/// </summary>
 		/// <param name="progress">The progress manager instance which is used to
 		/// track the progress of the current target's erasure.</param>
-		public virtual void Execute(ProgressManagerBase progress);
+		public virtual void Execute(ProgressManagerBase progress)
+		{
+		}
 	}
 
 	/// <summary>
@@ -305,6 +308,16 @@ namespace Eraser.Manager
 			get { return S._("Unused disk space ({0})", Drive); }
 		}
 
+		public override System.Windows.Forms.Control SettingsPanel
+		{
+			get { return new UnusedSpaceErasureTargetSettings(); }
+		}
+
+		public override void Configure(System.Windows.Forms.Control settingsPanel)
+		{
+			throw new NotImplementedException();
+		}
+
 		/// <summary>
 		/// The drive to erase
 		/// </summary>
@@ -334,6 +347,16 @@ namespace Eraser.Manager
 		/// </summary>
 		public FileTarget()
 		{
+		}
+
+		public override System.Windows.Forms.Control SettingsPanel
+		{
+			get { return new FileErasureTargetSettings(); }
+		}
+
+		public override void Configure(System.Windows.Forms.Control settingsPanel)
+		{
+			throw new NotImplementedException();
 		}
 
 		internal override List<string> GetPaths(out long totalSize)
@@ -386,6 +409,16 @@ namespace Eraser.Manager
 			IncludeMask = string.Empty;
 			ExcludeMask = string.Empty;
 			DeleteIfEmpty = true;
+		}
+
+		public override System.Windows.Forms.Control SettingsPanel
+		{
+			get { return new FolderErasureTargetSettings(); }
+		}
+
+		public override void Configure(System.Windows.Forms.Control settingsPanel)
+		{
+			throw new NotImplementedException();
 		}
 
 		internal override List<string> GetPaths(out long totalSize)
@@ -499,6 +532,17 @@ namespace Eraser.Manager
 
 		public RecycleBinTarget()
 		{
+		}
+
+		public override System.Windows.Forms.Control SettingsPanel
+		{
+			get { return null; }
+		}
+
+		public override void Configure(System.Windows.Forms.Control settingsPanel)
+		{
+			throw new InvalidOperationException("The RecycleBinTarget class has no settings to " +
+				"be set.");
 		}
 
 		internal override List<string> GetPaths(out long totalSize)

@@ -69,7 +69,19 @@
     <Compile Include="ErasureTarget.cs" />
     <Compile Include="Exception.cs" />
     <Compile Include="Executor.cs" />
+    <Compile Include="FileErasureTargetSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FileErasureTargetSettings.Designer.cs">
+      <DependentUpon>FileErasureTargetSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileSystem.cs" />
+    <Compile Include="FolderErasureTargetSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FolderErasureTargetSettings.Designer.cs">
+      <DependentUpon>FolderErasureTargetSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="IRegistrar.cs" />
     <Compile Include="ManagerLibrary.cs" />
     <Compile Include="Method.cs" />
@@ -80,6 +92,12 @@
     <Compile Include="Schedule.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Task.cs" />
+    <Compile Include="UnusedSpaceErasureTargetSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UnusedSpaceErasureTargetSettings.Designer.cs">
+      <DependentUpon>UnusedSpaceErasureTargetSettings.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eraser.Util.Native\Eraser.Util.Native.vcproj">
