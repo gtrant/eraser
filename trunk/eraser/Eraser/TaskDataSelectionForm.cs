@@ -92,7 +92,8 @@ namespace Eraser
 			{
 				ErasureType type = (ErasureType)typeCmb.SelectedItem;
 				ErasureTarget result = type.Target;
-				type.Configurer.SaveTo(result);
+				if (type.Configurer != null)
+					type.Configurer.SaveTo(result);
 				result.Method = (ErasureMethod)methodCmb.SelectedItem;
 
 				return result;
@@ -109,12 +110,13 @@ namespace Eraser
 				{
 					if (type.Target.GetType() == value.GetType())
 					{
-						typeCmb.SelectedItem = type;
-
 						type.Target = value;
 						type.Configurer = value.Configurer;
 						if (type.Configurer != null)
 							type.Configurer.LoadFrom(value);
+
+						typeCmb.SelectedItem = type;
+						typeCmb_SelectedIndexChanged(typeCmb, EventArgs.Empty);
 						break;
 					}
 				}
@@ -133,7 +135,13 @@ namespace Eraser
 			{
 				type.Configurer = type.Target.Configurer;
 				if (type.Configurer == null)
+				{
+					Label label = new Label();
+					label.Text = S._("(This erasure type does not have any settings to define.)");
+					label.Dock = DockStyle.Fill;
+					typeSettingsPnl.Controls.Add(label);
 					return;
+				}
 			}
 
 			if (!(type.Configurer is Control))
@@ -157,7 +165,7 @@ namespace Eraser
 				errorProvider.SetError(methodCmb, S._("The erasure method selected does " +
 					"not support unused disk space erasures."));
 			}
-			else if (type.Configurer.SaveTo(type.Target))
+			else if (type.Configurer == null || type.Configurer.SaveTo(type.Target))
 			{
 				errorProvider.Clear();
 				DialogResult = DialogResult.OK;
