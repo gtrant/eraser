@@ -66,6 +66,11 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
+		/// The task which owns this target.
+		/// </summary>
+		public Task Task { get; internal set; }
+
+		/// <summary>
 		/// The method used for erasing the file.
 		/// </summary>
 		public ErasureMethod Method
@@ -92,11 +97,6 @@ namespace Eraser.Manager
 					"target cannot be ErasureMethodRegistrar.Default");
 			}
 		}
-
-		/// <summary>
-		/// The task which owns this target.
-		/// </summary>
-		public Task Task { get; internal set; }
 
 		/// <summary>
 		/// Retrieves the text to display representing this task.
