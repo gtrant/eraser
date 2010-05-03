@@ -252,12 +252,30 @@ namespace Eraser.Manager
 				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
 					throw;
 
-				foreach (OpenHandle handle in OpenHandle.Items)
-					if (handle.Path == file && handle.Close())
+				StringBuilder processStr = new StringBuilder();
+				foreach (OpenHandle handle in OpenHandle.Close(file))
+				{
+					try
 					{
-						GetPathADSes(list, out totalSize, file);
-						return;
+						processStr.AppendFormat(
+							System.Globalization.CultureInfo.InvariantCulture,
+							"{0}, ", (System.Diagnostics.Process.GetProcessById(handle.ProcessId)).MainModule.FileName);
 					}
+					catch (System.ComponentModel.Win32Exception)
+					{
+						processStr.AppendFormat(
+							System.Globalization.CultureInfo.InvariantCulture,
+							"Process ID {0}, ", handle.ProcessId);
+					}
+				}
+
+				if (processStr.Length == 0)
+				{
+					GetPathADSes(list, out totalSize, file);
+					return;
+				}
+				else
+					throw;
 			}
 			catch (UnauthorizedAccessException e)
 			{
