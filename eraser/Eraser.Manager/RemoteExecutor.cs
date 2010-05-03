@@ -207,8 +207,7 @@ namespace Eraser.Manager
 						mstream.Position = 0;
 						try
 						{
-							request = (RemoteExecutorRequest)new BinaryFormatter().Deserialize(
-								new MemoryStream(buffer));
+							request = (RemoteExecutorRequest)new BinaryFormatter().Deserialize(mstream);
 						}
 						catch (SerializationException)
 						{
