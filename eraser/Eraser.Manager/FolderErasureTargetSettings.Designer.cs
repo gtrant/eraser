@@ -68,9 +68,9 @@ namespace Eraser.Manager
 			this.folderDelete.Checked = true;
 			this.folderDelete.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.folderDelete.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.folderDelete.Location = new System.Drawing.Point(0, 83);
+			this.folderDelete.Location = new System.Drawing.Point(0, 89);
 			this.folderDelete.Name = "folderDelete";
-			this.folderDelete.Size = new System.Drawing.Size(125, 17);
+			this.folderDelete.Size = new System.Drawing.Size(140, 19);
 			this.folderDelete.TabIndex = 20;
 			this.folderDelete.Text = "Delete folder if empty";
 			this.folderDelete.UseVisualStyleBackColor = true;
@@ -81,7 +81,7 @@ namespace Eraser.Manager
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.folderExclude.Location = new System.Drawing.Point(104, 57);
 			this.folderExclude.Name = "folderExclude";
-			this.folderExclude.Size = new System.Drawing.Size(272, 20);
+			this.folderExclude.Size = new System.Drawing.Size(272, 23);
 			this.folderExclude.TabIndex = 19;
 			// 
 			// folderExcludeLbl
@@ -90,7 +90,7 @@ namespace Eraser.Manager
 			this.folderExcludeLbl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
 			this.folderExcludeLbl.Location = new System.Drawing.Point(-3, 60);
 			this.folderExcludeLbl.Name = "folderExcludeLbl";
-			this.folderExcludeLbl.Size = new System.Drawing.Size(77, 13);
+			this.folderExcludeLbl.Size = new System.Drawing.Size(81, 15);
 			this.folderExcludeLbl.TabIndex = 18;
 			this.folderExcludeLbl.Text = "Exclude Mask:";
 			// 
@@ -100,7 +100,7 @@ namespace Eraser.Manager
 						| System.Windows.Forms.AnchorStyles.Right)));
 			this.folderInclude.Location = new System.Drawing.Point(104, 28);
 			this.folderInclude.Name = "folderInclude";
-			this.folderInclude.Size = new System.Drawing.Size(272, 20);
+			this.folderInclude.Size = new System.Drawing.Size(272, 23);
 			this.folderInclude.TabIndex = 17;
 			// 
 			// folderIncludeLbl
@@ -109,7 +109,7 @@ namespace Eraser.Manager
 			this.folderIncludeLbl.ImeMode = System.Windows.Forms.ImeMode.NoControl;
 			this.folderIncludeLbl.Location = new System.Drawing.Point(-3, 31);
 			this.folderIncludeLbl.Name = "folderIncludeLbl";
-			this.folderIncludeLbl.Size = new System.Drawing.Size(74, 13);
+			this.folderIncludeLbl.Size = new System.Drawing.Size(80, 15);
 			this.folderIncludeLbl.TabIndex = 16;
 			this.folderIncludeLbl.Text = "Include Mask:";
 			// 
@@ -129,9 +129,9 @@ namespace Eraser.Manager
 			// 
 			this.folderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.folderPath.Location = new System.Drawing.Point(0, 1);
+			this.folderPath.Location = new System.Drawing.Point(0, 0);
 			this.folderPath.Name = "folderPath";
-			this.folderPath.Size = new System.Drawing.Size(295, 20);
+			this.folderPath.Size = new System.Drawing.Size(295, 23);
 			this.folderPath.TabIndex = 14;
 			// 
 			// folderDialog
@@ -145,8 +145,7 @@ namespace Eraser.Manager
 			// 
 			// FolderErasureTargetSettings
 			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
 			this.Controls.Add(this.folderDelete);
 			this.Controls.Add(this.folderExclude);
 			this.Controls.Add(this.folderExcludeLbl);
@@ -154,6 +153,7 @@ namespace Eraser.Manager
 			this.Controls.Add(this.folderIncludeLbl);
 			this.Controls.Add(this.folderBrowse);
 			this.Controls.Add(this.folderPath);
+			this.Font = new System.Drawing.Font("Segoe UI", 9F);
 			this.Name = "FolderErasureTargetSettings";
 			this.Size = new System.Drawing.Size(376, 108);
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
