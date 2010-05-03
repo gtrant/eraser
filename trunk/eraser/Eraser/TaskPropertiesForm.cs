@@ -140,7 +140,8 @@ namespace Eraser
 			foreach (ErasureTarget target in task.Targets)
 			{
 				ListViewItem item = data.Items.Add(target.UIText);
-				item.SubItems.Add(target.MethodDefined ? target.Method.Name : S._("(default)"));
+				item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
+					S._("(default)") : target.Method.Name);
 				item.Tag = target;
 			}
 
@@ -214,7 +215,8 @@ namespace Eraser
 				{
 					ErasureTarget target = form.Target;
 					ListViewItem item = data.Items.Add(target.UIText);
-					item.SubItems.Add(target.MethodDefined ? target.Method.Name : S._("(default)"));
+					item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
+						S._("(default)") : target.Method.Name);
 					item.Tag = target;
 
 					task.Targets.Add(target);
@@ -243,7 +245,8 @@ namespace Eraser
 
 					item.Tag = target;
 					item.Text = target.UIText;
-					item.SubItems[1].Text = target.MethodDefined ? target.Method.Name : S._("(default)");
+					item.SubItems[1].Text = target.Method == ErasureMethodRegistrar.Default ?
+						S._("(default)") : target.Method.Name;
 				}
 			}
 		}

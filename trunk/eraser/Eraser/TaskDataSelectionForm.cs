@@ -137,14 +137,9 @@ namespace Eraser
 			set
 			{
 				//Set the erasure method.
-				if (value.MethodDefined)
-				{
-					foreach (object item in method.Items)
-						if (((ErasureMethod)item).Guid == value.Method.Guid)
-							method.SelectedItem = item;
-				}
-				else
-					method.SelectedIndex = 0;
+				foreach (object item in method.Items)
+					if (((ErasureMethod)item).Guid == value.Method.Guid)
+						method.SelectedItem = item;
 
 				//Then the data to be erased.
 				FileTarget fileTarget = value as FileTarget;

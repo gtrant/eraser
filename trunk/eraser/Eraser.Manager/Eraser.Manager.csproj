@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="DirectExecutor.cs" />
     <Compile Include="EntropySource.cs" />
+    <Compile Include="ErasureTarget.cs" />
     <Compile Include="Exception.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="FileSystem.cs" />

@@ -45,15 +45,15 @@ namespace Eraser.Manager
 		{
 			Guid methodGuid = (Guid)info.GetValue("Method", typeof(Guid));
 			if (methodGuid == Guid.Empty)
-				method = ErasureMethodRegistrar.Default;
+				Method = ErasureMethodRegistrar.Default;
 			else
-				method = ManagerLibrary.Instance.ErasureMethodRegistrar[methodGuid];
+				Method = ManagerLibrary.Instance.ErasureMethodRegistrar[methodGuid];
 		}
 
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			info.AddValue("Method", method.Guid);
+			info.AddValue("Method", Method.Guid);
 		}
 		#endregion
 
@@ -62,34 +62,36 @@ namespace Eraser.Manager
 		/// </summary>
 		protected ErasureTarget()
 		{
+			Method = ErasureMethodRegistrar.Default;
 		}
 
 		/// <summary>
-		/// The method used for erasing the file. If the variable is equal to
-		/// ErasureMethodManager.Default then the default is queried for the
-		/// task type. Check the <see cref="MethodDefined"/> property to see if
-		/// this variable was set on deliberately or if the result of the get
-		/// call is from the inferred default.
+		/// The method used for erasing the file.
 		/// </summary>
-		public virtual ErasureMethod Method
+		public ErasureMethod Method
+		{
+			get;
+			set;
+		}
+
+		/// <summary>
+		/// Gets the effective erasure method for the current target (i.e., returns
+		/// the correct erasure method for cases where the <see cref="Method"/>
+		/// property is <see cref="ErasureMethodRegistrar.Default"/>
+		/// </summary>
+		/// <returns>The Erasure method which the target should be erased with.
+		/// This function will never return <see cref="ErasureMethodRegistrar.Default"/></returns>
+		public virtual ErasureMethod EffectiveMethod
 		{
 			get
 			{
-				return method;
-			}
-			set
-			{
-				method = value;
-				MethodDefined = method != ErasureMethodRegistrar.Default;
+				if (Method != ErasureMethodRegistrar.Default)
+					return Method;
+
+				throw new InvalidOperationException("The effective method of the erasure " +
+					"target cannot be ErasureMethodRegistrar.Default");
 			}
 		}
-
-		/// <summary>
-		/// Checks whether a method has been selected for this target. This is
-		/// because the Method property will return non-default erasure methods
-		/// only.
-		/// </summary>
-		public bool MethodDefined { get; private set; }
 
 		/// <summary>
 		/// The task which owns this target.
@@ -103,20 +105,6 @@ namespace Eraser.Manager
 		{
 			get;
 		}
-
-		/// <summary>
-		/// Retrieves the amount of data that needs to be written in order to
-		/// complete the erasure.
-		/// </summary>
-		public abstract long TotalData
-		{
-			get;
-		}
-
-		/// <summary>
-		/// Erasure method to use for the target.
-		/// </summary>
-		private ErasureMethod method;
 
 		/// <summary>
 		/// The progress of this target.
@@ -155,7 +143,6 @@ namespace Eraser.Manager
 		protected FileSystemObjectTarget()
 			: base()
 		{
-			Method = ErasureMethodRegistrar.Default;
 		}
 
 		/// <summary>
@@ -218,18 +205,15 @@ namespace Eraser.Manager
 		/// </summary>
 		public string Path { get; set; }
 
-		public sealed override ErasureMethod Method
+		public sealed override ErasureMethod EffectiveMethod
 		{
 			get
 			{
-				if (base.MethodDefined)
-					return base.Method;
+				if (Method == ErasureMethodRegistrar.Default)
+					return base.EffectiveMethod;
+
 				return ManagerLibrary.Instance.ErasureMethodRegistrar[
 					ManagerLibrary.Settings.DefaultFileErasureMethod];
-			}
-			set
-			{
-				base.Method = value;
 			}
 		}
 
@@ -242,16 +226,6 @@ namespace Eraser.Manager
 				return string.IsNullOrEmpty(fileName) ?
 						(string.IsNullOrEmpty(directoryName) ? Path : directoryName)
 					: fileName;
-			}
-		}
-
-		public override long TotalData
-		{
-			get
-			{
-				long totalSize = 0;
-				List<string> paths = GetPaths(out totalSize);
-				return Method.CalculateEraseDataSize(paths, totalSize);
 			}
 		}
 	}
@@ -285,36 +259,23 @@ namespace Eraser.Manager
 		public UnusedSpaceTarget()
 			: base()
 		{
-			Method = ErasureMethodRegistrar.Default;
 		}
 
-		public override sealed ErasureMethod Method
+		public sealed override ErasureMethod EffectiveMethod
 		{
 			get
 			{
-				if (base.MethodDefined)
-					return base.Method;
+				if (Method == ErasureMethodRegistrar.Default)
+					return base.EffectiveMethod;
+
 				return ManagerLibrary.Instance.ErasureMethodRegistrar[
 					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod];
-			}
-			set
-			{
-				base.Method = value;
 			}
 		}
 
 		public override string UIText
 		{
 			get { return S._("Unused disk space ({0})", Drive); }
-		}
-
-		public override long TotalData
-		{
-			get
-			{
-				VolumeInfo info = VolumeInfo.FromMountPoint(Drive);
-				return Method.CalculateEraseDataSize(null, info.AvailableFreeSpace);
-			}
 		}
 
 		/// <summary>
