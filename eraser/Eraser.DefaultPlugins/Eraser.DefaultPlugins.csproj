@@ -84,26 +84,26 @@
     <Compile Include="ErasureMethods\RCMP_TSSIT_OPS_II.cs" />
     <Compile Include="ErasureTargets\FileErasureTarget.cs" />
     <Compile Include="ErasureTargets\FileSystemObjectErasureTarget.cs" />
-    <Compile Include="ErasureTargets\FileErasureTargetSettings.cs">
+    <Compile Include="ErasureTargets\FileErasureTargetConfigurer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ErasureTargets\FileErasureTargetSettings.Designer.cs">
-      <DependentUpon>FileErasureTargetSettings.cs</DependentUpon>
+    <Compile Include="ErasureTargets\FileErasureTargetConfigurer.Designer.cs">
+      <DependentUpon>FileErasureTargetConfigurer.cs</DependentUpon>
     </Compile>
     <Compile Include="ErasureTargets\FolderErasureTarget.cs" />
-    <Compile Include="ErasureTargets\FolderErasureTargetSettings.cs">
+    <Compile Include="ErasureTargets\FolderErasureTargetConfigurer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ErasureTargets\FolderErasureTargetSettings.Designer.cs">
-      <DependentUpon>FolderErasureTargetSettings.cs</DependentUpon>
+    <Compile Include="ErasureTargets\FolderErasureTargetConfigurer.Designer.cs">
+      <DependentUpon>FolderErasureTargetConfigurer.cs</DependentUpon>
     </Compile>
     <Compile Include="ErasureTargets\RecycleBinErasureTarget.cs" />
     <Compile Include="ErasureTargets\UnusedSpaceErasureTarget.cs" />
-    <Compile Include="ErasureTargets\UnusedSpaceErasureTargetSettings.cs">
+    <Compile Include="ErasureTargets\UnusedSpaceErasureTargetConfigurer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ErasureTargets\UnusedSpaceErasureTargetSettings.Designer.cs">
-      <DependentUpon>UnusedSpaceErasureTargetSettings.cs</DependentUpon>
+    <Compile Include="ErasureTargets\UnusedSpaceErasureTargetConfigurer.Designer.cs">
+      <DependentUpon>UnusedSpaceErasureTargetConfigurer.cs</DependentUpon>
     </Compile>
     <Compile Include="FileSystems\Fat.cs" />
     <Compile Include="FileSystems\Ntfs.cs" />
@@ -158,14 +158,14 @@
       <DependentUpon>CustomMethodPassEditor.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ErasureTargets\FileErasureTargetSettings.resx">
-      <DependentUpon>FileErasureTargetSettings.cs</DependentUpon>
+    <EmbeddedResource Include="ErasureTargets\FileErasureTargetConfigurer.resx">
+      <DependentUpon>FileErasureTargetConfigurer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ErasureTargets\FolderErasureTargetSettings.resx">
-      <DependentUpon>FolderErasureTargetSettings.cs</DependentUpon>
+    <EmbeddedResource Include="ErasureTargets\FolderErasureTargetConfigurer.resx">
+      <DependentUpon>FolderErasureTargetConfigurer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ErasureTargets\UnusedSpaceErasureTargetSettings.resx">
-      <DependentUpon>UnusedSpaceErasureTargetSettings.cs</DependentUpon>
+    <EmbeddedResource Include="ErasureTargets\UnusedSpaceErasureTargetConfigurer.resx">
+      <DependentUpon>UnusedSpaceErasureTargetConfigurer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsForm.it.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>

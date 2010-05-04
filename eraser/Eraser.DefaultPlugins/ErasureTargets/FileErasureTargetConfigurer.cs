@@ -33,9 +33,9 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class FileErasureTargetSettings : UserControl, IErasureTargetConfigurer
+	public partial class FileErasureTargetConfigurer : UserControl, IErasureTargetConfigurer
 	{
-		public FileErasureTargetSettings()
+		public FileErasureTargetConfigurer()
 		{
 			InitializeComponent();
 		}

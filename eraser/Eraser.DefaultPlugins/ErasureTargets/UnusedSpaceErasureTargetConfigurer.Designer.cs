@@ -21,7 +21,7 @@
 
 namespace Eraser.DefaultPlugins
 {
-	partial class UnusedSpaceErasureTargetSettings
+	partial class UnusedSpaceErasureTargetConfigurer
 	{
 		/// <summary> 
 		/// Required designer variable.

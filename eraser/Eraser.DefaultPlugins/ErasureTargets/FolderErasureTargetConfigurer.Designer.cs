@@ -21,7 +21,7 @@
 
 namespace Eraser.DefaultPlugins
 {
-	partial class FolderErasureTargetSettings
+	partial class FolderErasureTargetConfigurer
 	{
 		/// <summary> 
 		/// Required designer variable.
