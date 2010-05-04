@@ -37,19 +37,19 @@ namespace Eraser.DefaultPlugins
 			Settings = new DefaultPluginSettings();
 
 			//Then register the erasure methods et al.
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Gutmann());			//35 passes
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new GutmannLite());		//10 passes
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new DoD_EcE());			//7 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Gutmann());				//35 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new GutmannLite());			//10 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new DoD_EcE());				//7 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new RCMP_TSSIT_OPS_II());	//7 passes
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Schneier());			//7 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Schneier());				//7 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new VSITR());				//7 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new DoD_E());				//3 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new HMGIS5Enhanced());		//3 passes
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new USAF5020());			//3 passes
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new USAF5020());				//3 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new USArmyAR380_19());		//3 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new GOSTP50739());			//2 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new HMGIS5Baseline());		//1 pass
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Pseudorandom());		//1 pass
+			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Pseudorandom());			//1 pass
 			EraseCustom.RegisterAll();
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new FirstLast16KB());
 
@@ -59,6 +59,11 @@ namespace Eraser.DefaultPlugins
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat16FileSystem());
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat32FileSystem());
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new NtfsFileSystem());
+
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new FileTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new FolderTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new RecycleBinTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new UnusedSpaceTarget());
 		}
 
 		public void Dispose()

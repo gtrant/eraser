@@ -27,9 +27,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
+using Eraser.Manager;
 using Eraser.Util;
 
-namespace Eraser.Manager
+namespace Eraser.DefaultPlugins
 {
 	public partial class FileErasureTargetSettings : UserControl, IErasureTargetConfigurer
 	{

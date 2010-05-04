@@ -69,19 +69,7 @@
     <Compile Include="ErasureTarget.cs" />
     <Compile Include="Exception.cs" />
     <Compile Include="Executor.cs" />
-    <Compile Include="FileErasureTargetSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FileErasureTargetSettings.Designer.cs">
-      <DependentUpon>FileErasureTargetSettings.cs</DependentUpon>
-    </Compile>
     <Compile Include="FileSystem.cs" />
-    <Compile Include="FolderErasureTargetSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="FolderErasureTargetSettings.Designer.cs">
-      <DependentUpon>FolderErasureTargetSettings.cs</DependentUpon>
-    </Compile>
     <Compile Include="IRegistrar.cs" />
     <Compile Include="ManagerLibrary.cs" />
     <Compile Include="ErasureMethod.cs" />
@@ -92,12 +80,6 @@
     <Compile Include="Schedule.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Task.cs" />
-    <Compile Include="UnusedSpaceErasureTargetSettings.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UnusedSpaceErasureTargetSettings.Designer.cs">
-      <DependentUpon>UnusedSpaceErasureTargetSettings.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eraser.Util.Native\Eraser.Util.Native.vcproj">
@@ -110,12 +92,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FileErasureTargetSettings.resx">
-      <DependentUpon>FileErasureTargetSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FolderErasureTargetSettings.resx">
-      <DependentUpon>FolderErasureTargetSettings.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Strings.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -126,9 +102,6 @@
     <EmbeddedResource Include="Strings.pl.resx" />
     <EmbeddedResource Include="Strings.resx">
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UnusedSpaceErasureTargetSettings.resx">
-      <DependentUpon>UnusedSpaceErasureTargetSettings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-namespace Eraser.Manager
+namespace Eraser.DefaultPlugins
 {
 	partial class UnusedSpaceErasureTargetSettings
 	{

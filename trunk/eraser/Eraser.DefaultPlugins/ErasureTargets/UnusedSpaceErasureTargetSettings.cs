@@ -28,10 +28,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+
+using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
 
-namespace Eraser.Manager
+namespace Eraser.DefaultPlugins
 {
 	public partial class UnusedSpaceErasureTargetSettings : UserControl, IErasureTargetConfigurer
 	{
