@@ -66,6 +66,7 @@ namespace Eraser.DefaultPlugins
 			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new FolderErasureTarget());
 			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new RecycleBinErasureTarget());
 			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new UnusedSpaceErasureTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new SecureMoveErasureTarget());
 		}
 
 		public void Dispose()

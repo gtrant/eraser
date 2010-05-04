@@ -231,6 +231,12 @@
   <data name="Emptying recycle bin..." xml:space="preserve">
     <value>Emptying recycle bin...</value>
   </data>
+  <data name="Secure move" xml:space="preserve">
+    <value>Secure move</value>
+  </data>
+  <data name="Securely move {0}" xml:space="preserve">
+    <value>Securely move {0}</value>
+  </data>
   <data name="Unused disk space" xml:space="preserve">
     <value>Unused disk space</value>
   </data>

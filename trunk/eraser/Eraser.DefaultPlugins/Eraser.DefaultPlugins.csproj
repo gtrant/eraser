@@ -101,6 +101,13 @@
     </Compile>
     <Compile Include="ErasureTargets\RecycleBinErasureTarget.cs" />
     <Compile Include="ErasureTargets\RecycleBinErasureTargetConfigurer.cs" />
+    <Compile Include="ErasureTargets\SecureMoveErasureTarget.cs" />
+    <Compile Include="ErasureTargets\SecureMoveErasureTargetConfigurer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ErasureTargets\SecureMoveErasureTargetConfigurer.Designer.cs">
+      <DependentUpon>SecureMoveErasureTargetConfigurer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ErasureTargets\UnusedSpaceErasureTarget.cs" />
     <Compile Include="ErasureTargets\UnusedSpaceErasureTargetConfigurer.cs">
       <SubType>UserControl</SubType>
@@ -166,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ErasureTargets\FolderErasureTargetConfigurer.resx">
       <DependentUpon>FolderErasureTargetConfigurer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErasureTargets\SecureMoveErasureTargetConfigurer.resx">
+      <DependentUpon>SecureMoveErasureTargetConfigurer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ErasureTargets\UnusedSpaceErasureTargetConfigurer.resx">
       <DependentUpon>UnusedSpaceErasureTargetConfigurer.cs</DependentUpon>
