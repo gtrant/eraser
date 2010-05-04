@@ -53,9 +53,14 @@ namespace Eraser.DefaultPlugins
 			get { return GetType().GUID; }
 		}
 
+		public override string Name
+		{
+			get { return S._("Recycle Bin"); }
+		}
+
 		public override IErasureTargetConfigurer Configurer
 		{
-			get { return null; }
+			get { return new RecycleBinErasureTargetConfigurer(); }
 		}
 
 		internal override List<string> GetPaths(out long totalSize)

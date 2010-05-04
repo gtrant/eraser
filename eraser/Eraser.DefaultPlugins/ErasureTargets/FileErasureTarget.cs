@@ -59,6 +59,11 @@ namespace Eraser.DefaultPlugins
 			get { return GetType().GUID; }
 		}
 
+		public override string Name
+		{
+			get { return S._("File"); }
+		}
+
 		public override IErasureTargetConfigurer Configurer
 		{
 			get { return new FileErasureTargetConfigurer(); }
