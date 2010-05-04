@@ -47,4 +47,25 @@ namespace Eraser.Manager
 		/// succeeded.</returns>
 		bool SaveTo(T target);
 	}
+
+	/// <summary>
+	/// Represents an object which is able to configure a given instance of
+	/// <typeparamref name="T"/> from the Command Line.
+	/// </summary>
+	/// <typeparam name="T">The type to configure</typeparam>
+	public interface ICliConfigurer<T> : IConfigurer<T>
+	{
+		/// <summary>
+		/// Displays the help for the current configurer.
+		/// </summary>
+		void Help();
+
+		/// <summary>
+		/// Sets the configuration of the current configurer from the provided
+		/// command line argument.
+		/// </summary>
+		/// <param name="argument">The argument on the command line.</param>
+		/// <returns>True if the argument is accepted by the configurer.</returns>
+		bool ProcessArgument(string argument);
+	}
 }

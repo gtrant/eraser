@@ -112,7 +112,7 @@ namespace Eraser.DefaultPlugins
 
 		public override IErasureTargetConfigurer Configurer
 		{
-			get { return new UnusedSpaceErasureTargetSettings(); }
+			get { return new UnusedSpaceErasureTargetConfigurer(); }
 		}
 
 		/// <summary>

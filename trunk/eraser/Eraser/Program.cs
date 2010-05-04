@@ -399,82 +399,23 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 
 			//Parse the rest of the command line parameters as target expressions.
 			List<string> trueValues = new List<string>(new string[] { "yes", "true" });
-			string[] strings = new string[] {
-				//The recycle bin target
-				"(?<recycleBin>recyclebin)",
-
-				//The unused space erasure target, taking the optional clusterTips
-				//argument which defaults to true; if none is specified it's assumed
-				//false
-				"unused=(?<unusedVolume>.*)(?<unusedTips>,clusterTips(=(?<unusedTipsValue>true|false))?)?",
-
-				//The directory target, taking a list of + and - wildcard expressions.
-				"dir=(?<directoryName>.*)(?<directoryParams>(?<directoryExcludeMask>,-[^,]+)|(?<directoryIncludeMask>,\\+[^,]+)|(?<directoryDeleteIfEmpty>,deleteIfEmpty(=(?<directoryDeleteIfEmptyValue>true|false))?))*",
-
-				//The file target.
-				"file=(?<fileName>.*)"
-			};
-
-			Regex regex = new Regex(string.Join("|", strings),
-				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
 			foreach (string argument in arguments.PositionalArguments)
 			{
-				Match match = regex.Match(argument);
-				if (match.Captures.Count == 0)
+				bool processed = false;
+				foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
+					if (target.Configurer.ProcessArgument(argument))
+					{
+						target.Method = method;
+						task.Targets.Add(target);
+						processed = true;
+						break;
+					}
+
+				if (!processed)
 				{
 					Console.WriteLine("Unknown argument: {0}, skipped.", argument);
 					continue;
 				}
-
-				ErasureTarget target = null;
-				if (match.Groups["recycleBin"].Success)
-				{
-					target = new RecycleBinTarget();
-				}
-				else if (match.Groups["unusedVolume"].Success)
-				{
-					UnusedSpaceTarget unusedSpaceTarget = new UnusedSpaceTarget();
-					target = unusedSpaceTarget;
-					unusedSpaceTarget.Drive = match.Groups["unusedVolume"].Value;
-
-					if (!match.Groups["unusedTips"].Success)
-						unusedSpaceTarget.EraseClusterTips = false;
-					else if (!match.Groups["unusedTipsValue"].Success)
-						unusedSpaceTarget.EraseClusterTips = true;
-					else
-						unusedSpaceTarget.EraseClusterTips =
-							trueValues.IndexOf(match.Groups["unusedTipsValue"].Value) != -1;
-				}
-				else if (match.Groups["directoryName"].Success)
-				{
-					FolderTarget folderTarget = new FolderTarget();
-					target = folderTarget;
-
-					folderTarget.Path = match.Groups["directoryName"].Value;
-					if (!match.Groups["directoryDeleteIfEmpty"].Success)
-						folderTarget.DeleteIfEmpty = false;
-					else if (!match.Groups["directoryDeleteIfEmptyValue"].Success)
-						folderTarget.DeleteIfEmpty = true;
-					else
-						folderTarget.DeleteIfEmpty =
-							trueValues.IndexOf(match.Groups["directoryDeleteIfEmptyValue"].Value) != -1;
-					if (match.Groups["directoryExcludeMask"].Success)
-						folderTarget.ExcludeMask += match.Groups["directoryExcludeMask"].Value.Remove(0, 2) + ' ';
-					if (match.Groups["directoryIncludeMask"].Success)
-						folderTarget.IncludeMask += match.Groups["directoryIncludeMask"].Value.Remove(0, 2) + ' ';
-				}
-				else if (match.Groups["fileName"].Success)
-				{
-					FileTarget fileTarget = new FileTarget();
-					target = fileTarget;
-					fileTarget.Path = match.Groups["fileName"].Value;
-				}
-
-				if (target == null)
-					continue;
-
-				target.Method = method;
-				task.Targets.Add(target);
 			}
 
 			//Check the number of tasks in the task.

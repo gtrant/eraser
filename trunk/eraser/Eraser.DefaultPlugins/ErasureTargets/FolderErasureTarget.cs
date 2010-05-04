@@ -78,7 +78,7 @@ namespace Eraser.DefaultPlugins
 
 		public override IErasureTargetConfigurer Configurer
 		{
-			get { return new FolderErasureTargetSettings(); }
+			get { return new FolderErasureTargetConfigurer(); }
 		}
 
 		internal override List<string> GetPaths(out long totalSize)

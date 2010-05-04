@@ -66,19 +66,17 @@ namespace Eraser
 			Theming.ApplyTheme(this);
 
 			//Insert the types of erasure targets
-			typeCmb.Items.Add(new ErasureType("File", new FileTarget()));
-			typeCmb.Items.Add(new ErasureType("Files in Folder", new FolderTarget()));
-			typeCmb.Items.Add(new ErasureType("Unused disk space", new UnusedSpaceTarget()));
-			typeCmb.Items.Add(new ErasureType("Recycle Bin", new RecycleBinTarget()));
-			typeCmb.SelectedIndex = 0;
+			foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
+				typeCmb.Items.Add(new ErasureType(target.GetType().Name, target));
+			if (typeCmb.Items.Count != 0) 
+				typeCmb.SelectedIndex = 0;
 
-			
 			//And the methods list
-			this.methodCmb.Items.Add(ErasureMethodRegistrar.Default);
+			methodCmb.Items.Add(ErasureMethodRegistrar.Default);
 			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
-				this.methodCmb.Items.Add(method);
-			if (this.methodCmb.Items.Count != 0)
-				this.methodCmb.SelectedIndex = 0;
+				methodCmb.Items.Add(method);
+			if (methodCmb.Items.Count != 0)
+				methodCmb.SelectedIndex = 0;
 		}
 
 		/// <summary>

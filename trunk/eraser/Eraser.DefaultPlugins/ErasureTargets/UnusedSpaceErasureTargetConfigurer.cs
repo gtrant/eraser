@@ -27,7 +27,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
 using System.IO;
+using System.Text.RegularExpressions;
 
 using Eraser.Manager;
 using Eraser.Util;
@@ -94,7 +96,7 @@ namespace Eraser.DefaultPlugins
 				unusedDisk.SelectedIndex = 0;
 		}
 
-		#region IErasureTargetConfigurer Members
+		#region IConfigurer<ErasureTarget> Members
 
 		public void LoadFrom(ErasureTarget target)
 		{
@@ -119,6 +121,45 @@ namespace Eraser.DefaultPlugins
 			unused.Drive = ((DriveItem)unusedDisk.SelectedItem).Drive;
 			unused.EraseClusterTips = unusedClusterTips.Checked;
 			return true;
+		}
+
+		#endregion
+
+		#region ICliConfigurer<ErasureTarget> Members
+
+		public void Help()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool ProcessArgument(string argument)
+		{
+			//The unused space erasure target, taking the optional clusterTips
+			//argument which defaults to true; if none is specified it's assumed
+			//false
+			Regex regex = new Regex("unused=(?<unusedVolume>.*)(?<unusedTips>,clusterTips(=(?<unusedTipsValue>true|false))?)?",
+				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+			Match match = regex.Match(argument);
+
+			if (match.Groups["unusedVolume"].Success)
+			{
+				foreach (object item in unusedDisk.Items)
+				if (((DriveItem)item).Drive.ToUpperInvariant() ==
+					match.Groups["unusedVolume"].Value.ToUpperInvariant())
+				{
+					unusedDisk.SelectedItem = item;
+				}
+	
+				if (!match.Groups["unusedTips"].Success)
+					unusedClusterTips.Checked = false;
+				else if (!match.Groups["unusedTipsValue"].Success)
+					unusedClusterTips.Checked = true;
+				else
+					unusedClusterTips.Checked =
+						trueValues.IndexOf(match.Groups["unusedTipsValue"].Value) != -1;
+			}
+
+			return false;
 		}
 
 		#endregion

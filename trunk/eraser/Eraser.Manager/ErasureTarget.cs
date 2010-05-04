@@ -178,7 +178,7 @@ namespace Eraser.Manager
 	/// Represents an interface for an abstract erasure target configuration
 	/// object.
 	/// </summary>
-	public interface IErasureTargetConfigurer : IConfigurer<ErasureTarget>
+	public interface IErasureTargetConfigurer : ICliConfigurer<ErasureTarget>
 	{
 	}
 
