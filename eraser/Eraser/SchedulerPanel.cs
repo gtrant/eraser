@@ -421,7 +421,11 @@ namespace Eraser
 		private void scheduler_DragDrop(object sender, DragEventArgs e)
 		{
 			if (!e.Data.GetDataPresent(DataFormats.FileDrop))
+			{
 				e.Effect = DragDropEffects.None;
+				return;
+			}
+
 			DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
 
 			//Schedule the task dialog to be shown (to get to the event loop so that
