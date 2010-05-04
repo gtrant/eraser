@@ -459,9 +459,27 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <param name="args">The command line parameters passed to the program.</param>
 		private static void CommandShell(ConsoleArguments args)
 		{
+			switch (((ShellArguments)args).ShellAction)
+			{
+				case ShellActions.SecureMove:
+					CommandShellSecureMove((ShellArguments)args);
+					break;
+
+				default:
+					CommandShellErase((ShellArguments)args);
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Handles the erasure of files from the Shell extension.
+		/// </summary>
+		/// <param name="args">The command line parameters passed to the program.</param>
+		private static void CommandShellErase(ShellArguments args)
+		{
 			//Construct a draft task.
 			Task task = new Task();
-			switch (((ShellArguments)args).ShellAction)
+			switch (args.ShellAction)
 			{
 				case ShellActions.EraseOnRestart:
 					task.Schedule = Schedule.RunOnRestart;
@@ -475,7 +493,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 						{
 							target = new FolderErasureTarget();
 							target.Path = path;
-						} 
+						}
 						else
 						{
 							target = new FileErasureTarget();
@@ -486,7 +504,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					}
 
 					//Was the recycle bin specified?
-					if (((ShellArguments)args).RecycleBin)
+					if (args.RecycleBin)
 						task.Targets.Add(new RecycleBinErasureTarget());
 					break;
 
@@ -511,6 +529,22 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			//Then queue for erasure.
 			using (eraserClient = CommandConnect())
 				eraserClient.Tasks.Add(task);
+		}
+
+		/// <summary>
+		/// Handles the movement of files from the Shell extension.
+		/// </summary>
+		/// <param name="args">The command line parameters passed to the program.</param>
+		private static void CommandShellSecureMove(ShellArguments args)
+		{
+			string to = args.Destination;
+			List<string> paths = new List<string>();
+			foreach (string path in args.PositionalArguments)
+			{
+				paths.Add(path);
+			}
+
+			paths = paths;
 		}
 		#endregion
 
