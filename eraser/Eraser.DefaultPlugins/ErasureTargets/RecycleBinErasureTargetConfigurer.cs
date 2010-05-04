@@ -36,12 +36,11 @@ namespace Eraser.DefaultPlugins
 
 		public void LoadFrom(ErasureTarget target)
 		{
-			throw new NotImplementedException();
 		}
 
 		public bool SaveTo(ErasureTarget target)
 		{
-			throw new NotImplementedException();
+			return true;
 		}
 
 		#endregion
