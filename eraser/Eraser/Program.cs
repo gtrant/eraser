@@ -537,14 +537,25 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <param name="args">The command line parameters passed to the program.</param>
 		private static void CommandShellSecureMove(ShellArguments args)
 		{
-			string to = args.Destination;
-			List<string> paths = new List<string>();
+			//Construct a draft task.
+			Task task = new Task();
 			foreach (string path in args.PositionalArguments)
 			{
-				paths.Add(path);
+				SecureMoveErasureTarget target = new SecureMoveErasureTarget();
+				target.Path = path;
+				target.Destination = args.Destination;
 			}
+			
+			/*Application.EnableVisualStyles();
+			using (Form dialog = new ShellConfirmationDialog(task))
+			{
+				if (dialog.ShowDialog() != DialogResult.Yes)
+					return;
+			}*/
 
-			paths = paths;
+			//Then queue for erasure.
+			using (eraserClient = CommandConnect())
+				eraserClient.Tasks.Add(task);
 		}
 		#endregion
 
