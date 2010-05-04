@@ -273,7 +273,10 @@ namespace Eraser {
 		//-------------------------------------------------------------------------
 		if (applicableActions & ACTION_SECURE_MOVE)
 		{
-			InsertSeparator(hSubmenu);
+			//Insert the separator if we aren't the only menu item
+			if (applicableActions != ACTION_SECURE_MOVE)
+				InsertSeparator(hSubmenu);
+
 			InsertMenu(hSubmenu, ACTION_SECURE_MOVE, MF_BYPOSITION, uID++,
 				LoadString(IDS_ACTION_SECUREMOVE).c_str());			//Secure Move
 			VerbMenuIndices.push_back(ACTION_SECURE_MOVE);
@@ -510,6 +513,38 @@ namespace Eraser {
 			commandElevate = true;
 			break;
 
+		case ACTION_SECURE_MOVE:
+			//Securely move the file/folder. If the DragDropDestinationDirectory member
+			//is blank, query the user for a path to copy the items to
+			if (DragDropDestinationDirectory.empty())
+			{
+				BROWSEINFO info;
+				::ZeroMemory(&info, sizeof(info));
+
+				//Set the title of the dialog.
+				std::wstring title(LoadString(IDS_MESSAGE_SELECT_MOVE_DESTINATION));
+				std::vector<wchar_t> titleBuffer(title.length() + 1);
+				wcscpy_s(&titleBuffer.front(), title.length() + 1, title.c_str());
+
+				//Then set the display settings.
+				info.lpszTitle = &titleBuffer.front();
+				info.ulFlags = BIF_RETURNONLYFSDIRS | BIF_RETURNFSANCESTORS | BIF_USENEWUI | BIF_SHAREABLE;
+
+				//Display the dialog.
+				PIDLIST_ABSOLUTE pidl = SHBrowseForFolder(&info);
+
+				wchar_t buffer[MAX_PATH];
+				bool pathSucceeded = SHGetPathFromIDList(pidl, buffer);
+				ILFree(pidl);
+				if (pathSucceeded)
+					DragDropDestinationDirectory = buffer;
+				else
+					return E_ABORT;
+			}
+
+			commandLine += L"\"/destination=" + DragDropDestinationDirectory + L"\"";
+			break;
+
 		default:
 			if (!(pCmdInfo->fMask & CMIC_MASK_FLAG_NO_UI))
 			{
@@ -558,10 +593,8 @@ namespace Eraser {
 			break;
 		case INVOKEREASON_FILEFOLDER:
 			result |= ACTION_ERASE | ACTION_ERASE_ON_RESTART | ACTION_ERASE_UNUSED_SPACE;
-#if 0
 		case INVOKEREASON_DRAGDROP:
 			result |= ACTION_SECURE_MOVE;
-#endif
 		}
 
 		//Remove actions that don't apply to the current invocation reason.
@@ -813,6 +846,9 @@ namespace Eraser {
 			break;
 		case ACTION_ERASE_UNUSED_SPACE:
 			finalParameters += L"/action=EraseUnusedSpace ";
+			break;
+		case ACTION_SECURE_MOVE:
+			finalParameters += L"/action=SecureMove ";
 			break;
 		default:
 			return;

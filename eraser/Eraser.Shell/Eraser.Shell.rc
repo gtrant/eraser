@@ -220,6 +220,12 @@ BEGIN
     IDS_ACTION_SECUREMOVE   "Secure &Move"
 END
 
+STRINGTABLE 
+BEGIN
+    IDS_MESSAGE_SELECT_MOVE_DESTINATION 
+                            "Select the destination of the selected items"
+END
+
 #endif    // English (Neutral) resources
 /////////////////////////////////////////////////////////////////////////////
 

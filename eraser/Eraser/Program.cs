@@ -114,6 +114,13 @@ namespace Eraser
 			/// </summary>
 			[Arg("recycleBin", "The recycle bin as an erasure target", typeof(string), false, null, null)]
 			public bool RecycleBin { get; set; }
+
+			/// <summary>
+			/// The destination for secure move operations, only valid when
+			/// <see cref="ShellAction"/> is <see cref="ShellActions.SecureMove"/>
+			/// </summary>
+			[Arg("destination", "The destination for secure move operations", typeof(string), false, null, null)]
+			public string Destination { get; set; }
 		}
 
 		public enum ShellActions
@@ -131,7 +138,13 @@ namespace Eraser
 			/// <summary>
 			/// Erase the unused space on the drive.
 			/// </summary>
-			EraseUnusedSpace
+			EraseUnusedSpace,
+
+			/// <summary>
+			/// Securely moves a file from one drive to another (simple rename if the source and
+			/// destination drives are the same)
+			/// </summary>
+			SecureMove
 		}
 
 		/// <summary>
