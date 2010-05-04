@@ -139,7 +139,7 @@ namespace Eraser.DefaultPlugins
 
 				ProgressManager step = new ProgressManager();
 				Progress.Steps.Add(new SteppedProgressManagerStep(step,
-					0.0f, ));
+				0.0f, S._("Emptying recycle bin...")));
 				OnProgressChanged(this, new ProgressChangedEventArgs(step,
 					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 
