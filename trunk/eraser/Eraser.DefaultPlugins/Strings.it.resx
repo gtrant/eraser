@@ -192,6 +192,9 @@
   <data name="{0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>Non sono stati puliti i cluster tips di {0} per il seguente errore: {1}</value>
   </data>
+  <data name="Invalid file path" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -202,6 +205,24 @@
     <value>(Untranslated)</value>
   </data>
   <data name="The task was cancelled." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Removing folders..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Invalid folder path" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The path you selected is invalid." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Recycle Bin" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Emptying recycle bin..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">
@@ -235,27 +256,6 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Erasing unused directory structures..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Removing folders..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Recycle Bin" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Emptying recycle bin..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Invalid file path" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Invalid folder path" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The path you selected is invalid." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">

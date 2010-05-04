@@ -60,10 +60,10 @@ namespace Eraser.DefaultPlugins
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat32FileSystem());
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new NtfsFileSystem());
 
-			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new FileTarget());
-			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new FolderTarget());
-			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new RecycleBinTarget());
-			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new UnusedSpaceTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new FileErasureTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new FolderErasureTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new RecycleBinErasureTarget());
+			ManagerLibrary.Instance.ErasureTargetRegistrar.Add(new UnusedSpaceErasureTarget());
 		}
 
 		public void Dispose()

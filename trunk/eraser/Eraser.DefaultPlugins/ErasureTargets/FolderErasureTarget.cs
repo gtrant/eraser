@@ -40,10 +40,10 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("F50B0A44-3AB1-4cab-B81E-1713AC3D28C9")]
-	public class FolderTarget : FileSystemObjectTarget
+	public class FolderErasureTarget : FileSystemObjectErasureTarget
 	{
 		#region Serialization code
-		protected FolderTarget(SerializationInfo info, StreamingContext context)
+		protected FolderErasureTarget(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 			IncludeMask = (string)info.GetValue("IncludeMask", typeof(string));
@@ -64,7 +64,7 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public FolderTarget()
+		public FolderErasureTarget()
 		{
 			IncludeMask = string.Empty;
 			ExcludeMask = string.Empty;

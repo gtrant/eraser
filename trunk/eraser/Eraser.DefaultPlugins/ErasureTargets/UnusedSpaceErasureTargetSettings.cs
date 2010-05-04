@@ -98,7 +98,7 @@ namespace Eraser.DefaultPlugins
 
 		public void LoadFrom(ErasureTarget target)
 		{
-			UnusedSpaceTarget unused = target as UnusedSpaceTarget;
+			UnusedSpaceErasureTarget unused = target as UnusedSpaceErasureTarget;
 			if (unused == null)
 				throw new ArgumentException("The provided erasure target type is not " +
 					"supported by this configurer.");
@@ -111,7 +111,7 @@ namespace Eraser.DefaultPlugins
 
 		public bool SaveTo(ErasureTarget target)
 		{
-			UnusedSpaceTarget unused = target as UnusedSpaceTarget;
+			UnusedSpaceErasureTarget unused = target as UnusedSpaceErasureTarget;
 			if (unused == null)
 				throw new ArgumentException("The provided erasure target type is not " +
 					"supported by this configurer.");

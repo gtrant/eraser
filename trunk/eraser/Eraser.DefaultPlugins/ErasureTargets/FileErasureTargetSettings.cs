@@ -44,7 +44,7 @@ namespace Eraser.DefaultPlugins
 
 		public void LoadFrom(ErasureTarget target)
 		{
-			FileTarget file = target as FileTarget;
+			FileErasureTarget file = target as FileErasureTarget;
 			if (file == null)
 				throw new ArgumentException("The provided erasure target type is not " +
 					"supported by this configurer.");
@@ -54,7 +54,7 @@ namespace Eraser.DefaultPlugins
 
 		public bool SaveTo(ErasureTarget target)
 		{
-			FileTarget file = target as FileTarget;
+			FileErasureTarget file = target as FileErasureTarget;
 			if (file == null)
 				throw new ArgumentException("The provided erasure target type is not " +
 					"supported by this configurer.");
