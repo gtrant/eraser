@@ -117,99 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The drive {0} has disk quotas active. This will prevent the complete erasure of unused space and may pose a security concern." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Searching for files' cluster tips..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The task was cancelled." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Erasing cluster tips..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Erasing unused space..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Old resident file system table files" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Removing temporary files..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Erasing unused directory structures..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Erasing files..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Removing folders..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Emptying recycle bin..." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The selected erasure method is not supported for this erasure target." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Unused disk space ({0})" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Recycle Bin" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="EntropySource GUID not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Erasure method not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="PRNG not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Invalid file path" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The file system on the drive {0} is not supported." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Invalid folder path" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The path you selected is invalid." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Eraser" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="{0} (1 pass)" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -222,7 +129,28 @@
   <data name="(default)" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The selected erasure method is not supported for this erasure target." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="EntropySource GUID not found: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Erasure method not found: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="PRNG not found: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The file system on the drive {0} is not supported." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Could not load the plugin {0}.\n\nThe error returned was: {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Eraser" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Running on restart" xml:space="preserve">

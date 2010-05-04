@@ -192,6 +192,72 @@
   <data name="{0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>{0} did not have its cluster tips erased because of the following error: {1}</value>
   </data>
+  <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
+    <value>The file {0} was not erased as the file does not exist.</value>
+  </data>
+  <data name="Erasing files..." xml:space="preserve">
+    <value>Erasing files...</value>
+  </data>
+  <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
+    <value>The file {0} could not be erased because the file was either compressed, encrypted or a sparse file.</value>
+  </data>
+  <data name="The task was cancelled." xml:space="preserve">
+    <value>The task was cancelled.</value>
+  </data>
+  <data name="Unused disk space ({0})" xml:space="preserve">
+    <value>Unused disk space ({0})</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
+    <value>The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation.</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
+    <value>The program does not have the required permissions to erase the unused space on disk.</value>
+  </data>
+  <data name="This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
+    <value>This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern.</value>
+  </data>
+  <data name="The drive {0} has disk quotas active. This will prevent the complete erasure of unused space and may pose a security concern." xml:space="preserve">
+    <value>The drive {0} has disk quotas active. This will prevent the complete erasure of unused space and may pose a security concern.</value>
+  </data>
+  <data name="Searching for files' cluster tips..." xml:space="preserve">
+    <value>Searching for files' cluster tips...</value>
+  </data>
+  <data name="Erasing cluster tips..." xml:space="preserve">
+    <value>Erasing cluster tips...</value>
+  </data>
+  <data name="Erasing unused space..." xml:space="preserve">
+    <value>Erasing unused space...</value>
+  </data>
+  <data name="Old resident file system table files" xml:space="preserve">
+    <value>Old resident file system table files</value>
+  </data>
+  <data name="Removing temporary files..." xml:space="preserve">
+    <value>Removing temporary files...</value>
+  </data>
+  <data name="Erasing unused directory structures..." xml:space="preserve">
+    <value>Erasing unused directory structures...</value>
+  </data>
+  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
+    <value>Could not erase files and subfolders in {0} because {1}</value>
+  </data>
+  <data name="Removing folders..." xml:space="preserve">
+    <value>Removing folders...</value>
+  </data>
+  <data name="Recycle Bin" xml:space="preserve">
+    <value>Recycle Bin</value>
+  </data>
+  <data name="Emptying recycle bin..." xml:space="preserve">
+    <value>Emptying recycle bin...</value>
+  </data>
+  <data name="Invalid file path" xml:space="preserve">
+    <value>Invalid file path</value>
+  </data>
+  <data name="Invalid folder path" xml:space="preserve">
+    <value>Invalid folder path</value>
+  </data>
+  <data name="The path you selected is invalid." xml:space="preserve">
+    <value>The path you selected is invalid.</value>
+  </data>
   <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">
     <value>The custom erasure method can only comprise passes containing constant or random passes</value>
   </data>

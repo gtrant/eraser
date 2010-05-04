@@ -24,9 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using System.Text.RegularExpressions;
 using System.Security.Permissions;
-using System.IO;
 using System.Runtime.Serialization;
 
 using Eraser.Util;
@@ -38,7 +36,7 @@ namespace Eraser.Manager
 	/// Represents a generic target of erasure
 	/// </summary>
 	[Serializable]
-	public abstract class ErasureTarget : ISerializable
+	public abstract class ErasureTarget : ISerializable, IRegisterable
 	{
 		#region Serialization code
 		protected ErasureTarget(SerializationInfo info, StreamingContext context)
@@ -55,6 +53,15 @@ namespace Eraser.Manager
 		{
 			info.AddValue("Method", Method.Guid);
 		}
+		#endregion
+
+		#region IRegisterable Members
+
+		public abstract Guid Guid
+		{
+			get;
+		}
+
 		#endregion
 
 		/// <summary>
@@ -132,6 +139,15 @@ namespace Eraser.Manager
 		public ProgressManagerBase Progress
 		{
 			get;
+			protected set;
+		}
+		
+		/// <summary>
+		/// The Progress Changed event handler of the owning task.
+		/// </summary>
+		protected internal Action<ErasureTarget, ProgressChangedEventArgs> OnProgressChanged
+		{
+			get;
 			internal set;
 		}
 
@@ -148,13 +164,9 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Executes the given task.
+		/// Executes the given target.
 		/// </summary>
-		/// <param name="progress">The progress manager instance which is used to
-		/// track the progress of the current target's erasure.</param>
-		public virtual void Execute(ProgressManagerBase progress)
-		{
-		}
+		public abstract void Execute();
 
 		/// <summary>
 		/// The backing variable for the <see cref="Method"/> property.
@@ -183,479 +195,8 @@ namespace Eraser.Manager
 		bool SaveTo(ErasureTarget target);
 	}
 
-	/// <summary>
-	/// Class representing a tangible object (file/folder) to be erased.
-	/// </summary>
-	[Serializable]
-	public abstract class FileSystemObjectTarget : ErasureTarget
+	public class ErasureTargetRegistrar : Registrar<ErasureTarget>
 	{
-		#region Serialization code
-		protected FileSystemObjectTarget(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-			Path = (string)info.GetValue("Path", typeof(string));
-		}
-
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-			info.AddValue("Path", Path);
-		}
-		#endregion
-
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		protected FileSystemObjectTarget()
-			: base()
-		{
-		}
-
-		/// <summary>
-		/// Retrieves the list of files/folders to erase as a list.
-		/// </summary>
-		/// <param name="totalSize">Returns the total size in bytes of the
-		/// items.</param>
-		/// <returns>A list containing the paths to all the files to be erased.</returns>
-		internal abstract List<string> GetPaths(out long totalSize);
-
-		/// <summary>
-		/// Adds ADSes of the given file to the list.
-		/// </summary>
-		/// <param name="list">The list to add the ADS paths to.</param>
-		/// <param name="file">The file to look for ADSes</param>
-		protected void GetPathADSes(ICollection<string> list, out long totalSize, string file)
-		{
-			totalSize = 0;
-
-			try
-			{
-				//Get the ADS names
-				IList<string> adses = new FileInfo(file).GetADSes();
-
-				//Then prepend the path.
-				foreach (string adsName in adses)
-				{
-					string adsPath = file + ':' + adsName;
-					list.Add(adsPath);
-					StreamInfo info = new StreamInfo(adsPath);
-					totalSize += info.Length;
-				}
-			}
-			catch (FileNotFoundException)
-			{
-			}
-			catch (SharingViolationException)
-			{
-				//The system cannot open the file, try to force the file handle to close.
-				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
-					throw;
-
-				StringBuilder processStr = new StringBuilder();
-				foreach (OpenHandle handle in OpenHandle.Close(file))
-				{
-					try
-					{
-						processStr.AppendFormat(
-							System.Globalization.CultureInfo.InvariantCulture,
-							"{0}, ", (System.Diagnostics.Process.GetProcessById(handle.ProcessId)).MainModule.FileName);
-					}
-					catch (System.ComponentModel.Win32Exception)
-					{
-						processStr.AppendFormat(
-							System.Globalization.CultureInfo.InvariantCulture,
-							"Process ID {0}, ", handle.ProcessId);
-					}
-				}
-
-				if (processStr.Length == 0)
-				{
-					GetPathADSes(list, out totalSize, file);
-					return;
-				}
-				else
-					throw;
-			}
-			catch (UnauthorizedAccessException e)
-			{
-				//The system cannot read the file, assume no ADSes for lack of
-				//more information.
-				Logger.Log(e.Message, LogLevel.Error);
-			}
-		}
-
-		/// <summary>
-		/// The path to the file or folder referred to by this object.
-		/// </summary>
-		public string Path { get; set; }
-
-		public sealed override ErasureMethod EffectiveMethod
-		{
-			get
-			{
-				if (Method != ErasureMethodRegistrar.Default)
-					return base.EffectiveMethod;
-
-				return ManagerLibrary.Instance.ErasureMethodRegistrar[
-					ManagerLibrary.Settings.DefaultFileErasureMethod];
-			}
-		}
-
-		public override string UIText
-		{
-			get
-			{
-				string fileName = System.IO.Path.GetFileName(Path);
-				string directoryName = System.IO.Path.GetDirectoryName(Path);
-				return string.IsNullOrEmpty(fileName) ?
-						(string.IsNullOrEmpty(directoryName) ? Path : directoryName)
-					: fileName;
-			}
-		}
-	}
-
-	/// <summary>
-	/// Class representing a unused space erase.
-	/// </summary>
-	[Serializable]
-	public class UnusedSpaceTarget : ErasureTarget
-	{
-		#region Serialization code
-		protected UnusedSpaceTarget(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-			Drive = (string)info.GetValue("Drive", typeof(string));
-			EraseClusterTips = (bool)info.GetValue("EraseClusterTips", typeof(bool));
-		}
-
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-			info.AddValue("Drive", Drive);
-			info.AddValue("EraseClusterTips", EraseClusterTips);
-		}
-		#endregion
-
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public UnusedSpaceTarget()
-			: base()
-		{
-		}
-
-		public sealed override ErasureMethod EffectiveMethod
-		{
-			get
-			{
-				if (Method == ErasureMethodRegistrar.Default)
-					return base.EffectiveMethod;
-
-				return ManagerLibrary.Instance.ErasureMethodRegistrar[
-					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod];
-			}
-		}
-
-		public override bool SupportsMethod(ErasureMethod method)
-		{
-			return method == ErasureMethodRegistrar.Default ||
-				method is UnusedSpaceErasureMethod;
-		}
-
-		public override string UIText
-		{
-			get { return S._("Unused disk space ({0})", Drive); }
-		}
-
-		public override IErasureTargetConfigurer Configurer
-		{
-			get { return new UnusedSpaceErasureTargetSettings(); }
-		}
-
-		/// <summary>
-		/// The drive to erase
-		/// </summary>
-		public string Drive { get; set; }
-
-		/// <summary>
-		/// Whether cluster tips should be erased.
-		/// </summary>
-		public bool EraseClusterTips { get; set; }
-	}
-
-	/// <summary>
-	/// Class representing a file to be erased.
-	/// </summary>
-	[Serializable]
-	public class FileTarget : FileSystemObjectTarget
-	{
-		#region Serialization code
-		protected FileTarget(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-		#endregion
-
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public FileTarget()
-		{
-		}
-
-		public override IErasureTargetConfigurer Configurer
-		{
-			get { return new FileErasureTargetSettings(); }
-		}
-
-		internal override List<string> GetPaths(out long totalSize)
-		{
-			totalSize = 0;
-			List<string> result = new List<string>();
-			FileInfo fileInfo = new FileInfo(Path);
-
-			if (fileInfo.Exists)
-			{
-				GetPathADSes(result, out totalSize, Path);
-				totalSize += fileInfo.Length;
-			}
-
-			result.Add(Path);
-			return result;
-		}
-	}
-
-	/// <summary>
-	/// Represents a folder and its files which are to be erased.
-	/// </summary>
-	[Serializable]
-	public class FolderTarget : FileSystemObjectTarget
-	{
-		#region Serialization code
-		protected FolderTarget(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-			IncludeMask = (string)info.GetValue("IncludeMask", typeof(string));
-			ExcludeMask = (string)info.GetValue("ExcludeMask", typeof(string));
-			DeleteIfEmpty = (bool)info.GetValue("DeleteIfEmpty", typeof(bool));
-		}
-
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			base.GetObjectData(info, context);
-			info.AddValue("IncludeMask", IncludeMask);
-			info.AddValue("ExcludeMask", ExcludeMask);
-			info.AddValue("DeleteIfEmpty", DeleteIfEmpty);
-		}
-		#endregion
-
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		public FolderTarget()
-		{
-			IncludeMask = string.Empty;
-			ExcludeMask = string.Empty;
-			DeleteIfEmpty = true;
-		}
-
-		public override IErasureTargetConfigurer Configurer
-		{
-			get { return new FolderErasureTargetSettings(); }
-		}
-
-		internal override List<string> GetPaths(out long totalSize)
-		{
-			//Get a list to hold all the resulting paths.
-			List<string> result = new List<string>();
-
-			//Open the root of the search, including every file matching the pattern
-			DirectoryInfo dir = new DirectoryInfo(Path);
-
-			//List recursively all the files which match the include pattern.
-			FileInfo[] files = GetFiles(dir);
-
-			//Then exclude each file and finalize the list and total file size
-			totalSize = 0;
-			if (ExcludeMask.Length != 0)
-			{
-				string regex = Regex.Escape(ExcludeMask).Replace("\\*", ".*").
-					Replace("\\?", ".");
-				Regex excludePattern = new Regex(regex, RegexOptions.IgnoreCase);
-				foreach (FileInfo file in files)
-					if (file.Exists &&
-						(file.Attributes & FileAttributes.ReparsePoint) == 0 &&
-						excludePattern.Matches(file.FullName).Count == 0)
-					{
-						totalSize += file.Length;
-						GetPathADSes(result, out totalSize, file.FullName);
-						result.Add(file.FullName);
-					}
-			}
-			else
-				foreach (FileInfo file in files)
-				{
-					if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) != 0)
-						continue;
-
-					//Get the size of the file and its ADSes
-					totalSize += file.Length;
-					long adsesSize = 0;
-					GetPathADSes(result, out adsesSize, file.FullName);
-					totalSize += adsesSize;
-
-					//Append this file to the list of files to erase.
-					result.Add(file.FullName);
-				}
-
-			//Return the filtered list.
-			return result;
-		}
-
-		/// <summary>
-		/// Gets all files in the provided directory.
-		/// </summary>
-		/// <param name="info">The directory to look files in.</param>
-		/// <returns>A list of files found in the directory matching the IncludeMask
-		/// property.</returns>
-		private FileInfo[] GetFiles(DirectoryInfo info)
-		{
-			List<FileInfo> result = new List<FileInfo>();
-			if (info.Exists)
-			{
-				try
-				{
-					foreach (DirectoryInfo dir in info.GetDirectories())
-						result.AddRange(GetFiles(dir));
-
-					if (IncludeMask.Length == 0)
-						result.AddRange(info.GetFiles());
-					else
-						result.AddRange(info.GetFiles(IncludeMask, SearchOption.TopDirectoryOnly));
-				}
-				catch (UnauthorizedAccessException e)
-				{
-					Logger.Log(S._("Could not erase files and subfolders in {0} because {1}",
-						info.FullName, e.Message), LogLevel.Error);
-				}
-			}
-
-			return result.ToArray();
-		}
-
-		/// <summary>
-		/// A wildcard expression stating the condition for the set of files to include.
-		/// The include mask is applied before the exclude mask is applied. If this value
-		/// is empty, all files and folders within the folder specified is included.
-		/// </summary>
-		public string IncludeMask { get; set; }
-
-		/// <summary>
-		/// A wildcard expression stating the condition for removing files from the set
-		/// of included files. If this value is omitted, all files and folders extracted
-		/// by the inclusion mask is erased.
-		/// </summary>
-		public string ExcludeMask { get; set; }
-
-		/// <summary>
-		/// Determines if Eraser should delete the folder after the erase process.
-		/// </summary>
-		public bool DeleteIfEmpty { get; set; }
-	}
-
-	[Serializable]
-	public class RecycleBinTarget : FileSystemObjectTarget
-	{
-		#region Serialization code
-		protected RecycleBinTarget(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
-		#endregion
-
-		public RecycleBinTarget()
-		{
-		}
-
-		public override IErasureTargetConfigurer Configurer
-		{
-			get { return null; }
-		}
-
-		internal override List<string> GetPaths(out long totalSize)
-		{
-			totalSize = 0;
-			List<string> result = new List<string>();
-			string[] rootDirectory = new string[] {
-					"$RECYCLE.BIN",
-					"RECYCLER"
-				};
-
-			foreach (DriveInfo drive in DriveInfo.GetDrives())
-			{
-				foreach (string rootDir in rootDirectory)
-				{
-					DirectoryInfo dir = new DirectoryInfo(
-						System.IO.Path.Combine(
-							System.IO.Path.Combine(drive.Name, rootDir),
-							System.Security.Principal.WindowsIdentity.GetCurrent().
-								User.ToString()));
-					if (!dir.Exists)
-						continue;
-
-					GetRecyclerFiles(dir, result, ref totalSize);
-				}
-			}
-
-			return result;
-		}
-
-		/// <summary>
-		/// Retrieves all files within this folder, without exclusions.
-		/// </summary>
-		/// <param name="info">The DirectoryInfo object representing the folder to traverse.</param>
-		/// <param name="paths">The list of files to store path information in.</param>
-		/// <param name="totalSize">Receives the total size of the files.</param>
-		private void GetRecyclerFiles(DirectoryInfo info, List<string> paths,
-			ref long totalSize)
-		{
-			try
-			{
-				foreach (FileInfo fileInfo in info.GetFiles())
-				{
-					if (!fileInfo.Exists || (fileInfo.Attributes & FileAttributes.ReparsePoint) != 0)
-						continue;
-
-					long adsSize = 0;
-					GetPathADSes(paths, out adsSize, fileInfo.FullName);
-					totalSize += adsSize;
-					totalSize += fileInfo.Length;
-					paths.Add(fileInfo.FullName);
-				}
-
-				foreach (DirectoryInfo directoryInfo in info.GetDirectories())
-					if ((directoryInfo.Attributes & FileAttributes.ReparsePoint) == 0)
-						GetRecyclerFiles(directoryInfo, paths, ref totalSize);
-			}
-			catch (UnauthorizedAccessException e)
-			{
-				Logger.Log(e.Message, LogLevel.Error);
-			}
-		}
-
-		/// <summary>
-		/// Retrieves the text to display representing this task.
-		/// </summary>
-		public override string UIText
-		{
-			get
-			{
-				return S._("Recycle Bin");
-			}
-		}
 	}
 
 	/// <summary>
@@ -715,6 +256,7 @@ namespace Eraser.Manager
 		public void Add(ErasureTarget item)
 		{
 			item.Task = owner;
+			item.OnProgressChanged = owner.OnProgressChanged;
 			list.Add(item);
 		}
 
@@ -770,6 +312,7 @@ namespace Eraser.Manager
 		public void Insert(int index, ErasureTarget item)
 		{
 			item.Task = owner;
+			item.OnProgressChanged = owner.OnProgressChanged;
 			list.Insert(index, item);
 		}
 
@@ -804,7 +347,10 @@ namespace Eraser.Manager
 			{
 				owner = value;
 				foreach (ErasureTarget target in list)
+				{
 					target.Task = owner;
+					target.OnProgressChanged = owner.OnProgressChanged;
+				}
 			}
 		}
 

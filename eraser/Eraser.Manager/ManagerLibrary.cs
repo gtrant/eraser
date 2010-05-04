@@ -92,9 +92,14 @@ namespace Eraser.Manager
 		public PrngRegistrar PrngRegistrar { get; private set; }
 
 		/// <summary>
-		/// The global instance of the Erasure method manager.
+		/// The global instance of the Erasure method Manager.
 		/// </summary>
 		public ErasureMethodRegistrar ErasureMethodRegistrar { get; private set; }
+
+		/// <summary>
+		/// The global instance of the Erasure target Manager.
+		/// </summary>
+		public ErasureTargetRegistrar ErasureTargetRegistrar { get; private set; }
 
 		/// <summary>
 		/// The global instance of the File System manager.
