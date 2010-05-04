@@ -98,7 +98,10 @@ namespace Eraser.Manager.Plugin
 		/// </summary>
 		/// <param name="filePath">The absolute or relative file path to the
 		/// DLL.</param>
-		public abstract void LoadPlugin(string filePath);
+		/// <returns>True if the plugin is loaded, false otherwise.</returns>
+		/// <remarks>If a plugin is loaded twice, this function should do nothing
+		/// and return True.</remarks>
+		public abstract bool LoadPlugin(string filePath);
 	}
 
 	/// <summary>
@@ -135,27 +138,39 @@ namespace Eraser.Manager.Plugin
 
 		public override void Load()
 		{
+			//Specify additional places to load assemblies from
 			AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ResolveReflectionDependency;
-			string pluginsFolder = Path.Combine(
-				Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), //Assembly location
-				PLUGINSFOLDER //Plugins folder
-			);
 
-			foreach (string fileName in Directory.GetFiles(pluginsFolder))
+			try
 			{
-				FileInfo file = new FileInfo(fileName);
-				if (file.Extension.Equals(".dll"))
-					try
-					{
-						LoadPlugin(file.FullName);
-					}
-					catch (BadImageFormatException)
-					{
-					}
-					catch (FileLoadException)
-					{
-					}
+				//Load all core plugins first
+				foreach (KeyValuePair<string, string> plugin in CorePlugins)
+				{
+					LoadCorePlugin(Path.Combine(PluginsFolder, plugin.Key), plugin.Value);
+				}
+
+				//Then load the rest
+				foreach (string fileName in Directory.GetFiles(PluginsFolder))
+				{
+					FileInfo file = new FileInfo(fileName);
+					if (file.Extension.Equals(".dll"))
+						try
+						{
+							LoadPlugin(file.FullName);
+						}
+						catch (BadImageFormatException)
+						{
+						}
+						catch (FileLoadException)
+						{
+						}
+				}
+			}
+			finally
+			{
+				AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
+				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= ResolveReflectionDependency;
 			}
 		}
 
@@ -179,36 +194,108 @@ namespace Eraser.Manager.Plugin
 		/// <summary>
 		/// The path to the folder containing the plugins.
 		/// </summary>
-		public const string PLUGINSFOLDER = "Plugins";
+		public readonly string PluginsFolder = Path.Combine(
+			Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), //Assembly location
+			"Plugins" //Plugins folder
+		);
+
+		/// <summary>
+		/// The list of plugins which are core, the key is the file name, the value
+		/// is the assembly name.
+		/// </summary>
+		private readonly KeyValuePair<string, string>[] CorePlugins =
+			new KeyValuePair<string, string>[]
+			{
+				new KeyValuePair<string, string>(
+					"Eraser.DefaultPlugins.dll",
+					"Eraser.DefaultPlugins"
+				)
+			};
 
 		public override IList<PluginInstance> Plugins
 		{
 			get { return plugins.AsReadOnly(); }
 		}
 
-		public override void LoadPlugin(string filePath)
+		/// <summary>
+		/// Verifies whether the provided assembly is a plugin.
+		/// </summary>
+		/// <param name="assembly">The assembly to verify.</param>
+		/// <returns>True if the assembly provided is a plugin, false otherwise.</returns>
+		private bool IsPlugin(Assembly assembly)
+		{
+			//Iterate over every exported type, checking if it implements IPlugin
+			Type typePlugin = assembly.GetExportedTypes().FirstOrDefault(
+					type => type.GetInterface("Eraser.Manager.Plugin.IPlugin", true) != null);
+
+			//If the typePlugin type is empty the assembly doesn't implement IPlugin it's not
+			//a plugin.
+			return typePlugin != null;
+		}
+
+		/// <summary>
+		/// Loads the assembly at the specified path, and verifying its assembly name,
+		/// ensuring that the assembly contains a core plugin.
+		/// </summary>
+		/// <param name="filePath">The path to the assembly.</param>
+		/// <param name="assemblyName">The name of the assembly.</param>
+		private void LoadCorePlugin(string filePath, string assemblyName)
+		{
+			Assembly assembly = Assembly.ReflectionOnlyLoadFrom(filePath);
+			if (assembly.GetName().FullName.Substring(0, assemblyName.Length + 1) !=
+				assemblyName + ",")
+			{
+				throw new FileLoadException(S._("The Core plugin assembly is not one which" +
+					"Eraser expects.\n\nCheck that the Eraser installation is not corrupt, or " +
+					"reinstall the program."));
+			}
+
+			//Create the PluginInstance structure
+			PluginInstance instance = new PluginInstance(assembly, null);
+
+			//Ignore non-plugins
+			if (!IsPlugin(instance.Assembly))
+				throw new FileLoadException(S._("The provided Core plugin assembly is not a " +
+					"plugin.\n\nCheck that the Eraser installation is not corrupt, or reinstall " +
+					"the program."));
+
+			//OK this assembly is a plugin
+			lock (plugins)
+				plugins.Add(instance);
+
+			//Check for the presence of a valid signature: Core plugins must have the same
+			//public key as the current assembly
+			if (!assembly.GetName().GetPublicKey().SequenceEqual(
+					Assembly.GetExecutingAssembly().GetName().GetPublicKey()))
+			{
+				throw new FileLoadException(S._("The provided Core plugin does not have an " +
+					"identical public key as the Eraser assembly.\n\nCheck that the Eraser " +
+					"installation is not corrupt, or reinstall the program."));
+			}
+
+			//Okay, everything's fine, initialise the plugin
+			instance.Assembly = Assembly.Load(instance.Assembly.GetName());
+			instance.LoadingPolicy = LoadingPolicy.Core;
+			InitialisePlugin(instance);
+		}
+
+		public override bool LoadPlugin(string filePath)
 		{
 			//Create the PluginInstance structure
 			Assembly reflectAssembly = Assembly.ReflectionOnlyLoadFrom(filePath);
 			PluginInstance instance = new PluginInstance(reflectAssembly, null);
-			Type typePlugin = null;
 
-			//Iterate over every exported type, checking if it implements IPlugin
-			foreach (Type type in instance.Assembly.GetExportedTypes())
+			//Check that the plugin hasn't yet been loaded.
+			if (Plugins.Count(
+					plugin => plugin.Assembly.GetName().FullName ==
+					reflectAssembly.GetName().FullName) > 0)
 			{
-				//Check for an implementation of IPlugin
-				Type typeInterface = type.GetInterface("Eraser.Manager.Plugin.IPlugin", true);
-				if (typeInterface != null)
-				{
-					typePlugin = type;
-					break;
-				}
+				return true;
 			}
 
-			//If the typePlugin type is empty the assembly doesn't implement IPlugin; we
-			//aren't interested.
-			if (typePlugin == null)
-				return;
+			//Ignore non-plugins
+			if (!IsPlugin(instance.Assembly))
+				return false;
 
 			//OK this assembly is a plugin
 			lock (plugins)
@@ -222,74 +309,92 @@ namespace Eraser.Manager.Plugin
 				!Security.VerifyStrongName(filePath) ||
 				instance.AssemblyAuthenticode == null))
 			{
-				return;
+				return false;
 			}
 
+			//Preliminary checks to verify whether the plugin can be loaded (safely) passes,
+			//Load the assembly fully, and then initialise it.
+			instance.Assembly = Assembly.Load(reflectAssembly.GetName());
+			
 			//The plugin either is explicitly allowed or disallowed to load, or
 			//it has an Authenticode Signature as well as a Strong Name. Get the
 			//loading policy of the plugin.
-			instance.Assembly = Assembly.LoadFrom(filePath);
 			{
-				object[] attr = instance.Assembly.GetCustomAttributes(typeof(LoadingPolicyAttribute), true);
-				if (attr.Length != 0)
-				{
-					instance.LoadingPolicy = ((LoadingPolicyAttribute)attr[0]).Policy;
-
-					//If the loading policy is that the plugin is Core, we need to verify
-					//the public key of the assembly.
-					if (instance.LoadingPolicy == LoadingPolicy.Core &&
-						!reflectAssembly.GetName().GetPublicKey().SequenceEqual(
-							Assembly.GetExecutingAssembly().GetName().GetPublicKey()))
-					{
-						instance.LoadingPolicy = LoadingPolicy.None;
-					}
-				}
+				
 			}
 
-			bool loadPlugin = false;
+			bool initialisePlugin = false;
 
-			//If the loading policy is such that the plugin is a core plugin, ALWAYS load it.
-			if (instance.LoadingPolicy == LoadingPolicy.Core)
-				loadPlugin = true;
-
-			//The plugin is not a core plugin, is there an approval or denial?
-			else if (approvals.ContainsKey(instance.AssemblyInfo.Guid))
-				loadPlugin = approvals[instance.AssemblyInfo.Guid];
+			//Is there an approval or denial?
+			if (approvals.ContainsKey(instance.AssemblyInfo.Guid))
+				initialisePlugin = approvals[instance.AssemblyInfo.Guid];
 
 			//There's no approval or denial, what is the specified loading policy?
 			else
-				loadPlugin = instance.LoadingPolicy != LoadingPolicy.DefaultOff;
+				initialisePlugin = instance.LoadingPolicy != LoadingPolicy.DefaultOff;
 
-
-			if (loadPlugin)
+			if (initialisePlugin)
 			{
-				try
-				{
-					//Initialize the plugin
-					IPlugin pluginInterface = (IPlugin)Activator.CreateInstance(
-						instance.Assembly.GetType(typePlugin.ToString()));
-					pluginInterface.Initialize(this);
-					instance.Plugin = pluginInterface;
+				InitialisePlugin(instance);
+				return true;
+			}
 
-					//And broadcast the plugin load event
-					OnPluginLoaded(this, new PluginLoadedEventArgs(instance));
-				}
-				catch (System.Security.SecurityException e)
-				{
-					MessageBox.Show(S._("Could not load the plugin {0}.\n\nThe error returned was: {1}",
-						filePath, e.Message), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
-						MessageBoxDefaultButton.Button1, Localisation.IsRightToLeft(null) ?
-							MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-				}
+			return false;
+		}
+
+		/// <summary>
+		/// Initialises the given plugin from the plugin's description.
+		/// </summary>
+		/// <param name="instance">The <see cref="PluginInstance"/> structure to fill.</param>
+		private void InitialisePlugin(PluginInstance instance)
+		{
+			try
+			{
+				//Iterate over every exported type, checking for the IPlugin implementation
+				Type typePlugin = instance.Assembly.GetExportedTypes().First(
+					type => type.GetInterface("Eraser.Manager.Plugin.IPlugin", true) != null);
+				if (typePlugin == null)
+					return;
+
+				//Initialize the plugin
+				instance.Plugin = (IPlugin)Activator.CreateInstance(
+					instance.Assembly.GetType(typePlugin.ToString()));
+				instance.Plugin.Initialize(this);
+
+				//And broadcast the plugin load event
+				OnPluginLoaded(this, new PluginLoadedEventArgs(instance));
+			}
+			catch (System.Security.SecurityException e)
+			{
+				MessageBox.Show(S._("Could not load the plugin {0}.\n\nThe error returned was: {1}",
+					instance.Assembly.Location, e.Message), S._("Eraser"), MessageBoxButtons.OK,
+					MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
+					Localisation.IsRightToLeft(null) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 		}
 
 		private Assembly AssemblyResolve(object sender, ResolveEventArgs args)
 		{
-			lock (plugins)
-				foreach (PluginInstance instance in plugins)
-					if (instance.Assembly.FullName == args.Name)
-						return instance.Assembly;
+			//Check the plugins folder
+			foreach (string fileName in Directory.GetFiles(PluginsFolder))
+			{
+				FileInfo file = new FileInfo(fileName);
+				if (file.Extension.Equals(".dll"))
+					try
+					{
+						Assembly assembly = Assembly.ReflectionOnlyLoadFrom(file.FullName);
+						if (assembly.GetName().FullName == args.Name)
+							return Assembly.LoadFile(file.FullName);
+					}
+					catch (BadImageFormatException)
+					{
+					}
+					catch (FileLoadException)
+					{
+					}
+			}
+
 			return null;
 		}
 
@@ -347,6 +452,12 @@ namespace Eraser.Manager.Plugin
 						info.Guid = new Guid((string)attr.ConstructorArguments[0].Value);
 					else if (attr.Constructor.DeclaringType == typeof(AssemblyCompanyAttribute))
 						info.Author = (string)attr.ConstructorArguments[0].Value;
+					else if (attr.Constructor.DeclaringType == typeof(LoadingPolicyAttribute))
+					{
+						LoadingPolicy = (LoadingPolicy)attr.ConstructorArguments[0].Value;
+						if (LoadingPolicy == LoadingPolicy.Core)
+							LoadingPolicy = LoadingPolicy.None;
+					}
 
 				this.AssemblyInfo = info;
 			}
@@ -457,7 +568,7 @@ namespace Eraser.Manager.Plugin
 		/// <summary>
 		/// The author of the plug-in, used for display in the UI and for users
 		/// to contact the author about bugs. Must be in the format:
-		///		(.+) \<([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)\.([a-zA-Z0-9]+)\>
+		///		(.+) \&lt;([a-zA-Z0-9_.]+)@([a-zA-Z0-9_.]+)\.([a-zA-Z0-9]+)\&gt;
 		/// </summary>
 		/// <example>Joel Low <joel@joelsplace.sg></example>
 		string Author
@@ -504,9 +615,9 @@ namespace Eraser.Manager.Plugin
 		/// <summary>
 		/// The host must always load the plugin.
 		/// </summary>
-		/// <remarks>For this policy to have an effect, the plugin assembly must
-		/// have the same Strong Name as the loading assembly, otherwise it defaults
-		/// to None.</remarks>
+		/// <remarks>This policy does not have an effect when declared in the
+		/// <see cref="LoadingPolicyAttribute"/> attribute and will be equivalent
+		/// to <see cref="None"/>.</remarks>
 		Core
 	}
 
