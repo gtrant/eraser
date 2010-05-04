@@ -132,16 +132,24 @@ namespace Eraser.DefaultPlugins
 
 		public override void Execute()
 		{
-			base.Execute();
+			Progress = new SteppedProgressManager();
+			try
+			{
+				base.Execute();
 
-			ProgressManager step = new ProgressManager();
-			Progress.Steps.Add(new SteppedProgressManagerStep(step,
-				0.0f, S._("Emptying recycle bin...")));
-			OnProgressChanged(this, new ProgressChangedEventArgs(step,
-				new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
+				ProgressManager step = new ProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(step,
+					0.0f, ));
+				OnProgressChanged(this, new ProgressChangedEventArgs(step,
+					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 
-			RecycleBin.Empty(EmptyRecycleBinOptions.NoConfirmation |
-				EmptyRecycleBinOptions.NoProgressUI | EmptyRecycleBinOptions.NoSound);
+				RecycleBin.Empty(EmptyRecycleBinOptions.NoConfirmation |
+					EmptyRecycleBinOptions.NoProgressUI | EmptyRecycleBinOptions.NoSound);
+			}
+			finally
+			{
+				Progress = null;
+			}
 		}
 	}
 }
