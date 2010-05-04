@@ -72,6 +72,11 @@ namespace Eraser.DefaultPlugins
 			get { return GetType().GUID; }
 		}
 
+		public override string Name
+		{
+			get { return S._("Unused disk space"); }
+		}
+
 		public sealed override ErasureMethod EffectiveMethod
 		{
 			get

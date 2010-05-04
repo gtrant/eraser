@@ -192,6 +192,9 @@
   <data name="{0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="File" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Invalid file path" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -205,6 +208,9 @@
     <value>(Untranslated)</value>
   </data>
   <data name="The task was cancelled." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Files in Folder" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
@@ -223,6 +229,9 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Emptying recycle bin..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Unused disk space" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">

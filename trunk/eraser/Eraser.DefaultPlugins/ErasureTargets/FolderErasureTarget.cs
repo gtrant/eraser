@@ -76,6 +76,11 @@ namespace Eraser.DefaultPlugins
 			get { return GetType().GUID; }
 		}
 
+		public override string Name
+		{
+			get { return S._("Files in Folder"); }
+		}
+
 		public override IErasureTargetConfigurer Configurer
 		{
 			get { return new FolderErasureTargetConfigurer(); }

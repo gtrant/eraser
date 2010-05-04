@@ -78,6 +78,14 @@ namespace Eraser.Manager
 		public Task Task { get; internal set; }
 
 		/// <summary>
+		/// The name of the type of the Erasure target.
+		/// </summary>
+		public abstract string Name
+		{
+			get;
+		}
+
+		/// <summary>
 		/// The method used for erasing the file.
 		/// </summary>
 		public ErasureMethod Method
@@ -126,7 +134,7 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Retrieves the text to display representing this task.
+		/// Retrieves the text to display representing this target.
 		/// </summary>
 		public abstract string UIText
 		{
