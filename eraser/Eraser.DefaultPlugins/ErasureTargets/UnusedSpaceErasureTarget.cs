@@ -40,10 +40,10 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("A627BEC4-CAFC-46ce-92AD-209157C3177A")]
-	public class UnusedSpaceTarget : ErasureTarget
+	public class UnusedSpaceErasureTarget : ErasureTarget
 	{
 		#region Serialization code
-		protected UnusedSpaceTarget(SerializationInfo info, StreamingContext context)
+		protected UnusedSpaceErasureTarget(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 			Drive = (string)info.GetValue("Drive", typeof(string));
@@ -62,7 +62,7 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public UnusedSpaceTarget()
+		public UnusedSpaceErasureTarget()
 			: base()
 		{
 		}

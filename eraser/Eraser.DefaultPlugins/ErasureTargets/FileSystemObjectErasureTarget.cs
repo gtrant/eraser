@@ -39,10 +39,10 @@ namespace Eraser.DefaultPlugins
 	/// Class representing a tangible object (file/folder) to be erased.
 	/// </summary>
 	[Serializable]
-	public abstract class FileSystemObjectTarget : ErasureTarget
+	public abstract class FileSystemObjectErasureTarget : ErasureTarget
 	{
 		#region Serialization code
-		protected FileSystemObjectTarget(SerializationInfo info, StreamingContext context)
+		protected FileSystemObjectErasureTarget(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 			Path = (string)info.GetValue("Path", typeof(string));
@@ -59,7 +59,7 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		protected FileSystemObjectTarget()
+		protected FileSystemObjectErasureTarget()
 			: base()
 		{
 		}

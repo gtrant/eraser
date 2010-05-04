@@ -35,10 +35,10 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("0D741505-E1C4-400d-8470-598AF35E174D")]
-	public class FileTarget : FileSystemObjectTarget
+	public class FileErasureTarget : FileSystemObjectErasureTarget
 	{
 		#region Serialization code
-		protected FileTarget(SerializationInfo info, StreamingContext context)
+		protected FileErasureTarget(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}
@@ -47,7 +47,7 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Constructor.
 		/// </summary>
-		public FileTarget()
+		public FileErasureTarget()
 		{
 		}
 
