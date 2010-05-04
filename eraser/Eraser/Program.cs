@@ -38,6 +38,7 @@ using ComLib.Arguments;
 
 using Eraser.Manager;
 using Eraser.Util;
+using Eraser.DefaultPlugins;
 
 namespace Eraser
 {
@@ -398,7 +399,6 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			}
 
 			//Parse the rest of the command line parameters as target expressions.
-			List<string> trueValues = new List<string>(new string[] { "yes", "true" });
 			foreach (string argument in arguments.PositionalArguments)
 			{
 				bool processed = false;
@@ -457,15 +457,15 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				case ShellActions.EraseNow:
 					foreach (string path in args.PositionalArguments)
 					{
-						FileSystemObjectTarget target = null;
-						if (Directory.Exists(path))
+						FileSystemObjectErasureTarget target = null;
+						if ((File.GetAttributes(path) & FileAttributes.Directory) != 0)
 						{
-							target = new FolderTarget();
+							target = new FolderErasureTarget();
 							target.Path = path;
 						} 
 						else
 						{
-							target = new FileTarget();
+							target = new FileErasureTarget();
 							target.Path = path;
 						}
 
@@ -474,13 +474,13 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 
 					//Was the recycle bin specified?
 					if (((ShellArguments)args).RecycleBin)
-						task.Targets.Add(new RecycleBinTarget());
+						task.Targets.Add(new RecycleBinErasureTarget());
 					break;
 
 				case ShellActions.EraseUnusedSpace:
 					foreach (string path in args.PositionalArguments)
 					{
-						UnusedSpaceTarget target = new UnusedSpaceTarget();
+						UnusedSpaceErasureTarget target = new UnusedSpaceErasureTarget();
 						target.Drive = path;
 						task.Targets.Add(target);
 					}
