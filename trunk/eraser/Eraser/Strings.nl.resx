@@ -222,6 +222,12 @@
   <data name="Task executed" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="{0}, " xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Recycle Bin" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Import tasks from {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

@@ -360,45 +360,75 @@ namespace Eraser
 		{
 			string descriptionMessage = string.Empty;
 			string descriptionInsert = string.Empty;
-			const string descrptionPlaceholder = "%1";
-			if (!e.Data.GetDataPresent(DataFormats.FileDrop))
-				e.Effect = DragDropEffects.None;
-			else
+			string descriptionItemFormat = S._("{0}, ");
+			const string descriptionPlaceholder = "%1";
+			
+			bool recycleBinIncluded = false;
+			List<string> files = e.Data.GetDataPresent(DataFormats.FileDrop) ?
+				new List<string>((string[])e.Data.GetData(DataFormats.FileDrop, false)) :
+				new List<string>();
+			if (e.Data.GetDataPresent("Shell IDList Array"))
 			{
-				string[] files = (string[])e.Data.GetData(DataFormats.FileDrop, false);
-				bool isTaskList = true;
-				foreach (string file in files)
+				MemoryStream stream = (MemoryStream)e.Data.GetData("Shell IDList Array");
+				byte[] buffer = new byte[stream.Length];
+				stream.Read(buffer, 0, buffer.Length);
+				ShellCIDA cida = new ShellCIDA(buffer);
+
+				if (cida.cidl > 0)
 				{
-					if (descriptionInsert.Length < 259 &&
-						(descriptionInsert.Length < 3 || descriptionInsert.Substring(descriptionInsert.Length - 3) != "..."))
+					for (int i = 1; i <= cida.cidl; ++i)
 					{
-						string append = string.Format(CultureInfo.InvariantCulture, "{0}, ",
-							Path.GetFileNameWithoutExtension(file));
-						if (descriptionInsert.Length + append.Length > 259)
+						if (cida.aoffset[i].Guid != Guid.Empty)
 						{
-							descriptionInsert += ".....";
+							if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
+							{
+								descriptionInsert += string.Format(CultureInfo.InvariantCulture,
+									descriptionItemFormat, S._("Recycle Bin"));
+								recycleBinIncluded = true;
+							}
 						}
 						else
 						{
-							descriptionInsert += append;
+							files.Add(cida.aoffset[i].Path);
 						}
 					}
+				}
+			}
 
-					if (Path.GetExtension(file) != ".ersx")
-						isTaskList = false;
+			bool isTaskList = !recycleBinIncluded;
+			foreach (string file in files)
+			{
+				if (descriptionInsert.Length < 259 &&
+					(descriptionInsert.Length < 3 || descriptionInsert.Substring(descriptionInsert.Length - 3) != "..."))
+				{
+					string append = string.Format(CultureInfo.InvariantCulture,
+						descriptionItemFormat, Path.GetFileNameWithoutExtension(file));
+					if (descriptionInsert.Length + append.Length > 259)
+					{
+						descriptionInsert += ".....";
+					}
+					else
+					{
+						descriptionInsert += append;
+					}
 				}
-				descriptionInsert = descriptionInsert.Remove(descriptionInsert.Length - 2);
 
-				if (isTaskList)
-				{
-					e.Effect = DragDropEffects.Copy;
-					descriptionMessage = S._("Import tasks from {0}", descrptionPlaceholder);
-				}
-				else
-				{
-					e.Effect = DragDropEffects.Move;
-					descriptionMessage = S._("Erase {0}", descrptionPlaceholder);
-				}
+				if (Path.GetExtension(file) != ".ersx")
+					isTaskList = false;
+			}
+			descriptionInsert = descriptionInsert.Remove(descriptionInsert.Length - 2);
+
+			if (!recycleBinIncluded && files.Count == 0)
+				e.Effect = DragDropEffects.None;
+			else if (isTaskList)
+			{
+				e.Effect = DragDropEffects.Copy;
+				descriptionMessage = S._("Import tasks from {0}", descriptionPlaceholder);
+			}
+			else
+			{
+				e.Effect = DragDropEffects.Move;
+				descriptionMessage = S._("Erase {0}", descriptionPlaceholder);
 			}
 
 			if (e.Data.GetDataPresent("DragImageBits"))
@@ -421,18 +451,42 @@ namespace Eraser
 		/// </summary>
 		private void scheduler_DragDrop(object sender, DragEventArgs e)
 		{
-			if (!e.Data.GetDataPresent(DataFormats.FileDrop))
-			{
-				e.Effect = DragDropEffects.None;
-				return;
-			}
-
 			DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
+			if (e.Effect == DragDropEffects.None)
+				return;
+
+			bool recycleBinIncluded = false;
+			List<string> files = e.Data.GetDataPresent(DataFormats.FileDrop) ?
+				new List<string>((string[])e.Data.GetData(DataFormats.FileDrop, false)) :
+				new List<string>();
+			if (e.Data.GetDataPresent("Shell IDList Array"))
+			{
+				MemoryStream stream = (MemoryStream)e.Data.GetData("Shell IDList Array");
+				byte[] buffer = new byte[stream.Length];
+				stream.Read(buffer, 0, buffer.Length);
+				ShellCIDA cida = new ShellCIDA(buffer);
+
+				if (cida.cidl > 0)
+				{
+					for (int i = 1; i <= cida.cidl; ++i)
+					{
+						if (cida.aoffset[i].Guid != Guid.Empty)
+						{
+							if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
+								recycleBinIncluded = true;
+						}
+						else
+						{
+							files.Add(cida.aoffset[i].Path);
+						}
+					}
+				}
+			}
 
 			//Schedule the task dialog to be shown (to get to the event loop so that
 			//ComCtl32.dll v6 is used.)
-			BeginInvoke((Action<DragDropEffects, string[]>)scheduler_DragDropConfirm,
-				e.Effect, e.Data.GetData(DataFormats.FileDrop, false));
+			BeginInvoke((Action<DragDropEffects, List<string>, bool>)scheduler_DragDropConfirm,
+				e.Effect, files, recycleBinIncluded);
 		}
 
 		/// <summary>
@@ -440,7 +494,10 @@ namespace Eraser
 		/// </summary>
 		/// <param name="effect">The Drag/drop effect of the operation.</param>
 		/// <param name="files">The files which were dropped into the program.</param>
-		private void scheduler_DragDropConfirm(DragDropEffects effect, string[] files)
+		/// <param name="recycleBinIncluded">True if the recycle bin was among the
+		/// items dropped.</param>
+		private void scheduler_DragDropConfirm(DragDropEffects effect, List<string> files,
+			bool recycleBinIncluded)
 		{
 			//Determine whether we are importing a task list or dragging files for
 			//erasure.
@@ -469,17 +526,22 @@ namespace Eraser
 			{
 				//Create a task with the default settings
 				Task task = new Task();
-				foreach (string file in files)
-				{	
-					FileSystemObjectErasureTarget target;
-					if ((File.GetAttributes(file) & FileAttributes.Directory) != 0)
-						target = new FolderErasureTarget();
-					else
-						target = new FileErasureTarget();
-					target.Path = file;
+				if (files != null)
+					foreach (string file in files)
+					{	
+						FileSystemObjectErasureTarget target;
+						if ((File.GetAttributes(file) & FileAttributes.Directory) != 0)
+							target = new FolderErasureTarget();
+						else
+							target = new FileErasureTarget();
+						target.Path = file;
 
-					task.Targets.Add(target);
-				}
+						task.Targets.Add(target);
+					}
+
+				//Add the recycle bin if it was specified
+				if (recycleBinIncluded)
+					task.Targets.Add(new RecycleBinErasureTarget());
 
 				//Add the task, asking the user for his intent.
 				DialogResult action = DialogResult.No;
