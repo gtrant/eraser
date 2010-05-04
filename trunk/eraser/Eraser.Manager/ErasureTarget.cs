@@ -178,21 +178,8 @@ namespace Eraser.Manager
 	/// Represents an interface for an abstract erasure target configuration
 	/// object.
 	/// </summary>
-	public interface IErasureTargetConfigurer
+	public interface IErasureTargetConfigurer : IConfigurer<ErasureTarget>
 	{
-		/// <summary>
-		/// Loads the configuration from the provided erasure target.
-		/// </summary>
-		/// <param name="target">The erasure target to load the configuration from.</param>
-		void LoadFrom(ErasureTarget target);
-
-		/// <summary>
-		/// Configures the provided erasure target.
-		/// </summary>
-		/// <param name="target">The erasure target to configure.</param>
-		/// <returns>True if the configuration was valid and the save operation
-		/// succeeded.</returns>
-		bool SaveTo(ErasureTarget target);
 	}
 
 	public class ErasureTargetRegistrar : Registrar<ErasureTarget>
