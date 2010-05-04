@@ -315,4 +315,7 @@
   <data name="German VSITR" xml:space="preserve">
     <value>German VSITR</value>
   </data>
+  <data name="Kernel Entropy Source" xml:space="preserve">
+    <value>Kernel Entropy Source</value>
+  </data>
 </root>
