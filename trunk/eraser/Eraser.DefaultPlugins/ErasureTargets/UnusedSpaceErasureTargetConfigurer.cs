@@ -141,6 +141,7 @@ namespace Eraser.DefaultPlugins
 				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
 			Match match = regex.Match(argument);
 
+			string[] trueValues = new string[] { "yes", "true" };
 			if (match.Groups["unusedVolume"].Success)
 			{
 				foreach (object item in unusedDisk.Items)
@@ -156,7 +157,7 @@ namespace Eraser.DefaultPlugins
 					unusedClusterTips.Checked = true;
 				else
 					unusedClusterTips.Checked =
-						trueValues.IndexOf(match.Groups["unusedTipsValue"].Value) != -1;
+						trueValues.Contains(match.Groups["unusedTipsValue"].Value);
 			}
 
 			return false;
