@@ -180,7 +180,7 @@ namespace Eraser.DefaultPlugins
 
 		/// <remarks>The <see cref="Progress"/> property must be defined prior
 		/// to the execution of this function.</remarks>
-		public virtual void Execute()
+		public override void Execute()
 		{
 			//Retrieve the list of files to erase.
 			long dataTotal = 0;
@@ -217,7 +217,7 @@ namespace Eraser.DefaultPlugins
 				{
 					//Update the task progress
 					ProgressManager step = new ProgressManager();
-					progress.Steps.Add(new SteppedProgressManagerStep(step,
+					Progress.Steps.Add(new SteppedProgressManagerStep(step,
 						info.Length / (float)dataTotal, S._("Erasing files...")));
 					OnProgressChanged(this, new ProgressChangedEventArgs(step,
 						new TaskProgressChangedEventArgs(paths[i], 0, method.Passes)));
