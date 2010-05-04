@@ -70,6 +70,7 @@
     <Compile Include="Exception.cs" />
     <Compile Include="Executor.cs" />
     <Compile Include="FileSystem.cs" />
+    <Compile Include="IConfigurer.cs" />
     <Compile Include="IRegistrar.cs" />
     <Compile Include="ManagerLibrary.cs" />
     <Compile Include="ErasureMethod.cs" />

@@ -28,6 +28,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using System.Text.RegularExpressions;
+
 using Eraser.Manager;
 using Eraser.Util;
 
@@ -40,7 +42,7 @@ namespace Eraser.DefaultPlugins
 			InitializeComponent();
 		}
 
-		#region IErasureTargetConfigurer Members
+		#region IConfigurer<ErasureTarget> Members
 
 		public void LoadFrom(ErasureTarget target)
 		{
@@ -73,6 +75,42 @@ namespace Eraser.DefaultPlugins
 			folder.ExcludeMask = folderExclude.Text;
 			folder.DeleteIfEmpty = folderDelete.Checked;
 			return true;
+		}
+
+		#endregion
+
+		#region ICliConfigurer<ErasureTarget> Members
+
+		public void Help()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool ProcessArgument(string argument)
+		{
+			//The directory target, taking a list of + and - wildcard expressions.
+			Regex regex = new Regex("dir=(?<directoryName>.*)(?<directoryParams>(?<directoryExcludeMask>,-[^,]+)|(?<directoryIncludeMask>,\\+[^,]+)|(?<directoryDeleteIfEmpty>,deleteIfEmpty(=(?<directoryDeleteIfEmptyValue>true|false))?))*",
+				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+			Match match = regex.Match(argument);
+
+			if (match.Groups["directoryName"].Success)
+			{
+				folderPath.Text = match.Groups["directoryName"].Value;
+				if (!match.Groups["directoryDeleteIfEmpty"].Success)
+					folderDelete.Checked = false;
+				else if (!match.Groups["directoryDeleteIfEmptyValue"].Success)
+					folderDelete.Checked = true;
+				else
+					folderDelete.Checked =
+						trueValues.IndexOf(match.Groups["directoryDeleteIfEmptyValue"].Value) != -1;
+
+				if (match.Groups["directoryExcludeMask"].Success)
+					folderExclude.Text += match.Groups["directoryExcludeMask"].Value.Remove(0, 2) + ' ';
+				if (match.Groups["directoryIncludeMask"].Success)
+					folderInclude.Text += match.Groups["directoryIncludeMask"].Value.Remove(0, 2) + ' ';
+			}
+
+			return false;
 		}
 
 		#endregion

@@ -21,54 +21,27 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 using System.Text.RegularExpressions;
 
 using Eraser.Manager;
-using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class FileErasureTargetConfigurer : UserControl, IErasureTargetConfigurer
+	class RecycleBinErasureTargetConfigurer : IErasureTargetConfigurer
 	{
-		public FileErasureTargetConfigurer()
-		{
-			InitializeComponent();
-		}
-
 		#region IConfigurer<ErasureTarget> Members
 
 		public void LoadFrom(ErasureTarget target)
 		{
-			FileErasureTarget file = target as FileErasureTarget;
-			if (file == null)
-				throw new ArgumentException("The provided erasure target type is not " +
-					"supported by this configurer.");
-
-			filePath.Text = file.Path;
+			throw new NotImplementedException();
 		}
 
 		public bool SaveTo(ErasureTarget target)
 		{
-			FileErasureTarget file = target as FileErasureTarget;
-			if (file == null)
-				throw new ArgumentException("The provided erasure target type is not " +
-					"supported by this configurer.");
-
-			if (filePath.Text.Length == 0)
-			{
-				errorProvider.SetError(filePath, S._("Invalid file path"));
-				return false;
-			}
-
-			file.Path = filePath.Text;
-			return true;
+			throw new NotImplementedException();
 		}
 
 		#endregion
@@ -82,13 +55,12 @@ namespace Eraser.DefaultPlugins
 
 		public bool ProcessArgument(string argument)
 		{
-			Regex regex = new Regex("file=(?<fileName>.*)",
+			Regex regex = new Regex("(?<recycleBin>recyclebin)",
 				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
 			Match match = regex.Match(argument);
 
-			if (match.Groups["fileName"].Success)
+			if (match.Groups["recycleBin"].Success)
 			{
-				filePath.Text = match.Groups["fileName"].Value;
 				return true;
 			}
 
@@ -96,12 +68,5 @@ namespace Eraser.DefaultPlugins
 		}
 
 		#endregion
-
-		private void fileBrowse_Click(object sender, EventArgs e)
-		{
-			fileDialog.FileName = filePath.Text;
-			if (fileDialog.ShowDialog() == DialogResult.OK)
-				filePath.Text = fileDialog.FileName;
-		}
 	}
 }
