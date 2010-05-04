@@ -35,7 +35,7 @@ function QueryStatus($stackTrace)
 			if ($stackIndex == 'exception')
 				continue;
 
-			$stackFrames .= sprintf('(StackFrameIndex=%d AND Function=\'%s\') OR ',
+			$stackFrames .= sprintf('(StackFrameIndex=%d AND Function=%s\') OR ',
 				$stackIndex, $pdo->quote(GetFunctionNameFromStackTrace($stackFrame)));
 		}
 		
