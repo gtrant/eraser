@@ -378,7 +378,11 @@ namespace Eraser
 				{
 					for (int i = 1; i <= cida.cidl; ++i)
 					{
-						if (cida.aoffset[i].Guid != Guid.Empty)
+						if (!string.IsNullOrEmpty(cida.aoffset[i].Path))
+						{
+							files.Add(cida.aoffset[i].Path);
+						}
+						else if (cida.aoffset[i].Guid != Guid.Empty)
 						{
 							if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
 							{
@@ -386,10 +390,6 @@ namespace Eraser
 									descriptionItemFormat, S._("Recycle Bin"));
 								recycleBinIncluded = true;
 							}
-						}
-						else
-						{
-							files.Add(cida.aoffset[i].Path);
 						}
 					}
 				}
@@ -416,10 +416,15 @@ namespace Eraser
 				if (Path.GetExtension(file) != ".ersx")
 					isTaskList = false;
 			}
-			descriptionInsert = descriptionInsert.Remove(descriptionInsert.Length - 2);
+
+			if (!string.IsNullOrEmpty(descriptionInsert))
+				descriptionInsert = descriptionInsert.Remove(descriptionInsert.Length - 2);
 
 			if (!recycleBinIncluded && files.Count == 0)
+			{
 				e.Effect = DragDropEffects.None;
+				descriptionMessage = "Cannot erase the selected items";
+			}
 			else if (isTaskList)
 			{
 				e.Effect = DragDropEffects.Copy;
@@ -470,14 +475,14 @@ namespace Eraser
 				{
 					for (int i = 1; i <= cida.cidl; ++i)
 					{
-						if (cida.aoffset[i].Guid != Guid.Empty)
+						if (!string.IsNullOrEmpty(cida.aoffset[i].Path))
+						{
+							files.Add(cida.aoffset[i].Path);
+						}
+						else if (cida.aoffset[i].Guid != Guid.Empty)
 						{
 							if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
 								recycleBinIncluded = true;
-						}
-						else
-						{
-							files.Add(cida.aoffset[i].Path);
 						}
 					}
 				}
