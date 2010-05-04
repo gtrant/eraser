@@ -35,6 +35,7 @@ using System.ComponentModel;
 
 using Eraser.Manager;
 using Eraser.Util;
+using Eraser.DefaultPlugins;
 using Microsoft.Samples;
 using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
 
@@ -469,12 +470,12 @@ namespace Eraser
 				//Create a task with the default settings
 				Task task = new Task();
 				foreach (string file in files)
-				{
-					FileSystemObjectTarget target;
-					if (Directory.Exists(file))
-						target = new FolderTarget();
+				{	
+					FileSystemObjectErasureTarget target;
+					if ((File.GetAttributes(file) & FileAttributes.Directory) != 0)
+						target = new FolderErasureTarget();
 					else
-						target = new FileTarget();
+						target = new FileErasureTarget();
 					target.Path = file;
 
 					task.Targets.Add(target);

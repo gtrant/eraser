@@ -359,6 +359,11 @@
     <Content Include="Resources\ToolbarSettings.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Eraser.DefaultPlugins\Eraser.DefaultPlugins.csproj">
+      <Project>{21752123-7BD7-4B44-B512-14A963C55FD8}</Project>
+      <Name>Eraser.DefaultPlugins</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\Eraser.Manager\Eraser.Manager.csproj">
       <Project>{C1AC3255-0939-499D-A69D-725E3DD4F574}</Project>
       <Name>Eraser.Manager</Name>
