@@ -55,6 +55,8 @@ namespace Eraser.DefaultPlugins
 
 			ManagerLibrary.Instance.PrngRegistrar.Add(new RngCrypto());
 
+			ManagerLibrary.Instance.EntropySourceRegistrar.Add(new KernelEntropySource());
+
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat12FileSystem());
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat16FileSystem());
 			ManagerLibrary.Instance.FileSystemRegistrar.Add(new Fat32FileSystem());

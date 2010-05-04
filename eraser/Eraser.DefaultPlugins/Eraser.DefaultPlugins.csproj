@@ -47,6 +47,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -72,6 +73,7 @@
     <Compile Include="CustomMethodPassEditor.Designer.cs">
       <DependentUpon>CustomMethodPassEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="EntropySources\KernelEntropySource.cs" />
     <Compile Include="ErasureMethods\Custom.cs" />
     <Compile Include="ErasureMethods\DoD.cs" />
     <Compile Include="ErasureMethods\Random.cs" />
