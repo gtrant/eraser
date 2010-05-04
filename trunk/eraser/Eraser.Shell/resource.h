@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by ShellExt.rc
+// Used by Eraser.Shell.rc
 //
 #define IDS_PROJNAME                    100
 #define IDR_ERASERSHELLEXT              101
@@ -21,6 +21,7 @@
 #define IDS_ERROR_TOO_MANY_FILES        404
 #define IDS_ERROR_MISC                  405
 #define IDS_ERROR_CANNOT_GENERATE_TEMP_FILE 406
+#define IDS_MESSAGE_SELECT_MOVE_DESTINATION 500
 
 // Next default values for new objects
 // 
