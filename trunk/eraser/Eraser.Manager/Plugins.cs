@@ -142,35 +142,27 @@ namespace Eraser.Manager.Plugin
 			AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
 			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ResolveReflectionDependency;
 
-			try
+			//Load all core plugins first
+			foreach (KeyValuePair<string, string> plugin in CorePlugins)
 			{
-				//Load all core plugins first
-				foreach (KeyValuePair<string, string> plugin in CorePlugins)
-				{
-					LoadCorePlugin(Path.Combine(PluginsFolder, plugin.Key), plugin.Value);
-				}
-
-				//Then load the rest
-				foreach (string fileName in Directory.GetFiles(PluginsFolder))
-				{
-					FileInfo file = new FileInfo(fileName);
-					if (file.Extension.Equals(".dll"))
-						try
-						{
-							LoadPlugin(file.FullName);
-						}
-						catch (BadImageFormatException)
-						{
-						}
-						catch (FileLoadException)
-						{
-						}
-				}
+				LoadCorePlugin(Path.Combine(PluginsFolder, plugin.Key), plugin.Value);
 			}
-			finally
+
+			//Then load the rest
+			foreach (string fileName in Directory.GetFiles(PluginsFolder))
 			{
-				AppDomain.CurrentDomain.AssemblyResolve -= AssemblyResolve;
-				AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= ResolveReflectionDependency;
+				FileInfo file = new FileInfo(fileName);
+				if (file.Extension.Equals(".dll"))
+					try
+					{
+						LoadPlugin(file.FullName);
+					}
+					catch (BadImageFormatException)
+					{
+					}
+					catch (FileLoadException)
+					{
+					}
 			}
 		}
 
