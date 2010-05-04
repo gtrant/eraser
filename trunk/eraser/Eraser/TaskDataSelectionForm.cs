@@ -39,18 +39,16 @@ namespace Eraser
 	{
 		private class ErasureType
 		{
-			public ErasureType(string name, ErasureTarget target)
+			public ErasureType(ErasureTarget target)
 			{
-				Name = name;
 				Target = target;
 			}
 
 			public override string ToString()
 			{
-				return Name;
+				return Target.Name;
 			}
 
-			public string Name;
 			public ErasureTarget Target;
 
 			/// <summary>
@@ -67,7 +65,7 @@ namespace Eraser
 
 			//Insert the types of erasure targets
 			foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
-				typeCmb.Items.Add(new ErasureType(target.GetType().Name, target));
+				typeCmb.Items.Add(new ErasureType(target));
 			if (typeCmb.Items.Count != 0) 
 				typeCmb.SelectedIndex = 0;
 
