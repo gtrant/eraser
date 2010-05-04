@@ -130,24 +130,16 @@ namespace Eraser
 			//Then add in the new configurer
 			ErasureType type = (ErasureType)typeCmb.SelectedItem;
 			if (type.Configurer == null)
-			{
 				type.Configurer = type.Target.Configurer;
-				if (type.Configurer == null)
-				{
-					Label label = new Label();
-					label.Text = S._("(This erasure type does not have any settings to define.)");
-					label.Dock = DockStyle.Fill;
-					typeSettingsPnl.Controls.Add(label);
-					return;
-				}
-			}
 
-			if (!(type.Configurer is Control))
-				MessageBox.Show(S._("The erasure target type could be configured, but it does " +
-					"not provide a user interface for configuring."), S._("Select Data to Erase "),
-					MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+			if (type.Configurer == null || !(type.Configurer is Control))
+			{
+				Label label = new Label();
+				label.Text = S._("(This erasure type does not have any settings to define.)");
+				label.Dock = DockStyle.Fill;
+				typeSettingsPnl.Controls.Add(label);
+				return;
+			}
 
 			Control control = type.Configurer as Control;
 			typeSettingsPnl.Controls.Add(control);
