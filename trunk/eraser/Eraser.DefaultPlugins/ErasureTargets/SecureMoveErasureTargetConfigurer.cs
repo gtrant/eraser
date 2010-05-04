@@ -38,5 +38,32 @@ namespace Eraser.DefaultPlugins
 		{
 			InitializeComponent();
 		}
+
+		#region IConfigurer<ErasureTarget> Members
+
+		public void LoadFrom(ErasureTarget target)
+		{
+		}
+
+		public bool SaveTo(ErasureTarget target)
+		{
+			return true;
+		}
+
+		#endregion
+
+		#region ICliConfigurer<ErasureTarget> Members
+
+		public void Help()
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool ProcessArgument(string argument)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }
