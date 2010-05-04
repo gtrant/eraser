@@ -356,6 +356,21 @@ namespace Eraser.DefaultPlugins
 				method is UnusedSpaceErasureMethod;
 		}
 
+		/// <summary>
+		/// Override the base class property so that we won't need to keep casting
+		/// </summary>
+		protected new SteppedProgressManager Progress
+		{
+			get
+			{
+				return (SteppedProgressManager)base.Progress;
+			}
+			set
+			{
+				base.Progress = value;
+			}
+		}
+
 		public override string UIText
 		{
 			get { return S._("Unused disk space ({0})", Drive); }
