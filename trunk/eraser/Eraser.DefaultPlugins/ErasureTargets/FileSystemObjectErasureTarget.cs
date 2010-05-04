@@ -178,7 +178,9 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		public override void Execute()
+		/// <remarks>The <see cref="Progress"/> property must be defined prior
+		/// to the execution of this function.</remarks>
+		public virtual void Execute()
 		{
 			//Retrieve the list of files to erase.
 			long dataTotal = 0;
@@ -189,9 +191,9 @@ namespace Eraser.DefaultPlugins
 			dataTotal = method.CalculateEraseDataSize(paths, dataTotal);
 
 			//Set the event's current target status.
-			SteppedProgressManager progress = new SteppedProgressManager();
-			Progress = progress;
-			Task.Progress.Steps.Add(new SteppedProgressManagerStep(progress, 1.0f / Task.Targets.Count));
+			if (Progress == null)
+				throw new InvalidOperationException("The Progress property must not be null.");
+			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress, 1.0f / Task.Targets.Count));
 
 			//Iterate over every path, and erase the path.
 			for (int i = 0; i < paths.Count; ++i)

@@ -29,6 +29,7 @@ using System.Runtime.InteropServices;
 using System.IO;
 
 using Eraser.Manager;
+using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
@@ -77,6 +78,19 @@ namespace Eraser.DefaultPlugins
 
 			result.Add(Path);
 			return result;
+		}
+
+		public override void Execute()
+		{
+			Progress = new SteppedProgressManager();
+			try
+			{
+				base.Execute();
+			}
+			finally
+			{
+				Progress = null;
+			}
 		}
 	}
 }
