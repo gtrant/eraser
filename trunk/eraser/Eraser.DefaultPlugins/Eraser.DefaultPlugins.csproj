@@ -83,18 +83,22 @@
     <Compile Include="ErasureMethods\VSITR.cs" />
     <Compile Include="ErasureMethods\RCMP_TSSIT_OPS_II.cs" />
     <Compile Include="ErasureTargets\File.cs" />
+    <Compile Include="ErasureTargets\FileSystemObject.cs" />
     <Compile Include="ErasureTargets\FileErasureTargetSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ErasureTargets\FileErasureTargetSettings.Designer.cs">
       <DependentUpon>FileErasureTargetSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="ErasureTargets\Folder.cs" />
     <Compile Include="ErasureTargets\FolderErasureTargetSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ErasureTargets\FolderErasureTargetSettings.Designer.cs">
       <DependentUpon>FolderErasureTargetSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="ErasureTargets\RecycleBin.cs" />
+    <Compile Include="ErasureTargets\UnusedSpace.cs" />
     <Compile Include="ErasureTargets\UnusedSpaceErasureTargetSettings.cs">
       <SubType>UserControl</SubType>
     </Compile>
