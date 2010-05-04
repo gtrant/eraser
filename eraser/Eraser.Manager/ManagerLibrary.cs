@@ -44,6 +44,7 @@ namespace Eraser.Manager
 			EntropySourceRegistrar = new EntropySourceRegistrar();
 			PrngRegistrar = new PrngRegistrar();
 			ErasureMethodRegistrar = new ErasureMethodRegistrar();
+			ErasureTargetRegistrar = new ErasureTargetRegistrar();
 			FileSystemRegistrar = new FileSystemRegistrar();
 			Host = new Plugin.DefaultHost();
 			Host.Load();
