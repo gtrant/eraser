@@ -93,6 +93,7 @@ namespace Eraser.DefaultPlugins
 				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
 			Match match = regex.Match(argument);
 
+			string[] trueValues = new string[] { "yes", "true" };
 			if (match.Groups["directoryName"].Success)
 			{
 				folderPath.Text = match.Groups["directoryName"].Value;
@@ -102,7 +103,7 @@ namespace Eraser.DefaultPlugins
 					folderDelete.Checked = true;
 				else
 					folderDelete.Checked =
-						trueValues.IndexOf(match.Groups["directoryDeleteIfEmptyValue"].Value) != -1;
+						trueValues.Contains(match.Groups["directoryDeleteIfEmptyValue"].Value);
 
 				if (match.Groups["directoryExcludeMask"].Success)
 					folderExclude.Text += match.Groups["directoryExcludeMask"].Value.Remove(0, 2) + ' ';
