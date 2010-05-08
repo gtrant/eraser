@@ -106,11 +106,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleWindow.cs" />
+    <Compile Include="ExtensionClasses\SplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FileSize.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MiniDump.cs" />
     <Compile Include="NativeMethods\DbgHelp.cs" />
     <Compile Include="NativeMethods\Mpr.cs" />
+    <Compile Include="NativeMethods\WinUser.cs" />
     <Compile Include="PostDataBuilder.cs" />
     <Compile Include="Power.cs" />
     <Compile Include="NativeMethods\Gdi.cs" />
