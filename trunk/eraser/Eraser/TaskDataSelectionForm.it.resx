@@ -117,53 +117,88 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="cancel.Text" xml:space="preserve">
-    <value>Annulla</value>
+  <data name="okBtn.Error" xml:space="preserve">
+    <value />
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="okBtn.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="okBtn.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="cancelBtn.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="cancelBtn.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <data name="cancelBtn.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="typeSettingsPnl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="typeSettingsPnl.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <data name="typeSettingsPnl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="typeSettingsPnl.Text" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="typeCmb.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="typeCmb.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <data name="typeCmb.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="typeLbl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="typeLbl.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <data name="typeLbl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="recycleBin.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 19</value>
+  <data name="typeLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 15</value>
   </data>
-  <data name="recycleBin.Text" xml:space="preserve">
-    <value>Cestino</value>
+  <data name="typeLbl.Text" xml:space="preserve">
+    <value>Destinazione:</value>
   </data>
-  <data name="unusedClusterTips.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 19</value>
+  <data name="methodCmb.Error" xml:space="preserve">
+    <value />
   </data>
-  <data name="unusedClusterTips.Text" xml:space="preserve">
-    <value>Pulisci cluster tips</value>
+  <data name="methodCmb.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <data name="methodCmb.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Selezione dati da pulire</value>
+  </data>
+  <data name="methodLbl.Error" xml:space="preserve">
+    <value />
+  </data>
+  <data name="methodLbl.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+    <value>MiddleRight</value>
+  </data>
+  <data name="methodLbl.IconPadding" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="methodLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>91, 15</value>
   </data>
   <data name="methodLbl.Text" xml:space="preserve">
     <value>Metodo pulizia:</value>
-  </data>
-  <data name="folderDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 19</value>
-  </data>
-  <data name="folderDelete.Text" xml:space="preserve">
-    <value>Cancella folder se vuoto</value>
-  </data>
-  <data name="folderBrowse.Text" xml:space="preserve">
-    <value>Cerca...</value>
-  </data>
-  <data name="fileBrowse.Text" xml:space="preserve">
-    <value>Cerca...</value>
-  </data>
-  <data name="unused.Size" type="System.Drawing.Size, System.Drawing">
-    <value>156, 19</value>
-  </data>
-  <data name="unused.Text" xml:space="preserve">
-    <value>Spazio disco inutilizzato</value>
-  </data>
-  <data name="folder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 19</value>
-  </data>
-  <data name="folder.Text" xml:space="preserve">
-    <value>Files nella cartella</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Selezione dati da pulire</value>
   </data>
 </root>
