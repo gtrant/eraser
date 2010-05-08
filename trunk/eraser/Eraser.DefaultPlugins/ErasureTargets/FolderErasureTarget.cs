@@ -110,7 +110,9 @@ namespace Eraser.DefaultPlugins
 						excludePattern.Matches(file.FullName).Count == 0)
 					{
 						totalSize += file.Length;
-						GetPathADSes(result, out totalSize, file.FullName);
+						long adsesSize = 0;
+						GetPathADSes(result, out adsesSize, file.FullName);
+						totalSize += adsesSize;
 						result.Add(file.FullName);
 					}
 			}
