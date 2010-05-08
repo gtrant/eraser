@@ -89,7 +89,7 @@ namespace Eraser.DefaultPlugins
 			get { return new SecureMoveErasureTargetConfigurer(); }
 		}
 
-		internal override List<string> GetPaths(out long totalSize)
+		protected override List<string> GetPaths(out long totalSize)
 		{
 			throw new NotImplementedException();
 		}

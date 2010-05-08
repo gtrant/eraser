@@ -82,7 +82,7 @@ namespace Eraser.DefaultPlugins
 		/// <param name="totalSize">Returns the total size in bytes of the
 		/// items.</param>
 		/// <returns>A list containing the paths to all the files to be erased.</returns>
-		internal abstract List<string> GetPaths(out long totalSize);
+		protected abstract List<string> GetPaths(out long totalSize);
 
 		/// <summary>
 		/// Adds ADSes of the given file to the list.
