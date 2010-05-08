@@ -54,7 +54,7 @@ namespace Eraser.Util.ExtensionMethods
 					long TotalFileSize, long TotalBytesTransferred, long StreamSize,
 					long StreamBytesTransferred, uint dwStreamNumber,
 					NativeMethods.CopyProgressFunctionCallbackReasons dwCallbackReason,
-					SafeFileHandle hSourceFile, SafeFileHandle hDestinationFile, IntPtr lpData)
+					IntPtr hSourceFile, IntPtr hDestinationFile, IntPtr lpData)
 				{
 					return progress(TotalFileSize, TotalBytesTransferred);
 				};
