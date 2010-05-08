@@ -27,6 +27,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.IO;
 
 using Eraser.Manager;
 using Eraser.Util;
@@ -52,6 +53,9 @@ namespace Eraser.DefaultPlugins
 
 			fromTxt.Text = secureMove.Path;
 			toTxt.Text = secureMove.Destination;
+
+			moveFolderRadio.Checked = File.Exists(secureMove.Path) &&
+				(File.GetAttributes(secureMove.Path) & FileAttributes.Directory) != 0;
 		}
 
 		public bool SaveTo(ErasureTarget target)
@@ -84,26 +88,39 @@ namespace Eraser.DefaultPlugins
 
 		private void fromSelectButton_Click(object sender, EventArgs e)
 		{
-			fromTxt.Text = SelectFile(fromTxt.Text, S._("Select the Source file"));
-		}
-
-		private void fromSelectFolder_Click(object sender, EventArgs e)
-		{
-			fromTxt.Text = SelectFolder(fromTxt.Text, S._("Select the Source folder"));
+			if (moveFolderRadio.Checked)
+				fromTxt.Text = SelectFolder(fromTxt.Text, S._("Select the Source folder"));
+			else
+				fromTxt.Text = SelectFile(fromTxt.Text, S._("Select the Source file"));
 		}
 
 		private void toSelectButton_Click(object sender, EventArgs e)
 		{
-			toTxt.Text = SelectFolder(toTxt.Text, S._("Select the Destination folder"));
+			if (moveFolderRadio.Checked)
+				toTxt.Text = SelectFolder(toTxt.Text, S._("Save moved file as"));
+			else
+				toTxt.Text = SaveFile(toTxt.Text, S._("Move Source folder to:"));
 		}
 
 		private string SelectFile(string currentPath, string description)
 		{
-			fileDialog.FileName = currentPath;
-			fileDialog.Title = description;
-			if (fileDialog.ShowDialog(this) == DialogResult.OK)
+			openFileDialog.FileName = currentPath;
+			openFileDialog.Title = description;
+			if (openFileDialog.ShowDialog(this) == DialogResult.OK)
 			{
-				return fileDialog.FileName;
+				return openFileDialog.FileName;
+			}
+
+			return string.Empty;
+		}
+
+		private string SaveFile(string currentPath, string description)
+		{
+			saveFileDialog.FileName = currentPath;
+			saveFileDialog.Title = description;
+			if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
+			{
+				return saveFileDialog.FileName;
 			}
 
 			return string.Empty;
