@@ -237,6 +237,15 @@
   <data name="Securely move {0}" xml:space="preserve">
     <value>Securely move {0}</value>
   </data>
+  <data name="Select the Source file" xml:space="preserve">
+    <value>Select the Source file</value>
+  </data>
+  <data name="Select the Source folder" xml:space="preserve">
+    <value>Select the Source folder</value>
+  </data>
+  <data name="Select the Destination folder" xml:space="preserve">
+    <value>Select the Destination folder</value>
+  </data>
   <data name="Unused disk space" xml:space="preserve">
     <value>Unused disk space</value>
   </data>

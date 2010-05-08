@@ -29,6 +29,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using Eraser.Manager;
+using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
@@ -37,6 +38,7 @@ namespace Eraser.DefaultPlugins
 		public SecureMoveErasureTargetConfigurer()
 		{
 			InitializeComponent();
+			Theming.ApplyTheme(this);
 		}
 
 		#region IConfigurer<ErasureTarget> Members
@@ -65,5 +67,44 @@ namespace Eraser.DefaultPlugins
 		}
 
 		#endregion
+
+		private void fromSelectButton_Click(object sender, EventArgs e)
+		{
+			fromTxt.Text = SelectFile(fromTxt.Text, S._("Select the Source file"));
+		}
+
+		private void fromSelectFolder_Click(object sender, EventArgs e)
+		{
+			fromTxt.Text = SelectFolder(fromTxt.Text, S._("Select the Source folder"));
+		}
+
+		private void toSelectButton_Click(object sender, EventArgs e)
+		{
+			toTxt.Text = SelectFolder(toTxt.Text, S._("Select the Destination folder"));
+		}
+
+		private string SelectFile(string currentPath, string description)
+		{
+			fileDialog.FileName = currentPath;
+			fileDialog.Title = description;
+			if (fileDialog.ShowDialog(this) == DialogResult.OK)
+			{
+				return fileDialog.FileName;
+			}
+
+			return string.Empty;
+		}
+
+		private string SelectFolder(string currentPath, string description)
+		{
+			folderDialog.SelectedPath = currentPath;
+			folderDialog.Description = description;
+			if (folderDialog.ShowDialog(this) == DialogResult.OK)
+			{
+				return folderDialog.SelectedPath;
+			}
+
+			return string.Empty;
+		}
 	}
 }
