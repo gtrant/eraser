@@ -44,7 +44,8 @@ namespace System.Windows.Forms
 			get
 			{
 				CreateParams createParams = base.CreateParams;
-				createParams.Style |= NativeMethods.BS_SPLITBUTTON;
+				if (IsSupportedOnCurrentPlatform)
+					createParams.Style |= NativeMethods.BS_SPLITBUTTON;
 				return createParams;
 			}
 		}
@@ -85,12 +86,23 @@ namespace System.Windows.Forms
 					//Swallow all context menu clicks on Vista and later -- otherwise
 					//we will also show the context menu when the user right-clicks
 					//the button.
-					if (Environment.OSVersion.Version.Major >= 6)
+					if (!IsSupportedOnCurrentPlatform)
 						return;
 					break;
 			}
 
 			base.WndProc(ref m);
+		}
+
+		/// <summary>
+		/// Checks whether the current platform supports the control.
+		/// </summary>
+		private static bool IsSupportedOnCurrentPlatform
+		{
+			get
+			{
+				return Environment.OSVersion.Version.Major >= 6;
+			}
 		}
 
 		private bool DropDownState
