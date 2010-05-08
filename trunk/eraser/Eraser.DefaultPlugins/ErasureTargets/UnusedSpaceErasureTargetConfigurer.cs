@@ -68,6 +68,7 @@ namespace Eraser.DefaultPlugins
 		public UnusedSpaceErasureTargetConfigurer()
 		{
 			InitializeComponent();
+			Theming.ApplyTheme(this);
 
 			//Populate the drives list
 			foreach (VolumeInfo volume in VolumeInfo.Volumes.Concat(VolumeInfo.NetworkDrives))

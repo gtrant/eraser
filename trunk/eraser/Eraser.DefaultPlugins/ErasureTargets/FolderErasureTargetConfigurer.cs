@@ -40,6 +40,7 @@ namespace Eraser.DefaultPlugins
 		public FolderErasureTargetConfigurer()
 		{
 			InitializeComponent();
+			Theming.ApplyTheme(this);
 		}
 
 		#region IConfigurer<ErasureTarget> Members
