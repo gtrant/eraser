@@ -38,10 +38,83 @@ namespace Eraser.Util.ExtensionMethods
 	public static class IO
 	{
 		/// <summary>
+		/// Copies an existing file to a new file, allowing the monitoring of the progress
+		/// of the copy operation.
+		/// </summary>
+		/// <param name="info">The <see cref="System.IO.FileSystemInfo"/> object
+		/// to copy.</param>
+		/// <param name="destFileName">The name of the new file to copy to.</param>
+		/// <param name="progress">The progress callback function to execute</param>
+		/// <returns>A new file, or an overwrite of an existing file if the file exists.</returns>
+		public static FileInfo CopyTo(this FileInfo info, string destFileName,
+			CopyProgressFunction progress)
+		{
+			bool cancel = false;
+			NativeMethods.CopyProgressFunction callback = delegate(
+					long TotalFileSize, long TotalBytesTransferred, long StreamSize,
+					long StreamBytesTransferred, uint dwStreamNumber,
+					NativeMethods.CopyProgressFunctionCallbackReasons dwCallbackReason,
+					SafeFileHandle hSourceFile, SafeFileHandle hDestinationFile, IntPtr lpData)
+				{
+					return progress(TotalFileSize, TotalBytesTransferred);
+				};
+
+			if (!NativeMethods.CopyFileEx(info.FullName, destFileName, callback, IntPtr.Zero,
+				ref cancel, 0))
+			{
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			}
+
+			return new FileInfo(destFileName);
+		}
+
+		/// <summary>
+		/// An application-defined callback function used with the <see cref="CopyTo" />
+		/// function. It is called when a portion of a copy or move operation is
+		/// completed.
+		/// </summary>
+		/// <param name="TotalFileSize">The total size of the file, in bytes.</param>
+		/// <param name="TotalBytesTransferred">The total number of bytes
+		/// transferred from the source file to the destination file since the
+		/// copy operation began.</param>
+		/// <returns>The <see cref="CopyProgressFunction"/> function should return
+		/// one of the <see cref="CopyProgressFunctionResult"/> values.</returns>
+		public delegate CopyProgressFunctionResult CopyProgressFunction(
+			long TotalFileSize, long TotalBytesTransferred);
+
+		/// <summary>
+		/// Result codes which can be returned from the
+		/// <see cref="CopyProgressFunction"/> callbacks.
+		/// </summary>
+		public enum CopyProgressFunctionResult
+		{
+			/// <summary>
+			/// Cancel the copy operation and delete the destination file.
+			/// </summary>
+			Cancel = 1,
+
+			/// <summary>
+			/// Continue the copy operation.
+			/// </summary>
+			Continue = 0,
+
+			/// <summary>
+			/// Continue the copy operation, but stop invoking
+			/// <see cref="CopyProgressRoutine"/> to report progress.
+			/// </summary>
+			Quiet = 3,
+
+			/// <summary>
+			/// Stop the copy operation. It can be restarted at a later time.
+			/// </summary>
+			Stop = 2
+		}
+
+		/// <summary>
 		/// Gets the parent directory of the current <see cref="System.IO.FileSystemInfo"/>
 		/// object.
 		/// </summary>
-		/// <param name="info">The <see cref="System.IO.FileSystemInfo"/>object
+		/// <param name="info">The <see cref="System.IO.FileSystemInfo"/> object
 		/// to query its parent.</param>
 		/// <returns>The parent directory of the current
 		/// <see cref="System.IO.FileSystemInfo"/> object, or null if info is
