@@ -62,6 +62,7 @@ namespace Eraser.Util
 			switch (errorCode)
 			{
 				case NoError:			return null;
+				case RequestAborted:	return new OperationCanceledException();
 				case SharingViolation:	return new SharingViolationException();
 			}
 
@@ -87,6 +88,7 @@ namespace Eraser.Util
 		public const int NoMoreItems = 259;
 		public const int UnrecognizedVolume = 1005;
 		public const int BadDevice = 1200;
+		public const int RequestAborted = 1235;
 		public const int NotAReparsePoint = 4390;
 	}
 }
