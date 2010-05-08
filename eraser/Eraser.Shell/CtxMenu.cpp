@@ -534,7 +534,7 @@ namespace Eraser {
 				PIDLIST_ABSOLUTE pidl = SHBrowseForFolder(&info);
 
 				wchar_t buffer[MAX_PATH];
-				bool pathSucceeded = SHGetPathFromIDList(pidl, buffer);
+				bool pathSucceeded = SHGetPathFromIDList(pidl, buffer) != FALSE;
 				ILFree(pidl);
 				if (pathSucceeded)
 					DragDropDestinationDirectory = buffer;
