@@ -33,6 +33,163 @@ namespace Eraser.Util
 	internal static partial class NativeMethods
 	{
 		/// <summary>
+		/// Copies an existing file to a new file, notifying the application of
+		/// its progress through a callback function.
+		/// </summary>
+		/// <param name="lpExistingFileName">The name of an existing file.
+		/// 
+		/// In the ANSI version of this function, the name is limited to MAX_PATH
+		/// characters. To extend this limit to 32,767 wide characters, call the
+		/// ]Unicode version of the function and prepend "\\?\" to the path.
+		/// For more information, see Naming a File.
+		/// 
+		/// If lpExistingFileName does not exist, the CopyFileEx function fails,
+		/// and the GetLastError function returns ERROR_FILE_NOT_FOUND.</param>
+		/// <param name="lpNewFileName">The name of the new file.
+		/// 
+		/// In the ANSI version of this function, the name is limited to MAX_PATH
+		/// characters. To extend this limit to 32,767 wide characters, call the
+		/// Unicode version of the function and prepend "\\?\" to the path. For
+		/// more information, see Naming a File.</param>
+		/// <param name="lpProgressRoutine">The address of a callback function of
+		/// type <see cref="ExtensionMethods.IO.CopyProgressFunction"/> that is
+		/// called each time another portion of the file has been copied. This
+		/// parameter can be NULL. For more information on the progress callback
+		/// function, see the <see cref="ExtensionMethods.IO.CopyProgressFunction"/>
+		/// function.</param>
+		/// <param name="lpData">The argument to be passed to the callback function.
+		/// This parameter can be NULL.</param>
+		/// <param name="pbCancel">If this flag is set to TRUE during the copy
+		/// operation, the operation is canceled. Otherwise, the copy operation
+		/// will continue to completion.</param>
+		/// <param name="dwCopyFlags">Flags that specify how the file is to be
+		/// copied. This parameter can be a combination of the
+		/// <see cref="CopyFileFlags"/> enumeration.
+		/// </param>
+		/// <returns>If the function succeeds, the return value is nonzero.
+		/// 
+		/// If the function fails, the return value is zero. To get extended error information
+		/// call <see cref="Marshal.GetLastWin32Error"/>.
+		/// 
+		/// If lpProgressRoutine returns PROGRESS_CANCEL due to the user canceling the
+		/// operation, CopyFileEx will return zero and GetLastError will return
+		/// ERROR_REQUEST_ABORTED. In this case, the partially copied destination file is
+		/// deleted.
+		/// 
+		/// If lpProgressRoutine returns PROGRESS_STOP due to the user stopping the
+		/// operation, CopyFileEx will return zero and GetLastError will return
+		/// ERROR_REQUEST_ABORTED. In this case, the partially copied destination file
+		/// is left intact.</returns>
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		public static extern bool CopyFileEx(string lpExistingFileName,
+			string lpNewFileName, CopyProgressFunction lpProgressRoutine,
+			IntPtr lpData, ref bool pbCancel, CopyFileFlags dwCopyFlags);
+
+		/// <summary>
+		/// Flags used with <see cref="CopyFileEx"/>
+		/// </summary>
+		[Flags]
+		public enum CopyFileFlags
+		{
+			/// <summary>
+			/// An attempt to copy an encrypted file will succeed even if the
+			/// destination copy cannot be encrypted.
+			/// 
+			/// Windows 2000: This value is not supported.
+			/// </summary>
+			AllowDecryptedDestination = 0x00000008,
+
+			/// <summary>
+			/// If the source file is a symbolic link, the destination file is
+			/// also a symbolic link pointing to the same file that the source
+			/// symbolic link is pointing to.
+			/// 
+			/// Windows Server 2003 and Windows XP/2000: This value is not
+			/// supported.
+			/// </summary>
+			CopySymlink = 0x00000800,
+
+			/// <summary>
+			/// The copy operation fails immediately if the target file already
+			/// exists.
+			/// </summary>
+			FailIfExists = 0x00000001,
+
+			/// <summary>
+			/// The copy operation is performed using unbuffered I/O, bypassing
+			/// system I/O cache resources. Recommended for very large file
+			/// transfers.
+			///
+			/// Windows Server 2003 and Windows XP/2000: This value is not
+			/// supported.
+			/// </summary>
+			NoBuffering = 0x00001000,
+
+			/// <summary>
+			/// The file is copied and the original file is opened for write
+			/// access.
+			/// </summary>
+			OpenSourceForWrite = 0x00000004,
+
+			/// <summary>
+			/// Progress of the copy is tracked in the target file in case the
+			/// copy fails. The failed copy can be restarted at a later time by
+			///	specifying the same values for lpExistingFileName and lpNewFileName
+			///	as those used in the call that failed.
+			/// </summary>
+			Restartable = 0x00000002
+		}
+
+		/// <summary>
+		/// An application-defined callback function used with the CopyFileEx,
+		/// MoveFileTransacted, and MoveFileWithProgress functions. It is called when
+		/// a portion of a copy or move operation is completed. The LPPROGRESS_ROUTINE
+		/// type defines a pointer to this callback function. CopyProgressRoutine is
+		/// a placeholder for the application-defined function name.
+		/// </summary>
+		/// <param name="TotalFileSize">The total size of the file, in bytes.</param>
+		/// <param name="TotalBytesTransferred">The total number of bytes
+		/// transferred from the source file to the destination file since the
+		/// copy operation began.</param>
+		/// <param name="StreamSize">The total size of the current file stream,
+		/// in bytes.</param>
+		/// <param name="StreamBytesTransferred">The total number of bytes in the
+		/// current stream that have been transferred from the source file to the
+		/// destination file since the copy operation began.</param>
+		/// <param name="dwStreamNumber">A handle to the current stream. The
+		/// first time CopyProgressRoutine is called, the stream number is 1.</param>
+		/// <param name="dwCallbackReason">The reason that CopyProgressRoutine was
+		/// called. This parameter can be one of the following values.</param>
+		/// <param name="hSourceFile">A handle to the source file.</param>
+		/// <param name="hDestinationFile">A handle to the destination file.</param>
+		/// <param name="lpData">Argument passed to CopyProgressRoutine by CopyFileEx,
+		/// MoveFileTransacted, or MoveFileWithProgress.</param>
+		/// <returns>The CopyProgressRoutine function should return one of the
+		/// <see cref="CopyProgressFunctionResult"/> values.</returns>
+		public delegate ExtensionMethods.IO.CopyProgressFunctionResult CopyProgressFunction(
+			long TotalFileSize, long TotalBytesTransferred, long StreamSize,
+			long StreamBytesTransferred, uint dwStreamNumber,
+			CopyProgressFunctionCallbackReasons dwCallbackReason,
+			SafeFileHandle hSourceFile, SafeFileHandle hDestinationFile, IntPtr lpData);
+
+		/// <summary>
+		/// Callback reasons for the <see cref="CopyProgressFunction"/> callbacks.
+		/// </summary>
+		public enum CopyProgressFunctionCallbackReasons
+		{
+			/// <summary>
+			/// Another part of the data file was copied.
+			/// </summary>
+			ChunkFinished = 0x00000000,
+
+			/// <summary>
+			/// Another stream was created and is about to be copied. This is
+			/// the callback reason given when the callback routine is first invoked.
+			/// </summary>
+			StreamSwitch = 0x00000001
+		}
+
+		/// <summary>
 		/// Deletes an existing file.
 		/// </summary>
 		/// <param name="lpFileName">The name of the file to be deleted.
