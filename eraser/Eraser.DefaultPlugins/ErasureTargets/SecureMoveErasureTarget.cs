@@ -30,6 +30,7 @@ using System.Security.Permissions;
 
 using Eraser.Manager;
 using Eraser.Util;
+using System.IO;
 
 namespace Eraser.DefaultPlugins
 {
@@ -88,12 +89,35 @@ namespace Eraser.DefaultPlugins
 			get { return new SecureMoveErasureTargetConfigurer(); }
 		}
 
-		public override void Execute()
+		internal override List<string> GetPaths(out long totalSize)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal override List<string> GetPaths(out long totalSize)
+		public override void Execute()
+		{
+			//If the path doesn't exist, exit.
+			if (!File.Exists(Path))
+				return;
+
+			if ((File.GetAttributes(Path) & FileAttributes.Directory) != 0)
+			{
+				DirectoryInfo info = new DirectoryInfo(Path);
+				MoveDirectory(info);
+			}
+			else
+			{
+				FileInfo info = new FileInfo(Path);
+				MoveFile(info);
+			}
+		}
+
+		private void MoveDirectory(DirectoryInfo info)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void MoveFile(FileInfo info)
 		{
 			throw new NotImplementedException();
 		}
