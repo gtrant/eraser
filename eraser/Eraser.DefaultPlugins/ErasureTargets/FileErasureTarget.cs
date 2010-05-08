@@ -69,7 +69,7 @@ namespace Eraser.DefaultPlugins
 			get { return new FileErasureTargetConfigurer(); }
 		}
 
-		internal override List<string> GetPaths(out long totalSize)
+		protected override List<string> GetPaths(out long totalSize)
 		{
 			totalSize = 0;
 			List<string> result = new List<string>();
