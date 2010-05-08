@@ -170,7 +170,7 @@ namespace Eraser.Util
 			long TotalFileSize, long TotalBytesTransferred, long StreamSize,
 			long StreamBytesTransferred, uint dwStreamNumber,
 			CopyProgressFunctionCallbackReasons dwCallbackReason,
-			SafeFileHandle hSourceFile, SafeFileHandle hDestinationFile, IntPtr lpData);
+			IntPtr hSourceFile, IntPtr hDestinationFile, IntPtr lpData);
 
 		/// <summary>
 		/// Callback reasons for the <see cref="CopyProgressFunction"/> callbacks.
