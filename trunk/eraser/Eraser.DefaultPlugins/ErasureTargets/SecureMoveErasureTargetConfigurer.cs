@@ -45,10 +45,24 @@ namespace Eraser.DefaultPlugins
 
 		public void LoadFrom(ErasureTarget target)
 		{
+			SecureMoveErasureTarget secureMove = target as SecureMoveErasureTarget;
+			if (secureMove == null)
+				throw new ArgumentException("The provided erasure target type is not " +
+					"supported by this configurer.");
+
+			fromTxt.Text = secureMove.Path;
+			toTxt.Text = secureMove.Destination;
 		}
 
 		public bool SaveTo(ErasureTarget target)
 		{
+			SecureMoveErasureTarget secureMove = target as SecureMoveErasureTarget;
+			if (secureMove == null)
+				throw new ArgumentException("The provided erasure target type is not " +
+					"supported by this configurer.");
+
+			secureMove.Path = fromTxt.Text;
+			secureMove.Destination = toTxt.Text;
 			return true;
 		}
 
