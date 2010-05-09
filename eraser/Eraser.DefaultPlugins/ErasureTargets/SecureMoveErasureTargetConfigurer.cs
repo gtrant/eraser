@@ -97,9 +97,9 @@ namespace Eraser.DefaultPlugins
 		private void toSelectButton_Click(object sender, EventArgs e)
 		{
 			if (moveFolderRadio.Checked)
-				toTxt.Text = SelectFolder(toTxt.Text, S._("Save moved file as"));
+				toTxt.Text = SelectFolder(toTxt.Text, S._("Move Source folder to:"));
 			else
-				toTxt.Text = SaveFile(toTxt.Text, S._("Move Source folder to:"));
+				toTxt.Text = SaveFile(toTxt.Text, S._("Save Source file to"));
 		}
 
 		private string SelectFile(string currentPath, string description)
