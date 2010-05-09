@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Random Data" xml:space="preserve">
-    <value>Random Data</value>
+    <value>Dati "casuali"</value>
   </data>
   <data name="Constant ({0} bytes)" xml:space="preserve">
     <value>Costante ({0} bytes)</value>
@@ -196,7 +196,7 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Invalid file path" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Percorso del file non valido</value>
   </data>
   <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
     <value>(Untranslated)</value>
@@ -205,7 +205,7 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Erasing files..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia file...</value>
   </data>
   <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
     <value>(Untranslated)</value>
@@ -214,28 +214,28 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Files in Folder" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>File in cartella</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia cartelle...</value>
   </data>
   <data name="Invalid folder path" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Percorso non valido</value>
   </data>
   <data name="The path you selected is invalid." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Recycle Bin" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Cestino</value>
   </data>
   <data name="Emptying recycle bin..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Secure move" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Spostamento sicuro</value>
   </data>
   <data name="Securely move {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Spostamento sicuro di {0}</value>
   </data>
   <data name="Copying source file to destination" xml:space="preserve">
     <value>(Untranslated)</value>
@@ -244,22 +244,22 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Select the Source folder" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Seleziona la cartella sorgente</value>
   </data>
   <data name="Select the Source file" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Seleziona il file sorgente</value>
   </data>
   <data name="Save moved file as" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Salva il file spostato come</value>
   </data>
   <data name="Move Source folder to:" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Unused disk space" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Spazio disco livero</value>
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Spazio disco libero ({0})</value>
   </data>
   <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
     <value>(Untranslated)</value>
@@ -274,22 +274,22 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Searching for files' cluster tips..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Ricerca di files' cluster tips...</value>
   </data>
   <data name="Erasing cluster tips..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia cluster tips...</value>
   </data>
   <data name="Erasing unused space..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia spazio inusato...</value>
   </data>
   <data name="Old resident file system table files" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Removing temporary files..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia file temporanei...</value>
   </data>
   <data name="Erasing unused directory structures..." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Pulizia di struttura di cartelle inusate...</value>
   </data>
   <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">
     <value>Il metodo di pulizia custom può solo prevedere passi costanti oppure casuali</value>
