@@ -297,8 +297,6 @@ namespace Eraser.DefaultPlugins
 						info.IsReadOnly = isReadOnly;
 				}
 			}
-
-			Progress = null;
 		}
 	}
 }
