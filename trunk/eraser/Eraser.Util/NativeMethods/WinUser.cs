@@ -37,11 +37,13 @@ namespace Eraser.Util
 		public const uint WM_PAINT = 0x000F;
 		public const uint WM_CONTEXTMENU = 0x007B;
 
+		#pragma warning disable 0649
 		public struct NMHDR
 		{
 			public IntPtr hwndFrom;
 			public uint idFrom;
 			public uint code;
 		}
+		#pragma warning restore 0649
 	}
 }
