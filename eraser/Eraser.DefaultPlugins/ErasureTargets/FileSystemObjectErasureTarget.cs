@@ -64,6 +64,10 @@ namespace Eraser.DefaultPlugins
 		{
 		}
 
+		/// <summary>
+		/// The Progress of this target's erasure. This property must be set
+		/// before <see cref="FileSystemObjectErasureTarget.Execute"/> is called.
+		/// </summary>
 		protected new SteppedProgressManager Progress
 		{
 			get
@@ -82,29 +86,54 @@ namespace Eraser.DefaultPlugins
 		/// <param name="totalSize">Returns the total size in bytes of the
 		/// items.</param>
 		/// <returns>A list containing the paths to all the files to be erased.</returns>
-		protected abstract List<string> GetPaths(out long totalSize);
+		protected abstract List<StreamInfo> GetPaths(out long totalSize);
+
+		/// <summary>
+		/// Gets all files in the provided directory.
+		/// </summary>
+		/// <param name="info">The directory to look files in.</param>
+		/// <returns>A list of files found in the directory matching the IncludeMask
+		/// property.</returns>
+		protected FileInfo[] GetFiles(DirectoryInfo info)
+		{
+			List<FileInfo> result = new List<FileInfo>();
+			if (info.Exists)
+			{
+				try
+				{
+					foreach (DirectoryInfo dir in info.GetDirectories())
+						result.AddRange(GetFiles(dir));
+				}
+				catch (UnauthorizedAccessException e)
+				{
+					Logger.Log(S._("Could not erase files and subfolders in {0} because {1}",
+						info.FullName, e.Message), LogLevel.Error);
+				}
+			}
+
+			return result.ToArray();
+		}
 
 		/// <summary>
 		/// Adds ADSes of the given file to the list.
 		/// </summary>
-		/// <param name="list">The list to add the ADS paths to.</param>
 		/// <param name="file">The file to look for ADSes</param>
-		protected void GetPathADSes(ICollection<string> list, out long totalSize, string file)
+		protected StreamInfo[] GetPathADSes(FileInfo file, out long totalSize)
 		{
 			totalSize = 0;
 
 			try
 			{
 				//Get the ADS names
-				IList<string> adses = new FileInfo(file).GetADSes();
+				IList<string> adses = file.GetADSes();
+				StreamInfo[] result = new StreamInfo[adses.Count];
 
 				//Then prepend the path.
-				foreach (string adsName in adses)
+				for (int i = 0; i < adses.Count; ++i)
 				{
-					string adsPath = file + ':' + adsName;
-					list.Add(adsPath);
-					StreamInfo info = new StreamInfo(adsPath);
+					StreamInfo info = new StreamInfo(file.FullName + ':' + adses[i]);
 					totalSize += info.Length;
+					result[i] = info;
 				}
 			}
 			catch (FileNotFoundException)
@@ -117,7 +146,7 @@ namespace Eraser.DefaultPlugins
 					throw;
 
 				StringBuilder processStr = new StringBuilder();
-				foreach (OpenHandle handle in OpenHandle.Close(file))
+				foreach (OpenHandle handle in OpenHandle.Close(file.FullName))
 				{
 					try
 					{
@@ -134,10 +163,7 @@ namespace Eraser.DefaultPlugins
 				}
 
 				if (processStr.Length == 0)
-				{
-					GetPathADSes(list, out totalSize, file);
-					return;
-				}
+					return GetPathADSes(file, out totalSize);
 				else
 					throw;
 			}
@@ -147,6 +173,8 @@ namespace Eraser.DefaultPlugins
 				//more information.
 				Logger.Log(e.Message, LogLevel.Error);
 			}
+
+			return new StreamInfo[0];
 		}
 
 		/// <summary>
@@ -184,7 +212,7 @@ namespace Eraser.DefaultPlugins
 		{
 			//Retrieve the list of files to erase.
 			long dataTotal = 0;
-			List<string> paths = GetPaths(out dataTotal);
+			List<StreamInfo> paths = GetPaths(out dataTotal);
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = EffectiveMethod;
@@ -193,13 +221,14 @@ namespace Eraser.DefaultPlugins
 			//Set the event's current target status.
 			if (Progress == null)
 				throw new InvalidOperationException("The Progress property must not be null.");
-			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress, 1.0f / Task.Targets.Count));
+			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress,
+				EraseWeight / Task.Targets.Count));
 
 			//Iterate over every path, and erase the path.
 			for (int i = 0; i < paths.Count; ++i)
 			{
 				//Check that the file exists - we do not want to bother erasing nonexistant files
-				StreamInfo info = new StreamInfo(paths[i]);
+				StreamInfo info = paths[i];
 				if (!info.Exists)
 				{
 					Logger.Log(S._("The file {0} was not erased as the file does not exist.",
@@ -220,7 +249,7 @@ namespace Eraser.DefaultPlugins
 					Progress.Steps.Add(new SteppedProgressManagerStep(step,
 						info.Length / (float)dataTotal, S._("Erasing files...")));
 					OnProgressChanged(this, new ProgressChangedEventArgs(step,
-						new TaskProgressChangedEventArgs(paths[i], 0, method.Passes)));
+						new TaskProgressChangedEventArgs(info.FullName, 0, method.Passes)));
 
 					//Remove the read-only flag, if it is set.
 					if (isReadOnly = info.IsReadOnly)
@@ -296,6 +325,18 @@ namespace Eraser.DefaultPlugins
 					if (isReadOnly && info.Exists && !info.IsReadOnly)
 						info.IsReadOnly = isReadOnly;
 				}
+			}
+		}
+
+		/// <summary>
+		/// The weight attached with the erase process, so that tasks can depend on
+		/// the erase task without it using up all the weights allocated.
+		/// </summary>
+		protected virtual float EraseWeight
+		{
+			get
+			{
+				return 1.0f;
 			}
 		}
 	}

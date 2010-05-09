@@ -198,6 +198,9 @@
   <data name="Invalid file path" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -211,9 +214,6 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Files in Folder" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
@@ -235,6 +235,12 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Securely move {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Copying source file to destination" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Erasing incomplete destination file" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Select the Source folder" xml:space="preserve">
