@@ -27,10 +27,11 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using System.IO;
 
 using Eraser.Manager;
 using Eraser.Util;
-using System.IO;
+using Eraser.Util.ExtensionMethods;
 
 namespace Eraser.DefaultPlugins
 {
@@ -89,9 +90,40 @@ namespace Eraser.DefaultPlugins
 			get { return new SecureMoveErasureTargetConfigurer(); }
 		}
 
-		protected override List<string> GetPaths(out long totalSize)
+		protected override List<StreamInfo> GetPaths(out long totalSize)
 		{
-			throw new NotImplementedException();
+			totalSize = 0;
+			List<StreamInfo> result = new List<StreamInfo>();
+			if (File.Exists(Path))
+				return result;
+
+			if ((File.GetAttributes(Path) & FileAttributes.Directory) == 0)
+			{
+				FileInfo info = new FileInfo(Path);
+
+				//Add the alternate data streams
+				long adsesSize = 0;
+				result.AddRange(GetPathADSes(info, out adsesSize));
+				totalSize += adsesSize;
+
+				//And the file itself
+				totalSize += info.Length;
+				result.Add(new StreamInfo(info.FullName));
+			}
+			else
+			{
+
+			}
+
+			return result;
+		}
+
+		protected override float EraseWeight
+		{
+			get
+			{
+				return 0.5f;
+			}
 		}
 
 		public override void Execute()
@@ -100,26 +132,82 @@ namespace Eraser.DefaultPlugins
 			if (!File.Exists(Path))
 				return;
 
-			if ((File.GetAttributes(Path) & FileAttributes.Directory) != 0)
+			//Create the progress manager.
+			Progress = new SteppedProgressManager();
+
+			try
 			{
-				DirectoryInfo info = new DirectoryInfo(Path);
-				MoveDirectory(info);
+				//Depending on whether the path is a file or directory, execute the
+				//correct fucntion.
+				if ((File.GetAttributes(Path) & FileAttributes.Directory) != 0)
+				{
+					DirectoryInfo info = new DirectoryInfo(Path);
+					CopyDirectory(info);
+				}
+				else
+				{
+					FileInfo info = new FileInfo(Path);
+					CopyFile(info);
+				}
+
+				//Then erase the source paths.
+				base.Execute();
 			}
-			else
+			finally
 			{
-				FileInfo info = new FileInfo(Path);
-				MoveFile(info);
+				Progress = null;
 			}
 		}
 
-		private void MoveDirectory(DirectoryInfo info)
+		private void CopyDirectory(DirectoryInfo info)
 		{
 			throw new NotImplementedException();
 		}
 
-		private void MoveFile(FileInfo info)
+		private void CopyFile(FileInfo info)
 		{
-			throw new NotImplementedException();
+			ProgressManager copyProgress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(copyProgress, 0.5f,
+				S._("Copying source file to destination")));
+
+			try
+			{
+				info.CopyTo(Destination, delegate(long TotalFileSize, long TotalBytesTransferred)
+					{
+						copyProgress.Completed = TotalBytesTransferred;
+						copyProgress.Total = TotalFileSize;
+						OnProgressChanged(this, new ProgressChangedEventArgs(Progress, 
+							new TaskProgressChangedEventArgs(info.FullName, 1, 1)));
+
+						if (Task.Canceled)
+							return IO.CopyProgressFunctionResult.Stop;
+						return IO.CopyProgressFunctionResult.Continue;
+					});
+			}
+			catch (OperationCanceledException)
+			{
+				//The copy was cancelled: Complete the copy part.
+				copyProgress.MarkComplete();
+
+				//We need to erase the partially copied copy of the file.
+				Task task = new Task();
+				FileErasureTarget fileTarget = new FileErasureTarget();
+				fileTarget.Path = Destination;
+				task.Targets.Add(fileTarget);
+
+				Progress.Steps.Add(new SteppedProgressManagerStep(task.Progress, 0.5f,
+					S._("Erasing incomplete destination file")));
+				task.ProgressChanged += delegate(object sender, ProgressChangedEventArgs e)
+					{
+						OnProgressChanged(this, new ProgressChangedEventArgs(Progress,
+							e.UserState));
+					};
+
+				fileTarget.Execute();
+
+				//Rethrow the exception.
+				throw;
+			}
 		}
 	}
 }
