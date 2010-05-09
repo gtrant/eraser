@@ -75,7 +75,7 @@ namespace Eraser.DefaultPlugins
 			get { return GetType().GUID; }
 		}
 
-		public override long CalculateEraseDataSize(ICollection<string> paths, long targetSize)
+		public override long CalculateEraseDataSize(ICollection<StreamInfo> paths, long targetSize)
 		{
 			//If we have no default or we are the default then throw an exception
 			if (method == null || method.Guid == Guid)

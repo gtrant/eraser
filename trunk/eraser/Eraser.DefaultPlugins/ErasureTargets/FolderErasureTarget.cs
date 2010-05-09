@@ -86,10 +86,10 @@ namespace Eraser.DefaultPlugins
 			get { return new FolderErasureTargetConfigurer(); }
 		}
 
-		protected override List<string> GetPaths(out long totalSize)
+		protected override List<StreamInfo> GetPaths(out long totalSize)
 		{
-			//Get a list to hold all the resulting paths.
-			List<string> result = new List<string>();
+			//Get a list to hold all the resulting streams.
+			List<StreamInfo> result = new List<StreamInfo>();
 
 			//Open the root of the search, including every file matching the pattern
 			DirectoryInfo dir = new DirectoryInfo(Path);
@@ -99,72 +99,40 @@ namespace Eraser.DefaultPlugins
 
 			//Then exclude each file and finalize the list and total file size
 			totalSize = 0;
-			if (ExcludeMask.Length != 0)
+			Regex includePattern = string.IsNullOrEmpty(IncludeMask) ? null :
+				new Regex(
+					Regex.Escape(ExcludeMask).Replace("\\*", ".*").Replace("\\?", "."),
+					RegexOptions.IgnoreCase | RegexOptions.Compiled);
+			Regex excludePattern = string.IsNullOrEmpty(ExcludeMask) ? null :
+				new Regex(
+					Regex.Escape(ExcludeMask).Replace("\\*", ".*").Replace("\\?", "."),
+					RegexOptions.IgnoreCase | RegexOptions.Compiled);
+			foreach (FileInfo file in files)
 			{
-				string regex = Regex.Escape(ExcludeMask).Replace("\\*", ".*").
-					Replace("\\?", ".");
-				Regex excludePattern = new Regex(regex, RegexOptions.IgnoreCase);
-				foreach (FileInfo file in files)
-					if (file.Exists &&
-						(file.Attributes & FileAttributes.ReparsePoint) == 0 &&
-						excludePattern.Matches(file.FullName).Count == 0)
-					{
-						totalSize += file.Length;
-						long adsesSize = 0;
-						GetPathADSes(result, out adsesSize, file.FullName);
-						totalSize += adsesSize;
-						result.Add(file.FullName);
-					}
+				//Check that the file exists and is not a reparse point.
+				if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) == 0)
+					continue;
+
+				//Check that the file is included
+				if (includePattern != null && !includePattern.Match(file.FullName).Success)
+					continue;
+
+				//Check that the file is not excluded
+				if (excludePattern != null && excludePattern.Match(file.FullName).Success)
+					continue;
+
+				//Add the size of the file and its alternate data streams
+				totalSize += file.Length;
+				long adsesSize = 0;
+				result.AddRange(GetPathADSes(file, out adsesSize));
+				totalSize += adsesSize;
+
+				//And the file itself
+				result.Add(new StreamInfo(file.FullName));
 			}
-			else
-				foreach (FileInfo file in files)
-				{
-					if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) != 0)
-						continue;
-
-					//Get the size of the file and its ADSes
-					totalSize += file.Length;
-					long adsesSize = 0;
-					GetPathADSes(result, out adsesSize, file.FullName);
-					totalSize += adsesSize;
-
-					//Append this file to the list of files to erase.
-					result.Add(file.FullName);
-				}
 
 			//Return the filtered list.
 			return result;
-		}
-
-		/// <summary>
-		/// Gets all files in the provided directory.
-		/// </summary>
-		/// <param name="info">The directory to look files in.</param>
-		/// <returns>A list of files found in the directory matching the IncludeMask
-		/// property.</returns>
-		private FileInfo[] GetFiles(DirectoryInfo info)
-		{
-			List<FileInfo> result = new List<FileInfo>();
-			if (info.Exists)
-			{
-				try
-				{
-					foreach (DirectoryInfo dir in info.GetDirectories())
-						result.AddRange(GetFiles(dir));
-
-					if (IncludeMask.Length == 0)
-						result.AddRange(info.GetFiles());
-					else
-						result.AddRange(info.GetFiles(IncludeMask, SearchOption.TopDirectoryOnly));
-				}
-				catch (UnauthorizedAccessException e)
-				{
-					Logger.Log(S._("Could not erase files and subfolders in {0} because {1}",
-						info.FullName, e.Message), LogLevel.Error);
-				}
-			}
-
-			return result.ToArray();
 		}
 
 		/// <summary>

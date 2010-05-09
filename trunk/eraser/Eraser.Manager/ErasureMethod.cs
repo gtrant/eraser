@@ -82,7 +82,7 @@ namespace Eraser.Manager
 		/// total size of the files (the ones that take most computation time)
 		/// are already provided. However some exceptional cases may take a
 		/// long time if the data set is large.</remarks>
-		public abstract long CalculateEraseDataSize(ICollection<string> paths, long targetSize);
+		public abstract long CalculateEraseDataSize(ICollection<StreamInfo> paths, long targetSize);
 
 		/// <summary>
 		/// The main bit of the class! This function is called whenever data has
@@ -284,7 +284,7 @@ namespace Eraser.Manager
 			get;
 		}
 
-		public override long CalculateEraseDataSize(ICollection<string> paths, long targetSize)
+		public override long CalculateEraseDataSize(ICollection<StreamInfo> paths, long targetSize)
 		{
 			//Simple. Amount of data multiplied by passes.
 			return targetSize * Passes;
@@ -375,7 +375,7 @@ namespace Eraser.Manager
 				get { return Guid.Empty; }
 			}
 
-			public override long CalculateEraseDataSize(ICollection<string> paths, long targetSize)
+			public override long CalculateEraseDataSize(ICollection<StreamInfo> paths, long targetSize)
 			{
 				throw new InvalidOperationException("The DefaultMethod class should never " +
 					"be used and should instead be replaced before execution!");

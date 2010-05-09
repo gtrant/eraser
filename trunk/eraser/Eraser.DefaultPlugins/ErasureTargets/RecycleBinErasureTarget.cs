@@ -63,14 +63,16 @@ namespace Eraser.DefaultPlugins
 			get { return new RecycleBinErasureTargetConfigurer(); }
 		}
 
-		protected override List<string> GetPaths(out long totalSize)
+		protected override List<StreamInfo> GetPaths(out long totalSize)
 		{
 			totalSize = 0;
-			List<string> result = new List<string>();
+			List<StreamInfo> result = new List<StreamInfo>();
 			string[] rootDirectory = new string[] {
 					"$RECYCLE.BIN",
 					"RECYCLER"
 				};
+			string userSid = System.Security.Principal.WindowsIdentity.GetCurrent().
+				User.ToString();
 
 			foreach (DriveInfo drive in DriveInfo.GetDrives())
 			{
@@ -79,49 +81,28 @@ namespace Eraser.DefaultPlugins
 					DirectoryInfo dir = new DirectoryInfo(
 						System.IO.Path.Combine(
 							System.IO.Path.Combine(drive.Name, rootDir),
-							System.Security.Principal.WindowsIdentity.GetCurrent().
-								User.ToString()));
+							userSid));
 					if (!dir.Exists)
 						continue;
 
-					GetRecyclerFiles(dir, result, ref totalSize);
+					foreach (FileInfo file in GetFiles(dir))
+					{
+						if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) != 0)
+							continue;
+
+						//Add the ADSes
+						long adsSize = 0;
+						result.AddRange(GetPathADSes(file, out adsSize));
+						totalSize += adsSize;
+
+						//Then the file itself
+						totalSize += file.Length;
+						result.Add(new StreamInfo(file.FullName));
+					}
 				}
 			}
 
 			return result;
-		}
-
-		/// <summary>
-		/// Retrieves all files within this folder, without exclusions.
-		/// </summary>
-		/// <param name="info">The DirectoryInfo object representing the folder to traverse.</param>
-		/// <param name="paths">The list of files to store path information in.</param>
-		/// <param name="totalSize">Receives the total size of the files.</param>
-		private void GetRecyclerFiles(DirectoryInfo info, List<string> paths,
-			ref long totalSize)
-		{
-			try
-			{
-				foreach (FileInfo fileInfo in info.GetFiles())
-				{
-					if (!fileInfo.Exists || (fileInfo.Attributes & FileAttributes.ReparsePoint) != 0)
-						continue;
-
-					long adsSize = 0;
-					GetPathADSes(paths, out adsSize, fileInfo.FullName);
-					totalSize += adsSize;
-					totalSize += fileInfo.Length;
-					paths.Add(fileInfo.FullName);
-				}
-
-				foreach (DirectoryInfo directoryInfo in info.GetDirectories())
-					if ((directoryInfo.Attributes & FileAttributes.ReparsePoint) == 0)
-						GetRecyclerFiles(directoryInfo, paths, ref totalSize);
-			}
-			catch (UnauthorizedAccessException e)
-			{
-				Logger.Log(e.Message, LogLevel.Error);
-			}
 		}
 
 		/// <summary>
