@@ -488,6 +488,10 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				case ShellActions.EraseNow:
 					foreach (string path in args.PositionalArguments)
 					{
+						//If the path doesn't exist, skip the file
+						if (!File.Exists(path))
+							continue;
+
 						FileSystemObjectErasureTarget target = null;
 						if ((File.GetAttributes(path) & FileAttributes.Directory) != 0)
 						{

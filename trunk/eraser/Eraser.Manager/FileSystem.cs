@@ -140,20 +140,28 @@ namespace Eraser.Manager
 							"but no decoy files were found. The current file has been only " +
 							"replaced with random data."));
 
+					//Get an item from the list of files, and then check that the item exists.
 					int index = prng.Next(entries.Count - 1);
-					if ((File.GetAttributes(entries[index]) & FileAttributes.Directory) != 0)
+					shadowFile = entries[index];
+					if (File.Exists(shadowFile))
 					{
-						DirectoryInfo dir = new DirectoryInfo(entries[index]);
-						FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
-						foreach (FileInfo f in files)
-							entries.Add(f.FullName);
+						if ((File.GetAttributes(shadowFile) & FileAttributes.Directory) != 0)
+						{
+							DirectoryInfo dir = new DirectoryInfo(shadowFile);
+							FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
+							entries.Capacity += files.Length;
+							foreach (FileInfo f in files)
+								entries.Add(f.FullName);
+						}
+						else
+							shadowFile = entries[index];
 					}
 					else
-						shadowFile = entries[index];
+						shadowFile = null;
 
 					entries.RemoveAt(index);
 				}
-				while (shadowFile == null || shadowFile.Length == 0 || !File.Exists(shadowFile));
+				while (string.IsNullOrEmpty(shadowFile));
 				shadowFileInfo = new FileInfo(shadowFile);
 			}
 
