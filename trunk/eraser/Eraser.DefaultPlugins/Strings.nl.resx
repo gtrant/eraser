@@ -249,10 +249,10 @@
   <data name="Select the Source file" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Save moved file as" xml:space="preserve">
+  <data name="Move Source folder to:" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Move Source folder to:" xml:space="preserve">
+  <data name="Save Source file to" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Unused disk space" xml:space="preserve">
