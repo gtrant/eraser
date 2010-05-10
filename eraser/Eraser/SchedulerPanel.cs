@@ -533,7 +533,11 @@ namespace Eraser
 				Task task = new Task();
 				if (files != null)
 					foreach (string file in files)
-					{	
+					{
+						//If the path doesn't exist, skip the file
+						if (!File.Exists(file))
+							continue;
+
 						FileSystemObjectErasureTarget target;
 						if ((File.GetAttributes(file) & FileAttributes.Directory) != 0)
 							target = new FolderErasureTarget();
