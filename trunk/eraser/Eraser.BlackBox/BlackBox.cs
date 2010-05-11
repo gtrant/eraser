@@ -660,6 +660,9 @@ namespace Eraser.BlackBox
 				}
 				catch (WebException e)
 				{
+					if (e.Response == null)
+						throw;
+
 					using (Stream responseStream = e.Response.GetResponseStream())
 					{
 						try
@@ -781,6 +784,9 @@ namespace Eraser.BlackBox
 				}
 				catch (WebException e)
 				{
+					if (e.Response == null)
+						throw;
+
 					using (Stream responseStream = e.Response.GetResponseStream())
 					{
 						try
@@ -831,7 +837,7 @@ namespace Eraser.BlackBox
 		/// The URI to the BlackBox server.
 		/// </summary>
 		private static readonly Uri BlackBoxServer =
-			new Uri("http://eraser.heidi.ie/scripts/blackbox/upload.php");
+			new Uri("http://eraser.lowfamily.uni.cc/scripts/blackbox/upload.php?XDEBUG_SESSION_START=netbeans-xdebug");
 
 		/// <summary>
 		/// The report being uploaded.
