@@ -43,7 +43,7 @@ function QueryStatus($stackTrace)
 			continue;
 		
 		//Query for the list of exceptions containing the given functions
-		$statement = $pdo->query(sprintf('SELECT DISTINCT(BlackBox_Exceptions.ID) FROM BlackBox_StackFrames
+		$statement = $pdo->prepare(sprintf('SELECT DISTINCT(BlackBox_Exceptions.ID) FROM BlackBox_StackFrames
 			INNER JOIN BlackBox_Exceptions ON BlackBox_StackFrames.ExceptionID=BlackBox_Exceptions.ID
 			WHERE (%s) AND ExceptionDepth=? AND ExceptionType=?',
 			substr($stackFrames, 0, strlen($stackFrames) - 4)));
