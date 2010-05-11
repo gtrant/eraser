@@ -255,6 +255,9 @@
   <data name="Save Source file to" xml:space="preserve">
     <value>Muover la cartella sorgente in:</value>
   </data>
+  <data name="Save Source file to" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Unused disk space" xml:space="preserve">
     <value>Spazio disco libero</value>
   </data>
