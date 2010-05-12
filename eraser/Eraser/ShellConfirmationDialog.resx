@@ -142,8 +142,9 @@
   <data name="NoBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 27</value>
   </data>
-  <data name="Message.Location" type="System.Drawing.Point, System.Drawing">
-    <value>58, 9</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="NoBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;NoBtn.Parent" xml:space="preserve">
     <value>$this</value>
@@ -173,7 +174,6 @@
   <data name="NoBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Image.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -185,9 +185,6 @@
   </data>
   <data name="OptionsButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
-  </data>
-  <data name="NoBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
   </data>
   <data name="&gt;&gt;NoBtn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -215,6 +212,9 @@
   </data>
   <data name="&gt;&gt;Message.Name" xml:space="preserve">
     <value>Message</value>
+  </data>
+  <data name="Message.Location" type="System.Drawing.Point, System.Drawing">
+    <value>58, 9</value>
   </data>
   <data name="&gt;&gt;OptionsButton.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -278,8 +278,5 @@
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Italian</value>
   </metadata>
 </root>
