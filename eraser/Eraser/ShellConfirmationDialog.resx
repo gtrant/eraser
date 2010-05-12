@@ -117,166 +117,169 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Message.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;OptionsButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Message.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;OptionsButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Image.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Message.Size" type="System.Drawing.Size, System.Drawing">
-    <value>281, 15</value>
-  </data>
-  <data name="NoBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 27</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="NoBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;NoBtn.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="YesBtn.Text" xml:space="preserve">
-    <value>Yes</value>
+  <data name="Image.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 9</value>
   </data>
   <data name="Image.Size" type="System.Drawing.Size, System.Drawing">
     <value>40, 40</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="NoBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="OptionsButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 70</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Erase Items</value>
-  </data>
-  <data name="Image.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 9</value>
-  </data>
-  <data name="Message.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
-  </data>
-  <data name="NoBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Image.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="YesBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>275, 70</value>
-  </data>
-  <data name="YesBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="OptionsButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;NoBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;NoBtn.Name" xml:space="preserve">
-    <value>NoBtn</value>
-  </data>
-  <data name="Message.Text" xml:space="preserve">
-    <value>Are you sure you want to erase the selected items?</value>
-  </data>
-  <data name="YesBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="NoBtn.Text" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="&gt;&gt;YesBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;Image.Name" xml:space="preserve">
     <value>Image</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>479, 107</value>
-  </data>
-  <data name="&gt;&gt;Message.Name" xml:space="preserve">
-    <value>Message</value>
-  </data>
-  <data name="Message.Location" type="System.Drawing.Point, System.Drawing">
-    <value>58, 9</value>
-  </data>
-  <data name="&gt;&gt;OptionsButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Message.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;YesBtn.Name" xml:space="preserve">
-    <value>YesBtn</value>
-  </data>
-  <data name="&gt;&gt;Message.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;OptionsButton.Name" xml:space="preserve">
-    <value>OptionsButton</value>
-  </data>
-  <data name="OptionsButton.Text" xml:space="preserve">
-    <value>Options...</value>
-  </data>
   <data name="&gt;&gt;Image.Type" xml:space="preserve">
     <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;YesBtn.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
-    <value>CenterScreen</value>
-  </data>
-  <data name="NoBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>377, 70</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>7, 15</value>
+  <data name="&gt;&gt;Image.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
   <data name="&gt;&gt;Image.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;NoBtn.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="Message.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;YesBtn.Parent" xml:space="preserve">
+  <data name="Message.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="Message.Location" type="System.Drawing.Point, System.Drawing">
+    <value>58, 9</value>
+  </data>
+  <data name="Message.Size" type="System.Drawing.Size, System.Drawing">
+    <value>281, 15</value>
+  </data>
+  <data name="Message.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="Message.Text" xml:space="preserve">
+    <value>Are you sure you want to erase the selected items?</value>
+  </data>
+  <data name="&gt;&gt;Message.Name" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="&gt;&gt;Message.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Message.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>ShellConfirmationDialog</value>
+  <data name="&gt;&gt;Message.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="YesBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="YesBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>275, 70</value>
   </data>
   <data name="YesBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 27</value>
   </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 5, 2, 5</value>
+  <data name="YesBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="YesBtn.Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="&gt;&gt;YesBtn.Name" xml:space="preserve">
+    <value>YesBtn</value>
+  </data>
+  <data name="&gt;&gt;YesBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;YesBtn.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;YesBtn.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="NoBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="NoBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="NoBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>377, 70</value>
+  </data>
+  <data name="NoBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 27</value>
+  </data>
+  <data name="NoBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="NoBtn.Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="&gt;&gt;NoBtn.Name" xml:space="preserve">
+    <value>NoBtn</value>
+  </data>
+  <data name="&gt;&gt;NoBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;NoBtn.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;NoBtn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="OptionsButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 70</value>
   </data>
   <data name="OptionsButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 27</value>
   </data>
+  <data name="OptionsButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="OptionsButton.Text" xml:space="preserve">
+    <value>Options...</value>
+  </data>
+  <data name="&gt;&gt;OptionsButton.Name" xml:space="preserve">
+    <value>OptionsButton</value>
+  </data>
+  <data name="&gt;&gt;OptionsButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;OptionsButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;OptionsButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Italian</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>7, 15</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>479, 107</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 5, 2, 5</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Erase Items</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>ShellConfirmationDialog</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
