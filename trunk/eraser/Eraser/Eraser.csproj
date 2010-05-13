@@ -211,6 +211,9 @@
     <EmbeddedResource Include="SettingsPanel.it.resx">
       <DependentUpon>SettingsPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ShellConfirmationDialog.it.resx">
+      <DependentUpon>ShellConfirmationDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ShellConfirmationDialog.resx">
       <DependentUpon>ShellConfirmationDialog.cs</DependentUpon>
     </EmbeddedResource>
