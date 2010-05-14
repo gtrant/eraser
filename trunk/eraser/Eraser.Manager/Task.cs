@@ -117,7 +117,7 @@ namespace Eraser.Manager
 					return Name;
 
 				string result = string.Empty;
-				if ( Targets.Count == 0)
+				if (Targets.Count == 0)
 					return result;
 				else if (Targets.Count < 5)
 				{
