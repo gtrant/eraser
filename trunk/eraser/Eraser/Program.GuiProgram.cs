@@ -102,14 +102,14 @@ namespace Eraser
 				//can connect and give us subsequent command lines.
 				if (IsFirstInstance)
 				{
+					//Initialise and run the program.
+					InitInstanceEventArgs eventArgs = new InitInstanceEventArgs();
+					OnInitInstance(this, eventArgs);
+					if (MainForm == null)
+						return;
+
 					try
 					{
-						//Initialise and run the program.
-						InitInstanceEventArgs eventArgs = new InitInstanceEventArgs();
-						OnInitInstance(this, eventArgs);
-						if (MainForm == null)
-							return;
-
 						//Create the pipe server which will handle connections to us
 						PipeServer = new Thread(ServerMain);
 						PipeServer.Start();
@@ -126,7 +126,8 @@ namespace Eraser
 					}
 					finally
 					{
-						PipeServer.Abort();
+						if (PipeServer != null)
+							PipeServer.Abort();
 					}
 				}
 
