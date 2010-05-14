@@ -113,11 +113,13 @@ namespace Eraser.Manager
 			get
 			{
 				//Simple case, the task name was given by the user.
-				if (Name.Length != 0)
+				if (!string.IsNullOrEmpty(Name))
 					return Name;
 
 				string result = string.Empty;
-				if (Targets.Count < 5)
+				if ( Targets.Count == 0)
+					return result;
+				else if (Targets.Count < 5)
 				{
 					//Simpler case, small set of data.
 					foreach (ErasureTarget tgt in Targets)
