@@ -219,6 +219,9 @@
   <data name="An invalid type was found when loading the task schedule" xml:space="preserve">
     <value>Un tipo non valido è stato trovato durante il caricamento della pianificazione dell'operazione</value>
   </data>
+  <data name="{0}, " xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
     <value>{0} e {1} altri target</value>
   </data>

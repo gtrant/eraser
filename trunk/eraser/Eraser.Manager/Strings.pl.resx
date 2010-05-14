@@ -219,6 +219,9 @@
   <data name="An invalid type was found when loading the task schedule" xml:space="preserve">
     <value>Podczas ładowania napotkano niewłaściwy typ harmonogramu zadań</value>
   </data>
+  <data name="{0}, " xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="{0} and {1} other targets" xml:space="preserve">
     <value>{0} i {1} inne cele</value>
   </data>
