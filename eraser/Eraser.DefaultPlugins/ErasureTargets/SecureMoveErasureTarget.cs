@@ -93,7 +93,7 @@ namespace Eraser.DefaultPlugins
 		protected override List<StreamInfo> GetPaths()
 		{
 			List<StreamInfo> result = new List<StreamInfo>();
-			if (!File.Exists(Path))
+			if (!(File.Exists(Path) || Directory.Exists(Path)))
 				return result;
 
 			FileInfo[] files = null;
@@ -117,16 +117,18 @@ namespace Eraser.DefaultPlugins
 		public override void Execute()
 		{
 			//If the path doesn't exist, exit.
-			if (!File.Exists(Path))
+			if (!File.Exists(Path) && !Directory.Exists(Path))
 				return;
 
 			//Create the progress manager.
 			Progress = new SteppedProgressManager();
+			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress,
+				1.0f / Task.Targets.Count));
 
 			try
 			{
 				//Depending on whether the path is a file or directory, execute the
-				//correct fucntion.
+				//correct function.
 				if ((File.GetAttributes(Path) & FileAttributes.Directory) != 0)
 				{
 					DirectoryInfo info = new DirectoryInfo(Path);
@@ -157,8 +159,8 @@ namespace Eraser.DefaultPlugins
 			{
 				//Compute the total size of the file on the disk (including ADSes)
 				List<StreamInfo> fileStreams = new List<StreamInfo>(
-					file.GetADSes().Select(x => new StreamInfo(info.FullName, x)));
-				fileStreams.Add(new StreamInfo(info.FullName));
+					file.GetADSes().Select(x => new StreamInfo(file.FullName, x)));
+				fileStreams.Add(new StreamInfo(file.FullName));
 				long fileSize = fileStreams.Sum(x => x.Length);
 
 				SteppedProgressManager fileProgress = new SteppedProgressManager();
@@ -173,11 +175,18 @@ namespace Eraser.DefaultPlugins
 
 				try
 				{
-					//Compute the path to the new file.
-					Uri sourceDir = new Uri(Path);
-					Uri currentDir = new Uri(file.FullName).MakeRelativeUri(sourceDir);
+					//Compute the path to the new directory.
+					DirectoryInfo sourceDirectory = file.Directory;
+					DirectoryInfo destDirectory = new DirectoryInfo(
+						SourceToDestinationPath(file.DirectoryName));
 
-					file.CopyTo(Destination, delegate(long TotalFileSize, long TotalBytesTransferred)
+					//Make sure all necessary folders exist before the copy.
+					if (!destDirectory.Exists)
+						destDirectory.Create();
+					
+					//Then copy the file.
+					file.CopyTo(System.IO.Path.Combine(destDirectory.FullName, file.Name),
+						delegate(long TotalFileSize, long TotalBytesTransferred)
 						{
 							return CopyProgress(copyProgress, file, TotalFileSize,
 								TotalBytesTransferred);
@@ -204,17 +213,65 @@ namespace Eraser.DefaultPlugins
 					(totalPasses - 1) / totalPasses));
 				EraseFile(file, eraseProgress);
 			}
+
+			//Then copy the timestamps from the source folders and delete the source.
+			ProgressManager folderDeleteProgress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(folderDeleteProgress, 0.0f,
+				S._("Removing folders...")));
+
+			Action<DirectoryInfo> CopyTimesAndDelete = null;
+			CopyTimesAndDelete = delegate(DirectoryInfo subDirectory)
+			{
+				foreach (DirectoryInfo child in subDirectory.GetDirectories())
+					CopyTimesAndDelete(child);
+
+				//Update progress.
+				OnProgressChanged(this, new ProgressChangedEventArgs(folderDeleteProgress,
+					new TaskProgressChangedEventArgs(subDirectory.FullName, 1, 1)));
+
+				//Get the directory which we copied to and copy the file times to the
+				//destination directory
+				DirectoryInfo destDirectory = new DirectoryInfo(
+					SourceToDestinationPath(subDirectory.FullName));
+				if (!destDirectory.Exists)
+					destDirectory.Create();
+				destDirectory.CopyTimes(subDirectory);
+
+				//Then delete the source directory.
+				FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+					VolumeInfo.FromMountPoint(Path)];
+				fsManager.DeleteFolder(subDirectory);
+			};
+			CopyTimesAndDelete(info);
+		}
+
+		/// <summary>
+		/// Converts the source path to the destination path.
+		/// </summary>
+		/// <param name="sourcePath">The source path to convert.</param>
+		/// <returns>The destination path that the file would have been moved to.</returns>
+		private string SourceToDestinationPath(string sourcePath)
+		{
+			DirectoryInfo source = new DirectoryInfo(Path);
+			string baseDir = System.IO.Path.Combine(Destination, source.Name);
+			return System.IO.Path.Combine(baseDir,
+				Shell.MakeRelativeTo(source, sourcePath));
 		}
 
 		private void CopyFile(FileInfo info)
 		{
 			ProgressManager copyProgress = new ProgressManager();
 			Progress.Steps.Add(new SteppedProgressManagerStep(copyProgress, 0.5f,
-				S._("Copying source files to destination")));
+				S._("Copying source files to destination...")));
 
 			try
 			{
-				info.CopyTo(Destination, delegate(long TotalFileSize, long TotalBytesTransferred)
+				//Make sure all necessary folders exist before the copy.
+				Directory.CreateDirectory(Destination);
+
+				//Then copy the file.
+				string path = System.IO.Path.Combine(Destination, info.Name);
+				info.CopyTo(path, delegate(long TotalFileSize, long TotalBytesTransferred)
 					{
 						return CopyProgress(copyProgress, info, TotalFileSize,
 							TotalBytesTransferred);

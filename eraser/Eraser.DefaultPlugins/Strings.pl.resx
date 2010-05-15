@@ -243,6 +243,12 @@
   <data name="Erasing incomplete destination file" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Securely moving files and folders..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Copying source files to destination..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Select the Source folder" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

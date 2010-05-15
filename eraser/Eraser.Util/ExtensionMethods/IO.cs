@@ -38,6 +38,17 @@ namespace Eraser.Util.ExtensionMethods
 	public static class IO
 	{
 		/// <summary>
+		/// Copies the file times from the provided file.
+		/// </summary>
+		/// <param name="rhs">The file times to copy from.</param>
+		public static void CopyTimes(this FileSystemInfo lhs, FileSystemInfo rhs)
+		{
+			lhs.CreationTimeUtc = rhs.CreationTimeUtc;
+			lhs.LastAccessTimeUtc = rhs.LastAccessTimeUtc;
+			lhs.LastWriteTimeUtc = rhs.LastWriteTimeUtc;
+		}
+
+		/// <summary>
 		/// Copies an existing file to a new file, allowing the monitoring of the progress
 		/// of the copy operation.
 		/// </summary>
