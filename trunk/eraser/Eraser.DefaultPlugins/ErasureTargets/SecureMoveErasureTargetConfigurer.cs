@@ -54,7 +54,8 @@ namespace Eraser.DefaultPlugins
 			fromTxt.Text = secureMove.Path;
 			toTxt.Text = secureMove.Destination;
 
-			moveFolderRadio.Checked = File.Exists(secureMove.Path) &&
+			moveFolderRadio.Checked =
+				File.Exists(secureMove.Path) || Directory.Exists(secureMove.Path) &&
 				(File.GetAttributes(secureMove.Path) & FileAttributes.Directory) != 0;
 		}
 

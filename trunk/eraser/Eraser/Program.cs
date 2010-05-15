@@ -489,7 +489,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					foreach (string path in args.PositionalArguments)
 					{
 						//If the path doesn't exist, skip the file
-						if (!File.Exists(path))
+						if (!(File.Exists(path) || Directory.Exists(path)))
 							continue;
 
 						FileSystemObjectErasureTarget target = null;

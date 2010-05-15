@@ -117,7 +117,7 @@ namespace Eraser.DefaultPlugins
 		public override void Execute()
 		{
 			//If the path doesn't exist, exit.
-			if (!File.Exists(Path) && !Directory.Exists(Path))
+			if (!(File.Exists(Path) || Directory.Exists(Path)))
 				return;
 
 			//Create the progress manager.
