@@ -243,6 +243,9 @@
   <data name="Erasing incomplete destination file" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Erasing source files..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Copying source files to destination..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

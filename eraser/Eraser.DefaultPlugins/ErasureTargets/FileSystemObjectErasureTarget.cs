@@ -214,10 +214,6 @@ namespace Eraser.DefaultPlugins
 			List<StreamInfo> paths = GetPaths();
 			long dataTotal = paths.Sum(x => x.Length);
 
-			//Get the erasure method if the user specified he wants the default.
-			ErasureMethod method = EffectiveMethod;
-			dataTotal = method.CalculateEraseDataSize(paths, dataTotal);
-
 			//Set the event's current target status.
 			if (Progress == null)
 				throw new InvalidOperationException("The Progress property must not be null.");

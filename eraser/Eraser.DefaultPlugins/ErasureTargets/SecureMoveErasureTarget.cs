@@ -210,7 +210,8 @@ namespace Eraser.DefaultPlugins
 				//We copied the file over; erase the source file
 				SteppedProgressManager eraseProgress = new SteppedProgressManager();
 				fileProgress.Steps.Add(new SteppedProgressManagerStep(eraseProgress,
-					(totalPasses - 1) / totalPasses));
+					(totalPasses - 1) / (float)totalPasses,
+					S._("Erasing source files...")));
 				EraseFile(file, eraseProgress);
 			}
 
@@ -261,7 +262,8 @@ namespace Eraser.DefaultPlugins
 		private void CopyFile(FileInfo info)
 		{
 			ProgressManager copyProgress = new ProgressManager();
-			Progress.Steps.Add(new SteppedProgressManagerStep(copyProgress, 0.5f,
+			int totalPasses = 1 + EffectiveMethod.Passes;
+			Progress.Steps.Add(new SteppedProgressManagerStep(copyProgress, 1.0f / totalPasses,
 				S._("Copying source files to destination...")));
 
 			try
@@ -292,7 +294,15 @@ namespace Eraser.DefaultPlugins
 				throw;
 			}
 
-			base.Execute();
+			//Mark the copy as complete.
+			copyProgress.MarkComplete();
+
+			//Erase the source copy.
+			SteppedProgressManager eraseProgress = new SteppedProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(eraseProgress,
+				(totalPasses - 1) / totalPasses,
+				S._("Erasing source files...")));
+			EraseFile(info, eraseProgress);
 		}
 
 		/// <summary>
