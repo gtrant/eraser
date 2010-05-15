@@ -62,6 +62,7 @@ namespace Eraser.Util
 			switch (errorCode)
 			{
 				case NoError:			return null;
+				case NotReady:			return new IOException();
 				case RequestAborted:	return new OperationCanceledException();
 				case SharingViolation:	return new SharingViolationException();
 			}

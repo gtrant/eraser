@@ -104,6 +104,9 @@ namespace Eraser.Util
 					int errorCode = Marshal.GetLastWin32Error();
 					switch (errorCode)
 					{
+						case Win32ErrorCode.NotReady:
+							//The drive isn't ready yet: just return an empty list.
+							return result;
 						case Win32ErrorCode.MoreData:
 							pathNamesBuffer.EnsureCapacity((int)returnLength);
 							break;
