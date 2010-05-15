@@ -555,12 +555,16 @@ namespace Eraser {
 					return E_ABORT;
 			}
 
+			if (*DragDropDestinationDirectory.rbegin() == '\\')
+				DragDropDestinationDirectory += '\\';
 			commandLine += L"\"/destination=" + DragDropDestinationDirectory + L"\"";
 			break;
 
 		case ACTION_SECURE_PASTE:
 			{
 				//Set the destination for the paste operation.
+				if (*DragDropDestinationDirectory.rbegin() == '\\')
+					DragDropDestinationDirectory += '\\';
 				commandLine += L"\"/destination=" + DragDropDestinationDirectory + L"\"";
 
 				//Query the files from the clipboard.
@@ -591,7 +595,10 @@ namespace Eraser {
 		for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
 			i != SelectedFiles.end(); ++i)
 		{
-			commandLine += L"\"" + *i + L"\" ";
+			std::wstring path(*i);
+			if (path[path.length() - 1] == '\\')
+				path += '\\';
+			commandLine += L" \"" + path + L"\"";
 		}
 
 		try
@@ -1031,6 +1038,7 @@ namespace Eraser {
 			wcscpy_s(&buffer.front(), buffer.size(), (L"\"" + eraserPath + L"\" " +
 				finalParameters).c_str());
 
+			MessageBox(NULL, &buffer.front(), L"", MB_OK);
 			if (!CreateProcess(NULL, &buffer.front(), NULL, NULL, true, CREATE_NO_WINDOW,
 				NULL, NULL, &startupInfo, &processInfo))
 			{
