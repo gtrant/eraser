@@ -93,7 +93,7 @@ namespace Eraser.DefaultPlugins
 		protected override List<StreamInfo> GetPaths()
 		{
 			List<StreamInfo> result = new List<StreamInfo>();
-			if (File.Exists(Path))
+			if (!File.Exists(Path))
 				return result;
 
 			if ((File.GetAttributes(Path) & FileAttributes.Directory) == 0)
