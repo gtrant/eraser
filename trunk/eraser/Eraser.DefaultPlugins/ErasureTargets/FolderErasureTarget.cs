@@ -86,7 +86,7 @@ namespace Eraser.DefaultPlugins
 			get { return new FolderErasureTargetConfigurer(); }
 		}
 
-		protected override List<StreamInfo> GetPaths(out long totalSize)
+		protected override List<StreamInfo> GetPaths()
 		{
 			//Get a list to hold all the resulting streams.
 			List<StreamInfo> result = new List<StreamInfo>();
@@ -98,7 +98,6 @@ namespace Eraser.DefaultPlugins
 			FileInfo[] files = GetFiles(dir);
 
 			//Then exclude each file and finalize the list and total file size
-			totalSize = 0;
 			Regex includePattern = string.IsNullOrEmpty(IncludeMask) ? null :
 				new Regex(
 					Regex.Escape(ExcludeMask).Replace("\\*", ".*").Replace("\\?", "."),
@@ -122,10 +121,7 @@ namespace Eraser.DefaultPlugins
 					continue;
 
 				//Add the size of the file and its alternate data streams
-				totalSize += file.Length;
-				long adsesSize = 0;
-				result.AddRange(GetPathADSes(file, out adsesSize));
-				totalSize += adsesSize;
+				result.AddRange(GetPathADSes(file));
 
 				//And the file itself
 				result.Add(new StreamInfo(file.FullName));
@@ -157,59 +153,70 @@ namespace Eraser.DefaultPlugins
 		public override void Execute()
 		{
 			Progress = new SteppedProgressManager();
+
 			try
 			{
 				base.Execute();
 
-				//If the user requested a folder removal, do it.
-				if (Directory.Exists(Path))
-				{
-					ProgressManager step = new ProgressManager();
-					Progress.Steps.Add(new SteppedProgressManagerStep(step,
-						0.0f, S._("Removing folders...")));
-
-					//Remove all subfolders which are empty.
-					FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
-						VolumeInfo.FromMountPoint(Path)];
-					Action<DirectoryInfo> eraseEmptySubFolders = null;
-					eraseEmptySubFolders = delegate(DirectoryInfo info)
-					{
-						foreach (DirectoryInfo subDir in info.GetDirectories())
-							eraseEmptySubFolders(subDir);
-						OnProgressChanged(this, new ProgressChangedEventArgs(step,
-							new TaskProgressChangedEventArgs(info.FullName, 0, 0)));
-
-						FileSystemInfo[] files = info.GetFileSystemInfos();
-						if (files.Length == 0)
-							fsManager.DeleteFolder(info);
-					};
-
-					DirectoryInfo directory = new DirectoryInfo(Path);
-					foreach (DirectoryInfo subDir in directory.GetDirectories())
-						eraseEmptySubFolders(subDir);
-
-					if (DeleteIfEmpty)
-					{
-						//See if this is the root of a volume.
-						bool isVolumeRoot = directory.Parent == null;
-						foreach (VolumeInfo volume in VolumeInfo.Volumes)
-							foreach (string mountPoint in volume.MountPoints)
-								if (directory.FullName == mountPoint)
-									isVolumeRoot = true;
-
-						//If the folder is a mount point, then don't delete it. If it isn't,
-						//search for files under the folder to see if it is empty.
-						if (!isVolumeRoot && directory.Exists &&
-							directory.GetFiles("*", SearchOption.AllDirectories).Length == 0)
-						{
-							fsManager.DeleteFolder(directory);
-						}
-					}
-				}
+				//Remove the contents of the folder, deleting the folder if it is empty
+				//at the end of it.
+				EraseFolder();
 			}
 			finally
 			{
 				Progress = null;
+			}
+		}
+
+		/// <summary>
+		/// Erases the folder after all files have been deleted. This folder does not
+		/// delete folders which have files within it.
+		/// </summary>
+		private void EraseFolder()
+		{
+			//Update the progress to show that folders are being removed.
+			ProgressManager step = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(step,
+				0.0f, S._("Removing folders...")));
+
+			//Remove all subfolders which are empty.
+			FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+				VolumeInfo.FromMountPoint(Path)];
+			DirectoryInfo directory = new DirectoryInfo(Path);
+				foreach (DirectoryInfo subDir in directory.GetDirectories())
+					EraseFolder(subDir, step);
+
+			if (DeleteIfEmpty)
+			{
+				//See if this is the root of a volume.
+				bool isVolumeRoot = directory.Parent == null;
+				foreach (VolumeInfo volume in VolumeInfo.Volumes)
+					foreach (string mountPoint in volume.MountPoints)
+						if (directory.FullName == mountPoint)
+							isVolumeRoot = true;
+
+				//If the folder is a mount point, then don't delete it. If it isn't,
+				//search for files under the folder to see if it is empty.
+				if (!isVolumeRoot && directory.Exists &&
+					directory.GetFiles("*", SearchOption.AllDirectories).Length == 0)
+				{
+					fsManager.DeleteFolder(directory);
+				}
+			}
+		}
+
+		private void EraseFolder(DirectoryInfo info, ProgressManager progress)
+		{
+			foreach (DirectoryInfo subDir in info.GetDirectories())
+				EraseFolder(subDir, progress);
+			OnProgressChanged(this, new ProgressChangedEventArgs(progress,
+				new TaskProgressChangedEventArgs(info.FullName, 0, 0)));
+
+			FileSystemInfo[] files = info.GetFileSystemInfos();
+			if (files.Length == 0)
+			{
+				ManagerLibrary.Instance.FileSystemRegistrar[
+					VolumeInfo.FromMountPoint(Path)].DeleteFolder(info);
 			}
 		}
 	}

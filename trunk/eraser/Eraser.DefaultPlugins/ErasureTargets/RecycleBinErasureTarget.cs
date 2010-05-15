@@ -58,14 +58,24 @@ namespace Eraser.DefaultPlugins
 			get { return S._("Recycle Bin"); }
 		}
 
+		/// <summary>
+		/// Retrieves the text to display representing this task.
+		/// </summary>
+		public override string UIText
+		{
+			get
+			{
+				return S._("Recycle Bin");
+			}
+		}
+
 		public override IErasureTargetConfigurer Configurer
 		{
 			get { return new RecycleBinErasureTargetConfigurer(); }
 		}
 
-		protected override List<StreamInfo> GetPaths(out long totalSize)
+		protected override List<StreamInfo> GetPaths()
 		{
-			totalSize = 0;
 			List<StreamInfo> result = new List<StreamInfo>();
 			string[] rootDirectory = new string[] {
 					"$RECYCLE.BIN",
@@ -91,12 +101,9 @@ namespace Eraser.DefaultPlugins
 							continue;
 
 						//Add the ADSes
-						long adsSize = 0;
-						result.AddRange(GetPathADSes(file, out adsSize));
-						totalSize += adsSize;
+						result.AddRange(GetPathADSes(file));
 
 						//Then the file itself
-						totalSize += file.Length;
 						result.Add(new StreamInfo(file.FullName));
 					}
 				}
@@ -105,37 +112,33 @@ namespace Eraser.DefaultPlugins
 			return result;
 		}
 
-		/// <summary>
-		/// Retrieves the text to display representing this task.
-		/// </summary>
-		public override string UIText
-		{
-			get
-			{
-				return S._("Recycle Bin");
-			}
-		}
-
 		public override void Execute()
 		{
 			Progress = new SteppedProgressManager();
+
 			try
 			{
 				base.Execute();
 
-				ProgressManager step = new ProgressManager();
-				Progress.Steps.Add(new SteppedProgressManagerStep(step,
-				0.0f, S._("Emptying recycle bin...")));
-				OnProgressChanged(this, new ProgressChangedEventArgs(step,
-					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
-
-				RecycleBin.Empty(EmptyRecycleBinOptions.NoConfirmation |
-					EmptyRecycleBinOptions.NoProgressUI | EmptyRecycleBinOptions.NoSound);
+				//Empty the contents of the Recycle Bin
+				EmptyRecycleBin();
 			}
 			finally
 			{
 				Progress = null;
 			}
+		}
+
+		private void EmptyRecycleBin()
+		{
+			ProgressManager progress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(progress,
+				0.0f, S._("Emptying recycle bin...")));
+			OnProgressChanged(this, new ProgressChangedEventArgs(progress,
+				new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
+
+			RecycleBin.Empty(EmptyRecycleBinOptions.NoConfirmation |
+				EmptyRecycleBinOptions.NoProgressUI | EmptyRecycleBinOptions.NoSound);
 		}
 	}
 }

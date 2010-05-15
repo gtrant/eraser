@@ -83,10 +83,8 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Retrieves the list of files/folders to erase as a list.
 		/// </summary>
-		/// <param name="totalSize">Returns the total size in bytes of the
-		/// items.</param>
 		/// <returns>A list containing the paths to all the files to be erased.</returns>
-		protected abstract List<StreamInfo> GetPaths(out long totalSize);
+		protected abstract List<StreamInfo> GetPaths();
 
 		/// <summary>
 		/// Gets all files in the provided directory.
@@ -94,7 +92,7 @@ namespace Eraser.DefaultPlugins
 		/// <param name="info">The directory to look files in.</param>
 		/// <returns>A list of files found in the directory matching the IncludeMask
 		/// property.</returns>
-		protected FileInfo[] GetFiles(DirectoryInfo info)
+		protected static FileInfo[] GetFiles(DirectoryInfo info)
 		{
 			List<FileInfo> result = new List<FileInfo>();
 			if (info.Exists)
@@ -115,13 +113,12 @@ namespace Eraser.DefaultPlugins
 		}
 
 		/// <summary>
-		/// Adds ADSes of the given file to the list.
+		/// Adds ADSes of the given file to the list, forcing the open handles to the
+		/// files closed if necessary.
 		/// </summary>
 		/// <param name="file">The file to look for ADSes</param>
-		protected StreamInfo[] GetPathADSes(FileInfo file, out long totalSize)
+		protected static StreamInfo[] GetPathADSes(FileInfo file)
 		{
-			totalSize = 0;
-
 			try
 			{
 				//Get the ADS names
@@ -132,7 +129,6 @@ namespace Eraser.DefaultPlugins
 				for (int i = 0; i < adses.Count; ++i)
 				{
 					StreamInfo info = new StreamInfo(file.FullName + ':' + adses[i]);
-					totalSize += info.Length;
 					result[i] = info;
 				}
 			}
@@ -163,7 +159,7 @@ namespace Eraser.DefaultPlugins
 				}
 
 				if (processStr.Length == 0)
-					return GetPathADSes(file, out totalSize);
+					return GetPathADSes(file);
 				else
 					throw;
 			}
@@ -206,13 +202,16 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
+		/// <summary>
+		/// Erases the streams returned by the <see cref="GetPaths"/> function.
+		/// </summary>
 		/// <remarks>The <see cref="Progress"/> property must be defined prior
 		/// to the execution of this function.</remarks>
 		public override void Execute()
 		{
 			//Retrieve the list of files to erase.
-			long dataTotal = 0;
-			List<StreamInfo> paths = GetPaths(out dataTotal);
+			List<StreamInfo> paths = GetPaths();
+			long dataTotal = paths.Sum(x => x.Length);
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = EffectiveMethod;
@@ -222,7 +221,7 @@ namespace Eraser.DefaultPlugins
 			if (Progress == null)
 				throw new InvalidOperationException("The Progress property must not be null.");
 			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress,
-				EraseWeight / Task.Targets.Count));
+				1.0f / Task.Targets.Count));
 
 			//Iterate over every path, and erase the path.
 			for (int i = 0; i < paths.Count; ++i)
@@ -231,11 +230,12 @@ namespace Eraser.DefaultPlugins
 				Progress.Steps.Add(new SteppedProgressManagerStep(step,
 					paths[i].Length / (float)dataTotal, S._("Erasing files...")));
 				EraseStream(paths[i], step);
+				step.MarkComplete();
 			}
 		}
 
 		/// <summary>
-		/// Erases the provided stream, and updates progress using tyhe provided
+		/// Erases the provided stream, and updates progress using the provided
 		/// progress manager.
 		/// </summary>
 		/// <param name="info">The information regarding the stream that needs erasure.</param>
@@ -337,18 +337,6 @@ namespace Eraser.DefaultPlugins
 				//Re-set the read-only flag if the file exists (i.e. there was an error)
 				if (isReadOnly && info.Exists && !info.IsReadOnly)
 					info.IsReadOnly = isReadOnly;
-			}
-		}
-
-		/// <summary>
-		/// The weight attached with the erase process, so that tasks can depend on
-		/// the erase task without it using up all the weights allocated.
-		/// </summary>
-		protected virtual float EraseWeight
-		{
-			get
-			{
-				return 1.0f;
 			}
 		}
 	}
