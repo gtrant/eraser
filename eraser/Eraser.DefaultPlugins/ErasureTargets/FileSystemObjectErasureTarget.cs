@@ -227,104 +227,116 @@ namespace Eraser.DefaultPlugins
 			//Iterate over every path, and erase the path.
 			for (int i = 0; i < paths.Count; ++i)
 			{
-				//Check that the file exists - we do not want to bother erasing nonexistant files
-				StreamInfo info = paths[i];
-				if (!info.Exists)
+				ProgressManager step = new ProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(step,
+					paths[i].Length / (float)dataTotal, S._("Erasing files...")));
+				EraseStream(paths[i], step);
+			}
+		}
+
+		/// <summary>
+		/// Erases the provided stream, and updates progress using tyhe provided
+		/// progress manager.
+		/// </summary>
+		/// <param name="info">The information regarding the stream that needs erasure.</param>
+		/// <param name="progress">The progress manager for the erasure of the current
+		/// stream.</param>
+		protected void EraseStream(StreamInfo info, ProgressManager progress)
+		{
+			//Check that the file exists - we do not want to bother erasing nonexistant files
+			if (!info.Exists)
+			{
+				Logger.Log(S._("The file {0} was not erased as the file does not exist.",
+					info.FileName), LogLevel.Notice);
+				return;
+			}
+
+			//Get the filesystem provider to handle the secure file erasures
+			FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+				VolumeInfo.FromMountPoint(info.DirectoryName)];
+
+			bool isReadOnly = false;
+
+			try
+			{
+				//Update the task progress
+				ErasureMethod method = EffectiveMethod;
+				OnProgressChanged(this, new ProgressChangedEventArgs(progress,
+					new TaskProgressChangedEventArgs(info.FullName, 0, method.Passes)));
+
+				//Remove the read-only flag, if it is set.
+				if (isReadOnly = info.IsReadOnly)
+					info.IsReadOnly = false;
+
+				//Make sure the file does not have any attributes which may affect
+				//the erasure process
+				if ((info.Attributes & FileAttributes.Compressed) != 0 ||
+					(info.Attributes & FileAttributes.Encrypted) != 0 ||
+					(info.Attributes & FileAttributes.SparseFile) != 0)
 				{
-					Logger.Log(S._("The file {0} was not erased as the file does not exist.",
-						paths[i]), LogLevel.Notice);
-					continue;
+					//Log the error
+					Logger.Log(S._("The file {0} could not be erased because the file was " +
+						"either compressed, encrypted or a sparse file.", info.FullName),
+						LogLevel.Error);
+					return;
 				}
 
-				//Get the filesystem provider to handle the secure file erasures
-				FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
-					VolumeInfo.FromMountPoint(info.DirectoryName)];
-
-				bool isReadOnly = false;
-
-				try
-				{
-					//Update the task progress
-					ProgressManager step = new ProgressManager();
-					Progress.Steps.Add(new SteppedProgressManagerStep(step,
-						info.Length / (float)dataTotal, S._("Erasing files...")));
-					OnProgressChanged(this, new ProgressChangedEventArgs(step,
-						new TaskProgressChangedEventArgs(info.FullName, 0, method.Passes)));
-
-					//Remove the read-only flag, if it is set.
-					if (isReadOnly = info.IsReadOnly)
-						info.IsReadOnly = false;
-
-					//Make sure the file does not have any attributes which may affect
-					//the erasure process
-					if ((info.Attributes & FileAttributes.Compressed) != 0 ||
-						(info.Attributes & FileAttributes.Encrypted) != 0 ||
-						(info.Attributes & FileAttributes.SparseFile) != 0)
+				fsManager.EraseFileSystemObject(info, method,
+					delegate(long lastWritten, long totalData, int currentPass)
 					{
-						//Log the error
-						Logger.Log(S._("The file {0} could not be erased because the file was " +
-							"either compressed, encrypted or a sparse file.", info.FullName),
-							LogLevel.Error);
-						continue;
-					}
+						if (Task.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
 
-					fsManager.EraseFileSystemObject(info, method,
-						delegate(long lastWritten, long totalData, int currentPass)
-						{
-							if (Task.Canceled)
-								throw new OperationCanceledException(S._("The task was cancelled."));
+						progress.Total = totalData;
+						progress.Completed += lastWritten;
+						OnProgressChanged(this, new ProgressChangedEventArgs(progress,
+							new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
+					});
 
-							step.Total = totalData;
-							step.Completed += lastWritten;
-							OnProgressChanged(this, new ProgressChangedEventArgs(step,
-								new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
-						});
+				//Remove the file.
+				FileInfo fileInfo = info.File;
+				if (fileInfo != null)
+					fsManager.DeleteFile(fileInfo);
+				progress.MarkComplete();
+			}
+			catch (UnauthorizedAccessException)
+			{
+				Logger.Log(S._("The file {0} could not be erased because the file's " +
+					"permissions prevent access to the file.", info.FullName), LogLevel.Error);
+			}
+			catch (SharingViolationException)
+			{
+				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+					throw;
 
-					//Remove the file.
-					FileInfo fileInfo = info.File;
-					if (fileInfo != null)
-						fsManager.DeleteFile(fileInfo);
-					step.MarkComplete();
-				}
-				catch (UnauthorizedAccessException)
+				StringBuilder processStr = new StringBuilder();
+				foreach (OpenHandle handle in OpenHandle.Close(info.FullName))
 				{
-					Logger.Log(S._("The file {0} could not be erased because the file's " +
-						"permissions prevent access to the file.", info.FullName), LogLevel.Error);
-				}
-				catch (SharingViolationException)
-				{
-					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
-						throw;
-
-					StringBuilder processStr = new StringBuilder();
-					foreach (OpenHandle handle in OpenHandle.Close(info.FullName))
+					try
 					{
-						try
-						{
-							processStr.AppendFormat(
-								System.Globalization.CultureInfo.InvariantCulture,
-								"{0}, ", System.Diagnostics.Process.GetProcessById(handle.ProcessId).MainModule.FileName);
-						}
-						catch (System.ComponentModel.Win32Exception)
-						{
-							processStr.AppendFormat(
-								System.Globalization.CultureInfo.InvariantCulture,
-								"Process ID {0}, ", handle.ProcessId);
-						}
+						processStr.AppendFormat(
+							System.Globalization.CultureInfo.InvariantCulture,
+							"{0}, ", System.Diagnostics.Process.GetProcessById(handle.ProcessId).MainModule.FileName);
 					}
+					catch (System.ComponentModel.Win32Exception)
+					{
+						processStr.AppendFormat(
+							System.Globalization.CultureInfo.InvariantCulture,
+							"Process ID {0}, ", handle.ProcessId);
+					}
+				}
 
-					if (processStr.Length != 0)
-						Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
-								paths[i], S._("(locked by {0})",
-									processStr.ToString().Remove(processStr.Length - 2)).Trim()),
-							LogLevel.Error);
-				}
-				finally
-				{
-					//Re-set the read-only flag if the file exists (i.e. there was an error)
-					if (isReadOnly && info.Exists && !info.IsReadOnly)
-						info.IsReadOnly = isReadOnly;
-				}
+				if (processStr.Length != 0)
+					Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
+							info.FileName, S._("(locked by {0})",
+								processStr.ToString().Remove(processStr.Length - 2)).Trim()),
+						LogLevel.Error);
+			}
+			finally
+			{
+				//Re-set the read-only flag if the file exists (i.e. there was an error)
+				if (isReadOnly && info.Exists && !info.IsReadOnly)
+					info.IsReadOnly = isReadOnly;
 			}
 		}
 
