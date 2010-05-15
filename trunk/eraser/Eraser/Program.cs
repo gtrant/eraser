@@ -548,6 +548,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				SecureMoveErasureTarget target = new SecureMoveErasureTarget();
 				target.Path = path;
 				target.Destination = args.Destination;
+
+				task.Targets.Add(target);
 			}
 
 			//Then queue for erasure.
