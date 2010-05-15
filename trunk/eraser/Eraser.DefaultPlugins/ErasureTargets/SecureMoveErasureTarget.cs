@@ -146,27 +146,78 @@ namespace Eraser.DefaultPlugins
 
 		private void CopyDirectory(DirectoryInfo info)
 		{
-			throw new NotImplementedException();
+			//We need to get the files from the list of streams
+			List<StreamInfo> streams = GetPaths();
+			List<FileInfo> files = new List<FileInfo>(
+				streams.Distinct(new StreamInfoFileEqualityComparer()).
+				Select(x => x.File));
+			long totalSize = streams.Sum(x => x.Length);
+
+			foreach (FileInfo file in files)
+			{
+				//Compute the total size of the file on the disk (including ADSes)
+				List<StreamInfo> fileStreams = new List<StreamInfo>(
+					file.GetADSes().Select(x => new StreamInfo(info.FullName, x)));
+				fileStreams.Add(new StreamInfo(info.FullName));
+				long fileSize = fileStreams.Sum(x => x.Length);
+
+				SteppedProgressManager fileProgress = new SteppedProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(fileProgress,
+					fileSize / (float)totalSize, S._("Securely moving files and folders...")));
+
+				//Add the copying step to the file progress.
+				ProgressManager copyProgress = new ProgressManager();
+				int totalPasses = 1 + EffectiveMethod.Passes;
+				fileProgress.Steps.Add(new SteppedProgressManagerStep(copyProgress,
+					1f / totalPasses));
+
+				try
+				{
+					//Compute the path to the new file.
+					Uri sourceDir = new Uri(Path);
+					Uri currentDir = new Uri(file.FullName).MakeRelativeUri(sourceDir);
+
+					file.CopyTo(Destination, delegate(long TotalFileSize, long TotalBytesTransferred)
+						{
+							return CopyProgress(copyProgress, file, TotalFileSize,
+								TotalBytesTransferred);
+						});
+				}
+				catch (OperationCanceledException)
+				{
+					//The copy was cancelled: Complete the copy part.
+					copyProgress.MarkComplete();
+
+					//We need to erase the partially copied copy of the file.
+					SteppedProgressManager destroyProgress = new SteppedProgressManager();
+					Progress.Steps.Add(new SteppedProgressManagerStep(destroyProgress, 0.5f,
+						S._("Erasing incomplete destination file")));
+					EraseFile(file, destroyProgress);
+
+					//Rethrow the exception.
+					throw;
+				}
+
+				//We copied the file over; erase the source file
+				SteppedProgressManager eraseProgress = new SteppedProgressManager();
+				fileProgress.Steps.Add(new SteppedProgressManagerStep(eraseProgress,
+					(totalPasses - 1) / totalPasses));
+				EraseFile(file, eraseProgress);
+			}
 		}
 
 		private void CopyFile(FileInfo info)
 		{
 			ProgressManager copyProgress = new ProgressManager();
 			Progress.Steps.Add(new SteppedProgressManagerStep(copyProgress, 0.5f,
-				S._("Copying source file to destination")));
+				S._("Copying source files to destination")));
 
 			try
 			{
 				info.CopyTo(Destination, delegate(long TotalFileSize, long TotalBytesTransferred)
 					{
-						copyProgress.Completed = TotalBytesTransferred;
-						copyProgress.Total = TotalFileSize;
-						OnProgressChanged(this, new ProgressChangedEventArgs(Progress, 
-							new TaskProgressChangedEventArgs(info.FullName, 1, 1)));
-
-						if (Task.Canceled)
-							return IO.CopyProgressFunctionResult.Stop;
-						return IO.CopyProgressFunctionResult.Continue;
+						return CopyProgress(copyProgress, info, TotalFileSize,
+							TotalBytesTransferred);
 					});
 			}
 			catch (OperationCanceledException)
@@ -175,24 +226,70 @@ namespace Eraser.DefaultPlugins
 				copyProgress.MarkComplete();
 
 				//We need to erase the partially copied copy of the file.
-				FileInfo copiedFile = new FileInfo(Destination);
-				List<StreamInfo> streams = new List<StreamInfo>(
-					copiedFile.GetADSes().Select(x => new StreamInfo(copiedFile.FullName, x));
-				streams.Add(new StreamInfo(copiedFile.FullName));
-				long totalSize = streams.Sum(x => x.Length);
-
-				foreach (StreamInfo stream in streams)
-				{
-					ProgressManager destroyProgress = new ProgressManager();
-					Progress.Steps.Add(new SteppedProgressManagerStep(destroyProgress,
-						0.5f * stream.Length / totalSize,
-						S._("Erasing incomplete destination file")));
-					EraseStream(stream, destroyProgress);
-				}
+				SteppedProgressManager destroyProgress = new SteppedProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(destroyProgress, 0.5f,
+					S._("Erasing incomplete destination file")));
+				EraseFile(new FileInfo(Destination), destroyProgress);
 
 				//Rethrow the exception.
 				throw;
 			}
+
+			base.Execute();
+		}
+
+		/// <summary>
+		/// Wrapper around <see cref="FileSystemObjectErasureTarget.EraseStream"/>
+		/// that will erase every stream in the provided file.
+		/// </summary>
+		/// <param name="info">The file to erase.</param>
+		/// <param name="eraseProgress">The progress manager for the entire
+		/// erasure of the file.</param>
+		private void EraseFile(FileInfo info, SteppedProgressManager eraseProgress)
+		{
+			List<StreamInfo> streams = new List<StreamInfo>(
+				info.GetADSes().Select(x => new StreamInfo(info.FullName, x)));
+			streams.Add(new StreamInfo(info.FullName));
+			long fileSize = streams.Sum(x => x.Length);
+
+			foreach (StreamInfo stream in streams)
+			{
+				ProgressManager progress = new ProgressManager();
+				eraseProgress.Steps.Add(new SteppedProgressManagerStep(progress,
+					stream.Length / (float)fileSize,
+					S._("Erasing incomplete destination file")));
+				EraseStream(stream, progress);
+			}
+		}
+
+		private IO.CopyProgressFunctionResult CopyProgress(ProgressManager progress,
+			FileInfo file, long TotalFileSize, long TotalBytesTransferred)	
+		{
+			progress.Completed = TotalBytesTransferred;
+			progress.Total = TotalFileSize;
+			OnProgressChanged(this, new ProgressChangedEventArgs(Progress,
+				new TaskProgressChangedEventArgs(file.FullName, 1, 1)));
+
+			if (Task.Canceled)
+				return IO.CopyProgressFunctionResult.Stop;
+			return IO.CopyProgressFunctionResult.Continue;
+		}
+
+		private class StreamInfoFileEqualityComparer : IEqualityComparer<StreamInfo>
+		{
+			#region IEqualityComparer<StreamInfo> Members
+
+			public bool Equals(StreamInfo x, StreamInfo y)
+			{
+				return x.FileName == y.FileName;
+			}
+
+			public int GetHashCode(StreamInfo obj)
+			{
+				return obj.FileName.GetHashCode();
+			}
+
+			#endregion
 		}
 	}
 }
