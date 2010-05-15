@@ -170,7 +170,7 @@ namespace Eraser {
 			return E_INVALIDARG;
 
 		//Assign the list of files selected.
-		SelectedFiles.swap(GetHDropPaths(hDrop));
+		SelectedFiles = GetHDropPaths(hDrop);
 
 		//Clean up.
 		GlobalUnlock(stg.hGlobal);
