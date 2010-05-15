@@ -20,6 +20,7 @@
  */
 using System;
 using System.Reflection;
+using System.Diagnostics;
 
 [assembly: AssemblyFileVersion("6.1.0.$WCREV$")]
 [assembly: AssemblyVersion("6.1.0.2112")]
@@ -30,5 +31,16 @@ namespace Eraser {
 		public static readonly DateTime BuildDate = DateTime.Parse("$WCNOW$",
 			System.Globalization.CultureInfo.InvariantCulture);
 		public const bool CustomBuild = $WCMODS?true:false$;
+		public static Version AssemblyFileVersion
+		{
+			get
+			{
+				FileVersionInfo version = FileVersionInfo.GetVersionInfo(
+					Assembly.GetExecutingAssembly().Location);
+
+				return new Version(version.FileMajorPart, version.FileMinorPart,
+					version.FileBuildPart, version.FilePrivatePart);
+			}
+		}
 	}
 }
