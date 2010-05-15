@@ -322,13 +322,13 @@ namespace Eraser.Manager
 				if (task.Schedule is RecurringSchedule)
 					((RecurringSchedule)task.Schedule).Reschedule(DateTime.Now);
 
+				//And the task finished event.
+				task.OnTaskFinished();
+
 				//If the task is an execute on restart task or run immediately task, it is
 				//only run once and can now be restored to a manually run task
 				if (task.Schedule == Schedule.RunOnRestart || task.Schedule == Schedule.RunNow)
 					task.Schedule = Schedule.RunManually;
-
-				//And the task finished event.
-				task.OnTaskFinished();
 
 				//Remove the actively executing task from our instance variable
 				currentTask = null;
