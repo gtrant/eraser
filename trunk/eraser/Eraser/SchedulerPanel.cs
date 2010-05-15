@@ -535,7 +535,7 @@ namespace Eraser
 					foreach (string file in files)
 					{
 						//If the path doesn't exist, skip the file
-						if (!(File.Exists(file) && Directory.Exists(file)))
+						if (!(File.Exists(file) || Directory.Exists(file)))
 							continue;
 
 						FileSystemObjectErasureTarget target;
