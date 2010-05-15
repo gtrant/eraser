@@ -552,6 +552,10 @@ namespace Eraser
 				if (recycleBinIncluded)
 					task.Targets.Add(new RecycleBinErasureTarget());
 
+				//If the task has no targets, we should not go on.
+				if (task.Targets.Count == 0)
+					return;
+
 				//Add the task, asking the user for his intent.
 				DialogResult action = DialogResult.No;
 				if (TaskDialog.IsAvailableOnThisOS)
