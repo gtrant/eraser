@@ -237,13 +237,10 @@
   <data name="Securely move {0}" xml:space="preserve">
     <value>Spostamento sicuro di {0}</value>
   </data>
-  <data name="Copying source file to destination" xml:space="preserve">
-    <value>Copia del file nella destinazione</value>
-  </data>
-  <data name="Erasing incomplete destination file" xml:space="preserve">
+  <data name="Securely moving files and folders..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Securely moving files and folders..." xml:space="preserve">
+  <data name="Erasing incomplete destination file" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Copying source files to destination..." xml:space="preserve">
