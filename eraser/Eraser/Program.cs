@@ -549,13 +549,6 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				target.Path = path;
 				target.Destination = args.Destination;
 			}
-			
-			/*Application.EnableVisualStyles();
-			using (Form dialog = new ShellConfirmationDialog(task))
-			{
-				if (dialog.ShowDialog() != DialogResult.Yes)
-					return;
-			}*/
 
 			//Then queue for erasure.
 			using (eraserClient = CommandConnect())
