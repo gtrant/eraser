@@ -86,6 +86,7 @@ namespace Eraser
 		static std::wstring FormatString(const std::wstring& formatString, ...);
 		static std::wstring FormatError(DWORD lastError = static_cast<DWORD>(-1));
 		static std::wstring GetHKeyPath(HKEY handle);
+		static std::list<std::wstring> GetHDropPaths(HDROP hDrop);
 
 		static bool IsUserAdmin();
 		static void RunEraser(Actions action, const std::wstring& parameters,
