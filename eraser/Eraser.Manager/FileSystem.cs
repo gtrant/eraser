@@ -143,7 +143,7 @@ namespace Eraser.Manager
 					//Get an item from the list of files, and then check that the item exists.
 					int index = prng.Next(entries.Count - 1);
 					shadowFile = entries[index];
-					if (File.Exists(shadowFile))
+					if (File.Exists(shadowFile) || Directory.Exists(shadowFile))
 					{
 						if ((File.GetAttributes(shadowFile) & FileAttributes.Directory) != 0)
 						{
