@@ -509,10 +509,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\SecureMove.h"
-				>
-			</File>
-			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
