@@ -120,13 +120,17 @@
 						Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
 						Type="string" />
 					<!-- Directories -->
-					<RegistryKey Root="HKCR" Key="Directory\shellex">
+					<RegistryKey Root="HKCR" Key="Directory">
 						<RegistryValue Id="EraserShellHKCRDirectoryCtxMenu"
-							Key="ContextMenuHandlers\Eraser"
+							Key="shellex\ContextMenuHandlers\Eraser"
 							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
 							Type="string" />
 						<RegistryValue Id="EraserShellHKCRDirectoryDragDrop"
-							Key="DragDropHandlers\Eraser"
+							Key="shellex\DragDropHandlers\Eraser"
+							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
+							Type="string" />
+						<RegistryValue Id="EraserShellHKCRDirectoryBackgroundCtxMenu"
+							Key="Background\shellex\ContextMenuHandlers\Eraser"
 							Value="{BC9B776A-90D7-4476-A791-79D835F30650}"
 							Type="string" />
 					</RegistryKey>
