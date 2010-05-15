@@ -88,7 +88,7 @@ namespace Eraser.Util
 			{
 				bool result = System.IO.File.Exists(FullName);
 				return result &&
-					(string.IsNullOrEmpty(StreamName) || true/*verify the ADS exists*/);
+					(string.IsNullOrEmpty(StreamName) || true/*TODO: verify the ADS exists*/);
 			}
 		}
 
