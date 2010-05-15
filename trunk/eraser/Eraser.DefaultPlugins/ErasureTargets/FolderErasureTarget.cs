@@ -109,7 +109,7 @@ namespace Eraser.DefaultPlugins
 			foreach (FileInfo file in files)
 			{
 				//Check that the file exists and is not a reparse point.
-				if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) == 0)
+				if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) != 0)
 					continue;
 
 				//Check that the file is included
