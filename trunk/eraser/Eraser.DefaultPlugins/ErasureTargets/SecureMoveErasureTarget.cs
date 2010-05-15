@@ -96,19 +96,19 @@ namespace Eraser.DefaultPlugins
 			if (!File.Exists(Path))
 				return result;
 
+			FileInfo[] files = null;
 			if ((File.GetAttributes(Path) & FileAttributes.Directory) == 0)
-			{
-				FileInfo info = new FileInfo(Path);
+				files = new FileInfo[] { new FileInfo(Path) };
+			else
+				files = GetFiles(new DirectoryInfo(Path));
 
+			foreach (FileInfo info in files)
+			{
 				//Add the alternate data streams
 				result.AddRange(GetPathADSes(info));
 
 				//And the file itself
 				result.Add(new StreamInfo(info.FullName));
-			}
-			else
-			{
-
 			}
 
 			return result;
@@ -137,9 +137,6 @@ namespace Eraser.DefaultPlugins
 					FileInfo info = new FileInfo(Path);
 					CopyFile(info);
 				}
-
-				//Then erase the source paths.
-				base.Execute();
 			}
 			finally
 			{
@@ -178,20 +175,20 @@ namespace Eraser.DefaultPlugins
 				copyProgress.MarkComplete();
 
 				//We need to erase the partially copied copy of the file.
-				Task task = new Task();
-				FileErasureTarget fileTarget = new FileErasureTarget();
-				fileTarget.Path = Destination;
-				task.Targets.Add(fileTarget);
+				FileInfo copiedFile = new FileInfo(Destination);
+				List<StreamInfo> streams = new List<StreamInfo>(
+					copiedFile.GetADSes().Select(x => new StreamInfo(copiedFile.FullName, x));
+				streams.Add(new StreamInfo(copiedFile.FullName));
+				long totalSize = streams.Sum(x => x.Length);
 
-				Progress.Steps.Add(new SteppedProgressManagerStep(task.Progress, 0.5f,
-					S._("Erasing incomplete destination file")));
-				task.ProgressChanged += delegate(object sender, ProgressChangedEventArgs e)
-					{
-						OnProgressChanged(this, new ProgressChangedEventArgs(Progress,
-							e.UserState));
-					};
-
-				fileTarget.Execute();
+				foreach (StreamInfo stream in streams)
+				{
+					ProgressManager destroyProgress = new ProgressManager();
+					Progress.Steps.Add(new SteppedProgressManagerStep(destroyProgress,
+						0.5f * stream.Length / totalSize,
+						S._("Erasing incomplete destination file")));
+					EraseStream(stream, destroyProgress);
+				}
 
 				//Rethrow the exception.
 				throw;
