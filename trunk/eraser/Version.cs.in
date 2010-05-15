@@ -22,7 +22,7 @@ using System;
 using System.Reflection;
 
 [assembly: AssemblyFileVersion("6.1.0.$WCREV$")]
-[assembly: AssemblyVersion("6.1.0.$WCREV$")]
+[assembly: AssemblyVersion("6.1.0.2112")]
 
 namespace Eraser {
 	internal static class BuildInfo
