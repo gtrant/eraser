@@ -38,6 +38,7 @@ namespace Eraser.Util
 	{
 		/// <summary>
 		/// Constructor.
+		/// </summary>
 		/// <param name="filename">The fully qualified name of the new file, or
 		/// the relative file name.</param>
 		public StreamInfo(string filename)
