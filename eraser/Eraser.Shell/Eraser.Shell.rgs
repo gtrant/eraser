@@ -23,6 +23,17 @@ HKCR
 				ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
 			}
 		}
+		
+		NoRemove Background
+		{
+			NoRemove shellex
+			{
+				NoRemove ContextMenuHandlers
+				{
+					ForceRemove Eraser = s '{BC9B776A-90D7-4476-A791-79D835F30650}'
+				}
+			}
+		}
 	}
 	NoRemove Drive
 	{
