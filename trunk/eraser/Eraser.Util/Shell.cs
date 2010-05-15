@@ -26,6 +26,7 @@ using System.Text;
 
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
+using System.IO;
 
 namespace Eraser.Util
 {
@@ -86,6 +87,57 @@ namespace Eraser.Util
 			NativeMethods.LocalFree(argv);
 
 			return result;
+		}
+
+		/// <summary>
+		/// Makes the first path relative to the second.
+		/// </summary>
+		/// <remarks>Modified from:
+		/// http://mrpmorris.blogspot.com/2007/05/convert-absolute-path-to-relative-path.html</remarks>
+		/// <param name="absolutePath">The path to use as the root of the relative path.</param>
+		/// <param name="relativeTo">The path to make relative.</param>
+		/// <returns>The relative path to the provided path.</returns>
+		public static string MakeRelativeTo(FileSystemInfo absolutePath, string relativeTo)
+		{
+			string[] absoluteDirectories = absolutePath.FullName.Split(
+				Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+			string[] relativeDirectories = relativeTo.Split(
+				Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+			//Get the shortest of the two paths
+			int length = absoluteDirectories.Length < relativeDirectories.Length ?
+				absoluteDirectories.Length : relativeDirectories.Length;
+
+			//Use to determine where in the loop we exited
+			int lastCommonRoot = -1;
+			int index;
+
+			//Find common root
+			for (index = 0; index < length; index++)
+				if (absoluteDirectories[index] == relativeDirectories[index])
+					lastCommonRoot = index;
+				else
+					break;
+
+			//If we didn't find a common prefix then throw
+			if (lastCommonRoot == -1)
+				throw new ArgumentException("Paths do not have a common base");
+
+			//Build up the relative path
+			StringBuilder relativePath = new StringBuilder();
+
+			//Add on the ..
+			for (index = lastCommonRoot + 1; index < absoluteDirectories.Length; index++)
+				if (absoluteDirectories[index].Length > 0)
+					relativePath.Append("..\\");
+
+			//Add on the folders
+			for (index = lastCommonRoot + 1; index < relativeDirectories.Length - 1; index++)
+				relativePath.Append(relativeDirectories[index] + "\\");
+			if (lastCommonRoot < relativeDirectories.Length - 1)
+				relativePath.Append(relativeDirectories[relativeDirectories.Length - 1]);
+
+			return relativePath.ToString();
 		}
 
 		/// <summary>

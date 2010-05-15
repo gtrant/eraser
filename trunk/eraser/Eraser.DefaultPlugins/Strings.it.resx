@@ -243,6 +243,12 @@
   <data name="Erasing incomplete destination file" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Securely moving files and folders..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Copying source files to destination..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Select the Source folder" xml:space="preserve">
     <value>Seleziona la cartella sorgente</value>
   </data>
@@ -251,9 +257,6 @@
   </data>
   <data name="Move Source folder to:" xml:space="preserve">
     <value>Salva il file spostato come</value>
-  </data>
-  <data name="Save Source file to" xml:space="preserve">
-    <value>Muover la cartella sorgente in:</value>
   </data>
   <data name="Save Source file to" xml:space="preserve">
     <value>(Untranslated)</value>
