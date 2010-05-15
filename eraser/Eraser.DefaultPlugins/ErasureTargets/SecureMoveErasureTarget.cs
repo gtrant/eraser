@@ -90,9 +90,8 @@ namespace Eraser.DefaultPlugins
 			get { return new SecureMoveErasureTargetConfigurer(); }
 		}
 
-		protected override List<StreamInfo> GetPaths(out long totalSize)
+		protected override List<StreamInfo> GetPaths()
 		{
-			totalSize = 0;
 			List<StreamInfo> result = new List<StreamInfo>();
 			if (File.Exists(Path))
 				return result;
@@ -102,12 +101,9 @@ namespace Eraser.DefaultPlugins
 				FileInfo info = new FileInfo(Path);
 
 				//Add the alternate data streams
-				long adsesSize = 0;
-				result.AddRange(GetPathADSes(info, out adsesSize));
-				totalSize += adsesSize;
+				result.AddRange(GetPathADSes(info));
 
 				//And the file itself
-				totalSize += info.Length;
 				result.Add(new StreamInfo(info.FullName));
 			}
 			else
@@ -116,14 +112,6 @@ namespace Eraser.DefaultPlugins
 			}
 
 			return result;
-		}
-
-		protected override float EraseWeight
-		{
-			get
-			{
-				return 0.5f;
-			}
 		}
 
 		public override void Execute()
