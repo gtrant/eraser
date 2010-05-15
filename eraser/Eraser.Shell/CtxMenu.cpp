@@ -169,34 +169,13 @@ namespace Eraser {
 		if (hDrop == NULL)
 			return E_INVALIDARG;
 
-		//Sanity check - make sure there is at least one filename.
-		UINT uNumFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
-		if (!uNumFiles)
-		{
-			GlobalUnlock(stg.hGlobal);
-			ReleaseStgMedium(&stg);
-			return E_INVALIDARG;
-		}
-
-		//Collect all the files which have been selected.
-		HRESULT hr = S_OK;
-		WCHAR buffer[MAX_PATH] = {0};
-		for (UINT i = 0; i < uNumFiles; i++)
-		{
-			UINT charsWritten = DragQueryFile(hDrop, i, buffer, sizeof(buffer) / sizeof(buffer[0]));
-			if (!charsWritten)
-			{
-				hr = E_INVALIDARG;
-				continue;
-			}
-
-			SelectedFiles.push_back(std::wstring(buffer, charsWritten));
-		}
+		//Assign the list of files selected.
+		SelectedFiles.swap(GetHDropPaths(hDrop));
 
 		//Clean up.
 		GlobalUnlock(stg.hGlobal);
 		ReleaseStgMedium(&stg);
-		return hr;
+		return SelectedFiles.empty() ? E_INVALIDARG : S_OK;
 	}
 
 	HRESULT CCtxMenu::QueryContextMenu(HMENU hmenu, UINT uMenuIndex, UINT uidFirstCmd,
@@ -302,14 +281,27 @@ namespace Eraser {
 				LoadString(IDS_ACTION_SECUREMOVE).c_str());			//Secure Move
 			VerbMenuIndices.push_back(ACTION_SECURE_MOVE);
 		}
+		if (applicableActions & ACTION_SECURE_PASTE)
+		{
+			VerbMenuIndices.push_back(ACTION_SECURE_PASTE);
+		}
 
 		//Insert the submenu into the Context menu provided by Explorer.
 		{
 			MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
 			mii.wID = uID++;
-			mii.fMask = MIIM_SUBMENU | MIIM_STRING | MIIM_ID;
-			mii.hSubMenu = hSubmenu;
-			mii.dwTypeData = const_cast<wchar_t*>(MenuTitle);
+			mii.fMask = MIIM_STRING | MIIM_ID;
+			if (InvokeReason != INVOKEREASON_DIRECTORY_BACKGROUND)
+			{
+				mii.fMask |= MIIM_SUBMENU;
+				mii.hSubMenu = hSubmenu;
+				mii.dwTypeData = const_cast<wchar_t*>(MenuTitle);
+			}
+			else
+			{
+				mii.dwTypeData = L"E&raser Secure Paste";
+			}
+			
 			MenuID = mii.wID;
 
 			//Set the bitmap for the registered item. Vista machines will be set using a DIB,
@@ -566,6 +558,25 @@ namespace Eraser {
 			commandLine += L"\"/destination=" + DragDropDestinationDirectory + L"\"";
 			break;
 
+		case ACTION_SECURE_PASTE:
+			{
+				//Set the destination for the paste operation.
+				commandLine += L"\"/destination=" + DragDropDestinationDirectory + L"\"";
+
+				//Query the files from the clipboard.
+				std::vector<std::wstring> paths;
+				if (OpenClipboard(NULL))
+				{
+					HDROP fileHandle = reinterpret_cast<HDROP>(GetClipboardData(CF_HDROP));
+					if (fileHandle)
+						SelectedFiles = GetHDropPaths(fileHandle);
+
+					EmptyClipboard();
+					CloseClipboard();
+				}
+			}
+			break;
+
 		default:
 			if (!(pCmdInfo->fMask & CMIC_MASK_FLAG_NO_UI))
 			{
@@ -641,12 +652,31 @@ namespace Eraser {
 		//Check that the clipboard has files for querying.
 		if (OpenClipboard(NULL))
 		{
+			const UINT preferredDropEffect = RegisterClipboardFormat(L"Preferred DropEffect");
+			bool hasFiles = false;
+			bool hasDropEffect = false;
+			DWORD dropEffect = DROPEFFECT_NONE;
+
 			UINT clipboardFormat = 0;
 			while ((clipboardFormat = EnumClipboardFormats(clipboardFormat)) != 0)
+			{
 				if (clipboardFormat == CF_HDROP)
-					break;
+					hasFiles = true;
+				else if (clipboardFormat == preferredDropEffect)
+				{
+					hasDropEffect = true;
+					HGLOBAL hGlobal = GetClipboardData(preferredDropEffect);
+					DWORD* data = reinterpret_cast<DWORD*>(GlobalLock(hGlobal));
 
-			if (clipboardFormat != CF_HDROP)
+					if (data)
+					{
+						dropEffect = *data;
+						GlobalUnlock(hGlobal);
+					}
+				}
+			}
+
+			if (!hasFiles || hasDropEffect && dropEffect != DROPEFFECT_MOVE)
 				result &= ~ACTION_SECURE_PASTE;
 			CloseClipboard();
 		}
@@ -829,6 +859,32 @@ namespace Eraser {
 		KEY_NODE_INFORMATION* keyInfo = reinterpret_cast<KEY_NODE_INFORMATION*>(
 			&buffer.front());
 		return keyInfo->Name;
+	}
+
+	std::list<std::wstring> CCtxMenu::GetHDropPaths(HDROP hDrop)
+	{
+		//Sanity check - make sure there is at least one filename.
+		UINT uNumFiles = DragQueryFile(hDrop, 0xFFFFFFFF, NULL, 0);
+		if (!uNumFiles)
+			return std::list<std::wstring>();
+
+		//Collect all the files which have been selected.
+		HRESULT hr = S_OK;
+		WCHAR buffer[MAX_PATH] = {0};
+		std::list<std::wstring> result;
+		for (UINT i = 0; i < uNumFiles; i++)
+		{
+			UINT charsWritten = DragQueryFile(hDrop, i, buffer, sizeof(buffer) / sizeof(buffer[0]));
+			if (!charsWritten)
+			{
+				hr = E_INVALIDARG;
+				continue;
+			}
+
+			result.push_back(std::wstring(buffer, charsWritten));
+		}
+
+		return result;
 	}
 
 	bool CCtxMenu::IsUserAdmin()
