@@ -122,6 +122,22 @@ namespace Eraser {
 			return S_OK;
 		}
 
+		//Check whether pDataObj is NULL: if so, it is a directory background click
+		else if (pDataObj == NULL)
+		{
+			InvokeReason = INVOKEREASON_DIRECTORY_BACKGROUND;
+
+			//Translate the drop path to a location on the filesystem.
+			wchar_t dropTargetPath[MAX_PATH];
+			if (!SHGetPathFromIDList(pidlFolder, dropTargetPath))
+				return E_FAIL;
+
+			DragDropDestinationDirectory = dropTargetPath;
+
+			//We can't do anything else. The data object is null.
+			return S_OK;
+		}
+
 		//Check pidlFolder for the drop path, if it exists. This is for drag-and-drop
 		//context menus.
 		else if (pidlFolder != NULL)
@@ -210,6 +226,11 @@ namespace Eraser {
 		//Create the submenu, following the order defined in the CEraserLPVERB enum, creating
 		//only items which are applicable.
 		Actions applicableActions = GetApplicableActions();
+
+		//If we have no actions that the user can execute, just return an error code.
+		if (!applicableActions)
+			return E_INVALIDARG;
+
 		VerbMenuIndices.clear();
 		if (applicableActions & ACTION_ERASE)
 		{
@@ -595,6 +616,9 @@ namespace Eraser {
 			result |= ACTION_ERASE | ACTION_ERASE_ON_RESTART | ACTION_ERASE_UNUSED_SPACE;
 		case INVOKEREASON_DRAGDROP:
 			result |= ACTION_SECURE_MOVE;
+			break;
+		case INVOKEREASON_DIRECTORY_BACKGROUND:
+			result |= ACTION_SECURE_PASTE;
 		}
 
 		//Remove actions that don't apply to the current invocation reason.
@@ -613,6 +637,21 @@ namespace Eraser {
 				result &= ~ACTION_ERASE_UNUSED_SPACE;
 			}
 		}
+
+		//Check that the clipboard has files for querying.
+		if (OpenClipboard(NULL))
+		{
+			UINT clipboardFormat = 0;
+			while ((clipboardFormat = EnumClipboardFormats(clipboardFormat)) != 0)
+				if (clipboardFormat == CF_HDROP)
+					break;
+
+			if (clipboardFormat != CF_HDROP)
+				result &= ~ACTION_SECURE_PASTE;
+			CloseClipboard();
+		}
+		else
+			result &= ~ACTION_SECURE_PASTE;
 
 		return static_cast<Actions>(result);
 	}
