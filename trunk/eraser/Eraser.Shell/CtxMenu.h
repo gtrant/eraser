@@ -49,6 +49,7 @@ namespace Eraser
 		enum InvokeReasons
 		{
 			INVOKEREASON_FILEFOLDER,
+			INVOKEREASON_DIRECTORY_BACKGROUND,
 			INVOKEREASON_DRAGDROP,
 			INVOKEREASON_RECYCLEBIN
 		};
@@ -61,6 +62,7 @@ namespace Eraser
 			ACTION_ERASE_UNUSED_SPACE	= 1 << 2,
 			ACTION_SEPERATOR_1,
 			ACTION_SECURE_MOVE			= 1 << 3,
+			ACTION_SECURE_PASTE			= 1 << 4
 		};
 
 	public:
