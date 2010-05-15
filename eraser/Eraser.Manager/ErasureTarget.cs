@@ -190,7 +190,7 @@ namespace Eraser.Manager
 	{
 	}
 
-	public class ErasureTargetRegistrar : Registrar<ErasureTarget>
+	public class ErasureTargetRegistrar : FactoryRegistrar<ErasureTarget>
 	{
 	}
 
