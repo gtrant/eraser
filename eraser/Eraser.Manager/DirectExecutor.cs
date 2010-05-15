@@ -322,10 +322,10 @@ namespace Eraser.Manager
 				if (task.Schedule is RecurringSchedule)
 					((RecurringSchedule)task.Schedule).Reschedule(DateTime.Now);
 
-				//If the task is an execute on restart task, it is only run
-				//once and can now be restored to an immediately executed task
-				if (task.Schedule == Schedule.RunOnRestart)
-					task.Schedule = Schedule.RunNow;
+				//If the task is an execute on restart task or run immediately task, it is
+				//only run once and can now be restored to a manually run task
+				if (task.Schedule == Schedule.RunOnRestart || task.Schedule == Schedule.RunNow)
+					task.Schedule = Schedule.RunManually;
 
 				//And the task finished event.
 				task.OnTaskFinished();
@@ -395,6 +395,10 @@ namespace Eraser.Manager
 				lock (list)
 					list.Insert(index, item);
 
+				//Call all the event handlers who registered to be notified of tasks
+				//being added.
+				Owner.OnTaskAdded(new TaskEventArgs(item));
+
 				//If the task is scheduled to run now, break the waiting thread and
 				//run it immediately
 				if (item.Schedule == Schedule.RunNow)
@@ -407,10 +411,6 @@ namespace Eraser.Manager
 				{
 					Owner.ScheduleTask(item);
 				}
-
-				//Call all the event handlers who registered to be notified of tasks
-				//being added.
-				Owner.OnTaskAdded(new TaskEventArgs(item));
 			}
 
 			public override void RemoveAt(int index)
@@ -518,7 +518,9 @@ namespace Eraser.Manager
 					foreach (Task task in deserialised)
 					{
 						Owner.OnTaskAdded(new TaskEventArgs(task));
-						if (task.Schedule is RecurringSchedule)
+						if (task.Schedule == Schedule.RunNow)
+							Owner.QueueTask(task);
+						else if (task.Schedule is RecurringSchedule)
 							Owner.ScheduleTask(task);
 					}
 				}
