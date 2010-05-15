@@ -1038,7 +1038,6 @@ namespace Eraser {
 			wcscpy_s(&buffer.front(), buffer.size(), (L"\"" + eraserPath + L"\" " +
 				finalParameters).c_str());
 
-			MessageBox(NULL, &buffer.front(), L"", MB_OK);
 			if (!CreateProcess(NULL, &buffer.front(), NULL, NULL, true, CREATE_NO_WINDOW,
 				NULL, NULL, &startupInfo, &processInfo))
 			{
