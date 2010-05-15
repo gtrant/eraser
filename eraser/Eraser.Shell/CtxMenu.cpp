@@ -943,6 +943,7 @@ namespace Eraser {
 			finalParameters += L"/action=EraseUnusedSpace ";
 			break;
 		case ACTION_SECURE_MOVE:
+		case ACTION_SECURE_PASTE:
 			finalParameters += L"/action=SecureMove ";
 			break;
 		default:
