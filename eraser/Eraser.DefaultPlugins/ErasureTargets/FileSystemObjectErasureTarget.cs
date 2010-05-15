@@ -101,6 +101,7 @@ namespace Eraser.DefaultPlugins
 				{
 					foreach (DirectoryInfo dir in info.GetDirectories())
 						result.AddRange(GetFiles(dir));
+					result.AddRange(info.GetFiles());
 				}
 				catch (UnauthorizedAccessException e)
 				{
