@@ -177,21 +177,29 @@ namespace Eraser
 				CommandLinePrefixes, CommandLineSeparators);
 			Args parsedArguments = (Args)argumentParser.Item;
 
-			//We default to a GUI if:
-			// - The parser did not succeed.
-			// - The parser resulted in an empty arguments list
-			// - The parser's argument at index 0 is not equal to the first argument (this
-			//   is when the user is passing GUI options -- command line options always
-			//   start with the action, e.g. Eraser help, or Eraser addtask
-			if (!argumentParser.Success || parsedArguments.IsEmpty ||
-				parsedArguments.Positional.Count == 0 ||
-				parsedArguments.Positional[0] != parsedArguments.Raw[0])
+			//Load the Eraser.Manager library
+			using (ManagerLibrary library = new ManagerLibrary(new Settings()))
 			{
-				GUIMain(finalCommandLine);
-			}
-			else
-			{
-				return CommandMain(finalCommandLine);
+				//Set our UI language
+				EraserSettings settings = EraserSettings.Get();
+				Thread.CurrentThread.CurrentUICulture = new CultureInfo(settings.Language);
+
+				//We default to a GUI if:
+				// - The parser did not succeed.
+				// - The parser resulted in an empty arguments list
+				// - The parser's argument at index 0 is not equal to the first argument
+				//   (this is when the user is passing GUI options -- command line options
+				//   always start with the action, e.g. Eraser help, or Eraser addtask
+				if (!argumentParser.Success || parsedArguments.IsEmpty ||
+					parsedArguments.Positional.Count == 0 ||
+					parsedArguments.Positional[0] != parsedArguments.Raw[0])
+				{
+					GUIMain(finalCommandLine);
+				}
+				else
+				{
+					return CommandMain(finalCommandLine);
+				}
 			}
 
 			//Return zero to signify success
@@ -220,8 +228,8 @@ namespace Eraser
 
 					result.Run();
 					if (!result.IsConnected)
-						throw new IOException("Eraser cannot connect to the running " +
-							"instance for erasures.");
+						throw new IOException(S._("Eraser cannot connect to the running " +
+							"instance for erasures."));
 				}
 
 				return result;
@@ -230,12 +238,12 @@ namespace Eraser
 			{
 				//We can't connect to the pipe because the other instance of Eraser
 				//is running with higher privileges than this instance.
-				throw new UnauthorizedAccessException("Another instance of Eraser " +
+				throw new UnauthorizedAccessException(S._("Another instance of Eraser " +
 					"is already running but it is running with higher privileges than " +
 					"this instance of Eraser. Tasks cannot be added in this manner.\n\n" +
 					"Close the running instance of Eraser and start it again without " +
 					"administrator privileges, or run the command again as an " +
-					"administrator.", e);
+					"administrator.", e));
 			}
 		}
 
@@ -246,7 +254,6 @@ namespace Eraser
 		private static int CommandMain(string[] commandLine)
 		{
 			using (ConsoleProgram program = new ConsoleProgram(commandLine))
-			using (ManagerLibrary library = new ManagerLibrary(new Settings()))
 				try
 				{
 					program.Handlers.Add("help",
@@ -283,7 +290,7 @@ namespace Eraser
 		/// </summary>
 		private static void PrintCommandHelp()
 		{
-			Console.WriteLine(@"usage: Eraser <action> <arguments>
+			Console.WriteLine(S._(@"usage: Eraser <action> <arguments>
 where action is
   help                Show this help message.
   addtask             Adds tasks to the current task list.
@@ -343,7 +350,7 @@ Response files can be used for very long command lines (generally, anything
 involving more than 32,000 characters.) Response files are used by prepending
 ""@"" to the path to the file, and passing it into the command line. The
 contents of the response files' will be substituted at the same position into
-the command line.");
+the command line."));
 			Console.Out.Flush();
 		}
 
@@ -353,10 +360,10 @@ the command line.");
 		/// <param name="arguments">Not used.</param>
 		private static void CommandHelp(ConsoleArguments arguments)
 		{
-			Console.WriteLine(@"Eraser {0}
+			Console.WriteLine(S._(@"Eraser {0}
 (c) 2008-2010 The Eraser Project
 Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
-", Assembly.GetExecutingAssembly().GetName().Version);
+", Assembly.GetExecutingAssembly().GetName().Version));
 
 			PrintCommandHelp();
 		}
@@ -369,7 +376,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		{
 			//Output the header
 			const string methodFormat = "{0,-2} {1,-39} {2}";
-			Console.WriteLine(methodFormat, "", "Method", "GUID");
+			Console.WriteLine(methodFormat, "", "Erasure Method", "GUID");
 			Console.WriteLine(new string('-', 79));
 
 			//Refresh the list of erasure methods
@@ -407,8 +414,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					task.Schedule = Schedule.RunOnRestart;
 					break;
 				default:
-					throw new ArgumentException(string.Format(CultureInfo.CurrentCulture,
-						"Unknown schedule type: {0}", arguments.Schedule), "/schedule");
+					throw new ArgumentException(
+						S._("Unknown schedule type: {0}", arguments.Schedule), "/schedule");
 			}
 
 			//Parse the rest of the command line parameters as target expressions.
@@ -426,14 +433,14 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 
 				if (!processed)
 				{
-					Console.WriteLine("Unknown argument: {0}, skipped.", argument);
+					Console.WriteLine(S._("Unknown argument: {0}, skipped.", argument));
 					continue;
 				}
 			}
 
 			//Check the number of tasks in the task.
 			if (task.Targets.Count == 0)
-				throw new ArgumentException("Tasks must contain at least one erasure target.");
+				throw new ArgumentException(S._("Tasks must contain at least one erasure target."));
 
 			//Send the task out.
 			using (eraserClient = CommandConnect())
@@ -571,7 +578,6 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 
 			//Then initialise the instance and initialise the Manager library.
 			using (GuiProgram program = new GuiProgram(commandLine, instanceId))
-			using (ManagerLibrary library = new ManagerLibrary(new Settings()))
 			{
 				program.InitInstance += OnGUIInitInstance;
 				program.NextInstance += OnGUINextInstance;
@@ -589,10 +595,6 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		{
 			GuiProgram program = (GuiProgram)sender;
 			eraserClient = new RemoteExecutorServer();
-
-			//Set our UI language
-			EraserSettings settings = EraserSettings.Get();
-			Thread.CurrentThread.CurrentUICulture = new CultureInfo(settings.Language);
 			Application.SafeTopLevelCaptionFormat = S._("Eraser");
 
 			//Load the task list
