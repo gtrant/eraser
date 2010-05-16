@@ -329,7 +329,12 @@ namespace Eraser.Util
 				StringBuilder volumeID = new StringBuilder(NativeMethods.MaxPath);
 				if (driveType == DriveType.Network)
 				{
-					//Resolve the mountpoint to a UNC path
+					//If the current directory is a UNC path, then return the VolumeInfo instance
+					//directly
+					if (currentDir.Substring(0, 2) == "\\\\" && currentDir.IndexOf('\\', 2) != -1)
+						return new VolumeInfo(currentDir);
+
+					//Otherwise, resolve the mountpoint to a UNC path
 					uint bufferCapacity = (uint)volumeID.Capacity;
 					uint errorCode = NativeMethods.WNetGetConnection(
 						currentDir.Substring(0, currentDir.Length - 1),
