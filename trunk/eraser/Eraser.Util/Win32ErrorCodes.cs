@@ -85,6 +85,7 @@ namespace Eraser.Util
 		public const int NotReady = 21;
 		public const int SharingViolation = 32;
 		public const int InvalidParameter = 87;
+		public const int DiskFull = 112;
 		public const int MoreData = 234;
 		public const int NoMoreItems = 259;
 		public const int UnrecognizedVolume = 1005;

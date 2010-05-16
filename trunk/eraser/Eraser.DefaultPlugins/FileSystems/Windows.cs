@@ -157,6 +157,12 @@ namespace Eraser.DefaultPlugins
 							Thread.Sleep(100);
 							break;
 
+						case Win32ErrorCode.DiskFull:
+							//If the disk is full, we can't do anything except manually deleting
+							//the file, break out of this loop.
+							i = FileNameEraseTries;
+							break;
+
 						default:
 							throw;
 					}
