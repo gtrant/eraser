@@ -108,10 +108,6 @@ namespace Eraser.DefaultPlugins
 					RegexOptions.IgnoreCase | RegexOptions.Compiled);
 			foreach (FileInfo file in files)
 			{
-				//Check that the file exists and is not a reparse point.
-				if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) != 0)
-					continue;
-
 				//Check that the file is included
 				if (includePattern != null && !includePattern.Match(file.FullName).Success)
 					continue;
