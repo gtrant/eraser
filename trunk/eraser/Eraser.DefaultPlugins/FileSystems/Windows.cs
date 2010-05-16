@@ -136,13 +136,13 @@ namespace Eraser.DefaultPlugins
 									{
 										processStr.AppendFormat(
 											System.Globalization.CultureInfo.InvariantCulture,
-											"{0}, ", (System.Diagnostics.Process.GetProcessById(handle.ProcessId)).MainModule.FileName);
+											"{0}, ", handle.Process.MainModule.FileName);
 									}
 									catch (System.ComponentModel.Win32Exception)
 									{
 										processStr.AppendFormat(
 											System.Globalization.CultureInfo.InvariantCulture,
-											"Process ID {0}, ", handle.ProcessId);
+											"Process ID {0}, ", handle.Process.Id);
 									}
 								}
 
@@ -204,7 +204,7 @@ namespace Eraser.DefaultPlugins
 			if (!info.IsMounted)
 				throw new InvalidOperationException(S._("Could not erase cluster tips in {0} " +
 					"as the volume is not mounted.", info.VolumeId));
-			ListFiles(new DirectoryInfo(info.MountPoints[0]), files, searchCallback);
+			ListFiles(info.MountPoints[0], files, searchCallback);
 
 			//For every file, erase the cluster tips.
 			for (int i = 0, j = files.Count; i != j; ++i)
@@ -278,8 +278,8 @@ namespace Eraser.DefaultPlugins
 					{
 						try
 						{
-							foreach (string i in file.GetADSes())
-								files.Add(file.FullName + ':' + i);
+							foreach (StreamInfo stream in file.GetADSes())
+								files.Add(stream.FullName);
 
 							files.Add(file.FullName);
 						}

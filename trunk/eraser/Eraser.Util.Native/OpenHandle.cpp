@@ -93,7 +93,7 @@ namespace Util {
 	bool OpenHandle::Close()
 	{
 		//Open a handle to the owning process
-		HANDLE processHandle = OpenProcess(PROCESS_DUP_HANDLE, false, ProcessId);
+		HANDLE processHandle = OpenProcess(PROCESS_DUP_HANDLE, false, processId);
 
 		//Forcibly close the handle
 		DuplicateHandle(processHandle, static_cast<void*>(Handle), GetCurrentProcess(),

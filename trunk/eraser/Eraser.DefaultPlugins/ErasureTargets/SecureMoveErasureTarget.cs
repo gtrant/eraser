@@ -158,8 +158,7 @@ namespace Eraser.DefaultPlugins
 			foreach (FileInfo file in files)
 			{
 				//Compute the total size of the file on the disk (including ADSes)
-				List<StreamInfo> fileStreams = new List<StreamInfo>(
-					file.GetADSes().Select(x => new StreamInfo(file.FullName, x)));
+				List<StreamInfo> fileStreams = new List<StreamInfo>(file.GetADSes());
 				fileStreams.Add(new StreamInfo(file.FullName));
 				long fileSize = fileStreams.Sum(x => x.Length);
 
@@ -314,8 +313,7 @@ namespace Eraser.DefaultPlugins
 		/// erasure of the file.</param>
 		private void EraseFile(FileInfo info, SteppedProgressManager eraseProgress)
 		{
-			List<StreamInfo> streams = new List<StreamInfo>(
-				info.GetADSes().Select(x => new StreamInfo(info.FullName, x)));
+			List<StreamInfo> streams = new List<StreamInfo>(info.GetADSes());
 			streams.Add(new StreamInfo(info.FullName));
 			long fileSize = streams.Sum(x => x.Length);
 

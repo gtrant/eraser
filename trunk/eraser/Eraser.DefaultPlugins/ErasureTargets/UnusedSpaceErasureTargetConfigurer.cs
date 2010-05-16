@@ -83,10 +83,9 @@ namespace Eraser.DefaultPlugins
 						continue;
 
 					DriveItem item = new DriveItem();
-					string volumePath = volume.MountPoints[0];
-					DirectoryInfo root = new DirectoryInfo(volumePath);
+					DirectoryInfo root = volume.MountPoints[0];
 
-					item.Drive = volumePath;
+					item.Drive = root.FullName;
 					item.Label = root.GetDescription();
 					item.Icon = root.GetIcon();
 					unusedDisk.Items.Add(item);

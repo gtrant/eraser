@@ -187,8 +187,8 @@ namespace Eraser.DefaultPlugins
 				//See if this is the root of a volume.
 				bool isVolumeRoot = directory.Parent == null;
 				foreach (VolumeInfo volume in VolumeInfo.Volumes)
-					foreach (string mountPoint in volume.MountPoints)
-						if (directory.FullName == mountPoint)
+					foreach (DirectoryInfo mountPoint in volume.MountPoints)
+						if (directory.FullName == mountPoint.FullName)
 							isVolumeRoot = true;
 
 				//If the folder is a mount point, then don't delete it. If it isn't,

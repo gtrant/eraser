@@ -713,8 +713,8 @@ namespace Eraser.Util
 		/// ID.</returns>
 		public override string ToString()
 		{
-			ReadOnlyCollection<string> mountPoints = MountPoints;
-			return mountPoints.Count == 0 ? VolumeId : mountPoints[0];
+			IList<DirectoryInfo> mountPoints = MountPoints;
+			return mountPoints.Count == 0 ? VolumeId : mountPoints[0].FullName;
 		}
 
 		public VolumeLock LockVolume(FileStream stream)
