@@ -53,7 +53,7 @@ namespace Eraser
 			//Populate the scheduler list-view with the current task list
 			ExecutorTasksCollection tasks = Program.eraserClient.Tasks;
 			foreach (Task task in tasks)
-				DisplayTask(task);
+				CreateTask(task);
 
 			//Hook the event machinery to our class. Handle the task Added and Removed
 			//events.
@@ -61,24 +61,29 @@ namespace Eraser
 			Program.eraserClient.TaskDeleted += TaskDeleted;
 		}
 
-		private void DisplayTask(Task task)
+		#region List-View Task Management
+		private void CreateTask(Task task)
 		{
 			//Add the item to the list view
 			ListViewItem item = scheduler.Items.Add(task.UIText);
 			item.SubItems.Add(string.Empty);
 			item.SubItems.Add(string.Empty);
 
-			//Set the tag of the item so we know which task on the LV corresponds
-			//to the physical task object.
+			//Set the tag of the item so we know which task on the list-view
+			//corresponds to the physical task object.
 			item.Tag = task;
 
 			//Add our event handlers to the task
-			task.TaskStarted += task_TaskStarted;
-			task.ProgressChanged += task_ProgressChanged;
-			task.TaskFinished += task_TaskFinished;
+			task.TaskStarted += TaskStarted;
+			task.ProgressChanged += TaskProgressChanged;
+			task.TaskFinished += TaskFinished;
 
 			//Show the fields on the list view
 			UpdateTask(item);
+
+			//If the task is set to Run Immediately, then show that status.
+			if (task.Schedule == Schedule.RunNow)
+				item.SubItems[1].Text = S._("Queued for execution");
 		}
 
 		private void UpdateTask(ListViewItem item)
@@ -90,15 +95,12 @@ namespace Eraser
 			item.Text = task.UIText;
 
 			//Set the next run time of the task
-			if (task.Queued || task.Schedule == Schedule.RunNow)
-			{
+			if (task.Queued)
 				item.SubItems[1].Text = S._("Queued for execution");
-				item.SubItems[2].Text = string.Empty;
-			}
 			else if (task.Schedule is RecurringSchedule)
 				item.SubItems[1].Text = ((task.Schedule as RecurringSchedule).NextRun.
 					ToString("F", CultureInfo.CurrentCulture));
-			else if (task.Schedule == Schedule.RunManually)
+			else if (task.Schedule == Schedule.RunManually || task.Schedule == Schedule.RunNow)
 				item.SubItems[1].Text = S._("Not queued");
 			else
 				item.SubItems[1].Text = task.Schedule.UIText;
@@ -121,7 +123,9 @@ namespace Eraser
 			else
 				item.Group = scheduler.Groups["recurring"];
 		}
+		#endregion
 
+		#region Task Event handlers
 		/// <summary>
 		/// Handles the Task Added event.
 		/// </summary>
@@ -142,7 +146,7 @@ namespace Eraser
 					ToolTipIcon.Info);
 			}
 
-			DisplayTask(e.Task);
+			CreateTask(e.Task);
 		}
 
 		private void DeleteSelectedTasks()
@@ -189,11 +193,11 @@ namespace Eraser
 		/// Handles the task start event.
 		/// </summary>
 		/// <param name="e">The task event object.</param>
-		void task_TaskStarted(object sender, EventArgs e)
+		void TaskStarted(object sender, EventArgs e)
 		{
 			if (InvokeRequired)
 			{
-				Invoke((EventHandler)task_TaskStarted, sender, e);
+				Invoke((EventHandler)TaskStarted, sender, e);
 				return;
 			}
 
@@ -214,13 +218,13 @@ namespace Eraser
 		/// <summary>
 		/// Handles the progress event by the task.
 		/// </summary>
-		void task_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		void TaskProgressChanged(object sender, ProgressChangedEventArgs e)
 		{
 			//Make sure we handle the event in the main thread as this requires
 			//GUI calls.
 			if (InvokeRequired)
 			{
-				Invoke((EventHandler<ProgressChangedEventArgs>)task_ProgressChanged, sender, e);
+				Invoke((EventHandler<ProgressChangedEventArgs>)TaskProgressChanged, sender, e);
 				return;
 			}
 
@@ -232,11 +236,11 @@ namespace Eraser
 		/// <summary>
 		/// Handles the task completion event.
 		/// </summary>
-		void task_TaskFinished(object sender, EventArgs e)
+		void TaskFinished(object sender, EventArgs e)
 		{
 			if (InvokeRequired)
 			{
-				Invoke((EventHandler)task_TaskFinished, sender, e);
+				Invoke((EventHandler)TaskFinished, sender, e);
 				return;
 			}
 
@@ -322,7 +326,9 @@ namespace Eraser
 				UpdateTask(item);
 			}
 		}
+		#endregion
 
+		#region List-View Event handlers
 		/// <summary>
 		/// Occurs when the user presses a key on the list view.
 		/// </summary>
@@ -749,6 +755,7 @@ namespace Eraser
 		{
 			DeleteSelectedTasks();
 		}
+		#endregion
 
 		#region Item management
 		/// <summary>
