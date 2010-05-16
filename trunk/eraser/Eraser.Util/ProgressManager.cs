@@ -646,6 +646,10 @@ namespace Eraser.Util
 		/// This value is not used by the class at all.</param>
 		public SteppedProgressManagerStep(ProgressManagerBase progress, float weight, string name)
 		{
+			if (float.IsInfinity(weight) || float.IsNaN(weight))
+				throw new ArgumentException(S._("The weight of a progress manager step must be " +
+					"a valid floatint-point value."));
+
 			Progress = progress;
 			Weight = weight;
 			Name = name;
