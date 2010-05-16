@@ -278,17 +278,23 @@ namespace Eraser.DefaultPlugins
 					return;
 				}
 
-				fsManager.EraseFileSystemObject(info, method,
-					delegate(long lastWritten, long totalData, int currentPass)
-					{
-						if (Task.Canceled)
-							throw new OperationCanceledException(S._("The task was cancelled."));
+				//Do not erase reparse points, as they will cause other references to the file
+				//to be to garbage.
+				if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
+					fsManager.EraseFileSystemObject(info, method,
+						delegate(long lastWritten, long totalData, int currentPass)
+						{
+							if (Task.Canceled)
+								throw new OperationCanceledException(S._("The task was cancelled."));
 
-						progress.Total = totalData;
-						progress.Completed += lastWritten;
-						OnProgressChanged(this, new ProgressChangedEventArgs(progress,
-							new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
-					});
+							progress.Total = totalData;
+							progress.Completed += lastWritten;
+							OnProgressChanged(this, new ProgressChangedEventArgs(progress,
+								new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
+						});
+				else
+					Logger.Log(S._("The file {0} is a reparse point and the contents of the file " +
+						"was left intact, but the file reference was erased.", LogLevel.Notice));
 
 				//Remove the file.
 				FileInfo fileInfo = info.File;
