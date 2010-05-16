@@ -20,6 +20,7 @@
  */
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -563,12 +564,14 @@ namespace Eraser.Util
 		/// paths which may be a drive or a mountpoint. Every string includes the
 		/// trailing backslash.
 		/// </summary>
-		public ReadOnlyCollection<string> MountPoints
+		public IList<DirectoryInfo> MountPoints
 		{
 			get
 			{
-				return (VolumeType == DriveType.Network ?
-					GetNetworkMountPoints() : GetLocalVolumeMountPoints()).AsReadOnly();
+				List<string> paths = VolumeType == DriveType.Network ?
+					GetNetworkMountPoints() : GetLocalVolumeMountPoints();
+				return new List<DirectoryInfo>(
+					paths.Select(x => new DirectoryInfo(x))).AsReadOnly();
 			}
 		}
 

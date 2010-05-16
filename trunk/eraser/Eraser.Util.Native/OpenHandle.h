@@ -26,6 +26,7 @@
 using namespace System;
 using namespace System::Collections::Generic;
 using namespace System::Collections::ObjectModel;
+using namespace System::Diagnostics;
 using namespace Microsoft::Win32::SafeHandles;
 
 namespace Eraser {
@@ -95,11 +96,11 @@ namespace Util {
 		/// <summary>
 		/// The process ID of the process owning the handle.
 		/// </summary>
-		property int ProcessId
+		property Process^ Process
 		{
-			int get()
+			System::Diagnostics::Process^ get()
 			{
-				return processId;
+				return System::Diagnostics::Process::GetProcessById(processId);
 			}
 		};
 
