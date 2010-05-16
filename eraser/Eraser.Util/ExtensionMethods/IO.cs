@@ -323,9 +323,9 @@ namespace Eraser.Util.ExtensionMethods
 		/// <returns>A list containing the names of the ADSes of each file. The
 		/// list will be empty if no ADSes exist.</returns>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")]
-		public static IList<string> GetADSes(this FileInfo info)
+		public static IList<StreamInfo> GetADSes(this FileInfo info)
 		{
-			List<string> result = new List<string>();
+			List<StreamInfo> result = new List<StreamInfo>();
 			using (FileStream stream = new StreamInfo(info.FullName).Open(FileMode.Open,
 				FileAccess.Read, FileShare.ReadWrite))
 			using (SafeFileHandle streamHandle = stream.SafeFileHandle)
@@ -340,7 +340,7 @@ namespace Eraser.Util.ExtensionMethods
 						streamInfo.StreamName.LastIndexOf(':') - 1);
 
 					if (streamName.Length != 0)
-						result.Add(streamName);
+						result.Add(new StreamInfo(info.FullName, streamName));
 				}
 			}
 
