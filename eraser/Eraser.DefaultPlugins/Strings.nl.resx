@@ -213,6 +213,9 @@
   <data name="The task was cancelled." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The file {0} is a hard link or a symbolic link thus the contents of the file was not erased." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Files in Folder" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
