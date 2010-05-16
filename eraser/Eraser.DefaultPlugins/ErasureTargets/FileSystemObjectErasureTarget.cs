@@ -216,7 +216,8 @@ namespace Eraser.DefaultPlugins
 			{
 				ProgressManager step = new ProgressManager();
 				Progress.Steps.Add(new SteppedProgressManagerStep(step,
-					paths[i].Length / (float)dataTotal, S._("Erasing files...")));
+					dataTotal == 0 ? 0.0f : paths[i].Length / (float)dataTotal,
+					S._("Erasing files...")));
 				EraseStream(paths[i], step);
 				step.MarkComplete();
 			}
