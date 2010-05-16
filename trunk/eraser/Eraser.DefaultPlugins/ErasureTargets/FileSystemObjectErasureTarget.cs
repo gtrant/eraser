@@ -293,8 +293,8 @@ namespace Eraser.DefaultPlugins
 								new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
 						});
 				else
-					Logger.Log(S._("The file {0} is a reparse point and the contents of the file " +
-						"was left intact, but the file reference was erased.", LogLevel.Notice));
+					Logger.Log(S._("The file {0} is a hard link or a symbolic link thus the " +
+						"contents of the file was not erased.", LogLevel.Notice));
 
 				//Remove the file.
 				FileInfo fileInfo = info.File;

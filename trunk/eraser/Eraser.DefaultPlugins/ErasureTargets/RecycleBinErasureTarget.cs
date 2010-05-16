@@ -97,9 +97,6 @@ namespace Eraser.DefaultPlugins
 
 					foreach (FileInfo file in GetFiles(dir))
 					{
-						if (!file.Exists || (file.Attributes & FileAttributes.ReparsePoint) != 0)
-							continue;
-
 						//Add the ADSes
 						result.AddRange(GetPathADSes(file));
 
