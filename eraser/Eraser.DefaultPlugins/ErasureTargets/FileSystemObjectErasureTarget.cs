@@ -122,16 +122,7 @@ namespace Eraser.DefaultPlugins
 		{
 			try
 			{
-				//Get the ADS names
-				IList<string> adses = file.GetADSes();
-				StreamInfo[] result = new StreamInfo[adses.Count];
-
-				//Then prepend the path.
-				for (int i = 0; i < adses.Count; ++i)
-				{
-					StreamInfo info = new StreamInfo(file.FullName + ':' + adses[i]);
-					result[i] = info;
-				}
+				return file.GetADSes().ToArray();
 			}
 			catch (FileNotFoundException)
 			{
@@ -149,13 +140,13 @@ namespace Eraser.DefaultPlugins
 					{
 						processStr.AppendFormat(
 							System.Globalization.CultureInfo.InvariantCulture,
-							"{0}, ", (System.Diagnostics.Process.GetProcessById(handle.ProcessId)).MainModule.FileName);
+							"{0}, ", handle.Process.MainModule.FileName);
 					}
 					catch (System.ComponentModel.Win32Exception)
 					{
 						processStr.AppendFormat(
 							System.Globalization.CultureInfo.InvariantCulture,
-							"Process ID {0}, ", handle.ProcessId);
+							"Process ID {0}, ", handle.Process.Id);
 					}
 				}
 
@@ -319,13 +310,13 @@ namespace Eraser.DefaultPlugins
 					{
 						processStr.AppendFormat(
 							System.Globalization.CultureInfo.InvariantCulture,
-							"{0}, ", System.Diagnostics.Process.GetProcessById(handle.ProcessId).MainModule.FileName);
+							"{0}, ", handle.Process.MainModule.FileName);
 					}
 					catch (System.ComponentModel.Win32Exception)
 					{
 						processStr.AppendFormat(
 							System.Globalization.CultureInfo.InvariantCulture,
-							"Process ID {0}, ", handle.ProcessId);
+							"Process ID {0}, ", handle.Process.Id);
 					}
 				}
 

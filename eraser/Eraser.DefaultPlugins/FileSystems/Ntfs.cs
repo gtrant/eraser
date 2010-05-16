@@ -104,7 +104,7 @@ namespace Eraser.DefaultPlugins
 		{
 			//Create a directory to hold all the temporary files
 			DirectoryInfo tempDir = new DirectoryInfo(FileSystem.GenerateRandomFileName(
-				new DirectoryInfo(info.MountPoints[0]), 32));
+				info.MountPoints[0], 32));
 			tempDir.Create();
 
 			try
