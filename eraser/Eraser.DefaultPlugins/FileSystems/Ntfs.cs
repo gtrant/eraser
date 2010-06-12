@@ -178,7 +178,7 @@ namespace Eraser.DefaultPlugins
 
 			//Create the file stream, and call the erasure method to write to
 			//the stream.
-			long fileArea = GetFileArea(info.FullName);
+			long fileArea = GetFileArea(info);
 
 			//If the stream is empty, there's nothing to overwrite. Continue
 			//to the next entry

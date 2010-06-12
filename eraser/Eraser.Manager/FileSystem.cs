@@ -280,9 +280,9 @@ namespace Eraser.Manager
 		/// Retrieves the size of the file on disk, calculated by the amount of
 		/// clusters allocated by it.
 		/// </summary>
-		/// <param name="filePath">The path to the file.</param>
+		/// <param name="streamInfo">The Stream to get the area for.</param>
 		/// <returns>The area of the file.</returns>
-		public abstract long GetFileArea(string filePath);
+		public abstract long GetFileArea(StreamInfo filePath);
 
 		/// <summary>
 		/// The number of times file names are renamed to erase the file name from
