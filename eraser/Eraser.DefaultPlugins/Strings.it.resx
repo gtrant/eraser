@@ -192,6 +192,9 @@
   <data name="{0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>Non sono stati puliti i cluster tips di {0} per il seguente errore: {1}</value>
   </data>
+  <data name="Files in {0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
