@@ -47,7 +47,7 @@ namespace Eraser.DefaultPlugins
 		{
 			//Create the file stream, and call the erasure method to write to
 			//the stream.
-			long fileArea = GetFileArea(info.FullName);
+			long fileArea = GetFileArea(info);
 			using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
 				FileShare.None, FileOptions.WriteThrough))
 			{
