@@ -57,6 +57,55 @@ namespace Eraser.Util
 			ref IO_STATUS_BLOCK IoStatusBlock, IntPtr FileInformation, uint Length,
 			FILE_INFORMATION_CLASS FileInformationClass);
 
+		/// <summary>
+		/// The ZwSetInformationFile routine changes various kinds of information
+		/// about a file object.
+		/// </summary>
+		/// <param name="FileHandle">Handle to the file object. This handle is
+		/// created by a successful call to ZwCreateFile or ZwOpenFile.</param>
+		/// <param name="IoStatusBlock">Pointer to an IO_STATUS_BLOCK structure
+		/// that receives the final completion status and information about the
+		/// requested operation. The Information member receives the number of
+		/// bytes set on the file.</param>
+		/// <param name="FileInformation">Pointer to a buffer that contains the
+		/// information to set for the file. The particular structure in this
+		/// buffer is determined by the FileInformationClass parameter. Setting
+		/// any member of the structure to zero tells ZwSetInformationFile to
+		/// leave the current information about the file for that member
+		/// unchanged.</param>
+		/// <param name="Length">The size, in bytes, of the FileInformation
+		/// buffer.</param>
+		/// <param name="FileInformationClass">The type of information, supplied in
+		/// the buffer pointed to by FileInformation, to set for the file. Device
+		/// and intermediate drivers can specify any of the
+		/// <see cref="FILE_INFORMATION_CLASS"/> values.</param>
+		/// <returns>ZwSetInformationFile returns STATUS_SUCCESS or an appropriate
+		/// error status.</returns>
+		/// <remarks>ZwSetInformationFile changes information about a file. It
+		/// ignores any member of a FILE_XXX_INFORMATION structure that is not
+		/// supported by a particular device or file system.
+		/// 
+		/// If you set FileInformationClass to FileDispositionInformation, you
+		/// can subsequently pass FileHandle to ZwClose but not to any other
+		/// ZwXxxFile routine. Because FileDispositionInformation causes the file
+		/// to be marked for deletion, it is a programming error to attempt any
+		/// subsequent operation on the handle other than closing it.
+		/// 
+		/// If you set FileInformationClass to FilePositionInformation, and the
+		/// preceding call to ZwCreateFile included the FILE_NO_INTERMEDIATE_BUFFERING
+		/// flag in the CreateOptions parameter, certain restrictions on the
+		/// CurrentByteOffset member of the FILE_POSITION_INFORMATION structure
+		/// are enforced. For more information, see ZwCreateFile.
+		/// 
+		/// If you set FileInformationClass to FileEndOfFileInformation, and the
+		/// EndOfFile member of FILE_END_OF_FILE_INFORMATION specifies an offset
+		/// beyond the current end-of-file mark, ZwSetInformationFile extends
+		/// the file and pads the extension with zeros.</remarks>
+		[DllImport("NtDll.dll")]
+		public static extern uint NtSetInformationFile(SafeFileHandle FileHandle,
+			out IO_STATUS_BLOCK IoStatusBlock, IntPtr FileInformation, uint Length,
+			FILE_INFORMATION_CLASS FileInformationClass);
+
 		public struct IO_STATUS_BLOCK
 		{
 			public IntPtr PointerStatus;
@@ -93,6 +142,40 @@ namespace Eraser.Util
 			/// </summary>
 			public string StreamName;
 		}
+
+		#pragma warning disable 0649
+		/// <summary>
+		/// The FILE_BASIC_INFORMATION structure is used as an argument to routines
+		/// that query or set file information.
+		/// </summary>
+		public struct FILE_BASIC_INFORMATION
+		{
+			/// <summary>
+			/// Specifies the time that the file was created.
+			/// </summary>
+			public long CreationTime;
+
+			/// <summary>
+			/// Specifies the time that the file was last accessed.
+			/// </summary>
+			public long LastAccessTime;
+			
+			/// <summary>
+			/// Specifies the time that the file was last written to.
+			/// </summary>
+			public long LastWriteTime;
+
+			/// <summary>
+			/// Specifies the last time the file was changed.
+			/// </summary>
+			public long ChangeTime;
+
+			/// <summary>
+			/// Specifies one or more FILE_ATTRIBUTE_XXX flags.
+			/// </summary>
+			public uint FileAttributes;
+		}
+		#pragma warning restore 0649
 
 		public enum FILE_INFORMATION_CLASS
 		{

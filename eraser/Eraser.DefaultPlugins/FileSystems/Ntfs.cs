@@ -207,7 +207,7 @@ namespace Eraser.DefaultPlugins
 		{
 			get
 			{
-				return new DateTime(1601, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+				return new DateTime(1601, 1, 1, 0, 0, 0, 1, DateTimeKind.Utc);
 			}
 		}
 	}

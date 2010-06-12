@@ -309,6 +309,12 @@ namespace Eraser.Util
 					break;
 			}
 
+			return OpenHandle(mode, iAccess, share, options);
+		}
+
+		internal SafeFileHandle OpenHandle(FileMode mode, uint access, FileShare share,
+			FileOptions options)
+		{
 			//Sharing mode
 			if ((share & FileShare.Inheritable) != 0)
 				throw new NotSupportedException("Inheritable handles are not supported.");
@@ -318,7 +324,7 @@ namespace Eraser.Util
 				throw new NotSupportedException("Asynchronous handles are not implemented.");
 
 			//Create the handle
-			SafeFileHandle result = NativeMethods.CreateFile(FullName, iAccess,
+			SafeFileHandle result = NativeMethods.CreateFile(FullName, access,
 				(uint)share, IntPtr.Zero, (uint)mode, (uint)options, IntPtr.Zero);
 			if (result.IsInvalid)
 			{
@@ -328,6 +334,18 @@ namespace Eraser.Util
 			}
 
 			return result;
+		}
+
+		public void SetTimes(DateTime updateTime, DateTime createdTime, DateTime lastModifiedTime,
+			DateTime lastAccessedTime)
+		{
+			using (SafeFileHandle streamHandle = OpenHandle(FileMode.Open,
+					NativeMethods.FILE_WRITE_ATTRIBUTES, FileShare.ReadWrite,
+					FileOptions.None))
+			{
+				ExtensionMethods.IO.SetTimes(streamHandle, updateTime, createdTime,
+					lastModifiedTime, lastAccessedTime);
+			}
 		}
 
 		/// <summary>

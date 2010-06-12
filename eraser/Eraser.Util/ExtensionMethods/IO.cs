@@ -49,6 +49,103 @@ namespace Eraser.Util.ExtensionMethods
 		}
 
 		/// <summary>
+		/// Deeply sets the file times associated with the current
+		/// <see cref="FileInfo"/> object.
+		/// </summary>
+		/// <param name="updateTime">The time the basic information was last set.</param>
+		/// <param name="createdTime">The time the file was created.</param>
+		/// <param name="lastModifiedTime">The time the file was last modified.</param>
+		/// <param name="lastAccessedTime">The time the file was last accessed.</param>
+		public static void SetTimes(this FileSystemInfo info, DateTime updateTime,
+			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
+		{
+			FileInfo file = info as FileInfo;
+			DirectoryInfo directory = info as DirectoryInfo;
+
+			if (file != null)
+				file.SetTimes(updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+			else if (directory != null)
+				directory.SetTimes(updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+			else
+				throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Deeply sets the file times associated with the current
+		/// <see cref="FileInfo"/> object.
+		/// </summary>
+		/// <param name="updateTime">The time the basic information was last set.</param>
+		/// <param name="createdTime">The time the file was created.</param>
+		/// <param name="lastModifiedTime">The time the file was last modified.</param>
+		/// <param name="lastAccessedTime">The time the file was last accessed.</param>
+		public static void SetTimes(this FileInfo info, DateTime updateTime,
+			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
+		{
+			using (SafeFileHandle streamHandle = new StreamInfo(info.FullName).
+				OpenHandle(FileMode.Open, NativeMethods.FILE_WRITE_ATTRIBUTES,
+					FileShare.ReadWrite, FileOptions.None))
+			{
+				SetTimes(streamHandle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+			}
+		}
+
+		/// <summary>
+		/// Deeply sets the file times associated with the current
+		/// <see cref="DirectoryInfo"/> object.
+		/// </summary>
+		/// <param name="updateTime">The time the basic information was last set.</param>
+		/// <param name="createdTime">The time the file was created.</param>
+		/// <param name="lastModifiedTime">The time the file was last modified.</param>
+		/// <param name="lastAccessedTime">The time the file was last accessed.</param>
+		public static void SetTimes(this DirectoryInfo info, DateTime updateTime,
+			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
+		{
+			using (SafeFileHandle streamHandle = new StreamInfo(info.FullName).
+				OpenHandle(FileMode.Open, NativeMethods.FILE_WRITE_ATTRIBUTES,
+					FileShare.ReadWrite, (FileOptions)NativeMethods.FILE_FLAG_BACKUP_SEMANTICS))
+			{
+				SetTimes(streamHandle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+			}
+		}
+
+		internal static void SetTimes(SafeFileHandle handle, DateTime updateTime,
+			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
+		{
+			NativeMethods.FILE_BASIC_INFORMATION fileInfo =
+				new NativeMethods.FILE_BASIC_INFORMATION();
+			fileInfo.ChangeTime = updateTime.ToFileTime();
+			fileInfo.CreationTime = createdTime.ToFileTime();
+			fileInfo.LastAccessTime = lastAccessedTime.ToFileTime();
+			fileInfo.LastWriteTime = lastModifiedTime.ToFileTime();
+
+			if (fileInfo.ChangeTime == 0)
+				throw new ArgumentOutOfRangeException("updateTime");
+			if (fileInfo.CreationTime == 0)
+				throw new ArgumentOutOfRangeException("createdTime");
+			if (fileInfo.LastAccessTime == 0)
+				throw new ArgumentOutOfRangeException("lastAccessedTime");
+			if (fileInfo.LastWriteTime == 0)
+				throw new ArgumentOutOfRangeException("lastModifiedTime");
+
+			IntPtr fileInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf(fileInfo));
+			try
+			{
+				Marshal.StructureToPtr(fileInfo, fileInfoPtr, true);
+				NativeMethods.IO_STATUS_BLOCK status;
+				uint result = NativeMethods.NtSetInformationFile(handle,
+					out status, fileInfoPtr, (uint)Marshal.SizeOf(fileInfo),
+					NativeMethods.FILE_INFORMATION_CLASS.FileBasicInformation);
+
+				if (result != 0)
+					throw new IOException();
+			}
+			finally
+			{
+				Marshal.FreeHGlobal(fileInfoPtr);
+			}
+		}
+
+		/// <summary>
 		/// Gets the parent directory of the current <see cref="System.IO.FileSystemInfo"/>
 		/// object.
 		/// </summary>
