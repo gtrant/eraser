@@ -222,18 +222,7 @@ namespace Eraser.DefaultPlugins
 
 				try
 				{
-					//Reset the file attributes.
-					FileAttributes fileAttr = streamInfo.Attributes;
-					streamInfo.Attributes = FileAttributes.Normal;
-
-					try
-					{
-						EraseFileClusterTips(files[i], method);
-					}
-					finally
-					{
-						streamInfo.Attributes = fileAttr;
-					}
+					EraseFileClusterTips(streamInfo, method);
 				}
 				catch (UnauthorizedAccessException)
 				{
@@ -324,59 +313,71 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Erases the cluster tips of the given file.
 		/// </summary>
-		/// <param name="file">The file to erase.</param>
+		/// <param name="stream">The stream to erase.</param>
 		/// <param name="method">The erasure method to use.</param>
-		private void EraseFileClusterTips(string file, ErasureMethod method)
+		private void EraseFileClusterTips(StreamInfo streamInfo, ErasureMethod method)
 		{
 			//Get the file access times
-			StreamInfo streamInfo = new StreamInfo(file);
 			DateTime lastAccess = streamInfo.LastAccessTime;
 			DateTime lastWrite = streamInfo.LastWriteTime;
 			DateTime created = streamInfo.CreationTime;
 
+			//Get the file attributes
+			FileAttributes attributes = streamInfo.Attributes;
+
 			//And get the file lengths to know how much to overwrite
-			long fileArea = GetFileArea(file);
+			long fileArea = GetFileArea(streamInfo);
 			long fileLength = streamInfo.Length;
 
 			//If the file length equals the file area there is no cluster tip to overwrite
 			if (fileArea == fileLength)
 				return;
 
-			//Otherwise, create the stream, lengthen the file, then tell the erasure
-			//method to erase the cluster tips.
+			//Otherwise, unset any read-only flags, create the stream, lengthen the
+			//file, then tell the erasure method to erase the cluster tips.
 			try
 			{
-				using (FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
-					FileShare.None, FileOptions.WriteThrough))
-				{
-					try
-					{
-						stream.SetLength(fileArea);
-						stream.Seek(fileLength, SeekOrigin.Begin);
+				streamInfo.Attributes = FileAttributes.Normal;
+				FileStream stream = streamInfo.Open(FileMode.Open, FileAccess.Write,
+					FileShare.None, FileOptions.WriteThrough);
 
-						//Erase the file
-						method.Erase(stream, long.MaxValue,
-							ManagerLibrary.Instance.PrngRegistrar[
-								ManagerLibrary.Settings.ActivePrng],
-							null);
-					}
-					finally
-					{
-						//Make sure the file length is restored!
-						stream.SetLength(fileLength);
-					}
+				try
+				{
+					stream.SetLength(fileArea);
+					stream.Seek(fileLength, SeekOrigin.Begin);
+
+					//Erase the file
+					method.Erase(stream, long.MaxValue, ManagerLibrary.Instance.PrngRegistrar[
+							ManagerLibrary.Settings.ActivePrng], null);
 				}
+				finally
+				{
+					//Make sure the file length is restored!
+					stream.SetLength(fileLength);
+
+					//Then destroy the stream
+					stream.Close();
+				}
+			}
+			catch (ArgumentException e)
+			{
+				//This is an undocumented exception: when the path we are setting
+				//cannot be accessed (ERROR_ACCESS_DENIED is returned) an
+				//ArgumentException is raised (no idea why!)
+				throw new UnauthorizedAccessException(e.Message, e);
 			}
 			finally
 			{
+				//Reset the file attributes
+				streamInfo.Attributes = attributes;
+
 				//Reset the file times
 				streamInfo.SetTimes(MinTimestamp, created, lastWrite, lastAccess);
 			}
 		}
 
-		public override long GetFileArea(string filePath)
+		public override long GetFileArea(StreamInfo info)
 		{
-			StreamInfo info = new StreamInfo(filePath);
 			VolumeInfo volume = VolumeInfo.FromMountPoint(info.Directory.FullName);
 			long clusterSize = volume.ClusterSize;
 			return (info.Length + (clusterSize - 1)) & ~(clusterSize - 1);
