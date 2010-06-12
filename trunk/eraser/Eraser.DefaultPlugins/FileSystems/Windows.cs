@@ -100,7 +100,7 @@ namespace Eraser.DefaultPlugins
 				try
 				{
 					//Reset the file access times: after every rename the file times may change.
-					info.CreationTime = info.LastWriteTime = info.LastAccessTime = MinTimestamp;
+					info.SetTimes(MinTimestamp, MinTimestamp, MinTimestamp, MinTimestamp);
 
 					//Try to rename the file. If it fails, it is probably due to another
 					//process locking the file. Defer, then rename again.
@@ -370,9 +370,7 @@ namespace Eraser.DefaultPlugins
 			finally
 			{
 				//Reset the file times
-				streamInfo.LastAccessTime = lastAccess;
-				streamInfo.LastWriteTime = lastWrite;
-				streamInfo.CreationTime = created;
+				streamInfo.SetTimes(MinTimestamp, created, lastWrite, lastAccess);
 			}
 		}
 
