@@ -281,13 +281,13 @@ namespace Eraser.DefaultPlugins
 						catch (UnauthorizedAccessException e)
 						{
 							Logger.Log(S._("{0} did not have its cluster tips erased because of " +
-								"the following error: {1}", info.FullName, e.Message),
+								"the following error: {1}", file.FullName, e.Message),
 								LogLevel.Information);
 						}
 						catch (IOException e)
 						{
 							Logger.Log(S._("{0} did not have its cluster tips erased because of " +
-								"the following error: {1}", info.FullName, e.Message),
+								"the following error: {1}", file.FullName, e.Message),
 								LogLevel.Warning);
 						}
 					}
@@ -300,12 +300,12 @@ namespace Eraser.DefaultPlugins
 			}
 			catch (UnauthorizedAccessException e)
 			{
-				Logger.Log(S._("{0} did not have its cluster tips erased because of the " +
+				Logger.Log(S._("Files in {0} did not have its cluster tips erased because of the " +
 					"following error: {1}", info.FullName, e.Message), LogLevel.Information);
 			}
 			catch (IOException e)
 			{
-				Logger.Log(S._("{0} did not have its cluster tips erased because of the " +
+				Logger.Log(S._("Files in {0} did not have its cluster tips erased because of the " +
 					"following error: {1}", info.FullName, e.Message), LogLevel.Warning);
 			}
 		}
