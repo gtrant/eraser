@@ -25,9 +25,6 @@
 #pragma unmanaged
 
 namespace {
-	HANDLE NameResolutionThread;
-	NameResolutionThreadParams NameResolutionThreadParam;
-
 	DWORD __stdcall nameResolutionThread(void* data)
 	{
 		//Get the thread parameters
@@ -100,14 +97,16 @@ namespace {
 		//Create the thread
 		handle = CreateThread(NULL, 0, nameResolutionThread, &params, 0, NULL);
 	}
-
 }
 
 std::wstring ResolveHandleName(HANDLE handle, int pid)
 {
+	static HANDLE thread = NULL;
+	static NameResolutionThreadParams params;
+
 	//Start a name resolution thread (in case one entry hangs)
-	if (NameResolutionThread == NULL)
-		CreateNameThread(NameResolutionThread, NameResolutionThreadParam);
+	if (thread == NULL)
+		CreateNameThread(thread, params);
 
 	//Create a duplicate handle
 	HANDLE localHandle;
@@ -122,14 +121,14 @@ std::wstring ResolveHandleName(HANDLE handle, int pid)
 
 	//Send the handle to the secondary thread for name resolution
 	NameResult result(localHandle);
-	NameResolutionThreadParam.Input.push_back(&result);
-	ReleaseSemaphore(NameResolutionThreadParam.Semaphore, 1, NULL);
+	params.Input.push_back(&result);
+	ReleaseSemaphore(params.Semaphore, 1, NULL);
 
 	//Wait for the result
 	if (WaitForSingleObject(result.Event, 50) != WAIT_OBJECT_0)
 	{
 		//The wait failed. Terminate the thread and recreate another.
-		CreateNameThread(NameResolutionThread, NameResolutionThreadParam);
+		CreateNameThread(thread, params);
 	}
 
 	//Close the handle which we duplicated
