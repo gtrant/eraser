@@ -211,8 +211,17 @@ namespace Eraser.DefaultPlugins
 			FileSystemInfo[] files = info.GetFileSystemInfos();
 			if (files.Length == 0)
 			{
-				ManagerLibrary.Instance.FileSystemRegistrar[
-					VolumeInfo.FromMountPoint(Path)].DeleteFolder(info);
+				try
+				{
+					ManagerLibrary.Instance.FileSystemRegistrar[
+						VolumeInfo.FromMountPoint(Path)].DeleteFolder(info);
+				}
+				catch (UnauthorizedAccessException)
+				{
+					Logger.Log(new LogEntry(S._("The folder {0} could not be deleted because " +
+						"the folder's permissions prevents the deletion of the folder.",
+						info.FullName), LogLevel.Error));
+				}
 			}
 		}
 	}
