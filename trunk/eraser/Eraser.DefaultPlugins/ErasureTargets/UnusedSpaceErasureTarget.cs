@@ -230,61 +230,8 @@ namespace Eraser.DefaultPlugins
 				//Disable the low disk space notifications
 				Shell.LowDiskSpaceNotificationsEnabled = false;
 
-				ProgressManager mainProgress = new ProgressManager();
-				Progress.Steps.Add(new SteppedProgressManagerStep(mainProgress,
-					EraseClusterTips ? 0.8f : 0.9f, S._("Erasing unused space...")));
-
-				//Continue creating files while there is free space.
-				while (volInfo.AvailableFreeSpace > 0)
-				{
-					//Generate a non-existant file name
-					string currFile = FileSystem.GenerateRandomFileName(info, 18);
-
-					//Create the stream
-					using (FileStream stream = new FileStream(currFile, FileMode.CreateNew,
-						FileAccess.Write, FileShare.None, 8, FileOptions.WriteThrough))
-					{
-						//Set the length of the file to be the amount of free space left
-						//or the maximum size of one of these dumps.
-						mainProgress.Total = mainProgress.Completed +
-							method.CalculateEraseDataSize(null, volInfo.AvailableFreeSpace);
-						long streamLength = Math.Min(ErasureMethod.FreeSpaceFileUnit,
-							volInfo.AvailableFreeSpace);
-
-						//Handle IO exceptions gracefully, because the filesystem
-						//may require more space than demanded by us for file allocation.
-						while (true)
-							try
-							{
-								stream.SetLength(streamLength);
-								break;
-							}
-							catch (IOException)
-							{
-								if (streamLength > volInfo.ClusterSize)
-									streamLength -= volInfo.ClusterSize;
-								else
-									throw;
-							}
-
-						//Then run the erase task
-						method.Erase(stream, long.MaxValue,
-							ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
-							delegate(long lastWritten, long totalData, int currentPass)
-							{
-								mainProgress.Completed += lastWritten;
-								OnProgressChanged(this, new ProgressChangedEventArgs(mainProgress,
-									new TaskProgressChangedEventArgs(Drive, currentPass, method.Passes)));
-
-								if (Task.Canceled)
-									throw new OperationCanceledException(S._("The task was cancelled."));
-							}
-						);
-					}
-				}
-
-				//Mark the main bulk of the progress as complete
-				mainProgress.MarkComplete();
+				//Fill the disk
+				EraseUnusedSpace(volInfo, info, fsManager, method);
 
 				//Erase old resident file system table files
 				ProgressManager residentProgress = new ProgressManager();
@@ -342,6 +289,72 @@ namespace Eraser.DefaultPlugins
 
 			structureProgress.MarkComplete();
 			Progress = null;
+		}
+
+		private void EraseUnusedSpace(VolumeInfo volInfo, DirectoryInfo info, FileSystem fsInfo,
+			ErasureMethod method)
+		{
+			ProgressManager mainProgress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(mainProgress,
+				EraseClusterTips ? 0.8f : 0.9f, S._("Erasing unused space...")));
+
+			//Continue creating files while there is free space.
+			while (volInfo.AvailableFreeSpace > 0)
+			{
+				//Generate a non-existant file name
+				string currFile = FileSystem.GenerateRandomFileName(info, 18);
+
+				//Create the stream
+				FileStream stream = new FileStream(currFile, FileMode.CreateNew,
+					FileAccess.Write, FileShare.None, 8, FileOptions.WriteThrough);
+				try
+				{
+					//Set the length of the file to be the amount of free space left
+					//or the maximum size of one of these dumps.
+					mainProgress.Total = mainProgress.Completed +
+						method.CalculateEraseDataSize(null, volInfo.AvailableFreeSpace);
+					long streamLength = Math.Min(ErasureMethod.FreeSpaceFileUnit,
+						volInfo.AvailableFreeSpace);
+
+					//Handle IO exceptions gracefully, because the filesystem
+					//may require more space than demanded by us for file allocation.
+					while (true)
+						try
+						{
+							stream.SetLength(streamLength);
+							break;
+						}
+						catch (IOException)
+						{
+							if (streamLength > volInfo.ClusterSize)
+								streamLength -= volInfo.ClusterSize;
+							else
+								throw;
+						}
+
+					//Then run the erase task
+					method.Erase(stream, long.MaxValue,
+						ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
+						delegate(long lastWritten, long totalData, int currentPass)
+						{
+							mainProgress.Completed += lastWritten;
+							OnProgressChanged(this, new ProgressChangedEventArgs(mainProgress,
+								new TaskProgressChangedEventArgs(Drive, currentPass, method.Passes)));
+
+							if (Task.Canceled)
+								throw new OperationCanceledException(S._("The task was cancelled."));
+						}
+					);
+				}
+				finally
+				{
+					stream.Close();
+					fsInfo.ResetFileTimes(new FileInfo(currFile));
+				}
+			}
+
+			//Mark the main bulk of the progress as complete
+			mainProgress.MarkComplete();
 		}
 	}
 }
