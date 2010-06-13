@@ -499,13 +499,13 @@ namespace Eraser.Util
 				lastCompleted = Progress;
 
 				//If the progress delta is zero, it usually means that the amount
-				//completed within the calculatin interval is too short -- lengthen
+				//completed within the calculation interval is too short -- lengthen
 				//the interval so we can get a small difference, significant to make
 				//a speed calculation. Likewise, if it is too great a difference,
 				//we need to shorten the interval to get more accurate calculations
 				if (progressDelta == 0.0)
-					SpeedCalcInterval *= 2;
-				else if (progressDelta > 3.0)
+					SpeedCalcInterval += SpeedCalcInterval / 3;
+				else if (progressDelta > 0.01 && SpeedCalcInterval > 6)
 					SpeedCalcInterval -= 3;
 
 				//We won't update the speed of the task if the current speed is within
