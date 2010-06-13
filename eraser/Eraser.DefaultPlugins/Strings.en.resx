@@ -291,9 +291,6 @@
   <data name="Erasing cluster tips..." xml:space="preserve">
     <value>Erasing cluster tips...</value>
   </data>
-  <data name="Erasing unused space..." xml:space="preserve">
-    <value>Erasing unused space...</value>
-  </data>
   <data name="Old resident file system table files" xml:space="preserve">
     <value>Old resident file system table files</value>
   </data>
@@ -302,6 +299,9 @@
   </data>
   <data name="Erasing unused directory structures..." xml:space="preserve">
     <value>Erasing unused directory structures...</value>
+  </data>
+  <data name="Erasing unused space..." xml:space="preserve">
+    <value>Erasing unused space...</value>
   </data>
   <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">
     <value>The custom erasure method can only comprise passes containing constant or random passes</value>
