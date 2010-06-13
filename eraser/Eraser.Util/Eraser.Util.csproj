@@ -115,6 +115,7 @@
     <Compile Include="NativeMethods\DbgHelp.cs" />
     <Compile Include="NativeMethods\Mpr.cs" />
     <Compile Include="NativeMethods\WinUser.cs" />
+    <Compile Include="PhysicalDriveInfo.cs" />
     <Compile Include="PostDataBuilder.cs" />
     <Compile Include="Power.cs" />
     <Compile Include="NativeMethods\Gdi.cs" />

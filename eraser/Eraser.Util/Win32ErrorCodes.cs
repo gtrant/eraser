@@ -88,6 +88,7 @@ namespace Eraser.Util
 		public const int DeviceNotExist = 55;
 		public const int InvalidParameter = 87;
 		public const int DiskFull = 112;
+		public const int InsufficientBuffer = 122;
 		public const int MoreData = 234;
 		public const int NoMoreItems = 259;
 		public const int UnrecognizedVolume = 1005;
