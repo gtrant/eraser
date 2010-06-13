@@ -225,6 +225,9 @@
   <data name="Removing folders..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The folder {0} could not be deleted because the folder's permissions prevents the deletion of the folder." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Invalid folder path" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
