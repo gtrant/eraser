@@ -37,6 +37,12 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	public abstract class WindowsFileSystem : FileSystem
 	{
+		public override void ResetFileTimes(FileSystemInfo info)
+		{
+			//Reset the file access times: after every rename the file times may change.
+			info.SetTimes(MinTimestamp, MinTimestamp, MinTimestamp, MinTimestamp);
+		}
+
 		public override void DeleteFile(FileInfo info)
 		{
 			//If the user wants plausible deniability, find a random file from the
@@ -99,8 +105,7 @@ namespace Eraser.DefaultPlugins
 
 				try
 				{
-					//Reset the file access times: after every rename the file times may change.
-					info.SetTimes(MinTimestamp, MinTimestamp, MinTimestamp, MinTimestamp);
+					ResetFileTimes(info);
 
 					//Try to rename the file. If it fails, it is probably due to another
 					//process locking the file. Defer, then rename again.
