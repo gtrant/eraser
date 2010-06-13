@@ -483,6 +483,161 @@ namespace Eraser.Util
 		public const uint FILE_FLAG_OPEN_NO_RECALL = 0x00100000;
 		public const uint FILE_FLAG_FIRST_PIPE_INSTANCE = 0x00080000;
 
+		/// <summary>
+		/// Defines, redefines, or deletes MS-DOS device names.
+		/// </summary>
+		/// <param name="dwFlags">The controllable aspects of the DefineDosDevice function. This
+		/// parameter can be one or more of the DosDeviceDefineFlags.</param>
+		/// <param name="lpDeviceName">A pointer to an MS-DOS device name string specifying the
+		/// device the function is defining, redefining, or deleting. The device name string must
+		/// not have a colon as the last character, unless a drive letter is being defined,
+		/// redefined, or deleted. For example, drive C would be the string "C:". In no case is
+		/// a trailing backslash ("\") allowed.</param>
+		/// <param name="lpTargetPath">A pointer to a path string that will implement this
+		/// device. The string is an MS-DOS path string unless the DDD_RAW_TARGET_PATH flag
+		/// is specified, in which case this string is a path string.</param>
+		/// <returns>If the function succeeds, the return value is true.
+		/// 
+		/// If the function fails, the return value is zero. To get extended error
+		/// information, call Marshal.GetLastWin32Error.</returns>
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public extern static bool DefineDosDevice(DosDeviceDefineFlags dwFlags,
+			string lpDeviceName, string lpTargetPath);
+
+		[Flags]
+		public enum DosDeviceDefineFlags
+		{
+			/// <summary>
+			/// If this value is specified along with DDD_REMOVE_DEFINITION, the function will
+			/// use an exact match to determine which mapping to remove. Use this value to
+			/// ensure that you do not delete something that you did not define.
+			/// </summary>
+			ExactMatchOnRmove = 0x00000004,
+
+			/// <summary>
+			/// Do not broadcast the WM_SETTINGCHANGE message. By default, this message is
+			/// broadcast to notify the shell and applications of the change.
+			/// </summary>
+			NoBroadcastSystem = 0x00000008,
+
+			/// <summary>
+			/// Uses the lpTargetPath string as is. Otherwise, it is converted from an MS-DOS
+			/// path to a path.
+			/// </summary>
+			RawTargetPath = 0x00000001,
+
+			/// <summary>
+			/// Removes the specified definition for the specified device. To determine which
+			/// definition to remove, the function walks the list of mappings for the device,
+			/// looking for a match of lpTargetPath against a prefix of each mapping associated
+			/// with this device. The first mapping that matches is the one removed, and then
+			/// the function returns.
+			/// 
+			/// If lpTargetPath is NULL or a pointer to a NULL string, the function will remove
+			/// the first mapping associated with the device and pop the most recent one pushed.
+			/// If there is nothing left to pop, the device name will be removed.
+			/// 
+			/// If this value is not specified, the string pointed to by the lpTargetPath
+			/// parameter will become the new mapping for this device.
+			/// </summary>
+			RemoveDefinition = 0x00000002
+		}
+
+		/// <summary>
+		/// Retrieves information about MS-DOS device names. The function can obtain the
+		/// current mapping for a particular MS-DOS device name. The function can also obtain
+		/// a list of all existing MS-DOS device names.
+		/// 
+		/// MS-DOS device names are stored as junctions in the object name space. The code
+		/// that converts an MS-DOS path into a corresponding path uses these junctions to
+		/// map MS-DOS devices and drive letters. The QueryDosDevice function enables an
+		/// application to query the names of the junctions used to implement the MS-DOS
+		/// device namespace as well as the value of each specific junction.
+		/// </summary>
+		/// <param name="lpDeviceName">An MS-DOS device name string specifying the target of
+		/// the query. The device name cannot have a trailing backslash; for example,
+		/// use "C:", not "C:\".
+		/// 
+		/// This parameter can be NULL. In that case, the QueryDosDevice function will
+		/// store a list of all existing MS-DOS device names into the buffer pointed to
+		/// by lpTargetPath.</param>
+		/// <param name="lpTargetPath">A pointer to a buffer that will receive the result
+		/// of the query. The function fills this buffer with one or more null-terminated
+		/// strings. The final null-terminated string is followed by an additional NULL.
+		/// 
+		/// If lpDeviceName is non-NULL, the function retrieves information about the
+		/// particular MS-DOS device specified by lpDeviceName. The first null-terminated
+		/// string stored into the buffer is the current mapping for the device. The other
+		/// null-terminated strings represent undeleted prior mappings for the device.
+		/// 
+		/// If lpDeviceName is NULL, the function retrieves a list of all existing MS-DOS
+		/// device names. Each null-terminated string stored into the buffer is the name
+		/// of an existing MS-DOS device, for example, \Device\HarddiskVolume1 or
+		/// \Device\Floppy0.</param>
+		/// <param name="length">The maximum number of TCHARs that can be stored into
+		/// the buffer pointed to by lpTargetPath.</param>
+		/// <returns>If the function succeeds, the return value is the number of TCHARs
+		/// stored into the buffer pointed to by lpTargetPath.
+		/// 
+		/// If the function fails, the return value is zero. To get extended error
+		/// information, call Marshal.GetLastWin32Error.
+		/// 
+		/// If the buffer is too small, the function fails and the last error code is
+		/// ERROR_INSUFFICIENT_BUFFER.</returns>
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		private static extern uint QueryDosDevice([Optional] string lpDeviceName,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] [Out] char[] lpTargetPath, int length);
+
+		private static string[] QueryDosDeviceInternal(string lpDeviceName)
+		{
+			char[] buffer = new char[32768];
+			for ( ; ; buffer = new char[buffer.Length * 2])
+			{
+				uint written = NativeMethods.QueryDosDevice(lpDeviceName, buffer, buffer.Length);
+
+				//Do we have enough space for all the text
+				if (written != 0)
+					break;
+				else if (Marshal.GetLastWin32Error() == Win32ErrorCode.InsufficientBuffer)
+					continue;
+				else
+					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			}
+
+			List<string> result = new List<string>();
+			for (int lastIndex = 0, i = 0; i != buffer.Length; ++i)
+			{
+				if (buffer[i] == '\0')
+				{
+					//If there are no mount points for this volume, the string will only
+					//have one NULL
+					if (i - lastIndex == 0)
+						break;
+
+					//Resolve the DOS name to the device name
+					result.Add(new string(buffer, lastIndex, i - lastIndex));
+
+					lastIndex = i + 1;
+					if (buffer[lastIndex] == '\0')
+						break;
+				}
+			}
+
+			return result.ToArray();
+		}
+
+		public static string QueryDosDevice(string lpDeviceName)
+		{
+			string[] result = QueryDosDeviceInternal(lpDeviceName);
+			return result.Length == 0 ? null : result[0];
+		}
+
+		public static string[] QueryDosDevices()
+		{
+			return QueryDosDeviceInternal(null);
+		}
+
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public extern static bool DeviceIoControl(SafeFileHandle hDevice,
