@@ -62,6 +62,7 @@ namespace Eraser.Util
 			switch (errorCode)
 			{
 				case NoError:			return null;
+				case DeviceNotExist:
 				case NotReady:			return new IOException();
 				case RequestAborted:	return new OperationCanceledException();
 				case SharingViolation:	return new SharingViolationException();
@@ -84,6 +85,7 @@ namespace Eraser.Util
 		public const int NoMoreFiles = 18;
 		public const int NotReady = 21;
 		public const int SharingViolation = 32;
+		public const int DeviceNotExist = 55;
 		public const int InvalidParameter = 87;
 		public const int DiskFull = 112;
 		public const int MoreData = 234;
