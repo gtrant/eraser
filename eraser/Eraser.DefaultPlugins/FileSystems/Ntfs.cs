@@ -50,47 +50,45 @@ namespace Eraser.DefaultPlugins
 			DirectoryInfo tempDirectory, ErasureMethod method,
 			FileSystemEntriesEraseProgress callback)
 		{
+			//Squeeze files smaller than one MFT record until the volume and the MFT is full.
+			long MFTRecordSize = NtfsApi.GetMftRecordSegmentSize(volume);
+			long lastFileSize = MFTRecordSize;
+
 			try
 			{
-				//Squeeze one-byte files until the volume or the MFT is full.
-				long oldMFTSize = NtfsApi.GetMftValidSize(volume);
-
 				for ( ; ; )
 				{
 					//Open this stream
-					using (FileStream strm = new FileStream(
-						GenerateRandomFileName(tempDirectory, 18), FileMode.CreateNew,
-						FileAccess.Write, FileShare.None, 8, FileOptions.WriteThrough))
+					string fileName = GenerateRandomFileName(tempDirectory, 18);
+					FileStream strm = new FileStream(fileName, FileMode.CreateNew, FileAccess.Write,
+						FileShare.None, 8, FileOptions.WriteThrough);
+					try
 					{
-						long streamSize = 0;
-						try
-						{
-							while (true)
-							{
-								//Stretch the file size to use up some of the resident space.
-								strm.SetLength(++streamSize);
+						//Stretch the file size to use up some of the resident space.
+						strm.SetLength(lastFileSize);
 
-								//Then run the erase task
-								method.Erase(strm, long.MaxValue,
-									ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
-									null);
+						//Then run the erase task
+						method.Erase(strm, long.MaxValue, ManagerLibrary.Instance.PrngRegistrar[
+								ManagerLibrary.Settings.ActivePrng], null);
 
-								//Call the callback function if one is provided. We'll provide a dummy
-								//value since we really have no idea how much of the MFT we can clean.
-								if (callback != null)
-									callback(0, 1);
-							}
-						}
-						catch (IOException)
-						{
-							if (streamSize == 1)
-								return;
-						}
+						//Call the callback function if one is provided. We'll provide a dummy
+						//value since we really have no idea how much of the MFT we can clean.
+						if (callback != null)
+							callback((int)(MFTRecordSize - lastFileSize), (int)MFTRecordSize);
 					}
+					catch (IOException)
+					{
+						if (lastFileSize-- == 0)
+							break;
+					}
+					finally
+					{
+						//Close the stream handle
+						strm.Close();
 
-					//We can stop when the MFT has grown.
-					if (NtfsApi.GetMftValidSize(volume) > oldMFTSize)
-						break;
+						//Then reset the time the file was created.
+						ResetFileTimes(new FileInfo(fileName));
+					}
 				}
 			}
 			catch (IOException)
@@ -119,10 +117,9 @@ namespace Eraser.DefaultPlugins
 				while (true)
 				{
 					++filesCreated;
-					using (FileStream strm = new FileStream(FileSystem.GenerateRandomFileName(
-						tempDir, 220), FileMode.CreateNew, FileAccess.Write))
-					{
-					}
+					string fileName = GenerateRandomFileName(tempDir, 220);
+					File.Create(fileName).Close();
+					ResetFileTimes(new FileInfo(fileName));
 
 					if (filesCreated % pollingInterval == 0)
 					{
@@ -151,7 +148,7 @@ namespace Eraser.DefaultPlugins
 				{
 					if (callback != null && i % 50 == 0)
 						callback(files.Length + i, files.Length * 2);
-					DeleteFile(files[i]);
+					files[i].Delete();
 				}
 
 				DeleteFolder(tempDir);
