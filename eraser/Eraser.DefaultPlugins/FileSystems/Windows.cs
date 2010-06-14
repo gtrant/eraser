@@ -374,7 +374,8 @@ namespace Eraser.DefaultPlugins
 			finally
 			{
 				//Reset the file attributes
-				streamInfo.Attributes = attributes;
+				if (streamInfo.Attributes != attributes)
+					streamInfo.Attributes = attributes;
 
 				//Reset the file times
 				streamInfo.SetTimes(MinTimestamp, created, lastWrite, lastAccess);
