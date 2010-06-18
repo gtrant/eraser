@@ -126,40 +126,33 @@ namespace Eraser.Util
 		{
 			get
 			{
-				//Get all registered DOS Device names.
-				string[] dosDevices = NativeMethods.QueryDosDevices();
-
-				//Get a list of Win32 device names, and map it to DOS Devices.
-				ComLib.Collections.DictionaryMultiValue<string, string> devices =
-					new ComLib.Collections.DictionaryMultiValue<string, string>();
-				foreach (string dosDevice in dosDevices)
-				{
-					string win32Device = NativeMethods.QueryDosDevice(dosDevice);
-					if (win32Device != null)
-						devices.Add(win32Device, dosDevice);
-				}
-
 				List<VolumeInfo> result = new List<VolumeInfo>();
-				foreach (VolumeInfo info in VolumeInfo.Volumes)
+
+				//Check every partition index on this drive.
+				for (int i = 1; ; ++i)
 				{
-					if (info.VolumeId.Substring(0, 4) == "\\\\?\\")
+					string path = string.Format(CultureInfo.InvariantCulture,
+						"\\Device\\Harddisk{0}\\Partition{1}", Index, i);
+					using (SafeFileHandle handle = OpenWin32Device(path))
 					{
-						string win32Device = NativeMethods.QueryDosDevice(
-							info.VolumeId.Substring(4, info.VolumeId.Length - 5));
-						foreach (string dosDevice in devices.Get(win32Device))
+						if (handle.IsInvalid)
+							break;
+					}
+
+					//This partition index is valid. Check which VolumeInfo this maps to.
+					foreach (VolumeInfo info in VolumeInfo.Volumes)
+					{
+						//Only check local drives
+						if (info.VolumeId.Substring(0, 4) == "\\\\?\\")
 						{
-							Match match = HarddiskPartitionRegex.Match(dosDevice);
-							if (!match.Success)
-								continue;
-
-							//Check the HardDisk ID: if it is the same as our index, it is our partition.
-							if (Convert.ToInt32(match.Groups[1].Value) == Index)
+							//Check whether the DOS Device maps to the target of the symbolic link
+							if (NativeMethods.NtQuerySymbolicLink(path) ==
+								NativeMethods.QueryDosDevice(info.VolumeId.Substring(
+									4, info.VolumeId.Length - 5)))
 							{
-								int partition = Convert.ToInt32(match.Groups[2].Value) - 1;
-								while (partition >= result.Count)
-									result.Add(null);
-
-								result[partition] = info;
+								//Yes, this volume belongs to this disk
+								result.Add(info);
+								break;
 							}
 						}
 					}

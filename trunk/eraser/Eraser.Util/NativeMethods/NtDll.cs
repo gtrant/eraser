@@ -305,5 +305,212 @@ namespace Eraser.Util
 			public ushort MajorVersion;
 			public ushort MinorVersion;
 		}
+
+		/// <summary>
+		/// Represents a counted Unicode string.
+		/// </summary>
+		private struct UNICODE_STRING
+		{
+			/// <summary>
+			/// Constructs a UNICODE_STRING object from an existing <see cref="System.String"/>
+			/// object.
+			/// </summary>
+			/// <param name="str">The string to construct from.</param>
+			public UNICODE_STRING(string str)
+			{
+				if (string.IsNullOrEmpty(str))
+					MaximumLength = Length = 0;
+				else
+					MaximumLength = Length = checked((ushort)(str.Length * sizeof(char)));
+				Buffer = str;
+			}
+
+			/// <summary>
+			/// Allocates an empty string of the given length.
+			/// </summary>
+			/// <param name="length">The length, in characters, to allocate.</param>
+			public UNICODE_STRING(ushort length)
+			{
+				MaximumLength = checked((ushort)(length * sizeof(char)));
+				Length = 0;
+				Buffer = new string('\0', length);
+			}
+			
+			public override string ToString()
+			{
+				if (Length / sizeof(char) > Buffer.Length)
+					return Buffer + new string('\0', Length - Buffer.Length / sizeof(char));
+				else
+					return Buffer.Substring(0, Length / sizeof(char));
+			}
+
+			/// <summary>
+			/// Specifies the length, in bytes, of the string pointed to by the Buffer
+			/// member, not including the terminating NULL character, if any.
+			/// </summary>
+			public ushort Length;
+
+			/// <summary>
+			/// Specifies the total size, in bytes, of memory allocated for Buffer. Up to
+			/// MaximumLength bytes may be written into the buffer without trampling memory.
+			/// </summary>
+			public ushort MaximumLength;
+
+			/// <summary>
+			/// Pointer to a wide-character string.
+			/// </summary>
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string Buffer;
+		}
+
+		/// <summary>
+		/// The OBJECT_ATTRIBUTES structure specifies attributes that can be applied to
+		/// objects or object handles by routines that create objects and/or return
+		/// handles to objects.
+		/// </summary>
+		private struct OBJECT_ATTRIBUTES : IDisposable
+		{
+			public OBJECT_ATTRIBUTES(UNICODE_STRING objectName)
+				: this()
+			{
+				Length = (uint)Marshal.SizeOf(this);
+				ObjectName = Marshal.AllocHGlobal(Marshal.SizeOf(objectName));
+				Marshal.StructureToPtr(objectName, ObjectName, false);
+			}
+
+			public void Dispose()
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+			}
+
+			public void Dispose(bool disposing)
+			{
+				if (ObjectName != IntPtr.Zero)
+					Marshal.FreeHGlobal(ObjectName);
+			}
+			
+			/// <summary>
+			/// The number of bytes of data contained in this structure.
+			/// </summary>
+			public uint Length;
+
+			/// <summary>
+			/// Optional handle to the root object directory for the path name specified by
+			/// the ObjectName member. If RootDirectory is NULL, ObjectName must point
+			/// to a fully-qualified object name that includes the full path to the target
+			/// object. If RootDirectory is non-NULL, ObjectName specifies an object name
+			/// relative to the RootDirectory directory. The RootDirectory handle can refer
+			/// to a file system directory or an object directory in the object manager
+			/// namespace.
+			/// </summary>
+			public IntPtr RootDirectory;
+
+			/// <summary>
+			/// Pointer to a Unicode string that contains the name of the object for which
+			/// a handle is to be opened. This must either be a fully qualified object name,
+			/// or a relative path name to the directory specified by the RootDirectory
+			/// member.
+			/// </summary>
+			public IntPtr ObjectName;
+
+			/// <summary>
+			/// Bitmask of flags that specify object handle attributes. This member can
+			/// contain one or more of the flags in the following table.
+			/// </summary>
+			OBJECT_ATTRIBUTESFlags Attributes;
+
+			/// <summary>
+			/// Specifies a security descriptor (SECURITY_DESCRIPTOR) for the object
+			/// when the object is created. If this member is NULL, the object will
+			/// receive default security settings.
+			/// </summary>
+			IntPtr SecurityDescriptor;
+
+			/// <summary>
+			/// Optional quality of service to be applied to the object when it is created.
+			/// Used to indicate the security impersonation level and context tracking mode
+			/// (dynamic or static). Currently, the InitializeObjectAttributes macro sets
+			/// this member to NULL.
+			/// </summary>
+			IntPtr SecurityQualityOfService;
+		}
+
+		[Flags]
+		public enum OBJECT_ATTRIBUTESFlags
+		{
+			/// <summary>
+			/// No flags specified.
+			/// </summary>
+			None = 0
+		}
+
+		/// <summary>
+		/// Opens an existing symbolic link.
+		/// </summary>
+		/// <param name="LinkHandle">A handle to the newly opened symbolic link object.</param>
+		/// <param name="DesiredAccess">An ACCESS_MASK that specifies the requested access
+		/// to the directory object. It is typical to use GENERIC_READ so the handle can be
+		/// passed to the NtQueryDirectoryObject function.</param>
+		/// <param name="ObjectAttributes">The attributes for the directory object.</param>
+		/// <returns>The function returns STATUS_SUCCESS or an error status.</returns>
+		[DllImport("NtDll.dll")]
+		private static extern uint NtOpenSymbolicLinkObject(out IntPtr LinkHandle,
+			uint DesiredAccess, ref OBJECT_ATTRIBUTES ObjectAttributes);
+
+		/// <summary>
+		/// Retrieves the target of a symbolic link.
+		/// </summary>
+		/// <param name="LinkHandle">A handle to the symbolic link object.</param>
+		/// <param name="LinkTarget">A pointer to an initialized Unicode string that receives
+		/// the target of the symbolic link. The MaximumLength and Buffer members must be
+		/// set if the call fails.</param>
+		/// <param name="ReturnedLength">A pointer to a variable that receives the length of
+		/// the Unicode string returned in the LinkTarget parameter. If the function
+		/// returns STATUS_BUFFER_TOO_SMALL, this variable receives the required buffer
+		/// size.</param>
+		/// <returns>The function returns STATUS_SUCCESS or an error status.</returns>
+		[DllImport("NtDll.dll")]
+		private static extern uint NtQuerySymbolicLinkObject(IntPtr LinkHandle,
+			ref UNICODE_STRING LinkTarget, out uint ReturnedLength);
+
+		/// <summary>
+		/// Queries the provided symbolic link for its target.
+		/// </summary>
+		/// <param name="path">The path to query.</param>
+		/// <returns>The destination of the symbolic link.</returns>
+		public static string NtQuerySymbolicLink(string path)
+		{
+			uint status = 0;
+			IntPtr handle = IntPtr.Zero;
+			UNICODE_STRING drive = new UNICODE_STRING(path);
+			OBJECT_ATTRIBUTES attributes = new OBJECT_ATTRIBUTES(drive);
+
+			try
+			{
+				status = NtOpenSymbolicLinkObject(out handle, GENERIC_READ, ref attributes);
+				if (status != 0)
+					return null;
+			}
+			finally
+			{
+				attributes.Dispose();
+			}
+
+			UNICODE_STRING target = new UNICODE_STRING(MaxPath);
+			uint length = 0;
+			for ( ; ; )
+			{
+				status = NtQuerySymbolicLinkObject(handle, ref target, out length);
+				if (status == 0)
+					break;
+				else if (status == 0xC0000023L) //STATUS_BUFFER_TOO_SMALL
+					target = new UNICODE_STRING(target.MaximumLength);
+				else
+					return null;
+			}
+
+			return target.ToString();
+		}
 	}
 }
