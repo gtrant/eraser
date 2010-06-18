@@ -720,6 +720,11 @@ namespace Eraser.Util
 			return VolumeId == rhs.VolumeId;
 		}
 
+		public override int GetHashCode()
+		{
+			return VolumeId.GetHashCode();
+		}
+
 		public VolumeLock LockVolume(FileStream stream)
 		{
 			return new VolumeLock(stream);
