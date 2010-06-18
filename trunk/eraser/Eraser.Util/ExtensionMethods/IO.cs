@@ -81,11 +81,11 @@ namespace Eraser.Util.ExtensionMethods
 		public static void SetTimes(this FileInfo info, DateTime updateTime,
 			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
 		{
-			using (SafeFileHandle streamHandle = new StreamInfo(info.FullName).
-				OpenHandle(FileMode.Open, NativeMethods.FILE_WRITE_ATTRIBUTES,
-					FileShare.ReadWrite, FileOptions.None))
+			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
+				NativeMethods.FILE_WRITE_ATTRIBUTES, 0, IntPtr.Zero,
+				NativeMethods.OPEN_EXISTING, 0, IntPtr.Zero))
 			{
-				SetTimes(streamHandle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+				SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
 			}
 		}
 
@@ -100,11 +100,11 @@ namespace Eraser.Util.ExtensionMethods
 		public static void SetTimes(this DirectoryInfo info, DateTime updateTime,
 			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
 		{
-			using (SafeFileHandle streamHandle = new StreamInfo(info.FullName).
-				OpenHandle(FileMode.Open, NativeMethods.FILE_WRITE_ATTRIBUTES,
-					FileShare.ReadWrite, (FileOptions)NativeMethods.FILE_FLAG_BACKUP_SEMANTICS))
+			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
+				NativeMethods.FILE_WRITE_ATTRIBUTES, (uint)FileShare.ReadWrite, IntPtr.Zero,
+				NativeMethods.OPEN_EXISTING, NativeMethods.FILE_FLAG_BACKUP_SEMANTICS, IntPtr.Zero))
 			{
-				SetTimes(streamHandle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+				SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
 			}
 		}
 
@@ -423,10 +423,13 @@ namespace Eraser.Util.ExtensionMethods
 		public static IList<StreamInfo> GetADSes(this FileInfo info)
 		{
 			List<StreamInfo> result = new List<StreamInfo>();
-			using (FileStream stream = new StreamInfo(info.FullName).Open(FileMode.Open,
-				FileAccess.Read, FileShare.ReadWrite))
-			using (SafeFileHandle streamHandle = stream.SafeFileHandle)
+			using (SafeFileHandle streamHandle = NativeMethods.CreateFile(info.FullName,
+				NativeMethods.GENERIC_READ, (uint)FileShare.ReadWrite, IntPtr.Zero,
+				(uint)FileMode.Open, (uint)FileOptions.None, IntPtr.Zero))
 			{
+				if (streamHandle.IsInvalid)
+					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+
 				//Allocate the structures
 				NativeMethods.FILE_STREAM_INFORMATION[] streams = GetADSes(streamHandle);
 
