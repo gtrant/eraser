@@ -65,7 +65,7 @@ namespace Eraser.Util
 				for (int i = 0; ; ++i)
 				{
 					using (SafeFileHandle handle = OpenWin32Device(GetDiskPath(i),
-						NativeMethods.FILE_READ_ATTRIBUTES))
+						NativeMethods.FILE_READ_ATTRIBUTES, FileShare.ReadWrite, FileOptions.None))
 					{
 						if (handle.IsInvalid)
 							break;
@@ -75,47 +75,6 @@ namespace Eraser.Util
 				}
 
 				return result.AsReadOnly();
-			}
-		}
-
-		/// <summary>
-		/// Opens a device in the Win32 Namespace.
-		/// </summary>
-		/// <param name="deviceName">The name of the device to open.</param>
-		/// <param name="access">The access needed for the handle.</param>
-		/// <returns>A <see cref="SafeFileHandle"/> to the device.</returns>
-		private static SafeFileHandle OpenWin32Device(string deviceName, uint access)
-		{
-			//Define the DOS device name for access
-			string dosDeviceName = string.Format(CultureInfo.InvariantCulture,
-				"eraser{0}_{1}", System.Diagnostics.Process.GetCurrentProcess().Id,
-				System.AppDomain.GetCurrentThreadId());
-			if (!NativeMethods.DefineDosDevice(
-				NativeMethods.DosDeviceDefineFlags.RawTargetPath, dosDeviceName,
-				deviceName))
-			{
-				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
-			}
-
-			try
-			{
-				//Open the device handle.
-				return NativeMethods.CreateFile(string.Format(CultureInfo.InvariantCulture,
-					"\\\\.\\{0}", dosDeviceName), access,
-					NativeMethods.FILE_SHARE_READ | NativeMethods.FILE_SHARE_WRITE, IntPtr.Zero,
-					(int)FileMode.Open, (uint)FileAttributes.ReadOnly, IntPtr.Zero);
-			}
-			finally
-			{
-				//Then undefine the DOS device
-				if (!NativeMethods.DefineDosDevice(
-					NativeMethods.DosDeviceDefineFlags.ExactMatchOnRmove |
-					NativeMethods.DosDeviceDefineFlags.RawTargetPath |
-					NativeMethods.DosDeviceDefineFlags.RemoveDefinition,
-					dosDeviceName, deviceName))
-				{
-					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
-				}
 			}
 		}
 
@@ -133,7 +92,7 @@ namespace Eraser.Util
 				{
 					string path = GetPartitionPath(i);
 					using (SafeFileHandle handle = OpenWin32Device(path,
-						NativeMethods.FILE_READ_ATTRIBUTES))
+						NativeMethods.FILE_READ_ATTRIBUTES, FileShare.ReadWrite, FileOptions.None))
 					{
 						if (handle.IsInvalid)
 							break;
@@ -170,7 +129,7 @@ namespace Eraser.Util
 			get
 			{
 				using (SafeFileHandle handle = OpenWin32Device(GetDiskPath(),
-					NativeMethods.GENERIC_READ))
+					NativeMethods.GENERIC_READ, FileShare.ReadWrite, FileOptions.None))
 				{
 					if (handle.IsInvalid)
 						throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
@@ -183,6 +142,148 @@ namespace Eraser.Util
 						return result;
 					}
 
+					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+				}
+			}
+		}
+
+		/// <summary>
+		/// Opens a file with read, write, or read/write access.
+		/// </summary>
+		/// <param name="access">A System.IO.FileAccess constant specifying whether
+		/// to open the file with Read, Write, or ReadWrite file access.</param>
+		/// <returns>A System.IO.FileStream object opened in the specified mode
+		/// and access, unshared, and no special file options.</returns>
+		public FileStream Open(FileAccess access)
+		{
+			return Open(access, FileShare.None, FileOptions.None);
+		}
+
+		/// <summary>
+		/// Opens a file with read, write, or read/write access and the specified
+		/// sharing option.
+		/// </summary>
+		/// <param name="access">A System.IO.FileAccess constant specifying whether
+		/// to open the file with Read, Write, or ReadWrite file access.</param>
+		/// <param name="share">A System.IO.FileShare constant specifying the type
+		/// of access other FileStream objects have to this file.</param>
+		/// <returns>A System.IO.FileStream object opened with the specified mode,
+		/// access, sharing options, and no special file options.</returns>
+		public FileStream Open(FileAccess access, FileShare share)
+		{
+			return Open(access, share, FileOptions.None);
+		}
+
+		/// <summary>
+		/// Opens a file with read, write, or read/write access, the specified
+		/// sharing option, and other advanced options.
+		/// </summary>
+		/// <param name="mode">A System.IO.FileMode constant specifying the mode
+		/// (for example, Open or Append) in which to open the file.</param>
+		/// <param name="access">A System.IO.FileAccess constant specifying whether
+		/// to open the file with Read, Write, or ReadWrite file access.</param>
+		/// <param name="share">A System.IO.FileShare constant specifying the type
+		/// of access other FileStream objects have to this file.</param>
+		/// <param name="options">The System.IO.FileOptions constant specifying
+		/// the advanced file options to use when opening the file.</param>
+		/// <returns>A System.IO.FileStream object opened with the specified mode,
+		/// access, sharing options, and special file options.</returns>
+		public FileStream Open(FileAccess access, FileShare share, FileOptions options)
+		{
+			SafeFileHandle handle = OpenHandle(access, share, options);
+
+			//Check that the handle is valid
+			if (handle.IsInvalid)
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				handle.Close();
+				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+			}
+
+			//Return the stream
+			return new PhysicalDriveStream(this, handle, access);
+		}
+
+		private SafeFileHandle OpenHandle(FileAccess access, FileShare share,
+			FileOptions options)
+		{
+			//Access mode
+			uint iAccess = 0;
+			switch (access)
+			{
+				case FileAccess.Read:
+					iAccess = NativeMethods.GENERIC_READ;
+					break;
+				case FileAccess.ReadWrite:
+					iAccess = NativeMethods.GENERIC_READ | NativeMethods.GENERIC_WRITE;
+					break;
+				case FileAccess.Write:
+					iAccess = NativeMethods.GENERIC_WRITE;
+					break;
+			}
+
+			return OpenHandle(iAccess, share, options);
+		}
+
+		private SafeFileHandle OpenHandle(uint access, FileShare share,
+			FileOptions options)
+		{
+			//Sharing mode
+			if ((share & FileShare.Inheritable) != 0)
+				throw new NotSupportedException("Inheritable handles are not supported.");
+
+			//Advanced options
+			if ((options & FileOptions.Asynchronous) != 0)
+				throw new NotSupportedException("Asynchronous handles are not implemented.");
+
+			//Create the handle
+			SafeFileHandle result = OpenWin32Device(GetDiskPath(), access, share, options);
+			if (result.IsInvalid)
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				result.Close();
+				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+			}
+
+			return result;
+		}
+
+		/// <summary>
+		/// Opens a device in the Win32 Namespace.
+		/// </summary>
+		/// <param name="deviceName">The name of the device to open.</param>
+		/// <param name="access">The access needed for the handle.</param>
+		/// <returns>A <see cref="SafeFileHandle"/> to the device.</returns>
+		private static SafeFileHandle OpenWin32Device(string deviceName, uint access,
+			FileShare share, FileOptions options)
+		{
+			//Define the DOS device name for access
+			string dosDeviceName = string.Format(CultureInfo.InvariantCulture,
+				"eraser{0}_{1}", System.Diagnostics.Process.GetCurrentProcess().Id,
+				System.Threading.Thread.CurrentThread.ManagedThreadId);
+			if (!NativeMethods.DefineDosDevice(
+				NativeMethods.DosDeviceDefineFlags.RawTargetPath, dosDeviceName,
+				deviceName))
+			{
+				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+			}
+
+			try
+			{
+				//Open the device handle.
+				return NativeMethods.CreateFile(string.Format(CultureInfo.InvariantCulture,
+					"\\\\.\\{0}", dosDeviceName), access, (uint)share, IntPtr.Zero,
+					(int)FileMode.Open, (uint)options, IntPtr.Zero);
+			}
+			finally
+			{
+				//Then undefine the DOS device
+				if (!NativeMethods.DefineDosDevice(
+					NativeMethods.DosDeviceDefineFlags.ExactMatchOnRmove |
+					NativeMethods.DosDeviceDefineFlags.RawTargetPath |
+					NativeMethods.DosDeviceDefineFlags.RemoveDefinition,
+					dosDeviceName, deviceName))
+				{
 					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 				}
 			}
@@ -235,5 +336,33 @@ namespace Eraser.Util
 		{
 			return string.Format(CultureInfo.InvariantCulture, PartitionFormat, Index, partition);
 		}
+	}
+
+	public class PhysicalDriveStream : FileStream
+	{
+		internal PhysicalDriveStream(PhysicalDriveInfo drive, SafeFileHandle handle,
+			FileAccess access)
+			: base(handle, access)
+		{
+			Drive = drive;
+		}
+
+		public override void SetLength(long value)
+		{
+			throw new InvalidOperationException();
+		}
+
+		public override long Length
+		{
+			get
+			{
+				return Drive.Size;
+			}
+		}
+
+		/// <summary>
+		/// The <see cref="VolumeInfo"/> object this stream is encapsulating.
+		/// </summary>
+		private PhysicalDriveInfo Drive;
 	}
 }
