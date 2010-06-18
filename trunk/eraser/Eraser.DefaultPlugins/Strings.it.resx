@@ -195,6 +195,45 @@
   <data name="Files in {0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Drive/Partition" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Hard disk {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Partition: {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Hard disk {0} Partition {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Partition" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
+    <value>Il programma non ha i necessari permessi per pulire li spazio libero sul disco. Esegui il programma "as an administrator" e riprova l'operazione</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
+    <value>Il programma non ha i necessari permessi per pulire li spazio libero sul disco.</value>
+  </data>
+  <data name="The Drive erasure target requires a volume or physical drive selected for erasure." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The task was cancelled." xml:space="preserve">
+    <value>L'operazione è stata annullata.</value>
+  </data>
+  <data name="Hard disk {0} ({1})" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Partition {0} ({1})" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Partition ({0})" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Partition {0}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -212,9 +251,6 @@
   </data>
   <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
     <value>(Untranslated)</value>
-  </data>
-  <data name="The task was cancelled." xml:space="preserve">
-    <value>L'operazione è stata annullata.</value>
   </data>
   <data name="The file {0} is a hard link or a symbolic link thus the contents of the file was not erased." xml:space="preserve">
     <value>(Untranslated)</value>
@@ -275,12 +311,6 @@
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">
     <value>Spazio disco libero ({0})</value>
-  </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
-    <value>Il programma non ha i necessari permessi per pulire li spazio libero sul disco. Esegui il programma "as an administrator" e riprova l'operazione</value>
-  </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
-    <value>Il programma non ha i necessari permessi per pulire li spazio libero sul disco.</value>
   </data>
   <data name="This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
     <value>Questo computer ha il System Restore o Volume Shadow Copies abilitato.Ciò permette il ripristino di file memorizzati sul disco anche se precedentemente puliti e ciò determina dei problemi di sicurezza.</value>
