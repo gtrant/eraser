@@ -272,6 +272,10 @@ namespace Eraser.Util
 									(NativeMethods.NETRESOURCE)Marshal.PtrToStructure(
 										(IntPtr)pointer, typeof(NativeMethods.NETRESOURCE));
 
+								//Skip all UNC paths without a local mount point
+								if (resource.lpLocalName == null)
+									continue;
+
 								//Ensure that the path in the resource structure ends with a trailing
 								//backslash as out volume ID ends with one.
 								if (string.IsNullOrEmpty(resource.lpRemoteName))
