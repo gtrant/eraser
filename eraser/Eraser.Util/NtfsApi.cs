@@ -68,16 +68,14 @@ namespace Eraser.Util
 		/// retrieved.</returns>
 		internal static NativeMethods.NTFS_VOLUME_DATA_BUFFER? GetNtfsVolumeData(VolumeInfo volume)
 		{
-			using (SafeFileHandle volumeHandle = volume.OpenHandle(
-				FileAccess.Read, FileShare.ReadWrite, FileOptions.None))
+			using (FileStream stream = volume.Open(FileAccess.Read, FileShare.ReadWrite,
+				FileOptions.None))
+			using (SafeFileHandle handle = stream.SafeFileHandle)
 			{
-				if (volumeHandle.IsInvalid)
-					return null;
-
 				uint resultSize = 0;
 				NativeMethods.NTFS_VOLUME_DATA_BUFFER volumeData =
 					new NativeMethods.NTFS_VOLUME_DATA_BUFFER();
-				if (NativeMethods.DeviceIoControl(volumeHandle,
+				if (NativeMethods.DeviceIoControl(handle,
 					NativeMethods.FSCTL_GET_NTFS_VOLUME_DATA, IntPtr.Zero, 0, out volumeData,
 					(uint)Marshal.SizeOf(volumeData), out resultSize, IntPtr.Zero))
 				{

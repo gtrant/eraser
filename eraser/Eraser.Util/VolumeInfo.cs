@@ -634,21 +634,10 @@ namespace Eraser.Util
 		/// access, sharing options, and special file options.</returns>
 		public FileStream Open(FileAccess access, FileShare share, FileOptions options)
 		{
-			SafeFileHandle handle = OpenHandle(access, share, options);
-
-			//Check that the handle is valid
-			if (handle.IsInvalid)
-			{
-				int errorCode = Marshal.GetLastWin32Error();
-				handle.Close();
-				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
-			}
-
-			//Return the FileStream
-			return new FileStream(handle, access);
+			return new VolumeStream(this, OpenHandle(access, share, options), access);
 		}
 
-		internal SafeFileHandle OpenHandle(FileAccess access, FileShare share, FileOptions options)
+		private SafeFileHandle OpenHandle(FileAccess access, FileShare share, FileOptions options)
 		{
 			//Access mode
 			uint iAccess = 0;
@@ -668,7 +657,7 @@ namespace Eraser.Util
 			return OpenHandle(iAccess, share, options);
 		}
 
-		internal SafeFileHandle OpenHandle(uint access, FileShare share, FileOptions options)
+		private SafeFileHandle OpenHandle(uint access, FileShare share, FileOptions options)
 		{
 			//Sharing mode
 			if ((share & FileShare.Inheritable) != 0)
@@ -682,8 +671,19 @@ namespace Eraser.Util
 			string openPath = VolumeId;
 			if (openPath.Length > 0 && openPath[openPath.Length - 1] == '\\')
 				openPath = openPath.Remove(openPath.Length - 1);
-			return NativeMethods.CreateFile(openPath, access, (uint)share, IntPtr.Zero,
-				(uint)FileMode.Open, (uint)options, IntPtr.Zero);
+
+			SafeFileHandle result = NativeMethods.CreateFile(openPath, access, (uint)share,
+				IntPtr.Zero, (uint)FileMode.Open, (uint)options, IntPtr.Zero);
+
+			//Check that the handle is valid
+			if (result.IsInvalid)
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				result.Close();
+				throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+			}
+
+			return result;
 		}
 
 		/// <summary>
@@ -738,19 +738,52 @@ namespace Eraser.Util
 		{
 			return VolumeId.GetHashCode();
 		}
-
-		public VolumeLock LockVolume(FileStream stream)
-		{
-			return new VolumeLock(stream);
-		}
 	}
 
-	public sealed class VolumeLock : IDisposable
+	public class VolumeStream : FileStream
 	{
-		internal VolumeLock(FileStream stream)
+		internal VolumeStream(VolumeInfo volume, SafeFileHandle handle, FileAccess access)
+			: base(handle, access)
 		{
+			Volume = volume;
+			Access = access;
+
+			if (Access == FileAccess.Write || Access == FileAccess.ReadWrite)
+				LockVolume();
+		}
+
+		protected override void Dispose(bool disposing)
+		{
+			if (Access == FileAccess.Write || Access == FileAccess.ReadWrite)
+				UnlockVolume();
+			base.Dispose(disposing);
+		}
+
+		public override void SetLength(long value)
+		{
+			throw new InvalidOperationException();
+		}
+
+		public override long Length
+		{
+			get
+			{
+				if (IsLocked)
+					return LengthCache;
+				return Volume.TotalSize;
+			}
+		}
+
+		/// <summary>
+		/// Temporarily stores the length of the disk while the disk is locked.
+		/// </summary>
+		private long LengthCache;
+
+		private void LockVolume()
+		{
+			LengthCache = Length;
 			uint result = 0;
-			for (int i = 0; !NativeMethods.DeviceIoControl(stream.SafeFileHandle,
+			for (int i = 0; !NativeMethods.DeviceIoControl(SafeFileHandle,
 					NativeMethods.FSCTL_LOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
 					0, out result, IntPtr.Zero); ++i)
 			{
@@ -759,43 +792,40 @@ namespace Eraser.Util
 				System.Threading.Thread.Sleep(100);
 			}
 
-			Stream = stream;
+			IsLocked = true;
 		}
 
-		~VolumeLock()
+		private void UnlockVolume()
 		{
-			Dispose(false);
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "disposing")]
-		private void Dispose(bool disposing)
-		{
-			if (Stream == null)
-				return;
-
 			//Flush the contents of the buffer to disk since after we unlock the volume
 			//we can no longer write to the volume.
-			Stream.Flush();
+			Flush();
 
 			uint result = 0;
-			if (!NativeMethods.DeviceIoControl(Stream.SafeFileHandle,
-				NativeMethods.FSCTL_UNLOCK_VOLUME, IntPtr.Zero, 0, IntPtr.Zero,
-				0, out result, IntPtr.Zero))
+			if (!NativeMethods.DeviceIoControl(SafeFileHandle, NativeMethods.FSCTL_UNLOCK_VOLUME,
+				IntPtr.Zero, 0, IntPtr.Zero, 0, out result, IntPtr.Zero))
 			{
 				throw new IOException("Could not unlock volume.");
 			}
 
-			//Set the stream to null so that we won't run this function again.
-			Stream = null;
+			LengthCache = 0;
+			IsLocked = false;
 		}
 
-		private FileStream Stream;
+		/// <summary>
+		/// Reflects whether the current handle has exclusive access to the volume.
+		/// </summary>
+		private bool IsLocked;
+
+		/// <summary>
+		/// The <see cref="VolumeInfo"/> object this stream is encapsulating.
+		/// </summary>
+		private VolumeInfo Volume;
+
+		/// <summary>
+		/// The access parameter for this stream.
+		/// </summary>
+		private FileAccess Access;
 	}
 
 	public class DiskPerformanceInfo

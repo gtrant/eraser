@@ -88,32 +88,29 @@ namespace Eraser.DefaultPlugins
 
 				try
 				{
-					using (VolumeLock volumeLock = info.LockVolume(stream))
+					while (eraseQueue.Count != 0)
 					{
-						while (eraseQueue.Count != 0)
-						{
-							if (callback != null)
-								callback(directoriesCleaned, directoriesCleaned + eraseQueue.Count);
+						if (callback != null)
+							callback(directoriesCleaned, directoriesCleaned + eraseQueue.Count);
 
-							FatDirectoryBase currentDir = api.LoadDirectory(eraseQueue[0].FullName);
-							eraseQueue.RemoveAt(0);
+						FatDirectoryBase currentDir = api.LoadDirectory(eraseQueue[0].FullName);
+						eraseQueue.RemoveAt(0);
 
-							//Queue the subfolders in this directory
-							foreach (KeyValuePair<string, FatDirectoryEntry> entry in currentDir.Items)
-								if (entry.Value.EntryType == FatDirectoryEntryType.Directory)
-								{
-									//Check that we don't have the same cluster queued twice (e.g. for
-									//long/8.3 file names)
-									if (eraseQueueClusters.Contains(entry.Value.Cluster))
-										continue;
+						//Queue the subfolders in this directory
+						foreach (KeyValuePair<string, FatDirectoryEntry> entry in currentDir.Items)
+							if (entry.Value.EntryType == FatDirectoryEntryType.Directory)
+							{
+								//Check that we don't have the same cluster queued twice (e.g. for
+								//long/8.3 file names)
+								if (eraseQueueClusters.Contains(entry.Value.Cluster))
+									continue;
 
-									eraseQueueClusters.Add(entry.Value.Cluster);
-									eraseQueue.Add(entry.Value);
-								}
+								eraseQueueClusters.Add(entry.Value.Cluster);
+								eraseQueue.Add(entry.Value);
+							}
 
-							currentDir.ClearDeletedEntries();
-							++directoriesCleaned;
-						}
+						currentDir.ClearDeletedEntries();
+						++directoriesCleaned;
 					}
 				}
 				catch (SharingViolationException)
