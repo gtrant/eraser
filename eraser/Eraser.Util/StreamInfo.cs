@@ -312,7 +312,7 @@ namespace Eraser.Util
 			return OpenHandle(mode, iAccess, share, options);
 		}
 
-		internal SafeFileHandle OpenHandle(FileMode mode, uint access, FileShare share,
+		private SafeFileHandle OpenHandle(FileMode mode, uint access, FileShare share,
 			FileOptions options)
 		{
 			//Sharing mode
