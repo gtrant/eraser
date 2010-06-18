@@ -161,11 +161,5 @@ namespace Eraser.Util
 				return result;
 			}
 		}
-
-		/// <summary>
-		/// The regular expression which parses DOS Device names for the hard disk and partition.
-		/// </summary>
-		private static readonly Regex HarddiskPartitionRegex =
-			new Regex("Harddisk([\\d]+)Partition([\\d]+)", RegexOptions.Compiled);
 	}
 }
