@@ -188,6 +188,20 @@ namespace Eraser.Util
 			}
 		}
 
+		public override bool Equals(object obj)
+		{
+			PhysicalDriveInfo info = obj as PhysicalDriveInfo;
+			if (info == null)
+				return base.Equals(obj);
+
+			return Index == info.Index;
+		}
+
+		public override int GetHashCode()
+		{
+			return Index.GetHashCode();
+		}
+
 		/// <summary>
 		/// The format string for accessing partitions.
 		/// </summary>
