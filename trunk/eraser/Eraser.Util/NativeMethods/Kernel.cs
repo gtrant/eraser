@@ -1166,9 +1166,9 @@ namespace Eraser.Util
 		/// <returns></returns>
 		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetVolumePathNamesForVolumeName(
-			string lpszVolumeName, StringBuilder lpszVolumePathNames, uint cchBufferLength,
-			out uint lpcchReturnLength);
+		public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName,
+			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] char[] lpszVolumePathNames,
+			uint cchBufferLength, out uint lpcchReturnLength);
 
 		public const int MaxPath = 260;
 		public const int LongPath = 32768;

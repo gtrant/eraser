@@ -97,10 +97,9 @@ namespace Eraser.Util
 			string pathNames;
 			{
 				uint returnLength = 0;
-				StringBuilder pathNamesBuffer = new StringBuilder();
-				pathNamesBuffer.EnsureCapacity(NativeMethods.MaxPath);
+				char[] pathNamesBuffer = new char[NativeMethods.MaxPath];
 				while (!NativeMethods.GetVolumePathNamesForVolumeName(VolumeId,
-					pathNamesBuffer, (uint)pathNamesBuffer.Capacity, out returnLength))
+					pathNamesBuffer, (uint)pathNamesBuffer.Length, out returnLength))
 				{
 					int errorCode = Marshal.GetLastWin32Error();
 					switch (errorCode)
@@ -109,16 +108,14 @@ namespace Eraser.Util
 							//The drive isn't ready yet: just return an empty list.
 							return result;
 						case Win32ErrorCode.MoreData:
-							pathNamesBuffer.EnsureCapacity((int)returnLength);
+							pathNamesBuffer = new char[pathNamesBuffer.Length * 2];
 							break;
 						default:
 							throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
 					}
 				}
 
-				if (pathNamesBuffer.Length < returnLength)
-					pathNamesBuffer.Length = (int)returnLength;
-				pathNames = pathNamesBuffer.ToString().Substring(0, (int)returnLength);
+				pathNames = new string(pathNamesBuffer, 0, (int)returnLength);
 			}
 
 			//OK, the marshalling is complete. Convert the pathNames string into a list
