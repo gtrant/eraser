@@ -52,7 +52,7 @@ namespace Eraser
 
 			//Set the current progress
 			if (task.Progress.CurrentStep != null)
-				UpdateProgress((SteppedProgressManager)task.Progress.CurrentStep.Progress,
+				UpdateProgress(task.Progress.CurrentStep.Progress,
 					new ProgressChangedEventArgs(task.Progress.CurrentStep.Progress, null));
 		}
 
@@ -81,11 +81,7 @@ namespace Eraser
 			if (target == null)
 				return;
 
-			SteppedProgressManager progress = target.Progress as SteppedProgressManager;
-			if (progress == null)
-				return;
-
-			UpdateProgress(progress, e);
+			UpdateProgress(target.Progress, e);
 		}
 
 		private void task_TaskFinished(object sender, EventArgs e)
@@ -143,11 +139,17 @@ namespace Eraser
 			Close();
 		}
 
-		private void UpdateProgress(SteppedProgressManager targetProgress, ProgressChangedEventArgs e)
+		private void UpdateProgress(ProgressManagerBase targetProgress, ProgressChangedEventArgs e)
 		{
 			TaskProgressChangedEventArgs e2 = (TaskProgressChangedEventArgs)e.UserState;
-			if (targetProgress.CurrentStep != null)
-				status.Text = targetProgress.CurrentStep.Name;
+			{
+				SteppedProgressManager targetProgressStepped =
+					targetProgress as SteppedProgressManager;
+				if (targetProgressStepped != null && targetProgressStepped.CurrentStep != null)
+					status.Text = targetProgressStepped.CurrentStep.Name;
+				else
+					status.Text = S._("Erasing...");
+			}
 
 			if (e2 != null)
 			{

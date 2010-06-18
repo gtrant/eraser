@@ -201,6 +201,9 @@
   <data name="Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Erasing..." xml:space="preserve">
+    <value>Erasing...</value>
+  </data>
   <data name="{0} out of {1}" xml:space="preserve">
     <value>{0} out of {1}</value>
   </data>
