@@ -565,6 +565,23 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
+		/// Gets the Physical Drive this Volume is in.
+		/// </summary>
+		public PhysicalDriveInfo PhysicalDrive
+		{
+			get
+			{
+				foreach (PhysicalDriveInfo info in PhysicalDriveInfo.Drives)
+				{
+					if (info.Volumes.IndexOf(this) != -1)
+						return info;
+				}
+
+				return null;
+			}
+		}
+
+		/// <summary>
 		/// Opens a file with read, write, or read/write access.
 		/// </summary>
 		/// <param name="access">A System.IO.FileAccess constant specifying whether
@@ -696,6 +713,15 @@ namespace Eraser.Util
 		{
 			IList<DirectoryInfo> mountPoints = MountPoints;
 			return mountPoints.Count == 0 ? VolumeId : mountPoints[0].FullName;
+		}
+
+		public override bool Equals(object obj)
+		{
+			VolumeInfo rhs = obj as VolumeInfo;
+			if (rhs == null)
+				return base.Equals(obj);
+
+			return VolumeId == rhs.VolumeId;
 		}
 
 		public VolumeLock LockVolume(FileStream stream)
