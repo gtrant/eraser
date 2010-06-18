@@ -64,15 +64,13 @@ namespace Eraser.Util
 				//Iterate over every hard disk index until we find one that doesn't exist.
 				for (int i = 0; ; ++i)
 				{
-					string path = string.Format(CultureInfo.InvariantCulture,
-						"\\Device\\Harddisk{0}\\Partition0", i);
-					using (SafeFileHandle handle = OpenWin32Device(path))
+					using (SafeFileHandle handle = OpenWin32Device(GetDiskPath(i)))
 					{
 						if (handle.IsInvalid)
 							break;
-
-						result.Add(new PhysicalDriveInfo(i));
 					}
+
+					result.Add(new PhysicalDriveInfo(i));
 				}
 
 				return result.AsReadOnly();
@@ -131,8 +129,7 @@ namespace Eraser.Util
 				//Check every partition index on this drive.
 				for (int i = 1; ; ++i)
 				{
-					string path = string.Format(CultureInfo.InvariantCulture,
-						"\\Device\\Harddisk{0}\\Partition{1}", Index, i);
+					string path = GetPartitionPath(i);
 					using (SafeFileHandle handle = OpenWin32Device(path))
 					{
 						if (handle.IsInvalid)
@@ -160,6 +157,40 @@ namespace Eraser.Util
 
 				return result;
 			}
+		}
+
+		/// <summary>
+		/// The format string for accessing partitions.
+		/// </summary>
+		private static readonly string PartitionFormat = "\\Device\\Harddisk{0}\\Partition{1}";
+
+		/// <summary>
+		/// Gets the disk device name.
+		/// </summary>
+		/// <param name="disk">The zero-based disk index.</param>
+		/// <returns>The device name of the disk.</returns>
+		private static string GetDiskPath(int disk)
+		{
+			return string.Format(CultureInfo.InvariantCulture, PartitionFormat, disk, 0);
+		}
+
+		/// <summary>
+		/// Gets the current disk device name.
+		/// </summary>
+		/// <returns>The device name of the disk.</returns>
+		private string GetDiskPath()
+		{
+			return GetDiskPath(Index);
+		}
+
+		/// <summary>
+		/// Gets the partition device name.
+		/// </summary>
+		/// <param name="partition">The one-based partition index.</param>
+		/// <returns>The device name of the partition.</returns>
+		private string GetPartitionPath(int partition)
+		{
+			return string.Format(CultureInfo.InvariantCulture, PartitionFormat, Index, partition);
 		}
 	}
 }
