@@ -1,6 +1,7 @@
 php_value error_log ../error.log
 php_value upload_max_filesize 256M
 php_value post_max_size 288M
+php_value max_input_time 86400
 
 order allow,deny
 allow from all
