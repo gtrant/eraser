@@ -91,55 +91,7 @@ namespace Eraser.Util
 		/// <returns>A list of volume mount points for the current volume.</returns>
 		private List<string> GetLocalVolumeMountPoints()
 		{
-			List<string> result = new List<string>();
-
-			//Get the paths of the said volume
-			string pathNames;
-			{
-				uint returnLength = 0;
-				char[] pathNamesBuffer = new char[NativeMethods.MaxPath];
-				while (!NativeMethods.GetVolumePathNamesForVolumeName(VolumeId,
-					pathNamesBuffer, (uint)pathNamesBuffer.Length, out returnLength))
-				{
-					int errorCode = Marshal.GetLastWin32Error();
-					switch (errorCode)
-					{
-						case Win32ErrorCode.NotReady:
-							//The drive isn't ready yet: just return an empty list.
-							return result;
-						case Win32ErrorCode.MoreData:
-							pathNamesBuffer = new char[pathNamesBuffer.Length * 2];
-							break;
-						default:
-							throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
-					}
-				}
-
-				pathNames = new string(pathNamesBuffer, 0, (int)returnLength);
-			}
-
-			//OK, the marshalling is complete. Convert the pathNames string into a list
-			//of strings containing all of the volumes mountpoints; because the
-			//GetVolumePathNamesForVolumeName function returns a convoluted structure
-			//containing the path names.
-			for (int lastIndex = 0, i = 0; i != pathNames.Length; ++i)
-			{
-				if (pathNames[i] == '\0')
-				{
-					//If there are no mount points for this volume, the string will only
-					//have one NULL
-					if (i - lastIndex == 0)
-						break;
-
-					result.Add(pathNames.Substring(lastIndex, i - lastIndex));
-
-					lastIndex = i + 1;
-					if (pathNames[lastIndex] == '\0')
-						break;
-				}
-			}
-
-			return result;
+			return new List<string>(NativeMethods.GetVolumePathNamesForVolumeName(VolumeId));
 		}
 
 		/// <summary>
