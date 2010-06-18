@@ -598,33 +598,12 @@ namespace Eraser.Util
 
 				//Do we have enough space for all the text
 				if (written != 0)
-					break;
+					return ParseNullDelimitedArray(buffer, (int)written);
 				else if (Marshal.GetLastWin32Error() == Win32ErrorCode.InsufficientBuffer)
 					continue;
 				else
 					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
-
-			List<string> result = new List<string>();
-			for (int lastIndex = 0, i = 0; i != buffer.Length; ++i)
-			{
-				if (buffer[i] == '\0')
-				{
-					//If there are no mount points for this volume, the string will only
-					//have one NULL
-					if (i - lastIndex == 0)
-						break;
-
-					//Resolve the DOS name to the device name
-					result.Add(new string(buffer, lastIndex, i - lastIndex));
-
-					lastIndex = i + 1;
-					if (buffer[lastIndex] == '\0')
-						break;
-				}
-			}
-
-			return result.ToArray();
 		}
 
 		public static string QueryDosDevice(string lpDeviceName)
@@ -1166,9 +1145,37 @@ namespace Eraser.Util
 		/// <returns></returns>
 		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName,
+		private static extern bool GetVolumePathNamesForVolumeName(string lpszVolumeName,
 			[MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 3)] char[] lpszVolumePathNames,
 			uint cchBufferLength, out uint lpcchReturnLength);
+
+		/// <summary>
+		/// Retrieves a list of path names for the specified volume name.
+		/// </summary>
+		/// <param name="lpszVolumeName">The volume name.</param>
+		public static string[] GetVolumePathNamesForVolumeName(string lpszVolumeName)
+		{
+			uint returnLength = 0;
+			char[] pathNamesBuffer = new char[NativeMethods.MaxPath];
+			while (!NativeMethods.GetVolumePathNamesForVolumeName(lpszVolumeName,
+				pathNamesBuffer, (uint)pathNamesBuffer.Length, out returnLength))
+			{
+				int errorCode = Marshal.GetLastWin32Error();
+				switch (errorCode)
+				{
+					case Win32ErrorCode.NotReady:
+						//The drive isn't ready yet: just return an empty list.
+						return new string[0];
+					case Win32ErrorCode.MoreData:
+						pathNamesBuffer = new char[pathNamesBuffer.Length * 2];
+						break;
+					default:
+						throw Win32ErrorCode.GetExceptionForWin32Error(errorCode);
+				}
+			}
+
+			return ParseNullDelimitedArray(pathNamesBuffer, (int)returnLength);
+		}
 
 		public const int MaxPath = 260;
 		public const int LongPath = 32768;
@@ -1243,5 +1250,33 @@ namespace Eraser.Util
 		/// you to verify the intended behavior, then continue execution.</remarks>
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		public static extern IntPtr LocalFree(IntPtr hMem);
+
+		/// <summary>
+		/// Parses a null-delimited array into a string array.
+		/// </summary>
+		/// <param name="buffer">The buffer to parse.</param>
+		/// <param name="length">The valid length of the array.</param>
+		/// <returns>The array found in the buffer</returns>
+		private static string[] ParseNullDelimitedArray(char[] buffer, int length)
+		{
+			List<string> result = new List<string>();
+			for (int lastIndex = 0, i = 0; i != length; ++i)
+			{
+				if (buffer[i] == '\0')
+				{
+					//If the string formed is empty, there are no elements left.
+					if (i - lastIndex == 0)
+						break;
+
+					result.Add(new string(buffer, lastIndex, i - lastIndex));
+
+					lastIndex = i + 1;
+					if (buffer[lastIndex] == '\0')
+						break;
+				}
+			}
+
+			return result.ToArray();
+		}
 	}
 }
