@@ -195,6 +195,45 @@
   <data name="Files in {0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>Files in {0} did not have its cluster tips erased because of the following error: {1}</value>
   </data>
+  <data name="Drive/Partition" xml:space="preserve">
+    <value>Drive/Partition</value>
+  </data>
+  <data name="Hard disk {0}" xml:space="preserve">
+    <value>Hard disk {0}</value>
+  </data>
+  <data name="Partition: {0}" xml:space="preserve">
+    <value>Partition: {0}</value>
+  </data>
+  <data name="Hard disk {0} Partition {1}" xml:space="preserve">
+    <value>Hard disk {0} Partition {1}</value>
+  </data>
+  <data name="Partition" xml:space="preserve">
+    <value>Partition</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
+    <value>The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation.</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
+    <value>The program does not have the required permissions to erase the unused space on disk.</value>
+  </data>
+  <data name="The Drive erasure target requires a volume or physical drive selected for erasure." xml:space="preserve">
+    <value>The Drive erasure target requires a volume or physical drive selected for erasure.</value>
+  </data>
+  <data name="The task was cancelled." xml:space="preserve">
+    <value>The task was cancelled.</value>
+  </data>
+  <data name="Hard disk {0} ({1})" xml:space="preserve">
+    <value>Hard disk {0} ({1})</value>
+  </data>
+  <data name="Partition {0} ({1})" xml:space="preserve">
+    <value>Partition {0} ({1})</value>
+  </data>
+  <data name="Partition ({0})" xml:space="preserve">
+    <value>Partition ({0})</value>
+  </data>
+  <data name="Partition {0}" xml:space="preserve">
+    <value>Partition {0}</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
@@ -212,9 +251,6 @@
   </data>
   <data name="The file {0} could not be erased because the file was either compressed, encrypted or a sparse file." xml:space="preserve">
     <value>The file {0} could not be erased because the file was either compressed, encrypted or a sparse file.</value>
-  </data>
-  <data name="The task was cancelled." xml:space="preserve">
-    <value>The task was cancelled.</value>
   </data>
   <data name="The file {0} is a hard link or a symbolic link thus the contents of the file was not erased." xml:space="preserve">
     <value>The file {0} is a hard link or a symbolic link thus the contents of the file was not erased.</value>
@@ -275,12 +311,6 @@
   </data>
   <data name="Unused disk space ({0})" xml:space="preserve">
     <value>Unused disk space ({0})</value>
-  </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
-    <value>The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation.</value>
-  </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
-    <value>The program does not have the required permissions to erase the unused space on disk.</value>
   </data>
   <data name="This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
     <value>This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern.</value>
