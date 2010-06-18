@@ -64,7 +64,8 @@ namespace Eraser.Util
 				//Iterate over every hard disk index until we find one that doesn't exist.
 				for (int i = 0; ; ++i)
 				{
-					using (SafeFileHandle handle = OpenWin32Device(GetDiskPath(i)))
+					using (SafeFileHandle handle = OpenWin32Device(GetDiskPath(i),
+						NativeMethods.FILE_READ_ATTRIBUTES))
 					{
 						if (handle.IsInvalid)
 							break;
@@ -81,8 +82,9 @@ namespace Eraser.Util
 		/// Opens a device in the Win32 Namespace.
 		/// </summary>
 		/// <param name="deviceName">The name of the device to open.</param>
+		/// <param name="access">The access needed for the handle.</param>
 		/// <returns>A <see cref="SafeFileHandle"/> to the device.</returns>
-		private static SafeFileHandle OpenWin32Device(string deviceName)
+		private static SafeFileHandle OpenWin32Device(string deviceName, uint access)
 		{
 			//Define the DOS device name for access
 			string dosDeviceName = string.Format(CultureInfo.InvariantCulture,
@@ -99,7 +101,7 @@ namespace Eraser.Util
 			{
 				//Open the device handle.
 				return NativeMethods.CreateFile(string.Format(CultureInfo.InvariantCulture,
-					"\\\\.\\{0}", dosDeviceName), NativeMethods.FILE_READ_ATTRIBUTES,
+					"\\\\.\\{0}", dosDeviceName), access,
 					NativeMethods.FILE_SHARE_READ | NativeMethods.FILE_SHARE_WRITE, IntPtr.Zero,
 					(int)FileMode.Open, (uint)FileAttributes.ReadOnly, IntPtr.Zero);
 			}
@@ -130,7 +132,8 @@ namespace Eraser.Util
 				for (int i = 1; ; ++i)
 				{
 					string path = GetPartitionPath(i);
-					using (SafeFileHandle handle = OpenWin32Device(path))
+					using (SafeFileHandle handle = OpenWin32Device(path,
+						NativeMethods.FILE_READ_ATTRIBUTES))
 					{
 						if (handle.IsInvalid)
 							break;
@@ -156,6 +159,32 @@ namespace Eraser.Util
 				}
 
 				return result;
+			}
+		}
+
+		/// <summary>
+		/// Gets the size of the disk, in bytes.
+		/// </summary>
+		public long Size
+		{
+			get
+			{
+				using (SafeFileHandle handle = OpenWin32Device(GetDiskPath(),
+					NativeMethods.GENERIC_READ))
+				{
+					if (handle.IsInvalid)
+						throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+
+					long result = 0;
+					uint returned = 0;
+					if (NativeMethods.DeviceIoControl(handle, NativeMethods.IOCTL_DISK_GET_LENGTH_INFO,
+						IntPtr.Zero, 0, out result, out returned, IntPtr.Zero))
+					{
+						return result;
+					}
+
+					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+				}
 			}
 		}
 

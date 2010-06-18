@@ -674,6 +674,27 @@ namespace Eraser.Util
 			public string StorageManagerName;
 		}
 
+		[DllImport("Kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		private extern static bool DeviceIoControl(SafeFileHandle hDevice,
+			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
+			out long lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned,
+			IntPtr lpOverlapped);
+
+		public static bool DeviceIoControl(SafeFileHandle hDevice,
+			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
+			out long lpOutBuffer, out uint lpBytesReturned, IntPtr lpOverlapped)
+		{
+			return DeviceIoControl(hDevice, dwIoControlCode, lpInBuffer, nInBufferSize,
+				out lpOutBuffer, sizeof(long), out lpBytesReturned, lpOverlapped);
+		}
+
+		/// <summary>
+		/// Retrieves the length of the specified disk, volume, or partition.
+		/// </summary>
+		public const int IOCTL_DISK_GET_LENGTH_INFO =
+			(0x00000007 << 16) | (0x0001 << 14) | (0x0017 << 2);
+
 		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool DeviceIoControl(SafeFileHandle hDevice,

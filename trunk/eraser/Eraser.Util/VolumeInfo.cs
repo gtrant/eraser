@@ -462,16 +462,30 @@ namespace Eraser.Util
 		{
 			get
 			{
-				if (!IsReady)
-					throw new InvalidOperationException("The volume has not been mounted or is not " +
-						"currently ready.");
-
 				ulong result, dummy;
 				if (NativeMethods.GetDiskFreeSpaceEx(VolumeId, out dummy, out result, out dummy))
 				{
 					return (long)result;
 				}
 
+				//Try the alternative method
+				using (SafeFileHandle handle = OpenHandle(NativeMethods.GENERIC_READ,
+					FileShare.ReadWrite, FileOptions.None))
+				{
+					if (handle.IsInvalid)
+						throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+
+					long result2;
+					uint returned = 0;
+					if (NativeMethods.DeviceIoControl(handle,
+						NativeMethods.IOCTL_DISK_GET_LENGTH_INFO, IntPtr.Zero, 0, out result2,
+						out returned, IntPtr.Zero))
+					{
+						return result2;
+					}
+				}
+
+				//Otherwise, throw
 				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
 			}
 		}
