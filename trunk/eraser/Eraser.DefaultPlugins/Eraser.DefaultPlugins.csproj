@@ -99,6 +99,13 @@
     <Compile Include="ErasureTargets\FolderErasureTargetConfigurer.Designer.cs">
       <DependentUpon>FolderErasureTargetConfigurer.cs</DependentUpon>
     </Compile>
+    <Compile Include="ErasureTargets\DriveErasureTarget.cs" />
+    <Compile Include="ErasureTargets\DriveErasureTargetConfigurer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ErasureTargets\DriveErasureTargetConfigurer.Designer.cs">
+      <DependentUpon>DriveErasureTargetConfigurer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ErasureTargets\RecycleBinErasureTarget.cs" />
     <Compile Include="ErasureTargets\RecycleBinErasureTargetConfigurer.cs" />
     <Compile Include="ErasureTargets\SecureMoveErasureTarget.cs" />
@@ -173,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ErasureTargets\FolderErasureTargetConfigurer.resx">
       <DependentUpon>FolderErasureTargetConfigurer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErasureTargets\DriveErasureTargetConfigurer.resx">
+      <DependentUpon>DriveErasureTargetConfigurer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ErasureTargets\SecureMoveErasureTargetConfigurer.resx">
       <DependentUpon>SecureMoveErasureTargetConfigurer.cs</DependentUpon>
