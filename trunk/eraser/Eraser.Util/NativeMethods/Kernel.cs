@@ -645,6 +645,8 @@ namespace Eraser.Util
 
 		public const uint FSCTL_LOCK_VOLUME = 0x90018;
 		public const uint FSCTL_UNLOCK_VOLUME = 0x9001C;
+		public const uint IOCTL_DISK_DELETE_DRIVE_LAYOUT =
+			(0x00000007 << 16) | ((0x01 | 0x02) << 14) | (0x0040 << 2);
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
