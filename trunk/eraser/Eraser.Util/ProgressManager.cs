@@ -158,6 +158,7 @@ namespace Eraser.Util
 		/// </summary>
 		public void MarkComplete()
 		{
+			progressIndeterminate = false;
 			if (total == 0)
 				completed = total = 1;
 			else
@@ -167,6 +168,7 @@ namespace Eraser.Util
 		/// <summary>
 		/// Gets or sets the number of work units already completed.
 		/// </summary>
+		/// <remarks>This unsets the Indeterminate flag for the progress of this Task.</remarks>
 		public long Completed
 		{
 			get
@@ -181,6 +183,7 @@ namespace Eraser.Util
 						"the task.");
 
 				completed = value;
+				progressIndeterminate = false;
 			}
 		}
 
