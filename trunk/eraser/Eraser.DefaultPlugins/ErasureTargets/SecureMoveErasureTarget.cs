@@ -327,7 +327,7 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		private IO.CopyProgressFunctionResult CopyProgress(ProgressManager progress,
+		private Methods.CopyProgressFunctionResult CopyProgress(ProgressManager progress,
 			FileInfo file, long TotalFileSize, long TotalBytesTransferred)	
 		{
 			progress.Completed = TotalBytesTransferred;
