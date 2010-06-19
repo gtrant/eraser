@@ -336,8 +336,8 @@ namespace Eraser.DefaultPlugins
 				new TaskProgressChangedEventArgs(file.FullName, 1, 1)));
 
 			if (Task.Canceled)
-				return IO.CopyProgressFunctionResult.Stop;
-			return IO.CopyProgressFunctionResult.Continue;
+				return Methods.CopyProgressFunctionResult.Stop;
+			return Methods.CopyProgressFunctionResult.Continue;
 		}
 
 		private class StreamInfoFileEqualityComparer : IEqualityComparer<StreamInfo>
