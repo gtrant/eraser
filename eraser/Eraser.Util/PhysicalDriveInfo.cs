@@ -148,6 +148,26 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
+		/// Destroys all partitioning information on the drive.
+		/// </summary>
+		public void DeleteDriveLayout()
+		{
+			//Open the drive for read/write access
+			using (SafeFileHandle handle = OpenHandle(FileAccess.ReadWrite, FileShare.ReadWrite,
+				FileOptions.None))
+			{
+				//Issue the IOCTL_DISK_DELETE_DRIVE_LAYOUT control code
+				uint returnSize = 0;
+				if (!NativeMethods.DeviceIoControl(handle,
+					NativeMethods.IOCTL_DISK_DELETE_DRIVE_LAYOUT, IntPtr.Zero, 0, IntPtr.Zero,
+					0, out returnSize, IntPtr.Zero))
+				{
+					throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+				}
+			}
+		}
+
+		/// <summary>
 		/// Opens a file with read, write, or read/write access.
 		/// </summary>
 		/// <param name="access">A System.IO.FileAccess constant specifying whether
