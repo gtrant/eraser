@@ -28,12 +28,14 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-using Eraser.Manager;
-using Eraser.Manager.Plugin;
 using Microsoft.Win32;
 using System.Globalization;
-using Eraser.Util;
 using System.Threading;
+
+using Eraser.Manager;
+using Eraser.Manager.Plugin;
+using Eraser.Util;
+using Eraser.Util.ExtensionMethods;
 
 namespace Eraser
 {
@@ -78,7 +80,7 @@ namespace Eraser
 			item.ImageIndex = e.Instance.AssemblyAuthenticode == null ? -1 : 0;
 			item.Group = e.Instance.LoadingPolicy == LoadingPolicy.Core ?
 				pluginsManager.Groups[0] : pluginsManager.Groups[1];
-			item.SubItems.Add(e.Instance.Assembly.GetName().Version.ToString());
+			item.SubItems.Add(e.Instance.Assembly.GetFileVersion().ToString());
 			item.SubItems.Add(e.Instance.Assembly.Location);
 			item.Tag = e.Instance;
 			pluginsManager.Items.Add(item);

@@ -44,6 +44,7 @@ using Microsoft.Win32.SafeHandles;
 using Microsoft.VisualBasic.Devices;
 
 using Eraser.Util;
+using Eraser.Util.ExtensionMethods;
 using ProgressChangedEventHandler = Eraser.Util.ProgressChangedEventHandler;
 using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
 
@@ -190,7 +191,7 @@ namespace Eraser.BlackBox
 				stream.WriteLine("Application Information");
 				stream.WriteLine(separator);
 				stream.WriteLine(string.Format(lineFormat, "Version",
-					Assembly.GetEntryAssembly().GetName().Version));
+					Assembly.GetEntryAssembly().GetFileVersion()));
 				StringBuilder commandLine = new StringBuilder();
 				foreach (string param in Environment.GetCommandLineArgs())
 				{

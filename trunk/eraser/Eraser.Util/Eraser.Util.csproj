@@ -109,6 +109,7 @@
     <Compile Include="ExtensionClasses\SplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ExtensionMethods\Assembly.cs" />
     <Compile Include="FileSize.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="MiniDump.cs" />
