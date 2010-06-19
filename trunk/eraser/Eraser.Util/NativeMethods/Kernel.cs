@@ -645,6 +645,24 @@ namespace Eraser.Util
 
 		public const uint FSCTL_LOCK_VOLUME = 0x90018;
 		public const uint FSCTL_UNLOCK_VOLUME = 0x9001C;
+
+		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool DeviceIoControl(SafeFileHandle hDevice,
+			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
+			out NTFS_VOLUME_DATA_BUFFER lpOutBuffer, uint nOutBufferSize,
+			out uint lpBytesReturned, IntPtr lpOverlapped);
+
+		/// <summary>
+		/// Retrieves information about the specified NTFS file system volume.
+		/// </summary>
+		public const int FSCTL_GET_NTFS_VOLUME_DATA = (9 << 16) | (25 << 2);
+
+		/// <summary>
+		/// Removes the boot signature from the master boot record, so that the disk will
+		/// be formatted from sector zero to the end of the disk. Partition information
+		/// is no longer stored in sector zero.
+		/// </summary>
 		public const uint IOCTL_DISK_DELETE_DRIVE_LAYOUT =
 			(0x00000007 << 16) | ((0x01 | 0x02) << 14) | (0x0040 << 2);
 
@@ -678,18 +696,10 @@ namespace Eraser.Util
 
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		private extern static bool DeviceIoControl(SafeFileHandle hDevice,
+		public extern static bool DeviceIoControl(SafeFileHandle hDevice,
 			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
 			out long lpOutBuffer, uint nOutBufferSize, out uint lpBytesReturned,
 			IntPtr lpOverlapped);
-
-		public static bool DeviceIoControl(SafeFileHandle hDevice,
-			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
-			out long lpOutBuffer, out uint lpBytesReturned, IntPtr lpOverlapped)
-		{
-			return DeviceIoControl(hDevice, dwIoControlCode, lpInBuffer, nInBufferSize,
-				out lpOutBuffer, sizeof(long), out lpBytesReturned, lpOverlapped);
-		}
 
 		/// <summary>
 		/// Retrieves the length of the specified disk, volume, or partition.
@@ -697,17 +707,60 @@ namespace Eraser.Util
 		public const int IOCTL_DISK_GET_LENGTH_INFO =
 			(0x00000007 << 16) | (0x0001 << 14) | (0x0017 << 2);
 
-		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeviceIoControl(SafeFileHandle hDevice,
-			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
-			out NTFS_VOLUME_DATA_BUFFER lpOutBuffer, uint nOutBufferSize,
-			out uint lpBytesReturned, IntPtr lpOverlapped);
+		/// <summary>
+		/// Retrieves the physical location of a specified volume on one or more disks.
+		/// </summary>
+		public const int IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS =
+			((0x00000056) << 16) | ((0) << 14) | ((0) << 2) | (0);
 
 		/// <summary>
-		/// Retrieves information about the specified NTFS file system volume.
+		/// Represents a physical location on a disk.
 		/// </summary>
-		public const int FSCTL_GET_NTFS_VOLUME_DATA = (9 << 16) | (25 << 2);
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct VOLUME_DISK_EXTENTS
+		{
+			/// <summary>
+			/// The number of disks in the volume (a volume can span multiple disks).
+			/// 
+			/// An extent is a contiguous run of sectors on one disk. When the number
+			/// of extents returned is greater than one (1), the error code
+			/// ERROR_MORE_DATA is returned. You should call DeviceIoControl again,
+			/// allocating enough buffer space based on the value of NumberOfDiskExtents
+			/// after the first DeviceIoControl call.
+			/// </summary>
+			public uint NumberOfDiskExtents;
+
+			/// <summary>
+			/// The first extent in the set. Subsequent extents are found after this
+			/// structure.
+			/// </summary>
+			public DISK_EXTENT Extent;
+		}
+
+		/// <summary>
+		/// Represents a disk extent.
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct DISK_EXTENT
+		{
+			/// <summary>
+			/// The number of the disk that contains this extent.
+			/// 
+			/// This is the same number that is used to construct the name of the disk,
+			/// for example, the X in PhysicalDriveX or HarddiskX.
+			/// </summary>
+			public uint DiskNumber;
+
+			/// <summary>
+			/// The offset from the beginning of the disk to the extent, in bytes.
+			/// </summary>
+			public long StartingOffset;
+
+			/// <summary>
+			/// The number of bytes in this extent.
+			/// </summary>
+			public long ExtentLength;
+		}
 
 		/// <summary>
 		/// Retrieves a set of FAT file system attributes for a specified file or
