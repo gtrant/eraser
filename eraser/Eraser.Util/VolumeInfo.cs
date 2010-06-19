@@ -598,7 +598,9 @@ namespace Eraser.Util
 						buffer, (uint)bufferSize, out returnSize, IntPtr.Zero))
 					{
 						int error = Marshal.GetLastWin32Error();
-						if (error != Win32ErrorCode.InsufficientBuffer)
+						if (error == Win32ErrorCode.InvalidFunction)
+							return null;
+						else if (error != Win32ErrorCode.MoreData)
 							throw Win32ErrorCode.GetExceptionForWin32Error(error);
 
 						//Calculate the size of the buffer required
@@ -628,8 +630,9 @@ namespace Eraser.Util
 						NativeMethods.VOLUME_DISK_EXTENTS)); i < header.NumberOfDiskExtents;
 						++i, offset += Marshal.SizeOf(typeof(NativeMethods.DISK_EXTENT)))
 					{
-						NativeMethods.DISK_EXTENT extent = new NativeMethods.DISK_EXTENT();
-						Marshal.PtrToStructure(new IntPtr(buffer.ToInt64() + offset), extent);
+						NativeMethods.DISK_EXTENT extent = (NativeMethods.DISK_EXTENT)
+							Marshal.PtrToStructure(new IntPtr(buffer.ToInt64() + offset),
+							typeof(NativeMethods.DISK_EXTENT));
 						extents.Add(extent);
 					}
 				}

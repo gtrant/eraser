@@ -87,34 +87,11 @@ namespace Eraser.Util
 			{
 				List<VolumeInfo> result = new List<VolumeInfo>();
 
-				//Check every partition index on this drive.
-				for (int i = 1; ; ++i)
+				//Check every volume for which disk it is on.
+				foreach (VolumeInfo info in VolumeInfo.Volumes)
 				{
-					string path = GetPartitionPath(i);
-					using (SafeFileHandle handle = OpenWin32Device(path,
-						NativeMethods.FILE_READ_ATTRIBUTES, FileShare.ReadWrite, FileOptions.None))
-					{
-						if (handle.IsInvalid)
-							break;
-					}
-
-					//This partition index is valid. Check which VolumeInfo this maps to.
-					foreach (VolumeInfo info in VolumeInfo.Volumes)
-					{
-						//Only check local drives
-						if (info.VolumeId.Substring(0, 4) == "\\\\?\\")
-						{
-							//Check whether the DOS Device maps to the target of the symbolic link
-							if (NativeMethods.NtQuerySymbolicLink(path) ==
-								NativeMethods.QueryDosDevice(info.VolumeId.Substring(
-									4, info.VolumeId.Length - 5)))
-							{
-								//Yes, this volume belongs to this disk
-								result.Add(info);
-								break;
-							}
-						}
-					}
+					if (Equals(info.PhysicalDrive))
+						result.Add(info);
 				}
 
 				return result;
