@@ -299,7 +299,7 @@ namespace Eraser.DefaultPlugins
 			//Erase the source copy.
 			SteppedProgressManager eraseProgress = new SteppedProgressManager();
 			Progress.Steps.Add(new SteppedProgressManagerStep(eraseProgress,
-				(totalPasses - 1) / totalPasses,
+				(totalPasses - 1) / (float)totalPasses,
 				S._("Erasing source files...")));
 			EraseFile(info, eraseProgress);
 		}
