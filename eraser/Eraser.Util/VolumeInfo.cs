@@ -479,7 +479,7 @@ namespace Eraser.Util
 					uint returned = 0;
 					if (NativeMethods.DeviceIoControl(handle,
 						NativeMethods.IOCTL_DISK_GET_LENGTH_INFO, IntPtr.Zero, 0, out result2,
-						out returned, IntPtr.Zero))
+						sizeof(long), out returned, IntPtr.Zero))
 					{
 						return result2;
 					}
@@ -581,12 +581,66 @@ namespace Eraser.Util
 		{
 			get
 			{
-				foreach (PhysicalDriveInfo info in PhysicalDriveInfo.Drives)
+				IntPtr buffer = IntPtr.Zero;
+				List<NativeMethods.DISK_EXTENT> extents = new List<NativeMethods.DISK_EXTENT>();
+				SafeFileHandle handle = OpenHandle(FileAccess.Read, FileShare.ReadWrite,
+					FileOptions.None);
+
+				try
 				{
-					if (info.Volumes.IndexOf(this) != -1)
-						return info;
+					uint returnSize = 0;
+					int bufferSize = Marshal.SizeOf(typeof(NativeMethods.VOLUME_DISK_EXTENTS));
+					buffer = Marshal.AllocHGlobal(bufferSize);
+					NativeMethods.VOLUME_DISK_EXTENTS header;
+
+					if (!NativeMethods.DeviceIoControl(handle,
+						NativeMethods.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, IntPtr.Zero, 0,
+						buffer, (uint)bufferSize, out returnSize, IntPtr.Zero))
+					{
+						int error = Marshal.GetLastWin32Error();
+						if (error != Win32ErrorCode.InsufficientBuffer)
+							throw Win32ErrorCode.GetExceptionForWin32Error(error);
+
+						//Calculate the size of the buffer required
+						header = (NativeMethods.VOLUME_DISK_EXTENTS)
+							Marshal.PtrToStructure(buffer,
+								typeof(NativeMethods.VOLUME_DISK_EXTENTS));
+						Marshal.FreeHGlobal(buffer);
+						bufferSize += (int)(header.NumberOfDiskExtents - 1) *
+							Marshal.SizeOf(typeof(NativeMethods.DISK_EXTENT));
+						buffer = Marshal.AllocHGlobal(bufferSize);
+
+						if (!NativeMethods.DeviceIoControl(handle,
+							NativeMethods.IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, IntPtr.Zero, 0,
+							buffer, (uint)bufferSize, out returnSize, IntPtr.Zero))
+						{
+							throw Win32ErrorCode.GetExceptionForWin32Error(
+								Marshal.GetLastWin32Error());
+						}
+					}
+
+					//Parse the structure.
+					header = (NativeMethods.VOLUME_DISK_EXTENTS)Marshal.PtrToStructure(buffer,
+						typeof(NativeMethods.VOLUME_DISK_EXTENTS));
+					extents.Add(header.Extent);
+
+					for (long i = 1, offset = (uint)Marshal.SizeOf(typeof(
+						NativeMethods.VOLUME_DISK_EXTENTS)); i < header.NumberOfDiskExtents;
+						++i, offset += Marshal.SizeOf(typeof(NativeMethods.DISK_EXTENT)))
+					{
+						NativeMethods.DISK_EXTENT extent = new NativeMethods.DISK_EXTENT();
+						Marshal.PtrToStructure(new IntPtr(buffer.ToInt64() + offset), extent);
+						extents.Add(extent);
+					}
+				}
+				finally
+				{
+					handle.Close();
+					Marshal.FreeHGlobal(buffer);
 				}
 
+				if (extents.Count == 1)
+					return new PhysicalDriveInfo((int)extents[0].DiskNumber);
 				return null;
 			}
 		}

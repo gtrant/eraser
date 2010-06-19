@@ -137,7 +137,7 @@ namespace Eraser.Util
 					long result = 0;
 					uint returned = 0;
 					if (NativeMethods.DeviceIoControl(handle, NativeMethods.IOCTL_DISK_GET_LENGTH_INFO,
-						IntPtr.Zero, 0, out result, out returned, IntPtr.Zero))
+						IntPtr.Zero, 0, out result, sizeof(long), out returned, IntPtr.Zero))
 					{
 						return result;
 					}
