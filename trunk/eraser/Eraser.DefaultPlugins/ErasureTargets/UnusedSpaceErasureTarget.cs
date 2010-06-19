@@ -183,9 +183,9 @@ namespace Eraser.DefaultPlugins
 			{
 				//Define the callback handlers
 				ProgressManager tipSearch = new ProgressManager();
+				tipSearch.MarkIndeterminate();
 				Progress.Steps.Add(new SteppedProgressManagerStep(tipSearch,
 					0.0f, S._("Searching for files' cluster tips...")));
-				tipSearch.Total = 1;
 				ClusterTipsSearchProgress searchProgress = delegate(string path)
 				{
 					if (Task.Canceled)
