@@ -57,7 +57,17 @@ namespace Eraser.Util
 		/// <summary>
 		/// Gets the percentage of the operation completed.
 		/// </summary>
+		/// <remarks>If the <see cref="ProgressIndeterminate"/> property is true, this
+		/// property will return <see cref="System.Float.NaN"/>.</remarks>
 		public abstract float Progress
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Gets whether the current progress is undefined.
+		/// </summary>
+		public abstract bool ProgressIndeterminate
 		{
 			get;
 		}
@@ -136,6 +146,14 @@ namespace Eraser.Util
 	public class ProgressManager : ProgressManagerBase
 	{
 		/// <summary>
+		/// Marks this task's progress as indeterminate.
+		/// </summary>
+		public void MarkIndeterminate()
+		{
+			progressIndeterminate = true;
+		}
+
+		/// <summary>
 		/// Marks this task as complete.
 		/// </summary>
 		public void MarkComplete()
@@ -192,10 +210,26 @@ namespace Eraser.Util
 			{
 				if (Total == 0)
 					return 0.0f;
+				else if (ProgressIndeterminate)
+					return float.NaN;
 
 				return (float)((double)Completed / Total);
 			}
 		}
+
+		public override bool ProgressIndeterminate
+		{
+			get
+			{
+				return progressIndeterminate;
+			}
+		}
+
+		/// <summary>
+		/// Stores whether the progress of the current task cannot be determined.
+		/// </summary>
+		/// <see cref="ProgressIndeterminate"/>
+		private bool progressIndeterminate;
 
 		public override float Speed
 		{
@@ -478,6 +512,15 @@ namespace Eraser.Util
 			{
 				lock (ListLock)
 					return Steps.Sum(step => step.Progress.Progress * step.Weight);
+			}
+		}
+
+		public override bool ProgressIndeterminate
+		{
+			get
+			{
+				lock (ListLock)
+					return Steps.Any(x => x.Progress.ProgressIndeterminate);
 			}
 		}
 
@@ -828,6 +871,15 @@ namespace Eraser.Util
 			{
 				lock (TaskLock)
 					return Tasks.Sum(task => task.Progress * (1.0f / Tasks.Count));
+			}
+		}
+
+		public override bool ProgressIndeterminate
+		{
+			get
+			{
+				lock (TaskLock)
+					return Tasks.Any(x => x.ProgressIndeterminate);
 			}
 		}
 
