@@ -166,9 +166,9 @@ namespace Eraser.Util
 		/// MoveFileTransacted, or MoveFileWithProgress.</param>
 		/// <returns>The CopyProgressRoutine function should return one of the
 		/// <see cref="CopyProgressFunctionResult"/> values.</returns>
-		public delegate ExtensionMethods.IO.CopyProgressFunctionResult CopyProgressFunction(
-			long TotalFileSize, long TotalBytesTransferred, long StreamSize,
-			long StreamBytesTransferred, uint dwStreamNumber,
+		public delegate ExtensionMethods.Methods.CopyProgressFunctionResult
+			CopyProgressFunction(long TotalFileSize, long TotalBytesTransferred,
+			long StreamSize, long StreamBytesTransferred, uint dwStreamNumber,
 			CopyProgressFunctionCallbackReasons dwCallbackReason,
 			IntPtr hSourceFile, IntPtr hDestinationFile, IntPtr lpData);
 
