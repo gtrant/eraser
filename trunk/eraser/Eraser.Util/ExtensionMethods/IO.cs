@@ -35,7 +35,7 @@ namespace Eraser.Util.ExtensionMethods
 	/// <summary>
 	/// Implements extension methods for IO-bound operations.
 	/// </summary>
-	public static class IO
+	public static partial class Methods
 	{
 		/// <summary>
 		/// Copies the file times from the provided file.

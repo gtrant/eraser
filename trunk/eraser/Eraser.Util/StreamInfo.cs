@@ -343,7 +343,7 @@ namespace Eraser.Util
 					NativeMethods.FILE_WRITE_ATTRIBUTES, FileShare.ReadWrite,
 					FileOptions.None))
 			{
-				ExtensionMethods.IO.SetTimes(streamHandle, updateTime, createdTime,
+				ExtensionMethods.Methods.SetTimes(streamHandle, updateTime, createdTime,
 					lastModifiedTime, lastAccessedTime);
 			}
 		}
