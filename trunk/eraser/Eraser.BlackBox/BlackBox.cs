@@ -190,43 +190,44 @@ namespace Eraser.BlackBox
 				string lineFormat = "{0,20}: {1}";
 				stream.WriteLine("Application Information");
 				stream.WriteLine(separator);
-				stream.WriteLine(string.Format(lineFormat, "Version",
-					Assembly.GetEntryAssembly().GetFileVersion()));
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Version", Assembly.GetEntryAssembly().GetFileVersion()));
 				StringBuilder commandLine = new StringBuilder();
 				foreach (string param in Environment.GetCommandLineArgs())
 				{
 					commandLine.Append(param);
 					commandLine.Append(' ');
 				}
-				stream.WriteLine(string.Format(lineFormat, "Command Line",
-					commandLine.ToString().Trim()));
-				stream.WriteLine(string.Format(lineFormat, "Current Directory",
-					Environment.CurrentDirectory));
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Command Line", commandLine.ToString().Trim()));
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Current Directory", Environment.CurrentDirectory));
 
 				//System Information
 				ComputerInfo info = new ComputerInfo();
 				stream.WriteLine();
 				stream.WriteLine("System Information");
 				stream.WriteLine(separator);
-				stream.WriteLine(string.Format(lineFormat, "Operating System",
-					string.Format("{0} {1}{2} {4}",
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Operating System",
+					string.Format(CultureInfo.InvariantCulture, "{0} {1}{2} {4}",
 						info.OSFullName.Trim(), info.OSVersion.Trim(),
 						string.IsNullOrEmpty(Environment.OSVersion.ServicePack) ?
 							string.Empty :
-							string.Format("({0})", Environment.OSVersion.ServicePack),
+							string.Format(CultureInfo.InvariantCulture, "({0})", Environment.OSVersion.ServicePack),
 						SystemInfo.WindowsEdition == WindowsEditions.Undefined ?
-							"" : SystemInfo.WindowsEdition.ToString(),
+							string.Empty : SystemInfo.WindowsEdition.ToString(),
 						SystemInfo.ProcessorArchitecture)));
-				stream.WriteLine(string.Format(lineFormat, ".NET Runtime version",
-					Environment.Version));
-				stream.WriteLine(string.Format(lineFormat, "Processor Count",
-					Environment.ProcessorCount));
-				stream.WriteLine(string.Format(lineFormat, "Physical Memory",
-					string.Format("{0}/{1}", info.AvailablePhysicalMemory,
-						info.TotalPhysicalMemory)));
-				stream.WriteLine(string.Format(lineFormat, "Virtual Memory",
-					string.Format("{0}/{1}", info.AvailableVirtualMemory,
-						info.TotalVirtualMemory)));
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					".NET Runtime version", Environment.Version));
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Processor Count", Environment.ProcessorCount));
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Physical Memory", string.Format(CultureInfo.InvariantCulture,
+						"{0}/{1}", info.AvailablePhysicalMemory, info.TotalPhysicalMemory)));
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Virtual Memory", string.Format(CultureInfo.InvariantCulture,
+						"{0}/{1}", info.AvailableVirtualMemory, info.TotalVirtualMemory)));
 
 				//Running processes
 				stream.WriteLine();
@@ -239,16 +240,17 @@ namespace Eraser.BlackBox
 						try
 						{
 							ProcessModule mainModule = process.MainModule;
-							stream.WriteLine(string.Format(lineFormat,
-								string.Format("Process[{0}]", ++i),
-								string.Format("{0} [{1}.{2}.{3}.{4}{5}]", mainModule.FileName,
+							stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+								string.Format(CultureInfo.InvariantCulture, "Process[{0}]", ++i),
+								string.Format(CultureInfo.InvariantCulture, "{0} [{1}.{2}.{3}.{4}{5}]",
+									mainModule.FileName,
 									mainModule.FileVersionInfo.FileMajorPart,
 									mainModule.FileVersionInfo.FileMinorPart,
 									mainModule.FileVersionInfo.FileBuildPart,
 									mainModule.FileVersionInfo.FilePrivatePart,
 									string.IsNullOrEmpty(mainModule.FileVersionInfo.FileVersion) ?
 										string.Empty :
-										string.Format(" <{0}>",
+										string.Format(CultureInfo.InvariantCulture, " <{0}>",
 											mainModule.FileVersionInfo.FileVersion))));
 						}
 						catch (Win32Exception)
@@ -270,26 +272,33 @@ namespace Eraser.BlackBox
 					Exception currentException = exception;
 					for (uint i = 1; currentException != null; ++i)
 					{
-						stream.WriteLine(string.Format("Exception {0}:", i));
-						stream.WriteLine(string.Format(lineFormat, "Message", currentException.Message));
-						stream.WriteLine(string.Format(lineFormat, "Exception Type",
-							currentException.GetType().FullName));
-						stackTraceLog.WriteLine(string.Format("Exception {0}: {1}", i,
-							currentException.GetType().FullName));
+						stream.WriteLine(string.Format(CultureInfo.InvariantCulture,
+							"Exception {0}:", i));
+						stream.WriteLine(string.Format(CultureInfo.InvariantCulture,
+							lineFormat, "Message", currentException.Message));
+						stream.WriteLine(string.Format(CultureInfo.InvariantCulture,
+							lineFormat, "Exception Type", currentException.GetType().FullName));
+						stackTraceLog.WriteLine(string.Format(CultureInfo.InvariantCulture,
+							"Exception {0}: {1}", i, currentException.GetType().FullName));
 
 						//Parse the stack trace
 						string[] stackTrace = currentException.StackTrace.Split(new char[] { '\n' });
 						for (uint j = 0; j < stackTrace.Length; ++j)
 						{
-							stream.WriteLine(string.Format(lineFormat,
-								string.Format("Stack Trace [{0}]", j), stackTrace[j].Trim()));
-							stackTraceLog.WriteLine(string.Format("{0}", stackTrace[j].Trim()));
+							stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+								string.Format(CultureInfo.InvariantCulture,
+									"Stack Trace [{0}]", j), stackTrace[j].Trim()));
+							stackTraceLog.WriteLine(string.Format(CultureInfo.InvariantCulture,
+								"{0}", stackTrace[j].Trim()));
 						}
 
 						uint k = 0;
 						foreach (System.Collections.DictionaryEntry value in currentException.Data)
-							stream.WriteLine(string.Format(lineFormat, string.Format("Data[{0}]", ++k),
-								string.Format("{0} {1}", value.Key.ToString(), value.Value.ToString())));
+							stream.WriteLine(
+								string.Format(CultureInfo.InvariantCulture, lineFormat,
+									string.Format(CultureInfo.InvariantCulture, "Data[{0}]", ++k),
+									string.Format(CultureInfo.InvariantCulture, "{0} {1}",
+										value.Key.ToString(), value.Value.ToString())));
 
 						//End the exception and get the inner exception.
 						stream.WriteLine();
@@ -821,8 +830,8 @@ namespace Eraser.BlackBox
 			{
 				foreach (string stackFrame in exceptionStack.StackTrace)
 					builder.AddPart(new PostDataField(
-						string.Format("stackTrace[{0}][]", exceptionIndex), stackFrame));
-				builder.AddPart(new PostDataField(string.Format(
+						string.Format(CultureInfo.InvariantCulture, "stackTrace[{0}][]", exceptionIndex), stackFrame));
+				builder.AddPart(new PostDataField(string.Format(CultureInfo.InvariantCulture, 
 					"stackTrace[{0}][exception]", exceptionIndex), exceptionStack.ExceptionType));
 				++exceptionIndex;
 			}
