@@ -583,8 +583,8 @@ namespace Eraser.Util
 			{
 				IntPtr buffer = IntPtr.Zero;
 				List<NativeMethods.DISK_EXTENT> extents = new List<NativeMethods.DISK_EXTENT>();
-				SafeFileHandle handle = OpenHandle(FileAccess.Read, FileShare.ReadWrite,
-					FileOptions.None);
+				SafeFileHandle handle = OpenHandle(NativeMethods.FILE_READ_ATTRIBUTES,
+					FileShare.ReadWrite, FileOptions.None);
 
 				try
 				{
