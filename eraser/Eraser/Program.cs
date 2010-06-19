@@ -363,7 +363,7 @@ the command line."));
 			Console.WriteLine(S._(@"Eraser {0}
 (c) 2008-2010 The Eraser Project
 Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
-", Assembly.GetExecutingAssembly().GetName().Version));
+", BuildInfo.AssemblyFileVersion));
 
 			PrintCommandHelp();
 		}
