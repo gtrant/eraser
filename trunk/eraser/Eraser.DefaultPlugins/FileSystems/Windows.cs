@@ -337,7 +337,7 @@ namespace Eraser.DefaultPlugins
 			//If the file length equals the file area there is no cluster tip to overwrite
 			if (fileArea == fileLength)
 				return;
-			return;
+
 			//Otherwise, unset any read-only flags, create the stream, lengthen the
 			//file, then tell the erasure method to erase the cluster tips.
 			try
