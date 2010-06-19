@@ -230,7 +230,12 @@ namespace Eraser
 
 			//Update the progress bar
 			ErasureTarget target = (ErasureTarget)sender;
-			schedulerProgress.Value = (int)(target.Task.Progress.Progress * 1000.0);
+			SteppedProgressManager progress = target.Task.Progress;
+			schedulerProgress.Style = progress.ProgressIndeterminate ?
+				ProgressBarStyle.Marquee : ProgressBarStyle.Continuous;
+			
+			if (!progress.ProgressIndeterminate)
+				schedulerProgress.Value = (int)(progress.Progress * 1000.0);
 		}
 
 		/// <summary>

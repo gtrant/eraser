@@ -164,7 +164,7 @@ namespace Eraser
 			else
 				timeLeft.Text = S._("Unknown");
 
-			if (targetProgress.Progress >= 0.0f)
+			if (!targetProgress.ProgressIndeterminate)
 			{
 				itemProgress.Style = ProgressBarStyle.Continuous;
 				itemProgress.Value = (int)(targetProgress.Progress * 1000);
@@ -177,8 +177,17 @@ namespace Eraser
 				itemProgressLbl.Text = string.Empty;
 			}
 
-			overallProgress.Value = (int)(task.Progress.Progress * 1000);
-			overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", task.Progress.Progress);
+			if (!task.Progress.ProgressIndeterminate)
+			{
+				overallProgress.Style = ProgressBarStyle.Continuous;
+				overallProgress.Value = (int)(task.Progress.Progress * 1000);
+				overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", task.Progress.Progress);
+			}
+			else
+			{
+				overallProgress.Style = ProgressBarStyle.Marquee;
+				overallProgressLbl.Text = S._("Total: Unknown");
+			}
 		}
 
 		private string WrapItemName(string itemName)
