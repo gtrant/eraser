@@ -213,6 +213,9 @@
   <data name="Unknown" xml:space="preserve">
     <value>Nieznany</value>
   </data>
+  <data name="Total: Unknown" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Queued for execution" xml:space="preserve">
     <value>Ustawiony w kolejce dla wykonania</value>
   </data>
