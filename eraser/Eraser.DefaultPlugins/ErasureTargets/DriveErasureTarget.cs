@@ -195,6 +195,7 @@ namespace Eraser.DefaultPlugins
 				else if (PhysicalDrive != null)
 				{
 					Progress.Total = PhysicalDrive.Size;
+					PhysicalDrive.DeleteDriveLayout();
 					stream = PhysicalDrive.Open(FileAccess.ReadWrite, FileShare.ReadWrite);
 				}
 				else
