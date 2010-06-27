@@ -82,7 +82,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="shlwapi.lib comsvcs.lib"
+				AdditionalDependencies="shell32.lib shlwapi.lib comsvcs.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(ProjectDir)DllMain.def"
 				GenerateDebugInformation="true"
@@ -173,7 +173,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="shlwapi.lib comsvcs.lib"
+				AdditionalDependencies="shell32.lib shlwapi.lib comsvcs.lib"
 				LinkIncremental="2"
 				ModuleDefinitionFile="$(ProjectDir)DllMain.def"
 				GenerateDebugInformation="true"
@@ -265,7 +265,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="shlwapi.lib comsvcs.lib"
+				AdditionalDependencies="shell32.lib shlwapi.lib comsvcs.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(ProjectDir)DllMain.def"
 				GenerateDebugInformation="true"
@@ -358,7 +358,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="true"
-				AdditionalDependencies="shlwapi.lib comsvcs.lib"
+				AdditionalDependencies="shell32.lib shlwapi.lib comsvcs.lib"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(ProjectDir)DllMain.def"
 				GenerateDebugInformation="true"
