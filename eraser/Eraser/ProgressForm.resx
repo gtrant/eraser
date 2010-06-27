@@ -819,6 +819,10 @@
   <data name="title.Size" type="System.Drawing.Size, System.Drawing">
     <value>128, 128</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="title.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
   <data name="title.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
@@ -909,7 +913,6 @@
   <data name="&gt;&gt;itemProgress.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="stop.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
@@ -950,7 +953,7 @@
     <value>bevelLine1</value>
   </data>
   <data name="&gt;&gt;bevelLine1.Type" xml:space="preserve">
-    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3589.29050, Culture=neutral, PublicKeyToken=77979e16578a2d88</value>
+    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3589.29437, Culture=neutral, PublicKeyToken=77979e16578a2d88</value>
   </data>
   <data name="&gt;&gt;bevelLine1.Parent" xml:space="preserve">
     <value>$this</value>
@@ -971,7 +974,7 @@
     <value>bevelLine2</value>
   </data>
   <data name="&gt;&gt;bevelLine2.Type" xml:space="preserve">
-    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3589.29050, Culture=neutral, PublicKeyToken=77979e16578a2d88</value>
+    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3589.29437, Culture=neutral, PublicKeyToken=77979e16578a2d88</value>
   </data>
   <data name="&gt;&gt;bevelLine2.Parent" xml:space="preserve">
     <value>$this</value>
