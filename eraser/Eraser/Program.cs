@@ -683,7 +683,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <summary>
 		/// The acceptable list of command line prefixes we will accept.
 		/// </summary>
-		public const string CommandLinePrefixes = "(/|-|--)";
+		public const string CommandLinePrefixes = "^(/|-|--)";
 
 		/// <summary>
 		/// The acceptable list of command line separators we will accept.
