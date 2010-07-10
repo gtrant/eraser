@@ -90,12 +90,13 @@ namespace Eraser.DefaultPlugins
 		/// Gets all files in the provided directory.
 		/// </summary>
 		/// <param name="info">The directory to look files in.</param>
-		/// <returns>A list of files found in the directory matching the IncludeMask
-		/// property.</returns>
+		/// <returns>A list of files found in the directory.</returns>
+		/// <remarks>This function does not recurse into directories which are
+		/// reparse points.</remarks>
 		protected static FileInfo[] GetFiles(DirectoryInfo info)
 		{
 			List<FileInfo> result = new List<FileInfo>();
-			if (info.Exists)
+			if (info.Exists && (info.Attributes & FileAttributes.ReparsePoint) == 0)
 			{
 				try
 				{
