@@ -118,70 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="nameLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="nameLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 9</value>
-  </data>
-  <data name="nameLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 15</value>
-  </data>
-  <data name="nameLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="nameLbl.Text" xml:space="preserve">
-    <value>Task name (optional):</value>
-  </data>
-  <data name="&gt;&gt;nameLbl.Name" xml:space="preserve">
-    <value>nameLbl</value>
-  </data>
-  <data name="&gt;&gt;nameLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nameLbl.Parent" xml:space="preserve">
-    <value>containerTask</value>
-  </data>
-  <data name="&gt;&gt;nameLbl.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="name.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 6</value>
-  </data>
-  <data name="name.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 23</value>
-  </data>
-  <data name="name.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;name.Name" xml:space="preserve">
-    <value>name</value>
-  </data>
-  <data name="&gt;&gt;name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;name.Parent" xml:space="preserve">
-    <value>containerTask</value>
-  </data>
-  <data name="&gt;&gt;name.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
   <data name="eraseLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="eraseLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 111</value>
+    <value>6, 121</value>
   </data>
   <data name="eraseLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 15</value>
   </data>
   <data name="eraseLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>2</value>
   </data>
   <data name="eraseLbl.Text" xml:space="preserve">
     <value>Data to erase:</value>
@@ -196,22 +144,29 @@
     <value>containerTask</value>
   </data>
   <data name="&gt;&gt;eraseLbl.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>1</value>
   </data>
   <data name="typeLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="typeLbl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="typeLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 37</value>
+    <value>3, 29</value>
   </data>
   <data name="typeLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 15</value>
+    <value>122, 22</value>
   </data>
   <data name="typeLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="typeLbl.Text" xml:space="preserve">
     <value>Task Type:</value>
+  </data>
+  <data name="typeLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;typeLbl.Name" xml:space="preserve">
     <value>typeLbl</value>
@@ -220,22 +175,25 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;typeLbl.Parent" xml:space="preserve">
-    <value>containerTask</value>
+    <value>tableLayoutPanel2</value>
   </data>
   <data name="&gt;&gt;typeLbl.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="typeImmediate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="typeImmediate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 53</value>
+    <value>131, 51</value>
+  </data>
+  <data name="typeImmediate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
   </data>
   <data name="typeImmediate.Size" type="System.Drawing.Size, System.Drawing">
     <value>115, 19</value>
   </data>
   <data name="typeImmediate.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="typeImmediate.Text" xml:space="preserve">
     <value>Run immediately</value>
@@ -247,22 +205,25 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;typeImmediate.Parent" xml:space="preserve">
-    <value>containerTask</value>
+    <value>tableLayoutPanel2</value>
   </data>
   <data name="&gt;&gt;typeImmediate.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="typeRecurring.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="typeRecurring.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 89</value>
+    <value>131, 89</value>
+  </data>
+  <data name="typeRecurring.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
   </data>
   <data name="typeRecurring.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 19</value>
   </data>
   <data name="typeRecurring.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="typeRecurring.Text" xml:space="preserve">
     <value>Recurring</value>
@@ -274,10 +235,10 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;typeRecurring.Parent" xml:space="preserve">
-    <value>containerTask</value>
+    <value>tableLayoutPanel2</value>
   </data>
   <data name="&gt;&gt;typeRecurring.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>1</value>
   </data>
   <data name="data.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -297,6 +258,12 @@
   <metadata name="dataContextMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>140, 17</value>
   </metadata>
+  <data name="deleteDataToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 22</value>
+  </data>
+  <data name="deleteDataToolStripMenuItem.Text" xml:space="preserve">
+    <value>Remove from List</value>
+  </data>
   <data name="dataContextMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
     <value>168, 26</value>
   </data>
@@ -307,13 +274,13 @@
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="data.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 129</value>
+    <value>9, 139</value>
   </data>
   <data name="data.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 218</value>
+    <value>324, 208</value>
   </data>
   <data name="data.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;data.Name" xml:space="preserve">
     <value>data</value>
@@ -325,13 +292,7 @@
     <value>containerTask</value>
   </data>
   <data name="&gt;&gt;data.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="deleteDataToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 22</value>
-  </data>
-  <data name="deleteDataToolStripMenuItem.Text" xml:space="preserve">
-    <value>Remove from List</value>
+    <value>2</value>
   </data>
   <data name="dataAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left</value>
@@ -343,7 +304,7 @@
     <value>75, 23</value>
   </data>
   <data name="dataAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>4</value>
   </data>
   <data name="dataAdd.Text" xml:space="preserve">
     <value>Add Data</value>
@@ -358,7 +319,7 @@
     <value>containerTask</value>
   </data>
   <data name="&gt;&gt;dataAdd.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>3</value>
   </data>
   <data name="ok.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -417,17 +378,65 @@
   <data name="container.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;typeManual.Name" xml:space="preserve">
-    <value>typeManual</value>
+  <data name="tableLayoutPanel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;typeManual.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;typeManual.Parent" xml:space="preserve">
-    <value>containerTask</value>
+  <data name="nameLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;typeManual.ZOrder" xml:space="preserve">
+  <data name="nameLbl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="nameLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="nameLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="nameLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>122, 29</value>
+  </data>
+  <data name="nameLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="nameLbl.Text" xml:space="preserve">
+    <value>Task name (optional):</value>
+  </data>
+  <data name="nameLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="&gt;&gt;nameLbl.Name" xml:space="preserve">
+    <value>nameLbl</value>
+  </data>
+  <data name="&gt;&gt;nameLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;nameLbl.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;nameLbl.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="typeRestart.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="typeRestart.Location" type="System.Drawing.Point, System.Drawing">
+    <value>131, 70</value>
+  </data>
+  <data name="typeRestart.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
+  </data>
+  <data name="typeRestart.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 19</value>
+  </data>
+  <data name="typeRestart.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="typeRestart.Text" xml:space="preserve">
+    <value>Run on restart</value>
   </data>
   <data name="&gt;&gt;typeRestart.Name" xml:space="preserve">
     <value>typeRestart</value>
@@ -436,10 +445,91 @@
     <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;typeRestart.Parent" xml:space="preserve">
-    <value>containerTask</value>
+    <value>tableLayoutPanel2</value>
   </data>
   <data name="&gt;&gt;typeRestart.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="typeManual.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="typeManual.Location" type="System.Drawing.Point, System.Drawing">
+    <value>131, 32</value>
+  </data>
+  <data name="typeManual.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="typeManual.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 19</value>
+  </data>
+  <data name="typeManual.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="typeManual.Text" xml:space="preserve">
+    <value>Run manually</value>
+  </data>
+  <data name="&gt;&gt;typeManual.Name" xml:space="preserve">
+    <value>typeManual</value>
+  </data>
+  <data name="&gt;&gt;typeManual.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;typeManual.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;typeManual.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="name.Location" type="System.Drawing.Point, System.Drawing">
+    <value>131, 3</value>
+  </data>
+  <data name="name.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 23</value>
+  </data>
+  <data name="name.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;name.Name" xml:space="preserve">
+    <value>name</value>
+  </data>
+  <data name="&gt;&gt;name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;name.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;name.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 6</value>
+  </data>
+  <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>332, 112</value>
+  </data>
+  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
+    <value>containerTask</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="nameLbl" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="typeRecurring" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="typeRestart" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="typeManual" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="typeImmediate" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="name" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="typeLbl" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="containerTask.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 24</value>
@@ -468,889 +558,7 @@
   <data name="&gt;&gt;containerTask.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="schedulePattern.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="scheduleMonthlyLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleMonthlyLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 237</value>
-  </data>
-  <data name="scheduleMonthlyLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 15</value>
-  </data>
-  <data name="scheduleMonthlyLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="scheduleMonthlyLbl.Text" xml:space="preserve">
-    <value>On day</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyLbl.Name" xml:space="preserve">
-    <value>scheduleMonthlyLbl</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyLbl.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyLbl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="scheduleMonthlyDayNumber.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 235</value>
-  </data>
-  <data name="scheduleMonthlyDayNumber.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 23</value>
-  </data>
-  <data name="scheduleMonthlyDayNumber.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyDayNumber.Name" xml:space="preserve">
-    <value>scheduleMonthlyDayNumber</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyDayNumber.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyDayNumber.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyDayNumber.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="scheduleMonthlyFreq.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 235</value>
-  </data>
-  <data name="scheduleMonthlyFreq.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 23</value>
-  </data>
-  <data name="scheduleMonthlyFreq.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyFreq.Name" xml:space="preserve">
-    <value>scheduleMonthlyFreq</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyFreq.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyFreq.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyFreq.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="scheduleMonthlyMonthLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleMonthlyMonthLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>227, 237</value>
-  </data>
-  <data name="scheduleMonthlyMonthLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 15</value>
-  </data>
-  <data name="scheduleMonthlyMonthLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="scheduleMonthlyMonthLbl.Text" xml:space="preserve">
-    <value>month(s)</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyMonthLbl.Name" xml:space="preserve">
-    <value>scheduleMonthlyMonthLbl</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyMonthLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyMonthLbl.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyMonthLbl.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="scheduleMonthlyEveryLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleMonthlyEveryLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>123, 237</value>
-  </data>
-  <data name="scheduleMonthlyEveryLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 15</value>
-  </data>
-  <data name="scheduleMonthlyEveryLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="scheduleMonthlyEveryLbl.Text" xml:space="preserve">
-    <value>of every</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyEveryLbl.Name" xml:space="preserve">
-    <value>scheduleMonthlyEveryLbl</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyEveryLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyEveryLbl.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthlyEveryLbl.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="scheduleWeeklyFreq.Location" type="System.Drawing.Point, System.Drawing">
-    <value>61, 109</value>
-  </data>
-  <data name="scheduleWeeklyFreq.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 23</value>
-  </data>
-  <data name="scheduleWeeklyFreq.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreq.Name" xml:space="preserve">
-    <value>scheduleWeeklyFreq</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreq.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreq.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreq.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="scheduleDaily.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleDaily.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 15</value>
-  </data>
-  <data name="scheduleDaily.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 19</value>
-  </data>
-  <data name="scheduleDaily.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="scheduleDaily.Text" xml:space="preserve">
-    <value>Daily</value>
-  </data>
-  <data name="&gt;&gt;scheduleDaily.Name" xml:space="preserve">
-    <value>scheduleDaily</value>
-  </data>
-  <data name="&gt;&gt;scheduleDaily.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleDaily.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleDaily.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="scheduleDailyPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="scheduleDailyByDayFreq.Location" type="System.Drawing.Point, System.Drawing">
-    <value>62, 3</value>
-  </data>
-  <data name="scheduleDailyByDayFreq.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 23</value>
-  </data>
-  <data name="scheduleDailyByDayFreq.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayFreq.Name" xml:space="preserve">
-    <value>scheduleDailyByDayFreq</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayFreq.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayFreq.Parent" xml:space="preserve">
-    <value>scheduleDailyPanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayFreq.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="scheduleDailyByDay.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleDailyByDay.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="scheduleDailyByDay.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 19</value>
-  </data>
-  <data name="scheduleDailyByDay.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="scheduleDailyByDay.Text" xml:space="preserve">
-    <value>Every</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDay.Name" xml:space="preserve">
-    <value>scheduleDailyByDay</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDay.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDay.Parent" xml:space="preserve">
-    <value>scheduleDailyPanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDay.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="scheduleDailyByDayLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleDailyByDayLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>111, 5</value>
-  </data>
-  <data name="scheduleDailyByDayLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 15</value>
-  </data>
-  <data name="scheduleDailyByDayLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="scheduleDailyByDayLbl.Text" xml:space="preserve">
-    <value>day(s),</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayLbl.Name" xml:space="preserve">
-    <value>scheduleDailyByDayLbl</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayLbl.Parent" xml:space="preserve">
-    <value>scheduleDailyPanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByDayLbl.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="scheduleDailyByWeekday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleDailyByWeekday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 25</value>
-  </data>
-  <data name="scheduleDailyByWeekday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>102, 19</value>
-  </data>
-  <data name="scheduleDailyByWeekday.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="scheduleDailyByWeekday.Text" xml:space="preserve">
-    <value>Every weekday</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByWeekday.Name" xml:space="preserve">
-    <value>scheduleDailyByWeekday</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByWeekday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByWeekday.Parent" xml:space="preserve">
-    <value>scheduleDailyPanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyByWeekday.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="scheduleDailyPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>26, 36</value>
-  </data>
-  <data name="scheduleDailyPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>257, 48</value>
-  </data>
-  <data name="scheduleDailyPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyPanel.Name" xml:space="preserve">
-    <value>scheduleDailyPanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyPanel.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleDailyPanel.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="scheduleWeeklyDays.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="scheduleWeeklyDays.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyMonday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyMonday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="scheduleWeeklyMonday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 19</value>
-  </data>
-  <data name="scheduleWeeklyMonday.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="scheduleWeeklyMonday.Text" xml:space="preserve">
-    <value>Monday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyMonday.Name" xml:space="preserve">
-    <value>scheduleWeeklyMonday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyMonday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyMonday.Parent" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyMonday.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="scheduleWeeklyTuesday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyTuesday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>79, 3</value>
-  </data>
-  <data name="scheduleWeeklyTuesday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 19</value>
-  </data>
-  <data name="scheduleWeeklyTuesday.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="scheduleWeeklyTuesday.Text" xml:space="preserve">
-    <value>Tuesday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyTuesday.Name" xml:space="preserve">
-    <value>scheduleWeeklyTuesday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyTuesday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyTuesday.Parent" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyTuesday.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="scheduleWeeklyWednesday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyWednesday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>155, 3</value>
-  </data>
-  <data name="scheduleWeeklyWednesday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 19</value>
-  </data>
-  <data name="scheduleWeeklyWednesday.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="scheduleWeeklyWednesday.Text" xml:space="preserve">
-    <value>Wednesday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyWednesday.Name" xml:space="preserve">
-    <value>scheduleWeeklyWednesday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyWednesday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyWednesday.Parent" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyWednesday.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="scheduleWeeklyThursday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyThursday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 28</value>
-  </data>
-  <data name="scheduleWeeklyThursday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 19</value>
-  </data>
-  <data name="scheduleWeeklyThursday.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="scheduleWeeklyThursday.Text" xml:space="preserve">
-    <value>Thursday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyThursday.Name" xml:space="preserve">
-    <value>scheduleWeeklyThursday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyThursday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyThursday.Parent" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyThursday.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="scheduleWeeklyFriday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyFriday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>84, 28</value>
-  </data>
-  <data name="scheduleWeeklyFriday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 19</value>
-  </data>
-  <data name="scheduleWeeklyFriday.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="scheduleWeeklyFriday.Text" xml:space="preserve">
-    <value>Friday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFriday.Name" xml:space="preserve">
-    <value>scheduleWeeklyFriday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFriday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFriday.Parent" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFriday.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="scheduleWeeklySaturday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklySaturday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>148, 28</value>
-  </data>
-  <data name="scheduleWeeklySaturday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 19</value>
-  </data>
-  <data name="scheduleWeeklySaturday.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="scheduleWeeklySaturday.Text" xml:space="preserve">
-    <value>Saturday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySaturday.Name" xml:space="preserve">
-    <value>scheduleWeeklySaturday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySaturday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySaturday.Parent" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySaturday.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="scheduleWeeklySunday.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklySunday.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 53</value>
-  </data>
-  <data name="scheduleWeeklySunday.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 19</value>
-  </data>
-  <data name="scheduleWeeklySunday.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="scheduleWeeklySunday.Text" xml:space="preserve">
-    <value>Sunday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySunday.Name" xml:space="preserve">
-    <value>scheduleWeeklySunday</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySunday.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySunday.Parent" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklySunday.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="scheduleWeeklyDays.Location" type="System.Drawing.Point, System.Drawing">
-    <value>23, 135</value>
-  </data>
-  <data name="scheduleWeeklyDays.Size" type="System.Drawing.Size, System.Drawing">
-    <value>260, 75</value>
-  </data>
-  <data name="scheduleWeeklyDays.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyDays.Name" xml:space="preserve">
-    <value>scheduleWeeklyDays</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyDays.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyDays.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyDays.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="scheduleWeeklyFreqLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyFreqLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 111</value>
-  </data>
-  <data name="scheduleWeeklyFreqLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>170, 15</value>
-  </data>
-  <data name="scheduleWeeklyFreqLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="scheduleWeeklyFreqLbl.Text" xml:space="preserve">
-    <value>week(s), on the following days:</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreqLbl.Name" xml:space="preserve">
-    <value>scheduleWeeklyFreqLbl</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreqLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreqLbl.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyFreqLbl.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="scheduleWeeklyLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeeklyLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 111</value>
-  </data>
-  <data name="scheduleWeeklyLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 15</value>
-  </data>
-  <data name="scheduleWeeklyLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="scheduleWeeklyLbl.Text" xml:space="preserve">
-    <value>Every</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyLbl.Name" xml:space="preserve">
-    <value>scheduleWeeklyLbl</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyLbl.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeeklyLbl.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="scheduleWeekly.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleWeekly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 83</value>
-  </data>
-  <data name="scheduleWeekly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 19</value>
-  </data>
-  <data name="scheduleWeekly.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="scheduleWeekly.Text" xml:space="preserve">
-    <value>Weekly</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeekly.Name" xml:space="preserve">
-    <value>scheduleWeekly</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeekly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeekly.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleWeekly.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="scheduleMonthly.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="scheduleMonthly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 211</value>
-  </data>
-  <data name="scheduleMonthly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 19</value>
-  </data>
-  <data name="scheduleMonthly.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="scheduleMonthly.Text" xml:space="preserve">
-    <value>Monthly</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthly.Name" xml:space="preserve">
-    <value>scheduleMonthly</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthly.Parent" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;scheduleMonthly.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="schedulePattern.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 72</value>
-  </data>
-  <data name="schedulePattern.Size" type="System.Drawing.Size, System.Drawing">
-    <value>327, 305</value>
-  </data>
-  <data name="schedulePattern.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="schedulePattern.Text" xml:space="preserve">
-    <value>Recurrence Pattern</value>
-  </data>
-  <data name="&gt;&gt;schedulePattern.Name" xml:space="preserve">
-    <value>schedulePattern</value>
-  </data>
-  <data name="&gt;&gt;schedulePattern.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;schedulePattern.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;schedulePattern.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringLbl.Name" xml:space="preserve">
-    <value>nonRecurringLbl</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringLbl.Parent" xml:space="preserve">
-    <value>nonRecurringPanel</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringLbl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringBitmap.Name" xml:space="preserve">
-    <value>nonRecurringBitmap</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringBitmap.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringBitmap.Parent" xml:space="preserve">
-    <value>nonRecurringPanel</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringBitmap.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="nonRecurringPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="nonRecurringPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="nonRecurringPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>327, 34</value>
-  </data>
-  <data name="nonRecurringPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringPanel.Name" xml:space="preserve">
-    <value>nonRecurringPanel</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringPanel.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;nonRecurringPanel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="scheduleTimePanel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;scheduleTime.Name" xml:space="preserve">
-    <value>scheduleTime</value>
-  </data>
-  <data name="&gt;&gt;scheduleTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleTime.Parent" xml:space="preserve">
-    <value>scheduleTimePanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleTime.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimeLbl.Name" xml:space="preserve">
-    <value>scheduleTimeLbl</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimeLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimeLbl.Parent" xml:space="preserve">
-    <value>scheduleTimePanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimeLbl.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="scheduleTimePanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="scheduleTimePanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 40</value>
-  </data>
-  <data name="scheduleTimePanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="scheduleTimePanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>333, 29</value>
-  </data>
-  <data name="scheduleTimePanel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimePanel.Name" xml:space="preserve">
-    <value>scheduleTimePanel</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimePanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimePanel.Parent" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;scheduleTimePanel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tableLayoutPanel1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>333, 380</value>
-  </data>
-  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
-    <value>tableLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
-    <value>containerSchedule</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="schedulePattern" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="nonRecurringPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="scheduleTimePanel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="containerSchedule.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 24</value>
-  </data>
-  <data name="containerSchedule.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
-  </data>
-  <data name="containerSchedule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 386</value>
-  </data>
-  <data name="containerSchedule.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="containerSchedule.Text" xml:space="preserve">
-    <value>Schedule</value>
-  </data>
-  <data name="&gt;&gt;containerSchedule.Name" xml:space="preserve">
-    <value>containerSchedule</value>
-  </data>
-  <data name="&gt;&gt;containerSchedule.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;containerSchedule.Parent" xml:space="preserve">
-    <value>container</value>
-  </data>
-  <data name="&gt;&gt;containerSchedule.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="container.Location" type="System.Drawing.Point, System.Drawing">
-    <value>15, 12</value>
-  </data>
-  <data name="container.Size" type="System.Drawing.Size, System.Drawing">
-    <value>347, 414</value>
-  </data>
-  <data name="container.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;container.Name" xml:space="preserve">
-    <value>container</value>
-  </data>
-  <data name="&gt;&gt;container.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;container.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;container.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="typeManual.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="typeManual.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 35</value>
-  </data>
-  <data name="typeManual.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 19</value>
-  </data>
-  <data name="typeManual.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="typeManual.Text" xml:space="preserve">
-    <value>Run manually</value>
-  </data>
-  <data name="&gt;&gt;typeManual.Name" xml:space="preserve">
-    <value>typeManual</value>
-  </data>
-  <data name="&gt;&gt;typeManual.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;typeManual.Parent" xml:space="preserve">
-    <value>containerTask</value>
-  </data>
-  <data name="&gt;&gt;typeManual.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="typeRestart.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="typeRestart.Location" type="System.Drawing.Point, System.Drawing">
-    <value>142, 71</value>
-  </data>
-  <data name="typeRestart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 19</value>
-  </data>
-  <data name="typeRestart.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="typeRestart.Text" xml:space="preserve">
-    <value>Run on restart</value>
-  </data>
-  <data name="&gt;&gt;typeRestart.Name" xml:space="preserve">
-    <value>typeRestart</value>
-  </data>
-  <data name="&gt;&gt;typeRestart.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;typeRestart.Parent" xml:space="preserve">
-    <value>containerTask</value>
-  </data>
-  <data name="&gt;&gt;typeRestart.ZOrder" xml:space="preserve">
+  <data name="containerSchedulePanel.ColumnCount" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="nonRecurringLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1360,7 +568,7 @@
     <value>38, 0</value>
   </data>
   <data name="nonRecurringLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>287, 34</value>
+    <value>289, 32</value>
   </data>
   <data name="nonRecurringLbl.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1401,41 +609,59 @@
   <data name="&gt;&gt;nonRecurringBitmap.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="scheduleTime.Location" type="System.Drawing.Point, System.Drawing">
-    <value>99, 3</value>
+  <data name="nonRecurringPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="scheduleTime.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 23</value>
+  <data name="nonRecurringPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
-  <data name="scheduleTime.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="nonRecurringPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>327, 34</value>
   </data>
-  <data name="&gt;&gt;scheduleTime.Name" xml:space="preserve">
-    <value>scheduleTime</value>
+  <data name="nonRecurringPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;scheduleTime.Type" xml:space="preserve">
-    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;nonRecurringPanel.Name" xml:space="preserve">
+    <value>nonRecurringPanel</value>
   </data>
-  <data name="&gt;&gt;scheduleTime.Parent" xml:space="preserve">
-    <value>scheduleTimePanel</value>
+  <data name="&gt;&gt;nonRecurringPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;scheduleTime.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;nonRecurringPanel.Parent" xml:space="preserve">
+    <value>containerSchedulePanel</value>
+  </data>
+  <data name="&gt;&gt;nonRecurringPanel.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="scheduleTimePanel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="scheduleTimeLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="scheduleTimeLbl.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="scheduleTimeLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="scheduleTimeLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 7</value>
+    <value>9, 3</value>
+  </data>
+  <data name="scheduleTimeLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>9, 3, 3, 3</value>
   </data>
   <data name="scheduleTimeLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 15</value>
+    <value>90, 23</value>
   </data>
   <data name="scheduleTimeLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="scheduleTimeLbl.Text" xml:space="preserve">
     <value>Run this task at:</value>
+  </data>
+  <data name="scheduleTimeLbl.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
   <data name="&gt;&gt;scheduleTimeLbl.Name" xml:space="preserve">
     <value>scheduleTimeLbl</value>
@@ -1447,6 +673,990 @@
     <value>scheduleTimePanel</value>
   </data>
   <data name="&gt;&gt;scheduleTimeLbl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="scheduleTime.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 3</value>
+  </data>
+  <data name="scheduleTime.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 23</value>
+  </data>
+  <data name="scheduleTime.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;scheduleTime.Name" xml:space="preserve">
+    <value>scheduleTime</value>
+  </data>
+  <data name="&gt;&gt;scheduleTime.Type" xml:space="preserve">
+    <value>System.Windows.Forms.DateTimePicker, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleTime.Parent" xml:space="preserve">
+    <value>scheduleTimePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleTime.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="scheduleTimePanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="scheduleTimePanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 40</value>
+  </data>
+  <data name="scheduleTimePanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="scheduleTimePanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>333, 29</value>
+  </data>
+  <data name="scheduleTimePanel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;scheduleTimePanel.Name" xml:space="preserve">
+    <value>scheduleTimePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleTimePanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleTimePanel.Parent" xml:space="preserve">
+    <value>containerSchedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleTimePanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="schedulePanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="scheduleDaily.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleDaily.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleDaily.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="scheduleDaily.Size" type="System.Drawing.Size, System.Drawing">
+    <value>51, 19</value>
+  </data>
+  <data name="scheduleDaily.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="scheduleDaily.Text" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="&gt;&gt;scheduleDaily.Name" xml:space="preserve">
+    <value>scheduleDaily</value>
+  </data>
+  <data name="&gt;&gt;scheduleDaily.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleDaily.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleDaily.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="scheduleDailyByDayPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="scheduleDailyByDay.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleDailyByDay.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleDailyByDay.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 0</value>
+  </data>
+  <data name="scheduleDailyByDay.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 3</value>
+  </data>
+  <data name="scheduleDailyByDay.Size" type="System.Drawing.Size, System.Drawing">
+    <value>53, 19</value>
+  </data>
+  <data name="scheduleDailyByDay.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="scheduleDailyByDay.Text" xml:space="preserve">
+    <value>Every</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDay.Name" xml:space="preserve">
+    <value>scheduleDailyByDay</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDay.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDay.Parent" xml:space="preserve">
+    <value>scheduleDailyByDayPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDay.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="scheduleDailyByDayFreq.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 0</value>
+  </data>
+  <data name="scheduleDailyByDayFreq.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="scheduleDailyByDayFreq.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 23</value>
+  </data>
+  <data name="scheduleDailyByDayFreq.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayFreq.Name" xml:space="preserve">
+    <value>scheduleDailyByDayFreq</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayFreq.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayFreq.Parent" xml:space="preserve">
+    <value>scheduleDailyByDayPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayFreq.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>105, 2</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 3</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>39, 15</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="scheduleDailyByDayLbl.Text" xml:space="preserve">
+    <value>day(s)</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayLbl.Name" xml:space="preserve">
+    <value>scheduleDailyByDayLbl</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayLbl.Parent" xml:space="preserve">
+    <value>scheduleDailyByDayPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayLbl.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="scheduleDailyByDayPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 25</value>
+  </data>
+  <data name="scheduleDailyByDayPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>21, 0, 0, 0</value>
+  </data>
+  <data name="scheduleDailyByDayPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>297, 29</value>
+  </data>
+  <data name="scheduleDailyByDayPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="scheduleDailyByDayPanel.WrapContents" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayPanel.Name" xml:space="preserve">
+    <value>scheduleDailyByDayPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayPanel.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByDayPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="scheduleDailyByWeekday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleDailyByWeekday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleDailyByWeekday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>24, 54</value>
+  </data>
+  <data name="scheduleDailyByWeekday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>24, 0, 3, 3</value>
+  </data>
+  <data name="scheduleDailyByWeekday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>102, 19</value>
+  </data>
+  <data name="scheduleDailyByWeekday.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="scheduleDailyByWeekday.Text" xml:space="preserve">
+    <value>Every weekday</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByWeekday.Name" xml:space="preserve">
+    <value>scheduleDailyByWeekday</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByWeekday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByWeekday.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleDailyByWeekday.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="scheduleWeekly.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeekly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeekly.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 79</value>
+  </data>
+  <data name="scheduleWeekly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>63, 19</value>
+  </data>
+  <data name="scheduleWeekly.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="scheduleWeekly.Text" xml:space="preserve">
+    <value>Weekly</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeekly.Name" xml:space="preserve">
+    <value>scheduleWeekly</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeekly.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeekly.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeekly.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="scheduleWeeklyFrequencyPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="scheduleWeeklyLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklyLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 2</value>
+  </data>
+  <data name="scheduleWeeklyLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 3</value>
+  </data>
+  <data name="scheduleWeeklyLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 15</value>
+  </data>
+  <data name="scheduleWeeklyLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="scheduleWeeklyLbl.Text" xml:space="preserve">
+    <value>Every</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyLbl.Name" xml:space="preserve">
+    <value>scheduleWeeklyLbl</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyLbl.Parent" xml:space="preserve">
+    <value>scheduleWeeklyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyLbl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="scheduleWeeklyFreq.Location" type="System.Drawing.Point, System.Drawing">
+    <value>41, 0</value>
+  </data>
+  <data name="scheduleWeeklyFreq.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="scheduleWeeklyFreq.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 23</value>
+  </data>
+  <data name="scheduleWeeklyFreq.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreq.Name" xml:space="preserve">
+    <value>scheduleWeeklyFreq</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreq.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreq.Parent" xml:space="preserve">
+    <value>scheduleWeeklyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreq.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>87, 2</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 3</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>170, 15</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="scheduleWeeklyFreqLbl.Text" xml:space="preserve">
+    <value>week(s), on the following days:</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreqLbl.Name" xml:space="preserve">
+    <value>scheduleWeeklyFreqLbl</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreqLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreqLbl.Parent" xml:space="preserve">
+    <value>scheduleWeeklyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFreqLbl.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="scheduleWeeklyFrequencyPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 104</value>
+  </data>
+  <data name="scheduleWeeklyFrequencyPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklyFrequencyPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>297, 29</value>
+  </data>
+  <data name="scheduleWeeklyFrequencyPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="scheduleWeeklyFrequencyPanel.WrapContents" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFrequencyPanel.Name" xml:space="preserve">
+    <value>scheduleWeeklyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFrequencyPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFrequencyPanel.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFrequencyPanel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="scheduleWeeklyDays.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="scheduleWeeklyDays.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyMonday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyMonday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklyMonday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="scheduleWeeklyMonday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklyMonday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 19</value>
+  </data>
+  <data name="scheduleWeeklyMonday.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="scheduleWeeklyMonday.Text" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyMonday.Name" xml:space="preserve">
+    <value>scheduleWeeklyMonday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyMonday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyMonday.Parent" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyMonday.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>79, 3</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 19</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="scheduleWeeklyTuesday.Text" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyTuesday.Name" xml:space="preserve">
+    <value>scheduleWeeklyTuesday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyTuesday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyTuesday.Parent" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyTuesday.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>155, 3</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 19</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="scheduleWeeklyWednesday.Text" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyWednesday.Name" xml:space="preserve">
+    <value>scheduleWeeklyWednesday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyWednesday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyWednesday.Parent" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyWednesday.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="scheduleWeeklyThursday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyThursday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklyThursday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 25</value>
+  </data>
+  <data name="scheduleWeeklyThursday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklyThursday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 19</value>
+  </data>
+  <data name="scheduleWeeklyThursday.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="scheduleWeeklyThursday.Text" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyThursday.Name" xml:space="preserve">
+    <value>scheduleWeeklyThursday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyThursday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyThursday.Parent" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyThursday.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="scheduleWeeklyFriday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklyFriday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklyFriday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>84, 25</value>
+  </data>
+  <data name="scheduleWeeklyFriday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklyFriday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>58, 19</value>
+  </data>
+  <data name="scheduleWeeklyFriday.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="scheduleWeeklyFriday.Text" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFriday.Name" xml:space="preserve">
+    <value>scheduleWeeklyFriday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFriday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFriday.Parent" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyFriday.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="scheduleWeeklySaturday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklySaturday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklySaturday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>148, 25</value>
+  </data>
+  <data name="scheduleWeeklySaturday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklySaturday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 19</value>
+  </data>
+  <data name="scheduleWeeklySaturday.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="scheduleWeeklySaturday.Text" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySaturday.Name" xml:space="preserve">
+    <value>scheduleWeeklySaturday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySaturday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySaturday.Parent" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySaturday.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="scheduleWeeklySunday.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleWeeklySunday.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleWeeklySunday.Location" type="System.Drawing.Point, System.Drawing">
+    <value>226, 25</value>
+  </data>
+  <data name="scheduleWeeklySunday.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="scheduleWeeklySunday.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 19</value>
+  </data>
+  <data name="scheduleWeeklySunday.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="scheduleWeeklySunday.Text" xml:space="preserve">
+    <value>Sunday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySunday.Name" xml:space="preserve">
+    <value>scheduleWeeklySunday</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySunday.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySunday.Parent" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklySunday.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="scheduleWeeklyDays.Location" type="System.Drawing.Point, System.Drawing">
+    <value>18, 136</value>
+  </data>
+  <data name="scheduleWeeklyDays.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>18, 3, 3, 3</value>
+  </data>
+  <data name="scheduleWeeklyDays.Size" type="System.Drawing.Size, System.Drawing">
+    <value>297, 44</value>
+  </data>
+  <data name="scheduleWeeklyDays.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyDays.Name" xml:space="preserve">
+    <value>scheduleWeeklyDays</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyDays.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyDays.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleWeeklyDays.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="scheduleMonthly.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleMonthly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleMonthly.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 186</value>
+  </data>
+  <data name="scheduleMonthly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>70, 19</value>
+  </data>
+  <data name="scheduleMonthly.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="scheduleMonthly.Text" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthly.Name" xml:space="preserve">
+    <value>scheduleMonthly</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthly.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthly.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthly.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="scheduleMonthlyFrequencyPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="scheduleMonthlyLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleMonthlyLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleMonthlyLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 2</value>
+  </data>
+  <data name="scheduleMonthlyLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 3</value>
+  </data>
+  <data name="scheduleMonthlyLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 15</value>
+  </data>
+  <data name="scheduleMonthlyLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="scheduleMonthlyLbl.Text" xml:space="preserve">
+    <value>On day</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyLbl.Name" xml:space="preserve">
+    <value>scheduleMonthlyLbl</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyLbl.Parent" xml:space="preserve">
+    <value>scheduleMonthlyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyLbl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="scheduleMonthlyDayNumber.Location" type="System.Drawing.Point, System.Drawing">
+    <value>51, 0</value>
+  </data>
+  <data name="scheduleMonthlyDayNumber.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="scheduleMonthlyDayNumber.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 23</value>
+  </data>
+  <data name="scheduleMonthlyDayNumber.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyDayNumber.Name" xml:space="preserve">
+    <value>scheduleMonthlyDayNumber</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyDayNumber.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyDayNumber.Parent" xml:space="preserve">
+    <value>scheduleMonthlyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyDayNumber.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>97, 2</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 3</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 15</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="scheduleMonthlyEveryLbl.Text" xml:space="preserve">
+    <value>of every</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyEveryLbl.Name" xml:space="preserve">
+    <value>scheduleMonthlyEveryLbl</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyEveryLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyEveryLbl.Parent" xml:space="preserve">
+    <value>scheduleMonthlyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyEveryLbl.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="scheduleMonthlyFreq.Location" type="System.Drawing.Point, System.Drawing">
+    <value>149, 0</value>
+  </data>
+  <data name="scheduleMonthlyFreq.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="scheduleMonthlyFreq.Size" type="System.Drawing.Size, System.Drawing">
+    <value>43, 23</value>
+  </data>
+  <data name="scheduleMonthlyFreq.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFreq.Name" xml:space="preserve">
+    <value>scheduleMonthlyFreq</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFreq.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFreq.Parent" xml:space="preserve">
+    <value>scheduleMonthlyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFreq.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 2</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 2, 3, 3</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 15</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="scheduleMonthlyMonthLbl.Text" xml:space="preserve">
+    <value>month(s)</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyMonthLbl.Name" xml:space="preserve">
+    <value>scheduleMonthlyMonthLbl</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyMonthLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyMonthLbl.Parent" xml:space="preserve">
+    <value>scheduleMonthlyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyMonthLbl.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="scheduleMonthlyFrequencyPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>21, 211</value>
+  </data>
+  <data name="scheduleMonthlyFrequencyPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>21, 3, 3, 3</value>
+  </data>
+  <data name="scheduleMonthlyFrequencyPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>294, 29</value>
+  </data>
+  <data name="scheduleMonthlyFrequencyPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="scheduleMonthlyFrequencyPanel.WrapContents" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFrequencyPanel.Name" xml:space="preserve">
+    <value>scheduleMonthlyFrequencyPanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFrequencyPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFrequencyPanel.Parent" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;scheduleMonthlyFrequencyPanel.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="schedulePanel.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
+    <value>TopDown</value>
+  </data>
+  <data name="schedulePanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 22</value>
+  </data>
+  <data name="schedulePanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>321, 277</value>
+  </data>
+  <data name="schedulePanel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="schedulePanel.WrapContents" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;schedulePanel.Name" xml:space="preserve">
+    <value>schedulePanel</value>
+  </data>
+  <data name="&gt;&gt;schedulePanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;schedulePanel.Parent" xml:space="preserve">
+    <value>schedulePattern</value>
+  </data>
+  <data name="&gt;&gt;schedulePanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="schedulePattern.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="schedulePattern.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 72</value>
+  </data>
+  <data name="schedulePattern.Size" type="System.Drawing.Size, System.Drawing">
+    <value>327, 305</value>
+  </data>
+  <data name="schedulePattern.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="schedulePattern.Text" xml:space="preserve">
+    <value>Recurrence Pattern</value>
+  </data>
+  <data name="&gt;&gt;schedulePattern.Name" xml:space="preserve">
+    <value>schedulePattern</value>
+  </data>
+  <data name="&gt;&gt;schedulePattern.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;schedulePattern.Parent" xml:space="preserve">
+    <value>containerSchedulePanel</value>
+  </data>
+  <data name="&gt;&gt;schedulePattern.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="containerSchedulePanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="containerSchedulePanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="containerSchedulePanel.RowCount" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="containerSchedulePanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>333, 380</value>
+  </data>
+  <data name="containerSchedulePanel.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;containerSchedulePanel.Name" xml:space="preserve">
+    <value>containerSchedulePanel</value>
+  </data>
+  <data name="&gt;&gt;containerSchedulePanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;containerSchedulePanel.Parent" xml:space="preserve">
+    <value>containerSchedule</value>
+  </data>
+  <data name="&gt;&gt;containerSchedulePanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="containerSchedulePanel.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="nonRecurringPanel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="scheduleTimePanel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="schedulePattern" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Percent,100,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="containerSchedule.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 24</value>
+  </data>
+  <data name="containerSchedule.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
+  </data>
+  <data name="containerSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>339, 386</value>
+  </data>
+  <data name="containerSchedule.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="containerSchedule.Text" xml:space="preserve">
+    <value>Schedule</value>
+  </data>
+  <data name="&gt;&gt;containerSchedule.Name" xml:space="preserve">
+    <value>containerSchedule</value>
+  </data>
+  <data name="&gt;&gt;containerSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;containerSchedule.Parent" xml:space="preserve">
+    <value>container</value>
+  </data>
+  <data name="&gt;&gt;containerSchedule.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="container.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 12</value>
+  </data>
+  <data name="container.Size" type="System.Drawing.Size, System.Drawing">
+    <value>347, 414</value>
+  </data>
+  <data name="container.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;container.Name" xml:space="preserve">
+    <value>container</value>
+  </data>
+  <data name="&gt;&gt;container.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;container.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;container.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <metadata name="errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -1455,6 +1665,9 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>374, 470</value>
   </data>

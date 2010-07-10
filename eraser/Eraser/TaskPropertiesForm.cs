@@ -44,6 +44,47 @@ namespace Eraser
 			//Set a default task type
 			typeManual.Checked = true;
 			scheduleDaily.Checked = true;
+			//panelresize(schedulePanel);
+			this.AutoScaleMode = AutoScaleMode.None;
+		}
+
+		private void panelresize(Panel p)
+		{
+			Random r = new Random();
+			panelresize(p, r);
+		}
+
+		private void panelresize(Control c, Random r)
+		{
+			if (c is Panel)
+				panelresize(c as Panel, r);
+			else if (c is NumericUpDown)
+				panelresize(c as NumericUpDown, r);
+			else if (c is Label)
+				panelresize(c as Label, r);
+
+			foreach (Control d in c.Controls)
+				panelresize(d, r);
+		}
+
+		private void panelresize(Panel p, Random r)
+		{
+			//p.BackColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256));
+
+			foreach (Control c in p.Controls)
+				panelresize(c, r);
+		}
+
+		private void panelresize(NumericUpDown n, Random r)
+		{
+			n.AutoScaleMode = AutoScaleMode.None;
+			n.BackColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256));
+			n.BorderStyle = BorderStyle.Fixed3D;
+		}
+
+		private void panelresize(Label l, Random r)
+		{
+			l.BackColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256)); 
 		}
 
 		/// <summary>
@@ -299,6 +340,22 @@ namespace Eraser
 		}
 
 		/// <summary>
+		/// Generated when any of the schedule spans have been clicked.
+		/// </summary>
+		/// <param name="sender">The radio button triggering the event.</param>
+		/// <param name="e">Event argument.</param>
+		private void scheduleSpan_Clicked(object sender, EventArgs e)
+		{
+			//Check the selected radio button
+			scheduleDaily.Checked = sender == scheduleDaily;
+			scheduleWeekly.Checked = sender == scheduleWeekly;
+			scheduleMonthly.Checked = sender == scheduleMonthly;
+
+			//Then trigger the checked changed event.
+			scheduleSpan_CheckedChanged(sender, e);
+		}
+
+		/// <summary>
 		/// Generated when the scheduling frequency is changed.
 		/// </summary>
 		/// <param name="sender">The object triggering the event.</param>
@@ -323,14 +380,33 @@ namespace Eraser
 		}
 
 		/// <summary>
+		/// Generated when any of the daily frequency radio buttons are clicked.
+		/// </summary>
+		/// <param name="sender">The radio button which triggers the event.</param>
+		/// <param name="e">Event argument.</param>
+		private void scheduleDailySpan_Clicked(object sender, EventArgs e)
+		{
+			scheduleDailyByDay.CheckedChanged -= scheduleDailySpan_CheckedChanged;
+			scheduleDailyByWeekday.CheckedChanged -= scheduleDailySpan_CheckedChanged;
+
+			scheduleDailyByDay.Checked = sender == scheduleDailyByDay;
+			scheduleDailyByWeekday.Checked = sender == scheduleDailyByWeekday;
+
+			scheduleDailyByDay.CheckedChanged += scheduleDailySpan_CheckedChanged;
+			scheduleDailyByWeekday.CheckedChanged += scheduleDailySpan_CheckedChanged;
+			
+			scheduleDailySpan_CheckedChanged(sender, e);
+		}
+
+		/// <summary>
 		/// Generated when the daily frequency argument is changed.
 		/// </summary>
 		/// <param name="sender">The object triggering the event.</param>
 		/// <param name="e">Event argument.</param>
 		private void scheduleDailySpan_CheckedChanged(object sender, EventArgs e)
 		{
-			scheduleDailyByDayFreq.Enabled = scheduleDailyByDay.Checked &&
-				scheduleDaily.Checked && typeRecurring.Checked;
+			scheduleDailyByDayLbl.Enabled = scheduleDailyByDayFreq.Enabled =
+				scheduleDailyByDay.Checked && scheduleDaily.Checked && typeRecurring.Checked;
 		}
 
 		/// <summary>

@@ -51,8 +51,6 @@ namespace Eraser
 		{
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TaskPropertiesForm));
-			this.nameLbl = new System.Windows.Forms.Label();
-			this.name = new System.Windows.Forms.TextBox();
 			this.eraseLbl = new System.Windows.Forms.Label();
 			this.typeLbl = new System.Windows.Forms.Label();
 			this.typeImmediate = new System.Windows.Forms.RadioButton();
@@ -67,23 +65,32 @@ namespace Eraser
 			this.cancel = new System.Windows.Forms.Button();
 			this.container = new System.Windows.Forms.TabControl();
 			this.containerTask = new System.Windows.Forms.TabPage();
-			this.typeManual = new System.Windows.Forms.RadioButton();
+			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+			this.nameLbl = new System.Windows.Forms.Label();
 			this.typeRestart = new System.Windows.Forms.RadioButton();
+			this.typeManual = new System.Windows.Forms.RadioButton();
+			this.name = new System.Windows.Forms.TextBox();
 			this.containerSchedule = new System.Windows.Forms.TabPage();
-			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.containerSchedulePanel = new System.Windows.Forms.TableLayoutPanel();
+			this.nonRecurringPanel = new System.Windows.Forms.Panel();
+			this.nonRecurringLbl = new System.Windows.Forms.Label();
+			this.nonRecurringBitmap = new System.Windows.Forms.PictureBox();
+			this.scheduleTimePanel = new System.Windows.Forms.FlowLayoutPanel();
+			this.scheduleTimeLbl = new System.Windows.Forms.Label();
+			this.scheduleTime = new System.Windows.Forms.DateTimePicker();
 			this.schedulePattern = new System.Windows.Forms.GroupBox();
-			this.scheduleMonthlyLbl = new System.Windows.Forms.Label();
-			this.scheduleMonthlyDayNumber = new System.Windows.Forms.NumericUpDown();
-			this.scheduleMonthlyFreq = new System.Windows.Forms.NumericUpDown();
-			this.scheduleMonthlyMonthLbl = new System.Windows.Forms.Label();
-			this.scheduleMonthlyEveryLbl = new System.Windows.Forms.Label();
-			this.scheduleWeeklyFreq = new System.Windows.Forms.NumericUpDown();
+			this.schedulePanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.scheduleDaily = new System.Windows.Forms.RadioButton();
-			this.scheduleDailyPanel = new System.Windows.Forms.Panel();
-			this.scheduleDailyByDayFreq = new System.Windows.Forms.NumericUpDown();
+			this.scheduleDailyByDayPanel = new System.Windows.Forms.FlowLayoutPanel();
 			this.scheduleDailyByDay = new System.Windows.Forms.RadioButton();
+			this.scheduleDailyByDayFreq = new System.Windows.Forms.NumericUpDown();
 			this.scheduleDailyByDayLbl = new System.Windows.Forms.Label();
 			this.scheduleDailyByWeekday = new System.Windows.Forms.RadioButton();
+			this.scheduleWeekly = new System.Windows.Forms.RadioButton();
+			this.scheduleWeeklyFrequencyPanel = new System.Windows.Forms.FlowLayoutPanel();
+			this.scheduleWeeklyLbl = new System.Windows.Forms.Label();
+			this.scheduleWeeklyFreq = new System.Windows.Forms.NumericUpDown();
+			this.scheduleWeeklyFreqLbl = new System.Windows.Forms.Label();
 			this.scheduleWeeklyDays = new System.Windows.Forms.FlowLayoutPanel();
 			this.scheduleWeeklyMonday = new System.Windows.Forms.CheckBox();
 			this.scheduleWeeklyTuesday = new System.Windows.Forms.CheckBox();
@@ -92,44 +99,35 @@ namespace Eraser
 			this.scheduleWeeklyFriday = new System.Windows.Forms.CheckBox();
 			this.scheduleWeeklySaturday = new System.Windows.Forms.CheckBox();
 			this.scheduleWeeklySunday = new System.Windows.Forms.CheckBox();
-			this.scheduleWeeklyFreqLbl = new System.Windows.Forms.Label();
-			this.scheduleWeeklyLbl = new System.Windows.Forms.Label();
-			this.scheduleWeekly = new System.Windows.Forms.RadioButton();
 			this.scheduleMonthly = new System.Windows.Forms.RadioButton();
-			this.nonRecurringPanel = new System.Windows.Forms.Panel();
-			this.nonRecurringLbl = new System.Windows.Forms.Label();
-			this.nonRecurringBitmap = new System.Windows.Forms.PictureBox();
-			this.scheduleTimePanel = new System.Windows.Forms.Panel();
-			this.scheduleTime = new System.Windows.Forms.DateTimePicker();
-			this.scheduleTimeLbl = new System.Windows.Forms.Label();
+			this.scheduleMonthlyFrequencyPanel = new System.Windows.Forms.FlowLayoutPanel();
+			this.scheduleMonthlyLbl = new System.Windows.Forms.Label();
+			this.scheduleMonthlyDayNumber = new System.Windows.Forms.NumericUpDown();
+			this.scheduleMonthlyEveryLbl = new System.Windows.Forms.Label();
+			this.scheduleMonthlyFreq = new System.Windows.Forms.NumericUpDown();
+			this.scheduleMonthlyMonthLbl = new System.Windows.Forms.Label();
 			this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
 			this.dataContextMenuStrip.SuspendLayout();
 			this.container.SuspendLayout();
 			this.containerTask.SuspendLayout();
+			this.tableLayoutPanel2.SuspendLayout();
 			this.containerSchedule.SuspendLayout();
-			this.tableLayoutPanel1.SuspendLayout();
-			this.schedulePattern.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyDayNumber)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyFreq)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleWeeklyFreq)).BeginInit();
-			this.scheduleDailyPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleDailyByDayFreq)).BeginInit();
-			this.scheduleWeeklyDays.SuspendLayout();
+			this.containerSchedulePanel.SuspendLayout();
 			this.nonRecurringPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.nonRecurringBitmap)).BeginInit();
 			this.scheduleTimePanel.SuspendLayout();
+			this.schedulePattern.SuspendLayout();
+			this.schedulePanel.SuspendLayout();
+			this.scheduleDailyByDayPanel.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleDailyByDayFreq)).BeginInit();
+			this.scheduleWeeklyFrequencyPanel.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleWeeklyFreq)).BeginInit();
+			this.scheduleWeeklyDays.SuspendLayout();
+			this.scheduleMonthlyFrequencyPanel.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyDayNumber)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyFreq)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// nameLbl
-			// 
-			resources.ApplyResources(this.nameLbl, "nameLbl");
-			this.nameLbl.Name = "nameLbl";
-			// 
-			// name
-			// 
-			resources.ApplyResources(this.name, "name");
-			this.name.Name = "name";
 			// 
 			// eraseLbl
 			// 
@@ -222,19 +220,37 @@ namespace Eraser
 			// 
 			// containerTask
 			// 
-			this.containerTask.Controls.Add(this.typeManual);
-			this.containerTask.Controls.Add(this.typeRestart);
-			this.containerTask.Controls.Add(this.nameLbl);
-			this.containerTask.Controls.Add(this.name);
-			this.containerTask.Controls.Add(this.typeLbl);
-			this.containerTask.Controls.Add(this.typeImmediate);
-			this.containerTask.Controls.Add(this.typeRecurring);
+			this.containerTask.Controls.Add(this.tableLayoutPanel2);
 			this.containerTask.Controls.Add(this.eraseLbl);
 			this.containerTask.Controls.Add(this.data);
 			this.containerTask.Controls.Add(this.dataAdd);
 			resources.ApplyResources(this.containerTask, "containerTask");
 			this.containerTask.Name = "containerTask";
 			this.containerTask.UseVisualStyleBackColor = true;
+			// 
+			// tableLayoutPanel2
+			// 
+			resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
+			this.tableLayoutPanel2.Controls.Add(this.nameLbl, 0, 0);
+			this.tableLayoutPanel2.Controls.Add(this.typeRecurring, 1, 4);
+			this.tableLayoutPanel2.Controls.Add(this.typeRestart, 1, 3);
+			this.tableLayoutPanel2.Controls.Add(this.typeManual, 1, 1);
+			this.tableLayoutPanel2.Controls.Add(this.typeImmediate, 1, 2);
+			this.tableLayoutPanel2.Controls.Add(this.name, 1, 0);
+			this.tableLayoutPanel2.Controls.Add(this.typeLbl, 0, 1);
+			this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+			// 
+			// nameLbl
+			// 
+			resources.ApplyResources(this.nameLbl, "nameLbl");
+			this.nameLbl.Name = "nameLbl";
+			// 
+			// typeRestart
+			// 
+			resources.ApplyResources(this.typeRestart, "typeRestart");
+			this.typeRestart.Name = "typeRestart";
+			this.typeRestart.TabStop = true;
+			this.typeRestart.UseVisualStyleBackColor = true;
 			// 
 			// typeManual
 			// 
@@ -244,137 +260,111 @@ namespace Eraser
 			this.typeManual.UseVisualStyleBackColor = true;
 			this.typeManual.CheckedChanged += new System.EventHandler(this.taskType_CheckedChanged);
 			// 
-			// typeRestart
+			// name
 			// 
-			resources.ApplyResources(this.typeRestart, "typeRestart");
-			this.typeRestart.Name = "typeRestart";
-			this.typeRestart.TabStop = true;
-			this.typeRestart.UseVisualStyleBackColor = true;
+			resources.ApplyResources(this.name, "name");
+			this.name.Name = "name";
 			// 
 			// containerSchedule
 			// 
-			this.containerSchedule.Controls.Add(this.tableLayoutPanel1);
+			this.containerSchedule.Controls.Add(this.containerSchedulePanel);
 			resources.ApplyResources(this.containerSchedule, "containerSchedule");
 			this.containerSchedule.Name = "containerSchedule";
 			this.containerSchedule.UseVisualStyleBackColor = true;
 			// 
-			// tableLayoutPanel1
+			// containerSchedulePanel
 			// 
-			resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-			this.tableLayoutPanel1.Controls.Add(this.schedulePattern, 0, 2);
-			this.tableLayoutPanel1.Controls.Add(this.nonRecurringPanel, 0, 0);
-			this.tableLayoutPanel1.Controls.Add(this.scheduleTimePanel, 0, 1);
-			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+			resources.ApplyResources(this.containerSchedulePanel, "containerSchedulePanel");
+			this.containerSchedulePanel.Controls.Add(this.nonRecurringPanel, 0, 0);
+			this.containerSchedulePanel.Controls.Add(this.scheduleTimePanel, 0, 1);
+			this.containerSchedulePanel.Controls.Add(this.schedulePattern, 0, 2);
+			this.containerSchedulePanel.Name = "containerSchedulePanel";
+			// 
+			// nonRecurringPanel
+			// 
+			this.nonRecurringPanel.Controls.Add(this.nonRecurringLbl);
+			this.nonRecurringPanel.Controls.Add(this.nonRecurringBitmap);
+			resources.ApplyResources(this.nonRecurringPanel, "nonRecurringPanel");
+			this.nonRecurringPanel.Name = "nonRecurringPanel";
+			// 
+			// nonRecurringLbl
+			// 
+			resources.ApplyResources(this.nonRecurringLbl, "nonRecurringLbl");
+			this.nonRecurringLbl.Name = "nonRecurringLbl";
+			// 
+			// nonRecurringBitmap
+			// 
+			this.nonRecurringBitmap.Image = global::Eraser.Properties.Resources.Information;
+			resources.ApplyResources(this.nonRecurringBitmap, "nonRecurringBitmap");
+			this.nonRecurringBitmap.Name = "nonRecurringBitmap";
+			this.nonRecurringBitmap.TabStop = false;
+			// 
+			// scheduleTimePanel
+			// 
+			resources.ApplyResources(this.scheduleTimePanel, "scheduleTimePanel");
+			this.scheduleTimePanel.Controls.Add(this.scheduleTimeLbl);
+			this.scheduleTimePanel.Controls.Add(this.scheduleTime);
+			this.scheduleTimePanel.Name = "scheduleTimePanel";
+			// 
+			// scheduleTimeLbl
+			// 
+			resources.ApplyResources(this.scheduleTimeLbl, "scheduleTimeLbl");
+			this.scheduleTimeLbl.Name = "scheduleTimeLbl";
+			// 
+			// scheduleTime
+			// 
+			this.scheduleTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+			resources.ApplyResources(this.scheduleTime, "scheduleTime");
+			this.scheduleTime.Name = "scheduleTime";
+			this.scheduleTime.ShowUpDown = true;
 			// 
 			// schedulePattern
 			// 
+			this.schedulePattern.Controls.Add(this.schedulePanel);
 			resources.ApplyResources(this.schedulePattern, "schedulePattern");
-			this.schedulePattern.Controls.Add(this.scheduleMonthlyLbl);
-			this.schedulePattern.Controls.Add(this.scheduleMonthlyDayNumber);
-			this.schedulePattern.Controls.Add(this.scheduleMonthlyFreq);
-			this.schedulePattern.Controls.Add(this.scheduleMonthlyMonthLbl);
-			this.schedulePattern.Controls.Add(this.scheduleMonthlyEveryLbl);
-			this.schedulePattern.Controls.Add(this.scheduleWeeklyFreq);
-			this.schedulePattern.Controls.Add(this.scheduleDaily);
-			this.schedulePattern.Controls.Add(this.scheduleDailyPanel);
-			this.schedulePattern.Controls.Add(this.scheduleWeeklyDays);
-			this.schedulePattern.Controls.Add(this.scheduleWeeklyFreqLbl);
-			this.schedulePattern.Controls.Add(this.scheduleWeeklyLbl);
-			this.schedulePattern.Controls.Add(this.scheduleWeekly);
-			this.schedulePattern.Controls.Add(this.scheduleMonthly);
 			this.schedulePattern.Name = "schedulePattern";
 			this.schedulePattern.TabStop = false;
 			// 
-			// scheduleMonthlyLbl
+			// schedulePanel
 			// 
-			resources.ApplyResources(this.scheduleMonthlyLbl, "scheduleMonthlyLbl");
-			this.scheduleMonthlyLbl.Name = "scheduleMonthlyLbl";
-			// 
-			// scheduleMonthlyDayNumber
-			// 
-			resources.ApplyResources(this.scheduleMonthlyDayNumber, "scheduleMonthlyDayNumber");
-			this.scheduleMonthlyDayNumber.Maximum = new decimal(new int[] {
-            31,
-            0,
-            0,
-            0});
-			this.scheduleMonthlyDayNumber.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.scheduleMonthlyDayNumber.Name = "scheduleMonthlyDayNumber";
-			this.scheduleMonthlyDayNumber.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			// 
-			// scheduleMonthlyFreq
-			// 
-			resources.ApplyResources(this.scheduleMonthlyFreq, "scheduleMonthlyFreq");
-			this.scheduleMonthlyFreq.Maximum = new decimal(new int[] {
-            120,
-            0,
-            0,
-            0});
-			this.scheduleMonthlyFreq.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.scheduleMonthlyFreq.Name = "scheduleMonthlyFreq";
-			this.scheduleMonthlyFreq.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			// 
-			// scheduleMonthlyMonthLbl
-			// 
-			resources.ApplyResources(this.scheduleMonthlyMonthLbl, "scheduleMonthlyMonthLbl");
-			this.scheduleMonthlyMonthLbl.Name = "scheduleMonthlyMonthLbl";
-			// 
-			// scheduleMonthlyEveryLbl
-			// 
-			resources.ApplyResources(this.scheduleMonthlyEveryLbl, "scheduleMonthlyEveryLbl");
-			this.scheduleMonthlyEveryLbl.Name = "scheduleMonthlyEveryLbl";
-			// 
-			// scheduleWeeklyFreq
-			// 
-			resources.ApplyResources(this.scheduleWeeklyFreq, "scheduleWeeklyFreq");
-			this.scheduleWeeklyFreq.Maximum = new decimal(new int[] {
-            104,
-            0,
-            0,
-            0});
-			this.scheduleWeeklyFreq.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-			this.scheduleWeeklyFreq.Name = "scheduleWeeklyFreq";
-			this.scheduleWeeklyFreq.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
+			resources.ApplyResources(this.schedulePanel, "schedulePanel");
+			this.schedulePanel.Controls.Add(this.scheduleDaily);
+			this.schedulePanel.Controls.Add(this.scheduleDailyByDayPanel);
+			this.schedulePanel.Controls.Add(this.scheduleDailyByWeekday);
+			this.schedulePanel.Controls.Add(this.scheduleWeekly);
+			this.schedulePanel.Controls.Add(this.scheduleWeeklyFrequencyPanel);
+			this.schedulePanel.Controls.Add(this.scheduleWeeklyDays);
+			this.schedulePanel.Controls.Add(this.scheduleMonthly);
+			this.schedulePanel.Controls.Add(this.scheduleMonthlyFrequencyPanel);
+			this.schedulePanel.Name = "schedulePanel";
 			// 
 			// scheduleDaily
 			// 
+			this.scheduleDaily.AutoCheck = false;
 			resources.ApplyResources(this.scheduleDaily, "scheduleDaily");
 			this.scheduleDaily.Name = "scheduleDaily";
+			this.scheduleDaily.TabStop = true;
 			this.scheduleDaily.UseVisualStyleBackColor = true;
-			this.scheduleDaily.CheckedChanged += new System.EventHandler(this.scheduleSpan_CheckedChanged);
+			this.scheduleDaily.Click += new System.EventHandler(this.scheduleSpan_Clicked);
 			// 
-			// scheduleDailyPanel
+			// scheduleDailyByDayPanel
 			// 
-			resources.ApplyResources(this.scheduleDailyPanel, "scheduleDailyPanel");
-			this.scheduleDailyPanel.Controls.Add(this.scheduleDailyByDayFreq);
-			this.scheduleDailyPanel.Controls.Add(this.scheduleDailyByDay);
-			this.scheduleDailyPanel.Controls.Add(this.scheduleDailyByDayLbl);
-			this.scheduleDailyPanel.Controls.Add(this.scheduleDailyByWeekday);
-			this.scheduleDailyPanel.Name = "scheduleDailyPanel";
+			resources.ApplyResources(this.scheduleDailyByDayPanel, "scheduleDailyByDayPanel");
+			this.scheduleDailyByDayPanel.Controls.Add(this.scheduleDailyByDay);
+			this.scheduleDailyByDayPanel.Controls.Add(this.scheduleDailyByDayFreq);
+			this.scheduleDailyByDayPanel.Controls.Add(this.scheduleDailyByDayLbl);
+			this.scheduleDailyByDayPanel.Name = "scheduleDailyByDayPanel";
+			// 
+			// scheduleDailyByDay
+			// 
+			this.scheduleDailyByDay.AutoCheck = false;
+			resources.ApplyResources(this.scheduleDailyByDay, "scheduleDailyByDay");
+			this.scheduleDailyByDay.Checked = true;
+			this.scheduleDailyByDay.Name = "scheduleDailyByDay";
+			this.scheduleDailyByDay.TabStop = true;
+			this.scheduleDailyByDay.UseVisualStyleBackColor = true;
+			this.scheduleDailyByDay.Click += new System.EventHandler(this.scheduleDailySpan_Clicked);
+			this.scheduleDailyByDay.CheckedChanged += new System.EventHandler(this.scheduleDailySpan_CheckedChanged);
 			// 
 			// scheduleDailyByDayFreq
 			// 
@@ -396,15 +386,6 @@ namespace Eraser
             0,
             0});
 			// 
-			// scheduleDailyByDay
-			// 
-			resources.ApplyResources(this.scheduleDailyByDay, "scheduleDailyByDay");
-			this.scheduleDailyByDay.Checked = true;
-			this.scheduleDailyByDay.Name = "scheduleDailyByDay";
-			this.scheduleDailyByDay.TabStop = true;
-			this.scheduleDailyByDay.UseVisualStyleBackColor = true;
-			this.scheduleDailyByDay.CheckedChanged += new System.EventHandler(this.scheduleDailySpan_CheckedChanged);
-			// 
 			// scheduleDailyByDayLbl
 			// 
 			resources.ApplyResources(this.scheduleDailyByDayLbl, "scheduleDailyByDayLbl");
@@ -412,10 +393,59 @@ namespace Eraser
 			// 
 			// scheduleDailyByWeekday
 			// 
+			this.scheduleDailyByWeekday.AutoCheck = false;
 			resources.ApplyResources(this.scheduleDailyByWeekday, "scheduleDailyByWeekday");
 			this.scheduleDailyByWeekday.Name = "scheduleDailyByWeekday";
 			this.scheduleDailyByWeekday.UseVisualStyleBackColor = true;
+			this.scheduleDailyByWeekday.Click += new System.EventHandler(this.scheduleDailySpan_Clicked);
 			this.scheduleDailyByWeekday.CheckedChanged += new System.EventHandler(this.scheduleDailySpan_CheckedChanged);
+			// 
+			// scheduleWeekly
+			// 
+			this.scheduleWeekly.AutoCheck = false;
+			resources.ApplyResources(this.scheduleWeekly, "scheduleWeekly");
+			this.scheduleWeekly.Name = "scheduleWeekly";
+			this.scheduleWeekly.TabStop = true;
+			this.scheduleWeekly.UseVisualStyleBackColor = true;
+			this.scheduleWeekly.Click += new System.EventHandler(this.scheduleSpan_Clicked);
+			// 
+			// scheduleWeeklyFrequencyPanel
+			// 
+			resources.ApplyResources(this.scheduleWeeklyFrequencyPanel, "scheduleWeeklyFrequencyPanel");
+			this.scheduleWeeklyFrequencyPanel.Controls.Add(this.scheduleWeeklyLbl);
+			this.scheduleWeeklyFrequencyPanel.Controls.Add(this.scheduleWeeklyFreq);
+			this.scheduleWeeklyFrequencyPanel.Controls.Add(this.scheduleWeeklyFreqLbl);
+			this.scheduleWeeklyFrequencyPanel.Name = "scheduleWeeklyFrequencyPanel";
+			// 
+			// scheduleWeeklyLbl
+			// 
+			resources.ApplyResources(this.scheduleWeeklyLbl, "scheduleWeeklyLbl");
+			this.scheduleWeeklyLbl.Name = "scheduleWeeklyLbl";
+			// 
+			// scheduleWeeklyFreq
+			// 
+			resources.ApplyResources(this.scheduleWeeklyFreq, "scheduleWeeklyFreq");
+			this.scheduleWeeklyFreq.Maximum = new decimal(new int[] {
+            104,
+            0,
+            0,
+            0});
+			this.scheduleWeeklyFreq.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.scheduleWeeklyFreq.Name = "scheduleWeeklyFreq";
+			this.scheduleWeeklyFreq.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			// 
+			// scheduleWeeklyFreqLbl
+			// 
+			resources.ApplyResources(this.scheduleWeeklyFreqLbl, "scheduleWeeklyFreqLbl");
+			this.scheduleWeeklyFreqLbl.Name = "scheduleWeeklyFreqLbl";
 			// 
 			// scheduleWeeklyDays
 			// 
@@ -471,68 +501,80 @@ namespace Eraser
 			this.scheduleWeeklySunday.Name = "scheduleWeeklySunday";
 			this.scheduleWeeklySunday.UseVisualStyleBackColor = true;
 			// 
-			// scheduleWeeklyFreqLbl
-			// 
-			resources.ApplyResources(this.scheduleWeeklyFreqLbl, "scheduleWeeklyFreqLbl");
-			this.scheduleWeeklyFreqLbl.Name = "scheduleWeeklyFreqLbl";
-			// 
-			// scheduleWeeklyLbl
-			// 
-			resources.ApplyResources(this.scheduleWeeklyLbl, "scheduleWeeklyLbl");
-			this.scheduleWeeklyLbl.Name = "scheduleWeeklyLbl";
-			// 
-			// scheduleWeekly
-			// 
-			resources.ApplyResources(this.scheduleWeekly, "scheduleWeekly");
-			this.scheduleWeekly.Name = "scheduleWeekly";
-			this.scheduleWeekly.UseVisualStyleBackColor = true;
-			this.scheduleWeekly.CheckedChanged += new System.EventHandler(this.scheduleSpan_CheckedChanged);
-			// 
 			// scheduleMonthly
 			// 
+			this.scheduleMonthly.AutoCheck = false;
 			resources.ApplyResources(this.scheduleMonthly, "scheduleMonthly");
 			this.scheduleMonthly.Name = "scheduleMonthly";
 			this.scheduleMonthly.TabStop = true;
 			this.scheduleMonthly.UseVisualStyleBackColor = true;
-			this.scheduleMonthly.CheckedChanged += new System.EventHandler(this.scheduleSpan_CheckedChanged);
+			this.scheduleMonthly.Click += new System.EventHandler(this.scheduleSpan_Clicked);
 			// 
-			// nonRecurringPanel
+			// scheduleMonthlyFrequencyPanel
 			// 
-			this.nonRecurringPanel.Controls.Add(this.nonRecurringLbl);
-			this.nonRecurringPanel.Controls.Add(this.nonRecurringBitmap);
-			resources.ApplyResources(this.nonRecurringPanel, "nonRecurringPanel");
-			this.nonRecurringPanel.Name = "nonRecurringPanel";
+			resources.ApplyResources(this.scheduleMonthlyFrequencyPanel, "scheduleMonthlyFrequencyPanel");
+			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyLbl);
+			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyDayNumber);
+			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyEveryLbl);
+			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyFreq);
+			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyMonthLbl);
+			this.scheduleMonthlyFrequencyPanel.MinimumSize = new System.Drawing.Size(294, 29);
+			this.scheduleMonthlyFrequencyPanel.Name = "scheduleMonthlyFrequencyPanel";
 			// 
-			// nonRecurringLbl
+			// scheduleMonthlyLbl
 			// 
-			resources.ApplyResources(this.nonRecurringLbl, "nonRecurringLbl");
-			this.nonRecurringLbl.Name = "nonRecurringLbl";
+			resources.ApplyResources(this.scheduleMonthlyLbl, "scheduleMonthlyLbl");
+			this.scheduleMonthlyLbl.Name = "scheduleMonthlyLbl";
 			// 
-			// nonRecurringBitmap
+			// scheduleMonthlyDayNumber
 			// 
-			this.nonRecurringBitmap.Image = global::Eraser.Properties.Resources.Information;
-			resources.ApplyResources(this.nonRecurringBitmap, "nonRecurringBitmap");
-			this.nonRecurringBitmap.Name = "nonRecurringBitmap";
-			this.nonRecurringBitmap.TabStop = false;
+			resources.ApplyResources(this.scheduleMonthlyDayNumber, "scheduleMonthlyDayNumber");
+			this.scheduleMonthlyDayNumber.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+			this.scheduleMonthlyDayNumber.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.scheduleMonthlyDayNumber.Name = "scheduleMonthlyDayNumber";
+			this.scheduleMonthlyDayNumber.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			// 
-			// scheduleTimePanel
+			// scheduleMonthlyEveryLbl
 			// 
-			resources.ApplyResources(this.scheduleTimePanel, "scheduleTimePanel");
-			this.scheduleTimePanel.Controls.Add(this.scheduleTime);
-			this.scheduleTimePanel.Controls.Add(this.scheduleTimeLbl);
-			this.scheduleTimePanel.Name = "scheduleTimePanel";
+			resources.ApplyResources(this.scheduleMonthlyEveryLbl, "scheduleMonthlyEveryLbl");
+			this.scheduleMonthlyEveryLbl.Name = "scheduleMonthlyEveryLbl";
 			// 
-			// scheduleTime
+			// scheduleMonthlyFreq
 			// 
-			this.scheduleTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-			resources.ApplyResources(this.scheduleTime, "scheduleTime");
-			this.scheduleTime.Name = "scheduleTime";
-			this.scheduleTime.ShowUpDown = true;
+			resources.ApplyResources(this.scheduleMonthlyFreq, "scheduleMonthlyFreq");
+			this.scheduleMonthlyFreq.Maximum = new decimal(new int[] {
+            120,
+            0,
+            0,
+            0});
+			this.scheduleMonthlyFreq.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+			this.scheduleMonthlyFreq.Name = "scheduleMonthlyFreq";
+			this.scheduleMonthlyFreq.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
 			// 
-			// scheduleTimeLbl
+			// scheduleMonthlyMonthLbl
 			// 
-			resources.ApplyResources(this.scheduleTimeLbl, "scheduleTimeLbl");
-			this.scheduleTimeLbl.Name = "scheduleTimeLbl";
+			resources.ApplyResources(this.scheduleMonthlyMonthLbl, "scheduleMonthlyMonthLbl");
+			this.scheduleMonthlyMonthLbl.Name = "scheduleMonthlyMonthLbl";
 			// 
 			// errorProvider
 			// 
@@ -541,9 +583,9 @@ namespace Eraser
 			// TaskPropertiesForm
 			// 
 			this.AcceptButton = this.ok;
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-			this.CancelButton = this.cancel;
 			resources.ApplyResources(this, "$this");
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+			this.CancelButton = this.cancel;
 			this.Controls.Add(this.container);
 			this.Controls.Add(this.cancel);
 			this.Controls.Add(this.ok);
@@ -556,23 +598,30 @@ namespace Eraser
 			this.container.ResumeLayout(false);
 			this.containerTask.ResumeLayout(false);
 			this.containerTask.PerformLayout();
+			this.tableLayoutPanel2.ResumeLayout(false);
+			this.tableLayoutPanel2.PerformLayout();
 			this.containerSchedule.ResumeLayout(false);
-			this.tableLayoutPanel1.ResumeLayout(false);
-			this.tableLayoutPanel1.PerformLayout();
-			this.schedulePattern.ResumeLayout(false);
-			this.schedulePattern.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyDayNumber)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyFreq)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleWeeklyFreq)).EndInit();
-			this.scheduleDailyPanel.ResumeLayout(false);
-			this.scheduleDailyPanel.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.scheduleDailyByDayFreq)).EndInit();
-			this.scheduleWeeklyDays.ResumeLayout(false);
-			this.scheduleWeeklyDays.PerformLayout();
+			this.containerSchedulePanel.ResumeLayout(false);
+			this.containerSchedulePanel.PerformLayout();
 			this.nonRecurringPanel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.nonRecurringBitmap)).EndInit();
 			this.scheduleTimePanel.ResumeLayout(false);
 			this.scheduleTimePanel.PerformLayout();
+			this.schedulePattern.ResumeLayout(false);
+			this.schedulePanel.ResumeLayout(false);
+			this.schedulePanel.PerformLayout();
+			this.scheduleDailyByDayPanel.ResumeLayout(false);
+			this.scheduleDailyByDayPanel.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleDailyByDayFreq)).EndInit();
+			this.scheduleWeeklyFrequencyPanel.ResumeLayout(false);
+			this.scheduleWeeklyFrequencyPanel.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleWeeklyFreq)).EndInit();
+			this.scheduleWeeklyDays.ResumeLayout(false);
+			this.scheduleWeeklyDays.PerformLayout();
+			this.scheduleMonthlyFrequencyPanel.ResumeLayout(false);
+			this.scheduleMonthlyFrequencyPanel.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyDayNumber)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.scheduleMonthlyFreq)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
 			this.ResumeLayout(false);
 
@@ -580,8 +629,6 @@ namespace Eraser
 
 		#endregion
 
-		private System.Windows.Forms.Label nameLbl;
-		private System.Windows.Forms.TextBox name;
 		private System.Windows.Forms.Label eraseLbl;
 		private System.Windows.Forms.Label typeLbl;
 		private System.Windows.Forms.RadioButton typeImmediate;
@@ -595,15 +642,41 @@ namespace Eraser
 		private System.Windows.Forms.TabControl container;
 		private System.Windows.Forms.TabPage containerTask;
 		private System.Windows.Forms.TabPage containerSchedule;
-		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.TableLayoutPanel containerSchedulePanel;
 		private System.Windows.Forms.GroupBox schedulePattern;
-		private System.Windows.Forms.NumericUpDown scheduleWeeklyFreq;
+		private System.Windows.Forms.Panel nonRecurringPanel;
+		private System.Windows.Forms.Label nonRecurringLbl;
+		private System.Windows.Forms.PictureBox nonRecurringBitmap;
+		private System.Windows.Forms.ErrorProvider errorProvider;
+		private System.Windows.Forms.RadioButton typeRestart;
+		private System.Windows.Forms.ContextMenuStrip dataContextMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem deleteDataToolStripMenuItem;
+		private System.Windows.Forms.RadioButton typeManual;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
+		private System.Windows.Forms.Label nameLbl;
+		private System.Windows.Forms.TextBox name;
+		private System.Windows.Forms.FlowLayoutPanel scheduleTimePanel;
+		private System.Windows.Forms.Label scheduleTimeLbl;
+		private System.Windows.Forms.DateTimePicker scheduleTime;
+		private System.Windows.Forms.FlowLayoutPanel schedulePanel;
 		private System.Windows.Forms.RadioButton scheduleDaily;
-		private System.Windows.Forms.Panel scheduleDailyPanel;
-		private System.Windows.Forms.NumericUpDown scheduleDailyByDayFreq;
+		private System.Windows.Forms.FlowLayoutPanel scheduleDailyByDayPanel;
 		private System.Windows.Forms.RadioButton scheduleDailyByDay;
+		private System.Windows.Forms.NumericUpDown scheduleDailyByDayFreq;
 		private System.Windows.Forms.Label scheduleDailyByDayLbl;
 		private System.Windows.Forms.RadioButton scheduleDailyByWeekday;
+		private System.Windows.Forms.RadioButton scheduleWeekly;
+		private System.Windows.Forms.FlowLayoutPanel scheduleWeeklyFrequencyPanel;
+		private System.Windows.Forms.Label scheduleWeeklyLbl;
+		private System.Windows.Forms.NumericUpDown scheduleWeeklyFreq;
+		private System.Windows.Forms.Label scheduleWeeklyFreqLbl;
+		private System.Windows.Forms.RadioButton scheduleMonthly;
+		private System.Windows.Forms.FlowLayoutPanel scheduleMonthlyFrequencyPanel;
+		private System.Windows.Forms.Label scheduleMonthlyLbl;
+		private System.Windows.Forms.NumericUpDown scheduleMonthlyDayNumber;
+		private System.Windows.Forms.Label scheduleMonthlyEveryLbl;
+		private System.Windows.Forms.NumericUpDown scheduleMonthlyFreq;
+		private System.Windows.Forms.Label scheduleMonthlyMonthLbl;
 		private System.Windows.Forms.FlowLayoutPanel scheduleWeeklyDays;
 		private System.Windows.Forms.CheckBox scheduleWeeklyMonday;
 		private System.Windows.Forms.CheckBox scheduleWeeklyTuesday;
@@ -612,25 +685,5 @@ namespace Eraser
 		private System.Windows.Forms.CheckBox scheduleWeeklyFriday;
 		private System.Windows.Forms.CheckBox scheduleWeeklySaturday;
 		private System.Windows.Forms.CheckBox scheduleWeeklySunday;
-		private System.Windows.Forms.Label scheduleWeeklyFreqLbl;
-		private System.Windows.Forms.Label scheduleWeeklyLbl;
-		private System.Windows.Forms.RadioButton scheduleWeekly;
-		private System.Windows.Forms.RadioButton scheduleMonthly;
-		private System.Windows.Forms.Panel nonRecurringPanel;
-		private System.Windows.Forms.Label nonRecurringLbl;
-		private System.Windows.Forms.PictureBox nonRecurringBitmap;
-		private System.Windows.Forms.Panel scheduleTimePanel;
-		private System.Windows.Forms.Label scheduleTimeLbl;
-		private System.Windows.Forms.ErrorProvider errorProvider;
-		private System.Windows.Forms.RadioButton typeRestart;
-		private System.Windows.Forms.NumericUpDown scheduleMonthlyDayNumber;
-		private System.Windows.Forms.NumericUpDown scheduleMonthlyFreq;
-		private System.Windows.Forms.Label scheduleMonthlyMonthLbl;
-		private System.Windows.Forms.Label scheduleMonthlyEveryLbl;
-		private System.Windows.Forms.Label scheduleMonthlyLbl;
-		private System.Windows.Forms.DateTimePicker scheduleTime;
-		private System.Windows.Forms.ContextMenuStrip dataContextMenuStrip;
-		private System.Windows.Forms.ToolStripMenuItem deleteDataToolStripMenuItem;
-		private System.Windows.Forms.RadioButton typeManual;
 	}
 }
