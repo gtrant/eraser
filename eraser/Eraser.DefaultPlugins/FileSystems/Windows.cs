@@ -62,11 +62,13 @@ namespace Eraser.DefaultPlugins
 				throw new InvalidOperationException(S._("The folder {0} cannot be deleted as it is " +
 					"not empty."));
 
-			//TODO: check for reparse points
-			foreach (DirectoryInfo dir in info.GetDirectories())
-				DeleteFolder(dir);
-			foreach (FileInfo file in info.GetFiles())
-				DeleteFile(file);
+			if ((info.Attributes & FileAttributes.ReparsePoint) != 0)
+			{
+				foreach (DirectoryInfo dir in info.GetDirectories())
+					DeleteFolder(dir);
+				foreach (FileInfo file in info.GetFiles())
+					DeleteFile(file);
+			}
 
 			DeleteFileSystemInfo(info);
 		}

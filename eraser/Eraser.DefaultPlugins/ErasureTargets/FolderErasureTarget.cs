@@ -175,13 +175,14 @@ namespace Eraser.DefaultPlugins
 			Progress.Steps.Add(new SteppedProgressManagerStep(step,
 				0.0f, S._("Removing folders...")));
 
-			//Remove all subfolders which are empty.
-			FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
-				VolumeInfo.FromMountPoint(Path)];
+			//Erase all subdirectories which are not reparse points.
 			DirectoryInfo directory = new DirectoryInfo(Path);
+			if ((directory.Attributes & FileAttributes.ReparsePoint) == 0)
 				foreach (DirectoryInfo subDir in directory.GetDirectories())
 					EraseFolder(subDir, step);
 
+			//Does the user want this directory to be erased if there are no more
+			//entries within it?
 			if (DeleteIfEmpty)
 			{
 				//See if this is the root of a volume.
@@ -197,6 +198,8 @@ namespace Eraser.DefaultPlugins
 				if (!isVolumeRoot && directory.Exists &&
 					directory.GetFiles("*", SearchOption.AllDirectories).Length == 0)
 				{
+					FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+						VolumeInfo.FromMountPoint(Path)];
 					fsManager.DeleteFolder(directory);
 				}
 			}
@@ -204,11 +207,20 @@ namespace Eraser.DefaultPlugins
 
 		private void EraseFolder(DirectoryInfo info, ProgressManager progress)
 		{
+			//Skip all symbolic links and junctions as we want to retain the
+			//contents of those directories.
+			if ((info.Attributes & FileAttributes.ReparsePoint) != 0)
+				return;
+
+			//Iterate over each directory and erase the subdirectories.
 			foreach (DirectoryInfo subDir in info.GetDirectories())
 				EraseFolder(subDir, progress);
+
+			//Public progress updates.
 			OnProgressChanged(this, new ProgressChangedEventArgs(progress,
 				new TaskProgressChangedEventArgs(info.FullName, 0, 0)));
 
+			//Ensure that the current directory is empty before deleting.
 			FileSystemInfo[] files = info.GetFileSystemInfos();
 			if (files.Length == 0)
 			{
