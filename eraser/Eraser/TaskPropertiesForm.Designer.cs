@@ -518,7 +518,7 @@ namespace Eraser
 			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyEveryLbl);
 			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyFreq);
 			this.scheduleMonthlyFrequencyPanel.Controls.Add(this.scheduleMonthlyMonthLbl);
-			this.scheduleMonthlyFrequencyPanel.MinimumSize = new System.Drawing.Size(294, 29);
+			this.scheduleMonthlyFrequencyPanel.MinimumSize = new System.Drawing.Size(294, 23);
 			this.scheduleMonthlyFrequencyPanel.Name = "scheduleMonthlyFrequencyPanel";
 			// 
 			// scheduleMonthlyLbl
