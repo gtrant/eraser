@@ -212,6 +212,11 @@ namespace Eraser {
 		if (uFlags & CMF_DEFAULTONLY)
 			return MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_NULL, 0);
 
+		//If the flags include CMF_VERBSONLY then we shouldn't do anything as we do not
+		//want to operate on the target of a shortcut implicitly.
+		if (uFlags & CMF_VERBSONLY)
+			return MAKE_HRESULT(SEVERITY_SUCCESS, FACILITY_NULL, 0);
+
 		//First, create and populate a submenu.
 		UINT uID = uidFirstCmd;
 		HMENU hSubmenu = CreatePopupMenu();
