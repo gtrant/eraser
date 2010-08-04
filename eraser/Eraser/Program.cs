@@ -402,7 +402,7 @@ parameters for erase and addtask:
   eraser addtask [/method=(<methodGUID>|<methodName>)] [/schedule=(now|manually|restart)] <target> [target [...]]
 
   /method             The Erasure method to use.
-    methodGUID and methodName any GUID/Name from the following list:
+    methodGUID and methodName can be any GUID/Name from the following list:
 {0}
     Only erasure methods labelled ""U"" can be used to erase unused disk space.
 
