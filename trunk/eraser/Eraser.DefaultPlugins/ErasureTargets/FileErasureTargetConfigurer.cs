@@ -77,9 +77,10 @@ namespace Eraser.DefaultPlugins
 
 		#region ICliConfigurer<ErasureTarget> Members
 
-		public void Help()
+		public string Help()
 		{
-			throw new NotImplementedException();
+			return S._(@"file                Erases the specified file
+  argument: file=<path>");
 		}
 
 		public bool ProcessArgument(string argument)

@@ -39,6 +39,7 @@ using ComLib.Arguments;
 using Eraser.Manager;
 using Eraser.Util;
 using Eraser.DefaultPlugins;
+using System.Text;
 
 namespace Eraser
 {
@@ -290,6 +291,19 @@ namespace Eraser
 		/// </summary>
 		private static void PrintCommandHelp()
 		{
+			//Get the command-line help for every erasure target
+			StringBuilder targets = new StringBuilder();
+			foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
+			{
+				//Replace all \r\n with \n, and split into lines
+				string[] helpText = target.Configurer.Help().Replace("\r\n", "\n").Split('\r', '\n');
+
+				//Pad the start of each line with spaces
+				foreach (string line in helpText)
+					targets.AppendLine(line.Insert(0, "    "));
+			}
+
+			//Print the message
 			Console.WriteLine(S._(@"usage: Eraser <action> <arguments>
 where action is
   help                Show this help message.
@@ -307,7 +321,7 @@ parameters for help:
   no parameters to set.
 
 parameters for addtask:
-  eraser addtask [/method=<methodGUID>] [/schedule=(now|manually|restart)] (recyclebin | unused=<volume> | dir=<directory> | file=<file>)[...]
+  eraser addtask [/method=<methodGUID>] [/schedule=(now|manually|restart)] <target> [target [...]]
 
   /method             The Erasure method to use.
   /schedule           The schedule the task will follow. The value must be one
@@ -316,23 +330,9 @@ parameters for addtask:
       manually        The task will be created but not queued for execution.
       restart         The task will be queued for execution when the computer
                       is next restarted.
-  recyclebin          Erases files and folders in the recycle bin
-  unused              Erases unused space in the volume.
-    optional arguments: unused=<drive>[,clusterTips[=(true|false)]]
-      clusterTips     If specified, the drive's files will have their
-                      cluster tips erased. This parameter accepts a Boolean
-                      value (true/false) as an argument; if none is specified
-                      true is assumed.
-  dir                 Erases files and folders in the directory
-    optional arguments: dir=<directory>[,-excludeMask][,+includeMask][,deleteIfEmpty]
-      excludeMask     A wildcard expression for files and folders to
-                      exclude.
-      includeMask     A wildcard expression for files and folders to
-                      include.
-                      The include mask is applied before the exclude mask.
-      deleteIfEmpty   Deletes the folder at the end of the erasure if it is
-                      empty.
-  file                Erases the specified file
+
+  where target is:
+{0}
 
 parameters for querymethods:
   eraser querymethods
@@ -350,7 +350,8 @@ Response files can be used for very long command lines (generally, anything
 involving more than 32,000 characters.) Response files are used by prepending
 ""@"" to the path to the file, and passing it into the command line. The
 contents of the response files' will be substituted at the same position into
-the command line."));
+the command line.", targets));
+
 			Console.Out.Flush();
 		}
 
