@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 
 using Eraser.Manager;
 using Eraser.Util;
+using System.IO;
 
 namespace Eraser.DefaultPlugins
 {
@@ -90,6 +91,11 @@ namespace Eraser.DefaultPlugins
 			if (match.Groups["fileName"].Success)
 			{
 				filePath.Text = match.Groups["fileName"].Value;
+				return true;
+			}
+			else if (File.Exists(argument))
+			{
+				filePath.Text = argument;
 				return true;
 			}
 

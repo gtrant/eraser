@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 
 using Eraser.Manager;
 using Eraser.Util;
+using System.IO;
 
 namespace Eraser.DefaultPlugins
 {
@@ -110,6 +111,15 @@ namespace Eraser.DefaultPlugins
 					folderExclude.Text += match.Groups["directoryExcludeMask"].Value.Remove(0, 2) + ' ';
 				if (match.Groups["directoryIncludeMask"].Success)
 					folderInclude.Text += match.Groups["directoryIncludeMask"].Value.Remove(0, 2) + ' ';
+
+				return true;
+			}
+			else if (Directory.Exists(argument))
+			{
+				folderPath.Text = argument;
+				folderDelete.Checked = false;
+				folderInclude.Text = folderExclude.Text = string.Empty;
+				return true;
 			}
 
 			return false;
