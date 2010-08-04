@@ -293,7 +293,7 @@ namespace Eraser
 			Console.WriteLine(S._(@"usage: Eraser <action> <arguments>
 where action is
   help                Show this help message.
-  addtask             Adds tasks to the current task list.
+  addtask             Adds a task to the current task list.
   querymethods        Lists all registered Erasure methods.
   importtasklist      Imports an Eraser Task list to the current user's Task
                       List.
@@ -421,20 +421,40 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			//Parse the rest of the command line parameters as target expressions.
 			foreach (string argument in arguments.PositionalArguments)
 			{
-				bool processed = false;
-				foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
-					if (target.Configurer.ProcessArgument(argument))
-					{
-						target.Method = method;
-						task.Targets.Add(target);
-						processed = true;
-						break;
-					}
+				ErasureTarget selectedTarget = null;
 
-				if (!processed)
+				//Iterate over every defined erasure target
+				foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
+				{
+					//See if this argument can be handled by the target's configurer
+					IErasureTargetConfigurer configurer = target.Configurer;
+					if (configurer.ProcessArgument(argument))
+					{
+						//Check whether a target has been set (implicitly: check whether two
+						//configurers can process the argument)
+						if (selectedTarget == null)
+						{
+							configurer.SaveTo(target);
+							selectedTarget = target;
+						}
+						else
+						{
+							//Yes, it is an ambiguity. Throw an error.
+							throw new InvalidOperationException("Ambiguous argument: {0} can be " +
+								"handled by more than one erasure target.");
+						}
+					}
+				}
+
+				//Check whether a target has been made from parsing the entry.
+				if (selectedTarget == null)
 				{
 					Console.WriteLine(S._("Unknown argument: {0}, skipped.", argument));
-					continue;
+				}
+				else
+				{
+					selectedTarget.Method = method;
+					task.Targets.Add(selectedTarget);
 				}
 			}
 
