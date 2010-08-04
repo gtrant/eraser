@@ -92,8 +92,8 @@ namespace Eraser
 			/// <summary>
 			/// The erasure method which the user specified on the command line.
 			/// </summary>
-			[Arg("method", "The erasure method to use", typeof(Guid), false, null, null)]
-			public Guid ErasureMethod { get; set; }
+			[Arg("method", "The erasure method to use", typeof(string), false, null, null)]
+			public string ErasureMethod { get; set; }
 
 			/// <summary>
 			/// The schedule for the current set of targets.
@@ -321,7 +321,7 @@ parameters for help:
   no parameters to set.
 
 parameters for addtask:
-  eraser addtask [/method=<methodGUID>] [/schedule=(now|manually|restart)] <target> [target [...]]
+  eraser addtask [/method=(<methodGUID>|<methodName>)] [/schedule=(now|manually|restart)] <target> [target [...]]
 
   /method             The Erasure method to use.
   /schedule           The schedule the task will follow. The value must be one
@@ -331,7 +331,7 @@ parameters for addtask:
       restart         The task will be queued for execution when the computer
                       is next restarted.
 
-  where target is:
+  where target is one of more of:
 {0}
 
 parameters for querymethods:
@@ -340,9 +340,9 @@ parameters for querymethods:
   no parameters to set.
 
 parameters for importtasklist:
-  eraser importtasklist (file)[...]
+  eraser importtasklist <file>[...]
 
-  [file]              A list of one or more files to import.
+    file               A list of one or more files to import.
 
 All arguments are case sensitive.
 
@@ -397,11 +397,15 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		{
 			AddTaskArguments arguments = (AddTaskArguments)arg;
 
-			//Create the task then set the method as well as schedule
+			//Create the task
 			Task task = new Task();
-			ErasureMethod method = arguments.ErasureMethod == Guid.Empty ?
+
+			//Get the erasure method the user wants to use
+			ErasureMethod method = string.IsNullOrEmpty(arguments.ErasureMethod) ?
 				ErasureMethodRegistrar.Default :
-				ManagerLibrary.Instance.ErasureMethodRegistrar[arguments.ErasureMethod];
+				ErasureMethodFromNameOrGuid(arguments.ErasureMethod);
+
+			//Define the schedule
 			switch (arguments.Schedule.ToUpperInvariant())
 			{
 				case "":
@@ -441,8 +445,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 						else
 						{
 							//Yes, it is an ambiguity. Throw an error.
-							throw new InvalidOperationException("Ambiguous argument: {0} can be " +
-								"handled by more than one erasure target.");
+							throw new ArgumentException(S._("Ambiguous argument: {0} can be " +
+								"handled by more than one erasure target.", argument));
 						}
 					}
 				}
@@ -466,6 +470,32 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			//Send the task out.
 			using (eraserClient = CommandConnect())
 				eraserClient.Tasks.Add(task);
+		}
+
+		private static ErasureMethod ErasureMethodFromNameOrGuid(string param)
+		{
+			try
+			{
+				return ManagerLibrary.Instance.ErasureMethodRegistrar[new Guid(param)];
+			}
+			catch (FormatException)
+			{
+				//Invalid GUID. Check every registered erasure method for the name
+				string upperParam = param.ToUpperInvariant();
+				ErasureMethod result = null;
+				foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+				{
+					if (method.Name.ToUpperInvariant() == upperParam)
+						if (result == null)
+							result = method;
+						else
+							throw new ArgumentException(S._("Ambiguous erasure method name: {0} " +
+								"identifies more than one erasure method.", param));
+				}
+			}
+
+			throw new ArgumentException(S._("The provided Erasure Method '{0}' does not exist.",
+				param));
 		}
 
 		/// <summary>
