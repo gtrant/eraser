@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using Eraser.Manager;
 using Eraser.Util;
@@ -82,7 +83,24 @@ namespace Eraser.DefaultPlugins
 
 		public bool ProcessArgument(string argument)
 		{
-			throw new NotImplementedException();
+			//The secure move source and target, which are separated by a pipe.
+			Regex regex = new Regex("(move=)?(?<source>.*)\\|(?<target>.*)",
+				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+			Match match = regex.Match(argument);
+
+			if (match.Groups["source"].Success && match.Groups["target"].Success)
+			{
+				//Get the source and destination paths
+				fromTxt.Text = match.Groups["source"].Value;
+				toTxt.Text = match.Groups["target"].Value;
+
+				//Check the folder radio button if the source is a folder.
+				moveFileRadio.Checked = !(
+					moveFolderRadio.Checked = Directory.Exists(fromTxt.Text));
+				return true;
+			}
+
+			return false;
 		}
 
 		#endregion
