@@ -335,7 +335,7 @@ namespace Eraser.Manager
 		{
 			try
 			{
-				client.Connect(10000);
+				client.Connect(0);
 			}
 			catch (TimeoutException)
 			{
