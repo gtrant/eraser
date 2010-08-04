@@ -94,10 +94,17 @@ namespace Eraser.DefaultPlugins
 				filePath.Text = match.Groups["fileName"].Value;
 				return true;
 			}
-			else if (File.Exists(argument))
+			
+			try	
 			{
-				filePath.Text = argument;
-				return true;
+				if (File.Exists(argument))
+				{
+					filePath.Text = argument;
+					return true;
+				}
+			}
+			catch (NotSupportedException)
+			{
 			}
 
 			return false;

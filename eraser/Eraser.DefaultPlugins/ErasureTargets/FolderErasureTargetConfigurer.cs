@@ -122,12 +122,19 @@ namespace Eraser.DefaultPlugins
 
 				return true;
 			}
-			else if (Directory.Exists(argument))
+
+			try
 			{
-				folderPath.Text = argument;
-				folderDelete.Checked = false;
-				folderInclude.Text = folderExclude.Text = string.Empty;
-				return true;
+				if (Directory.Exists(argument))
+				{
+					folderPath.Text = argument;
+					folderDelete.Checked = false;
+					folderInclude.Text = folderExclude.Text = string.Empty;
+					return true;
+				}
+			}
+			catch (NotSupportedException)
+			{
 			}
 
 			return false;
