@@ -259,8 +259,6 @@ namespace Eraser
 				{
 					program.Handlers.Add("help",
 						new ConsoleActionData(CommandHelp, new ConsoleArguments()));
-					program.Handlers.Add("querymethods",
-						new ConsoleActionData(CommandQueryMethods, new ConsoleArguments()));
 					program.Handlers.Add("addtask",
 						new ConsoleActionData(CommandAddTask, new AddTaskArguments()));
 					program.Handlers.Add("importtasklist",
@@ -303,12 +301,24 @@ namespace Eraser
 					targets.AppendLine(line.Insert(0, "    "));
 			}
 
+			//Get the list of registered Erasure Methods. First, output the header.
+			const string methodFormat = "    {0,-2} {1,-35} {2}\n";
+			StringBuilder methods = new StringBuilder();
+			methods.AppendFormat(methodFormat, "", "Erasure Method", "GUID");
+			methods.AppendLine("    " + new string('-', 75));
+
+			//Generate the list of erasure methods.
+			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+			{
+				methods.AppendFormat(methodFormat, (method is UnusedSpaceErasureMethod) ?
+					"U" : "", method.Name, method.Guid);
+			}
+
 			//Print the message
 			Console.WriteLine(S._(@"usage: Eraser <action> <arguments>
 where action is
   help                Show this help message.
   addtask             Adds a task to the current task list.
-  querymethods        Lists all registered Erasure methods.
   importtasklist      Imports an Eraser Task list to the current user's Task
                       List.
 
@@ -331,13 +341,12 @@ parameters for addtask:
       restart         The task will be queued for execution when the computer
                       is next restarted.
 
-  where target is one of more of:
+  where methodGUID and methodName any GUID/Name from the following list:
 {0}
+  Only erasure methods labelled ""U"" can be used to erase unused disk space.
 
-parameters for querymethods:
-  eraser querymethods
-
-  no parameters to set.
+where target is one or more of:
+{1}
 
 parameters for importtasklist:
   eraser importtasklist <file>[...]
@@ -350,7 +359,7 @@ Response files can be used for very long command lines (generally, anything
 involving more than 32,000 characters.) Response files are used by prepending
 ""@"" to the path to the file, and passing it into the command line. The
 contents of the response files' will be substituted at the same position into
-the command line.", targets));
+the command line.", methods, targets));
 
 			Console.Out.Flush();
 		}
@@ -367,25 +376,6 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 ", BuildInfo.AssemblyFileVersion));
 
 			PrintCommandHelp();
-		}
-
-		/// <summary>
-		/// Lists all registered erasure methods.
-		/// </summary>
-		/// <param name="arguments">Not used.</param>
-		private static void CommandQueryMethods(ConsoleArguments arguments)
-		{
-			//Output the header
-			const string methodFormat = "{0,-2} {1,-39} {2}";
-			Console.WriteLine(methodFormat, "", "Erasure Method", "GUID");
-			Console.WriteLine(new string('-', 79));
-
-			//Refresh the list of erasure methods
-			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
-			{
-				Console.WriteLine(methodFormat, (method is UnusedSpaceErasureMethod) ?
-					"U" : "", method.Name, method.Guid.ToString());
-			}
 		}
 
 		/// <summary>
