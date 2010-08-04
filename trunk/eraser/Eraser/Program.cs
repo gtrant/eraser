@@ -76,6 +76,24 @@ namespace Eraser
 		class ConsoleArguments : Arguments
 		{
 			/// <summary>
+			/// Constructor.
+			/// </summary>
+			public ConsoleArguments()
+			{
+			}
+
+			/// <summary>
+			/// Copy constructor.
+			/// </summary>
+			/// <param name="arguments">The <see cref="ConsoleArguments"/> to use as a template
+			/// for this instance.</param>
+			protected ConsoleArguments(ConsoleArguments arguments)
+			{
+				Action = arguments.Action;
+				PositionalArguments = arguments.PositionalArguments;
+			}
+
+			/// <summary>
 			/// The Action which this handler is in charge of.
 			/// </summary>
 			[Arg(0, "The action this command line is stating.", typeof(string), true, null, null)]
@@ -87,13 +105,51 @@ namespace Eraser
 			public List<string> PositionalArguments { get; set; }
 		}
 
-		class AddTaskArguments : ConsoleArguments
+		class EraseArguments : ConsoleArguments
 		{
+			/// <summary>
+			/// Constructor.
+			/// </summary>
+			public EraseArguments()
+			{
+			}
+
+			/// <summary>
+			/// Copy constructor.
+			/// </summary>
+			/// <param name="arguments">The <see cref="EraseArguments"/> to use as a template
+			/// for this instance.</param>
+			protected EraseArguments(EraseArguments arguments)
+				: base(arguments)
+			{
+				ErasureMethod = arguments.ErasureMethod;
+			}
+
 			/// <summary>
 			/// The erasure method which the user specified on the command line.
 			/// </summary>
 			[Arg("method", "The erasure method to use", typeof(string), false, null, null)]
 			public string ErasureMethod { get; set; }
+		}
+
+		class AddTaskArguments : EraseArguments
+		{
+			/// <summary>
+			/// Constructor.
+			/// </summary>
+			public AddTaskArguments()
+			{
+			}
+
+			/// <summary>
+			/// Constructs Add Task arguments from Erase arguments.
+			/// </summary>
+			/// <param name="arguments">The <see cref="EraseArguments"/> to use as a template
+			/// for this instance.</param>
+			internal AddTaskArguments(EraseArguments arguments)
+				: base(arguments)
+			{
+			}
 
 			/// <summary>
 			/// The schedule for the current set of targets.
@@ -259,6 +315,8 @@ namespace Eraser
 				{
 					program.Handlers.Add("help",
 						new ConsoleActionData(CommandHelp, new ConsoleArguments()));
+					program.Handlers.Add("erase",
+						new ConsoleActionData(CommandErase, new EraseArguments())); 
 					program.Handlers.Add("addtask",
 						new ConsoleActionData(CommandAddTask, new AddTaskArguments()));
 					program.Handlers.Add("importtasklist",
@@ -318,6 +376,8 @@ namespace Eraser
 			Console.WriteLine(S._(@"usage: Eraser <action> <arguments>
 where action is
   help                Show this help message.
+  erase               Erases items specified on the command line. This is
+                      equivalent to addtask, with the schedule set to ""now"".
   addtask             Adds a task to the current task list.
   importtasklist      Imports an Eraser Task list to the current user's Task
                       List.
@@ -330,7 +390,8 @@ parameters for help:
 
   no parameters to set.
 
-parameters for addtask:
+parameters for erase and addtask:
+  eraser erase [/method=(<methodGUID>|<methodName>)] <target> [target [...]]
   eraser addtask [/method=(<methodGUID>|<methodName>)] [/schedule=(now|manually|restart)] <target> [target [...]]
 
   /method             The Erasure method to use.
@@ -344,6 +405,8 @@ parameters for addtask:
     manually          The task will be created but not queued for execution.
     restart           The task will be queued for execution when the computer
                       is next restarted.
+
+                      This parameter is only valid for use with ""addtask"".
 
   target is one or more of:
 {1}
@@ -375,6 +438,19 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 ", BuildInfo.AssemblyFileVersion));
 
 			PrintCommandHelp();
+		}
+
+		/// <summary>
+		/// Parses the command line for tasks and adds them to run immediately
+		/// using the <see cref="RemoveExecutor"/> class.
+		/// </summary>
+		/// <param name="arg">The command line parameters passed to the program.</param>
+		private static void CommandErase(ConsoleArguments arg)
+		{
+			AddTaskArguments arguments = new AddTaskArguments((EraseArguments)arg);
+			arguments.Schedule = "NOW";
+
+			CommandAddTask(arguments);
 		}
 
 		/// <summary>
