@@ -334,20 +334,19 @@ parameters for addtask:
   eraser addtask [/method=(<methodGUID>|<methodName>)] [/schedule=(now|manually|restart)] <target> [target [...]]
 
   /method             The Erasure method to use.
+    methodGUID and methodName any GUID/Name from the following list:
+{0}
+    Only erasure methods labelled ""U"" can be used to erase unused disk space.
+
   /schedule           The schedule the task will follow. The value must be one
                       of:
-      now             The task will be queued for immediate execution.
-      manually        The task will be created but not queued for execution.
-      restart         The task will be queued for execution when the computer
+    now               The task will be queued for immediate execution.
+    manually          The task will be created but not queued for execution.
+    restart           The task will be queued for execution when the computer
                       is next restarted.
 
-  where methodGUID and methodName any GUID/Name from the following list:
-{0}
-  Only erasure methods labelled ""U"" can be used to erase unused disk space.
-
-where target is one or more of:
+  target is one or more of:
 {1}
-
 parameters for importtasklist:
   eraser importtasklist <file>[...]
 
