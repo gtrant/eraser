@@ -23,10 +23,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using System.Text.RegularExpressions;
 
 using Eraser.Manager;
+using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
@@ -47,9 +47,9 @@ namespace Eraser.DefaultPlugins
 
 		#region ICliConfigurer<ErasureTarget> Members
 
-		public void Help()
+		public string Help()
 		{
-			throw new NotImplementedException();
+			return S._("recyclebin          Erases files and folders in the recycle bin");
 		}
 
 		public bool ProcessArgument(string argument)

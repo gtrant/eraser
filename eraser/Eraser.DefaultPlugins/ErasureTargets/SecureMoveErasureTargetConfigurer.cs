@@ -76,9 +76,10 @@ namespace Eraser.DefaultPlugins
 
 		#region ICliConfigurer<ErasureTarget> Members
 
-		public void Help()
+		public string Help()
 		{
-			throw new NotImplementedException();
+			return S._(@"move                Securely moves a file/directory to a new location
+  arguments: move=<source>|<destination>");
 		}
 
 		public bool ProcessArgument(string argument)

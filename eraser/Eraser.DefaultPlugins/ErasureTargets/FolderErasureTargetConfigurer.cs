@@ -83,9 +83,17 @@ namespace Eraser.DefaultPlugins
 
 		#region ICliConfigurer<ErasureTarget> Members
 
-		public void Help()
+		public string Help()
 		{
-			throw new NotImplementedException();
+			return S._(@"dir                 Erases files and folders in the directory
+  arguments: dir=<directory>[,-excludeMask][,+includeMask][,deleteIfEmpty]
+    excludeMask     A wildcard expression for files and folders to
+                    exclude.
+    includeMask     A wildcard expression for files and folders to
+                    include.
+                    The include mask is applied before the exclude mask.
+    deleteIfEmpty   Deletes the folder at the end of the erasure if it is
+                    empty.");
 		}
 
 		public bool ProcessArgument(string argument)

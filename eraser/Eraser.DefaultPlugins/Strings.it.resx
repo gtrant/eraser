@@ -234,11 +234,17 @@
   <data name="Partition {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="drive               Erases partitions, volumes or drives\r\n  arguments:\r\n    drive=\Device\Harddisk&lt;index&gt;\r\n    drive=\\.\PhysicalDrive&lt;index&gt;\r\n    drive=\\?\Volume&lt;guid&gt;" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Invalid file path" xml:space="preserve">
     <value>Percorso del file non valido</value>
+  </data>
+  <data name="file                Erases the specified file\r\n  argument: file=&lt;path&gt;" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
     <value>Impossibile pulire files e cartelle in {0} perchè {1}</value>
@@ -267,6 +273,9 @@
   <data name="Invalid folder path" xml:space="preserve">
     <value>Percorso non valido</value>
   </data>
+  <data name="dir                 Erases files and folders in the directory\r\n  arguments: dir=&lt;directory&gt;[,-excludeMask][,+includeMask][,deleteIfEmpty]\r\n    excludeMask     A wildcard expression for files and folders to\r\n                    exclude.\r\n    includeMask     A wildcard expression for files and folders to\r\n                    include.\r\n                    The include mask is applied before the exclude mask.\r\n    deleteIfEmpty   Deletes the folder at the end of the erasure if it is\r\n                    empty." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="The path you selected is invalid." xml:space="preserve">
     <value>Il percorso scelto non è valido</value>
   </data>
@@ -275,6 +284,9 @@
   </data>
   <data name="Emptying recycle bin..." xml:space="preserve">
     <value>Svuotamento cestino...</value>
+  </data>
+  <data name="recyclebin          Erases files and folders in the recycle bin" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Secure move" xml:space="preserve">
     <value>Spostamento sicuro</value>
@@ -292,6 +304,9 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Copying source files to destination..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="move                Securely moves a file/directory to a new location\r\n  arguments: move=&lt;source&gt;|&lt;destination&gt;" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Select the Source folder" xml:space="preserve">
@@ -335,6 +350,9 @@
   </data>
   <data name="Erasing unused space..." xml:space="preserve">
     <value>Pulizia spazio inusato...</value>
+  </data>
+  <data name="unused              Erases unused space in the volume.\r\n  arguments: unused=&lt;drive&gt;[,clusterTips[=(true|false)]]\r\n  clusterTips     If specified, the drive's files will have their\r\n                  cluster tips erased. This parameter accepts a Boolean\r\n                  value (true/false) as an argument; if none is specified\r\n                  true is assumed." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">
     <value>Il metodo di pulizia custom può solo prevedere passi costanti oppure casuali</value>

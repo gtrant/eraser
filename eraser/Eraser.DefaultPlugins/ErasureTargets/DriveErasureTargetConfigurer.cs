@@ -164,9 +164,13 @@ namespace Eraser.DefaultPlugins
 
 		#region ICliConfigurer<ErasureTarget> Members
 
-		public void Help()
+		public string Help()
 		{
-			throw new NotImplementedException();
+			return S._(@"drive               Erases partitions, volumes or drives
+  arguments:
+    drive=\Device\Harddisk<index>
+    drive=\\.\PhysicalDrive<index>
+    drive=\\?\Volume<guid>");
 		}
 
 		public bool ProcessArgument(string argument)

@@ -56,9 +56,9 @@ namespace Eraser.Manager
 	public interface ICliConfigurer<T> : IConfigurer<T>
 	{
 		/// <summary>
-		/// Displays the help for the current configurer.
+		/// Gets the help string for the current configurer.
 		/// </summary>
-		void Help();
+		string Help();
 
 		/// <summary>
 		/// Sets the configuration of the current configurer from the provided

@@ -127,9 +127,14 @@ namespace Eraser.DefaultPlugins
 
 		#region ICliConfigurer<ErasureTarget> Members
 
-		public void Help()
+		public string Help()
 		{
-			throw new NotImplementedException();
+			return S._(@"unused              Erases unused space in the volume.
+  arguments: unused=<drive>[,clusterTips[=(true|false)]]
+  clusterTips     If specified, the drive's files will have their
+                  cluster tips erased. This parameter accepts a Boolean
+                  value (true/false) as an argument; if none is specified
+                  true is assumed.");
 		}
 
 		public bool ProcessArgument(string argument)
