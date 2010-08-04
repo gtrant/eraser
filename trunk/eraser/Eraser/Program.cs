@@ -283,10 +283,17 @@ namespace Eraser
 					Thread.Sleep(0);
 					eraserInstance.WaitForInputIdle();
 
-					result.Run();
-					if (!result.IsConnected)
-						throw new IOException(S._("Eraser cannot connect to the running " +
-							"instance for erasures."));
+					//Wait for the server to be initialised.
+					for (int i = 0; !result.IsConnected; ++i)
+					{
+						Thread.Sleep(100);
+						result.Run();
+
+						//After 10s, we should probably give up.
+						if (i > 100)
+							throw new IOException(S._("Eraser cannot connect to the running " +
+								"instance for erasures."));
+					}
 				}
 
 				return result;
