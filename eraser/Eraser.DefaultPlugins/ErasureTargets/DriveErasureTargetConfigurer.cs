@@ -28,6 +28,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 using Eraser.Manager;
 using Eraser.Util;
@@ -170,7 +171,58 @@ namespace Eraser.DefaultPlugins
 
 		public bool ProcessArgument(string argument)
 		{
-			throw new NotImplementedException();
+			//The hard disk index
+			Regex hardDiskRegex = new Regex("^(drive=)?\\\\Device\\\\Harddisk(?<disk>[\\d]+)",
+				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+
+			//PhysicalDrive index
+			Regex physicalDriveIndex = new Regex("^(drive=)?\\\\\\\\\\.\\\\PhysicalDrive(?<disk>[\\d]+)",
+				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+
+			//The volume GUID
+			Regex volumeRegex = new Regex("^(drive=)?\\\\\\\\\\?\\\\Volume\\{(?<guid>([0-9a-f-]+))\\}",
+				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+
+			//Try to get the hard disk index.
+			Match match = hardDiskRegex.Match(argument);
+			if (!match.Groups["disk"].Success)
+				match = physicalDriveIndex.Match(argument);
+			if (match.Groups["disk"].Success)
+			{
+				//Get the index of the disk.
+				int index = Convert.ToInt32(match.Groups["disk"].Value);
+
+				//Create a physical drive info object for the target disk
+				PhysicalDriveInfo target = new PhysicalDriveInfo(index);
+
+				//Select it in the GUI.
+				foreach (PartitionItem item in partitionCmb.Items)
+					if (item.PhysicalDrive != null && item.PhysicalDrive.Equals(target))
+						partitionCmb.SelectedItem = item;
+
+				return true;
+			}
+
+			//Try to get the volume GUID
+			match = volumeRegex.Match(argument);
+			if (match.Groups["guid"].Success)
+			{
+				//Find the volume GUID
+				Guid guid = new Guid(match.Groups["guid"].Value);
+
+				//Create a volume info object for the target volume
+				VolumeInfo target = new VolumeInfo(string.Format(CultureInfo.InvariantCulture,
+					"\\\\?\\Volume{{{0}}}\\", guid));
+
+				//Select it in the GUI.
+				foreach (PartitionItem item in partitionCmb.Items)
+					if (item.Volume != null && item.Volume.Equals(target))
+						partitionCmb.SelectedItem = item;
+				
+				return true;
+			}
+
+			return false;
 		}
 
 		#endregion
