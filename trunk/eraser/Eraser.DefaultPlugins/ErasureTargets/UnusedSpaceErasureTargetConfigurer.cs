@@ -158,6 +158,8 @@ namespace Eraser.DefaultPlugins
 				else
 					unusedClusterTips.Checked =
 						trueValues.Contains(match.Groups["unusedTipsValue"].Value);
+
+				return true;
 			}
 
 			return false;
