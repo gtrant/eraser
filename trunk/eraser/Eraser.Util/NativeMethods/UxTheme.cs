@@ -51,53 +51,7 @@ namespace Eraser.Util
 		public static extern void SetWindowTheme(IntPtr hwnd, string pszSubAppName,
 			string pszSubIdList);
 
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern SafeThemeHandle OpenThemeData(IntPtr hwnd, string pszClassList);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern IntPtr CloseThemeData(IntPtr hwndTeme);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern IntPtr DrawThemeParentBackground(IntPtr hwnd,
-			IntPtr hdc, ref Rectangle prc);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool IsThemeBackgroundPartiallyTransparent(
-			SafeThemeHandle hTheme, int iPartId, int iStateId);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern IntPtr DrawThemeBackground(
-			SafeThemeHandle hTheme, IntPtr hdc, int iPartId, int iStateId,
-			ref Rectangle pRect, ref Rectangle pClipRect);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public extern static int DrawThemeText(SafeThemeHandle hTheme,
-			IntPtr hDC, int iPartId, int iStateId,
-			[MarshalAs(UnmanagedType.LPWStr)] string pszText, int iCharCount,
-			TextFormatFlags dwTextFlag, int dwTextFlags2, ref Rectangle pRect);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern IntPtr GetThemeMargins(SafeThemeHandle hTheme,
-			IntPtr hdc, int iPartId, int iStateId, int iPropId, ref Rectangle prc,
-			ref Rectangle pMargins);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern IntPtr GetThemeMargins(SafeThemeHandle hTheme,
-			IntPtr hdc, int iPartId, int iStateId, int iPropId, IntPtr prc,
-			ref Rectangle pMargins);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern IntPtr GetThemePartSize(SafeThemeHandle hTheme,
-			IntPtr hdc, int iPartId, int iStateId, ref Rectangle prc,
-			THEMESIZE eSize, ref Size psz);
-
-		[DllImport("UxTheme.dll", CharSet = CharSet.Unicode)]
-		public static extern IntPtr GetThemePartSize(SafeThemeHandle hTheme,
-			IntPtr hdc, int iPartId, int iStateId, IntPtr prc,
-			THEMESIZE eSize, ref Size psz);
-
-		public enum MENUPARTS
+		public enum MENUPARTS : int
 		{
 			MENU_MENUITEM_TMSCHEMA = 1,
 			MENU_MENUDROPDOWN_TMSCHEMA = 2,
@@ -148,20 +102,6 @@ namespace Eraser.Util
 		{
 			MSM_NORMAL = 1,
 			MSM_DISABLED = 2,
-		}
-
-		public enum TMT_MARGINS
-		{
-			TMT_SIZINGMARGINS = 3601,
-			TMT_CONTENTMARGINS,
-			TMT_CAPTIONMARGINS
-		}
-
-		public enum THEMESIZE
-		{
-			TS_MIN,
-			TS_TRUE,
-			TS_DRAW
 		}
 
 		public const int WM_THEMECHANGED = 0x031A;
