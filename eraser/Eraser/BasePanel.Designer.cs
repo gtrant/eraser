@@ -74,12 +74,12 @@ namespace Eraser
 			// 
 			// BasePanel
 			// 
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
+			resources.ApplyResources(this, "$this");
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.Controls.Add(this.content);
 			this.Controls.Add(this.titleIcon);
 			this.Controls.Add(this.titleLabel);
 			this.Name = "BasePanel";
-			resources.ApplyResources(this, "$this");
 			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
