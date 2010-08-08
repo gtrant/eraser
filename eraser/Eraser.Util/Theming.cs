@@ -26,6 +26,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Drawing;
 using System.IO;
+using System.Windows.Forms.VisualStyles;
 using Microsoft.Win32.SafeHandles;
 
 namespace Eraser.Util
@@ -251,81 +252,85 @@ namespace Eraser.Util
 
 	public class UXThemeMenuRenderer : ToolStripRenderer
 	{
-		~UXThemeMenuRenderer()
-		{
-			if (hTheme != null)
-				hTheme.Close();
-		}
-
 		protected override void Initialize(ToolStrip toolStrip)
 		{
 			base.Initialize(toolStrip);
-			hTheme = NativeMethods.OpenThemeData(toolStrip.Handle, "MENU");
+			ToolStrip = toolStrip;
+			Renderer = new VisualStyleRenderer(VisualStyleElement.Button.PushButton.Default);
+
+			//Hook the item added event to inflate the height of every item by 2px.
+			ToolStrip.ItemAdded += new ToolStripItemEventHandler(OnToolStripItemAdded);
+			foreach (ToolStripItem item in toolStrip.Items)
+				item.Height += 2;
+		}
+
+		void OnToolStripItemAdded(object sender, ToolStripItemEventArgs e)
+		{
+			//Inflate the height of every item by 2px.
+			e.Item.Height += 2;
 		}
 
 		protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e)
 		{
-			IntPtr hDC = e.Graphics.GetHdc();
 			Rectangle rect = e.AffectedBounds;
-
-			if (NativeMethods.IsThemeBackgroundPartiallyTransparent(hTheme,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM, 0))
-			{
-				NativeMethods.DrawThemeBackground(hTheme, hDC,
-					(int)NativeMethods.MENUPARTS.MENU_POPUPBACKGROUND, 0, ref rect, ref rect);
-			}
 			
-			NativeMethods.DrawThemeBackground(hTheme, hDC, (int)
-				NativeMethods.MENUPARTS.MENU_POPUPBORDERS, 0, ref rect, ref rect);
+			Renderer.SetParameters(MenuPopupBackground);
+			if (Renderer.IsBackgroundPartiallyTransparent())
+				Renderer.DrawParentBackground(e.Graphics, e.ToolStrip.ClientRectangle, e.ToolStrip);
+			
+			Renderer.DrawBackground(e.Graphics, e.ToolStrip.ClientRectangle, e.AffectedBounds);
+		}
 
-			e.Graphics.ReleaseHdc();
-			rect.Inflate(-Margin, -Margin);
-			using (SolidBrush brush = new SolidBrush(e.BackColor))
-				e.Graphics.FillRectangle(brush, rect);
+		protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+		{
+			//Strange, borders are drawn after the content. So, clip to only the borders
+			//so that the internals will be retained.
+			Region oldClip = e.Graphics.Clip;
+			Rectangle insideRect = e.ToolStrip.ClientRectangle;
+
+			//The correct (Windows) size is actually 3px, but that will cut into our items.
+			insideRect.Inflate(-2, -2);
+			e.Graphics.ExcludeClip(insideRect);
+
+			Renderer.SetParameters(MenuPopupBorders);
+			Renderer.DrawBackground(e.Graphics, e.ToolStrip.ClientRectangle, e.AffectedBounds);
+
+			//Restore the old clipping.
+			e.Graphics.IntersectClip(insideRect);
 		}
 
 		protected override void OnRenderImageMargin(ToolStripRenderEventArgs e)
 		{
-			IntPtr hDC = e.Graphics.GetHdc();
+			//Compute the rectangle to draw the gutter.
 			Rectangle rect = e.AffectedBounds;
-			rect.Inflate(-2, -2);
-			rect.Offset(1, 1);
-			rect.Size = new Size(GutterWidth, rect.Height + 1);
+			rect.X = 0;
+			Size gutterImageSize = Renderer.GetPartSize(e.Graphics, ThemeSizeType.True);
+			rect.Width = GutterWidth - gutterImageSize.Width + 1;
 
-			NativeMethods.DrawThemeBackground(hTheme, hDC,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPGUTTER, 0, ref rect, ref rect);
-
-			e.Graphics.ReleaseHdc();
+			Renderer.SetParameters(MenuPopupGutter);
+			Renderer.DrawBackground(e.Graphics, rect);
 		}
 
 		protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
 		{
-			Rectangle rect = Rectangle.Truncate(e.Graphics.VisibleClipBounds);
-			rect.Inflate(-1, 0);
-			rect.Offset(2, 0);
-			IntPtr hDC = e.Graphics.GetHdc();
+			//Compute the rectangle of the background.
+			Rectangle rect = e.Item.ContentRectangle;
+			rect.Inflate(0, 1);
 
-			int itemState = (int)(e.Item.Selected ?
-				(e.Item.Enabled ? NativeMethods.POPUPITEMSTATES.MPI_HOT :
-					NativeMethods.POPUPITEMSTATES.MPI_DISABLEDHOT) :
-				(e.Item.Enabled ? NativeMethods.POPUPITEMSTATES.MPI_NORMAL :
-					NativeMethods.POPUPITEMSTATES.MPI_DISABLED));
-			NativeMethods.DrawThemeBackground(hTheme, hDC,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM, itemState, ref rect, ref rect);
-
-			e.Graphics.ReleaseHdc();
+			Renderer.SetParameters(GetItemElement(e.Item));
+			Renderer.DrawBackground(e.Graphics, rect, rect);
 		}
 
 		protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
 		{
-			IntPtr hDC = e.Graphics.GetHdc();
-			Rectangle rect = new Rectangle(GutterWidth, 0, e.Item.Width, e.Item.Height);
-			rect.Inflate(4, 0);
+			//Get the size of the gutter image
+			Renderer.SetParameters(MenuPopupGutter);
+			Size gutterImageSize = Renderer.GetPartSize(e.Graphics, ThemeSizeType.True);
 
-			NativeMethods.DrawThemeBackground(hTheme, hDC,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPSEPARATOR, 0, ref rect, ref rect);
-
-			e.Graphics.ReleaseHdc();
+			Renderer.SetParameters(MenuSeparator);
+			Renderer.DrawBackground(e.Graphics, new Rectangle(
+				GutterWidth - gutterImageSize.Width, 0, e.ToolStrip.DisplayRectangle.Width,
+				e.Item.Height));
 		}
 
 		protected override void OnRenderItemCheck(ToolStripItemImageRenderEventArgs e)
@@ -336,128 +341,146 @@ namespace Eraser.Util
 				return;
 			}
 
-			//Create the rectangle for the checkmark:
-			// 1. Offset by 2px
-			// 2. Inflate by (4, 3)
-			// 3. Increase width by 1px to fall on even x-coordinate (correction for odd pixel offset)
-			Rectangle imgRect = new Rectangle(e.ImageRectangle.Left + 2 - 4,
-				e.ImageRectangle.Top - 3,
-				e.ImageRectangle.Width + 4 * 2 + 1, e.ImageRectangle.Height + 3 * 2);
-
-			IntPtr hDC = e.Graphics.GetHdc();
+			//Get the menu item.
 			ToolStripMenuItem item = (ToolStripMenuItem)e.Item;
 
-			int bgState = (int)(e.Item.Enabled ? NativeMethods.POPUPCHECKBACKGROUNDSTATES.MCB_NORMAL :
-				NativeMethods.POPUPCHECKBACKGROUNDSTATES.MCB_DISABLED);
-			NativeMethods.DrawThemeBackground(hTheme, hDC,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPCHECKBACKGROUND, bgState,
-				ref imgRect, ref imgRect);
+			//Compute the rectangle for the background.
+			Rectangle rect = e.Item.ContentRectangle;
+			rect.Y = 0;
+			rect.Size = new Size(item.Height, item.Height);
 
-			int checkState = (int)(item.Checked ?
-				(item.Enabled ? NativeMethods.POPUPCHECKSTATES.MC_CHECKMARKNORMAL :
-					NativeMethods.POPUPCHECKSTATES.MC_CHECKMARKDISABLED) : 0);
-			NativeMethods.DrawThemeBackground(hTheme, hDC,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, checkState,
-				ref imgRect, ref imgRect);
+			//Draw the background
+			Renderer.SetParameters(GetCheckBackgroundElement(item));
+			Renderer.DrawBackground(e.Graphics, rect);
 
-			e.Graphics.ReleaseHdc();
+			//Compute the size of the checkmark
+			rect.Inflate(-3, -3);
+			
+			//Draw the checkmark
+			Renderer.SetParameters(GetCheckElement(item));
+			Renderer.DrawBackground(e.Graphics, rect);
 		}
 
 		protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
 		{
-			int itemState = (int)(e.Item.Selected ?
-				(e.Item.Enabled ? NativeMethods.POPUPITEMSTATES.MPI_HOT :
-					NativeMethods.POPUPITEMSTATES.MPI_DISABLEDHOT) :
-				(e.Item.Enabled ? NativeMethods.POPUPITEMSTATES.MPI_NORMAL :
-					NativeMethods.POPUPITEMSTATES.MPI_DISABLED));
+			Renderer.SetParameters(GetItemElement(e.Item));
+			if (e.Item.Owner.IsDropDown || e.Item.Owner is MenuStrip)
+				e.TextColor = Renderer.GetColor(ColorProperty.TextColor);
 
-			Rectangle newRect = e.TextRectangle;
-			newRect.Offset(2, 0);
-			e.TextRectangle = newRect;
-			Rectangle rect = new Rectangle(e.TextRectangle.Left, 0,
-				e.Item.Width - e.TextRectangle.Left, e.Item.Height);
-			IntPtr hFont = e.TextFont.ToHfont();
-			IntPtr hDC = e.Graphics.GetHdc();
-			NativeMethods.SelectObject(hDC, hFont);
-
-			NativeMethods.DrawThemeText(hTheme, hDC,
-				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM, itemState, e.Text,
-				-1, e.TextFormat | TextFormatFlags.WordEllipsis | TextFormatFlags.SingleLine,
-				0, ref rect);
-
-			e.Graphics.ReleaseHdc();
+			base.OnRenderItemText(e);
 		}
 
 		protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
 		{
-			int itemState = (int)(e.Item.Enabled ? NativeMethods.POPUPSUBMENUSTATES.MSM_NORMAL :
-				NativeMethods.POPUPSUBMENUSTATES.MSM_DISABLED);
-
-			//Strangely, UxTheme won't draw any arrow once the starting coordinate
-			//is beyond 5px. So draw the arrow on a backing image then blit
-			//to the actual one.
-			using (Bitmap backBmp = new Bitmap(e.ArrowRectangle.Width, e.ArrowRectangle.Height))
-			{
-				using (Graphics backGfx = Graphics.FromImage(backBmp))
-				{
-					IntPtr hDC = backGfx.GetHdc();
-
-					Rectangle backRect = new Rectangle(new Point(0, 0), backBmp.Size);
-					NativeMethods.DrawThemeBackground(hTheme, hDC,
-						(int)NativeMethods.MENUPARTS.MENU_POPUPSUBMENU, itemState,
-						ref backRect, ref backRect);
-					backGfx.ReleaseHdc();
-				}
-
-				e.Graphics.DrawImageUnscaled(backBmp, e.ArrowRectangle);
-			}
+			Renderer.SetParameters(GetSubmenuElement(e.Item));
+			Renderer.DrawBackground(e.Graphics, e.ArrowRectangle);
 		}
 
+		private VisualStyleElement GetItemElement(ToolStripItem item)
+		{
+			return item.Selected ?
+				(item.Enabled ?
+					MenuPopupItemHot :
+					MenuPopupItemDisabledHot) :
+				(item.Enabled ?
+					MenuPopupItem :
+					MenuPopupItemDisabled);
+		}
+
+		private VisualStyleElement GetCheckBackgroundElement(ToolStripItem item)
+		{
+			return item.Enabled ? MenuPopupCheckBackground : MenuPopupCheckBackgroundDisabled;
+		}
+
+		private VisualStyleElement GetCheckElement(ToolStripMenuItem item)
+		{
+			return item.Checked ?
+				(item.Enabled ? MenuPopupCheck : MenuPopupCheckDisabled) :
+				MenuPopupBitmap;
+		}
+
+		private VisualStyleElement GetSubmenuElement(ToolStripItem item)
+		{
+			return item.Enabled ? MenuSubmenu : MenuSubmenuDisabled;
+		}
+
+		/// <summary>
+		/// Gets the width of the gutter for images.
+		/// </summary>
 		private int GutterWidth
 		{
 			get
 			{
-				Rectangle margins = Rectangle.Empty;
-				Size checkSize = Size.Empty;
-
-				NativeMethods.GetThemeMargins(hTheme, IntPtr.Zero,
-					(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, 0,
-					(int)NativeMethods.TMT_MARGINS.TMT_SIZINGMARGINS,
-					IntPtr.Zero, ref margins);
-				NativeMethods.GetThemePartSize(hTheme, IntPtr.Zero,
-					(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, 0,
-					IntPtr.Zero, NativeMethods.THEMESIZE.TS_TRUE, ref checkSize);
-				return 2 * checkSize.Width + margins.Left + margins.Width - 1;
+				return ToolStrip.DisplayRectangle.Left;
 			}
 		}
 
-		private int Margin
-		{
-			get
-			{
-				Size borderSize = Size.Empty;
-				NativeMethods.GetThemePartSize(hTheme, IntPtr.Zero,
-					(int)NativeMethods.MENUPARTS.MENU_POPUPBORDERS, 0,
-					IntPtr.Zero, NativeMethods.THEMESIZE.TS_TRUE, ref borderSize);
-				return borderSize.Width;
-			}
-		}
+		private ToolStrip ToolStrip;
+		private VisualStyleRenderer Renderer;
 
-		private SafeThemeHandle hTheme;
-	}
+		private static readonly string MenuClass = "MENU";
 
-	internal class SafeThemeHandle : SafeHandleZeroOrMinusOneIsInvalid
-	{
-		public SafeThemeHandle()
-			: base(true)
-		{
-		}
+		private static VisualStyleElement MenuPopupBackground =
+			VisualStyleElement.CreateElement(
+				MenuClass, (int)NativeMethods.MENUPARTS.MENU_POPUPBACKGROUND, 0);
+		private static VisualStyleElement MenuPopupBorders =
+			VisualStyleElement.CreateElement(
+				MenuClass, (int)NativeMethods.MENUPARTS.MENU_POPUPBORDERS, 0);
 
-		protected override bool ReleaseHandle()
-		{
-			NativeMethods.CloseThemeData(handle);
-			handle = IntPtr.Zero;
-			return true;
-		}
+		private static VisualStyleElement MenuPopupItem =
+			VisualStyleElement.CreateElement(MenuClass,
+				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM,
+				(int)NativeMethods.POPUPITEMSTATES.MPI_NORMAL);
+		private static VisualStyleElement MenuPopupItemHot =
+			VisualStyleElement.CreateElement(MenuClass,
+				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM,
+				(int)NativeMethods.POPUPITEMSTATES.MPI_HOT);
+		private static VisualStyleElement MenuPopupItemDisabled =
+			VisualStyleElement.CreateElement(MenuClass,
+				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM,
+				(int)NativeMethods.POPUPITEMSTATES.MPI_DISABLED);
+		private static VisualStyleElement MenuPopupItemDisabledHot =
+			VisualStyleElement.CreateElement(MenuClass,
+				(int)NativeMethods.MENUPARTS.MENU_POPUPITEM,
+				(int)NativeMethods.POPUPITEMSTATES.MPI_DISABLEDHOT);
+
+		private VisualStyleElement MenuPopupCheckBackground =
+			VisualStyleElement.CreateElement(MenuClass,
+			(int)NativeMethods.MENUPARTS.MENU_POPUPCHECKBACKGROUND,
+			(int)NativeMethods.POPUPCHECKBACKGROUNDSTATES.MCB_NORMAL);
+		private VisualStyleElement MenuPopupCheckBackgroundDisabled =
+			VisualStyleElement.CreateElement(MenuClass,
+			(int)NativeMethods.MENUPARTS.MENU_POPUPCHECKBACKGROUND,
+			(int)NativeMethods.POPUPCHECKBACKGROUNDSTATES.MCB_NORMAL);
+
+		private VisualStyleElement MenuPopupBitmap =
+			VisualStyleElement.CreateElement(MenuClass,
+			(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK, 0);
+		private VisualStyleElement MenuPopupCheck =
+			VisualStyleElement.CreateElement(MenuClass,
+			(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK,
+			(int)NativeMethods.POPUPCHECKSTATES.MC_CHECKMARKNORMAL);
+		private VisualStyleElement MenuPopupCheckDisabled =
+			VisualStyleElement.CreateElement(MenuClass,
+			(int)NativeMethods.MENUPARTS.MENU_POPUPCHECK,
+			(int)NativeMethods.POPUPCHECKSTATES.MC_CHECKMARKDISABLED);
+		
+
+		private static VisualStyleElement MenuPopupGutter =
+			VisualStyleElement.CreateElement(MenuClass,
+				(int)NativeMethods.MENUPARTS.MENU_POPUPGUTTER, 0);
+
+		private VisualStyleElement MenuSeparator =
+			VisualStyleElement.CreateElement(MenuClass,
+				(int)NativeMethods.MENUPARTS.MENU_POPUPSEPARATOR, 0);
+
+		private VisualStyleElement MenuSubmenu =
+			VisualStyleElement.CreateElement(MenuClass,
+			(int)NativeMethods.MENUPARTS.MENU_POPUPSUBMENU,
+			(int)NativeMethods.POPUPSUBMENUSTATES.MSM_NORMAL);
+		private VisualStyleElement MenuSubmenuDisabled =
+			VisualStyleElement.CreateElement(MenuClass,
+			(int)NativeMethods.MENUPARTS.MENU_POPUPSUBMENU,
+			(int)NativeMethods.POPUPSUBMENUSTATES.MSM_DISABLED);
 	}
 }
