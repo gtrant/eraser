@@ -126,7 +126,7 @@
     <value>Segoe UI, 18pt</value>
   </data>
   <data name="titleLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>50, 17</value>
+    <value>50, 16</value>
   </data>
   <data name="titleLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>119, 32</value>
@@ -180,6 +180,9 @@
   <data name="titleIcon.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 24</value>
   </data>
+  <data name="titleIcon.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
   <data name="titleIcon.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -198,6 +201,9 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>17, 17, 17, 17</value>
   </data>

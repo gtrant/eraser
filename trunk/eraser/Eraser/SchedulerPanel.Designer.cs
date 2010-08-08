@@ -201,6 +201,7 @@ namespace Eraser
 			// 
 			// SchedulerPanel
 			// 
+			resources.ApplyResources(this, "$this");
 			this.DoubleBuffered = true;
 			this.Name = "SchedulerPanel";
 			this.Controls.SetChildIndex(this.titleLabel, 0);

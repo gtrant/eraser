@@ -134,7 +134,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;titleLabel.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;titleIcon.Name" xml:space="preserve">
     <value>titleIcon</value>
@@ -146,7 +146,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;titleIcon.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="schedulerProgress.Location" type="System.Drawing.Point, System.Drawing">
     <value>481, 28</value>
@@ -238,7 +238,7 @@
     <value>Delete Task</value>
   </data>
   <data name="schedulerMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>188, 148</value>
+    <value>188, 126</value>
   </data>
   <data name="&gt;&gt;schedulerMenu.Name" xml:space="preserve">
     <value>schedulerMenu</value>
@@ -307,7 +307,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;content.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <metadata name="schedulerDefaultMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 17</value>
@@ -330,6 +330,9 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
   <data name="&gt;&gt;schedulerColName.Name" xml:space="preserve">
     <value>schedulerColName</value>
   </data>
