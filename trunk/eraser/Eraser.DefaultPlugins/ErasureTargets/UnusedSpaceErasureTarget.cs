@@ -261,7 +261,7 @@ namespace Eraser.DefaultPlugins
 				OnProgressChanged(this, new ProgressChangedEventArgs(tempFiles,
 					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 				info.Delete(true);
-				tempFiles.Completed = tempFiles.Total;
+				tempFiles.MarkComplete();
 
 				//Reset the low disk space notifications
 				Shell.LowDiskSpaceNotificationsEnabled = lowDiskSpaceNotifications;
