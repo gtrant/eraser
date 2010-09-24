@@ -212,6 +212,7 @@ Eraser Project Members:
 
 			AboutTextScrollTop = AboutTextRect.Height / 2;
 			animationTimer_Tick(null, null);
+			animationTimer.Start();
 		}
 
 		private void AboutForm_Click(object sender, EventArgs e)
