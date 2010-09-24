@@ -62,6 +62,15 @@ namespace Eraser
 			Left = point.X;
 			Top = point.Y;
 
+			//Get the parent dialog's screen buffer.
+			ParentBitmap = new Bitmap(parent.ClientSize.Width, parent.ClientSize.Height);
+			using (Graphics dest = Graphics.FromImage(ParentBitmap))
+			{
+				parent.Refresh();
+				Point parentPos = parent.PointToScreen(new Point(0, 0));
+				dest.CopyFromScreen(parentPos, new Point(0, 0), parent.ClientSize);
+			}
+
 			//Load the localised About Text
 			AboutText = S._(@"Eraser is an advanced security tool for Windows, which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Eraser is Free software and its source code is released under GNU General Public License.
 
@@ -99,11 +108,27 @@ Eraser Project Members:
 
 			//Create the About bitmap localised for the current version (sans scrolling
 			//text) so it can be drawn quickly later.
-			AboutBitmap = Properties.Resources.AboutDialog;
-			AboutBitmap = AboutBitmap.Clone(new Rectangle(0, 0, AboutBitmap.Width,
-				AboutBitmap.Height), PixelFormat.DontCare);
+			//First, duplicate the bitmap and scale it according to the resolution of the
+			//monitor.
+			float dpiScale = 0f;
+			using (Graphics controlDC = CreateGraphics())
+			{
+				Debug.Assert(controlDC.DpiX == controlDC.DpiY);
+				dpiScale = controlDC.DpiX / 96.0f;
+			}
+
+			Bitmap sourceBitmap = Properties.Resources.AboutDialog;
+			AboutBitmap = new Bitmap((int)(sourceBitmap.Width * dpiScale),
+				(int)(sourceBitmap.Height * dpiScale));
 			using (Graphics g = Graphics.FromImage(AboutBitmap))
 			{
+				g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+				g.ScaleTransform(dpiScale, dpiScale);
+				g.DrawImage(sourceBitmap, Point.Empty);
+
+				//Scale the font down since we will be using a scale transform later.
+				Font = new Font(Font.FontFamily, Font.SizeInPoints / dpiScale);
+
 				//Version number
 				Font boldFont = new Font(Font, FontStyle.Bold);
 				Font underlineFont = new Font(Font, FontStyle.Underline);
@@ -151,35 +176,38 @@ Eraser Project Members:
 			//Calculate the position of the About bitmap
 			AboutBitmapPos = new Point((ClientSize.Width - AboutBitmap.Width) / 2,
 				(ClientSize.Height - AboutBitmap.Height) / 2);
-			WebsiteRect.X += AboutBitmapPos.X;
-			WebsiteRect.Y += AboutBitmapPos.Y;
-			DonateRect.X += AboutBitmapPos.X;
-			DonateRect.Y += AboutBitmapPos.Y;
+			WebsiteRect.X = (int)(WebsiteRect.X * dpiScale + AboutBitmapPos.X);
+			WebsiteRect.Y = (int)(WebsiteRect.Y * dpiScale + AboutBitmapPos.Y);
+			WebsiteRect.Width = (int)(WebsiteRect.Width * dpiScale);
+			WebsiteRect.Height = (int)(WebsiteRect.Height * dpiScale);
+			DonateRect.X = (int)(DonateRect.X * dpiScale + AboutBitmapPos.X);
+			DonateRect.Y = (int)(DonateRect.Y * dpiScale + AboutBitmapPos.Y);
+			DonateRect.Width = (int)(DonateRect.Width * dpiScale);
+			DonateRect.Height = (int)(DonateRect.Height * dpiScale);
 
 			//And calculate the bounds of the About Text.
-			AboutTextRect = new Rectangle(AboutBitmapPos.X + 19 + 149, AboutBitmapPos.Y + 20 + 147,
-				AboutBitmap.Width - 19 - 149 - 20, 130);
+			AboutTextRect = Rectangle.Truncate(new RectangleF(
+				AboutBitmapPos.X + (19 + 149) * dpiScale,
+				AboutBitmapPos.Y + (20 + 147) * dpiScale,
+				AboutBitmap.Width - (19 + 149 + 20) * dpiScale,
+				130 * dpiScale));
 
 			//Create the About Text laid out on screen.
 			SizeF aboutTextSize = SizeF.Empty;
 			using (Bitmap b = new Bitmap(1, 1))
 			using (Graphics g = Graphics.FromImage(b))
+			{
+				g.ScaleTransform(dpiScale, dpiScale);
 				aboutTextSize = g.MeasureString(AboutText, Font, AboutTextRect.Width);
+			}
 			AboutTextBitmap = new Bitmap(AboutTextRect.Width, (int)aboutTextSize.Height);
 			using (Graphics g = Graphics.FromImage(AboutTextBitmap))
 			{
 				g.Clear(Color.FromArgb(0, 0, 0, 0));
-				g.DrawString(AboutText, Font, new SolidBrush(Color.White), new RectangleF(
-					0.0f, 0.0f, AboutTextRect.Width, aboutTextSize.Height));
-			}
-
-			//Get the parent dialog's screen buffer.
-			ParentBitmap = new Bitmap(parent.ClientSize.Width, parent.ClientSize.Height);
-			using (Graphics dest = Graphics.FromImage(ParentBitmap))
-			{
-				parent.Refresh();
-				Point parentPos = parent.PointToScreen(new Point(0, 0));
-				dest.CopyFromScreen(parentPos, new Point(0, 0), parent.ClientSize);
+				g.ScaleTransform(dpiScale, dpiScale);
+				g.DrawString(AboutText, Font, new SolidBrush(Color.White),
+					new RectangleF(0.0f, 0.0f, AboutTextBitmap.Width / dpiScale,
+						AboutTextBitmap.Height / dpiScale));
 			}
 
 			AboutTextScrollTop = AboutTextRect.Height / 2;
