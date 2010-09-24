@@ -178,6 +178,12 @@ namespace Eraser
 			/// </summary>
 			[Arg("destination", "The destination for secure move operations", typeof(string), false, null, null)]
 			public string Destination { get; set; }
+
+			/// <summary>
+			/// The parent HWND which can be used as a parent to display dialogs.
+			/// </summary>
+			[Arg("parent", "The parent HWND which can be used as a parent to display dialogues", typeof(string), false, null, null)]
+			public string Parent { get; set; }
 		}
 
 		public enum ShellActions
@@ -652,11 +658,19 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 					break;
 			}
 
+			//Do we have a parent dialog?
+			IWin32Window parent = null;
+			if (args.Parent != null)
+			{
+				parent = new Win32Window((IntPtr)(ulong)
+					Convert.ChangeType(args.Parent, typeof(ulong)));
+			}
+
 			//Confirm that the user wants the erase.
 			Application.EnableVisualStyles();
 			using (Form dialog = new ShellConfirmationDialog(task))
 			{
-				if (dialog.ShowDialog() != DialogResult.Yes)
+				if (dialog.ShowDialog(parent) != DialogResult.Yes)
 					return;
 			}
 
@@ -838,5 +852,24 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// Path to the Eraser settings key (relative to HKCU)
 		/// </summary>
 		public const string SettingsPath = @"SOFTWARE\Eraser\Eraser 6";
+	}
+
+	class Win32Window : IWin32Window
+	{
+		public Win32Window(IntPtr hwnd)
+		{
+			Hwnd = hwnd;
+		}
+
+		#region IWin32Window Members
+
+		public IntPtr Handle
+		{
+			get { return Hwnd; }
+		}
+
+		#endregion
+
+		private IntPtr Hwnd;
 	}
 }
