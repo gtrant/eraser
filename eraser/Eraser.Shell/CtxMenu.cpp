@@ -976,6 +976,11 @@ namespace Eraser {
 			return;
 		}
 
+		//Pass Explorer's HWND to the child process, in the event that it is required.
+		std::wostringstream stream;
+		stream << L" /parent=" << (size_t)parent;
+		finalParameters += stream.str();
+
 		//Then append the rest of the arguments, depending on the length.
 		{
 			//Depending on the length of the argument, we either use a response file
