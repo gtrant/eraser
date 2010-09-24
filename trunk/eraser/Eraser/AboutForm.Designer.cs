@@ -67,17 +67,17 @@ namespace Eraser
 			// 
 			// AboutForm
 			// 
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
 			resources.ApplyResources(this, "$this");
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
 			this.Name = "AboutForm";
 			this.ShowInTaskbar = false;
-			this.Click += new System.EventHandler(this.AboutForm_Click);
+			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AboutForm_MouseUp);
 			this.Paint += new System.Windows.Forms.PaintEventHandler(this.AboutForm_Paint);
+			this.Click += new System.EventHandler(this.AboutForm_Click);
 			this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.AboutForm_MouseDown);
 			this.MouseLeave += new System.EventHandler(this.AboutForm_MouseLeave);
 			this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.AboutForm_MouseMove);
-			this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.AboutForm_MouseUp);
 			this.ResumeLayout(false);
 
 		}
