@@ -46,8 +46,6 @@ class SourceForge
 
 		//Get the download page, using the cache if it exists.
 		$document->loadHTML(SourceForge::Download('http://sourceforge.net' . $downloadPage, 60 * 60));
-		file_put_contents('test.xml', $document->saveXML());
-
 		foreach ($document->getElementsByTagName('a') as $element)
 		{
 			if (!is_a($element, 'DOMElement'))
@@ -56,21 +54,24 @@ class SourceForge
 			//$parent is the <td> node.
 			$parent = $element->parentNode;
 			if (is_a($parent, 'DOMElement') && $parent->tagName == 'td' &&
-				$parent->getAttribute('class') == 'tree' &&
-				urldecode($element->getAttribute('href')) == implode('/', $pathComponents))
+				$parent->getAttribute('class') == 'tree')
 			{
-				//$grandParent is the <tr> node.
-				$grandParent = $parent->parentNode;
-
-				//Find the download column (currently the 5th)
-				$i = 0;
-				foreach ($grandParent->getElementsByTagName('td') as $cell)
+				$downloadUrlInfo = parse_url(urldecode($element->getAttribute('href')));
+				if ($urlInfo['path'] == $downloadUrlInfo['path'])
 				{
-					if (++$i == 5)
+					//$grandParent is the <tr> node.
+					$grandParent = $parent->parentNode;
+
+					//Find the download column (currently the 5th)
+					$i = 0;
+					foreach ($grandParent->getElementsByTagName('td') as $cell)
 					{
-						//We are at the 5th column, return the contents as an integer.
-						$result = str_replace(',', '', $cell->textContent);
-						return intval($result);
+						if (++$i == 5)
+						{
+							//We are at the 5th column, return the contents as an integer.
+							$result = str_replace(',', '', $cell->textContent);
+							return intval($result);
+						}
 					}
 				}
 			}
