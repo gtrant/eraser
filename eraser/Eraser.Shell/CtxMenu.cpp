@@ -954,32 +954,31 @@ namespace Eraser {
 		eraserPath += L"Eraser.exe";
 
 		//Compile the final set of parameters we are going to pass to Eraser.
-		std::wstring finalParameters(L"shell /quiet ");
+		std::wostringstream finalParameters;
+		finalParameters << L"shell /quiet ";
 
 		//Set the action selected by the user.
 		switch (action)
 		{
 		case ACTION_ERASE:
-			finalParameters += L"/action=EraseNow ";
+			finalParameters << L"/action=EraseNow ";
 			break;
 		case ACTION_ERASE_ON_RESTART:
-			finalParameters += L"/action=EraseOnRestart ";
+			finalParameters << L"/action=EraseOnRestart ";
 			break;
 		case ACTION_ERASE_UNUSED_SPACE:
-			finalParameters += L"/action=EraseUnusedSpace ";
+			finalParameters << L"/action=EraseUnusedSpace ";
 			break;
 		case ACTION_SECURE_MOVE:
 		case ACTION_SECURE_PASTE:
-			finalParameters += L"/action=SecureMove ";
+			finalParameters << L"/action=SecureMove ";
 			break;
 		default:
 			return;
 		}
 
 		//Pass Explorer's HWND to the child process, in the event that it is required.
-		std::wostringstream stream;
-		stream << L" /parent=" << (size_t)parent;
-		finalParameters += stream.str();
+		finalParameters << L" /parent=" << (size_t)parent << L' ';
 
 		//Then append the rest of the arguments, depending on the length.
 		{
@@ -1000,14 +999,12 @@ namespace Eraser {
 				std::wofstream stream(buffer);
 				stream << parameters;
 
-				finalParameters += L"\"@";
-				finalParameters += buffer;
-				finalParameters += '"';
+				finalParameters << L"\"@" << buffer << L'"';
 			}
 			else
 			{
 				//Short command line, pass directly to the program
-				finalParameters += parameters;
+				finalParameters << parameters;
 			}
 		}
 
@@ -1016,7 +1013,7 @@ namespace Eraser {
 		if (elevated && !IsUserAdmin())
 		{
 			int result = reinterpret_cast<int>(ShellExecute(parent, L"runas",
-				eraserPath.c_str(), finalParameters.c_str(), NULL, show));
+				eraserPath.c_str(), finalParameters.str().c_str(), NULL, show));
 			if (result <= 32)
 				switch (result)
 				{
@@ -1058,9 +1055,9 @@ namespace Eraser {
 
 			PROCESS_INFORMATION processInfo;
 			ZeroMemory(&processInfo, sizeof(processInfo));
-			std::vector<wchar_t> buffer(eraserPath.length() + finalParameters.length() + 4);
+			std::vector<wchar_t> buffer(eraserPath.length() + finalParameters.str().length() + 4);
 			wcscpy_s(&buffer.front(), buffer.size(), (L"\"" + eraserPath + L"\" " +
-				finalParameters).c_str());
+				finalParameters.str()).c_str());
 
 			if (!CreateProcess(NULL, &buffer.front(), NULL, NULL, true, CREATE_NO_WINDOW,
 				NULL, NULL, &startupInfo, &processInfo))
