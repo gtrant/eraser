@@ -309,7 +309,7 @@ namespace Eraser {
 		{
 			MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
 			mii.wID = uID++;
-			mii.fMask = MIIM_STRING | MIIM_ID;
+			mii.fMask = MIIM_STRING | MIIM_ID | MIIM_BITMAP;
 			if (InvokeReason != INVOKEREASON_DIRECTORY_BACKGROUND)
 			{
 				mii.fMask |= MIIM_SUBMENU;
@@ -327,14 +327,12 @@ namespace Eraser {
 			//older machines will be ownerdrawn.
 			if (isVistaOrLater)
 			{
-				mii.fMask |= MIIM_BITMAP;
 				Handle<HICON> icon(GetMenuIcon());
 				mii.hbmpItem = GetMenuBitmapFromIcon(icon);
 			}
 			else if (InvokeReason != INVOKEREASON_DRAGDROP)
 			{
-				mii.fMask |= MIIM_FTYPE;
-				mii.fType = MFT_OWNERDRAW;
+				mii.hbmpItem = HBMMENU_CALLBACK;
 			}
 
 			UINT menuIndex = uMenuIndex++;
@@ -375,8 +373,6 @@ namespace Eraser {
 				MEASUREITEMSTRUCT* mis = reinterpret_cast<MEASUREITEMSTRUCT*>(lParam);
 				if (mis->itemID == MenuID)
 					handleResult = OnMeasureItem(mis->itemWidth, mis->itemHeight);
-				else
-					handleResult = false;
 				break;
 			}
 
@@ -385,8 +381,6 @@ namespace Eraser {
 				DRAWITEMSTRUCT* dis = reinterpret_cast<DRAWITEMSTRUCT*>(lParam);
 				if (dis->itemID == MenuID)
 					handleResult = OnDrawItem(dis->hDC, dis->rcItem, dis->itemAction, dis->itemState);
-				else
-					handleResult = false;
 			}
 		}
 
@@ -397,76 +391,25 @@ namespace Eraser {
 
 	bool CCtxMenu::OnMeasureItem(UINT& itemWidth, UINT& itemHeight)
 	{
-		LOGFONT logFont;
-		if (!SystemParametersInfo(SPI_GETICONTITLELOGFONT, sizeof(logFont), &logFont, 0))
-			return false;
-
-		//Measure the size of the text.
-		Handle<HDC> screenDC = GetDC(NULL);
-		Handle<HFONT> font = CreateFontIndirect(&logFont);
-		SelectObject(screenDC, font);
-		SIZE textSize;
-		if (!GetTextExtentPoint32(screenDC, MenuTitle, static_cast<DWORD>(wcslen(MenuTitle)), &textSize))
-			return false;
-
-		itemWidth = textSize.cx;
-		itemHeight = textSize.cy;
-
 		//Account for the size of the bitmap.
-		UINT iconWidth = GetSystemMetrics(SM_CXMENUCHECK);
-		itemWidth += iconWidth;
-		itemHeight = std::max(iconWidth, itemHeight);
-
-		//And remember the minimum size for menu items.
-		itemHeight = std::max((int)itemHeight, GetSystemMetrics(SM_CXMENUSIZE));
+		itemWidth = 0;
+		itemHeight = std::max<UINT>(GetSystemMetrics(SM_CYMENUCHECK), itemHeight);
 		return true;
 	}
 
 	bool CCtxMenu::OnDrawItem(HDC hdc, RECT rect, UINT /*action*/, UINT state)
 	{
-		//Draw the background.
-		LOGBRUSH logBrush = { BS_SOLID,
-			(state & ODS_SELECTED) ?
-				GetSysColor(COLOR_HIGHLIGHT) : GetSysColor(COLOR_MENU),
-			0
-		};
-		Handle<HBRUSH> bgBrush = CreateBrushIndirect(&logBrush);
-		FillRect(hdc, &rect, bgBrush);
+		//Get the icon and calculate its size.
+		Handle<HICON> icon(GetMenuIcon());
+		int iconSize = GetSystemMetrics(SM_CXMENUCHECK);
+		int iconMargin = GetSystemMetrics(SM_CXEDGE);
 
-		//Then the bitmap.
-		{
-			//Draw the icon with alpha and all first.
-			Handle<HICON> icon(GetMenuIcon());
-			int iconSize = GetSystemMetrics(SM_CXMENUCHECK);
-			int iconMargin = GetSystemMetrics(SM_CXEDGE);
-			DrawState(hdc, NULL, NULL, reinterpret_cast<LPARAM>(static_cast<HICON>(icon)),
-				NULL, rect.left + iconMargin, rect.top + (rect.bottom - rect.top - iconSize) / 2,
-				0, 0, DST_ICON | ((state & ODS_DISABLED) ? DSS_DISABLED : 0));
-			
-			//Move the rectangle's left bound to the text starting position
-			rect.left += iconMargin * 2 + iconSize;
-		}
-		
-		//Draw the text.
-		SetBkMode(hdc, TRANSPARENT);
-		LOGFONT logFont;
-		if (!SystemParametersInfo(SPI_GETICONTITLELOGFONT, sizeof(logFont), &logFont, 0))
-			return false;
+		//Draw the bitmap.
+		DrawState(hdc, NULL, NULL, reinterpret_cast<LPARAM>(static_cast<HICON>(icon)),
+			NULL, rect.left - iconMargin - iconSize,
+			rect.top + (rect.bottom - rect.top - iconSize) / 2, 0, 0,
+			DST_ICON | ((state & ODS_DISABLED) ? DSS_DISABLED : 0));
 
-		SIZE textSize;
-		if (!GetTextExtentPoint32(hdc, MenuTitle, static_cast<DWORD>(wcslen(MenuTitle)), &textSize))
-			return false;
-
-		COLORREF oldColour = SetTextColor(hdc, 
-			(state & ODS_DISABLED) ? GetSysColor(COLOR_GRAYTEXT) :			//Disabled menu item
-			(state & ODS_SELECTED) ? GetSysColor(COLOR_HIGHLIGHTTEXT) :		//Highlighted menu item
-				GetSysColor(COLOR_MENUTEXT));								//Normal menu item
-		UINT flags = DST_PREFIXTEXT;
-		if (state & ODS_NOACCEL)
-			flags |= DSS_HIDEPREFIX;
-		::DrawState(hdc, NULL, NULL, reinterpret_cast<LPARAM>(MenuTitle), wcslen(MenuTitle),
-			rect.left, rect.top + (rect.bottom - rect.top - textSize.cy) / 2, textSize.cx, textSize.cy, flags);
-		SetTextColor(hdc, oldColour);
 		return true;
 	}
 
