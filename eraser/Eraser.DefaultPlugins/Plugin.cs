@@ -38,7 +38,6 @@ namespace Eraser.DefaultPlugins
 
 			//Then register the erasure methods et al.
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Gutmann());				//35 passes
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new GutmannLite());			//10 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new DoD_EcE());				//7 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new RCMP_TSSIT_OPS_II());	//7 passes
 			ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new Schneier());				//7 passes

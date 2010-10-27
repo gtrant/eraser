@@ -96,43 +96,4 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 	}
-
-	[Guid("AE5EB764-41B0-4601-BDF2-326B5838D44A")]
-	sealed class GutmannLite : PassBasedErasureMethod
-	{
-		public override string Name
-		{
-			get { return S._("Gutmann Lite"); }
-		}
-
-		public override Guid Guid
-		{
-			get { return GetType().GUID; }
-		}
-
-		protected override bool RandomizePasses
-		{
-			get { return false; }
-		}
-
-		protected override ErasureMethodPass[] PassesSet
-		{
-			get
-			{
-				return new ErasureMethodPass[]
-				{
-					new ErasureMethodPass(WriteRandom, null),								//Original pass 1
-					new ErasureMethodPass(WriteConstant, new byte[] {0x55}),					//Original pass 5
-					new ErasureMethodPass(WriteConstant, new byte[] {0xAA}),					//Original pass 6
-					new ErasureMethodPass(WriteConstant, new byte[] {0x92, 0x49, 0x24}),		//Original pass 7
-					new ErasureMethodPass(WriteConstant, new byte[] {0x49, 0x24, 0x92}),		//Original pass 8
-					new ErasureMethodPass(WriteConstant, new byte[] {0x24, 0x92, 0x49}),		//Original pass 9
-					new ErasureMethodPass(WriteConstant, new byte[] {0x4B}),
-					new ErasureMethodPass(WriteConstant, new byte[] {0xB4}),
-					new ErasureMethodPass(WriteConstant, new byte[] {0x00}),
-					new ErasureMethodPass(WriteConstant, new byte[] {0x11}),
-				};
-			}
-		}
-	}
 }
