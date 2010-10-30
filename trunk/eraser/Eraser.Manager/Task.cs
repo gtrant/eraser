@@ -296,6 +296,7 @@ namespace Eraser.Manager
 		internal void OnTaskFinished()
 		{
 			Progress = null;
+			Executing = false;
 			if (TaskFinished != null)
 				TaskFinished(this, EventArgs.Empty);
 		}
