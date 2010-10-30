@@ -344,6 +344,7 @@
     <Compile Include="ShellConfirmationDialog.Designer.cs">
       <DependentUpon>ShellConfirmationDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="TaskDragDropHelper.cs" />
     <None Include="Resources\AboutDialog.png" />
     <CodeAnalysisDictionary Include="..\CustomDictionary.xml">
       <Link>CustomDictionary.xml</Link>

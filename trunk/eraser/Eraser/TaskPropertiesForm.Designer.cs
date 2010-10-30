@@ -155,6 +155,7 @@ namespace Eraser
 			// 
 			// data
 			// 
+			this.data.AllowDrop = true;
 			resources.ApplyResources(this.data, "data");
 			this.data.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.dataColData,
@@ -167,6 +168,10 @@ namespace Eraser
 			this.data.UseCompatibleStateImageBehavior = false;
 			this.data.View = System.Windows.Forms.View.Details;
 			this.data.ItemActivate += new System.EventHandler(this.data_ItemActivate);
+			this.data.DragDrop += new System.Windows.Forms.DragEventHandler(this.data_DragDrop);
+			this.data.DragEnter += new System.Windows.Forms.DragEventHandler(this.data_DragEnter);
+			this.data.DragLeave += new System.EventHandler(this.data_DragLeave);
+			this.data.DragOver += new System.Windows.Forms.DragEventHandler(this.data_DragOver);
 			// 
 			// dataColData
 			// 

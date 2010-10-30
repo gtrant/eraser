@@ -27,10 +27,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
 using System.IO;
-using System.Runtime.Serialization;
 using System.ComponentModel;
 
 using Eraser.Manager;
@@ -371,87 +368,45 @@ namespace Eraser
 		/// </summary>
 		private void scheduler_DragEnter(object sender, DragEventArgs e)
 		{
-			string descriptionMessage = string.Empty;
-			string descriptionInsert = string.Empty;
-			string descriptionItemFormat = S._("{0}, ");
-			const string descriptionPlaceholder = "%1";
-			
-			bool recycleBinIncluded = false;
-			List<string> files = e.Data.GetDataPresent(DataFormats.FileDrop) ?
-				new List<string>((string[])e.Data.GetData(DataFormats.FileDrop, false)) :
-				new List<string>();
-			if (e.Data.GetDataPresent("Shell IDList Array"))
+			//Get the list of files.
+			bool recycleBin = false;
+			List<string> paths = new List<string>(TaskDragDropHelper.GetFiles(e, out recycleBin));
+
+			//We also need to determine if we are importing task lists.
+			bool isTaskList = !recycleBin;
+
+			for (int i = 0; i < paths.Count; ++i)
 			{
-				MemoryStream stream = (MemoryStream)e.Data.GetData("Shell IDList Array");
-				byte[] buffer = new byte[stream.Length];
-				stream.Read(buffer, 0, buffer.Length);
-				ShellCIDA cida = new ShellCIDA(buffer);
-
-				if (cida.cidl > 0)
-				{
-					for (int i = 1; i <= cida.cidl; ++i)
-					{
-						if (!string.IsNullOrEmpty(cida.aoffset[i].Path))
-						{
-							files.Add(cida.aoffset[i].Path);
-						}
-						else if (cida.aoffset[i].Guid != Guid.Empty)
-						{
-							if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
-							{
-								descriptionInsert += string.Format(CultureInfo.InvariantCulture,
-									descriptionItemFormat, S._("Recycle Bin"));
-								recycleBinIncluded = true;
-							}
-						}
-					}
-				}
-			}
-
-			bool isTaskList = !recycleBinIncluded;
-			foreach (string file in files)
-			{
-				if (descriptionInsert.Length < 259 &&
-					(descriptionInsert.Length < 3 || descriptionInsert.Substring(descriptionInsert.Length - 3) != "..."))
-				{
-					string append = string.Format(CultureInfo.InvariantCulture,
-						descriptionItemFormat, Path.GetFileNameWithoutExtension(file));
-					if (descriptionInsert.Length + append.Length > 259)
-					{
-						descriptionInsert += ".....";
-					}
-					else
-					{
-						descriptionInsert += append;
-					}
-				}
-
-				if (Path.GetExtension(file) != ".ersx")
+				//Does this item exclude a task list import?
+				if (isTaskList && Path.GetExtension(paths[i]) != ".ersx")
 					isTaskList = false;
+
+				//Just use the file name/directory name.
+				paths[i] = Path.GetFileName(paths[i]);
 			}
 
-			if (!string.IsNullOrEmpty(descriptionInsert))
-				descriptionInsert = descriptionInsert.Remove(descriptionInsert.Length - 2);
+			//Add the recycle bin if it was dropped.
+			if (recycleBin)
+				paths.Add(S._("Recycle Bin"));
 
-			if (!recycleBinIncluded && files.Count == 0)
+			string description = null;
+			if (paths.Count == 0)
 			{
 				e.Effect = DragDropEffects.None;
-				descriptionMessage = "Cannot erase the selected items";
+				description = S._("Cannot erase the selected items");
 			}
 			else if (isTaskList)
 			{
 				e.Effect = DragDropEffects.Copy;
-				descriptionMessage = S._("Import tasks from {0}", descriptionPlaceholder);
+				description = S._("Import tasks from {0}");
 			}
 			else
 			{
 				e.Effect = DragDropEffects.Move;
-				descriptionMessage = S._("Erase {0}", descriptionPlaceholder);
+				description = S._("Erase {0}");
 			}
 
-			if (e.Data.GetDataPresent("DragImageBits"))
-				DropTargetHelper.DragEnter(this, e.Data, new Point(e.X, e.Y), e.Effect,
-					descriptionMessage, descriptionInsert);
+			TaskDragDropHelper.OnDragEnter(this, e, description, paths);
 		}
 
 		private void scheduler_DragLeave(object sender, EventArgs e)
@@ -469,59 +424,28 @@ namespace Eraser
 		/// </summary>
 		private void scheduler_DragDrop(object sender, DragEventArgs e)
 		{
-			DropTargetHelper.Drop(e.Data, new Point(e.X, e.Y), e.Effect);
+			TaskDragDropHelper.OnDrop(e);
 			if (e.Effect == DragDropEffects.None)
 				return;
 
-			bool recycleBinIncluded = false;
-			List<string> files = e.Data.GetDataPresent(DataFormats.FileDrop) ?
-				new List<string>((string[])e.Data.GetData(DataFormats.FileDrop, false)) :
-				new List<string>();
-			if (e.Data.GetDataPresent("Shell IDList Array"))
-			{
-				MemoryStream stream = (MemoryStream)e.Data.GetData("Shell IDList Array");
-				byte[] buffer = new byte[stream.Length];
-				stream.Read(buffer, 0, buffer.Length);
-				ShellCIDA cida = new ShellCIDA(buffer);
+			//Determine our action.
+			bool recycleBin = false;
+			List<string> paths = new List<string>(TaskDragDropHelper.GetFiles(e, out recycleBin));
+			bool isTaskList = !recycleBin;
 
-				if (cida.cidl > 0)
+			foreach (string path in paths)
+			{
+				//Does this item exclude a task list import?
+				if (isTaskList && Path.GetExtension(path) != ".ersx")
 				{
-					for (int i = 1; i <= cida.cidl; ++i)
-					{
-						if (!string.IsNullOrEmpty(cida.aoffset[i].Path))
-						{
-							files.Add(cida.aoffset[i].Path);
-						}
-						else if (cida.aoffset[i].Guid != Guid.Empty)
-						{
-							if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
-								recycleBinIncluded = true;
-						}
-					}
+					isTaskList = false;
+					break;
 				}
 			}
 
-			//Schedule the task dialog to be shown (to get to the event loop so that
-			//ComCtl32.dll v6 is used.)
-			BeginInvoke((Action<DragDropEffects, List<string>, bool>)scheduler_DragDropConfirm,
-				e.Effect, files, recycleBinIncluded);
-		}
-
-		/// <summary>
-		/// Called after the files have been dropped into Eraser.
-		/// </summary>
-		/// <param name="effect">The Drag/drop effect of the operation.</param>
-		/// <param name="files">The files which were dropped into the program.</param>
-		/// <param name="recycleBinIncluded">True if the recycle bin was among the
-		/// items dropped.</param>
-		private void scheduler_DragDropConfirm(DragDropEffects effect, List<string> files,
-			bool recycleBinIncluded)
-		{
-			//Determine whether we are importing a task list or dragging files for
-			//erasure.
-			if (effect == DragDropEffects.Copy)
+			if (isTaskList)
 			{
-				foreach (string file in files)
+				foreach (string file in paths)
 					using (FileStream stream = new FileStream(file, FileMode.Open,
 						FileAccess.Read, FileShare.Read))
 					{
@@ -540,72 +464,66 @@ namespace Eraser
 						}
 					}
 			}
-			else if (effect == DragDropEffects.Move)
+			else
 			{
 				//Create a task with the default settings
 				Task task = new Task();
-				if (files != null)
-					foreach (string file in files)
-					{
-						//If the path doesn't exist, skip the file
-						if (!(File.Exists(file) || Directory.Exists(file)))
-							continue;
-
-						FileSystemObjectErasureTarget target;
-						if ((File.GetAttributes(file) & FileAttributes.Directory) != 0)
-							target = new FolderErasureTarget();
-						else
-							target = new FileErasureTarget();
-						target.Path = file;
-
-						task.Targets.Add(target);
-					}
-
-				//Add the recycle bin if it was specified
-				if (recycleBinIncluded)
-					task.Targets.Add(new RecycleBinErasureTarget());
+				foreach (ErasureTarget target in TaskDragDropHelper.GetTargets(paths, recycleBin))
+					task.Targets.Add(target);
 
 				//If the task has no targets, we should not go on.
 				if (task.Targets.Count == 0)
 					return;
 
-				//Add the task, asking the user for his intent.
-				DialogResult action = DialogResult.No;
-				if (TaskDialog.IsAvailableOnThisOS)
-				{
-					TaskDialog dialog = new TaskDialog();
-					dialog.WindowTitle = S._("Eraser");
-					dialog.MainIcon = TaskDialogIcon.Information;
-					dialog.MainInstruction = S._("You have dropped a set of files and folders into Eraser. What do you want to do with them?");
-					dialog.AllowDialogCancellation = true;
-					dialog.Buttons = new TaskDialogButton[] {
-						new TaskDialogButton((int)DialogResult.Yes, S._("Erase the selected items\nSchedules the selected items for immediate erasure.")),
-						new TaskDialogButton((int)DialogResult.OK, S._("Create a new Task\nA task will be created containing the selected items.")),
-						new TaskDialogButton((int)DialogResult.No, S._("Cancel the drag-and-drop operation"))
-					};
-					dialog.RightToLeftLayout = Localisation.IsRightToLeft(this);
-					dialog.UseCommandLinks = true;
-					action = (DialogResult)dialog.Show(this);
-				}
-				else
-				{
-					action = MessageBox.Show(S._("Are you sure you wish to erase the selected "
-						+ "items?"), S._("Eraser"), MessageBoxButtons.YesNo,
-						MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-						Localisation.IsRightToLeft(this) ?
-							MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-				}
+				//Schedule the task dialog to be shown (to get to the event loop so that
+				//ComCtl32.dll v6 is used.)
+				BeginInvoke((Action<Task>)scheduler_DragDropConfirm, task);
+			}
+		}
 
-				switch (action)
-				{
-					case DialogResult.OK:
-						task.Schedule = Schedule.RunManually;
-						goto case DialogResult.Yes;
+		/// <summary>
+		/// Called when a set of files are dropped into Eraser and to let the user
+		/// decide what to do with the collection.
+		/// </summary>
+		/// <param name="task">The task which requires confirmation.</param>
+		private void scheduler_DragDropConfirm(Task task)
+		{
+			//Add the task, asking the user for his intent.
+			DialogResult action = DialogResult.No;
+			if (TaskDialog.IsAvailableOnThisOS)
+			{
+				TaskDialog dialog = new TaskDialog();
+				dialog.WindowTitle = S._("Eraser");
+				dialog.MainIcon = TaskDialogIcon.Information;
+				dialog.MainInstruction = S._("You have dropped a set of files and folders into Eraser. What do you want to do with them?");
+				dialog.AllowDialogCancellation = true;
+				dialog.Buttons = new TaskDialogButton[] {
+					new TaskDialogButton((int)DialogResult.Yes, S._("Erase the selected items\nSchedules the selected items for immediate erasure.")),
+					new TaskDialogButton((int)DialogResult.OK, S._("Create a new Task\nA task will be created containing the selected items.")),
+					new TaskDialogButton((int)DialogResult.No, S._("Cancel the drag-and-drop operation"))
+				};
+				dialog.RightToLeftLayout = Localisation.IsRightToLeft(this);
+				dialog.UseCommandLinks = true;
+				action = (DialogResult)dialog.Show(this);
+			}
+			else
+			{
+				action = MessageBox.Show(S._("Are you sure you wish to erase the selected "
+					+ "items?"), S._("Eraser"), MessageBoxButtons.YesNo,
+					MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+			}
 
-					case DialogResult.Yes:
-						Program.eraserClient.Tasks.Add(task);
-						break;
-				}
+			switch (action)
+			{
+				case DialogResult.OK:
+					task.Schedule = Schedule.RunManually;
+					goto case DialogResult.Yes;
+
+				case DialogResult.Yes:
+					Program.eraserClient.Tasks.Add(task);
+					break;
 			}
 		}
 

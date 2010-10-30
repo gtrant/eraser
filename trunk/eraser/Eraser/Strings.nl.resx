@@ -258,10 +258,10 @@
   <data name="Task executed" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="{0}, " xml:space="preserve">
+  <data name="Recycle Bin" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Recycle Bin" xml:space="preserve">
+  <data name="Cannot erase the selected items" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Import tasks from {0}" xml:space="preserve">
@@ -336,7 +336,16 @@
   <data name="The erasure method selected does not support unused disk space erasures." xml:space="preserve">
     <value>Deze geselecteerde wis methode kan geen ongebruikte schijfruimte te wissen.</value>
   </data>
+  <data name="{0}, " xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="(default)" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Cannot add the selected items" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Add {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="The task has no data to erase." xml:space="preserve">
