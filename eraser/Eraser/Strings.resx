@@ -258,11 +258,11 @@
   <data name="Task executed" xml:space="preserve">
     <value>Task executed</value>
   </data>
-  <data name="{0}, " xml:space="preserve">
-    <value>{0}, </value>
-  </data>
   <data name="Recycle Bin" xml:space="preserve">
     <value>Recycle Bin</value>
+  </data>
+  <data name="Cannot erase the selected items" xml:space="preserve">
+    <value>Cannot erase the selected items</value>
   </data>
   <data name="Import tasks from {0}" xml:space="preserve">
     <value>Import tasks from {0}</value>
@@ -336,8 +336,17 @@
   <data name="The erasure method selected does not support unused disk space erasures." xml:space="preserve">
     <value>The erasure method selected does not support unused disk space erasures.</value>
   </data>
+  <data name="{0}, " xml:space="preserve">
+    <value>{0}, </value>
+  </data>
   <data name="(default)" xml:space="preserve">
     <value>(default)</value>
+  </data>
+  <data name="Cannot add the selected items" xml:space="preserve">
+    <value>Cannot add the selected items</value>
+  </data>
+  <data name="Add {0}" xml:space="preserve">
+    <value>Add {0}</value>
   </data>
   <data name="The task has no data to erase." xml:space="preserve">
     <value>The task has no data to erase.</value>

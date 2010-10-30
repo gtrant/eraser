@@ -268,6 +268,70 @@ namespace Eraser
 			}
 		}
 
+		private void data_DragEnter(object sender, DragEventArgs e)
+		{
+			//Get the list of files.
+			bool recycleBin = false;
+			List<string> paths = new List<string>(TaskDragDropHelper.GetFiles(e, out recycleBin));
+
+			for (int i = 0; i < paths.Count; ++i)
+			{
+				//Just use the file name/directory name.
+				paths[i] = System.IO.Path.GetFileName(paths[i]);
+			}
+
+			//Add the recycle bin if it was dropped.
+			if (recycleBin)
+				paths.Add(S._("Recycle Bin"));
+
+			string description = null;
+			if (paths.Count == 0)
+			{
+				e.Effect = DragDropEffects.None;
+				description = S._("Cannot add the selected items");
+			}
+			else
+			{
+				e.Effect = DragDropEffects.Copy;
+				description = S._("Add {0}");
+			}
+
+			TaskDragDropHelper.OnDragEnter(this, e, description, paths);
+		}
+
+		private void data_DragLeave(object sender, EventArgs e)
+		{
+			DropTargetHelper.DragLeave((Control)sender);
+		}
+
+		private void data_DragOver(object sender, DragEventArgs e)
+		{
+			DropTargetHelper.DragOver(new Point(e.X, e.Y), e.Effect);
+		}
+
+		private void data_DragDrop(object sender, DragEventArgs e)
+		{
+			TaskDragDropHelper.OnDrop(e);
+			if (e.Effect == DragDropEffects.None)
+				return;
+
+			//Determine our action.
+			bool recycleBin = false;
+			List<string> paths = new List<string>(TaskDragDropHelper.GetFiles(e, out recycleBin));
+
+			//Add the targets
+			foreach (ErasureTarget target in TaskDragDropHelper.GetTargets(paths, recycleBin))
+			{
+				ListViewItem item = data.Items.Add(target.UIText);
+				item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
+					S._("(default)") : target.Method.Name);
+				item.Tag = target;
+				Task.Targets.Add(target);
+
+				errorProvider.Clear();
+			}
+		}
+
 		/// <summary>
 		/// Generated when the user right-clicks on the data selection list-view.
 		/// </summary>
