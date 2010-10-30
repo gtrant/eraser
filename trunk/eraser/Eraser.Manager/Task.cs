@@ -295,10 +295,9 @@ namespace Eraser.Manager
 		/// </summary>
 		internal void OnTaskFinished()
 		{
+			Progress = null;
 			if (TaskFinished != null)
 				TaskFinished(this, EventArgs.Empty);
-			Executing = false;
-			Progress = null;
 		}
 		#endregion
 	}
