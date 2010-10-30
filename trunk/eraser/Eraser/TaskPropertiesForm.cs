@@ -141,7 +141,22 @@ namespace Eraser
 			//The data
 			foreach (ErasureTarget target in task.Targets)
 			{
-				ListViewItem item = data.Items.Add(target.UIText);
+				ListViewItem item;
+				if (System.IO.File.Exists(target.UIText))
+				{
+					item = data.Items.Add(System.IO.Path.GetFileName(target.UIText));
+					item.ToolTipText = target.UIText;
+				}
+				else if (System.IO.Directory.Exists(target.UIText))
+				{
+					item = data.Items.Add(System.IO.Path.GetDirectoryName(target.UIText));
+					item.ToolTipText = target.UIText;
+				}
+				else
+				{
+					item = data.Items.Add(target.UIText);
+				}
+				
 				item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
 					S._("(default)") : target.Method.Name);
 				item.Tag = target;

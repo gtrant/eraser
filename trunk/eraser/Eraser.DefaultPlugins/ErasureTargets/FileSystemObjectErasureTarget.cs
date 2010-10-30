@@ -187,11 +187,7 @@ namespace Eraser.DefaultPlugins
 		{
 			get
 			{
-				string fileName = System.IO.Path.GetFileName(Path);
-				string directoryName = System.IO.Path.GetDirectoryName(Path);
-				return string.IsNullOrEmpty(fileName) ?
-						(string.IsNullOrEmpty(directoryName) ? Path : directoryName)
-					: fileName;
+				return Path;
 			}
 		}
 

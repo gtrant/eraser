@@ -163,6 +163,7 @@ namespace Eraser
 			this.data.FullRowSelect = true;
 			this.data.MultiSelect = false;
 			this.data.Name = "data";
+			this.data.ShowItemToolTips = true;
 			this.data.UseCompatibleStateImageBehavior = false;
 			this.data.View = System.Windows.Forms.View.Details;
 			this.data.ItemActivate += new System.EventHandler(this.data_ItemActivate);
