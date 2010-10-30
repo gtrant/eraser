@@ -286,7 +286,6 @@ namespace Eraser
 					//that the server process isn't running. Start an instance.
 					Process eraserInstance = Process.Start(
 						Assembly.GetExecutingAssembly().Location, "/quiet");
-					Thread.Sleep(0);
 					eraserInstance.WaitForInputIdle();
 
 					//Wait for the server to be initialised.
@@ -757,10 +756,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
 			}
 
-			//Create the main form
-			program.MainForm = new MainForm();
-
-			//Decide whether to display any UI
+			//Decide whether to display any UI.
 			GuiArguments arguments = new GuiArguments();
 			Args.Parse(program.CommandLine, CommandLinePrefixes, CommandLineSeparators, arguments);
 			e.ShowMainForm = !arguments.AtRestart && !arguments.Quiet;
@@ -771,6 +767,9 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 
 			//Run the eraser client.
 			eraserClient.Run();
+
+			//Create the main form.
+			program.MainForm = new MainForm();
 		}
 
 		/// <summary>
