@@ -48,45 +48,6 @@ namespace Eraser
 			this.AutoScaleMode = AutoScaleMode.None;
 		}
 
-		private void panelresize(Panel p)
-		{
-			Random r = new Random();
-			panelresize(p, r);
-		}
-
-		private void panelresize(Control c, Random r)
-		{
-			if (c is Panel)
-				panelresize(c as Panel, r);
-			else if (c is NumericUpDown)
-				panelresize(c as NumericUpDown, r);
-			else if (c is Label)
-				panelresize(c as Label, r);
-
-			foreach (Control d in c.Controls)
-				panelresize(d, r);
-		}
-
-		private void panelresize(Panel p, Random r)
-		{
-			//p.BackColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256));
-
-			foreach (Control c in p.Controls)
-				panelresize(c, r);
-		}
-
-		private void panelresize(NumericUpDown n, Random r)
-		{
-			n.AutoScaleMode = AutoScaleMode.None;
-			n.BackColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256));
-			n.BorderStyle = BorderStyle.Fixed3D;
-		}
-
-		private void panelresize(Label l, Random r)
-		{
-			l.BackColor = Color.FromArgb(r.Next(256), r.Next(256), r.Next(256)); 
-		}
-
 		/// <summary>
 		/// Sets or retrieves the task object to be edited or being edited.
 		/// </summary>
