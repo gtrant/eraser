@@ -65,7 +65,7 @@ namespace Eraser
 			foreach (Task task in Program.eraserClient.Tasks)
 				if (task.Executing)
 				{
-					OnTaskProcessing(this, new TaskEventArgs(task));
+					OnTaskProcessing(task, EventArgs.Empty);
 					break;
 				}
 
