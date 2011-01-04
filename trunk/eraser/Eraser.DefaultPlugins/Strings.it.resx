@@ -294,6 +294,9 @@
   <data name="Securely move {0}" xml:space="preserve">
     <value>Spostamento sicuro di {0}</value>
   </data>
+  <data name="The destination directory cannot be within the source directory." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Securely moving files and folders..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

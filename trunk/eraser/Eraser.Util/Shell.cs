@@ -141,6 +141,33 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
+		/// Verifies if the path given is rooted at the given absolute path.
+		/// </summary>
+		/// <param name="absolutePath">The root path.</param>
+		/// <param name="path">The path to verify.</param>
+		/// <returns>True if the path provided is a subfolder/sub-file of the provided root path.</returns>
+		public static bool IsRootedAt(FileSystemInfo absolutePath, string path)
+		{
+			//Convert the path in question to an absolute path
+			if (!Path.IsPathRooted(path))
+				path = Path.GetFullPath(path);
+
+			//Split the directory path to its component folders
+			string[] absoluteDirectories = absolutePath.FullName.Split(
+				Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+			string[] relativeDirectories = path.Split(
+				Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+
+			//Compare element by element; if the absolute path compares till the end, the
+			//provided path is a subdirectory
+			for (int i = 0; i < absoluteDirectories.Length; ++i)
+				if (absoluteDirectories[i] != relativeDirectories[i])
+					return false;
+
+			return true;
+		}
+
+		/// <summary>
 		/// A List of known folder IDs in the shell namespace.
 		/// </summary>
 		public static class KnownFolderIDs

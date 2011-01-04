@@ -148,6 +148,14 @@ namespace Eraser.DefaultPlugins
 
 		private void CopyDirectory(DirectoryInfo info)
 		{
+			//Check the the destination is not a subfolder of the source.
+			if (Shell.IsRootedAt(info, Destination))
+			{
+				Logger.Log(S._("The destination directory cannot be within the source directory."),
+					LogLevel.Error);
+				return;
+			}
+
 			//We need to get the files from the list of streams
 			List<StreamInfo> streams = GetPaths();
 			List<FileInfo> files = new List<FileInfo>(
