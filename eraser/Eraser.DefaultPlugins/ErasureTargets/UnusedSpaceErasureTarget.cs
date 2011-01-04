@@ -32,6 +32,7 @@ using System.IO;
 using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Path = System.IO.Path;
 
 namespace Eraser.DefaultPlugins
 {

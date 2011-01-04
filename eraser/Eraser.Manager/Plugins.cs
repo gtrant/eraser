@@ -33,6 +33,7 @@ using System.Security.Cryptography.X509Certificates;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Path = System.IO.Path;
 
 namespace Eraser.Manager.Plugin
 {
