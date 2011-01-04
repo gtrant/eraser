@@ -47,6 +47,7 @@ using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
 using ProgressChangedEventHandler = Eraser.Util.ProgressChangedEventHandler;
 using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
+using Path = System.IO.Path;
 
 namespace Eraser.BlackBox
 {
