@@ -445,8 +445,15 @@ namespace Eraser.BlackBox
 		{
 			get
 			{
-				return DateTime.ParseExact(Name, BlackBox.CrashReportName,
-					CultureInfo.InvariantCulture).ToLocalTime();
+				try
+				{
+					return DateTime.ParseExact(Name, BlackBox.CrashReportName,
+						CultureInfo.InvariantCulture).ToLocalTime();
+				}
+				catch (FormatException)
+				{
+					return DateTime.MinValue;
+				}
 			}
 		}
 
