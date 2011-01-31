@@ -70,10 +70,10 @@ if (!empty($_GET['id']))
 						<th>Downloads</th>
 					</tr>
 					<tr>
-						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser 6/6.0.7/Eraser 6.0.7.1893.exe/download">Eraser 6.0.7.1893</a></td>
-						<td>6.0.7.1893</td>
-						<td>14/4/2010 8:00am</td>
-						<td><?php echo SourceForge::GetDownloads('http://sourceforge.net/projects/eraser/files/Eraser 6/6.0.7/Eraser 6.0.7.1893.exe/download'); ?></td>
+						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.8/Eraser%206.0.8.2273.exe/download">Eraser 6.0.8.2273</a></td>
+						<td>6.0.8.2273</td>
+						<td>6/11/2010 9:30am</td>
+						<td>&nbsp;</td>
 					</tr>
 					<tr>
 						<td colspan="4"><h3>Beta Builds</h3></td>
@@ -141,9 +141,9 @@ if (!empty($_GET['id']))
 			<div class="right_news">
 				<h3>Latest News</h3>
 				<div class="right_news_bg">
-					<h2>Eraser 6.0.7 released!</h2>
-					<div class="posted">Posted by: Joel, 14<sup>th</sup> April 2010, 8:00 am +800GMT</div>
-					<p>Eraser 6.0.7, next in the stable release line of 6.0.x has been released today. 6.0.7 addresses a significant number of stability and usability issues which were found in the initial stable 6.0.6. <a href="announcements/20100414.html">See the full announcement</a>.</p>
+					<h2>Eraser 6.0.8 released!</h2>
+					<div class="posted">Posted by: Joel, 6<sup>th</sup> November 2010, 9:30 am +800GMT</div>
+					<p>Eraser 6.0.8, a maintenance release in the stable 6.0.x line was released today. 6.0.8 addresses a significant number of stability and usability issues found in Eraser 6.0.7. Eraser 6.0.8 is now the best in the Eraser 6.0.x line, as such, all users are encouraged to upgrade to 6.0.8 as soon as possible. <a href="announcements/20101106.html">Read the full announcement.</a></p>
 				</div>
 			</div>
 
