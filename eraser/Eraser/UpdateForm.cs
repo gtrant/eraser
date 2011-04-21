@@ -571,7 +571,7 @@ namespace Eraser
 			//Read the descendants of the updateList node (ignoring the <mirrors> element)
 			//These are categories.
 			bool cont = reader.Read();
-			while (reader.NodeType != XmlNodeType.Element)
+			while (cont && reader.NodeType != XmlNodeType.Element)
 				cont = reader.Read();
 			if (reader.NodeType != XmlNodeType.Element)
 				return new List<DownloadInfo>();
