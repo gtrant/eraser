@@ -1,4 +1,2 @@
-php_value error_log ../error.log
-
 order allow,deny
 allow from all
