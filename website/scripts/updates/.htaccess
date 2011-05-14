@@ -1,2 +1,6 @@
+<IfModule php5_module>
+	php_value error_log ../error.log
+</IfModule>
+
 order allow,deny
 allow from all

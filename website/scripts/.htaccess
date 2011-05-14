@@ -1,2 +1,7 @@
+<IfModule php5_module>
+	php_value log_errors On
+	php_value display_errors Off
+</IfModule>
+
 order deny,allow
 deny from all
