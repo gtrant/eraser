@@ -162,9 +162,11 @@ namespace Eraser.DefaultPlugins
 
 			//If the user is under disk quotas, log a warning message
 			if (VolumeInfo.FromMountPoint(Drive).HasQuota)
+			{
 				Logger.Log(S._("The drive {0} has disk quotas active. This will prevent the " +
 					"complete erasure of unused space and may pose a security concern.",
 					Drive), LogLevel.Warning);
+			}
 
 			//Get the erasure method if the user specified he wants the default.
 			ErasureMethod method = EffectiveMethod;
