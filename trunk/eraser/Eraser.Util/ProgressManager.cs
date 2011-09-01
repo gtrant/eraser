@@ -202,6 +202,9 @@ namespace Eraser.Util
 					throw new ArgumentOutOfRangeException("value", value, "The Total property " +
 						"of the Progress Manager must be greater than or equal to the completed " +
 						"work units for the task.");
+				if (value < 0)
+					throw new ArgumentOutOfRangeException("value", value, "The Total property " +
+						"of the Progress Manager must be a positive integer");
 
 				total = value;
 			}
