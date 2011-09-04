@@ -62,7 +62,7 @@ namespace Eraser.DefaultPlugins
 				throw new InvalidOperationException(S._("The folder {0} cannot be deleted as it is " +
 					"not empty."));
 
-			if ((info.Attributes & FileAttributes.ReparsePoint) != 0)
+			if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
 			{
 				foreach (DirectoryInfo dir in info.GetDirectories())
 					DeleteFolder(dir);
