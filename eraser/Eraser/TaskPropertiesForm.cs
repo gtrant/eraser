@@ -26,6 +26,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Linq;
 
 using System.Globalization;
 using Eraser.Manager;
@@ -404,11 +405,11 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void scheduleSpan_CheckedChanged(object sender, EventArgs e)
 		{
-			if (((RadioButton)sender).Checked)
+			RadioButton[] group = new RadioButton[] {
+				scheduleDaily, scheduleWeekly, scheduleMonthly
+			};
+			if (group.Contains(sender) && ((RadioButton)sender).Checked)
 			{
-				RadioButton[] group = new RadioButton[] {
-					scheduleDaily, scheduleWeekly, scheduleMonthly
-				};
 				foreach (RadioButton button in group)
 					if (button != sender)
 						button.Checked = false;
