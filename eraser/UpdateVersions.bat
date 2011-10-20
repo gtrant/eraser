@@ -18,7 +18,7 @@ if ERRORLEVEL 1 (
 goto end
 
 :noSubWCRev
-echo No TortoiseSVN-Client (SubWCRev.exe) detected!
+echo No TortoiseSVN-Client (SubWCRev.exe) detected! >&2
 exit /b 1
 
 :end
