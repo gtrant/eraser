@@ -323,6 +323,7 @@ namespace Eraser
 			// 
 			// uiLanguage
 			// 
+			this.uiLanguage.DisplayMember = "DisplayName";
 			this.uiLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.uiLanguage.FormattingEnabled = true;
 			this.errorProvider.SetIconAlignment(this.uiLanguage, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("uiLanguage.IconAlignment"))));
