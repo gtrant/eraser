@@ -430,18 +430,24 @@ namespace Eraser.Manager
 						break;
 					}
 					case RecurringScheduleUnit.Monthly:
-						//Step the number of months since the last run
-						if (LastRun != DateTime.MinValue)
-							nextRun = nextRun.AddMonths(frequency);
+						if (LastRun == DateTime.MinValue)
+						{
+							//Since the schedule has never been used, find the next time
+							//to run the task. If the current day is less than the
+							//scheduled day, leave it alone. Otherwise, go to the
+							//following month.
+							while (monthlySchedule < nextRun.Day)
+								nextRun = nextRun.AddDays(1);
+						}
+						else
+						{
+							//Step the number of months since the last run
+							while (nextRun < DateTime.Now)
+								nextRun = nextRun.AddMonths(frequency);
+						}
 
-						//Ensure that the next run day is before the scheduled day of month
-						while (monthlySchedule < nextRun.Day)
-							nextRun = nextRun.AddDays(1);
-						
-						//Set the next run date to be the day on which the task will run.
-						nextRun = nextRun.AddDays(-((int)monthlySchedule - nextRun.Day));
-						while (nextRun < DateTime.Now)
-							nextRun = nextRun.AddMonths(frequency);
+						//Set the day of the month which the task is supposed to run.
+						nextRun = nextRun.AddDays(monthlySchedule - nextRun.Day);
 						break;
 				}
 
