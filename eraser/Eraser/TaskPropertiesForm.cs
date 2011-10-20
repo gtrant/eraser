@@ -184,10 +184,12 @@ namespace Eraser
 				switch (schedule.ScheduleType)
 				{
 					case RecurringScheduleUnit.Daily:
+						scheduleDaily.Checked = true;
 						scheduleDailyByDay.Checked = true;
 						scheduleDailyByDayFreq.Value = schedule.Frequency;
 						break;
 					case RecurringScheduleUnit.Weekdays:
+						scheduleDaily.Checked = true;
 						scheduleDailyByWeekday.Checked = true;
 						break;
 					case RecurringScheduleUnit.Weekly:
@@ -402,6 +404,16 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void scheduleSpan_CheckedChanged(object sender, EventArgs e)
 		{
+			if (((RadioButton)sender).Checked)
+			{
+				RadioButton[] group = new RadioButton[] {
+					scheduleDaily, scheduleWeekly, scheduleMonthly
+				};
+				foreach (RadioButton button in group)
+					if (button != sender)
+						button.Checked = false;
+			}
+
 			scheduleDailyByDay.Enabled = scheduleDailyByDayLbl.Enabled =
 				scheduleDailyByWeekday.Enabled = scheduleDaily.Checked &&
 				typeRecurring.Checked;

@@ -56,8 +56,8 @@ namespace Eraser
 			this.typeImmediate = new System.Windows.Forms.RadioButton();
 			this.typeRecurring = new System.Windows.Forms.RadioButton();
 			this.data = new System.Windows.Forms.ListView();
-			this.dataColData = new System.Windows.Forms.ColumnHeader();
-			this.dataColMethod = new System.Windows.Forms.ColumnHeader();
+			this.dataColData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.dataColMethod = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.dataContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.deleteDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.dataAdd = new System.Windows.Forms.Button();
@@ -170,8 +170,8 @@ namespace Eraser
 			this.data.ItemActivate += new System.EventHandler(this.data_ItemActivate);
 			this.data.DragDrop += new System.Windows.Forms.DragEventHandler(this.data_DragDrop);
 			this.data.DragEnter += new System.Windows.Forms.DragEventHandler(this.data_DragEnter);
-			this.data.DragLeave += new System.EventHandler(this.data_DragLeave);
 			this.data.DragOver += new System.Windows.Forms.DragEventHandler(this.data_DragOver);
+			this.data.DragLeave += new System.EventHandler(this.data_DragLeave);
 			// 
 			// dataColData
 			// 
@@ -351,6 +351,7 @@ namespace Eraser
 			this.scheduleDaily.Name = "scheduleDaily";
 			this.scheduleDaily.TabStop = true;
 			this.scheduleDaily.UseVisualStyleBackColor = true;
+			this.scheduleDaily.CheckedChanged += new System.EventHandler(this.scheduleSpan_CheckedChanged);
 			this.scheduleDaily.Click += new System.EventHandler(this.scheduleSpan_Clicked);
 			// 
 			// scheduleDailyByDayPanel
@@ -369,8 +370,8 @@ namespace Eraser
 			this.scheduleDailyByDay.Name = "scheduleDailyByDay";
 			this.scheduleDailyByDay.TabStop = true;
 			this.scheduleDailyByDay.UseVisualStyleBackColor = true;
-			this.scheduleDailyByDay.Click += new System.EventHandler(this.scheduleDailySpan_Clicked);
 			this.scheduleDailyByDay.CheckedChanged += new System.EventHandler(this.scheduleDailySpan_CheckedChanged);
+			this.scheduleDailyByDay.Click += new System.EventHandler(this.scheduleDailySpan_Clicked);
 			// 
 			// scheduleDailyByDayFreq
 			// 
@@ -403,8 +404,8 @@ namespace Eraser
 			resources.ApplyResources(this.scheduleDailyByWeekday, "scheduleDailyByWeekday");
 			this.scheduleDailyByWeekday.Name = "scheduleDailyByWeekday";
 			this.scheduleDailyByWeekday.UseVisualStyleBackColor = true;
-			this.scheduleDailyByWeekday.Click += new System.EventHandler(this.scheduleDailySpan_Clicked);
 			this.scheduleDailyByWeekday.CheckedChanged += new System.EventHandler(this.scheduleDailySpan_CheckedChanged);
+			this.scheduleDailyByWeekday.Click += new System.EventHandler(this.scheduleDailySpan_Clicked);
 			// 
 			// scheduleWeekly
 			// 
@@ -413,6 +414,7 @@ namespace Eraser
 			this.scheduleWeekly.Name = "scheduleWeekly";
 			this.scheduleWeekly.TabStop = true;
 			this.scheduleWeekly.UseVisualStyleBackColor = true;
+			this.scheduleWeekly.CheckedChanged += new System.EventHandler(this.scheduleSpan_CheckedChanged);
 			this.scheduleWeekly.Click += new System.EventHandler(this.scheduleSpan_Clicked);
 			// 
 			// scheduleWeeklyFrequencyPanel
@@ -514,6 +516,7 @@ namespace Eraser
 			this.scheduleMonthly.Name = "scheduleMonthly";
 			this.scheduleMonthly.TabStop = true;
 			this.scheduleMonthly.UseVisualStyleBackColor = true;
+			this.scheduleMonthly.CheckedChanged += new System.EventHandler(this.scheduleSpan_CheckedChanged);
 			this.scheduleMonthly.Click += new System.EventHandler(this.scheduleSpan_Clicked);
 			// 
 			// scheduleMonthlyFrequencyPanel
