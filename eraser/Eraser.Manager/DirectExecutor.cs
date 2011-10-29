@@ -320,7 +320,10 @@ namespace Eraser.Manager
 
 				//If the task is a recurring task, reschedule it since we are done.
 				if (task.Schedule is RecurringSchedule)
+				{
 					((RecurringSchedule)task.Schedule).Reschedule(DateTime.Now);
+					ScheduleTask(task);
+				}
 
 				//And the task finished event.
 				task.OnTaskFinished();
