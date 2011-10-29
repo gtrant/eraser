@@ -255,7 +255,7 @@
   <data name="The task {0} has completed." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Task executed" xml:space="preserve">
+  <data name="Task completed" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Recycle Bin" xml:space="preserve">

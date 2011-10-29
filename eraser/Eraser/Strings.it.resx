@@ -255,8 +255,8 @@
   <data name="The task {0} has completed." xml:space="preserve">
     <value>L'operazione {0} è stata completata.</value>
   </data>
-  <data name="Task executed" xml:space="preserve">
-    <value>Operazione eseguita</value>
+  <data name="Task completed" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Recycle Bin" xml:space="preserve">
     <value>Cestino</value>
