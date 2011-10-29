@@ -147,10 +147,4 @@
   <data name="Session ended" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The weight of a progress manager step must be a valid floatint-point value." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Could not load file icon from {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
 </root>
