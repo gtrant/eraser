@@ -326,7 +326,7 @@ namespace Eraser.Util.ExtensionMethods
 				return Icon.FromHandle(shfi.hIcon);
 			else
 				throw new IOException(string.Format(CultureInfo.CurrentCulture,
-					S._("Could not load file icon from {0}"), info.FullName),
+					"Could not load file icon from {0}", info.FullName),
 					Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error()));
 		}
 
