@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4AA1FBC2-DA5C-4204-B152-B5929516DC48}"
 	ProjectSection(SolutionItems) = preProject
 		CustomDictionary.xml = CustomDictionary.xml
@@ -38,14 +38,11 @@ Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Installer", "Installer\Inst
 		{A9884ABF-46E8-42C1-A30B-9A3DD6C38004} = {A9884ABF-46E8-42C1-A30B-9A3DD6C38004}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Installer.Bootstrapper", "Installer\Bootstrapper\Bootstrapper.vcproj", "{4F6CD250-0A08-4DB8-8E07-848E4FF01C21}"
-	ProjectSection(ProjectDependencies) = postProject
-		{318964CF-278D-41B2-A825-B9A0D1F5D766} = {318964CF-278D-41B2-A825-B9A0D1F5D766}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Installer.Bootstrapper", "Installer\Bootstrapper\Bootstrapper.vcxproj", "{4F6CD250-0A08-4DB8-8E07-848E4FF01C21}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Shell", "Eraser.Shell\ShellExt.vcproj", "{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Shell", "Eraser.Shell\ShellExt.vcxproj", "{738F455B-2220-4F8F-B87F-DA93F0B0F1BA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.Native", "Eraser.Util.Native\Eraser.Util.Native.vcproj", "{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.Native", "Eraser.Util.Native\Eraser.Util.Native.vcxproj", "{BCFE7D20-FC82-4BBE-BFE4-7B635D70D238}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraser.BlackBox", "Eraser.BlackBox\Eraser.BlackBox.csproj", "{F8C3524E-B846-454B-BA41-5E2AA64BD56B}"
 EndProject
