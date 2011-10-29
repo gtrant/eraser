@@ -291,7 +291,7 @@ namespace Eraser
 						break;
 				}
 
-				parent.ShowNotificationBalloon(S._("Task executed"), message,
+				parent.ShowNotificationBalloon(S._("Task completed"), message,
 					icon);
 			}
 
