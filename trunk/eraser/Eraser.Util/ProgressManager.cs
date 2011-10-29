@@ -120,7 +120,7 @@ namespace Eraser.Util
 				}
 
 				Speeds.Add(speed);
-				PredictedSpeed = Speeds.Predict(0.95);
+				PredictedSpeed = Speeds.Predict(0.50);
 			}
 		}
 
