@@ -31,6 +31,7 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Globalization;
 using System.Threading;
+using System.IO;
 
 using Eraser.Manager;
 using Eraser.Manager.Plugin;
@@ -60,7 +61,7 @@ namespace Eraser
 			ListViewItem item = new ListViewItem();
 			if (e.Instance.Plugin == null)
 			{
-				item.Text = System.IO.Path.GetFileNameWithoutExtension(e.Instance.Assembly.Location);
+				item.Text = Path.GetFileNameWithoutExtension(e.Instance.Assembly.Location);
 				item.SubItems.Add(e.Instance.AssemblyInfo.Author);
 			}
 			else
