@@ -149,7 +149,7 @@ namespace Eraser.DefaultPlugins
 		private void CopyDirectory(DirectoryInfo info)
 		{
 			//Check the the destination is not a subfolder of the source.
-			if (Eraser.Util.ExtensionMethods.Path.IsRootedAt(info, Destination))
+			if (PathUtil.IsRootedAt(info, Destination))
 			{
 				Logger.Log(S._("The destination directory cannot be within the source directory."),
 					LogLevel.Error);
@@ -263,7 +263,7 @@ namespace Eraser.DefaultPlugins
 			DirectoryInfo source = new DirectoryInfo(Path);
 			string baseDir = System.IO.Path.Combine(Destination, source.Name);
 			return System.IO.Path.Combine(baseDir,
-				Eraser.Util.ExtensionMethods.Path.MakeRelativeTo(source, sourcePath));
+				PathUtil.MakeRelativeTo(source, sourcePath));
 		}
 
 		private void CopyFile(FileInfo info)

@@ -30,7 +30,7 @@ namespace Eraser.Util.ExtensionMethods
 	/// <summary>
 	/// Additional Path utility methods.
 	/// </summary>
-	public class Path
+	public class PathUtil
 	{
 		/// <summary>
 		/// Makes the first path relative to the second.
