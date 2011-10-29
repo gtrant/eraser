@@ -167,7 +167,9 @@ namespace Eraser
 			this.data.ShowItemToolTips = true;
 			this.data.UseCompatibleStateImageBehavior = false;
 			this.data.View = System.Windows.Forms.View.Details;
+			this.data.VirtualMode = true;
 			this.data.ItemActivate += new System.EventHandler(this.data_ItemActivate);
+			this.data.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.data_RetrieveVirtualItem);
 			this.data.DragDrop += new System.Windows.Forms.DragEventHandler(this.data_DragDrop);
 			this.data.DragEnter += new System.Windows.Forms.DragEventHandler(this.data_DragEnter);
 			this.data.DragOver += new System.Windows.Forms.DragEventHandler(this.data_DragOver);

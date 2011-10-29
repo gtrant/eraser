@@ -27,10 +27,12 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using System.Linq;
+using System.IO;
 
 using System.Globalization;
 using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Util.ExtensionMethods;
 
 namespace Eraser
 {
@@ -45,8 +47,6 @@ namespace Eraser
 			//Set a default task type
 			typeManual.Checked = true;
 			scheduleDaily.Checked = true;
-			//panelresize(schedulePanel);
-			this.AutoScaleMode = AutoScaleMode.None;
 		}
 
 		/// <summary>
@@ -139,30 +139,6 @@ namespace Eraser
 			//Set the name of the task
 			name.Text = task.Name;
 
-			//The data
-			foreach (ErasureTarget target in task.Targets)
-			{
-				ListViewItem item;
-				if (System.IO.File.Exists(target.UIText))
-				{
-					item = data.Items.Add(System.IO.Path.GetFileName(target.UIText));
-					item.ToolTipText = target.UIText;
-				}
-				else if (System.IO.Directory.Exists(target.UIText))
-				{
-					item = data.Items.Add(System.IO.Path.GetDirectoryName(target.UIText));
-					item.ToolTipText = target.UIText;
-				}
-				else
-				{
-					item = data.Items.Add(target.UIText);
-				}
-				
-				item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
-					S._("(default)") : target.Method.Name);
-				item.Tag = target;
-			}
-
 			//And the schedule, if selected.
 			if (task.Schedule == Schedule.RunManually)
 			{
@@ -223,6 +199,22 @@ namespace Eraser
 		}
 
 		/// <summary>
+		/// Triggered when the list view needs to display an item.
+		/// </summary>
+		/// <param name="sender">The list view.</param>
+		/// <param name="e">Event argument.</param>
+		private void data_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+		{
+			ErasureTarget target = task.Targets[e.ItemIndex];
+			FileInfo info = new FileInfo(target.UIText);
+			e.Item = new ListViewItem(info.GetCompactPath(data.Columns[0].Width, data.Font));
+			e.Item.ToolTipText = target.UIText;
+
+			e.Item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
+				S._("(default)") : target.Method.Name);
+		}
+
+		/// <summary>
 		/// Triggered when the user clicks on the Add Data button.
 		/// </summary>
 		/// <param name="sender">The button.</param>
@@ -234,13 +226,10 @@ namespace Eraser
 				if (form.ShowDialog() == DialogResult.OK)
 				{
 					ErasureTarget target = form.Target;
-					ListViewItem item = data.Items.Add(target.UIText);
-					item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
-						S._("(default)") : target.Method.Name);
-					item.Tag = target;
-
 					task.Targets.Add(target);
 					errorProvider.Clear();
+
+					++data.VirtualListSize;
 				}
 			}
 		}
@@ -254,19 +243,13 @@ namespace Eraser
 		{
 			using (TaskDataSelectionForm form = new TaskDataSelectionForm())
 			{
-				ListViewItem item = data.SelectedItems[0];
-				form.Target = task.Targets[item.Index];
+				form.Target = task.Targets[data.SelectedIndices[0]];
 
 				if (form.ShowDialog() == DialogResult.OK)
 				{
 					ErasureTarget target = form.Target;
-					task.Targets.RemoveAt(item.Index);
-					task.Targets.Insert(item.Index, target);
-
-					item.Tag = target;
-					item.Text = target.UIText;
-					item.SubItems[1].Text = target.Method == ErasureMethodRegistrar.Default ?
-						S._("(default)") : target.Method.Name;
+					task.Targets.RemoveAt(data.SelectedIndices[0]);
+					task.Targets.Insert(data.SelectedIndices[0], target);
 				}
 			}
 		}
@@ -280,7 +263,7 @@ namespace Eraser
 			for (int i = 0; i < paths.Count; ++i)
 			{
 				//Just use the file name/directory name.
-				paths[i] = System.IO.Path.GetFileName(paths[i]);
+				paths[i] = Path.GetFileName(paths[i]);
 			}
 
 			//Add the recycle bin if it was dropped.
@@ -325,11 +308,8 @@ namespace Eraser
 			//Add the targets
 			foreach (ErasureTarget target in TaskDragDropHelper.GetTargets(paths, recycleBin))
 			{
-				ListViewItem item = data.Items.Add(target.UIText);
-				item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?
-					S._("(default)") : target.Method.Name);
-				item.Tag = target;
-				Task.Targets.Add(target);
+				task.Targets.Add(target);
+				++data.VirtualListSize;
 
 				errorProvider.Clear();
 			}
@@ -360,11 +340,19 @@ namespace Eraser
 			if (data.SelectedIndices.Count == 0)
 				return;
 
-			foreach (ListViewItem obj in data.SelectedItems)
-			{
-				task.Targets.Remove((ErasureTarget)obj.Tag);
-				data.Items.Remove(obj);
-			}
+			//Get the list of selected indices; sort them in decreasing order so that we
+			//can iterate and remove items without changing indices
+			SortedSet<int> indices = new SortedSet<int>();
+			foreach (int index in data.SelectedIndices)
+				indices.Add(index);
+
+			//Remove the items from the list view
+			data.SelectedIndices.Clear();
+			data.VirtualListSize -= indices.Count;
+
+			//Then finally remove the items from the task list
+			foreach (int index in indices.Reverse())
+				task.Targets.RemoveAt(index);
 		}
 
 		/// <summary>
@@ -469,7 +457,7 @@ namespace Eraser
 		/// <param name="e">Event argument.</param>
 		private void ok_Click(object sender, EventArgs e)
 		{
-			if (data.Items.Count == 0)
+			if (task.Targets.Count == 0)
 			{
 				errorProvider.SetIconPadding(data, -16);
 				errorProvider.SetIconAlignment(data, ErrorIconAlignment.BottomRight);
