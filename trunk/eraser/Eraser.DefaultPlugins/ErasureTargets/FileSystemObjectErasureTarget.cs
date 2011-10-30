@@ -268,6 +268,11 @@ namespace Eraser.DefaultPlugins
 					};
 
 				TryEraseStream(fsManager, method, info, callback);
+
+				//Remove the file.
+				FileInfo fileInfo = info.File;
+				if (fileInfo != null)
+					fsManager.DeleteFile(fileInfo);
 				progress.MarkComplete();
 			}
 			catch (UnauthorizedAccessException)
@@ -318,11 +323,6 @@ namespace Eraser.DefaultPlugins
 					else
 						Logger.Log(S._("The file {0} is a hard link or a symbolic link thus the " +
 							"contents of the file was not erased.", LogLevel.Notice));
-
-					//Remove the file.
-					FileInfo fileInfo = info.File;
-					if (fileInfo != null)
-						fsManager.DeleteFile(fileInfo);
 					return;
 				}
 				catch (SharingViolationException)
@@ -356,11 +356,11 @@ namespace Eraser.DefaultPlugins
 						}
 					}
 
-					if (processStr.Length != 0)
-						Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
-								info.FileName, S._("(locked by {0})",
-									processStr.ToString().Remove(processStr.Length - 2)).Trim()),
-							LogLevel.Error);
+					Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
+							info.FileName, S._("(locked by {0})",
+								processStr.ToString().Remove(processStr.Length - 2)).Trim()),
+						LogLevel.Error);
+					throw;
 				}
 			}
 		}
