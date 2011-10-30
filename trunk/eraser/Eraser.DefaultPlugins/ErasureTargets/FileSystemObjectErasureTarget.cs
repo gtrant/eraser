@@ -280,6 +280,10 @@ namespace Eraser.DefaultPlugins
 				Logger.Log(S._("The file {0} could not be erased because the file's " +
 					"permissions prevent access to the file.", info.FullName), LogLevel.Error);
 			}
+			catch (SharingViolationException e)
+			{
+				Logger.Log(e.Message, LogLevel.Error);
+			}
 			finally
 			{
 				//Re-set the read-only flag if the file exists (i.e. there was an error)
@@ -356,11 +360,11 @@ namespace Eraser.DefaultPlugins
 						}
 					}
 
-					Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
-							info.FileName, S._("(locked by {0})",
-								processStr.ToString().Remove(processStr.Length - 2)).Trim()),
-						LogLevel.Error);
-					throw;
+					throw new SharingViolationException(S._(
+						"Could not force closure of file \"{0}\" {1}", info.FileName,
+						S._("(locked by {0})",
+							processStr.ToString().Remove(processStr.Length - 2)).Trim()),
+						info.FileName);
 				}
 			}
 		}
