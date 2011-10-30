@@ -93,15 +93,16 @@ namespace Util {
 	bool OpenHandle::Close()
 	{
 		//Open a handle to the owning process
-		HANDLE processHandle = OpenProcess(PROCESS_DUP_HANDLE, false, processId);
+		HANDLE processHandle = OpenProcess(PROCESS_DUP_HANDLE, false, ProcessId);
 
 		//Forcibly close the handle
+		HANDLE duplicateHandle = NULL;
 		DuplicateHandle(processHandle, static_cast<void*>(Handle), GetCurrentProcess(),
-			NULL, 0, false, DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE);
+			&duplicateHandle, 0, false, DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE);
+		CloseHandle(duplicateHandle);
 
 		//Check if the handle is closed
 		bool result = true;
-		HANDLE duplicateHandle = NULL;
 		if (DuplicateHandle(processHandle, static_cast<void*>(Handle), GetCurrentProcess(),
 			&duplicateHandle, 0, false, DUPLICATE_SAME_ACCESS))
 		{
