@@ -40,12 +40,14 @@ namespace Eraser
 	public partial class MainForm : Form
 	{
 		private BasePanel CurrPage;
-		private SchedulerPanel SchedulerPage = new SchedulerPanel();
-		private SettingsPanel SettingsPage = new SettingsPanel();
+		private SchedulerPanel SchedulerPage;
+		private SettingsPanel SettingsPage;
 
 		public MainForm()
 		{
 			InitializeComponent();
+			SettingsPage = new SettingsPanel();
+			SchedulerPage = new SchedulerPanel();
 			contentPanel.Controls.Add(SchedulerPage);
 			contentPanel.Controls.Add(SettingsPage);
 			if (!IsHandleCreated)
