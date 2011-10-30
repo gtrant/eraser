@@ -254,41 +254,20 @@ namespace Eraser.DefaultPlugins
 				if (isReadOnly = info.IsReadOnly)
 					info.IsReadOnly = false;
 
-				//Make sure the file does not have any attributes which may affect
-				//the erasure process
-				if ((info.Attributes & FileAttributes.Compressed) != 0 ||
-					(info.Attributes & FileAttributes.Encrypted) != 0 ||
-					(info.Attributes & FileAttributes.SparseFile) != 0)
-				{
-					//Log the error
-					Logger.Log(S._("The file {0} could not be erased because the file was " +
-						"either compressed, encrypted or a sparse file.", info.FullName),
-						LogLevel.Error);
-					return;
-				}
+				//Define the callback function for progress reporting.
+				ErasureMethodProgressFunction callback =
+					delegate(long lastWritten, long totalData, int currentPass)
+					{
+						if (Task.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
 
-				//Do not erase reparse points, as they will cause other references to the file
-				//to be to garbage.
-				if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
-					fsManager.EraseFileSystemObject(info, method,
-						delegate(long lastWritten, long totalData, int currentPass)
-						{
-							if (Task.Canceled)
-								throw new OperationCanceledException(S._("The task was cancelled."));
+						progress.Total = totalData;
+						progress.Completed += lastWritten;
+						OnProgressChanged(this, new ProgressChangedEventArgs(progress,
+							new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
+					};
 
-							progress.Total = totalData;
-							progress.Completed += lastWritten;
-							OnProgressChanged(this, new ProgressChangedEventArgs(progress,
-								new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
-						});
-				else
-					Logger.Log(S._("The file {0} is a hard link or a symbolic link thus the " +
-						"contents of the file was not erased.", LogLevel.Notice));
-
-				//Remove the file.
-				FileInfo fileInfo = info.File;
-				if (fileInfo != null)
-					fsManager.DeleteFile(fileInfo);
+				TryEraseStream(fsManager, method, info, callback);
 				progress.MarkComplete();
 			}
 			catch (UnauthorizedAccessException)
@@ -296,39 +275,93 @@ namespace Eraser.DefaultPlugins
 				Logger.Log(S._("The file {0} could not be erased because the file's " +
 					"permissions prevent access to the file.", info.FullName), LogLevel.Error);
 			}
-			catch (SharingViolationException)
-			{
-				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
-					throw;
-
-				StringBuilder processStr = new StringBuilder();
-				foreach (OpenHandle handle in OpenHandle.Close(info.FullName))
-				{
-					try
-					{
-						processStr.AppendFormat(
-							System.Globalization.CultureInfo.InvariantCulture,
-							"{0}, ", handle.Process.MainModule.FileName);
-					}
-					catch (System.ComponentModel.Win32Exception)
-					{
-						processStr.AppendFormat(
-							System.Globalization.CultureInfo.InvariantCulture,
-							"Process ID {0}, ", handle.Process.Id);
-					}
-				}
-
-				if (processStr.Length != 0)
-					Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
-							info.FileName, S._("(locked by {0})",
-								processStr.ToString().Remove(processStr.Length - 2)).Trim()),
-						LogLevel.Error);
-			}
 			finally
 			{
 				//Re-set the read-only flag if the file exists (i.e. there was an error)
 				if (isReadOnly && info.Exists && !info.IsReadOnly)
 					info.IsReadOnly = isReadOnly;
+			}
+		}
+
+		/// <summary>
+		/// Attempts to erase a stream, trying to close all open handles if a process has
+		/// a lock on the file.
+		/// </summary>
+		/// <param name="fsManager">The file system provider used to erase the stream.</param>
+		/// <param name="method">The erasure method to use to erase the stream.</param>
+		/// <param name="info">The stream to erase.</param>
+		/// <param name="callback">The erasure progress callback.</param>
+		private void TryEraseStream(FileSystem fsManager, ErasureMethod method, StreamInfo info,
+			ErasureMethodProgressFunction callback)
+		{
+			for (int i = 0; ; ++i)
+			{
+				try
+				{
+					//Make sure the file does not have any attributes which may affect
+					//the erasure process
+					if ((info.Attributes & FileAttributes.Compressed) != 0 ||
+						(info.Attributes & FileAttributes.Encrypted) != 0 ||
+						(info.Attributes & FileAttributes.SparseFile) != 0)
+					{
+						//Log the error
+						Logger.Log(S._("The file {0} could not be erased because the file was " +
+							"either compressed, encrypted or a sparse file.", info.FullName),
+							LogLevel.Error);
+						return;
+					}
+
+					//Do not erase reparse points, as they will cause other references to the file
+					//to be to garbage.
+					if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
+						fsManager.EraseFileSystemObject(info, method, callback);
+					else
+						Logger.Log(S._("The file {0} is a hard link or a symbolic link thus the " +
+							"contents of the file was not erased.", LogLevel.Notice));
+
+					//Remove the file.
+					FileInfo fileInfo = info.File;
+					if (fileInfo != null)
+						fsManager.DeleteFile(fileInfo);
+					return;
+				}
+				catch (SharingViolationException)
+				{
+					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+						throw;
+
+					//Try closing all open handles. If it succeeds, we can run the erase again.
+					//To prevent Eraser from deadlocking, we will only attempt this once. Some
+					//programs may be aggressive and keep a handle open in a tight loop.
+					List<OpenHandle> remainingHandles = OpenHandle.Close(info.FullName);
+					if (i == 0 && remainingHandles.Count == 0)
+						continue;
+
+					//Either we could not close all instances, or we already tried twice. Report
+					//the error.
+					StringBuilder processStr = new StringBuilder();
+					foreach (OpenHandle handle in remainingHandles)
+					{
+						try
+						{
+							processStr.AppendFormat(
+								System.Globalization.CultureInfo.InvariantCulture,
+								"{0}, ", handle.Process.MainModule.FileName);
+						}
+						catch (System.ComponentModel.Win32Exception)
+						{
+							processStr.AppendFormat(
+								System.Globalization.CultureInfo.InvariantCulture,
+								"Process ID {0}, ", handle.Process.Id);
+						}
+					}
+
+					if (processStr.Length != 0)
+						Logger.Log(S._("Could not force closure of file \"{0}\" {1}",
+								info.FileName, S._("(locked by {0})",
+									processStr.ToString().Remove(processStr.Length - 2)).Trim()),
+							LogLevel.Error);
+				}
 			}
 		}
 	}
