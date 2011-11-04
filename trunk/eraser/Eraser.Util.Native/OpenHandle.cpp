@@ -28,23 +28,26 @@ namespace Util {
 	{
 		List<OpenHandle^>^ handles = gcnew List<OpenHandle^>();
 
-		//Get the number of handles on the system then load up the complete list.
-		std::auto_ptr<SYSTEM_HANDLES> handlesList(new SYSTEM_HANDLES);
+		//Try to load up the complete list of handles open.
+		std::vector<char> handlesBuffer;
 		{
-			DWORD bufferSize = 0;
-			NtQuerySystemInformation(static_cast<SYSTEM_INFORMATION_CLASS>(SystemHandleInformation),
-				handlesList.get(), sizeof(SYSTEM_HANDLES), &bufferSize);
+			DWORD bufferSize = sizeof(SYSTEM_HANDLES);
+			NTSTATUS result = STATUS_SUCCESS;
+			do
+			{
+				handlesBuffer.resize(bufferSize);
+				result = NtQuerySystemInformation(
+					static_cast<SYSTEM_INFORMATION_CLASS>(SystemHandleInformation),
+					&handlesBuffer.front(), handlesBuffer.size(), &bufferSize);
+			}
+			while (!NT_SUCCESS(result));
 
-			//Then get the whole list
-			handlesList.reset(reinterpret_cast<PSYSTEM_HANDLES>(new char[bufferSize]));
-			NtQuerySystemInformation(static_cast<SYSTEM_INFORMATION_CLASS>(SystemHandleInformation),
-				handlesList.get(), bufferSize, &bufferSize);
-
-			if (bufferSize == 0)
-				throw gcnew InvalidOperationException(S::_(L"The list of open system handles could not be retrieved."));
+			if (!NT_SUCCESS(result))
+				throw gcnew InvalidOperationException("The list of open system handles could not be retrieved.");
 		}
 
 		//Iterate over the handles
+		SYSTEM_HANDLES* handlesList = reinterpret_cast<SYSTEM_HANDLES*>(&handlesBuffer.front());
 		for (ULONG i = 0; i != handlesList->NumberOfHandles; ++i)
 		{
 			//Only consider files
