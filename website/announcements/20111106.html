@@ -3,17 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <!-- InstanceBeginEditable name="Title" -->
-<title>Eraser :: Announcemens :: April 18, 2009</title>
+<title>Eraser :: Announcements :: November 6, 2011</title>
 <!-- InstanceEndEditable -->
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <link href="../style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../scripts.js"></script>
 <!-- InstanceBeginEditable name="head" -->
 <style type="text/css">
-table.changelog {
-	width: 100%;
-}
-
 table.changelog td {
 	vertical-align: top;
 }
@@ -46,14 +42,13 @@ code.hash {
 			<div class="article">
 				<div class="article_head">
 					<div class="title">
-						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 5.8.7-beta5 released!<!-- InstanceEndEditable --></h2>
-						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted by: Joel, 18 April 2009, 11.36am, +800 GMT <!-- InstanceEndEditable --></div>
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 6.0.9 released!<!-- InstanceEndEditable --></h2>
+						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted by: Joel, 6<sup>th</sup> November 2011, 1:30 pm +800GMT<!-- InstanceEndEditable --></div>
 					</div>
 				</div>
 
 				<!-- InstanceBeginEditable name="LeftContentEdit" -->
-				<p>Hello all! I know I've been keeping silence for quite a while, but I assure you Eraser is not dead. Just that I've been too busy to do much stuff recently. Anyway, I've spent a few hours going through the buglist and solving these last few v5 bugs:</p>
-				<h2>Changelog</h2>
+				<p>It has been one year since the last release of Eraser, and we are happy to announce the release of Eraser 6.0.9. Eraser 6.0.9 only contains bug fixes and is the most stable release of the Eraser 6.0 series; users are encouraged to upgrade to this version as soon as possible.</p>
 				<table class="changelog">
 					<tr>
 						<th>Revision</th>
@@ -61,58 +56,78 @@ code.hash {
 						<th>Author</th>
 					</tr>
 					<tr>
-						<td>882</td>
-						<td>Fixed the task completion action specifier for dragged-and-dropped files to the On-Demand as well as for tasks on the Scheduler</td>
-						<td class="author">Joel</td>
+						<th>2277</th>
+						<td>Fixed documentation errors when adding new tasks</td>
+						<td>Joel</td>
 					</tr>
 					<tr>
-						<td>883</td>
-						<td>Show the time the scheduled task will run even if it is running at midnight</td>
-						<td class="author">Joel</td>
+						<th>2280</th>
+						<td>Fixed fatal errors when erasing files which the current user do not have access to</td>
+						<td>Joel</td>
 					</tr>
 					<tr>
-						<td>884</td>
-						<td><ul>
-								<li>Fixed a 64-bit problem for ISAAC buffer fills (semantic, not really serious)</li>
-								<li>Fixed a wrong use of the equality operator leading to files being detected as encrypted when they are not</li>
-							</ul>
-						</td>
-						<td class="author">Joel</td>
+						<th>2305</th>
+						<td>Fixed updater with the change in server</td>
+						<td>Joel</td>
 					</tr>
 					<tr>
-						<td>885</td>
-						<td>Fixed the missing shell extension entries </td>
-						<td class="author">Joel</td>
+						<th>2315</th>
+						<td>Fixed bug in monthly schedules</td>
+						<td>Joel</td>
 					</tr>
 					<tr>
-						<td>886</td>
-						<td>Fixed the Visual C++ Redistributable install for 64-bit builds </td>
-						<td class="author">Joel</td>
+						<th>2327</th>
+						<td>Implementation suggestion by Jackjack that the title of balloon tips should be &quot;Task Completed&quot; and not &quot;Task Executed&quot; for clarity in <a href="http://trac.heidi.ie/ticket/388">#388</a>.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2328</th>
+						<td>Document working around UAC to erase unused disk space.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2331</th>
+						<td>Fixed bug in scheduler where tasks will only be run once per Eraser start up even if the schedule should have been triggered</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2333</th>
+						<td>Fixed memory leak when the Unlocker feature was enabled.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2338</th>
+						<td>Fixed some cases where file unlocking would still not allow a file to be unlocked for erasure.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2340</th>
+						<td>Fixed a situation where by a task would be initiated from the Explorer context menu and when Eraser was not running. Under some situations, the task will run but the UI will not reflect that.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2342</th>
+						<td>Fixed a crash when using the Unlocker code from Windows Vista.</td>
+						<td>Joel</td>
 					</tr>
 				</table>
-				<p>
-					<strong>Disclaimer: The code is still of <em>beta quality</em> and may not be as stable as the released versions of Eraser.</strong>
-					It is however good to note that there are no feature additions and are mainly feature fixes and therefore upgrading should constitute an increase in stability.
-				</p>
-				<p>
-					If you have read the disclaimer, follow the instructions about <strong><a href="../trac/wiki/InstallingBetas">installing betas</a></strong> then download the <strong><a href="../download.php?id=10">installer</a></strong> or the <strong><a href="../download.php?id=11">standalone (&quot;portable&quot;)</a></strong> edition.
-				</p>
-				<p>File hashes:</p>
-				<ul>
-					<li>Installer</li>
-					<ul>
-						<li>SHA-1:     <code class="hash">f93d4c43d738a962156ae6e9245e8ef59c926ce0</code></li>
-						<li>SHA-256:   <code class="hash">1cc0e746e4cbb041d1f67a6c90cfabe3b398b4febc956313360<br />63cec340b155b</code></li>
-					  <li>Whirlpool:   <code class="hash">4ca1cee10200fb1e52ebae9cc5ee53d4c4349af1c953e332d25<br />e6442dc4431633bc663321d0574050792777e2063520fa0770f<br />fd53fa84b0185cb207bc60ce9d</code></li>
-					</ul>
-					<li>Standalone</li>
-					<ul>
-						<li>SHA-1:     <code class="hash">88bc622669f110a01d487630105e1fe543ccd668</code></li>
-						<li>SHA-256:   <code class="hash">00113b1e81fc22d0a4ebca10e3820476d58a9d01e8e923a5b48<br />3b763cc76cb4c</code></li>
-						<li>Whirlpool: <code class="hash">9709eb3d4a029204cb43c4dfe224d2928d8d5b62c57fde8fa49<br />b14d5cd6f0257649aa59d7ed2549cde6d36867d620fb2b30d27<br />d5141d7782ad9c806e723639b6</code></li>
-					</ul>
-				</ul>
 				
+				<h3>Download/Hashes</h3>
+
+				<p>It is important to note that users downgrading from 6.1 should delete their Task Lists (%LOCALAPPDATA%\Eraser 6\Task List.ersx) before running Eraser 6.0.x as that will result in a crash of 6.0.x builds. If you are upgrading from an earlier 6.0.x build, and especially if you have defined custom erasure methods or Plausible Deniability files, if upon upgrading Eraser refuses to start after the upgrade you can try deleting the task list (the same file as mentioned earlier) and if that fails, the <strong>HKCU\Software\Eraser\Eraser 6</strong> registry key. Deleting the latter will result in a reset of all Eraser settings to defaults.
+				<p>Download Eraser 6.0.9 from <a href="http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.9/Eraser%206.0.9.2343.exe/download">SourceForge</a></p>
+				<ul>
+					<li>SHA-1:		<code class="hash">f99213536a8c0e0bcfddc75e389590fe60cf3a4f</code></li>
+					<li>RIPEMD-160:	<code class="hash">7a30950e08ec2a845ff6f3ec7cae9df344c702a4</code></li>
+					<li>SHA-256:	<code class="hash">4ce2ba1b4eabaf58b763ac456397b43ece17e9803e806bf405b28c386<br />
+a484f6a</code></li>
+					<li>SHA-512:	<code class="hash">099db2cbdeec920f267925d5733fec1bcb8b47eb4fa10adfe87a71cfd<br />
+b455c87c5d9d319ad98771833af7ee69321d5651e4fc32c9a1d2f9882<br />
+d613c3db21d8d6</code></li>
+					<li>Whirlpool:	<code class="hash">8bc1fe20abf82ebf8109e47c51d90c100bcdf41160ac1b8d7cb4c7e37<br />
+aac96577f8a93e11209f1916300ccdd2ff7e95c9267c441eb65246156<br />
+da4faae4309924</code></li>
+				</ul>
 				<!-- InstanceEndEditable -->
 			</div>
 			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
