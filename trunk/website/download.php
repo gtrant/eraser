@@ -70,9 +70,9 @@ if (!empty($_GET['id']))
 						<th>Downloads</th>
 					</tr>
 					<tr>
-						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.8/Eraser%206.0.8.2273.exe/download">Eraser 6.0.8.2273</a></td>
-						<td>6.0.8.2273</td>
-						<td>6/11/2010 9:30am</td>
+						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.9/Eraser%206.0.9.2343.exe/download">Eraser 6.0.9.2343</a></td>
+						<td>6.0.8.2343</td>
+						<td>6/11/2011 1:30pm</td>
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
