@@ -36,6 +36,14 @@ function http_digest_parse($txt) {
 
 //Challenge the client if we did not receive the digest
 if (empty($_SERVER['PHP_AUTH_DIGEST']))
+{
+	if (!empty($_SERVER['PHP_HTTP_AUTHORIZATION']))
+	{
+		if (strtolower(substr($_SERVER['PHP_HTTP_AUTHORIZATION'], 0, 6)) == 'digest')
+			$_SERVER['PHP_AUTH_DIGEST'] = substr($_SERVER['PHP_HTTP_AUTHORIZATION'], 7);
+	}
+}
+if (empty($_SERVER['PHP_AUTH_DIGEST']))
 	http_digest_challenge();
 
 //Analyze the PHP_AUTH_DIGEST variable
@@ -112,7 +120,8 @@ try
 catch (Exception $e)
 {
 	ob_end_clean();
-	header('500 Internal Server Error');
-	echo $e->getMessage();
+	header('HTTP/1.1 500 Internal Server Error');
+	header('Status: 500 Internal Server Error');
+	die($e->getMessage());
 }
 ?>
