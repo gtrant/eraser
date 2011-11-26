@@ -50,9 +50,9 @@ try
 			$argv[1], $argv[2], filesize($argv[3]), urlencode(HTTP_WEB_ROOT . $installerPath)),
 			$serverResponse, $build_username, $build_password);
 		fseek($serverResponse, 0);
-		while (($line = fgets($handle, 4096)) !== false)
+		while (($line = fgetss($serverResponse, 4096)) !== false)
 			echo $line;
-		if (!feof($handle))
+		if (!feof($serverResponse))
 			throw new Exception('Unexpected fgets() failure');
 		fclose($serverResponse);
 	}
