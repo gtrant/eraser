@@ -5,7 +5,12 @@
 
 <Files BuildServer.php>
 	order allow,deny
-	allow from trac.heidi.ie
+	allow from all
+	<IfModule !php5_module>
+		RewriteEngine on
+		RewriteCond %{HTTP:Authorization} !^$
+		RewriteRule .* - [E=PHP_HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+	</IfModule>
 </Files>
 
 order deny,allow
