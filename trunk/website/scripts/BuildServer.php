@@ -54,10 +54,11 @@ $valid_response = md5($A1 . ':' . $credentials['nonce'] . ':' . $credentials['nc
 if ($credentials['response'] != $valid_response)
 	http_digest_challenge();
 
-require('Build.php');
-require('BuildUtil.php');
-require('Credentials.php');
-require('Database.php');
+require_once('Build.php');
+require_once('BuildUtil.php');
+require_once('BuildBranch.php');
+require_once('Credentials.php');
+require_once('Database.php');
 
 try
 {
@@ -69,7 +70,6 @@ try
 		throw new Exception('Invalid build information provided.');
 
 	//Get the branch the notification is for
-	define('HTTP_WEB_ROOT', 'http://eraser.sourceforge.net');
 	$branch = $branches[$_GET['branch']];
 
 	//Insert the build to the database.
