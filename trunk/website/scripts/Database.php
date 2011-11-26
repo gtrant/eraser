@@ -15,7 +15,7 @@ class Database extends PDO
 {
 	public function __construct()
 	{
-		parent::__construct('mysql:host=localhost;dbname=eraser', $GLOBALS['database_username'], $GLOBALS['database_password']);
+		parent::__construct('mysql:host=localhost;dbname=' . $GLOBALS['database_name'], $GLOBALS['database_username'], $GLOBALS['database_password']);
 		$this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	}
 }
