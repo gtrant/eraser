@@ -14,8 +14,8 @@ if (count($argv) < 4)
 }
 
 require_once('Credentials.php');
-require_once('Database.php');
-require_once('Build.php');
+require_once('BuildBranch.php');
+require_once('BuildUtil.php');
 
 $file = fopen($argv[3], 'rb');
 if (!$file)
@@ -39,32 +39,11 @@ try
 	$fileName = sprintf('Eraser %s.%d.%s', $branch->Version, $argv[2], $pathInfo['extension']);
 	$installerPath = sprintf('/builds/%s/%s', $branch->ID, $fileName);
 
-	//Then upload the installer to the URL.
+	//Upload the installer to the URL.
 	Upload(SHELL_WEB_ROOT . $installerPath, $file, $sftp_username, $sftp_password);
-
-	//Insert the build to the database.
-	printf('Inserting build into database... ');
-	Build::CreateBuild($branch->ID, intval($argv[2]), filesize($argv[3]), HTTP_WEB_ROOT . $installerPath);
-	printf("Inserted.\n");
-
-	//Remove old builds
-	printf('Removing old builds from database...' . "\n");
-
-	$pdo = new Database();
-	$statement = $pdo->prepare('UPDATE downloads SET Superseded=1 WHERE DownloadID=?');
-
-	$builds = Build::GetActive($branch->ID);
-	for ($i = 0, $j = count($builds) - 3; $i < $j; ++$i)
-	{
-		printf("\n\t" . 'Removing build %s' . "\n\t\t", $builds[$i]->Name);
-
-		//Delete the copy on the SourceForge web server.
-		Delete(SHELL_WEB_ROOT . parse_url($builds[$i]->Link, PHP_URL_PATH), $sftp_username,
-			$sftp_password);
-
-		//Remove from the database
-		$statement->execute(array($builds[$i]->ID));
-	}
+	
+	//Then update our website builds information
+	
 }
 catch (Exception $e)
 {
