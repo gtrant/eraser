@@ -23,6 +23,29 @@ function Upload($url, $stream, $username = '', $password = '')
 	printf("File uploaded.\n");
 }
 
+/**
+ * Downloads the contents of a particular URL to a stream.
+ * 
+ * @param string $url      The URL to download.
+ * @param string $stream   The stream to save to.
+ * @param string $username The username of the user, if required.
+ * @param string $password The password of the user, if required.
+ */
+function Download($url, $stream, $username = '', $password = '')
+{
+	printf('Downloading %s... ', $url);
+
+	$curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_USERPWD, sprintf('%s:%s', $username, $password));
+	curl_setopt($curl, CURLOPT_FILE, $stream);
+
+	if (curl_exec($curl) === false)
+		throw new Exception('cURL Error: ' . curl_error($curl));
+	curl_close($curl);
+
+	printf("File downloaded.\n");
+}
+
 function Delete($url, $username = '', $password = '')
 {
 	printf('Deleting %s... ', $url);

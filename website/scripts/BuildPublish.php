@@ -43,7 +43,25 @@ try
 	Upload(SHELL_WEB_ROOT . $installerPath, $file, $sftp_username, $sftp_password);
 	
 	//Then update our website builds information
-	
+	$serverResponse = fopen('php://temp', 'rw');
+	try
+	{
+		Download(sprintf('http://eraser.heidi.ie/scripts/BuildServer.php?branch=%s&revision=%d&filesize=%d&url=%s',
+			$argv[1], $argv[2], filesize($argv[3]), urlencode(HTTP_WEB_ROOT . $installerPath)),
+			$serverResponse, $build_username, $build_password);
+		fseek($serverResponse, 0);
+		while (($line = fgets($handle, 4096)) !== false)
+			echo $line;
+		if (!feof($handle))
+			throw new Exception('Unexpected fgets() failure');
+		fclose($serverResponse);
+	}
+	catch (Exception $e)
+	{
+		fclose($serverResponse);
+		Delete(SHELL_WEB_ROOT . $installerPath, $sftp_username, $sftp_password);
+		throw $e;
+	}
 }
 catch (Exception $e)
 {
