@@ -36,6 +36,8 @@ function Download($url, $stream, $username = '', $password = '')
 	printf('Downloading %s... ', $url);
 
 	$curl = curl_init($url);
+	curl_setopt($curl, CURLOPT_FAILONERROR, true);
+	curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANYSAFE);
 	curl_setopt($curl, CURLOPT_USERPWD, sprintf('%s:%s', $username, $password));
 	curl_setopt($curl, CURLOPT_FILE, $stream);
 
