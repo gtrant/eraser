@@ -1,5 +1,4 @@
 <?php
-
 //HTTP Digest authentication code, modified from http://php.net/manual/en/features.http-auth.php
 define('HTTP_DIGEST_REALM', 'Build Server');
 
@@ -55,5 +54,51 @@ $valid_response = md5($A1 . ':' . $credentials['nonce'] . ':' . $credentials['nc
 if ($credentials['response'] != $valid_response)
 	http_digest_challenge();
 
+require('Build.php');
+require('BuildUtil.php');
+require('Credentials.php');
+require('Database.php');
 
+try
+{
+	//Check that we have all the necessary information
+	$branches = BuildBranch::Get();
+	if (!array_key_exists($_GET['branch'], $branches))
+		throw new Exception('The branch ' . $_GET['branch'] . ' does not exist.');
+	if (!is_numeric($_GET['revision']) || !is_numeric($_GET['filesize']) || empty($_GET['url']))
+		throw new Exception('Invalid build information provided.');
+
+	//Get the branch the notification is for
+	define('HTTP_WEB_ROOT', 'http://eraser.sourceforge.net');
+	$branch = $branches[$_GET['branch']];
+
+	//Insert the build to the database.
+	printf('Inserting build into database... ');
+	Build::CreateBuild($branch->ID, intval($_GET['revision']), intval($_GET['filesize']), $_GET['url']);
+	printf("Inserted.\n");
+
+	//Remove old builds
+	printf('Removing old builds from database...' . "\n");
+
+	$pdo = new Database();
+	$statement = $pdo->prepare('UPDATE downloads SET Superseded=1 WHERE DownloadID=?');
+
+	$builds = Build::GetActive($branch->ID);
+	for ($i = 0, $j = count($builds) - 3; $i < $j; ++$i)
+	{
+		printf("\n\t" . 'Removing build %s' . "\n\t\t", $builds[$i]->Name);
+
+		//Delete the copy on the SourceForge web server.
+		Delete(SHELL_WEB_ROOT . parse_url($builds[$i]->Link, PHP_URL_PATH), $sftp_username,
+			$sftp_password);
+
+		//Remove from the database
+		$statement->execute(array($builds[$i]->ID));
+	}
+}
+catch (Exception $e)
+{
+	echo $e->getMessage();
+	exit(1);
+}
 ?>
