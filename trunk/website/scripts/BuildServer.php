@@ -73,6 +73,7 @@ try
 	$branch = $branches[$_GET['branch']];
 
 	//Insert the build to the database.
+	ob_start();
 	printf('Inserting build into database... ');
 	Build::CreateBuild($branch->ID, intval($_GET['revision']), intval($_GET['filesize']), $_GET['url']);
 	printf("Inserted.\n");
@@ -95,10 +96,14 @@ try
 		//Remove from the database
 		$statement->execute(array($builds[$i]->ID));
 	}
+	
+	header('content-type: text/plain');
+	ob_end_flush();
 }
 catch (Exception $e)
 {
+	ob_end_clean();
+	header('500 Internal Server Error');
 	echo $e->getMessage();
-	exit(1);
 }
 ?>
