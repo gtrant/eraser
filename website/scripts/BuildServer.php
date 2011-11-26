@@ -7,7 +7,7 @@ function http_digest_challenge() {
 	header('HTTP/1.1 401 Unauthorized');
 	header(sprintf('WWW-Authenticate: Digest realm="%s",qop="auth",nonce="%s",opaque="%s"',
 		HTTP_DIGEST_REALM, uniqid(), md5(HTTP_DIGEST_REALM)));
-	exit;
+	die('Authorisation required.');
 }
 
 //Function to parse the HTTP auth header
@@ -34,20 +34,30 @@ function http_digest_parse($txt) {
 	return $needed_parts ? false : $data;
 }
 
-//user => password
-$users = array('admin' => 'mypass', 'guest' => 'guest');
-
 //Challenge the client if we did not receive the digest
 if (empty($_SERVER['PHP_AUTH_DIGEST']))
 	http_digest_challenge();
 
 //Analyze the PHP_AUTH_DIGEST variable
 $credentials = http_digest_parse($_SERVER['PHP_AUTH_DIGEST']);
-if (!$credentials || !isset($users[$credentials['username']]))
+if (!$credentials)
 	http_digest_challenge();
 
-//Check the response
-$A1 = md5($credentials['username'] . ':' . HTTP_DIGEST_REALM . ':' . $users[$credentials['username']]);
+//Does the user exist?
+require_once('Credentials.php');
+require_once('Database.php');
+$database = new Database();
+$count = $database->query(sprintf('SELECT COUNT(*) FROM build_slaves WHERE Username=%s',
+	$database->quote($credentials['username'])))->fetch();
+$count = $count[0];
+if (!$count)
+	http_digest_challenge();
+
+//Check the response for the password.
+$password = $database->query(sprintf('SELECT Password FROM build_slaves WHERE Username=%s',
+	$database->quote($credentials['username'])))->fetch();
+$password = $password['Password'];
+$A1 = md5($credentials['username'] . ':' . HTTP_DIGEST_REALM . ':' . $password);
 $A2 = md5($_SERVER['REQUEST_METHOD'] . ':' . $credentials['uri']);
 $valid_response = md5($A1 . ':' . $credentials['nonce'] . ':' . $credentials['nc'] . ':' .
 		$credentials['cnonce'] . ':' . $credentials['qop'] . ':' . $A2);
@@ -57,17 +67,15 @@ if ($credentials['response'] != $valid_response)
 require_once('Build.php');
 require_once('BuildUtil.php');
 require_once('BuildBranch.php');
-require_once('Credentials.php');
-require_once('Database.php');
 
 try
 {
 	//Check that we have all the necessary information
 	$branches = BuildBranch::Get();
+	if (!is_numeric($_GET['revision']) || !is_numeric($_GET['filesize']) || empty($_GET['url']) || empty($_GET['branch']))
+		throw new Exception('Invalid build information provided.');
 	if (!array_key_exists($_GET['branch'], $branches))
 		throw new Exception('The branch ' . $_GET['branch'] . ' does not exist.');
-	if (!is_numeric($_GET['revision']) || !is_numeric($_GET['filesize']) || empty($_GET['url']))
-		throw new Exception('Invalid build information provided.');
 
 	//Get the branch the notification is for
 	$branch = $branches[$_GET['branch']];
