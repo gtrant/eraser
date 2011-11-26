@@ -1,6 +1,7 @@
 <?php
 require('scripts/Download.php');
 require('scripts/Build.php');
+require('scripts/BuildBranch.php');
 require('scripts/SourceForge.php');
 
 if (!empty($_GET['id']))
