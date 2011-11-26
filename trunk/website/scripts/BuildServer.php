@@ -98,6 +98,7 @@ try
 		printf("\n\t" . 'Removing build %s' . "\n\t\t", $builds[$i]->Name);
 
 		//Delete the copy on the SourceForge web server.
+		define('SHELL_WEB_ROOT', 'sftp://web.sourceforge.net/home/groups/e/er/eraser/htdocs');
 		Delete(SHELL_WEB_ROOT . parse_url($builds[$i]->Link, PHP_URL_PATH), $sftp_username,
 			$sftp_password);
 
