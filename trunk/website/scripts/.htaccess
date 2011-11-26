@@ -3,5 +3,10 @@
 	php_value display_errors Off
 </IfModule>
 
+<Files BuildServer.php>
+	order allow,deny
+	allow from trac.heidi.ie
+</Files>
+
 order deny,allow
 deny from all
