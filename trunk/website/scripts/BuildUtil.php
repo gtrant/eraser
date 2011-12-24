@@ -36,13 +36,18 @@ function Download($url, $stream, $username = '', $password = '')
 	printf('Downloading %s... ', $url);
 
 	$curl = curl_init($url);
-	curl_setopt($curl, CURLOPT_FAILONERROR, true);
 	curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANYSAFE);
 	curl_setopt($curl, CURLOPT_USERPWD, sprintf('%s:%s', $username, $password));
 	curl_setopt($curl, CURLOPT_FILE, $stream);
 
 	if (curl_exec($curl) === false)
 		throw new Exception('cURL Error: ' . curl_error($curl));
+	
+	//Check if we have a HTTP error
+	$responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+	if ($responseCode === false || intval($responseCode) >= 400)
+		throw new Exception('HTTP Error: Server returned HTTP error code ' .
+			$responseCode);
 	curl_close($curl);
 
 	printf("File downloaded.\n");
