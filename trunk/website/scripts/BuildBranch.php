@@ -23,7 +23,7 @@ class BuildBranch
 	public static function Get()
 	{
 		return array(
-			'Eraser6' => new BuildBranch('Eraser6', 'Eraser 6.0', '6.0.8'),
+			'Eraser6' => new BuildBranch('Eraser6', 'Eraser 6.0', '6.0.10'),
 			'Eraser6.2' => new BuildBranch('Eraser6.2', 'Eraser 6.2', '6.1.0')
 		);
 	}
