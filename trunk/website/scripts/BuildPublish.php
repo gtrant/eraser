@@ -17,6 +17,25 @@ require_once('Credentials.php');
 require_once('BuildBranch.php');
 require_once('BuildUtil.php');
 
+/**
+ * Reads a HTTP response stream and strips it of HTML, returning as a buffer.
+ * This is similar to file_get_contents
+ * 
+ * @param resource $file The file stream to read.
+ * @return string The contents of the response, without HTML.
+ * @throws Exception An I/O error occurred.
+ */
+function http_get_contents($file)
+{
+	$result = '';
+	while (($line = fgetss($file, 4096)) !== false)
+		$result .= $line . "\n";
+	if (!feof($file))
+		throw new Exception('Unexpected fgets() failure');
+
+	return $result;
+}
+
 $file = fopen($argv[3], 'rb');
 if (!$file)
 {
@@ -50,17 +69,21 @@ try
 			$argv[1], $argv[2], filesize($argv[3]), urlencode(HTTP_WEB_ROOT . $installerPath)),
 			$serverResponse, $build_username, $build_password);
 		fseek($serverResponse, 0);
-		while (($line = fgetss($serverResponse, 4096)) !== false)
-			echo $line;
-		if (!feof($serverResponse))
-			throw new Exception('Unexpected fgets() failure');
+		echo http_get_contents($serverResponse);
 		fclose($serverResponse);
 	}
 	catch (Exception $e)
 	{
+		fseek($serverResponse, 0);
+		$serverResponseText = http_get_contents($serverResponse);
 		fclose($serverResponse);
+		
+		echo 'Error: ' . $e->getMessage();
+		if (!empty($serverResponseText))
+			echo " with error message:\n" . $serverResponseText . "\n";
+		
 		Delete(SHELL_WEB_ROOT . $installerPath, $sftp_username, $sftp_password);
-		throw $e;
+		exit(1);
 	}
 }
 catch (Exception $e)
