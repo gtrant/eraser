@@ -72,10 +72,48 @@ function Delete($url, $username = '', $password = '')
 	));
 
 	if (curl_exec($curl) === false)
-		throw new Exception('cURL Error: ' . curl_error($curl));
+	{
+		$scheme = parse_url($url, PHP_URL_SCHEME);
+		if (curl_errno($curl) == CURLE_UNSUPPORTED_PROTOCOL && $scheme == 'sftp')
+			return Delete_Sftp($url, $username, $password);
+		
+		throw new Exception('cURL Error ' . $scheme.curl_errno($curl) . ': '. curl_error($curl));
+	}
 	fclose($stream);
 	curl_close($curl);
 
+	printf("File deleted.\n");
+}
+
+function Delete_Sftp($url, $username = '', $password = '')
+{
+	echo 'Trying alternative method... ';
+	$urlInfo = parse_url($url);
+	
+	//Connect to the server and authenticate the server.
+	$ssh2 = ssh2_connect($urlInfo['host'], $urlInfo['port']);
+	$knownFingerprints = array(
+		'b0a8eb30ce1a0e6a4d7a6b3a0ac62760'
+	);
+	if (!in_array($knownFingerprints, ssh2_fingerprint($ssh2, SSH2_FINGERPRINT_SHA1 | SSH2_FINGERPRINT_HEX)))
+	{
+		throw new Exception(sprintf('Authentication Error: The fingerprint provided ' .
+			'by %s is not recognised, disconnecting.', $urlInfo['host']));
+	}
+	
+	//Authenticate ourselves
+	if (!ssh2_auth_password($ssh2, $username, $password))
+	{
+		throw new Exception('Authentication Error: The credentials provided are incorrect.');
+	}
+	
+	//Delete the file
+	$sftp = ssh2_sftp($ssh2);
+	if (!ssh2_sftp_unlink($sftp, $urlInfo['path']))
+	{
+		throw new Exception(sprintf('SFTP Error: Could not delete file %s.', $urlInfo['path']));
+	}
+	
 	printf("File deleted.\n");
 }
 ?>
