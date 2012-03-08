@@ -38,11 +38,9 @@
 
 //7-zip SDK
 extern "C" {
+	#include <C/7z.h>
+	#include <C/7zAlloc.h>
 	#include <C/7zCrc.h>
-	#include <C/Archive/7z/7zIn.h>
-	#include <C/Archive/7z/7zAlloc.h>
-	#include <C/Archive/7z/7zDecode.h>
-	#include <C/Archive/7z/7zExtract.h>
 }
 
 //Boost

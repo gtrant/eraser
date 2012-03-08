@@ -115,7 +115,7 @@ private:
 	size_t BufferSize;
 	size_t CurrentOffset;
 
-	static SRes LZMemStreamLook(void* object, void** buf, size_t* size)
+	static SRes LZMemStreamLook(void* object, const void** buf, size_t* size)
 	{
 		if (*size == 0)
 			return SZ_OK;
@@ -237,7 +237,7 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		//Create the output file
 		size_t convertedChars = 0;
 		wchar_t fileName[MAX_PATH];
-		mbstowcs_s(&convertedChars, fileName, file->Name, sizeof(fileName) / sizeof(fileName[0]));
+		SzArEx_GetFileNameUtf16(&db, i, reinterpret_cast<UInt16*>(fileName));
 		
 		//Split the path to get the file name only.
 		wchar_t baseFileName[MAX_PATH];
@@ -258,7 +258,7 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		//Extract the file
 		while (result == SZ_OK && destFileSize)
 		{
-			result = SzAr_Extract(&db, &stream.InStream, i, &blockIndex,
+			result = SzArEx_Extract(&db, &stream.InStream, i, &blockIndex,
 				&outBuffer, &outBufferSize, &offset, &processedSize, &allocImp,
 				&allocTempImp);
 			if (result != SZ_OK)
