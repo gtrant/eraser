@@ -26,11 +26,11 @@
 			<Directory Id="INSTALLLOCATION" Name="Eraser">
 				<!-- Dependencies (of Eraser.Shell.Dll) -->
 				<?if $(sys.BUILDARCH) = "x64"?>
-					<Merge Id="VCRedist" SourceFile="Merge Modules\Microsoft_VC100_CRT_x86_x64.msm"
+					<Merge Id="VCRedist" SourceFile="Merge Modules\Microsoft_VC100_CRT_x64.msm"
 						DiskId="1" Language="0"/>
-					<Merge Id="VCAtlRedist" SourceFile="Merge Modules\Microsoft_VC100_ATL_x86_x64.msm"
+					<Merge Id="VCAtlRedist" SourceFile="Merge Modules\Microsoft_VC100_ATL_x64.msm"
 						DiskId="1" Language="0"/>
-					<Merge Id="VCMfcRedist" SourceFile="Merge Modules\Microsoft_VC100_MFC_x86_x64.msm"
+					<Merge Id="VCMfcRedist" SourceFile="Merge Modules\Microsoft_VC100_MFC_x64.msm"
 						DiskId="1" Language="0"/>
 				<?else?>
 					<Merge Id="VCRedist" SourceFile="Merge Modules\Microsoft_VC100_CRT_x86.msm"
