@@ -1,8 +1,3 @@
-<IfModule php5_module>
-	php_value log_errors On
-	php_value display_errors Off
-</IfModule>
-
 <Files BuildServer.php>
 	order allow,deny
 	allow from all
