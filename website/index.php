@@ -128,14 +128,7 @@
 					<li>
 						<img src="images/usr_developer.gif" alt="" width="17" height="17" />Developers:
 						<ul>
-							<li>Kasra Nassiri</li>
 							<li><a href="http://lemarquis.deviantart.com/" target="_blank">Dennis van Lith</a> (UX)</li>
-						</ul>
-					</li>
-					<li>
-						<img src="images/usr_designer.gif" alt="" width="17" height="17" />Support/Marketing:
-						<ul>
-							<li>Overwriter (Support)</li>
 						</ul>
 					</li>
 					<li><a href="contributing.html">Interested in helping Eraser?</a></li>
