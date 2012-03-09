@@ -110,7 +110,14 @@ namespace Eraser.Util
 			else
 				res = assemblies[assembly];
 
-			string result = res.GetString(Escape(text), Thread.CurrentThread.CurrentUICulture);
+			string result = null;
+			try
+			{
+				result = res.GetString(Escape(text), Thread.CurrentThread.CurrentUICulture);
+			}
+			catch (MissingManifestResourceException)
+			{
+			}
 #if DEBUG
 			return string.IsNullOrEmpty(result) ? text : Unescape(result);
 #else
