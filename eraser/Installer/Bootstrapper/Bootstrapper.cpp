@@ -278,19 +278,19 @@ void ExtractTempFiles(std::wstring pathToExtract)
 
 bool HasNetFramework()
 {
-	const std::wstring versionKey(L"v3.5");
+	const std::wstring versionKey(L"v4");
 
 	//Open the key for reading
 	Handle<HKEY> key;
 	DWORD result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-		(L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\" + versionKey).c_str(),
+		(L"SOFTWARE\\Microsoft\\NET Framework Setup\\NDP\\" + versionKey + L"\\Full").c_str(),
 		0, KEY_READ, key);
 
 	//Retry for 64-bit WoW
 	if (result == ERROR_FILE_NOT_FOUND)
 	{
 		result = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-			(L"SOFTWARE\\Wow6432Node\\Microsoft\\NET Framework Setup\\NDP\\" + versionKey).c_str(),
+			(L"SOFTWARE\\Wow6432Node\\Microsoft\\NET Framework Setup\\NDP\\" + versionKey + L"\\Full").c_str(),
 			0, KEY_READ, key);
 
 		if (result == ERROR_FILE_NOT_FOUND)
@@ -339,7 +339,7 @@ bool HasNetFramework()
 		previousDot = nextDot;
 	}
 
-	return versionComponents[0] == 3 && versionComponents[1] == 5 && versionComponents[2] >= 30729;
+	return versionComponents[0] == 4 && versionComponents[1] >= 0 && versionComponents[2] >= 30319;
 }
 
 int CreateProcessAndWait(const std::wstring& commandLine, const std::wstring& appName)
@@ -392,9 +392,9 @@ bool InstallNetFramework(std::wstring tempDir, bool quiet)
 	if (std::wstring(L"\\/").find(tempDir[tempDir.length() - 1]) == std::wstring::npos)
 		tempDir += L"\\";
 	std::wstring commandLine(L'"' + tempDir);
-	commandLine += L"dotnetfx35.exe\" /norestart";
+	commandLine += L"dotNetFx40_Full_setup.exe\" /norestart";
 
-	//If the user wants it quiet then pass the /q:a switch
+	//If the user wants it quiet then pass the /q switch
 	if (quiet)
 		commandLine += L" /q";
 
