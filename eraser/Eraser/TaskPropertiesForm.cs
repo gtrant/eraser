@@ -206,8 +206,8 @@ namespace Eraser
 		private void data_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
 		{
 			ErasureTarget target = task.Targets[e.ItemIndex];
-			FileInfo info = new FileInfo(target.UIText);
-			e.Item = new ListViewItem(info.GetCompactPath(data.Columns[0].Width, data.Font));
+			e.Item = new ListViewItem(PathUtil.GetCompactPath(target.UIText,
+				data.Columns[0].Width, data.Font));
 			e.Item.ToolTipText = target.UIText;
 
 			e.Item.SubItems.Add(target.Method == ErasureMethodRegistrar.Default ?

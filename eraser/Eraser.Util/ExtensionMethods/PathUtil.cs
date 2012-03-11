@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Eraser.Util.ExtensionMethods
 {
@@ -108,6 +110,56 @@ namespace Eraser.Util.ExtensionMethods
 					return false;
 
 			return true;
+		}
+
+		/// <summary>
+		/// Compacts the file path, fitting in the given width.
+		/// </summary>
+		/// <param name="longPath">The path to compact.</param>
+		/// <param name="newWidth">The target width of the text.</param>
+		/// <param name="drawFont">The font used for drawing the text.</param>
+		/// <returns>The compacted file path.</returns>
+		public static string GetCompactPath(string longPath, int newWidth, Font drawFont)
+		{
+			using (Control ctrl = new Control())
+			using (Graphics g = ctrl.CreateGraphics())
+			{
+				//First check if the source string is too long.
+				int width = g.MeasureString(longPath, drawFont).ToSize().Width;
+				if (width <= newWidth)
+					return longPath;
+
+				//It is, shorten it.
+				int aveCharWidth = width / longPath.Length;
+				int charCount = newWidth / aveCharWidth;
+				StringBuilder builder = new StringBuilder();
+				builder.Append(longPath);
+				builder.EnsureCapacity(charCount);
+
+				while (g.MeasureString(builder.ToString(), drawFont).Width > newWidth)
+				{
+					if (!NativeMethods.PathCompactPathEx(builder, longPath,
+						(uint)charCount--, 0))
+					{
+						return string.Empty;
+					}
+				}
+
+				return builder.ToString();
+			}
+		}
+
+		/// <summary>
+		/// Compacts the file path, fitting in the given width.
+		/// </summary>
+		/// <param name="longPath">The path to compact.</param>
+		/// <param name="newWidth">The target width of the text.</param>
+		/// <param name="control">The control on which this text is drawn. This is used
+		/// for font information.</param>
+		/// <returns>The compacted file path.</returns>
+		public static string GetCompactPath(string longPath, int newWidth, Control control)
+		{
+			return GetCompactPath(longPath, newWidth, control.Font);
 		}
 	}
 }

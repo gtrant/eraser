@@ -197,33 +197,7 @@ namespace Eraser.Util.ExtensionMethods
 		/// <returns>The compacted file path.</returns>
 		public static string GetCompactPath(this FileSystemInfo info, int newWidth, Font drawFont)
 		{
-			using (Control ctrl = new Control())
-			{
-				//First check if the source string is too long.
-				Graphics g = ctrl.CreateGraphics();
-				string longPath = info.FullName;
-				int width = g.MeasureString(longPath, drawFont).ToSize().Width;
-				if (width <= newWidth)
-					return longPath;
-
-				//It is, shorten it.
-				int aveCharWidth = width / longPath.Length;
-				int charCount = newWidth / aveCharWidth;
-				StringBuilder builder = new StringBuilder();
-				builder.Append(longPath);
-				builder.EnsureCapacity(charCount);
-
-				while (g.MeasureString(builder.ToString(), drawFont).Width > newWidth)
-				{
-					if (!NativeMethods.PathCompactPathEx(builder, longPath,
-						(uint)charCount--, 0))
-					{
-						return string.Empty;
-					}
-				}
-
-				return builder.ToString();
-			}
+			return PathUtil.GetCompactPath(info.FullName, newWidth, drawFont);
 		}
 
 		/// <summary>
