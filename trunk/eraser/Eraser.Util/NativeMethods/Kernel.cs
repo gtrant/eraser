@@ -23,6 +23,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
+
+using System.Security.Permissions;
+using System.Runtime.ConstrainedExecution;
 using Microsoft.Win32.SafeHandles;
 
 namespace Eraser.Util
@@ -901,8 +904,27 @@ namespace Eraser.Util
 		/// INVALID_HANDLE_VALUE error code. To get extended error information,
 		/// call GetLastError.</returns>
 		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-		public static extern SafeFileHandle FindFirstVolume(StringBuilder lpszVolumeName,
-			uint cchBufferLength);
+		public static extern SafeFindVolumeHandle FindFirstVolume(
+			StringBuilder lpszVolumeName, uint cchBufferLength);
+
+		/// <summary>
+		/// Implements a Safe handle for FindFirstVolume.
+		/// </summary>
+		[SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
+		[SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
+		public class SafeFindVolumeHandle : SafeHandleMinusOneIsInvalid
+		{
+			internal SafeFindVolumeHandle()
+				: base(true)
+			{
+			}
+
+			[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
+			protected override bool ReleaseHandle()
+			{
+				return FindVolumeClose(handle);
+			}
+		}
 
 		/// <summary>
 		/// Continues a volume search started by a call to the FindFirstVolume
@@ -922,7 +944,7 @@ namespace Eraser.Util
 		/// that case, close the search with the FindVolumeClose function.</returns>
 		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindNextVolume(SafeHandle hFindVolume,
+		public static extern bool FindNextVolume(SafeFindVolumeHandle hFindVolume,
 			StringBuilder lpszVolumeName, uint cchBufferLength);
 
 		/// <summary>
@@ -937,7 +959,7 @@ namespace Eraser.Util
 		/// information, call GetLastError.</returns>
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindVolumeClose(SafeHandle hFindVolume);
+		internal static extern bool FindVolumeClose(IntPtr hFindVolume);
 
 		/// <summary>
 		/// Retrieves the name of a volume mount point on the specified volume.
@@ -958,9 +980,28 @@ namespace Eraser.Util
 		/// return value is the INVALID_HANDLE_VALUE error code. To get extended
 		/// error information, call GetLastError.</returns>
 		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-		public static extern SafeFileHandle FindFirstVolumeMountPoint(
+		public static extern SafeFindVolumeMountPointHandle FindFirstVolumeMountPoint(
 			string lpszRootPathName, StringBuilder lpszVolumeMountPoint,
 			uint cchBufferLength);
+
+		/// <summary>
+		/// Implements a Safe handle for FindFirstVolumeMountPoint.
+		/// </summary>
+		[SecurityPermission(SecurityAction.InheritanceDemand, UnmanagedCode = true)]
+		[SecurityPermission(SecurityAction.Demand, UnmanagedCode = true)]
+		public class SafeFindVolumeMountPointHandle : SafeHandleMinusOneIsInvalid
+		{
+			internal SafeFindVolumeMountPointHandle()
+				: base(true)
+			{
+			}
+
+			[ReliabilityContract(Consistency.WillNotCorruptState, Cer.MayFail)]
+			protected override bool ReleaseHandle()
+			{
+				return FindVolumeMountPointClose(handle);
+			}
+		}
 
 		/// <summary>
 		/// Continues a volume mount point search started by a call to the
@@ -982,7 +1023,7 @@ namespace Eraser.Util
 		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool FindNextVolumeMountPoint(
-			SafeHandle hFindVolumeMountPoint, StringBuilder lpszVolumeMountPoint,
+			SafeFindVolumeMountPointHandle hFindVolumeMountPoint, StringBuilder lpszVolumeMountPoint,
 			uint cchBufferLength);
 
 		/// <summary>
@@ -999,7 +1040,7 @@ namespace Eraser.Util
 		/// information, call GetLastError.</returns>
 		[DllImport("Kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool FindVolumeMountPointClose(SafeHandle hFindVolumeMountPoint);
+		internal static extern bool FindVolumeMountPointClose(IntPtr hFindVolumeMountPoint);
 
 		/// <summary>
 		/// Retrieves information about the specified disk, including the amount
