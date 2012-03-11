@@ -119,24 +119,19 @@ namespace Eraser.Util
 			{
 				List<VolumeInfo> result = new List<VolumeInfo>();
 				StringBuilder nextVolume = new StringBuilder(NativeMethods.LongPath * sizeof(char));
-				SafeHandle handle = NativeMethods.FindFirstVolume(nextVolume, NativeMethods.LongPath);
-				if (handle.IsInvalid)
-					return result;
-
-				try
+				using (NativeMethods.SafeFindVolumeHandle handle = NativeMethods.FindFirstVolume(
+					nextVolume, NativeMethods.LongPath))
 				{
+					if (handle.IsInvalid)
+						return result;
+
 					//Iterate over the volume mountpoints
 					do
 						result.Add(new VolumeInfo(nextVolume.ToString()));
 					while (NativeMethods.FindNextVolume(handle, nextVolume, NativeMethods.LongPath));
-				}
-				finally
-				{
-					//Close the handle
-					NativeMethods.FindVolumeClose(handle);
-				}
 
-				return result.AsReadOnly();
+					return result.AsReadOnly();
+				}
 			}
 		}
 
@@ -526,27 +521,22 @@ namespace Eraser.Util
 				List<VolumeInfo> result = new List<VolumeInfo>();
 				StringBuilder nextMountpoint = new StringBuilder(NativeMethods.LongPath * sizeof(char));
 
-				SafeHandle handle = NativeMethods.FindFirstVolumeMountPoint(VolumeId,
-					nextMountpoint, NativeMethods.LongPath);
-				if (handle.IsInvalid)
-					return result;
-
-				try
+				using (NativeMethods.SafeFindVolumeMountPointHandle handle =
+					NativeMethods.FindFirstVolumeMountPoint(VolumeId, nextMountpoint,
+					NativeMethods.LongPath))
 				{
+					if (handle.IsInvalid)
+						return result;
+
 					//Iterate over the volume mountpoints
 					while (NativeMethods.FindNextVolumeMountPoint(handle, nextMountpoint,
 						NativeMethods.LongPath))
 					{
 						result.Add(new VolumeInfo(nextMountpoint.ToString()));
 					}
-				}
-				finally
-				{
-					//Close the handle
-					NativeMethods.FindVolumeMountPointClose(handle);
-				}
 
-				return result.AsReadOnly();
+					return result.AsReadOnly();
+				}
 			}
 		}
 
