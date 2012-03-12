@@ -104,7 +104,18 @@ class Download
 	 */
 	public function GetDisplayedLink()
 	{
-		return sprintf('http://%s/download.php?id=%d', $_SERVER['SERVER_NAME'], $this->ID);
+		if (preg_match('/http(s{0,1}):\/\/(.*)/', $this->Link))
+		{
+			return $this->Link;
+		}
+		else if (substr($this->Link, 0, 1) == '?')
+		{
+			return sprintf('http://%s/download.php?id=%d', $_SERVER['SERVER_NAME'], $this->ID);
+		}
+		else
+		{
+			throw new Exception('Unknown download link');
+		}
 	}
 
 	/**
