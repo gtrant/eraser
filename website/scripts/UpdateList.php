@@ -1,6 +1,7 @@
 <?php
 require_once('Database.php');
 require_once('Download.php');
+require_once ('Build.php');
 
 /**
  * Base class for all update lists types.
@@ -150,7 +151,7 @@ class UpdateList1_1 extends UpdateListBase
 	{
 		//Prepare the list of updates
 		$pdo = new Database();
-		$statement = $pdo->prepare('SELECT DownloadID
+		$statement = $pdo->prepare('SELECT DownloadID, `Type` as DownloadType
 			FROM downloads
 			WHERE
 				(Superseded = 0) AND
@@ -159,8 +160,8 @@ class UpdateList1_1 extends UpdateListBase
 						(`Type` <> \'build\') AND
 						(MinVersion IS NULL AND MaxVersion IS NULL) OR
 						(MinVersion IS NULL AND MaxVersion > :Version) OR
-						(MinVersion <= \'%1$s\' AND MaxVersion IS NULL) OR
-						(MinVersion <= \'%1$s\' AND MaxVersion > :Version)
+						(MinVersion <= :Version AND MaxVersion IS NULL) OR
+						(MinVersion <= :Version AND MaxVersion > :Version)
 					) OR
 					(															-- Nightly builds greater than our version
 						(`Type` = \'build\') AND
@@ -173,9 +174,12 @@ class UpdateList1_1 extends UpdateListBase
 
 		$result = array();
 		$downloadId = null;
+		$downloadType = null;
 		$statement->bindColumn('DownloadID', $downloadId);
+		$statement->bindColumn('DownloadType', $downloadType);
 		while ($statement->fetch())
-			$result[] = new Download($downloadId);
+			$result[] = $downloadType == 'build' ?
+				new Build($downloadId) : new Download($downloadId);
 
 		return $result;
 	}
