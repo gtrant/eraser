@@ -88,6 +88,16 @@ class Build extends Download
 	}
 	
 	/**
+	 * Gets the link to the download that can be referenced publicly.
+	 *
+	 * @return string The URL to this download.
+	 */
+	public function GetDisplayedLink()
+	{
+		return sprintf('http://%s/download.php?id=%d', $_SERVER['SERVER_NAME'], $this->ID);
+	}
+	
+	/**
 	 * Creates a new build to be published to the website. This function will first upload
 	 * to the public web server before allowing the build to be downloaded.
 	 *
