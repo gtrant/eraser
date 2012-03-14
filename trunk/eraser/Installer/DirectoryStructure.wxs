@@ -69,6 +69,8 @@
 
 					<File Id="EraserManager" Name="Eraser.Manager.dll"
 						Source="..\bin\Release\Eraser.Manager.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserPluginsRuntime" Name="Eraser.Plugins.dll"
+						Source="..\bin\Release\Eraser.Plugins.dll" ProcessorArchitecture="msil" />
 					<File Id="EraserUtil" Name="Eraser.Util.dll"
 						Source="..\bin\Release\Eraser.Util.dll" ProcessorArchitecture="msil" />
 					<?if $(sys.BUILDARCH) = "x64"?>
