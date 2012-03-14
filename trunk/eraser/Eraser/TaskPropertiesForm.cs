@@ -199,6 +199,9 @@ namespace Eraser
 						throw new ArgumentException("Unknown schedule type.");
 				}
 			}
+
+			//Set the number of targets in the task.
+			data.VirtualListSize = task.Targets.Count;
 		}
 
 		/// <summary>
