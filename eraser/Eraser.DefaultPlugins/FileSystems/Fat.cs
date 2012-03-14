@@ -25,24 +25,26 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 using System.IO;
-using Eraser.Manager;
+
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
 	/// <summary>
 	/// Provides functions to handle erasures specific to FAT volumes.
 	/// </summary>
-	public abstract class FatFileSystem : WindowsFileSystem
+	abstract class FatFileSystem : WindowsFileSystem
 	{
 		public override void EraseOldFileSystemResidentFiles(VolumeInfo volume,
-			DirectoryInfo tempDirectory, ErasureMethod method,
+			DirectoryInfo tempDirectory, IErasureMethod method,
 			FileSystemEntriesEraseProgress callback)
 		{
 			//Nothing to be done here. FAT doesn't store files in its FAT.
 		}
 
-		public override void EraseFileSystemObject(StreamInfo info, ErasureMethod method,
+		public override void EraseFileSystemObject(StreamInfo info, IErasureMethod method,
 			ErasureMethodProgressFunction callback)
 		{
 			//Create the file stream, and call the erasure method to write to
@@ -59,10 +61,7 @@ namespace Eraser.DefaultPlugins
 				if (strm.Length != 0)
 				{
 					//Then erase the file.
-					method.Erase(strm, long.MaxValue,
-						ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
-						callback
-					);
+					method.Erase(strm, long.MaxValue, Host.Instance.Prngs.ActivePrng, callback);
 				}
 
 				//Set the length of the file to 0.
@@ -136,7 +135,7 @@ namespace Eraser.DefaultPlugins
 	}
 
 	[Guid("36C78D78-7EE4-4304-8068-10755651AF2D")]
-	public class Fat12FileSystem : FatFileSystem
+	class Fat12FileSystem : FatFileSystem
 	{
 		public override Guid Guid
 		{
@@ -155,7 +154,7 @@ namespace Eraser.DefaultPlugins
 	}
 
 	[Guid("8C9DF746-1CD6-435d-8D04-3FE40A0A1C83")]
-	public class Fat16FileSystem : FatFileSystem
+	class Fat16FileSystem : FatFileSystem
 	{
 		public override Guid Guid
 		{
@@ -174,7 +173,7 @@ namespace Eraser.DefaultPlugins
 	}
 
 	[Guid("1FCD66DC-179D-4402-8FF8-D19F74A4C398")]
-	public class Fat32FileSystem : FatFileSystem
+	class Fat32FileSystem : FatFileSystem
 	{
 		public override Guid Guid
 		{

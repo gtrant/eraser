@@ -26,11 +26,13 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Runtime.Serialization;
+using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
-using System.IO;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
+using Eraser.Plugins.Registrars;
 
 namespace Eraser.DefaultPlugins
 {
@@ -39,7 +41,7 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("12CA079F-0B7A-48fa-B221-73AA217C1781")]
-	class DriveErasureTarget : ErasureTarget
+	class DriveErasureTarget : ErasureTargetBase
 	{
 		public DriveErasureTarget()
 		{
@@ -79,27 +81,24 @@ namespace Eraser.DefaultPlugins
 			get { return S._("Drive/Partition"); }
 		}
 
-		public override string UIText
+		public override string ToString()
 		{
-			get
+			if (PhysicalDrive != null)
 			{
-				if (PhysicalDrive != null)
-				{
-					return S._("Hard disk {0}", PhysicalDrive.Index);
-				}
-				else if (Volume != null)
-				{
-					if (Volume.IsReady && Volume.IsMounted)
-						return S._("Partition: {0}", Volume.MountPoints[0].GetDescription());
-					else if (Volume.IsReady && Volume.PhysicalDrive != null)
-						return S._("Hard disk {0} Partition {1}", Volume.PhysicalDrive.Index,
-							Volume.PhysicalDrive.Volumes.IndexOf(Volume) + 1);
-					else
-						return S._("Partition");
-				}
-				else
-					return null;
+				return S._("Hard disk {0}", PhysicalDrive.Index);
 			}
+			else if (Volume != null)
+			{
+				if (Volume.IsReady && Volume.IsMounted)
+					return S._("Partition: {0}", Volume.MountPoints[0].GetDescription());
+				else if (Volume.IsReady && Volume.PhysicalDrive != null)
+					return S._("Hard disk {0} Partition {1}", Volume.PhysicalDrive.Index,
+						Volume.PhysicalDrive.Volumes.IndexOf(Volume) + 1);
+				else
+					return S._("Partition");
+			}
+			else
+				return null;
 		}
 
 		public override IErasureTargetConfigurer Configurer
@@ -107,15 +106,15 @@ namespace Eraser.DefaultPlugins
 			get { return new DriveErasureTargetConfigurer(); }
 		}
 
-		public sealed override ErasureMethod EffectiveMethod
+		public sealed override IErasureMethod EffectiveMethod
 		{
 			get
 			{
 				if (Method != ErasureMethodRegistrar.Default)
 					return base.EffectiveMethod;
 
-				return ManagerLibrary.Instance.ErasureMethodRegistrar[
-					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod];
+				return Host.Instance.ErasureMethods[
+					Host.Instance.Settings.DefaultUnusedSpaceErasureMethod];
 			}
 		}
 
@@ -178,23 +177,24 @@ namespace Eraser.DefaultPlugins
 				return;
 			}
 
-			Progress = new ProgressManager();
-			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress,
-				1.0f / Task.Targets.Count));
+			Progress = new SteppedProgressManager();
+			ProgressManager stepProgress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(stepProgress, 1.0f,
+				ToString()));
 			FileStream stream = null;
 
 			try
 			{
 				//Overwrite the entire drive
-				ErasureMethod method = EffectiveMethod;
+				IErasureMethod method = EffectiveMethod;
 				if (Volume != null)
 				{
-					Progress.Total = Volume.TotalSize;
+					stepProgress.Total = Volume.TotalSize;
 					stream = Volume.Open(FileAccess.ReadWrite, FileShare.ReadWrite);
 				}
 				else if (PhysicalDrive != null)
 				{
-					Progress.Total = PhysicalDrive.Size;
+					stepProgress.Total = PhysicalDrive.Size;
 					PhysicalDrive.DeleteDriveLayout();
 					stream = PhysicalDrive.Open(FileAccess.ReadWrite, FileShare.ReadWrite);
 				}
@@ -203,16 +203,14 @@ namespace Eraser.DefaultPlugins
 						"volume or physical drive selected for erasure."));
 
 				//Calculate the size of the erasure
-				Progress.Total = method.CalculateEraseDataSize(null, Progress.Total);
+				stepProgress.Total = method.CalculateEraseDataSize(null, stepProgress.Total);
 
 				//Then run the erase task
-				method.Erase(stream, long.MaxValue,
-					ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
+				method.Erase(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng,
 					delegate(long lastWritten, long totalData, int currentPass)
 					{
-						Progress.Completed += lastWritten;
-						OnProgressChanged(this, new ProgressChangedEventArgs(Progress,
-							new TaskProgressChangedEventArgs(UIText, currentPass, method.Passes)));
+						stepProgress.Completed += lastWritten;
+						stepProgress.Tag = new int[] { currentPass, method.Passes };
 
 						if (Task.Canceled)
 							throw new OperationCanceledException(S._("The task was cancelled."));
@@ -223,21 +221,6 @@ namespace Eraser.DefaultPlugins
 			{
 				Progress = null;
 				stream.Close();
-			}
-		}
-
-		/// <summary>
-		/// The Progress manager for this target.
-		/// </summary>
-		private new ProgressManager Progress
-		{
-			get
-			{
-				return (ProgressManager)base.Progress;
-			}
-			set
-			{
-				base.Progress = value;
 			}
 		}
 	}

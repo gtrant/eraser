@@ -131,9 +131,9 @@
     <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eraser.Manager\Eraser.Manager.csproj">
-      <Project>{C1AC3255-0939-499D-A69D-725E3DD4F574}</Project>
-      <Name>Eraser.Manager</Name>
+    <ProjectReference Include="..\Eraser.Plugins\Eraser.Plugins.csproj">
+      <Project>{59F7ED0F-3589-4112-B612-4A9A6588F4A0}</Project>
+      <Name>Eraser.Plugins</Name>
       <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Eraser.Util\Eraser.Util.csproj">

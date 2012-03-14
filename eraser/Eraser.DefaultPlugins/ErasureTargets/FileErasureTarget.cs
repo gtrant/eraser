@@ -28,8 +28,9 @@ using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -38,7 +39,7 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("0D741505-E1C4-400d-8470-598AF35E174D")]
-	public class FileErasureTarget : FileSystemObjectErasureTarget
+	class FileErasureTarget : FileSystemObjectErasureTarget
 	{
 		#region Serialization code
 		protected FileErasureTarget(SerializationInfo info, StreamingContext context)

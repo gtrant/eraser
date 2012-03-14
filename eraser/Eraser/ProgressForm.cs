@@ -27,6 +27,8 @@ using System.Text;
 using System.Windows.Forms;
 
 using Eraser.Manager;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 using Eraser.Util;
 using System.Globalization;
 
@@ -46,42 +48,21 @@ namespace Eraser
 			this.ActiveControl = hide;
 
 			//Register the event handlers
-			jobTitle.Text = task.UIText;
-			task.ProgressChanged += task_ProgressChanged;
+			jobTitle.Text = task.ToString();
 			task.TaskFinished += task_TaskFinished;
 
 			//Set the current progress
-			if (task.Progress.CurrentStep != null)
-				UpdateProgress(task.Progress.CurrentStep.Progress,
-					new ProgressChangedEventArgs(task.Progress.CurrentStep.Progress, null));
+			UpdateProgress();
 		}
 
 		private void ProgressForm_FormClosed(object sender, FormClosedEventArgs e)
 		{
-			task.ProgressChanged -= task_ProgressChanged;
 			task.TaskFinished -= task_TaskFinished;
 		}
 
-		private void task_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		private void progressTimer_Tick(object sender, EventArgs e)
 		{
-			if (IsDisposed || !IsHandleCreated)
-				return;
-			if (InvokeRequired)
-			{
-				//Don't update too often - we can slow down the code.
-				if (DateTime.Now - lastUpdate < new TimeSpan(0, 0, 0, 0, 300))
-					return;
-
-				lastUpdate = DateTime.Now;
-				Invoke((EventHandler<ProgressChangedEventArgs>)task_ProgressChanged, sender, e);
-				return;
-			}
-
-			ErasureTarget target = sender as ErasureTarget;
-			if (target == null)
-				return;
-
-			UpdateProgress(target.Progress, e);
+			UpdateProgress();
 		}
 
 		private void task_TaskFinished(object sender, EventArgs e)
@@ -93,6 +74,9 @@ namespace Eraser
 				Invoke((EventHandler)task_TaskFinished, sender, e);
 				return;
 			}
+
+			//Stop the progress timer
+			progressTimer.Stop();
 
 			//Update the UI. Set everything to 100%
 			Task task = (Task)sender;
@@ -139,36 +123,59 @@ namespace Eraser
 			Close();
 		}
 
-		private void UpdateProgress(ProgressManagerBase targetProgress, ProgressChangedEventArgs e)
+		private void UpdateProgress()
 		{
-			TaskProgressChangedEventArgs e2 = (TaskProgressChangedEventArgs)e.UserState;
+			if (!task.Executing)
 			{
-				SteppedProgressManager targetProgressStepped =
-					targetProgress as SteppedProgressManager;
-				if (targetProgressStepped != null && targetProgressStepped.CurrentStep != null)
-					status.Text = targetProgressStepped.CurrentStep.Name;
-				else
-					status.Text = S._("Erasing...");
+				//The task is done! Bail out and let the completion handler reset the UI
+				return;
 			}
 
-			if (e2 != null)
+			//Get the name of the current erasure target to display the overall status
+			SteppedProgressManager taskProgress = task.Progress;
+			ErasureTargetProgressManagerStep taskStep =
+				(ErasureTargetProgressManagerStep)taskProgress.CurrentStep;
+			if (taskStep == null)
+				return;
+			else if (!string.IsNullOrEmpty(taskStep.Name))
+				status.Text = taskStep.Name;
+			else
+				status.Text = S._("Erasing...");
+
+			//The get the current step of the target to set the current item name
+			SteppedProgressManagerStepBase targetStep =
+				(SteppedProgressManagerStepBase)taskStep.Target.Progress.CurrentStep;
+			if (targetStep == null)
+				return;
+			else if (!string.IsNullOrEmpty(targetStep.Name))
+				item.Text = WrapItemName(targetStep.Name);
+
+			//Determine if the tag information of the step's progress manager is an
+			//object array or a string.
+			ProgressManagerBase targetStepProgress = targetStep.Progress;
 			{
-				item.Text = WrapItemName(e2.ItemName);
-				pass.Text = e2.ItemTotalPasses != 0 ?
-					S._("{0} out of {1}", e2.ItemPass, e2.ItemTotalPasses) :
-					e2.ItemPass.ToString(CultureInfo.CurrentCulture);
+				object tag = targetStepProgress.Tag;
+				if (tag == null)
+				{
+					if (string.IsNullOrEmpty(targetStep.Name))
+						item.Text = string.Empty;
+				}
+				else if (tag.GetType() == typeof(string))
+					item.Text = (string)tag;
+				else if (tag.GetType() == typeof(int[]))
+					pass.Text = S._("{0} out of {1}", ((int[])tag)[0], ((int[])tag)[1]);
 			}
 
-			if (targetProgress.TimeLeft >= TimeSpan.Zero)
-				timeLeft.Text = S._("About {0} left", RoundToSeconds(targetProgress.TimeLeft));
+			if (targetStepProgress.TimeLeft >= TimeSpan.Zero)
+				timeLeft.Text = S._("About {0} left", RoundToSeconds(targetStepProgress.TimeLeft));
 			else
 				timeLeft.Text = S._("Unknown");
 
-			if (!targetProgress.ProgressIndeterminate)
+			if (!targetStepProgress.ProgressIndeterminate)
 			{
 				itemProgress.Style = ProgressBarStyle.Continuous;
-				itemProgress.Value = (int)(targetProgress.Progress * 1000);
-				itemProgressLbl.Text = targetProgress.Progress.ToString("#0%",
+				itemProgress.Value = (int)(targetStepProgress.Progress * 1000);
+				itemProgressLbl.Text = targetStepProgress.Progress.ToString("#0%",
 					CultureInfo.CurrentCulture);
 			}
 			else
@@ -177,11 +184,11 @@ namespace Eraser
 				itemProgressLbl.Text = string.Empty;
 			}
 
-			if (!task.Progress.ProgressIndeterminate)
+			if (!taskProgress.ProgressIndeterminate)
 			{
 				overallProgress.Style = ProgressBarStyle.Continuous;
-				overallProgress.Value = (int)(task.Progress.Progress * 1000);
-				overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", task.Progress.Progress);
+				overallProgress.Value = (int)(taskProgress.Progress * 1000);
+				overallProgressLbl.Text = S._("Total: {0,2:#0.00%}", taskProgress.Progress);
 			}
 			else
 			{

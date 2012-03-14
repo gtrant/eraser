@@ -1,6 +1,6 @@
 ﻿/* 
  * $Id$
- * Copyright 2008-2010 The Eraser Project
+ * Copyright 2008-2012 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -25,7 +25,7 @@ using System.Text;
 using System.Runtime.Serialization;
 using Eraser.Util;
 
-namespace Eraser.Manager
+namespace Eraser.Plugins
 {
 	/// <summary>
 	/// Fatal exception class.

@@ -25,4 +25,4 @@ using System.Resources;
 [assembly: Guid("3460478d-ed1b-4ecc-96c9-2ca0e8500557")]
 
 // The plugin is an optional Eraser plugin, which should default to not load.
-[assembly: Eraser.Manager.Plugin.LoadingPolicy(Eraser.Manager.Plugin.LoadingPolicy.DefaultOff)]
+[assembly: Eraser.Plugins.PluginLoadingPolicy(Eraser.Plugins.PluginLoadingPolicy.DefaultOff)]

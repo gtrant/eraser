@@ -29,9 +29,10 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -40,7 +41,7 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("18FB3523-4012-4718-8B9A-BADAA9084214")]
-	public class SecureMoveErasureTarget : FileSystemObjectErasureTarget
+	class SecureMoveErasureTarget : FileSystemObjectErasureTarget
 	{
 		#region Serialization code
 		protected SecureMoveErasureTarget(SerializationInfo info, StreamingContext context)
@@ -71,9 +72,9 @@ namespace Eraser.DefaultPlugins
 			get { return S._("Secure move"); }
 		}
 
-		public override string UIText
+		public override string ToString()
 		{
-			get { return S._("Securely move {0}", Path); }
+			return S._("Securely move {0}", Path);
 		}
 
 		/// <summary>
@@ -122,9 +123,7 @@ namespace Eraser.DefaultPlugins
 
 			//Create the progress manager.
 			Progress = new SteppedProgressManager();
-			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress,
-				1.0f / Task.Targets.Count));
-
+			
 			try
 			{
 				//Depending on whether the path is a file or directory, execute the
@@ -234,8 +233,7 @@ namespace Eraser.DefaultPlugins
 					CopyTimesAndDelete(child);
 
 				//Update progress.
-				OnProgressChanged(this, new ProgressChangedEventArgs(folderDeleteProgress,
-					new TaskProgressChangedEventArgs(subDirectory.FullName, 1, 1)));
+				folderDeleteProgress.Tag = subDirectory.FullName;
 
 				//Get the directory which we copied to and copy the file times to the
 				//destination directory
@@ -246,9 +244,9 @@ namespace Eraser.DefaultPlugins
 				destDirectory.CopyTimes(subDirectory);
 
 				//Then delete the source directory.
-				FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+				IFileSystem fsManager = Host.Instance.FileSystems[
 					VolumeInfo.FromMountPoint(Path)];
-				fsManager.DeleteFolder(subDirectory);
+				fsManager.DeleteFolder(subDirectory, true);
 			};
 			CopyTimesAndDelete(info);
 		}
@@ -340,8 +338,7 @@ namespace Eraser.DefaultPlugins
 		{
 			progress.Completed = TotalBytesTransferred;
 			progress.Total = TotalFileSize;
-			OnProgressChanged(this, new ProgressChangedEventArgs(Progress,
-				new TaskProgressChangedEventArgs(file.FullName, 1, 1)));
+			progress.Tag = file.FullName;
 
 			if (Task.Canceled)
 				return Methods.CopyProgressFunctionResult.Stop;

@@ -27,32 +27,33 @@ using System.Linq;
 
 using System.IO;
 using System.Globalization;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Microsoft.Win32;
 
 using Eraser.Util;
+using Eraser.Plugins;
 
 namespace Eraser
 {
-	internal class Settings : Manager.SettingsManager
+	internal class Settings : PersistentStore
 	{
 		/// <summary>
 		/// Registry-based storage backing for the Settings class.
 		/// </summary>
-		private sealed class RegistrySettings : Manager.Settings, IDisposable
+		private sealed class RegistrySettings : PersistentStore, IDisposable
 		{
 			/// <summary>
 			/// Constructor.
 			/// </summary>
-			/// <param name="pluginId">The GUID of the plugin for which settings are stored.</param>
 			/// <param name="key">The registry key to look for the settings in.</param>
-			public RegistrySettings(Guid pluginId, RegistryKey key)
+			public RegistrySettings(RegistryKey key)
 			{
 				if (key == null)
 					throw new ArgumentNullException("key");
 
-				PluginID = pluginId;
 				Key = key;
 			}
 
@@ -83,6 +84,56 @@ namespace Eraser
 
 			public override T GetValue<T>(string name, T defaultValue)
 			{
+				//Determine the type of T. If it is an IEnumerable or IDictionary, use our
+				//concrete types.
+				Type typeOfT = typeof(T);
+				if (typeOfT.IsInterface)
+				{
+					//Is it a dictionary?
+					if (typeOfT.Name == "IDictionary`2")
+					{
+						//This is a System.Collections.Generic.IDictionary
+						Type[] keyValueType = typeOfT.GetGenericArguments();
+
+						Type settingsDictionary = typeof(SettingsDictionary<,>);
+						Type typeOfResult = settingsDictionary.MakeGenericType(keyValueType);
+
+						ConstructorInfo ctor = typeOfResult.GetConstructor(new Type[] {
+							typeof(PersistentStore), typeof(string) });
+						return (T)ctor.Invoke(new object[] { this, name });
+					}
+
+					//Or an IEnumerable?
+					else if (typeOfT.Name == "IEnumerable`1")
+					{
+						//This is a System.Collections.Generic.IEnumerable
+						Type[] keyValueType = typeOfT.GetGenericArguments();
+						return (T)GetList<T>(name, keyValueType[0]);
+					}
+
+					//Or an IList<T>, ICollection<T>
+					else
+					{
+						foreach (Type type in typeOfT.GetInterfaces())
+							if (type.IsGenericType)
+							{
+								if (type.GetInterfaces().Any(
+										x => x == typeof(System.Collections.IEnumerable)) &&
+									type.Name == "IEnumerable`1")
+								{
+									//This is a System.Collections.Generic.IEnumerable
+									Type[] keyValueType = typeOfT.GetGenericArguments();
+									return (T)GetList<T>(name, keyValueType[0]);
+								}
+							}
+					}
+				}
+
+				return (T)GetScalar(name, defaultValue);
+			}
+
+			private object GetScalar<T>(string name, T defaultValue)
+			{
 				//Get the raw registry value
 				object rawResult = Key.GetValue(name, null);
 				if (rawResult == null)
@@ -103,9 +154,8 @@ namespace Eraser
 						catch (InvalidCastException)
 						{
 							Key.DeleteValue(name);
-							MessageBox.Show(S._("Could not load the setting {0}\\{1} for " +
-									"plugin {2}. The setting has been lost.", Key, name,
-									PluginID.ToString()),
+							MessageBox.Show(S._("Could not load the setting {0}\\{1}. The " +
+								"setting has been lost.", Key, name),
 								S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Error,
 								MessageBoxDefaultButton.Button1,
 								Localisation.IsRightToLeft(null) ? MessageBoxOptions.RtlReading : 0);
@@ -113,18 +163,57 @@ namespace Eraser
 				}
 				else if (typeof(T) == typeof(Guid))
 				{
-					return (T)(object)new Guid((string)rawResult);
+					return new Guid((string)rawResult);
 				}
 				else if (typeof(T).GetInterfaces().Any(x => x == typeof(IConvertible)))
 				{
-					return (T)Convert.ChangeType(rawResult, typeof(T));
+					return Convert.ChangeType(rawResult, typeof(T));
 				}
 				else
 				{
-					return (T)rawResult;
+					return rawResult;
 				}
 
 				return defaultValue;
+			}
+
+			private object GetList<T>(string name, Type type)
+			{
+				//Make sure that type is either a string or the type can be converted from a
+				//string (via IConvertible)
+				if (type != typeof(string) && !type.GetInterfaces().Any(x => x == typeof(IConvertible)))
+				{
+					return GetScalar<T>(name, default(T));
+				}
+				
+				Type settingsList = typeof(SettingsList<>);
+				Type typeOfResult = settingsList.MakeGenericType(type);
+
+				//Get the constructor.
+				Type typeOfTArray = typeof(ICollection<>).MakeGenericType(type);
+				ConstructorInfo ctor = typeOfResult.GetConstructor(new Type[] {
+					typeof(PersistentStore), typeof(string), typeOfTArray });
+
+				//Get the values currently in the registry
+				string[] values = (string[])GetScalar<string[]>(name, null);
+
+				//Convert the values from a string array to the type expected
+				object array = null;
+				if (type == typeof(string))
+				{
+					array = values;
+				}
+				else
+				{
+					array = typeof(List<>).MakeGenericType(type).GetConstructor(new Type[0]).
+						Invoke(new object[0]);
+					foreach (string item in values)
+					{
+						((System.Collections.IList)array).Add(Convert.ChangeType(item, type));
+					}
+				}
+				
+				return ctor.Invoke(new object[] { this, name, array });
 			}
 
 			public override void SetValue(string name, object value)
@@ -135,6 +224,43 @@ namespace Eraser
 				}
 				else
 				{
+					//Determine the type of T. If it is an IEnumerable, store it as a string array
+					Type typeOfT = value.GetType();
+					foreach (Type type in typeOfT.GetInterfaces())
+						if (type.IsGenericType &&
+							type.Name == "IEnumerable`1" &&
+							type.GetInterfaces().Any(
+								x => x == typeof(System.Collections.IEnumerable)))
+						{
+							//Check that we know how to convert the item type
+							Type itemType = type.GetGenericArguments()[0];
+							string[] registryValue = null;
+							if (typeOfT == typeof(string[]))
+							{
+								registryValue = (string[])value;
+							}
+							else if (itemType == typeof(string))
+							{
+								registryValue = new List<string>((IEnumerable<string>)value).
+									ToArray();
+							}
+							else if (itemType.GetInterfaces().Any(x => x == typeof(IConvertible)))
+							{
+								List<string> collection = new List<string>();
+								foreach (object item in (System.Collections.IEnumerable)value)
+									collection.Add((string)
+										Convert.ChangeType(item, typeof(string)));
+
+								registryValue = collection.ToArray();
+							}
+
+							if (registryValue != null)
+							{
+								Key.SetValue(name, registryValue, RegistryValueKind.MultiString);
+								return;
+							}
+						}
+
 					if (value is bool)
 						Key.SetValue(name, value, RegistryValueKind.DWord);
 					else if ((value is int) || (value is uint))
@@ -143,13 +269,6 @@ namespace Eraser
 						Key.SetValue(name, value, RegistryValueKind.QWord);
 					else if ((value is string) || (value is Guid))
 						Key.SetValue(name, value, RegistryValueKind.String);
-					else if (value is ICollection<string>)
-					{
-						ICollection<string> collection = (ICollection<string>)value;
-						string[] temp = new string[collection.Count];
-						collection.CopyTo(temp, 0);
-						Key.SetValue(name, temp, RegistryValueKind.MultiString);
-					}
 					else
 						using (MemoryStream stream = new MemoryStream())
 						{
@@ -159,10 +278,27 @@ namespace Eraser
 				}
 			}
 
-			/// <summary>
-			/// The GUID of the plugin whose settings this object is storing.
-			/// </summary>
-			private Guid PluginID;
+			public override PersistentStore GetSubsection(string subsectionName)
+			{
+				RegistryKey subKey = null;
+
+				try
+				{
+					//Open the registry key containing the settings
+					subKey = Key.OpenSubKey(subsectionName, true);
+					if (subKey == null)
+						subKey = Key.CreateSubKey(subsectionName);
+
+					PersistentStore result = new RegistrySettings(subKey);
+					subKey = null;
+					return result;
+				}
+				finally
+				{
+					if (subKey != null)
+						subKey.Close();
+				}
+			}
 
 			/// <summary>
 			/// The registry key where the data is stored.
@@ -170,11 +306,7 @@ namespace Eraser
 			private RegistryKey Key;
 		}
 
-		public override void Save()
-		{
-		}
-
-		protected override Manager.Settings GetSettings(Guid guid)
+		private Settings()
 		{
 			RegistryKey eraserKey = null;
 
@@ -185,12 +317,9 @@ namespace Eraser
 				if (eraserKey == null)
 					eraserKey = Registry.CurrentUser.CreateSubKey(Program.SettingsPath);
 
-				RegistryKey pluginsKey = eraserKey.OpenSubKey(guid.ToString(), true);
-				if (pluginsKey == null)
-					pluginsKey = eraserKey.CreateSubKey(guid.ToString());
-
 				//Return the Settings object.
-				return new RegistrySettings(guid, pluginsKey);
+				registry = new RegistrySettings(eraserKey);
+				eraserKey = null;
 			}
 			finally
 			{
@@ -198,6 +327,335 @@ namespace Eraser
 					eraserKey.Close();
 			}
 		}
+
+		public static Settings Get()
+		{
+			Instance.SetValue("Test", new int[5] { 1, 7, 9, 5, 1 });
+			object test = Instance.GetValue<ICollection<int>>("Test");
+			Instance.SetValue("Test", new string[5] { "A", "b", "C", "d", "E" });
+			test = Instance.GetValue<ICollection<string>>("Test");
+			Instance.SetValue("Test", new List<string>(new string[5] { "A", "b", "C", "d", "E" }));
+			test = Instance.GetValue<ICollection<string>>("Test");
+			return Instance;
+		}
+
+		public override PersistentStore GetSubsection(string subsectionName)
+		{
+			return registry.GetSubsection(subsectionName);
+		}
+
+		public override T GetValue<T>(string name, T defaultValue)
+		{
+			return registry.GetValue<T>(name, defaultValue);
+		}
+
+		public override void SetValue(string name, object value)
+		{
+			registry.SetValue(name, value);
+		}
+
+		private RegistrySettings registry;
+
+		/// <summary>
+		/// The global Settings instance.
+		/// </summary>
+		private static Settings Instance = new Settings();
+	}
+
+	/// <summary>
+	/// Encapsulates an abstract list that is used to store settings.
+	/// </summary>
+	/// <typeparam name="T">The type of the list element.</typeparam>
+	class SettingsList<T> : IList<T>
+	{
+		public SettingsList(PersistentStore store, string settingName)
+			: this(store, settingName, null)
+		{
+		}
+
+		public SettingsList(PersistentStore store, string settingName, IEnumerable<T> values)
+		{
+			Store = store;
+			SettingName = settingName;
+			List = new List<T>();
+
+			if (values != null)
+				List.AddRange(values);
+		}
+
+		~SettingsList()
+		{
+			Save();
+		}
+
+		#region IList<T> Members
+
+		public int IndexOf(T item)
+		{
+			return List.IndexOf(item);
+		}
+
+		public void Insert(int index, T item)
+		{
+			List.Insert(index, item);
+			Save();
+		}
+
+		public void RemoveAt(int index)
+		{
+			List.RemoveAt(index);
+			Save();
+		}
+
+		public T this[int index]
+		{
+			get
+			{
+				return List[index];
+			}
+			set
+			{
+				List[index] = value;
+				Save();
+			}
+		}
+
+		#endregion
+
+		#region ICollection<T> Members
+
+		public void Add(T item)
+		{
+			List.Add(item);
+			Save();
+		}
+
+		public void Clear()
+		{
+			List.Clear();
+			Save();
+		}
+
+		public bool Contains(T item)
+		{
+			return List.Contains(item);
+		}
+
+		public void CopyTo(T[] array, int arrayIndex)
+		{
+			List.CopyTo(array, arrayIndex);
+		}
+
+		public int Count
+		{
+			get { return List.Count; }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return false; }
+		}
+
+		public bool Remove(T item)
+		{
+			bool result = List.Remove(item);
+			Save();
+			return result;
+		}
+
+		#endregion
+
+		#region IEnumerable<T> Members
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			return List.GetEnumerator();
+		}
+
+		#endregion
+
+		#region IEnumerable Members
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return List.GetEnumerator();
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Saves changes made to the list to the settings manager.
+		/// </summary>
+		private void Save()
+		{
+			Store.SetValue(SettingName, List);
+		}
+
+		/// <summary>
+		/// The settings object storing the settings.
+		/// </summary>
+		private PersistentStore Store;
+
+		/// <summary>
+		/// The name of the setting we are encapsulating.
+		/// </summary>
+		private string SettingName;
+
+		/// <summary>
+		/// The list we are using as scratch.
+		/// </summary>
+		private List<T> List;
+	}
+
+	/// <summary>
+	/// Encapsulates an abstract dictionary that is used to store settings.
+	/// </summary>
+	/// <typeparam name="TKey">The key type of the dictionary.</typeparam>
+	/// <typeparam name="TValue">The value type of the dictionary.</typeparam>
+	class SettingsDictionary<TKey, TValue> : IDictionary<TKey, TValue>
+	{
+		public SettingsDictionary(PersistentStore store, string settingName)
+		{
+			Store = store;
+			SettingName = settingName;
+		}
+
+		#region IDictionary<TKey,TValue> Members
+
+		public void Add(TKey key, TValue value)
+		{
+			KeyStore.SetValue(key.ToString(), value);
+		}
+
+		public bool ContainsKey(TKey key)
+		{
+			TValue outValue;
+			return TryGetValue(key, out outValue);
+		}
+
+		public ICollection<TKey> Keys
+		{
+			get { throw new NotSupportedException(); }
+		}
+
+		public bool Remove(TKey key)
+		{
+			KeyStore.SetValue(key.ToString(), null);
+			return true;
+		}
+
+		public bool TryGetValue(TKey key, out TValue value)
+		{
+			value = KeyStore.GetValue<TValue>(key.ToString());
+			return !value.Equals(default(TValue));
+		}
+
+		public ICollection<TValue> Values
+		{
+			get { throw new NotSupportedException(); }
+		}
+
+		public TValue this[TKey key]
+		{
+			get
+			{
+				return KeyStore.GetValue<TValue>(key.ToString());
+			}
+			set
+			{
+				KeyStore.SetValue(key.ToString(), value);
+			}
+		}
+
+		#endregion
+
+		#region ICollection<KeyValuePair<TKey,TValue>> Members
+
+		public void Add(KeyValuePair<TKey, TValue> item)
+		{
+			Add(item.Key, item.Value);
+		}
+
+		public void Clear()
+		{
+			throw new NotSupportedException();
+		}
+
+		public bool Contains(KeyValuePair<TKey, TValue> item)
+		{
+			TValue outValue;
+			if (TryGetValue(item.Key, out outValue) && item.Equals(outValue))
+				return true;
+
+			return false;
+		}
+
+		public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+		{
+			throw new NotSupportedException();
+		}
+
+		public int Count
+		{
+			get { throw new NotSupportedException(); }
+		}
+
+		public bool IsReadOnly
+		{
+			get { return false; }
+		}
+
+		public bool Remove(KeyValuePair<TKey, TValue> item)
+		{
+			if (Contains(item))
+			{
+				this[item.Key] = default(TValue);
+				return true;
+			}
+
+			return false;
+		}
+
+		#endregion
+
+		#region IEnumerable<KeyValuePair<TKey,TValue>> Members
+
+		public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
+		{
+			throw new NotSupportedException();
+		}
+
+		#endregion
+
+		#region IEnumerable Members
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			throw new NotSupportedException();
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Gets the Persistent Store for this dictionary.
+		/// </summary>
+		private PersistentStore KeyStore
+		{
+			get
+			{
+				return Store.GetSubsection(SettingName);
+			}
+		}
+
+		/// <summary>
+		/// The settings object storing the settings.
+		/// </summary>
+		private PersistentStore Store;
+
+		/// <summary>
+		/// The name of the setting we are encapsulating.
+		/// </summary>
+		private string SettingName;
 	}
 
 	internal class EraserSettings
@@ -207,7 +665,7 @@ namespace Eraser
 		/// </summary>
 		private EraserSettings()
 		{
-			settings = Manager.ManagerLibrary.Instance.SettingsManager.ModuleSettings;
+			settings = Settings.Get();
 		}
 
 		/// <summary>
@@ -308,7 +766,7 @@ namespace Eraser
 		/// <summary>
 		/// The data store behind the object.
 		/// </summary>
-		private Manager.Settings settings;
+		private PersistentStore settings;
 
 		/// <summary>
 		/// The global instance of the settings class.

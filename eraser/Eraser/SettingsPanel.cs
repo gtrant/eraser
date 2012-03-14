@@ -31,12 +31,13 @@ using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Globalization;
 using System.Threading;
-using System.IO;
 
 using Eraser.Manager;
-using Eraser.Manager.Plugin;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
+using Eraser.Plugins.Registrars;
 
 namespace Eraser
 {
@@ -48,8 +49,8 @@ namespace Eraser
 
 			//For new plugins, register the callback.
 			Host.Instance.PluginLoaded += OnNewPluginLoaded;
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Registered += OnMethodRegistered;
-			ManagerLibrary.Instance.ErasureMethodRegistrar.Unregistered += OnMethodUnregistered;
+			Host.Instance.ErasureMethods.Registered += OnMethodRegistered;
+			Host.Instance.ErasureMethods.Unregistered += OnMethodUnregistered;
 
 			//Load the values
 			LoadPluginDependantValues();
@@ -59,54 +60,54 @@ namespace Eraser
 		private void OnNewPluginLoaded(object sender, PluginLoadedEventArgs e)
 		{
 			ListViewItem item = new ListViewItem();
-			if (e.Instance.Plugin == null)
+			if (e.Plugin.Loaded)
 			{
-				item.Text = Path.GetFileNameWithoutExtension(e.Instance.Assembly.Location);
-				item.SubItems.Add(e.Instance.AssemblyInfo.Author);
+				item.Text = e.Plugin.Plugin.Name;
+				item.SubItems.Add(e.Plugin.Plugin.Author);
 			}
 			else
 			{
-				item.Text = e.Instance.Plugin.Name;
-				item.SubItems.Add(e.Instance.Plugin.Author);
+				item.Text = System.IO.Path.GetFileNameWithoutExtension(e.Plugin.Assembly.Location);
+				item.SubItems.Add(e.Plugin.AssemblyInfo.Author);
 			}
-
+			
 			//The item is checked if the plugin was given the green light to load
-			item.Checked = e.Instance.Plugin != null ||
-				(Manager.ManagerLibrary.Settings.PluginApprovals.ContainsKey(
-					e.Instance.AssemblyInfo.Guid) && Manager.ManagerLibrary.
-					Settings.PluginApprovals[e.Instance.AssemblyInfo.Guid]
+			item.Checked = e.Plugin.Plugin != null ||
+				(ManagerLibrary.Instance.Settings.PluginApprovals.ContainsKey(
+					e.Plugin.AssemblyInfo.Guid) && ManagerLibrary.Instance.
+					Settings.PluginApprovals[e.Plugin.AssemblyInfo.Guid]
 				);
 
 			//Visually display the other metadata associated with the assembly
-			item.ImageIndex = e.Instance.AssemblyAuthenticode == null ? -1 : 0;
-			item.Group = e.Instance.LoadingPolicy == LoadingPolicy.Core ?
+			item.ImageIndex = e.Plugin.AssemblyAuthenticode == null ? -1 : 0;
+			item.Group = e.Plugin.LoadingPolicy == PluginLoadingPolicy.Core ?
 				pluginsManager.Groups[0] : pluginsManager.Groups[1];
-			item.SubItems.Add(e.Instance.Assembly.GetFileVersion().ToString());
-			item.SubItems.Add(e.Instance.Assembly.Location);
-			item.Tag = e.Instance;
+			item.SubItems.Add(e.Plugin.Assembly.GetFileVersion().ToString());
+			item.SubItems.Add(e.Plugin.Assembly.Location);
+			item.Tag = e.Plugin;
 			pluginsManager.Items.Add(item);
 		}
 
 		private void OnMethodRegistered(object sender, EventArgs e)
 		{
-			ErasureMethod method = (ErasureMethod)sender;
+			IErasureMethod method = (IErasureMethod)sender;
 			eraseFilesMethod.Items.Add(method);
-			if (method is UnusedSpaceErasureMethod)
+			if (method is IUnusedSpaceErasureMethod)
 				eraseUnusedMethod.Items.Add(method);
 		}
 
 		private void OnMethodUnregistered(object sender, EventArgs e)
 		{
-			ErasureMethod method = (ErasureMethod)sender;
-			foreach (object obj in eraseFilesMethod.Items)
-				if (((ErasureMethod)obj).Guid == method.Guid)
+			IErasureMethod method = (IErasureMethod)sender;
+			foreach (IErasureMethod obj in eraseFilesMethod.Items)
+				if (obj.Guid == method.Guid)
 				{
 					eraseFilesMethod.Items.Remove(obj);
 					break;
 				}
 
-			foreach (object obj in eraseUnusedMethod.Items)
-				if (((ErasureMethod)obj).Guid == method.Guid)
+			foreach (IErasureMethod obj in eraseUnusedMethod.Items)
+				if (obj.Guid == method.Guid)
 				{
 					eraseUnusedMethod.Items.Remove(obj);
 					break;
@@ -122,7 +123,7 @@ namespace Eraser
 		{
 			//Load the list of plugins
 			Host instance = Host.Instance;
-			IEnumerator<PluginInstance> i = instance.Plugins.GetEnumerator();
+			IEnumerator<PluginInfo> i = instance.Plugins.GetEnumerator();
 			while (i.MoveNext())
 				OnNewPluginLoaded(this, new PluginLoadedEventArgs(i.Current));
 
@@ -132,15 +133,15 @@ namespace Eraser
 				uiLanguage.Items.Add(culture);
 
 			//Refresh the list of erasure methods
-			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+			foreach (IErasureMethod method in Host.Instance.ErasureMethods)
 			{
 				eraseFilesMethod.Items.Add(method);
-				if (method is UnusedSpaceErasureMethod)
+				if (method is IUnusedSpaceErasureMethod)
 					eraseUnusedMethod.Items.Add(method);
 			}
 
 			//Refresh the list of PRNGs
-			foreach (Prng prng in ManagerLibrary.Instance.PrngRegistrar)
+			foreach (IPrng prng in Host.Instance.Prngs)
 				erasePRNG.Items.Add(prng);
 		}
 
@@ -154,39 +155,39 @@ namespace Eraser
 					break;
 				}
 
-			foreach (ErasureMethod method in eraseFilesMethod.Items)
-				if (method.Guid == ManagerLibrary.Settings.DefaultFileErasureMethod)
+			foreach (IErasureMethod method in eraseFilesMethod.Items)
+				if (method.Guid == Host.Instance.Settings.DefaultFileErasureMethod)
 				{
 					eraseFilesMethod.SelectedItem = method;
 					break;
 				}
 
-			foreach (ErasureMethod method in eraseUnusedMethod.Items)
-				if (method.Guid == ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod)
+			foreach (IErasureMethod method in eraseUnusedMethod.Items)
+				if (method.Guid == Host.Instance.Settings.DefaultUnusedSpaceErasureMethod)
 				{
 					eraseUnusedMethod.SelectedItem = method;
 					break;
 				}
 
-			foreach (Prng prng in erasePRNG.Items)
-				if (prng.Guid == ManagerLibrary.Settings.ActivePrng)
+			foreach (IPrng prng in erasePRNG.Items)
+				if (prng.Guid == Host.Instance.Settings.ActivePrng)
 				{
 					erasePRNG.SelectedItem = prng;
 					break;
 				}
 
-			foreach (string path in ManagerLibrary.Settings.PlausibleDeniabilityFiles)
+			foreach (string path in Host.Instance.Settings.PlausibleDeniabilityFiles)
 				plausibleDeniabilityFiles.Items.Add(path);
 
 			uiContextMenu.Checked = settings.IntegrateWithShell;
 			lockedForceUnlock.Checked =
-				ManagerLibrary.Settings.ForceUnlockLockedFiles;
+				Host.Instance.Settings.ForceUnlockLockedFiles;
 			schedulerMissedImmediate.Checked =
-				ManagerLibrary.Settings.ExecuteMissedTasksImmediately;
+				ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
 			schedulerMissedIgnore.Checked =
-				!ManagerLibrary.Settings.ExecuteMissedTasksImmediately;
+				!ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
 			plausibleDeniability.Checked =
-				ManagerLibrary.Settings.PlausibleDeniability;
+				Host.Instance.Settings.PlausibleDeniability;
 			plausibleDeniability_CheckedChanged(plausibleDeniability, new EventArgs());
 			schedulerClearCompleted.Checked = settings.ClearCompletedTasks;
 
@@ -207,8 +208,8 @@ namespace Eraser
 				if (eraseFilesMethod.Items.Count > 0)
 				{
 					eraseFilesMethod.SelectedIndex = 0;
-					ManagerLibrary.Settings.DefaultFileErasureMethod =
-						((ErasureMethod)eraseFilesMethod.SelectedItem).Guid;
+					Host.Instance.Settings.DefaultFileErasureMethod =
+						((IErasureMethod)eraseFilesMethod.SelectedItem).Guid;
 				}
 				defaultsList.Add(S._("Default file erasure method"));
 			}
@@ -217,8 +218,8 @@ namespace Eraser
 				if (eraseUnusedMethod.Items.Count > 0)
 				{
 					eraseUnusedMethod.SelectedIndex = 0;
-					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod =
-						((ErasureMethod)eraseUnusedMethod.SelectedItem).Guid;
+					Host.Instance.Settings.DefaultUnusedSpaceErasureMethod =
+						((IErasureMethod)eraseUnusedMethod.SelectedItem).Guid;
 				}
 				defaultsList.Add(S._("Default unused space erasure method"));
 			}
@@ -227,8 +228,8 @@ namespace Eraser
 				if (erasePRNG.Items.Count > 0)
 				{
 					erasePRNG.SelectedIndex = 0;
-					ManagerLibrary.Settings.ActivePrng =
-						((Prng)erasePRNG.SelectedItem).Guid;
+					Host.Instance.Settings.ActivePrng =
+						((IPrng)erasePRNG.SelectedItem).Guid;
 				}
 				defaultsList.Add(S._("Randomness data source"));
 			}
@@ -309,8 +310,8 @@ namespace Eraser
 		private void pluginsManager_ItemCheck(object sender, ItemCheckEventArgs e)
 		{
 			ListViewItem item = pluginsManager.Items[e.Index];
-			PluginInstance instance = (PluginInstance)item.Tag;
-			if (instance.LoadingPolicy == LoadingPolicy.Core)
+			PluginInfo plugin = (PluginInfo)item.Tag;
+			if (plugin.LoadingPolicy == PluginLoadingPolicy.Core)
 				e.NewValue = CheckState.Checked;
 		}
 
@@ -318,8 +319,8 @@ namespace Eraser
 		{
 			if (pluginsManager.SelectedItems.Count == 1)
 			{
-				PluginInstance instance = (PluginInstance)pluginsManager.SelectedItems[0].Tag;
-				e.Cancel = instance.Plugin == null || !instance.Plugin.Configurable;
+				PluginInfo plugin = (PluginInfo)pluginsManager.SelectedItems[0].Tag;
+				e.Cancel = !(plugin.Loaded && plugin.Plugin.Configurable);
 			}
 			else
 				e.Cancel = true;
@@ -330,17 +331,17 @@ namespace Eraser
 			if (pluginsManager.SelectedItems.Count != 1)
 				return;
 
-			PluginInstance instance = (PluginInstance)pluginsManager.SelectedItems[0].Tag;
-			instance.Plugin.DisplaySettings(this);
+			PluginInfo plugin = (PluginInfo)pluginsManager.SelectedItems[0].Tag;
+			plugin.Plugin.DisplaySettings(this);
 		}
 
 		private void saveSettings_Click(object sender, EventArgs e)
 		{
 			EraserSettings settings = EraserSettings.Get();
-			ManagerSettings managerSettings = ManagerLibrary.Settings;
+			ManagerSettings managerSettings = ManagerLibrary.Instance.Settings;
 
 			//Save the settings that don't fail first.
-			managerSettings.ForceUnlockLockedFiles = lockedForceUnlock.Checked;
+			Host.Instance.Settings.ForceUnlockLockedFiles = lockedForceUnlock.Checked;
 			managerSettings.ExecuteMissedTasksImmediately = schedulerMissedImmediate.Checked;
 			settings.ClearCompletedTasks = schedulerClearCompleted.Checked;
 
@@ -348,7 +349,7 @@ namespace Eraser
 			IDictionary<Guid, bool> pluginApprovals = managerSettings.PluginApprovals;
 			foreach (ListViewItem item in pluginsManager.Items)
 			{
-				PluginInstance plugin = (PluginInstance)item.Tag;
+				PluginInfo plugin = (PluginInfo)item.Tag;
 				Guid guid = plugin.AssemblyInfo.Guid;
 				if (!pluginApprovals.ContainsKey(guid))
 				{
@@ -418,13 +419,13 @@ namespace Eraser
 			}
 			settings.IntegrateWithShell = uiContextMenu.Checked;
 
-			managerSettings.DefaultFileErasureMethod =
-				((ErasureMethod)eraseFilesMethod.SelectedItem).Guid;
-			managerSettings.DefaultUnusedSpaceErasureMethod =
-				((ErasureMethod)eraseUnusedMethod.SelectedItem).Guid;
+			Host.Instance.Settings.DefaultFileErasureMethod =
+				((IErasureMethod)eraseFilesMethod.SelectedItem).Guid;
+			Host.Instance.Settings.DefaultUnusedSpaceErasureMethod =
+				((IErasureMethod)eraseUnusedMethod.SelectedItem).Guid;
 
-			Prng newPRNG = (Prng)erasePRNG.SelectedItem;
-			if (newPRNG.Guid != managerSettings.ActivePrng)
+			IPrng newPRNG = (IPrng)erasePRNG.SelectedItem;
+			if (newPRNG.Guid != Host.Instance.Prngs.ActivePrng.Guid)
 			{
 				MessageBox.Show(this, S._("The new randomness data source will only be used when " +
 					"the next task is run.\nCurrently running tasks will use the old source."),
@@ -432,11 +433,11 @@ namespace Eraser
 					MessageBoxDefaultButton.Button1,
 					Localisation.IsRightToLeft(this) ?
 						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-				managerSettings.ActivePrng = newPRNG.Guid;
+				Host.Instance.Settings.ActivePrng = newPRNG.Guid;
 			}
-			
-			managerSettings.PlausibleDeniability = plausibleDeniability.Checked;
-			IList<string> plausibleDeniabilityFilesList = managerSettings.PlausibleDeniabilityFiles;
+
+			Host.Instance.Settings.PlausibleDeniability = plausibleDeniability.Checked;
+			IList<string> plausibleDeniabilityFilesList = Host.Instance.Settings.PlausibleDeniabilityFiles;
 			plausibleDeniabilityFilesList.Clear();
 			foreach (string str in this.plausibleDeniabilityFiles.Items)
 				plausibleDeniabilityFilesList.Add(str);

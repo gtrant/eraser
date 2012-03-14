@@ -52,9 +52,9 @@ namespace Eraser
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SchedulerPanel));
 			this.scheduler = new System.Windows.Forms.ListView();
-			this.schedulerColName = new System.Windows.Forms.ColumnHeader();
-			this.schedulerColNextRun = new System.Windows.Forms.ColumnHeader();
-			this.schedulerColStatus = new System.Windows.Forms.ColumnHeader();
+			this.schedulerColName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.schedulerColNextRun = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.schedulerColStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.schedulerMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.runNowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cancelTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +66,7 @@ namespace Eraser
 			this.schedulerProgress = new System.Windows.Forms.ProgressBar();
 			this.schedulerDefaultMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.newTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.progressTimer = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.titleIcon)).BeginInit();
 			this.content.SuspendLayout();
 			this.schedulerMenu.SuspendLayout();
@@ -105,13 +106,13 @@ namespace Eraser
 			this.scheduler.UseCompatibleStateImageBehavior = false;
 			this.scheduler.View = System.Windows.Forms.View.Details;
 			this.scheduler.DrawColumnHeader += new System.Windows.Forms.DrawListViewColumnHeaderEventHandler(this.scheduler_DrawColumnHeader);
+			this.scheduler.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.scheduler_DrawSubItem);
 			this.scheduler.ItemActivate += new System.EventHandler(this.scheduler_ItemActivate);
 			this.scheduler.DragDrop += new System.Windows.Forms.DragEventHandler(this.scheduler_DragDrop);
 			this.scheduler.DragEnter += new System.Windows.Forms.DragEventHandler(this.scheduler_DragEnter);
+			this.scheduler.DragOver += new System.Windows.Forms.DragEventHandler(this.scheduler_DragOver);
 			this.scheduler.DragLeave += new System.EventHandler(this.scheduler_DragLeave);
 			this.scheduler.KeyDown += new System.Windows.Forms.KeyEventHandler(this.scheduler_KeyDown);
-			this.scheduler.DragOver += new System.Windows.Forms.DragEventHandler(this.scheduler_DragOver);
-			this.scheduler.DrawSubItem += new System.Windows.Forms.DrawListViewSubItemEventHandler(this.scheduler_DrawSubItem);
 			// 
 			// schedulerColName
 			// 
@@ -199,6 +200,11 @@ namespace Eraser
 			resources.ApplyResources(this.newTaskToolStripMenuItem, "newTaskToolStripMenuItem");
 			this.newTaskToolStripMenuItem.Click += new System.EventHandler(this.newTaskToolStripMenuItem_Click);
 			// 
+			// progressTimer
+			// 
+			this.progressTimer.Interval = 300;
+			this.progressTimer.Tick += new System.EventHandler(this.progressTimer_Tick);
+			// 
 			// SchedulerPanel
 			// 
 			resources.ApplyResources(this, "$this");
@@ -233,6 +239,7 @@ namespace Eraser
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ContextMenuStrip schedulerDefaultMenu;
 		private System.Windows.Forms.ToolStripMenuItem newTaskToolStripMenuItem;
+		private System.Windows.Forms.Timer progressTimer;
 	}
 }
 

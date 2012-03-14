@@ -127,7 +127,6 @@
     <Compile Include="Power.cs" />
     <Compile Include="NativeMethods\Gdi.cs" />
     <Compile Include="NativeMethods\Sfc.cs" />
-    <Compile Include="ProgressManager.cs" />
     <Compile Include="Sampler.cs" />
     <Compile Include="ExtensionClasses\SharingViolationException.cs" />
     <Compile Include="Shell.cs" />

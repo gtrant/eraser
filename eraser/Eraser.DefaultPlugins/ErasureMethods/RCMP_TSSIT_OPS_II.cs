@@ -27,8 +27,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -54,12 +55,12 @@ namespace Eraser.DefaultPlugins
 		{
 			get
 			{
-				Prng prng = ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng];
+				IPrng prng = Host.Instance.Prngs.ActivePrng;
 				int rand = prng.Next();
 
 				return new ErasureMethodPass[]
 				{
-					new ErasureMethodPass(WriteConstant, new byte[] { (byte)0}),
+					new ErasureMethodPass(WriteConstant, new byte[] { (byte)0 }),
 					new ErasureMethodPass(WriteConstant, new byte[] { (byte)0x01 }),
 					new ErasureMethodPass(WriteConstant, new byte[] { (byte)0 }),
 					new ErasureMethodPass(WriteConstant, new byte[] { (byte)0x01 }),

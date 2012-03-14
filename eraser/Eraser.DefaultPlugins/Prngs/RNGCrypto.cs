@@ -22,17 +22,18 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Runtime.InteropServices;
 
-using Eraser.Manager;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	[DefaultPrng(1)]
 	[Guid("6BF35B8E-F37F-476e-B6B2-9994A92C3B0C")]
-	public class RngCrypto : Prng
+	class RngCrypto : PrngBase
 	{
 		public override string Name
 		{
@@ -49,7 +50,7 @@ namespace Eraser.DefaultPlugins
 			rand.GetBytes(buffer);
 		}
 
-		protected override void Reseed(byte[] seed)
+		public override void Reseed(byte[] seed)
 		{
 			//No-op. RNGCryptoServiceProviders can't be reseeded.
 		}

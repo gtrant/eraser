@@ -24,16 +24,18 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-using Eraser.Manager;
-using Eraser.Util;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
+using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
+
 namespace Eraser.DefaultPlugins
 {
 	[Guid("0C2E07BF-0207-49a3-ADE8-46F9E1499C01")]
-	sealed class FirstLast16KB : ErasureMethod
+	sealed class FirstLast16KB : ErasureMethodBase
 	{
 		public FirstLast16KB()
 		{
@@ -41,13 +43,12 @@ namespace Eraser.DefaultPlugins
 			{
 				//Try to retrieve the set erasure method
 				if (DefaultPlugin.Settings.FL16Method != Guid.Empty)
-					method = ManagerLibrary.Instance.ErasureMethodRegistrar[
-						DefaultPlugin.Settings.FL16Method];
-				else if (ManagerLibrary.Settings.DefaultFileErasureMethod != Guid)
-					method = ManagerLibrary.Instance.ErasureMethodRegistrar[
-						ManagerLibrary.Settings.DefaultFileErasureMethod];
+					method = Host.Instance.ErasureMethods[DefaultPlugin.Settings.FL16Method];
+				else if (Host.Instance.Settings.DefaultFileErasureMethod != Guid)
+					method = Host.Instance.ErasureMethods[
+						Host.Instance.Settings.DefaultFileErasureMethod];
 				else
-					method = ManagerLibrary.Instance.ErasureMethodRegistrar[new Gutmann().Guid];
+					method = Host.Instance.ErasureMethods[new Gutmann().Guid];
 			}
 			catch (ErasureMethodNotFoundException)
 			{
@@ -99,7 +100,7 @@ namespace Eraser.DefaultPlugins
 			return amountToWrite * method.Passes;
 		}
 
-		public override void Erase(Stream strm, long erasureLength, Prng prng,
+		public override void Erase(Stream strm, long erasureLength, IPrng prng,
 			ErasureMethodProgressFunction callback)
 		{
 			//If we have no default or we are the default then throw an exception
@@ -146,6 +147,6 @@ namespace Eraser.DefaultPlugins
 		/// </summary>
 		private const long DataSize = 16 * 1024;
 
-		private ErasureMethod method;
+		private IErasureMethod method;
 	}
 }

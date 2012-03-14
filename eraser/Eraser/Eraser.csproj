@@ -224,16 +224,26 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.en.resx">
       <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.en.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Strings.it.resx" />
-    <EmbeddedResource Include="Strings.pl.resx" />
+    <EmbeddedResource Include="Strings.it.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.it.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.pl.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.pl.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Strings.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Strings.nl.resx">
       <SubType>Designer</SubType>
       <LastGenOutput>Strings.nl.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="SchedulerPanel.resx">
       <SubType>Designer</SubType>
@@ -368,14 +378,13 @@
     <Content Include="Resources\ToolbarSettings.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Eraser.DefaultPlugins\Eraser.DefaultPlugins.csproj">
-      <Project>{21752123-7BD7-4B44-B512-14A963C55FD8}</Project>
-      <Name>Eraser.DefaultPlugins</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Eraser.Manager\Eraser.Manager.csproj">
       <Project>{C1AC3255-0939-499D-A69D-725E3DD4F574}</Project>
       <Name>Eraser.Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Eraser.Plugins\Eraser.Plugins.csproj">
+      <Project>{59F7ED0F-3589-4112-B612-4A9A6588F4A0}</Project>
+      <Name>Eraser.Plugins</Name>
     </ProjectReference>
     <ProjectReference Include="..\Eraser.Util\Eraser.Util.csproj">
       <Project>{D083E1A8-3A4C-4683-9B3F-D5FEDE61B9C9}</Project>

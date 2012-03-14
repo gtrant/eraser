@@ -27,13 +27,18 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text;
 using System.Windows.Forms;
-using Eraser.Util;
-using Eraser.Manager;
-using Eraser.Properties;
+
 using System.IO;
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.Serialization;
+
+using Eraser.Util;
+using Eraser.Manager;
+using Eraser.Plugins;
+using Eraser.Plugins.Registrars;
+using Eraser.Plugins.ExtensionPoints;
+using Eraser.Properties;
 
 namespace Eraser
 {
@@ -55,6 +60,16 @@ namespace Eraser
 
 			Theming.ApplyTheme(this);
 			Theming.ApplyTheme(notificationMenu);
+
+			//We need to see if there are any tools to display
+			foreach (IClientTool tool in Host.Instance.ClientTools)
+				tool.RegisterTool(tbToolsMenu);
+			if (tbToolsMenu.Items.Count == 0)
+			{
+				//There are none, hide the menu
+				tbTools.Visible = false;
+				tbToolsDropDown.Visible = false;
+			}
 
 			//For every task we need to register the Task Started and Task Finished
 			//event handlers for progress notifications
@@ -364,7 +379,7 @@ namespace Eraser
 			}
 
 			Task task = (Task)sender;
-			string iconText = S._("Eraser") + " - " + S._("Processing:") + ' ' + task.UIText;
+			string iconText = S._("Eraser") + " - " + S._("Processing:") + ' ' + task.ToString();
 			if (iconText.Length >= 64)
 				iconText = iconText.Remove(60) + "...";
 

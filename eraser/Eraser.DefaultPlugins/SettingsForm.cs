@@ -28,8 +28,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Globalization;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -41,7 +42,7 @@ namespace Eraser.DefaultPlugins
 			Theming.ApplyTheme(this);
 
 			//Populate the list of erasure passes, except the FL16KB.
-			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+			foreach (IErasureMethod method in Host.Instance.ErasureMethods)
 				if (method.Guid != typeof(FirstLast16KB).GUID)
 					fl16MethodCmb.Items.Add(method);
 
@@ -49,7 +50,7 @@ namespace Eraser.DefaultPlugins
 			DefaultPluginSettings settings = DefaultPlugin.Settings;
 			if (settings.FL16Method != Guid.Empty)
 				foreach (object item in fl16MethodCmb.Items)
-					if (((ErasureMethod)item).Guid == settings.FL16Method)
+					if (((IErasureMethod)item).Guid == settings.FL16Method)
 					{
 						fl16MethodCmb.SelectedItem = item;
 						break;
@@ -58,12 +59,12 @@ namespace Eraser.DefaultPlugins
 			if (fl16MethodCmb.SelectedIndex == -1)
 			{
 				Guid methodGuid =
-					ManagerLibrary.Settings.DefaultFileErasureMethod;
+					Host.Instance.Settings.DefaultFileErasureMethod;
 				if (methodGuid == typeof(FirstLast16KB).GUID)
 					methodGuid = typeof(Gutmann).GUID;
 				
 				foreach (object item in fl16MethodCmb.Items)
-					if (((ErasureMethod)item).Guid == methodGuid)
+					if (((IErasureMethod)item).Guid == methodGuid)
 					{
 						fl16MethodCmb.SelectedItem = item;
 						break;
@@ -154,20 +155,20 @@ namespace Eraser.DefaultPlugins
 				return;
 			}
 
-			DefaultPlugin.Settings.FL16Method = ((ErasureMethod)fl16MethodCmb.SelectedItem).Guid;
+			DefaultPlugin.Settings.FL16Method = ((IErasureMethod)fl16MethodCmb.SelectedItem).Guid;
 
 			//Remove the old methods.
 			foreach (Guid guid in removeCustomMethods)
 			{
 				customMethods.Remove(guid);
-				ManagerLibrary.Instance.ErasureMethodRegistrar.Remove(guid);
+				Host.Instance.ErasureMethods.Remove(guid);
 			}
 
 			//Update the Erasure method manager on the methods
 			foreach (CustomErasureMethod method in addCustomMethods)
 			{
 				customMethods.Add(method.Guid, method);
-				ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new EraseCustom(method));
+				Host.Instance.ErasureMethods.Add(new EraseCustom(method));
 			}
 
 			//Save the list of custom erasure methods

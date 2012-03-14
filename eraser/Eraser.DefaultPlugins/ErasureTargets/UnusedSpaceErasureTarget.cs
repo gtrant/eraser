@@ -29,9 +29,11 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
+using Eraser.Plugins.Registrars;
 
 namespace Eraser.DefaultPlugins
 {
@@ -40,7 +42,7 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("A627BEC4-CAFC-46ce-92AD-209157C3177A")]
-	public class UnusedSpaceErasureTarget : ErasureTarget
+	class UnusedSpaceErasureTarget : ErasureTargetBase
 	{
 		#region Serialization code
 		protected UnusedSpaceErasureTarget(SerializationInfo info, StreamingContext context)
@@ -72,27 +74,32 @@ namespace Eraser.DefaultPlugins
 			get { return GetType().GUID; }
 		}
 
+		public override string ToString()
+		{
+			return S._("Unused disk space ({0})", Drive);
+		}
+
 		public override string Name
 		{
 			get { return S._("Unused disk space"); }
 		}
 
-		public sealed override ErasureMethod EffectiveMethod
+		public sealed override IErasureMethod EffectiveMethod
 		{
 			get
 			{
 				if (Method != ErasureMethodRegistrar.Default)
 					return base.EffectiveMethod;
 
-				return ManagerLibrary.Instance.ErasureMethodRegistrar[
-					ManagerLibrary.Settings.DefaultUnusedSpaceErasureMethod];
+				return Host.Instance.ErasureMethods[
+					Host.Instance.Settings.DefaultUnusedSpaceErasureMethod];
 			}
 		}
 
-		public override bool SupportsMethod(ErasureMethod method)
+		public override bool SupportsMethod(IErasureMethod method)
 		{
 			return method == ErasureMethodRegistrar.Default ||
-				method is UnusedSpaceErasureMethod;
+				method is IUnusedSpaceErasureMethod;
 		}
 
 		/// <summary>
@@ -108,11 +115,6 @@ namespace Eraser.DefaultPlugins
 			{
 				base.Progress = value;
 			}
-		}
-
-		public override string UIText
-		{
-			get { return S._("Unused disk space ({0})", Drive); }
 		}
 
 		public override IErasureTargetConfigurer Configurer
@@ -168,17 +170,15 @@ namespace Eraser.DefaultPlugins
 			}
 
 			//Get the erasure method if the user specified he wants the default.
-			ErasureMethod method = EffectiveMethod;
+			IErasureMethod method = EffectiveMethod;
 
 			//Make a folder to dump our temporary files in
 			DirectoryInfo info = new DirectoryInfo(Drive);
 			VolumeInfo volInfo = VolumeInfo.FromMountPoint(Drive);
-			FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[volInfo];
+			IFileSystem fsManager = Host.Instance.FileSystems[volInfo];
 
 			//Start sampling the speed of the task.
 			Progress = new SteppedProgressManager();
-			Task.Progress.Steps.Add(new SteppedProgressManagerStep(
-				Progress, 1.0f / Task.Targets.Count));
 
 			//Erase the cluster tips of every file on the drive.
 			if (EraseClusterTips)
@@ -193,8 +193,7 @@ namespace Eraser.DefaultPlugins
 					if (Task.Canceled)
 						throw new OperationCanceledException(S._("The task was cancelled."));
 
-					OnProgressChanged(this, new ProgressChangedEventArgs(tipSearch,
-						new TaskProgressChangedEventArgs(path, 0, 0)));
+					tipSearch.Tag = path;
 				};
 
 				ProgressManager tipProgress = new ProgressManager();
@@ -206,8 +205,7 @@ namespace Eraser.DefaultPlugins
 						tipSearch.MarkComplete();
 						tipProgress.Total = totalFiles;
 						tipProgress.Completed = currentFile;
-						OnProgressChanged(this, new ProgressChangedEventArgs(tipProgress,
-							new TaskProgressChangedEventArgs(currentFilePath, 0, 0)));
+						tipProgress.Tag = currentFilePath;
 
 						if (Task.Canceled)
 							throw new OperationCanceledException(S._("The task was cancelled."));
@@ -221,7 +219,7 @@ namespace Eraser.DefaultPlugins
 
 			bool lowDiskSpaceNotifications = Shell.LowDiskSpaceNotificationsEnabled;
 			info = info.CreateSubdirectory(Path.GetFileName(
-				FileSystem.GenerateRandomFileName(info, 18)));
+				FileSystemBase.GenerateRandomFileName(info, 18)));
 			try
 			{
 				//Set the folder's compression flag off since we want to use as much
@@ -244,8 +242,6 @@ namespace Eraser.DefaultPlugins
 					{
 						residentProgress.Completed = currentFile;
 						residentProgress.Total = totalFiles;
-						OnProgressChanged(this, new ProgressChangedEventArgs(residentProgress,
-							new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 
 						if (Task.Canceled)
 							throw new OperationCanceledException(S._("The task was cancelled."));
@@ -260,8 +256,6 @@ namespace Eraser.DefaultPlugins
 				ProgressManager tempFiles = new ProgressManager();
 				Progress.Steps.Add(new SteppedProgressManagerStep(tempFiles,
 					0.0f, S._("Removing temporary files...")));
-				OnProgressChanged(this, new ProgressChangedEventArgs(tempFiles,
-					new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 				info.Delete(true);
 				tempFiles.MarkComplete();
 
@@ -282,10 +276,6 @@ namespace Eraser.DefaultPlugins
 					//Compute the progress
 					structureProgress.Total = totalFiles;
 					structureProgress.Completed = currentFile;
-
-					//Set the event parameters, then broadcast the progress event.
-					OnProgressChanged(this, new ProgressChangedEventArgs(structureProgress,
-						new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 				}
 			);
 
@@ -293,8 +283,8 @@ namespace Eraser.DefaultPlugins
 			Progress = null;
 		}
 
-		private void EraseUnusedSpace(VolumeInfo volInfo, DirectoryInfo info, FileSystem fsInfo,
-			ErasureMethod method)
+		private void EraseUnusedSpace(VolumeInfo volInfo, DirectoryInfo info, IFileSystem fsInfo,
+			IErasureMethod method)
 		{
 			ProgressManager mainProgress = new ProgressManager();
 			Progress.Steps.Add(new SteppedProgressManagerStep(mainProgress,
@@ -304,7 +294,7 @@ namespace Eraser.DefaultPlugins
 			while (volInfo.AvailableFreeSpace > 0)
 			{
 				//Generate a non-existant file name
-				string currFile = FileSystem.GenerateRandomFileName(info, 18);
+				string currFile = FileSystemBase.GenerateRandomFileName(info, 18);
 
 				//Create the stream
 				FileStream stream = new FileStream(currFile, FileMode.CreateNew,
@@ -315,7 +305,7 @@ namespace Eraser.DefaultPlugins
 					//or the maximum size of one of these dumps.
 					mainProgress.Total = mainProgress.Completed +
 						method.CalculateEraseDataSize(null, volInfo.AvailableFreeSpace);
-					long streamLength = Math.Min(ErasureMethod.FreeSpaceFileUnit,
+					long streamLength = Math.Min(PassBasedErasureMethod.FreeSpaceFileUnit,
 						volInfo.AvailableFreeSpace);
 
 					//Handle IO exceptions gracefully, because the filesystem
@@ -335,13 +325,11 @@ namespace Eraser.DefaultPlugins
 						}
 
 					//Then run the erase task
-					method.Erase(stream, long.MaxValue,
-						ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
+					method.Erase(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng,
 						delegate(long lastWritten, long totalData, int currentPass)
 						{
 							mainProgress.Completed += lastWritten;
-							OnProgressChanged(this, new ProgressChangedEventArgs(mainProgress,
-								new TaskProgressChangedEventArgs(Drive, currentPass, method.Passes)));
+							mainProgress.Tag = new int[] { currentPass, method.Passes };
 
 							if (Task.Canceled)
 								throw new OperationCanceledException(S._("The task was cancelled."));

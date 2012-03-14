@@ -46,6 +46,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Eraser.Util.Native", "Erase
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraser.BlackBox", "Eraser.BlackBox\Eraser.BlackBox.csproj", "{F8C3524E-B846-454B-BA41-5E2AA64BD56B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraser.Plugins", "Eraser.Plugins\Eraser.Plugins.csproj", "{59F7ED0F-3589-4112-B612-4A9A6588F4A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,22 @@ Global
 		{F8C3524E-B846-454B-BA41-5E2AA64BD56B}.Release|Win32.Build.0 = Release|Any CPU
 		{F8C3524E-B846-454B-BA41-5E2AA64BD56B}.Release|x64.ActiveCfg = Release|Any CPU
 		{F8C3524E-B846-454B-BA41-5E2AA64BD56B}.Release|x64.Build.0 = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|Win32.Build.0 = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Debug|x64.Build.0 = Debug|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|Win32.ActiveCfg = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|Win32.Build.0 = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|x64.ActiveCfg = Release|Any CPU
+		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -26,16 +26,18 @@ using System.Text;
 
 using System.IO;
 using System.Threading;
-using Eraser.Manager;
+
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
 	/// <summary>
 	/// Base class for all Windows filesystems.
 	/// </summary>
-	public abstract class WindowsFileSystem : FileSystem
+	abstract class WindowsFileSystem : FileSystemBase
 	{
 		public override void ResetFileTimes(FileSystemInfo info)
 		{
@@ -47,7 +49,7 @@ namespace Eraser.DefaultPlugins
 		{
 			//If the user wants plausible deniability, find a random file from the
 			//list of decoys and write it over.
-			if (Manager.ManagerLibrary.Settings.PlausibleDeniability)
+			if (Host.Instance.Settings.PlausibleDeniability)
 			{
 				using (FileStream fileStream = info.OpenWrite())
 					CopyPlausibleDeniabilityFile(fileStream);
@@ -65,7 +67,7 @@ namespace Eraser.DefaultPlugins
 			if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
 			{
 				foreach (DirectoryInfo dir in info.GetDirectories())
-					DeleteFolder(dir);
+					DeleteFolder(dir, true);
 				foreach (FileInfo file in info.GetFiles())
 					DeleteFile(file);
 			}
@@ -130,7 +132,7 @@ namespace Eraser.DefaultPlugins
 							{
 								//Try to force the handle closed.
 								if (tries > FileNameEraseTries + 1 ||
-									!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+									!Host.Instance.Settings.ForceUnlockLockedFiles)
 								{
 									throw new IOException(S._("The file {0} is currently in use " +
 										"and cannot be removed.", info.FullName), e);
@@ -209,7 +211,75 @@ namespace Eraser.DefaultPlugins
 				}
 		}
 
-		public override void EraseClusterTips(VolumeInfo info, ErasureMethod method,
+
+		/// <summary>
+		/// Writes a file for plausible deniability over the current stream.
+		/// </summary>
+		/// <param name="stream">The stream to write the data to.</param>
+		private static void CopyPlausibleDeniabilityFile(Stream stream)
+		{
+			//Get the template file to copy
+			FileInfo shadowFileInfo;
+			{
+				string shadowFile = null;
+				List<string> entries = new List<string>(
+					Host.Instance.Settings.PlausibleDeniabilityFiles);
+				IPrng prng = Host.Instance.Prngs.ActivePrng;
+				do
+				{
+					if (entries.Count == 0)
+						throw new FatalException(S._("Plausible deniability was selected, " +
+							"but no decoy files were found. The current file has been only " +
+							"replaced with random data."));
+
+					//Get an item from the list of files, and then check that the item exists.
+					int index = prng.Next(entries.Count - 1);
+					shadowFile = entries[index];
+					if (File.Exists(shadowFile) || Directory.Exists(shadowFile))
+					{
+						if ((File.GetAttributes(shadowFile) & FileAttributes.Directory) != 0)
+						{
+							DirectoryInfo dir = new DirectoryInfo(shadowFile);
+							FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
+							entries.Capacity += files.Length;
+							foreach (FileInfo f in files)
+								entries.Add(f.FullName);
+						}
+						else
+							shadowFile = entries[index];
+					}
+					else
+						shadowFile = null;
+
+					entries.RemoveAt(index);
+				}
+				while (string.IsNullOrEmpty(shadowFile));
+				shadowFileInfo = new FileInfo(shadowFile);
+			}
+
+			//Dump the copy (the first 4MB, or less, depending on the file size and size of
+			//the original file)
+			long amountToCopy = Math.Min(stream.Length,
+				Math.Min(4 * 1024 * 1024, shadowFileInfo.Length));
+			using (FileStream shadowFileStream = shadowFileInfo.OpenRead())
+			{
+				while (stream.Position < amountToCopy)
+				{
+					byte[] buf = new byte[524288];
+					int bytesRead = shadowFileStream.Read(buf, 0, buf.Length);
+
+					//Stop bothering if the input stream is at the end
+					if (bytesRead == 0)
+						break;
+
+					//Dump the read contents onto the file to be deleted
+					stream.Write(buf, 0,
+						(int)Math.Min(bytesRead, amountToCopy - stream.Position));
+				}
+			}
+		}
+
+		public override void EraseClusterTips(VolumeInfo info, IErasureMethod method,
 			ClusterTipsSearchProgress searchCallback, ClusterTipsEraseProgress eraseCallback)
 		{
 			//List all the files which can be erased.
@@ -322,7 +392,7 @@ namespace Eraser.DefaultPlugins
 		/// </summary>
 		/// <param name="stream">The stream to erase.</param>
 		/// <param name="method">The erasure method to use.</param>
-		private void EraseFileClusterTips(StreamInfo streamInfo, ErasureMethod method)
+		private void EraseFileClusterTips(StreamInfo streamInfo, IErasureMethod method)
 		{
 			//Get the file access times
 			DateTime lastAccess = streamInfo.LastAccessTime;
@@ -354,8 +424,7 @@ namespace Eraser.DefaultPlugins
 					stream.Seek(fileLength, SeekOrigin.Begin);
 
 					//Erase the file
-					method.Erase(stream, long.MaxValue, ManagerLibrary.Instance.PrngRegistrar[
-							ManagerLibrary.Settings.ActivePrng], null);
+					method.Erase(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng, null);
 				}
 				finally
 				{

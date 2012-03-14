@@ -45,8 +45,9 @@ using Microsoft.VisualBasic.Devices;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
-using ProgressChangedEventHandler = Eraser.Util.ProgressChangedEventHandler;
-using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
+using Eraser.Plugins;
+using ProgressChangedEventHandler = Eraser.Plugins.ProgressChangedEventHandler;
+using ProgressChangedEventArgs = Eraser.Plugins.ProgressChangedEventArgs;
 
 namespace Eraser.BlackBox
 {

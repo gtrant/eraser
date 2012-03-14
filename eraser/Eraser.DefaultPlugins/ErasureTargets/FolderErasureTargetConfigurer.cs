@@ -28,15 +28,17 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using System.IO;
 using System.Text.RegularExpressions;
 
-using Eraser.Manager;
 using Eraser.Util;
-using System.IO;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class FolderErasureTargetConfigurer : UserControl, IErasureTargetConfigurer
+	public partial class FolderErasureTargetConfigurer : UserControl,
+		IErasureTargetConfigurer, IDragAndDropConfigurerFactory<IErasureTarget>
 	{
 		public FolderErasureTargetConfigurer()
 		{
@@ -46,7 +48,7 @@ namespace Eraser.DefaultPlugins
 
 		#region IConfigurer<ErasureTarget> Members
 
-		public void LoadFrom(ErasureTarget target)
+		public void LoadFrom(IErasureTarget target)
 		{
 			FolderErasureTarget folder = target as FolderErasureTarget;
 			if (folder == null)
@@ -59,7 +61,7 @@ namespace Eraser.DefaultPlugins
 			folderDelete.Checked = folder.DeleteIfEmpty;
 		}
 
-		public bool SaveTo(ErasureTarget target)
+		public bool SaveTo(IErasureTarget target)
 		{
 			FolderErasureTarget folder = target as FolderErasureTarget;
 			if (folder == null)
@@ -138,6 +140,30 @@ namespace Eraser.DefaultPlugins
 			}
 
 			return false;
+		}
+
+		#endregion
+
+		#region IDragAndDropConfigurer<IErasureTarget> Members
+
+		public ICollection<IErasureTarget> ProcessArgument(DragEventArgs e)
+		{
+			List<string> files = e.Data.GetDataPresent(DataFormats.FileDrop) ?
+				new List<string>((string[])e.Data.GetData(DataFormats.FileDrop, false)) :
+				new List<string>();
+
+			List<IErasureTarget> result = new List<IErasureTarget>();
+			foreach (string file in files)
+			{
+				if (File.Exists(file))
+				{
+					FileErasureTarget target = new FileErasureTarget();
+					target.Path = file;
+					result.Add(target);
+				}
+			}
+
+			return result;
 		}
 
 		#endregion

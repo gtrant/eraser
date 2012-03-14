@@ -25,8 +25,10 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 using System.IO;
-using Eraser.Manager;
+
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -34,7 +36,7 @@ namespace Eraser.DefaultPlugins
 	/// Provides functions to handle erasures specific to NTFS volumes.
 	/// </summary>
 	[Guid("34399F62-0AD4-411c-8C71-5E1E6213545C")]
-	public class NtfsFileSystem : WindowsFileSystem
+	class NtfsFileSystem : WindowsFileSystem
 	{
 		public override Guid Guid
 		{
@@ -47,7 +49,7 @@ namespace Eraser.DefaultPlugins
 		}
 
 		public override void EraseOldFileSystemResidentFiles(VolumeInfo volume,
-			DirectoryInfo tempDirectory, ErasureMethod method,
+			DirectoryInfo tempDirectory, IErasureMethod method,
 			FileSystemEntriesEraseProgress callback)
 		{
 			//Squeeze files smaller than one MFT record until the volume and the MFT is full.
@@ -68,8 +70,7 @@ namespace Eraser.DefaultPlugins
 						strm.SetLength(lastFileSize);
 
 						//Then run the erase task
-						method.Erase(strm, long.MaxValue, ManagerLibrary.Instance.PrngRegistrar[
-								ManagerLibrary.Settings.ActivePrng], null);
+						method.Erase(strm, long.MaxValue, Host.Instance.Prngs.ActivePrng, null);
 
 						//Call the callback function if one is provided. We'll provide a dummy
 						//value since we really have no idea how much of the MFT we can clean.
@@ -101,7 +102,7 @@ namespace Eraser.DefaultPlugins
 			FileSystemEntriesEraseProgress callback)
 		{
 			//Create a directory to hold all the temporary files
-			DirectoryInfo tempDir = new DirectoryInfo(FileSystem.GenerateRandomFileName(
+			DirectoryInfo tempDir = new DirectoryInfo(GenerateRandomFileName(
 				info.MountPoints[0], 32));
 			tempDir.Create();
 
@@ -151,11 +152,11 @@ namespace Eraser.DefaultPlugins
 					files[i].Delete();
 				}
 
-				DeleteFolder(tempDir);
+				DeleteFolder(tempDir, true);
 			}
 		}
 
-		public override void EraseFileSystemObject(StreamInfo info, ErasureMethod method,
+		public override void EraseFileSystemObject(StreamInfo info, IErasureMethod method,
 			ErasureMethodProgressFunction callback)
 		{
 			//Check if the file fits in one cluster - if it does it may be MFT resident
@@ -167,8 +168,7 @@ namespace Eraser.DefaultPlugins
 				using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
 					FileShare.None))
 				{
-					method.Erase(strm, long.MaxValue,
-						ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
+					method.Erase(strm, long.MaxValue, Host.Instance.Prngs.ActivePrng,
 						null);
 				}
 			}
@@ -189,10 +189,7 @@ namespace Eraser.DefaultPlugins
 				strm.SetLength(fileArea);
 
 				//Then erase the file.
-				method.Erase(strm, long.MaxValue,
-					ManagerLibrary.Instance.PrngRegistrar[ManagerLibrary.Settings.ActivePrng],
-					callback
-				);
+				method.Erase(strm, long.MaxValue, Host.Instance.Prngs.ActivePrng, callback);
 
 				//Set the length of the file to 0.
 				strm.Seek(0, SeekOrigin.Begin);

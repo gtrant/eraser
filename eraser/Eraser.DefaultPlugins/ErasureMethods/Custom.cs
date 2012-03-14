@@ -26,7 +26,8 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 
 using Eraser.Util;
-using Eraser.Manager;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -55,7 +56,7 @@ namespace Eraser.DefaultPlugins
 			foreach (Guid guid in methods.Keys)
 			{
 				CustomErasureMethod method = methods[guid];
-				ManagerLibrary.Instance.ErasureMethodRegistrar.Add(new EraseCustom(method));
+				Host.Instance.ErasureMethods.Add(new EraseCustom(method));
 			}
 		}
 
@@ -132,12 +133,12 @@ namespace Eraser.DefaultPlugins
 		{
 			public PassData(ErasureMethodPass pass)
 			{
-				if (pass.Function == ErasureMethod.WriteConstant)
+				if (pass.Function == PassBasedErasureMethod.WriteConstant)
 				{
 					Random = false;
 					OpaqueValue = pass.OpaqueValue;
 				}
-				else if (pass.Function == ErasureMethod.WriteRandom)
+				else if (pass.Function == PassBasedErasureMethod.WriteRandom)
 				{
 					Random = true;
 				}
@@ -149,8 +150,8 @@ namespace Eraser.DefaultPlugins
 			public static implicit operator ErasureMethodPass(PassData pass)
 			{
 				return new ErasureMethodPass(pass.Random ?
-					new ErasureMethodPassFunction(ErasureMethod.WriteRandom) :
-						new ErasureMethodPassFunction(ErasureMethod.WriteConstant),
+					new ErasureMethodPass.ErasureMethodPassFunction(PassBasedErasureMethod.WriteRandom) :
+						new ErasureMethodPass.ErasureMethodPassFunction(PassBasedErasureMethod.WriteConstant),
 					pass.OpaqueValue);
 			}
 

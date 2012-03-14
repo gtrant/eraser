@@ -30,8 +30,9 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -45,7 +46,7 @@ namespace Eraser.DefaultPlugins
 
 		#region IConfigurer<ErasureTarget> Members
 
-		public void LoadFrom(ErasureTarget target)
+		public void LoadFrom(IErasureTarget target)
 		{
 			SecureMoveErasureTarget secureMove = target as SecureMoveErasureTarget;
 			if (secureMove == null)
@@ -60,7 +61,7 @@ namespace Eraser.DefaultPlugins
 				(File.GetAttributes(secureMove.Path) & FileAttributes.Directory) != 0;
 		}
 
-		public bool SaveTo(ErasureTarget target)
+		public bool SaveTo(IErasureTarget target)
 		{
 			SecureMoveErasureTarget secureMove = target as SecureMoveErasureTarget;
 			if (secureMove == null)

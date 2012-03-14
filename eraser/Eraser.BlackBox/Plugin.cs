@@ -24,13 +24,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-using Eraser.Manager.Plugin;
+using Eraser.Plugins;
 
 namespace Eraser.BlackBox
 {
 	public sealed class Plugin : IPlugin
 	{
-		public void Initialize(Host host)
+		public void Initialize(PluginInfo info)
 		{
 			//Initialise our crash handler
 			BlackBox blackBox = BlackBox.Get();

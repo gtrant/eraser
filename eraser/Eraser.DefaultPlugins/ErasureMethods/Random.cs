@@ -24,12 +24,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	[DefaultUnusedSpaceErasure(1)]
 	[Guid("BF8BA267-231A-4085-9BF9-204DE65A6641")]
 	sealed class Pseudorandom : PassBasedErasureMethod
 	{

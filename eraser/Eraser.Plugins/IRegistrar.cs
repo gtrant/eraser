@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
-namespace Eraser.Manager
+namespace Eraser.Plugins
 {
 	/// <summary>
 	/// The abstract registrar interface.
