@@ -434,7 +434,7 @@ the command line.", methods, targets));
 		private static void CommandHelp(ConsoleArguments arguments)
 		{
 			Console.WriteLine(S._(@"Eraser {0}
-(c) 2008-2010 The Eraser Project
+(c) 2008-2012 The Eraser Project
 Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 ", BuildInfo.AssemblyFileVersion));
 
