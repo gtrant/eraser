@@ -72,7 +72,7 @@ namespace Eraser
 			}
 			
 			//The item is checked if the plugin was given the green light to load
-			item.Checked = e.Plugin.Plugin != null ||
+			item.Checked = e.Plugin.Loaded ||
 				(ManagerLibrary.Instance.Settings.PluginApprovals.ContainsKey(
 					e.Plugin.AssemblyInfo.Guid) && ManagerLibrary.Instance.
 					Settings.PluginApprovals[e.Plugin.AssemblyInfo.Guid]
@@ -178,6 +178,8 @@ namespace Eraser
 
 			foreach (string path in Host.Instance.Settings.PlausibleDeniabilityFiles)
 				plausibleDeniabilityFiles.Items.Add(path);
+			plausibleDeniability.Checked =
+				Host.Instance.Settings.PlausibleDeniability;
 
 			uiContextMenu.Checked = settings.IntegrateWithShell;
 			lockedForceUnlock.Checked =
@@ -186,9 +188,6 @@ namespace Eraser
 				ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
 			schedulerMissedIgnore.Checked =
 				!ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
-			plausibleDeniability.Checked =
-				Host.Instance.Settings.PlausibleDeniability;
-			plausibleDeniability_CheckedChanged(plausibleDeniability, new EventArgs());
 			schedulerClearCompleted.Checked = settings.ClearCompletedTasks;
 
 			List<string> defaultsList = new List<string>();
@@ -338,15 +337,16 @@ namespace Eraser
 		private void saveSettings_Click(object sender, EventArgs e)
 		{
 			EraserSettings settings = EraserSettings.Get();
-			ManagerSettings managerSettings = ManagerLibrary.Instance.Settings;
 
 			//Save the settings that don't fail first.
 			Host.Instance.Settings.ForceUnlockLockedFiles = lockedForceUnlock.Checked;
-			managerSettings.ExecuteMissedTasksImmediately = schedulerMissedImmediate.Checked;
+			ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately =
+				schedulerMissedImmediate.Checked;
 			settings.ClearCompletedTasks = schedulerClearCompleted.Checked;
 
 			bool pluginApprovalsChanged = false;
-			IDictionary<Guid, bool> pluginApprovals = managerSettings.PluginApprovals;
+			IDictionary<Guid, bool> pluginApprovals =
+				ManagerLibrary.Instance.Settings.PluginApprovals;
 			foreach (ListViewItem item in pluginsManager.Items)
 			{
 				PluginInfo plugin = (PluginInfo)item.Tag;
