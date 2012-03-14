@@ -4,7 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4AA1FBC2-DA5C-4204-B152-B5929516DC48}"
 	ProjectSection(SolutionItems) = preProject
 		CustomDictionary.xml = CustomDictionary.xml
-		Eraser Native.vsprops = Eraser Native.vsprops
+		Eraser Native.props = Eraser Native.props
 		Eraser.fxcop = Eraser.fxcop
 		Strong Name.snk = Strong Name.snk
 		UpdateVersions.bat = UpdateVersions.bat
