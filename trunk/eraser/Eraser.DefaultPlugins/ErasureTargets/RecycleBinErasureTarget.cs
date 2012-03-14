@@ -77,7 +77,8 @@ namespace Eraser.DefaultPlugins
 			List<StreamInfo> result = new List<StreamInfo>();
 			string[] rootDirectory = new string[] {
 					"$RECYCLE.BIN",
-					"RECYCLER"
+					"RECYCLER",
+					"RECYCLED"
 				};
 			string userSid = System.Security.Principal.WindowsIdentity.GetCurrent().
 				User.ToString();
@@ -86,14 +87,16 @@ namespace Eraser.DefaultPlugins
 			{
 				foreach (string rootDir in rootDirectory)
 				{
-					DirectoryInfo dir = new DirectoryInfo(
-						System.IO.Path.Combine(
-							System.IO.Path.Combine(drive.Name, rootDir),
-							userSid));
-					if (!dir.Exists)
+					//First get the global recycle bin for the current drive
+					string recycleBinPath = System.IO.Path.Combine(drive.Name, rootDir);
+					if (!Directory.Exists(recycleBinPath))
 						continue;
 
-					foreach (FileInfo file in GetFiles(dir))
+					//Try to see if we can get the user's own recycle bin
+					if (Directory.Exists(System.IO.Path.Combine(recycleBinPath, userSid)))
+						recycleBinPath = System.IO.Path.Combine(recycleBinPath, userSid);
+
+					foreach (FileInfo file in GetFiles(new DirectoryInfo(recycleBinPath)))
 					{
 						//Add the ADSes
 						result.AddRange(GetPathADSes(file));
