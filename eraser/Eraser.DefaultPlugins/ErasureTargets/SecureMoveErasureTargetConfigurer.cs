@@ -36,7 +36,7 @@ using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class SecureMoveErasureTargetConfigurer : UserControl, IErasureTargetConfigurer
+	partial class SecureMoveErasureTargetConfigurer : UserControl, IErasureTargetConfigurer
 	{
 		public SecureMoveErasureTargetConfigurer()
 		{

@@ -37,7 +37,7 @@ using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class FolderErasureTargetConfigurer : UserControl,
+	partial class FolderErasureTargetConfigurer : UserControl,
 		IErasureTargetConfigurer, IDragAndDropConfigurerFactory<IErasureTarget>
 	{
 		public FolderErasureTargetConfigurer()

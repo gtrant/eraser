@@ -38,7 +38,7 @@ using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class UnusedSpaceErasureTargetConfigurer : UserControl, IErasureTargetConfigurer
+	partial class UnusedSpaceErasureTargetConfigurer : UserControl, IErasureTargetConfigurer
 	{
 		/// <summary>
 		/// Represents an item in the list of drives.

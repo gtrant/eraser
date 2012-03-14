@@ -34,7 +34,7 @@ using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	internal partial class CustomMethodEditorForm : Form
+	partial class CustomMethodEditorForm : Form
 	{
 		public CustomMethodEditorForm()
 		{
