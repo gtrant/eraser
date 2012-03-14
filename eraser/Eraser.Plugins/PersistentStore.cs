@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: LoadingPolicy.cs 2291 2011-01-04 05:38:18Z lowjoel $
+ * $Id$
  * Copyright 2008-2011 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:

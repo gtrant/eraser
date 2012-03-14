@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: FileSystem.cs 2161 2010-06-13 02:30:16Z lowjoel $
+ * $Id$
  * Copyright 2008-2010 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 

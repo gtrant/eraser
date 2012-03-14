@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: ErasureTarget.cs 2132 2010-05-15 13:50:31Z lowjoel $
+ * $Id$
  * Copyright 2008-2010 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
