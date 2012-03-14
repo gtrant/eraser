@@ -30,7 +30,7 @@ using Eraser.Util;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class CustomMethodPassEditor : UserControl
+	partial class CustomMethodPassEditor : UserControl
 	{
 		public CustomMethodPassEditor()
 		{

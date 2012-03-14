@@ -34,7 +34,7 @@ using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	public partial class SettingsForm : Form
+	partial class SettingsForm : Form
 	{
 		public SettingsForm()
 		{
