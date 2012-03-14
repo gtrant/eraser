@@ -288,7 +288,7 @@
   <data name="Are you sure you wish to erase the selected items?" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Could not load the setting {0}\\{1} for plugin {2}. The setting has been lost." xml:space="preserve">
+  <data name="Could not load the setting {0}\\{1}. The setting has been lost." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Default file erasure method" xml:space="preserve">

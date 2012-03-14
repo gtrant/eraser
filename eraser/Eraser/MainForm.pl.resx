@@ -112,16 +112,22 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="contentPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="tbSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>135, 28</value>
+  </data>
+  <data name="tbSchedule.Text" xml:space="preserve">
+    <value>Plan wymazywania</value>
+  </data>
   <data name="openEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>219, 22</value>
   </data>
@@ -1730,6 +1736,21 @@
   <data name="tbScheduleMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>192, 76</value>
   </data>
+  <data name="tbScheduleDropDown.Text" xml:space="preserve">
+    <value>Plan wymazywania</value>
+  </data>
+  <data name="tbSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>92, 28</value>
+  </data>
+  <data name="tbSettings.Text" xml:space="preserve">
+    <value>Ustawienia</value>
+  </data>
+  <data name="tbHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 28</value>
+  </data>
+  <data name="tbHelp.Text" xml:space="preserve">
+    <value>Pomoc</value>
+  </data>
   <data name="checkForUpdatesToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 22</value>
   </data>
@@ -1744,6 +1765,12 @@
   </data>
   <data name="tbHelpMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>186, 48</value>
+  </data>
+  <data name="tbHelpDropDown.Text" xml:space="preserve">
+    <value>Pomoc</value>
+  </data>
+  <data name="ToolBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>432, 32</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -3304,20 +3331,5 @@
         O6enpIqnp6T/p6ek/6enpIqnp6Q7AAAAAAAAAAAAAAAAAAAAAAAAAAD4HwAA4AcAAMADAACAAQAAAAAA
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACAAQAAwAMAAOAHAAD4HwAA
 </value>
-  </data>
-  <data name="tbHelp.Text" xml:space="preserve">
-    <value>Pomoc</value>
-  </data>
-  <data name="tbHelpDropDown.Text" xml:space="preserve">
-    <value>Pomoc</value>
-  </data>
-  <data name="tbSchedule.Text" xml:space="preserve">
-    <value>Plan wymazywania</value>
-  </data>
-  <data name="tbScheduleDropDown.Text" xml:space="preserve">
-    <value>Plan wymazywania</value>
-  </data>
-  <data name="tbSettings.Text" xml:space="preserve">
-    <value>Ustawienia</value>
   </data>
 </root>

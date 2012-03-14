@@ -117,51 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="{0} (1 pass)" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="{0} ({1} passes)" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Random" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="(default)" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The selected erasure method is not supported for this erasure target." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="EntropySource GUID not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Erasure method not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="PRNG not found: {0}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The file system on the drive {0} is not supported." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The Core plugin assembly is not one whichEraser expects.\n\nCheck that the Eraser installation is not corrupt, or reinstall the program." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The provided Core plugin assembly is not a plugin.\n\nCheck that the Eraser installation is not corrupt, or reinstall the program." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="The provided Core plugin does not have an identical public key as the Eraser assembly.\n\nCheck that the Eraser installation is not corrupt, or reinstall the program." xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Could not load the plugin {0}.\n\nThe error returned was: {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Eraser" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
   <data name="Running on restart" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

@@ -112,97 +112,85 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;notificationIcon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="contentPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;notificationIconTimer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="contentPanel.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;openEraserToolStripMenuItem.Name" xml:space="preserve">
-    <value>openEraserToolStripMenuItem</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="contentPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 77</value>
   </data>
-  <data name="openEraserToolStripMenuItem.Text" xml:space="preserve">
-    <value>Open Eraser</value>
+  <data name="contentPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>752, 449</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="newTaskToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+N</value>
+  <data name="contentPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;tbScheduleMenu.Name" xml:space="preserve">
-    <value>tbScheduleMenu</value>
+  <data name="&gt;&gt;contentPanel.Name" xml:space="preserve">
+    <value>contentPanel</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
+  <data name="&gt;&gt;contentPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;contentPanel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="hideWhenMinimisedToolStripMenuItem.Text" xml:space="preserve">
-    <value>Hide When Minimised</value>
+  <data name="&gt;&gt;contentPanel.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 6</value>
+  <data name="tbSchedule.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 28</value>
+  </data>
+  <data name="tbSchedule.Text" xml:space="preserve">
+    <value>Erase Schedule</value>
+  </data>
+  <metadata name="notificationIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>498, 17</value>
+  </metadata>
+  <metadata name="notificationMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>801, 17</value>
+  </metadata>
+  <data name="openEraserToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt, style=Bold</value>
+  </data>
+  <data name="openEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="openEraserToolStripMenuItem.Text" xml:space="preserve">
+    <value>Open Eraser</value>
   </data>
   <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>189, 6</value>
   </data>
-  <data name="&gt;&gt;newTaskToolStripMenuItem.Name" xml:space="preserve">
-    <value>newTaskToolStripMenuItem</value>
+  <data name="hideWhenMinimisedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>766, 538</value>
+  <data name="hideWhenMinimisedToolStripMenuItem.Text" xml:space="preserve">
+    <value>Hide When Minimised</value>
   </data>
-  <data name="&gt;&gt;importTaskListToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
   </data>
-  <data name="&gt;&gt;exportTaskListToolStripMenuItem.Name" xml:space="preserve">
-    <value>exportTaskListToolStripMenuItem</value>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>E&amp;xit Eraser</value>
   </data>
-  <data name="importTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 22</value>
-  </data>
-  <data name="&gt;&gt;contentPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;notificationIconTimer.Name" xml:space="preserve">
-    <value>notificationIconTimer</value>
-  </data>
-  <data name="checkForUpdatesToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 22</value>
-  </data>
-  <data name="&gt;&gt;tbSettings.Name" xml:space="preserve">
-    <value>tbSettings</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="notificationIcon.Visible" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="notificationMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 76</value>
   </data>
   <data name="&gt;&gt;notificationMenu.Name" xml:space="preserve">
     <value>notificationMenu</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Eraser</value>
-  </data>
   <data name="&gt;&gt;notificationMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ToolBar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="tbScheduleDropDown.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="notificationIcon.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1764,227 +1752,215 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACAAQAAwAMAAOAHAAD4HwAA
 </value>
   </data>
-  <data name="ToolBar.Text" xml:space="preserve">
-    <value>ToolBar</value>
-  </data>
-  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem1.Name" xml:space="preserve">
-    <value>checkForUpdatesToolStripMenuItem1</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="notificationMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>193, 76</value>
-  </data>
-  <data name="&gt;&gt;exitToolStripMenuItem.Name" xml:space="preserve">
-    <value>exitToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.Type" xml:space="preserve">
-    <value>Eraser.ToolBar, Eraser, Version=6.0.6.1386, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
-  </data>
-  <data name="eraserLogo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="eraserLogo.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
-    <value>StretchImage</value>
-  </data>
-  <data name="checkForUpdatesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 22</value>
-  </data>
-  <data name="contentPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 77</value>
-  </data>
-  <data name="&gt;&gt;notificationIcon.Name" xml:space="preserve">
-    <value>notificationIcon</value>
-  </data>
-  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem.Name" xml:space="preserve">
-    <value>checkForUpdatesToolStripMenuItem</value>
-  </data>
-  <data name="tbHelpDropDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 28</value>
-  </data>
-  <data name="hideWhenMinimisedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="exportTaskListToolStripMenuItem.Text" xml:space="preserve">
-    <value>Export Task List</value>
-  </data>
-  <data name="&gt;&gt;tbHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;tbHelpDropDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="contentPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;importTaskListToolStripMenuItem.Name" xml:space="preserve">
-    <value>importTaskListToolStripMenuItem</value>
-  </data>
-  <data name="tbHelpDropDown.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="&gt;&gt;aboutEraserToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbScheduleDropDown.Name" xml:space="preserve">
-    <value>tbScheduleDropDown</value>
-  </data>
-  <data name="contentPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>752, 449</value>
-  </data>
-  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
-    <value>toolStripMenuItem2</value>
-  </data>
-  <data name="&gt;&gt;tbSchedule.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="eraserLogo.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 44</value>
-  </data>
-  <data name="&gt;&gt;eraserLogo.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>MainForm</value>
-  </data>
-  <data name="checkForUpdatesToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Check for Updates</value>
-  </data>
-  <data name="tbScheduleDropDown.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomLeft</value>
-  </data>
-  <data name="&gt;&gt;tbHelpMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;eraserLogo.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;hideWhenMinimisedToolStripMenuItem.Name" xml:space="preserve">
-    <value>hideWhenMinimisedToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;newTaskToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="tbHelp.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="tbHelpDropDown.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomLeft</value>
-  </data>
-  <data name="aboutEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 22</value>
-  </data>
-  <data name="&gt;&gt;eraserLogo.Name" xml:space="preserve">
-    <value>eraserLogo</value>
-  </data>
-  <data name="ToolBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 32</value>
-  </data>
-  <data name="tbHelpMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 48</value>
-  </data>
-  <data name="eraserLogo.Location" type="System.Drawing.Point, System.Drawing">
-    <value>636, 15</value>
-  </data>
-  <data name="tbSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>77, 28</value>
-  </data>
-  <data name="eraserLogo.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="newTaskToolStripMenuItem.Text" xml:space="preserve">
-    <value>New Task</value>
-  </data>
-  <data name="&gt;&gt;tbHelp.Name" xml:space="preserve">
-    <value>tbHelp</value>
-  </data>
-  <data name="contentPanel.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.Name" xml:space="preserve">
-    <value>ToolBar</value>
-  </data>
-  <data name="contentPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbHelpMenu.Name" xml:space="preserve">
-    <value>tbHelpMenu</value>
-  </data>
-  <data name="exportTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 22</value>
-  </data>
-  <data name="tbHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 28</value>
-  </data>
-  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>760, 520</value>
-  </data>
-  <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 22</value>
-  </data>
-  <data name="tbSchedule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>113, 28</value>
-  </data>
   <data name="notificationIcon.Text" xml:space="preserve">
     <value>Eraser</value>
   </data>
+  <data name="notificationIcon.Visible" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <metadata name="notificationIconTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>634, 17</value>
+  </metadata>
+  <metadata name="ToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="ToolBar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <metadata name="tbScheduleMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>110, 17</value>
+  </metadata>
   <data name="tbScheduleMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>169, 76</value>
   </data>
-  <data name="tbSettings.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="&gt;&gt;contentPanel.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="importTaskListToolStripMenuItem.Text" xml:space="preserve">
-    <value>Import Task List</value>
-  </data>
-  <data name="&gt;&gt;tbSchedule.Name" xml:space="preserve">
-    <value>tbSchedule</value>
-  </data>
-  <data name="&gt;&gt;exportTaskListToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbScheduleDropDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbHelpDropDown.Name" xml:space="preserve">
-    <value>tbHelpDropDown</value>
+  <data name="&gt;&gt;tbScheduleMenu.Name" xml:space="preserve">
+    <value>tbScheduleMenu</value>
   </data>
   <data name="&gt;&gt;tbScheduleMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;hideWhenMinimisedToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tbScheduleDropDown.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
   </data>
-  <data name="checkForUpdatesToolStripMenuItem.Text" xml:space="preserve">
-    <value>Check for Updates</value>
+  <data name="tbScheduleDropDown.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
   </data>
-  <data name="tbSchedule.Text" xml:space="preserve">
-    <value>Erase Schedule</value>
-  </data>
-  <data name="&gt;&gt;openEraserToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tbScheduleDropDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 28</value>
   </data>
   <data name="tbScheduleDropDown.Text" xml:space="preserve">
     <value>Erase Schedule</value>
   </data>
-  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="tbTools.Size" type="System.Drawing.Size, System.Drawing">
+    <value>48, 28</value>
+  </data>
+  <data name="tbTools.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <metadata name="tbToolsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>254, 17</value>
+  </metadata>
+  <data name="tbToolsMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 4</value>
+  </data>
+  <data name="&gt;&gt;tbToolsMenu.Name" xml:space="preserve">
+    <value>tbToolsMenu</value>
+  </data>
+  <data name="&gt;&gt;tbToolsMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tbToolsDropDown.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="tbToolsDropDown.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="tbToolsDropDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>24, 28</value>
+  </data>
+  <data name="tbToolsDropDown.Text" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="tbSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>77, 28</value>
+  </data>
+  <data name="tbSettings.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="tbHelp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>60, 28</value>
+  </data>
+  <data name="tbHelp.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <metadata name="tbHelpMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>378, 17</value>
+  </metadata>
+  <data name="checkForUpdatesToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
+  <data name="checkForUpdatesToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="aboutEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
+  <data name="aboutEraserToolStripMenuItem.Text" xml:space="preserve">
+    <value>About Eraser</value>
+  </data>
+  <data name="tbHelpMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>172, 48</value>
+  </data>
+  <data name="&gt;&gt;tbHelpMenu.Name" xml:space="preserve">
+    <value>tbHelpMenu</value>
+  </data>
+  <data name="&gt;&gt;tbHelpMenu.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="tbHelpDropDown.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleLeft</value>
+  </data>
+  <data name="tbHelpDropDown.ImageScaling" type="System.Windows.Forms.ToolStripItemImageScaling, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="tbHelpDropDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 28</value>
+  </data>
+  <data name="tbHelpDropDown.Text" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="ToolBar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 27</value>
+  </data>
+  <data name="ToolBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>392, 32</value>
+  </data>
+  <data name="ToolBar.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ToolBar.Text" xml:space="preserve">
+    <value>ToolBar</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.Name" xml:space="preserve">
+    <value>ToolBar</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.Type" xml:space="preserve">
+    <value>Eraser.ToolBar, Eraser, Version=6.1.0.2112, Culture=neutral, PublicKeyToken=ab8c5acb8db9a36b</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="newTaskToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Ctrl+N</value>
+  </data>
+  <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="newTaskToolStripMenuItem.Text" xml:space="preserve">
+    <value>New Task</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 6</value>
+  </data>
+  <data name="exportTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="exportTaskListToolStripMenuItem.Text" xml:space="preserve">
+    <value>Export Task List</value>
+  </data>
+  <data name="importTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="importTaskListToolStripMenuItem.Text" xml:space="preserve">
+    <value>Import Task List</value>
+  </data>
+  <data name="checkForUpdatesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 22</value>
+  </data>
+  <data name="checkForUpdatesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="eraserLogo.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="eraserLogo.Location" type="System.Drawing.Point, System.Drawing">
+    <value>636, 15</value>
+  </data>
+  <data name="eraserLogo.Size" type="System.Drawing.Size, System.Drawing">
+    <value>118, 44</value>
+  </data>
+  <data name="eraserLogo.SizeMode" type="System.Windows.Forms.PictureBoxSizeMode, System.Windows.Forms">
+    <value>StretchImage</value>
+  </data>
+  <data name="eraserLogo.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;eraserLogo.Name" xml:space="preserve">
+    <value>eraserLogo</value>
+  </data>
+  <data name="&gt;&gt;eraserLogo.Type" xml:space="preserve">
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;eraserLogo.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;eraserLogo.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>766, 538</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -3546,73 +3522,136 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACAAQAAwAMAAOAHAAD4HwAA
 </value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>760, 520</value>
   </data>
-  <data name="tbScheduleDropDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 28</value>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Eraser</value>
   </data>
-  <data name="openEraserToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt, style=Bold</value>
+  <data name="&gt;&gt;tbSchedule.Name" xml:space="preserve">
+    <value>tbSchedule</value>
   </data>
-  <data name="openEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
+  <data name="&gt;&gt;tbSchedule.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;notificationIcon.Name" xml:space="preserve">
+    <value>notificationIcon</value>
   </data>
-  <data name="&gt;&gt;contentPanel.Name" xml:space="preserve">
-    <value>contentPanel</value>
+  <data name="&gt;&gt;notificationIcon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.NotifyIcon, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;eraserLogo.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;openEraserToolStripMenuItem.Name" xml:space="preserve">
+    <value>openEraserToolStripMenuItem</value>
   </data>
-  <data name="aboutEraserToolStripMenuItem.Text" xml:space="preserve">
-    <value>About Eraser</value>
-  </data>
-  <data name="tbHelpDropDown.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>E&amp;xit Eraser</value>
-  </data>
-  <data name="ToolBar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 27</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
-  </data>
-  <data name="ToolBar.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;aboutEraserToolStripMenuItem.Name" xml:space="preserve">
-    <value>aboutEraserToolStripMenuItem</value>
+  <data name="&gt;&gt;openEraserToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolStripMenuItem1.Name" xml:space="preserve">
     <value>toolStripMenuItem1</value>
   </data>
-  <metadata name="ToolBar.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>10, 27</value>
-  </metadata>
-  <metadata name="tbHelpMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>254, 17</value>
-  </metadata>
-  <metadata name="notificationIconTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>510, 17</value>
-  </metadata>
-  <metadata name="tbScheduleMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>110, 17</value>
-  </metadata>
-  <metadata name="notificationIcon.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>374, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="notificationMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>677, 17</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Dutch</value>
-  </metadata>
+  <data name="&gt;&gt;toolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;hideWhenMinimisedToolStripMenuItem.Name" xml:space="preserve">
+    <value>hideWhenMinimisedToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;hideWhenMinimisedToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;exitToolStripMenuItem.Name" xml:space="preserve">
+    <value>exitToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;exitToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notificationIconTimer.Name" xml:space="preserve">
+    <value>notificationIconTimer</value>
+  </data>
+  <data name="&gt;&gt;notificationIconTimer.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Timer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbScheduleDropDown.Name" xml:space="preserve">
+    <value>tbScheduleDropDown</value>
+  </data>
+  <data name="&gt;&gt;tbScheduleDropDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;newTaskToolStripMenuItem.Name" xml:space="preserve">
+    <value>newTaskToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;newTaskToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Name" xml:space="preserve">
+    <value>toolStripMenuItem2</value>
+  </data>
+  <data name="&gt;&gt;toolStripMenuItem2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;exportTaskListToolStripMenuItem.Name" xml:space="preserve">
+    <value>exportTaskListToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;exportTaskListToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;importTaskListToolStripMenuItem.Name" xml:space="preserve">
+    <value>importTaskListToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;importTaskListToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbTools.Name" xml:space="preserve">
+    <value>tbTools</value>
+  </data>
+  <data name="&gt;&gt;tbTools.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbToolsDropDown.Name" xml:space="preserve">
+    <value>tbToolsDropDown</value>
+  </data>
+  <data name="&gt;&gt;tbToolsDropDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbSettings.Name" xml:space="preserve">
+    <value>tbSettings</value>
+  </data>
+  <data name="&gt;&gt;tbSettings.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbHelp.Name" xml:space="preserve">
+    <value>tbHelp</value>
+  </data>
+  <data name="&gt;&gt;tbHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbHelpDropDown.Name" xml:space="preserve">
+    <value>tbHelpDropDown</value>
+  </data>
+  <data name="&gt;&gt;tbHelpDropDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem1.Name" xml:space="preserve">
+    <value>checkForUpdatesToolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;aboutEraserToolStripMenuItem.Name" xml:space="preserve">
+    <value>aboutEraserToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;aboutEraserToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem.Name" xml:space="preserve">
+    <value>checkForUpdatesToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;checkForUpdatesToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MainForm</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
