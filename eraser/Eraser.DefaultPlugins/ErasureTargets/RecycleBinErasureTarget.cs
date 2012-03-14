@@ -31,6 +31,7 @@ using System.IO;
 using Eraser.Util;
 using Eraser.Plugins;
 using Eraser.Plugins.ExtensionPoints;
+using Microsoft.Win32;
 
 namespace Eraser.DefaultPlugins
 {
@@ -74,7 +75,7 @@ namespace Eraser.DefaultPlugins
 
 		protected override List<StreamInfo> GetPaths()
 		{
-			List<StreamInfo> result = new List<StreamInfo>();
+			List<DirectoryInfo> directories = new List<DirectoryInfo>();
 			string[] rootDirectory = new string[] {
 					"$RECYCLE.BIN",
 					"RECYCLER",
@@ -83,12 +84,17 @@ namespace Eraser.DefaultPlugins
 			string userSid = System.Security.Principal.WindowsIdentity.GetCurrent().
 				User.ToString();
 
-			foreach (DriveInfo drive in DriveInfo.GetDrives())
+			//First try to get the recycle bin on each of of the physical volumes we have
+			foreach (VolumeInfo volume in VolumeInfo.Volumes)
 			{
+				if (!volume.IsMounted)
+					continue;
+
 				foreach (string rootDir in rootDirectory)
 				{
 					//First get the global recycle bin for the current drive
-					string recycleBinPath = System.IO.Path.Combine(drive.Name, rootDir);
+					string recycleBinPath = System.IO.Path.Combine(
+						volume.MountPoints[0].FullName, rootDir);
 					if (!Directory.Exists(recycleBinPath))
 						continue;
 
@@ -96,16 +102,41 @@ namespace Eraser.DefaultPlugins
 					if (Directory.Exists(System.IO.Path.Combine(recycleBinPath, userSid)))
 						recycleBinPath = System.IO.Path.Combine(recycleBinPath, userSid);
 
-					foreach (FileInfo file in GetFiles(new DirectoryInfo(recycleBinPath)))
-					{
-						//Add the ADSes
-						result.AddRange(GetPathADSes(file));
+					directories.Add(new DirectoryInfo(recycleBinPath));
+				}
+			}
 
-						//Then the file itself
-						result.Add(new StreamInfo(file.FullName));
+			//Then try the Shell's known folders for Vista and later
+			using (RegistryKey key = Registry.CurrentUser.OpenSubKey(
+				"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\BitBucket\\KnownFolder"))
+			{
+				if (key != null)
+				{
+					string[] knownFolders = key.GetSubKeyNames();
+					foreach (string stringGuid in knownFolders)
+					{
+						Guid guid = new Guid(stringGuid);
+						DirectoryInfo info = Shell.KnownFolderIDs.GetPath(guid);
+
+						if (info == null)
+							continue;
+
+						directories.Add(info);
 					}
 				}
 			}
+
+			//Then get all the files in each of the directories
+			List<StreamInfo> result = new List<StreamInfo>();
+			foreach (DirectoryInfo directory in directories)
+				foreach (FileInfo file in GetFiles(directory))
+				{
+					//Add the ADSes
+					result.AddRange(GetPathADSes(file));
+
+					//Then the file itself
+					result.Add(new StreamInfo(file.FullName));
+				}
 
 			return result;
 		}

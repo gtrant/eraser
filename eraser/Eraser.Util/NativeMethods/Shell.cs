@@ -413,5 +413,42 @@ namespace Eraser.Util
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SHGetPathFromIDList(IntPtr pidl,
 			StringBuilder pszPath);
+
+		/// <summary>
+		/// Retrieves the full path of a known folder identified by the folder's KNOWNFOLDERID.
+		/// </summary>
+		/// <param name="rfid">A reference to the KNOWNFOLDERID that identifies the
+		/// folder.</param>
+		/// <param name="dwFlags">Flags that specify special retrieval options. This value
+		/// can be 0; otherwise, one or more of the KNOWN_FOLDER_FLAG values.</param>
+		/// <param name="hToken">An access token that represents a particular user. If
+		/// this parameter is NULL, which is the most common usage, the function requests
+		/// the known folder for the current user.
+		/// 
+		/// Request a specific user's folder by passing the hToken of that user. This is
+		/// typically done in the context of a service that has sufficient privileges to
+		/// retrieve the token of a given user. That token must be opened with TOKEN_QUERY
+		/// and TOKEN_IMPERSONATE rights. In addition to passing the user's hToken, the
+		/// registry hive of that specific user must be mounted. See Access Control for
+		/// further discussion of access control issues.
+		/// 
+		/// Assigning the hToken parameter a value of -1 indicates the Default User. This
+		/// allows clients of SHGetKnownFolderPath to find folder locations (such as the
+		/// Desktop folder) for the Default User. The Default User user profile is duplicated
+		/// when any new user account is created, and includes special folders such as
+		/// Documents and Desktop. Any items added to the Default User folder also appear in
+		/// any new user account. Note that access to the Default User folders requires
+		/// administrator privileges.</param>
+		/// <param name="ppszPath">When this method returns, contains the address of a
+		/// pointer to a null-terminated Unicode string that specifies the path of the
+		/// known folder. The calling process is responsible for freeing this resource
+		/// once it is no longer needed by calling CoTaskMemFree. The returned path does
+		/// not include a trailing backslash. For example, "C:\Users" is returned rather
+		/// than "C:\Users\".</param>
+		/// <returns>Returns S_OK if successful, or an error value otherwise</returns>
+		[DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
+		[return: MarshalAs(UnmanagedType.Error)]
+		internal static extern uint SHGetKnownFolderPath(
+			ref Guid rfid, uint dwFlags, IntPtr hToken, out IntPtr ppszPath);
 	}
 }
