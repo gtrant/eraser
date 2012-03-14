@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: ProgressManager.cs 2406 2012-01-12 05:19:39Z lowjoel $
+ * $Id$
  * Copyright 2008-2012 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 

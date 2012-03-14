@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: ErasureMethod.cs 2085 2010-05-09 10:00:15Z lowjoel $
+ * $Id$
  * Copyright 2008-2010 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:

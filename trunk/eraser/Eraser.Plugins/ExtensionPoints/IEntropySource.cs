@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: EntropySource.cs 2055 2010-05-04 05:51:04Z lowjoel $
+ * $Id$
  * Copyright 2008-2010 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
