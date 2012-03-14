@@ -46,9 +46,6 @@ namespace Eraser.Plugins
 		{
 			get
 			{
-				//If the user did not define anything for this field, check all plugins
-				//and use the method which was declared by us to be the highest
-				//priority default
 				Guid result = Store.GetValue<Guid>("DefaultFileErasureMethod");
 				if (result == Guid.Empty)
 					result = new Guid("{1407FC4E-FEFF-4375-B4FB-D7EFBB7E9922}");
