@@ -42,7 +42,7 @@ namespace Eraser
 			Theming.ApplyTheme(this);
 
 			//Update the title
-			Text = string.Format(CultureInfo.InvariantCulture, "{0} - {1}", Text, task.UIText);
+			Text = string.Format(CultureInfo.InvariantCulture, "{0} - {1}", Text, task);
 
 			//Populate the list of sessions
 			foreach (LogSink sink in task.Log)

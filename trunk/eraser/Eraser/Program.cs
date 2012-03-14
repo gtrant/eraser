@@ -30,6 +30,7 @@ using System.ComponentModel;
 using System.Runtime.Serialization;
 using System.Security.Principal;
 using System.Text.RegularExpressions;
+using System.Text;
 
 using System.Reflection;
 using System.Diagnostics;
@@ -38,8 +39,9 @@ using ComLib.Arguments;
 
 using Eraser.Manager;
 using Eraser.Util;
-using Eraser.DefaultPlugins;
-using System.Text;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
+using Eraser.Plugins.Registrars;
 
 namespace Eraser
 {
@@ -132,21 +134,21 @@ namespace Eraser
 			public string ErasureMethod { get; set; }
 		}
 
-		class AddTaskArguments : EraseArguments
+		class TaskArguments : EraseArguments
 		{
 			/// <summary>
 			/// Constructor.
 			/// </summary>
-			public AddTaskArguments()
+			public TaskArguments()
 			{
 			}
 
 			/// <summary>
-			/// Constructs Add Task arguments from Erase arguments.
+			/// Constructs Task arguments from Erase arguments.
 			/// </summary>
 			/// <param name="arguments">The <see cref="EraseArguments"/> to use as a template
 			/// for this instance.</param>
-			internal AddTaskArguments(EraseArguments arguments)
+			internal TaskArguments(EraseArguments arguments)
 				: base(arguments)
 			{
 			}
@@ -158,32 +160,19 @@ namespace Eraser
 			public string Schedule { get; set; }
 		}
 
-		class ShellArguments : ConsoleArguments
+		class ShellArguments : TaskArguments
 		{
-			/// <summary>
-			/// The action which the shell extension has requested.
-			/// </summary>
-			[Arg("action", "The action selected by the user", typeof(string), true, null, null)]
-			public ShellActions ShellAction { get; set; }
-
-			/// <summary>
-			/// Whether the recycle bin was specified on the command line.
-			/// </summary>
-			[Arg("recycleBin", "The recycle bin as an erasure target", typeof(string), false, null, null)]
-			public bool RecycleBin { get; set; }
-
-			/// <summary>
-			/// The destination for secure move operations, only valid when
-			/// <see cref="ShellAction"/> is <see cref="ShellActions.SecureMove"/>
-			/// </summary>
-			[Arg("destination", "The destination for secure move operations", typeof(string), false, null, null)]
-			public string Destination { get; set; }
-
 			/// <summary>
 			/// The parent HWND which can be used as a parent to display dialogs.
 			/// </summary>
 			[Arg("parent", "The parent HWND which can be used as a parent to display dialogues", typeof(string), false, null, null)]
 			public string Parent { get; set; }
+
+			/// <summary>
+			/// Whether we should display a confirmation dialog.
+			/// </summary>
+			[Arg("confirm", "Whether a confirmation dialog should be shown", typeof(bool), false, true, null)]
+			public bool Confirm { get; set; }
 		}
 
 		public enum ShellActions
@@ -241,7 +230,7 @@ namespace Eraser
 			Args parsedArguments = (Args)argumentParser.Item;
 
 			//Load the Eraser.Manager library
-			using (ManagerLibrary library = new ManagerLibrary(new Settings()))
+			using (ManagerLibrary library = new ManagerLibrary(Settings.Get()))
 			{
 				//Set our UI language
 				EraserSettings settings = EraserSettings.Get();
@@ -330,7 +319,7 @@ namespace Eraser
 					program.Handlers.Add("erase",
 						new ConsoleActionData(CommandErase, new EraseArguments())); 
 					program.Handlers.Add("addtask",
-						new ConsoleActionData(CommandAddTask, new AddTaskArguments()));
+						new ConsoleActionData(CommandAddTask, new TaskArguments()));
 					program.Handlers.Add("importtasklist",
 						new ConsoleActionData(CommandImportTaskList, new ConsoleArguments()));
 					program.Handlers.Add("shell",
@@ -361,7 +350,7 @@ namespace Eraser
 		{
 			//Get the command-line help for every erasure target
 			StringBuilder targets = new StringBuilder();
-			foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
+			foreach (IErasureTarget target in Host.Instance.ErasureTargetFactories)
 			{
 				//Replace all \r\n with \n, and split into lines
 				string[] helpText = target.Configurer.Help().Replace("\r\n", "\n").Split('\r', '\n');
@@ -378,9 +367,9 @@ namespace Eraser
 			methods.AppendLine("    " + new string('-', 75));
 
 			//Generate the list of erasure methods.
-			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+			foreach (IErasureMethod method in Host.Instance.ErasureTargetFactories)
 			{
-				methods.AppendFormat(methodFormat, (method is UnusedSpaceErasureMethod) ?
+				methods.AppendFormat(methodFormat, (method is IUnusedSpaceErasureMethod) ?
 					"U" : "", method.Name, method.Guid);
 			}
 
@@ -459,7 +448,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <param name="arg">The command line parameters passed to the program.</param>
 		private static void CommandErase(ConsoleArguments arg)
 		{
-			AddTaskArguments arguments = new AddTaskArguments((EraseArguments)arg);
+			TaskArguments arguments = new TaskArguments((EraseArguments)arg);
 			arguments.Schedule = "NOW";
 
 			CommandAddTask(arguments);
@@ -472,13 +461,27 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <param name="arg">The command line parameters passed to the program.</param>
 		private static void CommandAddTask(ConsoleArguments arg)
 		{
-			AddTaskArguments arguments = (AddTaskArguments)arg;
+			TaskArguments arguments = (TaskArguments)arg;
+			Task task = TaskFromCommandLine(arguments);
 
+			//Send the task out.
+			using (eraserClient = CommandConnect())
+				eraserClient.Tasks.Add(task);
+		}
+
+		/// <summary>
+		/// Parses the command line for erasure targets and returns them as
+		/// a Task object.
+		/// </summary>
+		/// <param name="arguments">The arguments specified on the command line.</param>
+		/// <returns>The task represented on the command line.</returns>
+		private static Task TaskFromCommandLine(TaskArguments arguments)
+		{
 			//Create the task
 			Task task = new Task();
 
 			//Get the erasure method the user wants to use
-			ErasureMethod method = string.IsNullOrEmpty(arguments.ErasureMethod) ?
+			IErasureMethod method = string.IsNullOrEmpty(arguments.ErasureMethod) ?
 				ErasureMethodRegistrar.Default :
 				ErasureMethodFromNameOrGuid(arguments.ErasureMethod);
 
@@ -503,10 +506,10 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			//Parse the rest of the command line parameters as target expressions.
 			foreach (string argument in arguments.PositionalArguments)
 			{
-				ErasureTarget selectedTarget = null;
+				IErasureTarget selectedTarget = null;
 
 				//Iterate over every defined erasure target
-				foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
+				foreach (IErasureTarget target in Host.Instance.ErasureTargetFactories)
 				{
 					//See if this argument can be handled by the target's configurer
 					IErasureTargetConfigurer configurer = target.Configurer;
@@ -544,23 +547,21 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			if (task.Targets.Count == 0)
 				throw new ArgumentException(S._("Tasks must contain at least one erasure target."));
 
-			//Send the task out.
-			using (eraserClient = CommandConnect())
-				eraserClient.Tasks.Add(task);
+			return task;
 		}
 
-		private static ErasureMethod ErasureMethodFromNameOrGuid(string param)
+		private static IErasureMethod ErasureMethodFromNameOrGuid(string param)
 		{
 			try
 			{
-				return ManagerLibrary.Instance.ErasureMethodRegistrar[new Guid(param)];
+				return Host.Instance.ErasureMethods[new Guid(param)];
 			}
 			catch (FormatException)
 			{
 				//Invalid GUID. Check every registered erasure method for the name
 				string upperParam = param.ToUpperInvariant();
-				ErasureMethod result = null;
-				foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+				IErasureMethod result = null;
+				foreach (IErasureMethod method in Host.Instance.ErasureMethods)
 				{
 					if (method.Name.ToUpperInvariant() == upperParam)
 						if (result == null)
@@ -594,105 +595,26 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <param name="args">The command line parameters passed to the program.</param>
 		private static void CommandShell(ConsoleArguments args)
 		{
-			switch (((ShellArguments)args).ShellAction)
-			{
-				case ShellActions.SecureMove:
-					CommandShellSecureMove((ShellArguments)args);
-					break;
-
-				default:
-					CommandShellErase((ShellArguments)args);
-					break;
-			}
-		}
-
-		/// <summary>
-		/// Handles the erasure of files from the Shell extension.
-		/// </summary>
-		/// <param name="args">The command line parameters passed to the program.</param>
-		private static void CommandShellErase(ShellArguments args)
-		{
-			//Construct a draft task.
-			Task task = new Task();
-			switch (args.ShellAction)
-			{
-				case ShellActions.EraseOnRestart:
-					task.Schedule = Schedule.RunOnRestart;
-					goto case ShellActions.EraseNow;
-
-				case ShellActions.EraseNow:
-					foreach (string path in args.PositionalArguments)
-					{
-						//If the path doesn't exist, skip the file
-						if (!(File.Exists(path) || Directory.Exists(path)))
-							continue;
-
-						FileSystemObjectErasureTarget target = null;
-						if ((File.GetAttributes(path) & FileAttributes.Directory) != 0)
-						{
-							target = new FolderErasureTarget();
-							target.Path = path;
-						}
-						else
-						{
-							target = new FileErasureTarget();
-							target.Path = path;
-						}
-
-						task.Targets.Add(target);
-					}
-
-					//Was the recycle bin specified?
-					if (args.RecycleBin)
-						task.Targets.Add(new RecycleBinErasureTarget());
-					break;
-
-				case ShellActions.EraseUnusedSpace:
-					foreach (string path in args.PositionalArguments)
-					{
-						UnusedSpaceErasureTarget target = new UnusedSpaceErasureTarget();
-						target.Drive = path;
-						task.Targets.Add(target);
-					}
-					break;
-			}
+			ShellArguments arguments = (ShellArguments)args;
+			Task task = TaskFromCommandLine(arguments);
 
 			//Do we have a parent dialog?
 			IWin32Window parent = null;
-			if (args.Parent != null)
+			if (arguments.Parent != null)
 			{
 				parent = new Win32Window((IntPtr)(ulong)
-					Convert.ChangeType(args.Parent, typeof(ulong)));
+					Convert.ChangeType(arguments.Parent, typeof(ulong)));
 			}
 
 			//Confirm that the user wants the erase.
-			Application.EnableVisualStyles();
-			using (Form dialog = new ShellConfirmationDialog(task))
+			if (arguments.Confirm)
 			{
-				if (dialog.ShowDialog(parent) != DialogResult.Yes)
-					return;
-			}
-
-			//Then queue for erasure.
-			using (eraserClient = CommandConnect())
-				eraserClient.Tasks.Add(task);
-		}
-
-		/// <summary>
-		/// Handles the movement of files from the Shell extension.
-		/// </summary>
-		/// <param name="args">The command line parameters passed to the program.</param>
-		private static void CommandShellSecureMove(ShellArguments args)
-		{
-			//Construct a draft task.
-			Task task = new Task();
-			foreach (string path in args.PositionalArguments)
-			{
-				SecureMoveErasureTarget target = new SecureMoveErasureTarget();
-				target.Path = path;
-				target.Destination = args.Destination;
-
-				task.Targets.Add(target);
+				Application.EnableVisualStyles();
+				using (Form dialog = new ShellConfirmationDialog(task))
+				{
+					if (dialog.ShowDialog(parent) != DialogResult.Yes)
+						return;
+				}
 			}
 
 			//Then queue for erasure.
@@ -851,6 +773,8 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// Path to the Eraser settings key (relative to HKCU)
 		/// </summary>
 		public const string SettingsPath = @"SOFTWARE\Eraser\Eraser 6";
+
+		public static IEnumerable<IErasureTarget> ErasureTargetRegistrar { get; set; }
 	}
 
 	class Win32Window : IWin32Window

@@ -29,6 +29,8 @@ using System.Threading;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.Manager
 {
@@ -36,14 +38,14 @@ namespace Eraser.Manager
 	/// Deals with an erase task.
 	/// </summary>
 	[Serializable]
-	public class Task : ISerializable
+	public class Task : ITask, ISerializable
 	{
 		#region Serialization code
 		protected Task(SerializationInfo info, StreamingContext context)
 		{
 			Name = (string)info.GetValue("Name", typeof(string));
 			Executor = context.Context as Executor;
-			Targets = (ErasureTargetsCollection)info.GetValue("Targets", typeof(ErasureTargetsCollection));
+			Targets = (ErasureTargetCollection)info.GetValue("Targets", typeof(ErasureTargetCollection));
 			Targets.Owner = this;
 			Log = (List<LogSink>)info.GetValue("Log", typeof(List<LogSink>));
 			Canceled = false;
@@ -78,26 +80,30 @@ namespace Eraser.Manager
 		public Task()
 		{
 			Name = string.Empty;
-			Targets = new ErasureTargetsCollection(this);
+			Targets = new ErasureTargetCollection(this);
 			Schedule = Schedule.RunNow;
 			Canceled = false;
 			Log = new List<LogSink>();
 		}
 
 		/// <summary>
-		/// Cancels the task from running, or, if the task is queued for running,
-		/// removes the task from the queue.
-		/// </summary>
-		public void Cancel()
-		{
-			Executor.UnqueueTask(this);
-			Canceled = true;
-		}
-
-		/// <summary>
 		/// The Executor object which is managing this task.
 		/// </summary>
-		public Executor Executor { get; internal set; }
+		public Executor Executor
+		{
+			get
+			{
+				return executor;
+			}
+			internal set
+			{
+				if (executor != null && value != null)
+					throw new InvalidOperationException("A task can only belong to one " +
+						"executor at any one time");
+
+				executor = value;
+			}
+		}
 
 		/// <summary>
 		/// The name for this task. This is just an opaque value for the user to
@@ -108,68 +114,46 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The name of the task, used for display in UI elements.
 		/// </summary>
-		public string UIText
+		public override string ToString()
 		{
-			get
+			//Simple case, the task name was given by the user.
+			if (!string.IsNullOrEmpty(Name))
+				return Name;
+
+			string result = string.Empty;
+			if (Targets.Count == 0)
+				return result;
+			else if (Targets.Count < 5)
 			{
-				//Simple case, the task name was given by the user.
-				if (!string.IsNullOrEmpty(Name))
-					return Name;
+				//Simpler case, small set of data.
+				foreach (IErasureTarget tgt in Targets)
+					result += S._("{0}, ", tgt);
 
-				string result = string.Empty;
-				if (Targets.Count == 0)
-					return result;
-				else if (Targets.Count < 5)
-				{
-					//Simpler case, small set of data.
-					foreach (ErasureTarget tgt in Targets)
-						result += S._("{0}, ", tgt.UIText);
-
-					return result.Remove(result.Length - 2);
-				}
-				else
-				{
-					//Ok, we've quite a few entries, get the first, the mid and the end.
-					result = S._("{0}, ", Targets[0].UIText);
-					result += S._("{0}, ", Targets[Targets.Count / 2].UIText);
-					result += Targets[Targets.Count - 1].UIText;
-
-					return S._("{0} and {1} other targets", result, Targets.Count - 3);
-				}
+				return result.Remove(result.Length - 2);
 			}
-		}
-
-		/// <summary>
-		/// Gets the status of the task - whether it is being executed.
-		/// </summary>
-		public bool Executing { get; private set; }
-
-		/// <summary>
-		/// Gets whether this task is currently queued to run. This is true only
-		/// if the queue it is in is an explicit request, i.e will run when the
-		/// executor is idle.
-		/// </summary>
-		public bool Queued
-		{
-			get
+			else
 			{
-				return Executor.IsTaskQueued(this);
-			}
-		}
+				//Ok, we've quite a few entries, get the first, the mid and the end.
+				result = S._("{0}, ", Targets[0]);
+				result += S._("{0}, ", Targets[Targets.Count / 2]);
+				result += Targets[Targets.Count - 1];
 
-		/// <summary>
-		/// Gets whether the task has been cancelled from execution.
-		/// </summary>
-		public bool Canceled
-		{
-			get;
-			internal set;
+				return S._("{0} and {1} other targets", result, Targets.Count - 3);
+			}
 		}
 
 		/// <summary>
 		/// The set of data to erase when this task is executed.
 		/// </summary>
-		public ErasureTargetsCollection Targets { get; private set; }
+		public ErasureTargetCollection Targets { get; private set; }
+
+		/// <summary>
+		/// <see cref="Targets"/>
+		/// </summary>
+		ICollection<IErasureTarget> ITask.Targets
+		{
+			get { return Targets; }
+		}
 
 		/// <summary>
 		/// The schedule for running the task.
@@ -219,6 +203,109 @@ namespace Eraser.Manager
 			}
 		}
 
+		/// <summary>
+		/// Gets the status of the task - whether it is being executed.
+		/// </summary>
+		public bool Executing { get; private set; }
+
+		/// <summary>
+		/// Gets whether this task is currently queued to run. This is true only
+		/// if the queue it is in is an explicit request, i.e will run when the
+		/// executor is idle.
+		/// </summary>
+		public bool Queued
+		{
+			get
+			{
+				if (Executor == null)
+					throw new InvalidOperationException();
+
+				return Executor.IsTaskQueued(this);
+			}
+		}
+
+		/// <summary>
+		/// Gets whether the task has been cancelled from execution.
+		/// </summary>
+		public bool Canceled
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// Cancels the task from running, or, if the task is queued for running,
+		/// removes the task from the queue.
+		/// </summary>
+		public void Cancel()
+		{
+			Executor.UnqueueTask(this);
+			Canceled = true;
+		}
+
+		/// <summary>
+		/// Executes the task in the context of the calling thread.
+		/// </summary>
+		public void Execute()
+		{
+			OnTaskStarted();
+			Executing = true;
+			Canceled = false;
+			Progress = new SteppedProgressManager();
+
+			try
+			{
+				//Run the task
+				foreach (IErasureTarget target in Targets)
+					try
+					{
+						Progress.Steps.Add(new ErasureTargetProgressManagerStep(
+							target, Targets.Count));
+						target.Execute();
+					}
+					catch (FatalException)
+					{
+						throw;
+					}
+					catch (OperationCanceledException)
+					{
+						throw;
+					}
+					catch (SharingViolationException)
+					{
+					}
+			}
+			catch (FatalException e)
+			{
+				Logger.Log(e.Message, LogLevel.Fatal);
+			}
+			catch (OperationCanceledException e)
+			{
+				Logger.Log(e.Message, LogLevel.Fatal);
+			}
+			catch (SharingViolationException)
+			{
+			}
+			finally
+			{
+				//If the task is a recurring task, reschedule it since we are done.
+				if (Schedule is RecurringSchedule)
+				{
+					((RecurringSchedule)Schedule).Reschedule(DateTime.Now);
+				}
+
+				//If the task is an execute on restart task or run immediately task, it is
+				//only run once and can now be restored to a manually run task
+				if (Schedule == Schedule.RunOnRestart || Schedule == Schedule.RunNow)
+					Schedule = Schedule.RunManually;
+
+				Progress = null;
+				Executing = false;
+				OnTaskFinished();
+			}
+		}
+
+		private Executor executor;
 		private Schedule schedule;
 		private SteppedProgressManager progress;
 
@@ -232,11 +319,6 @@ namespace Eraser.Manager
 		/// The start of the execution of a task.
 		/// </summary>
 		public EventHandler TaskStarted { get; set; }
-
-		/// <summary>
-		/// The event object holding all event handlers.
-		/// </summary>
-		public EventHandler<ProgressChangedEventArgs> ProgressChanged { get; set; }
 
 		/// <summary>
 		/// The completion of the execution of a task.
@@ -255,52 +337,71 @@ namespace Eraser.Manager
 		/// <summary>
 		/// Broadcasts the task execution start event.
 		/// </summary>
-		internal void OnTaskStarted()
+		private void OnTaskStarted()
 		{
 			if (TaskStarted != null)
 				TaskStarted(this, EventArgs.Empty);
-			Executing = true;
-			Progress = new SteppedProgressManager();
-		}
-
-		/// <summary>
-		/// Broadcasts a ProgressChanged event. The sender will be the erasure target
-		/// which broadcast this event; e.UserState will contain extra information
-		/// about the progress which is stored as a TaskProgressChangedEventArgs
-		/// object.
-		/// </summary>
-		/// <param name="sender">The <see cref="ErasureTarget"/> which is reporting
-		/// progress.</param>
-		/// <param name="e">The new progress value.</param>
-		/// <exception cref="ArgumentException">e.UserState must be of the type
-		/// <see cref="TaskProgressEventargs"/></exception>
-		/// <exception cref="ArgumentNullException">Both sender and e cannot be null.</exception>
-		internal void OnProgressChanged(ErasureTarget sender, ProgressChangedEventArgs e)
-		{
-			if (sender == null)
-				throw new ArgumentNullException("sender");
-			if (e == null)
-				throw new ArgumentNullException("sender");
-			if (e.UserState.GetType() != typeof(TaskProgressChangedEventArgs))
-				throw new ArgumentException("The Task.OnProgressChanged event expects a " +
-					"TaskProgressEventArgs argument for the ProgressChangedEventArgs' UserState " +
-					"object.", "e");
-
-			if (ProgressChanged != null)
-				ProgressChanged(sender, e);
 		}
 
 		/// <summary>
 		/// Broadcasts the task execution completion event.
 		/// </summary>
-		internal void OnTaskFinished()
+		private void OnTaskFinished()
 		{
-			Progress = null;
-			Executing = false;
 			if (TaskFinished != null)
 				TaskFinished(this, EventArgs.Empty);
 		}
 		#endregion
+	}
+
+	/// <summary>
+	/// Returns the progress of an erasure target, since that comprises the
+	/// steps of the Task Progress.
+	/// </summary>
+	public class ErasureTargetProgressManagerStep : SteppedProgressManagerStepBase
+	{
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="target">The erasure target represented by this object.</param>
+		/// <param name="steps">The number of targets in the task.</param>
+		public ErasureTargetProgressManagerStep(IErasureTarget target, int targets)
+			: base(1.0f / targets)
+		{
+			Target = target;
+		}
+
+		public override ProgressManagerBase Progress
+		{
+			get
+			{
+				ProgressManagerBase targetProgress = Target.Progress;
+				if (targetProgress != null)
+					TargetProgress = targetProgress;
+
+				return TargetProgress;
+			}
+			set
+			{
+				throw new InvalidOperationException();
+			}
+		}
+
+		/// <summary>
+		/// The erasure target represented by this step.
+		/// </summary>
+		public IErasureTarget Target
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// Caches a copy of the progress object for the Target. This is so that
+		/// for as long we our object is alive we can give valid information
+		/// (as required by the SteppedProgressManager class)
+		/// </summary>
+		private ProgressManagerBase TargetProgress;
 	}
 
 	/// <summary>
@@ -321,43 +422,5 @@ namespace Eraser.Manager
 		/// The executing task.
 		/// </summary>
 		public Task Task { get; private set; }
-	}
-
-	/// <summary>
-	/// Stores extra information in the <see cref="ProgressChangedEventArgs"/>
-	/// structure that is not conveyed in the ProgressManagerBase classes.
-	/// </summary>
-	public class TaskProgressChangedEventArgs
-	{
-		/// <summary>
-		/// Constructor.
-		/// </summary>
-		/// <param name="itemName">The item whose erasure progress is being erased.</param>
-		/// <param name="itemPass">The current pass number for this item.</param>
-		/// <param name="itemTotalPasses">The total number of passes to complete erasure
-		/// of this item.</param>
-		public TaskProgressChangedEventArgs(string itemName, int itemPass,
-			int itemTotalPasses)
-		{
-			ItemName = itemName;
-			ItemPass = itemPass;
-			ItemTotalPasses = itemTotalPasses;
-		}
-
-		/// <summary>
-		/// The file name of the item being erased.
-		/// </summary>
-		public string ItemName { get; private set; }
-
-		/// <summary>
-		/// The pass number of a multi-pass erasure method.
-		/// </summary>
-		public int ItemPass { get; private set; }
-
-		/// <summary>
-		/// The total number of passes to complete before this erasure method is
-		/// completed.
-		/// </summary>
-		public int ItemTotalPasses { get; private set; }
 	}
 }

@@ -31,6 +31,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.Manager
 {
@@ -106,7 +108,7 @@ namespace Eraser.Manager
 				return;
 
 			DateTime executionTime = (schedule.MissedPreviousSchedule &&
-				ManagerLibrary.Settings.ExecuteMissedTasksImmediately) ?
+				ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately) ?
 					DateTime.Now : schedule.NextRun;
 
 			lock (tasksLock)
@@ -251,90 +253,42 @@ namespace Eraser.Manager
 
 				if (task != null)
 				{
-					//Start a new log session to separate this session's events
-					//from previous ones.
 					LogSink sessionLog = new LogSink();
 					task.Log.Add(sessionLog);
-					using (new LogSession(sessionLog))
+
+					//Start a new log session to separate this session's events
+					//from previous ones.
+					try
 					{
-						ExecuteTask(task);
+						using (new LogSession(sessionLog))
+						{
+							//Set the currently executing task.
+							currentTask = task;
+
+							//Prevent the system from sleeping.
+							Power.ExecutionState = ExecutionState.Continuous |
+								ExecutionState.SystemRequired;
+
+							task.Execute();
+						}
+					}
+					finally
+					{
+						//Allow the system to sleep again.
+						Power.ExecutionState = ExecutionState.Continuous;
+
+						//If the task is a recurring task, reschedule it for the next execution
+						//time since we are done with this one.
+						if (task.Schedule is RecurringSchedule)
+							ScheduleTask(task);
+
+						//Remove the actively executing task from our instance variable
+						currentTask = null;
 					}
 				}
 
 				//Wait for half a minute to check for the next scheduled task.
 				schedulerInterrupt.WaitOne(30000, false);
-			}
-		}
-
-		/// <summary>
-		/// Executes the given task.
-		/// </summary>
-		/// <param name="task">The task to execute.</param>
-		private void ExecuteTask(Task task)
-		{
-			//Set the currently executing task.
-			currentTask = task;
-
-			//Prevent the system from sleeping.
-			Power.ExecutionState = ExecutionState.Continuous | ExecutionState.SystemRequired;
-
-			try
-			{
-				//Broadcast the task started event.
-				task.Canceled = false;
-				task.OnTaskStarted();
-
-				//Run the task
-				foreach (ErasureTarget target in task.Targets)
-					try
-					{
-						target.Execute();
-					}
-					catch (FatalException)
-					{
-						throw;
-					}
-					catch (OperationCanceledException)
-					{
-						throw;
-					}
-					catch (SharingViolationException)
-					{
-					}
-			}
-			catch (FatalException e)
-			{
-				Logger.Log(e.Message, LogLevel.Fatal);
-			}
-			catch (OperationCanceledException e)
-			{
-				Logger.Log(e.Message, LogLevel.Fatal);
-			}
-			catch (SharingViolationException)
-			{
-			}
-			finally
-			{
-				//Allow the system to sleep again.
-				Power.ExecutionState = ExecutionState.Continuous;
-
-				//If the task is a recurring task, reschedule it since we are done.
-				if (task.Schedule is RecurringSchedule)
-				{
-					((RecurringSchedule)task.Schedule).Reschedule(DateTime.Now);
-					ScheduleTask(task);
-				}
-
-				//And the task finished event.
-				task.OnTaskFinished();
-
-				//If the task is an execute on restart task or run immediately task, it is
-				//only run once and can now be restored to a manually run task
-				if (task.Schedule == Schedule.RunOnRestart || task.Schedule == Schedule.RunNow)
-					task.Schedule = Schedule.RunManually;
-
-				//Remove the actively executing task from our instance variable
-				currentTask = null;
 			}
 		}
 

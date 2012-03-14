@@ -30,8 +30,9 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -40,7 +41,7 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("F50B0A44-3AB1-4cab-B81E-1713AC3D28C9")]
-	public class FolderErasureTarget : FileSystemObjectErasureTarget
+	class FolderErasureTarget : FileSystemObjectErasureTarget
 	{
 		#region Serialization code
 		protected FolderErasureTarget(SerializationInfo info, StreamingContext context)
@@ -198,9 +199,9 @@ namespace Eraser.DefaultPlugins
 				if (!isVolumeRoot && directory.Exists &&
 					directory.GetFiles("*", SearchOption.AllDirectories).Length == 0)
 				{
-					FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+					IFileSystem fsManager = Host.Instance.FileSystems[
 						VolumeInfo.FromMountPoint(Path)];
-					fsManager.DeleteFolder(directory);
+					fsManager.DeleteFolder(directory, true);
 				}
 			}
 		}
@@ -217,8 +218,7 @@ namespace Eraser.DefaultPlugins
 				EraseFolder(subDir, progress);
 
 			//Public progress updates.
-			OnProgressChanged(this, new ProgressChangedEventArgs(progress,
-				new TaskProgressChangedEventArgs(info.FullName, 0, 0)));
+			progress.Tag = info.FullName;
 
 			//Ensure that the current directory is empty before deleting.
 			FileSystemInfo[] files = info.GetFileSystemInfos();
@@ -226,8 +226,8 @@ namespace Eraser.DefaultPlugins
 			{
 				try
 				{
-					ManagerLibrary.Instance.FileSystemRegistrar[
-						VolumeInfo.FromMountPoint(Path)].DeleteFolder(info);
+					Host.Instance.FileSystems[VolumeInfo.FromMountPoint(Path)].
+						DeleteFolder(info, true);
 				}
 				catch (UnauthorizedAccessException)
 				{

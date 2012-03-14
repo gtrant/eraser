@@ -28,14 +28,15 @@ using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
 	[Serializable]
 	[Guid("A1FA7354-0258-4903-88E9-0D31FC5F8D51")]
-	public class RecycleBinErasureTarget : FileSystemObjectErasureTarget
+	class RecycleBinErasureTarget : FileSystemObjectErasureTarget
 	{
 		#region Serialization code
 		protected RecycleBinErasureTarget(SerializationInfo info, StreamingContext context)
@@ -61,12 +62,9 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Retrieves the text to display representing this task.
 		/// </summary>
-		public override string UIText
+		public override string ToString()
 		{
-			get
-			{
-				return S._("Recycle Bin");
-			}
+			return S._("Recycle Bin");
 		}
 
 		public override IErasureTargetConfigurer Configurer
@@ -131,8 +129,6 @@ namespace Eraser.DefaultPlugins
 			ProgressManager progress = new ProgressManager();
 			Progress.Steps.Add(new SteppedProgressManagerStep(progress,
 				0.0f, S._("Emptying recycle bin...")));
-			OnProgressChanged(this, new ProgressChangedEventArgs(progress,
-				new TaskProgressChangedEventArgs(string.Empty, 0, 0)));
 
 			RecycleBin.Empty(EmptyRecycleBinOptions.NoConfirmation |
 				EmptyRecycleBinOptions.NoProgressUI | EmptyRecycleBinOptions.NoSound);

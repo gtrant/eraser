@@ -30,7 +30,8 @@ using System.Drawing;
 
 using Eraser.Util;
 using Eraser.Manager;
-using Eraser.DefaultPlugins;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser
 {
@@ -63,16 +64,9 @@ namespace Eraser
 				{
 					for (int i = 1; i <= cida.cidl; ++i)
 					{
-						/*if (!string.IsNullOrEmpty(cida.aoffset[i].Path))
+						if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
 						{
-							files.Add(cida.aoffset[i].Path);
-						}
-						else */if (cida.aoffset[i].Guid != Guid.Empty)
-						{
-							if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)
-							{
-								recycleBin = true;
-							}
+							recycleBin = true;
 						}
 					}
 				}
@@ -81,30 +75,28 @@ namespace Eraser
 			return files;
 		}
 
-		public static ICollection<ErasureTarget> GetTargets(ICollection<string> paths, bool recycleBin)
+		/// <summary>
+		/// Parses a list of locations dropped on the target, converting them to the appropriate
+		/// IErasureTarget instance.
+		/// </summary>
+		/// <param name="e">The event argument.</param>
+		/// <returns>A list of erasure targets which will erase all the files and directories
+		/// as described by the drag-and-drop operation.</returns>
+		public static ICollection<IErasureTarget> GetTargets(DragEventArgs e)
 		{
-			ICollection<ErasureTarget> result = new List<ErasureTarget>();
-			foreach (string path in paths)
+			ICollection<IErasureTarget> result = new List<IErasureTarget>();
+			foreach (IErasureTarget target in Host.Instance.ErasureTargetFactories)
 			{
-				//If the path doesn't exist, skip the file
-				if (!(File.Exists(path) || Directory.Exists(path)))
+				//Skip targets not supporting IDragAndDropConfigurer
+				if (!(target.Configurer is IDragAndDropConfigurerFactory<IErasureTarget>))
 					continue;
 
-				FileSystemObjectErasureTarget target;
-				if ((File.GetAttributes(path) & FileAttributes.Directory) != 0)
-					target = new FolderErasureTarget();
-				else
-					target = new FileErasureTarget();
-				target.Path = path;
-
-				result.Add(target);
+				IDragAndDropConfigurerFactory<IErasureTarget> configurer =
+					(IDragAndDropConfigurerFactory<IErasureTarget>)target.Configurer;
+				foreach (IErasureTarget newTarget in configurer.ProcessArgument(e))
+					result.Add(newTarget);
 			}
 
-			//Add the recycle bin if it was specified
-			if (recycleBin)
-				result.Add(new RecycleBinErasureTarget());
-
-			//Return our result
 			return result;
 		}
 

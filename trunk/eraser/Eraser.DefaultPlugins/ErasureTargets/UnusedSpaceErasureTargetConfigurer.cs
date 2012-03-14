@@ -31,9 +31,10 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
@@ -98,7 +99,7 @@ namespace Eraser.DefaultPlugins
 
 		#region IConfigurer<ErasureTarget> Members
 
-		public void LoadFrom(ErasureTarget target)
+		public void LoadFrom(IErasureTarget target)
 		{
 			UnusedSpaceErasureTarget unused = target as UnusedSpaceErasureTarget;
 			if (unused == null)
@@ -111,7 +112,7 @@ namespace Eraser.DefaultPlugins
 			unusedClusterTips.Checked = unused.EraseClusterTips;
 		}
 
-		public bool SaveTo(ErasureTarget target)
+		public bool SaveTo(IErasureTarget target)
 		{
 			UnusedSpaceErasureTarget unused = target as UnusedSpaceErasureTarget;
 			if (unused == null)

@@ -35,8 +35,10 @@ using System.Net.Mime;
 using System.Globalization;
 
 using Eraser.Util;
+using Eraser.Plugins;
 
 using DoWorkEventArgs = System.ComponentModel.DoWorkEventArgs;
+using ProgressChangedEventHandler = Eraser.Plugins.ProgressChangedEventHandler;
 using RunWorkerCompletedEventArgs = System.ComponentModel.RunWorkerCompletedEventArgs;
 
 namespace Eraser
@@ -524,7 +526,7 @@ namespace Eraser
 	/// </summary>
 	public static class DownloadManager
 	{
-		public static IList<DownloadInfo> GetDownloads(Eraser.Util.ProgressChangedEventHandler handler)
+		public static IList<DownloadInfo> GetDownloads(ProgressChangedEventHandler handler)
 		{
 			WebRequest.DefaultCachePolicy = new HttpRequestCachePolicy(
 				HttpRequestCacheLevel.Revalidate);
@@ -536,7 +538,7 @@ namespace Eraser
 			using (Stream responseStream = response.GetResponseStream())
 			using (MemoryStream memoryStream = new MemoryStream())
 			{
-				Util.ProgressManager progress = new Util.ProgressManager();
+				ProgressManager progress = new ProgressManager();
 				if (response.ContentLength == -1)
 					progress.MarkIndeterminate();
 				else
@@ -552,7 +554,7 @@ namespace Eraser
 						progress.Completed = memoryStream.Position;
 					
 					if (handler != null)
-						handler(null, new Eraser.Util.ProgressChangedEventArgs(progress,
+						handler(null, new ProgressChangedEventArgs(progress,
 							S._("{0} of {1} downloaded", FileSize.ToString(progress.Completed),
 								FileSize.ToString(progress.Total))));
 				}
@@ -690,7 +692,7 @@ namespace Eraser
 		/// <summary>
 		/// Downloads the file to disk, storing the path into the DownloadedFile field.
 		/// </summary>
-		public void Download(Eraser.Util.ProgressChangedEventHandler handler)
+		public void Download(ProgressChangedEventHandler handler)
 		{
 			if (DownloadedFile != null && DownloadedFile.Length > 0)
 				throw new InvalidOperationException("The Download method cannot be called " +

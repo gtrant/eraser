@@ -24,21 +24,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	class RecycleBinErasureTargetConfigurer : IErasureTargetConfigurer
+	class RecycleBinErasureTargetConfigurer : IErasureTargetConfigurer,
+		IDragAndDropConfigurerFactory<IErasureTarget>
 	{
 		#region IConfigurer<ErasureTarget> Members
 
-		public void LoadFrom(ErasureTarget target)
+		public void LoadFrom(IErasureTarget target)
 		{
 		}
 
-		public bool SaveTo(ErasureTarget target)
+		public bool SaveTo(IErasureTarget target)
 		{
 			return true;
 		}
@@ -64,6 +67,35 @@ namespace Eraser.DefaultPlugins
 			}
 
 			return false;
+		}
+
+		#endregion
+
+		#region IDragAndDropConfigurer<IErasureTarget> Members
+
+		public ICollection<IErasureTarget> ProcessArgument(System.Windows.Forms.DragEventArgs e)
+		{
+			//Then try to see if we have shell locations dropped on us.
+			if (e.Data.GetDataPresent("Shell IDList Array"))
+			{
+				MemoryStream stream = (MemoryStream)e.Data.GetData("Shell IDList Array");
+				byte[] buffer = new byte[stream.Length];
+				stream.Read(buffer, 0, buffer.Length);
+				ShellCIDA cida = new ShellCIDA(buffer);
+
+				if (cida.cidl > 0)
+				{
+					for (int i = 1; i <= cida.cidl; ++i)
+					{
+						if (cida.aoffset[i].Guid == Shell.KnownFolderIDs.RecycleBin)							
+						{
+							return new IErasureTarget[] { new RecycleBinErasureTarget() };
+						}
+					}
+				}
+			}
+
+			return new IErasureTarget[0];
 		}
 
 		#endregion

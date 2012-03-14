@@ -1,4 +1,25 @@
-﻿using System;
+﻿/* 
+ * $Id$
+ * Copyright 2008-2012 The Eraser Project
+ * Original Author: Joel Low <lowjoel@users.sourceforge.net>
+ * Modified By: 
+ * 
+ * This file is part of Eraser.
+ * 
+ * Eraser is free software: you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ * 
+ * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * A copy of the GNU General Public License can be found at
+ * <http://www.gnu.org/licenses/>.
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +30,9 @@ using System.Windows.Forms;
 using Microsoft.VisualBasic.Devices;
 using Microsoft.Win32.SafeHandles;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins.ExtensionPoints;
+using System.Runtime.InteropServices;
 
 namespace Eraser.DefaultPlugins
 {
@@ -21,9 +43,9 @@ namespace Eraser.DefaultPlugins
 	/// instance of such behaviour within our system. The other classes could be
 	/// implemented as plugins, managed by EntropySourceManager.
 	/// </summary>
-	public class KernelEntropySource : EntropySource
+	class KernelEntropySource : IEntropySource
 	{
-		public override byte[] GetPrimer()
+		public byte[] GetPrimer()
 		{
 			List<byte> result = new List<byte>();
 
@@ -36,7 +58,7 @@ namespace Eraser.DefaultPlugins
 			return result.ToArray();
 		}
 
-		public override Guid Guid
+		public Guid Guid
 		{
 			get
 			{
@@ -44,7 +66,7 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		public override string Name
+		public string Name
 		{
 			get
 			{
@@ -52,7 +74,7 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		public override byte[] GetEntropy()
+		public byte[] GetEntropy()
 		{
 			List<byte> result = new List<byte>();
 			result.AddRange(GetFastEntropy());
@@ -64,7 +86,7 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// Retrieves entropy from quick sources.
 		/// </summary>
-		public override byte[] GetFastEntropy()
+		public byte[] GetFastEntropy()
 		{
 			List<byte> result = new List<byte>();
 
@@ -144,7 +166,7 @@ namespace Eraser.DefaultPlugins
 		/// Retrieves entropy from sources which are relatively slower than those from
 		/// the FastAddEntropy function.
 		/// </summary>
-		public override byte[] GetSlowEntropy()
+		public byte[] GetSlowEntropy()
 		{
 			List<byte> result = new List<byte>();
 
@@ -172,6 +194,32 @@ namespace Eraser.DefaultPlugins
 			}
 
 			return result.ToArray();
+		}
+
+		/// <summary>
+		/// Converts value types into a byte array. This is a helper function to allow
+		/// inherited classes to convert value types into byte arrays which can be
+		/// returned to the EntropyPoller class.
+		/// </summary>
+		/// <typeparam name="T">Any value type</typeparam>
+		/// <param name="entropy">A value which will be XORed with pool contents.</param>
+		private static byte[] StructToBuffer<T>(T entropy) where T : struct
+		{
+			int sizeofObject = Marshal.SizeOf(entropy);
+			IntPtr memory = Marshal.AllocHGlobal(sizeofObject);
+			try
+			{
+				Marshal.StructureToPtr(entropy, memory, false);
+				byte[] dest = new byte[sizeofObject];
+
+				//Copy the memory
+				Marshal.Copy(memory, dest, 0, sizeofObject);
+				return dest;
+			}
+			finally
+			{
+				Marshal.FreeHGlobal(memory);
+			}
 		}
 	}
 }

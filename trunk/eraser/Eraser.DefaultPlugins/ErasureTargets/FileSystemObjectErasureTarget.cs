@@ -29,9 +29,11 @@ using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.IO;
 
-using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
+using Eraser.Plugins.Registrars;
 
 namespace Eraser.DefaultPlugins
 {
@@ -39,7 +41,7 @@ namespace Eraser.DefaultPlugins
 	/// Class representing a tangible object (file/folder) to be erased.
 	/// </summary>
 	[Serializable]
-	public abstract class FileSystemObjectErasureTarget : ErasureTarget
+	abstract class FileSystemObjectErasureTarget : ErasureTargetBase
 	{
 		#region Serialization code
 		protected FileSystemObjectErasureTarget(SerializationInfo info, StreamingContext context)
@@ -131,7 +133,7 @@ namespace Eraser.DefaultPlugins
 			catch (SharingViolationException)
 			{
 				//The system cannot open the file, try to force the file handle to close.
-				if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+				if (!Host.Instance.Settings.ForceUnlockLockedFiles)
 					throw;
 
 				StringBuilder processStr = new StringBuilder();
@@ -171,24 +173,21 @@ namespace Eraser.DefaultPlugins
 		/// </summary>
 		public string Path { get; set; }
 
-		public sealed override ErasureMethod EffectiveMethod
+		public sealed override IErasureMethod EffectiveMethod
 		{
 			get
 			{
 				if (Method != ErasureMethodRegistrar.Default)
 					return base.EffectiveMethod;
 
-				return ManagerLibrary.Instance.ErasureMethodRegistrar[
-					ManagerLibrary.Settings.DefaultFileErasureMethod];
+				return Host.Instance.ErasureMethods[
+					Host.Instance.Settings.DefaultFileErasureMethod];
 			}
 		}
 
-		public override string UIText
+		public override string ToString()
 		{
-			get
-			{
-				return Path;
-			}
+			return Path;
 		}
 
 		/// <summary>
@@ -205,18 +204,20 @@ namespace Eraser.DefaultPlugins
 			//Set the event's current target status.
 			if (Progress == null)
 				throw new InvalidOperationException("The Progress property must not be null.");
-			Task.Progress.Steps.Add(new SteppedProgressManagerStep(Progress,
-				1.0f / Task.Targets.Count));
 
 			//Iterate over every path, and erase the path.
 			for (int i = 0; i < paths.Count; ++i)
 			{
+				//Does the file still exist after our enumeration?
+				if (!paths[i].Exists)
+					continue;
+
+				//Create a new progress manager for the file.
 				ProgressManager step = new ProgressManager();
 				Progress.Steps.Add(new SteppedProgressManagerStep(step,
 					dataTotal == 0 ? 0.0f : paths[i].Length / (float)dataTotal,
-					S._("Erasing files...")));
+					paths[i].FullName));
 				EraseStream(paths[i], step);
-				step.MarkComplete();
 			}
 		}
 
@@ -238,7 +239,7 @@ namespace Eraser.DefaultPlugins
 			}
 
 			//Get the filesystem provider to handle the secure file erasures
-			FileSystem fsManager = ManagerLibrary.Instance.FileSystemRegistrar[
+			IFileSystem fsManager = Host.Instance.FileSystems[
 				VolumeInfo.FromMountPoint(info.DirectoryName)];
 
 			bool isReadOnly = false;
@@ -246,10 +247,8 @@ namespace Eraser.DefaultPlugins
 			try
 			{
 				//Update the task progress
-				ErasureMethod method = EffectiveMethod;
-				OnProgressChanged(this, new ProgressChangedEventArgs(progress,
-					new TaskProgressChangedEventArgs(info.FullName, 0, method.Passes)));
-
+				IErasureMethod method = EffectiveMethod;
+				
 				//Remove the read-only flag, if it is set.
 				if (isReadOnly = info.IsReadOnly)
 					info.IsReadOnly = false;
@@ -261,10 +260,9 @@ namespace Eraser.DefaultPlugins
 						if (Task.Canceled)
 							throw new OperationCanceledException(S._("The task was cancelled."));
 
+						progress.Tag = new int[] { currentPass, method.Passes };
 						progress.Total = totalData;
 						progress.Completed += lastWritten;
-						OnProgressChanged(this, new ProgressChangedEventArgs(progress,
-							new TaskProgressChangedEventArgs(info.FullName, currentPass, method.Passes)));
 					};
 
 				TryEraseStream(fsManager, method, info, callback);
@@ -300,7 +298,7 @@ namespace Eraser.DefaultPlugins
 		/// <param name="method">The erasure method to use to erase the stream.</param>
 		/// <param name="info">The stream to erase.</param>
 		/// <param name="callback">The erasure progress callback.</param>
-		private void TryEraseStream(FileSystem fsManager, ErasureMethod method, StreamInfo info,
+		private void TryEraseStream(IFileSystem fsManager, IErasureMethod method, StreamInfo info,
 			ErasureMethodProgressFunction callback)
 		{
 			for (int i = 0; ; ++i)
@@ -331,7 +329,7 @@ namespace Eraser.DefaultPlugins
 				}
 				catch (SharingViolationException)
 				{
-					if (!ManagerLibrary.Settings.ForceUnlockLockedFiles)
+					if (!Host.Instance.Settings.ForceUnlockLockedFiles)
 						throw;
 
 					//Try closing all open handles. If it succeeds, we can run the erase again.

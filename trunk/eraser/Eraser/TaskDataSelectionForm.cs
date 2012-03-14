@@ -28,10 +28,14 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
+using System.IO;
+
 using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
-using System.IO;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
+using Eraser.Plugins.Registrars;
 
 namespace Eraser
 {
@@ -39,7 +43,7 @@ namespace Eraser
 	{
 		private class ErasureType
 		{
-			public ErasureType(ErasureTarget target)
+			public ErasureType(IErasureTarget target)
 			{
 				Target = target;
 			}
@@ -49,7 +53,7 @@ namespace Eraser
 				return Target.Name;
 			}
 
-			public ErasureTarget Target;
+			public IErasureTarget Target;
 
 			/// <summary>
 			/// The configurer returned by the active erasure target type.
@@ -64,14 +68,14 @@ namespace Eraser
 			Theming.ApplyTheme(this);
 
 			//Insert the types of erasure targets
-			foreach (ErasureTarget target in ManagerLibrary.Instance.ErasureTargetRegistrar)
+			foreach (IErasureTarget target in Host.Instance.ErasureTargetFactories)
 				typeCmb.Items.Add(new ErasureType(target));
 			if (typeCmb.Items.Count != 0) 
 				typeCmb.SelectedIndex = 0;
 
 			//And the methods list
 			methodCmb.Items.Add(ErasureMethodRegistrar.Default);
-			foreach (ErasureMethod method in ManagerLibrary.Instance.ErasureMethodRegistrar)
+			foreach (IErasureMethod method in Host.Instance.ErasureMethods)
 				methodCmb.Items.Add(method);
 			if (methodCmb.Items.Count != 0)
 				methodCmb.SelectedIndex = 0;
@@ -82,15 +86,15 @@ namespace Eraser
 		/// </summary>
 		/// <returns>An Eraser.Manager.Task.Data or Eraser.Manager.Task.UnusedSpace object
 		/// or any of its inherited classes, depending on the task selected</returns>
-		public ErasureTarget Target
+		public IErasureTarget Target
 		{
 			get
 			{
 				ErasureType type = (ErasureType)typeCmb.SelectedItem;
-				ErasureTarget result = type.Target;
+				IErasureTarget result = type.Target;
 				if (type.Configurer != null)
 					type.Configurer.SaveTo(result);
-				result.Method = (ErasureMethod)methodCmb.SelectedItem;
+				result.Method = (IErasureMethod)methodCmb.SelectedItem;
 
 				return result;
 			}
@@ -98,7 +102,7 @@ namespace Eraser
 			{
 				//Set the erasure method.
 				foreach (object item in methodCmb.Items)
-					if (((ErasureMethod)item).Guid == value.Method.Guid)
+					if (((IErasureMethod)item).Guid == value.Method.Guid)
 						methodCmb.SelectedItem = item;
 
 				//Set the active erasure type.
@@ -148,7 +152,7 @@ namespace Eraser
 		{
 			ErasureType type = (ErasureType)typeCmb.SelectedItem;
 			if (methodCmb.SelectedItem != ErasureMethodRegistrar.Default &&
-				!type.Target.SupportsMethod((ErasureMethod)methodCmb.SelectedItem))
+				!type.Target.SupportsMethod((IErasureMethod)methodCmb.SelectedItem))
 			{
 				errorProvider.SetError(methodCmb, S._("The erasure method selected does " +
 					"not support unused disk space erasures."));

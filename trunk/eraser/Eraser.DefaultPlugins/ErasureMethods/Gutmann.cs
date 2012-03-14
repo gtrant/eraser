@@ -27,12 +27,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-using Eraser.Manager;
 using Eraser.Util;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	[DefaultFileErasure(1)]
 	[Guid("1407FC4E-FEFF-4375-B4FB-D7EFBB7E9922")]
 	sealed class Gutmann : PassBasedErasureMethod
 	{

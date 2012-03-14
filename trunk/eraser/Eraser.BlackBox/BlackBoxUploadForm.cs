@@ -29,9 +29,10 @@ using System.Windows.Forms;
 using System.IO;
 
 using Eraser.Util;
+using Eraser.Plugins;
 
 using ProgressChangedEventArgs = System.ComponentModel.ProgressChangedEventArgs;
-using EraserProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
+using EraserProgressChangedEventArgs = Eraser.Plugins.ProgressChangedEventArgs;
 
 namespace Eraser.BlackBox
 {

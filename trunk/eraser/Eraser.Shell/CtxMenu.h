@@ -58,11 +58,10 @@ namespace Eraser
 		enum Actions
 		{
 			ACTION_ERASE				= 1 << 0,
-			ACTION_ERASE_ON_RESTART		= 1 << 1,
-			ACTION_ERASE_UNUSED_SPACE	= 1 << 2,
+			ACTION_ERASE_UNUSED_SPACE	= 1 << 1,
 			ACTION_SEPERATOR_1,
-			ACTION_SECURE_MOVE			= 1 << 3,
-			ACTION_SECURE_PASTE			= 1 << 4
+			ACTION_SECURE_MOVE			= 1 << 2,
+			ACTION_SECURE_PASTE			= 1 << 3
 		};
 
 	public:
@@ -82,6 +81,10 @@ namespace Eraser
 
 		Actions GetApplicableActions();
 
+		std::wstring GenerateEraseCommand();
+		std::wstring GenerateEraseUnusedSpaceCommand();
+		std::wstring GenerateSecureMoveCommand();
+
 		static std::wstring LoadString(UINT stringID);
 		static std::wstring FormatString(const std::wstring& formatString, ...);
 		static std::wstring FormatError(DWORD lastError = static_cast<DWORD>(-1));
@@ -89,8 +92,8 @@ namespace Eraser
 		static std::list<std::wstring> GetHDropPaths(HDROP hDrop);
 
 		static bool IsUserAdmin();
-		static void RunEraser(Actions action, const std::wstring& parameters,
-			bool elevated, HWND parent, int show);
+		static void RunEraser(const std::wstring& parameters, bool confirm, bool elevated,
+			HWND parent, int show);
 
 		static void InsertSeparator(HMENU menu);
 		static HICON GetMenuIcon();

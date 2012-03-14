@@ -24,6 +24,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.Serialization;
 
+using Eraser.Plugins;
+using Eraser.Util;
+
 namespace Eraser.Manager
 {
 	/// <summary>
@@ -32,22 +35,18 @@ namespace Eraser.Manager
 	/// </summary>
 	public class ManagerLibrary : IDisposable
 	{
-		public ManagerLibrary(SettingsManager settings)
+		public ManagerLibrary(PersistentStore persistentStore)
 		{
 			if (Instance != null)
 				throw new InvalidOperationException("Only one ManagerLibrary instance can " +
 					"exist at any one time");
 
 			Instance = this;
-			SettingsManager = settings;
-
-			EntropySourceRegistrar = new EntropySourceRegistrar();
-			PrngRegistrar = new PrngRegistrar();
-			ErasureMethodRegistrar = new ErasureMethodRegistrar();
-			ErasureTargetRegistrar = new ErasureTargetRegistrar();
-			FileSystemRegistrar = new FileSystemRegistrar();
-			Host = new Plugin.DefaultHost();
-			Host.Load();
+			Settings = new ManagerSettings(persistentStore);
+			entropyPoller = new EntropyPoller();
+			Host.Initialise(persistentStore);
+			Host.Instance.PluginLoad += OnPluginLoad;
+			Host.Instance.Load();
 		}
 
 		~ManagerLibrary()
@@ -57,17 +56,16 @@ namespace Eraser.Manager
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (SettingsManager == null)
+			if (Settings == null)
 				return;
 
 			if (disposing)
 			{
-				EntropySourceRegistrar.Poller.Abort();
-				Host.Dispose();
-				SettingsManager.Save();
+				entropyPoller.Abort();
+				Host.Instance.Dispose();
 			}
 
-			SettingsManager = null;
+			Settings = null;
 			Instance = null;
 		}
 
@@ -77,63 +75,46 @@ namespace Eraser.Manager
 			GC.SuppressFinalize(this);
 		}
 
+		private void OnPluginLoad(object sender, PluginLoadEventArgs e)
+		{
+			//If the plugin does not have an approval or denial, check for the presence of
+			//a valid signature.
+			IDictionary<Guid, bool> approvals = Settings.PluginApprovals;
+			if (!approvals.ContainsKey(e.Plugin.AssemblyInfo.Guid) &&
+				(e.Plugin.Assembly.GetName().GetPublicKey().Length == 0 ||
+				!Security.VerifyStrongName(e.Plugin.Assembly.Location) ||
+				e.Plugin.AssemblyAuthenticode == null))
+			{
+				e.Load = false;
+			}
+
+			//Is there an approval or denial?
+			else if (approvals.ContainsKey(e.Plugin.AssemblyInfo.Guid))
+				e.Load = approvals[e.Plugin.AssemblyInfo.Guid];
+
+			//There's no approval or denial, what is the specified loading policy?
+			else
+				e.Load = e.Plugin.LoadingPolicy != PluginLoadingPolicy.DefaultOff;
+		}
+
 		/// <summary>
 		/// The global library instance.
 		/// </summary>
 		public static ManagerLibrary Instance { get; private set; }
 
 		/// <summary>
-		/// The global instance of the EntropySource Manager
+		/// Gets the settings object representing the settings for the Eraser Manager.
 		/// </summary>
-		public EntropySourceRegistrar EntropySourceRegistrar { get; private set; }
-
-		/// <summary>
-		/// The global instance of the PRNG Manager.
-		/// </summary>
-		public PrngRegistrar PrngRegistrar { get; private set; }
-
-		/// <summary>
-		/// The global instance of the Erasure method Manager.
-		/// </summary>
-		public ErasureMethodRegistrar ErasureMethodRegistrar { get; private set; }
-
-		/// <summary>
-		/// The global instance of the Erasure target Manager.
-		/// </summary>
-		public ErasureTargetRegistrar ErasureTargetRegistrar { get; private set; }
-
-		/// <summary>
-		/// The global instance of the File System manager.
-		/// </summary>
-		public FileSystemRegistrar FileSystemRegistrar { get; private set; }
-
-		/// <summary>
-		/// Global instance of the Settings manager.
-		/// </summary>
-		public SettingsManager SettingsManager { get; set; }
-
-		/// <summary>
-		/// Gets the settings object representing the settings for the Eraser
-		/// Manager. This is just shorthand for the local classes.
-		/// </summary>
-		public static ManagerSettings Settings
+		public ManagerSettings Settings
 		{
-			get
-			{
-				if (settingsInstance == null)
-					settingsInstance = new ManagerSettings();
-				return settingsInstance;
-			}
+			get;
+			private set;
 		}
 
 		/// <summary>
-		/// The singleton instance for <see cref="Settings"/>.
+		/// The entropy poller thread which will gather entropy and push it to
+		/// the PRNGs.
 		/// </summary>
-		private static ManagerSettings settingsInstance;
-
-		/// <summary>
-		/// The global instance of the Plugin host.
-		/// </summary>
-		internal Plugin.DefaultHost Host;
+		private EntropyPoller entropyPoller;
 	}
 }

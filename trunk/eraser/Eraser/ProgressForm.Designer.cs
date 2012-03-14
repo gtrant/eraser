@@ -49,6 +49,7 @@ namespace Eraser
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressForm));
 			this.overallProgressLbl = new System.Windows.Forms.Label();
 			this.overallProgress = new System.Windows.Forms.ProgressBar();
@@ -69,6 +70,7 @@ namespace Eraser
 			this.timeLeftLbl = new System.Windows.Forms.Label();
 			this.timeLeft = new System.Windows.Forms.Label();
 			this.hide = new System.Windows.Forms.Button();
+			this.progressTimer = new System.Windows.Forms.Timer(this.components);
 			((System.ComponentModel.ISupportInitialize)(this.title)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -179,6 +181,12 @@ namespace Eraser
 			this.hide.UseVisualStyleBackColor = true;
 			this.hide.Click += new System.EventHandler(this.hide_Click);
 			// 
+			// progressTimer
+			// 
+			this.progressTimer.Enabled = true;
+			this.progressTimer.Interval = 300;
+			this.progressTimer.Tick += new System.EventHandler(this.progressTimer_Tick);
+			// 
 			// ProgressForm
 			// 
 			resources.ApplyResources(this, "$this");
@@ -235,6 +243,7 @@ namespace Eraser
 		private System.Windows.Forms.Label timeLeftLbl;
 		private System.Windows.Forms.Label timeLeft;
 		private System.Windows.Forms.Button hide;
+		private System.Windows.Forms.Timer progressTimer;
 	}
 }
 

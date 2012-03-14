@@ -236,12 +236,6 @@ namespace Eraser {
 				LoadString(IDS_ACTION_ERASE).c_str());				//Erase
 			VerbMenuIndices.push_back(ACTION_ERASE);
 		}
-		if (applicableActions & ACTION_ERASE_ON_RESTART)
-		{
-			InsertMenu(hSubmenu, ACTION_ERASE_ON_RESTART, MF_BYPOSITION, uID++,
-				LoadString(IDS_ACTION_ERASERESTART).c_str());		//Erase on Restart
-			VerbMenuIndices.push_back(ACTION_ERASE_ON_RESTART);
-		}
 		if (applicableActions & ACTION_ERASE_UNUSED_SPACE)
 		{
 			MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
@@ -430,9 +424,6 @@ namespace Eraser {
 		case ACTION_ERASE:
 			commandString = LoadString(IDS_HELPSTRING_ERASE);
 			break;
-		case ACTION_ERASE_ON_RESTART:
-			commandString = LoadString(IDS_HELPSTRING_ERASEONRESTART);
-			break;
 		case ACTION_ERASE_UNUSED_SPACE:
 			commandString = LoadString(IDS_HELPSTRING_ERASEUNUSEDSPACE);
 			break;
@@ -467,25 +458,22 @@ namespace Eraser {
 		if (LOWORD(pCmdInfo->lpVerb) >= VerbMenuIndices.size())
 			return E_INVALIDARG;
 
+		//Show a busy cursor.
+		BusyCursor cursor;
+
 		//Build the command line
-		std::wstring commandLine;
 		bool commandElevate = false;
+		bool commandConfirm = true;
+		std::wstring commandLine;
 		switch (VerbMenuIndices[LOWORD(pCmdInfo->lpVerb)])
 		{
-		case ACTION_ERASE_ON_RESTART:
 		case ACTION_ERASE:
-			//See the invocation context: if it is executed from the recycle bin
-			//then the list of selected files will be empty.
-			if (InvokeReason == INVOKEREASON_RECYCLEBIN)
-			{
-				commandLine += L"/recycleBin";
-			}
-
+			commandLine = GenerateEraseCommand();
 			break;
 
 		case ACTION_ERASE_UNUSED_SPACE:
 			//Erasing unused space requires elevation
-			commandElevate = true;
+			commandLine = GenerateEraseUnusedSpaceCommand();
 			break;
 
 		case ACTION_SECURE_MOVE:
@@ -519,7 +507,7 @@ namespace Eraser {
 
 			if (*DragDropDestinationDirectory.rbegin() == '\\')
 				DragDropDestinationDirectory += '\\';
-			commandLine += L"\"/destination=" + DragDropDestinationDirectory + L"\"";
+			commandLine = GenerateSecureMoveCommand();
 			break;
 
 		case ACTION_SECURE_PASTE:
@@ -527,7 +515,6 @@ namespace Eraser {
 				//Set the destination for the paste operation.
 				if (*DragDropDestinationDirectory.rbegin() == '\\')
 					DragDropDestinationDirectory += '\\';
-				commandLine += L"\"/destination=" + DragDropDestinationDirectory + L"\"";
 
 				//Query the files from the clipboard.
 				std::vector<std::wstring> paths;
@@ -539,6 +526,7 @@ namespace Eraser {
 
 					EmptyClipboard();
 					CloseClipboard();
+					commandLine = GenerateSecureMoveCommand();
 				}
 			}
 			break;
@@ -553,21 +541,9 @@ namespace Eraser {
 			}
 		}
 
-		//Add the list of items selected.
-		for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
-			i != SelectedFiles.end(); ++i)
-		{
-			std::wstring path(*i);
-			if (path[path.length() - 1] == '\\')
-				path += '\\';
-			commandLine += L" \"" + path + L"\"";
-		}
-
 		try
 		{
-			BusyCursor cursor;
-			RunEraser(VerbMenuIndices[LOWORD(pCmdInfo->lpVerb)], commandLine, commandElevate,
-				pCmdInfo->hwnd, pCmdInfo->nShow);
+			RunEraser(commandLine, commandElevate, commandConfirm, pCmdInfo->hwnd, pCmdInfo->nShow);
 		}
 		catch (const std::wstring& e)
 		{
@@ -590,10 +566,10 @@ namespace Eraser {
 		switch (InvokeReason)
 		{
 		case INVOKEREASON_RECYCLEBIN:
-			result |= ACTION_ERASE | ACTION_ERASE_ON_RESTART;
+			result |= ACTION_ERASE;
 			break;
 		case INVOKEREASON_FILEFOLDER:
-			result |= ACTION_ERASE | ACTION_ERASE_ON_RESTART | ACTION_ERASE_UNUSED_SPACE;
+			result |= ACTION_ERASE | ACTION_ERASE_UNUSED_SPACE;
 		case INVOKEREASON_DRAGDROP:
 			result |= ACTION_SECURE_MOVE;
 			break;
@@ -874,7 +850,74 @@ namespace Eraser {
 		return false;
 	}
 
-	void CCtxMenu::RunEraser(Actions action, const std::wstring& parameters, bool elevated,
+	std::wstring CCtxMenu::GenerateEraseCommand()
+	{
+		std::wstring commandLine;
+
+		//See the invocation context: if it is executed from the recycle bin
+		//then the list of selected files will be empty.
+		if (InvokeReason == INVOKEREASON_RECYCLEBIN)
+		{
+			commandLine += L"recyclebin ";
+		}
+
+		//Add the list of items selected.
+		for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
+			i != SelectedFiles.end(); ++i)
+		{
+			std::wstring path(*i);
+			if (path[path.length() - 1] == '\\')
+				path += '\\';
+
+			DWORD attributes = GetFileAttributes(path.c_str());
+			if (attributes == INVALID_FILE_ATTRIBUTES)
+				continue;
+			else if ((attributes & FILE_ATTRIBUTE_DIRECTORY) == 0)
+				commandLine += L"\"file=" + path + L"\" ";
+			else
+				commandLine += L"\"dir=" + path + L"\" ";
+		}
+
+		return commandLine;
+	}
+
+	std::wstring CCtxMenu::GenerateEraseUnusedSpaceCommand()
+	{
+		std::wstring commandLine;
+
+		//Add the list of items selected.
+		for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
+			i != SelectedFiles.end(); ++i)
+		{
+			std::wstring path(*i);
+			if (path[path.length() - 1] == '\\')
+				path += '\\';
+
+			commandLine += L"\"unused=" + path + L"\" ";
+		}
+
+		return commandLine;
+	}
+
+	std::wstring CCtxMenu::GenerateSecureMoveCommand()
+	{
+		std::wstring commandLine;
+
+		//Add the list of items selected.
+		for (std::list<std::wstring>::const_iterator i = SelectedFiles.begin();
+			i != SelectedFiles.end(); ++i)
+		{
+			std::wstring path(*i);
+			if (path[path.length() - 1] == '\\')
+				path += '\\';
+
+			commandLine += L"\"move=" + path + L"|" + DragDropDestinationDirectory + L"\" ";
+		}
+
+		return commandLine;
+	}
+
+	void CCtxMenu::RunEraser(const std::wstring& parameters, bool confirm, bool elevated,
 		HWND parent, int show)
 	{
 		//Get the path to this DLL so we can look for Eraser.exe
@@ -899,26 +942,8 @@ namespace Eraser {
 		//Compile the final set of parameters we are going to pass to Eraser.
 		std::wostringstream finalParameters;
 		finalParameters << L"shell /quiet ";
-
-		//Set the action selected by the user.
-		switch (action)
-		{
-		case ACTION_ERASE:
-			finalParameters << L"/action=EraseNow ";
-			break;
-		case ACTION_ERASE_ON_RESTART:
-			finalParameters << L"/action=EraseOnRestart ";
-			break;
-		case ACTION_ERASE_UNUSED_SPACE:
-			finalParameters << L"/action=EraseUnusedSpace ";
-			break;
-		case ACTION_SECURE_MOVE:
-		case ACTION_SECURE_PASTE:
-			finalParameters << L"/action=SecureMove ";
-			break;
-		default:
-			return;
-		}
+		if (!confirm)
+			finalParameters << L"/confirm=false ";
 
 		//Pass Explorer's HWND to the child process, in the event that it is required.
 		finalParameters << L" /parent=" << (size_t)parent << L' ';
@@ -1011,7 +1036,7 @@ namespace Eraser {
 				
 				//Or if elevation is required for this operation
 				else if (GetLastError() == ERROR_ELEVATION_REQUIRED)
-					return RunEraser(action, parameters, true, parent, show);
+					return RunEraser(parameters, confirm, true, parent, show);
 
 				//Or otherwise?
 				else

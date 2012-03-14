@@ -32,9 +32,11 @@ using System.ComponentModel;
 
 using Eraser.Manager;
 using Eraser.Util;
-using Eraser.DefaultPlugins;
+using Eraser.Plugins;
+using Eraser.Plugins.ExtensionPoints;
 using Microsoft.Samples;
-using ProgressChangedEventArgs = Eraser.Util.ProgressChangedEventArgs;
+
+using ProgressChangedEventArgs = Eraser.Plugins.ProgressChangedEventArgs;
 
 namespace Eraser
 {
@@ -62,7 +64,7 @@ namespace Eraser
 		private void CreateTask(Task task)
 		{
 			//Add the item to the list view
-			ListViewItem item = scheduler.Items.Add(task.UIText);
+			ListViewItem item = scheduler.Items.Add(task.ToString());
 			item.SubItems.Add(string.Empty);
 			item.SubItems.Add(string.Empty);
 
@@ -72,7 +74,6 @@ namespace Eraser
 
 			//Add our event handlers to the task
 			task.TaskStarted += TaskStarted;
-			task.ProgressChanged += TaskProgressChanged;
 			task.TaskFinished += TaskFinished;
 
 			//Show the fields on the list view
@@ -89,7 +90,7 @@ namespace Eraser
 			Task task = (Task)item.Tag;
 
 			//Set the task name
-			item.Text = task.UIText;
+			item.Text = task.ToString();
 
 			//Set the next run time of the task
 			if (task.Queued)
@@ -141,7 +142,7 @@ namespace Eraser
 			if (parent != null && (parent.WindowState == FormWindowState.Minimized || !parent.Visible))
 			{
 				parent.ShowNotificationBalloon(S._("New task added"), S._("{0} " +
-					"has just been added to the list of tasks.", e.Task.UIText),
+					"has just been added to the list of tasks.", e.Task.ToString()),
 					ToolTipIcon.Info);
 			}
 
@@ -212,27 +213,26 @@ namespace Eraser
 			schedulerProgress.Visible = true;
 			schedulerProgress.Value = 0;
 			PositionProgressBar();
+
+			//Start the timer for progress updates
+			progressTimer.Start();
 		}
 
 		/// <summary>
 		/// Handles the progress event by the task.
 		/// </summary>
-		void TaskProgressChanged(object sender, ProgressChangedEventArgs e)
+		private void progressTimer_Tick(object sender, EventArgs e)
 		{
-			//Make sure we handle the event in the main thread as this requires
-			//GUI calls.
-			if (InvokeRequired)
-			{
-				Invoke((EventHandler<ProgressChangedEventArgs>)TaskProgressChanged, sender, e);
+			ListViewItem item = (ListViewItem)schedulerProgress.Tag;
+			if (item == null)
 				return;
-			}
+			Task task = (Task)item.Tag;
 
 			//Update the progress bar
-			ErasureTarget target = (ErasureTarget)sender;
-			SteppedProgressManager progress = target.Task.Progress;
+			SteppedProgressManager progress = task.Progress;
 			schedulerProgress.Style = progress.ProgressIndeterminate ?
 				ProgressBarStyle.Marquee : ProgressBarStyle.Continuous;
-			
+
 			if (!progress.ProgressIndeterminate)
 				schedulerProgress.Value = (int)(progress.Progress * 1000.0);
 		}
@@ -247,6 +247,9 @@ namespace Eraser
 				Invoke((EventHandler)TaskFinished, sender, e);
 				return;
 			}
+
+			//Stop the timer for progress updates
+			progressTimer.Stop();
 
 			//Get the list view item
 			Task task = (Task)sender;
@@ -274,19 +277,19 @@ namespace Eraser
 				switch (highestLevel)
 				{
 					case LogLevel.Warning:
-						message = S._("The task {0} has completed with warnings.", task.UIText);
+						message = S._("The task {0} has completed with warnings.", task);
 						icon = ToolTipIcon.Warning;
 						break;
 					case LogLevel.Error:
-						message = S._("The task {0} has completed with errors.", task.UIText);
+						message = S._("The task {0} has completed with errors.", task);
 						icon = ToolTipIcon.Error;
 						break;
 					case LogLevel.Fatal:
-						message = S._("The task {0} did not complete.", task.UIText);
+						message = S._("The task {0} did not complete.", task);
 						icon = ToolTipIcon.Error;
 						break;
 					default:
-						message = S._("The task {0} has completed.", task.UIText);
+						message = S._("The task {0} has completed.", task);
 						icon = ToolTipIcon.Info;
 						break;
 				}
@@ -468,7 +471,7 @@ namespace Eraser
 			{
 				//Create a task with the default settings
 				Task task = new Task();
-				foreach (ErasureTarget target in TaskDragDropHelper.GetTargets(paths, recycleBin))
+				foreach (IErasureTarget target in TaskDragDropHelper.GetTargets(e))
 					task.Targets.Add(target);
 
 				//If the task has no targets, we should not go on.
