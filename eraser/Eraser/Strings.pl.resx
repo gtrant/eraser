@@ -129,8 +129,8 @@
   <data name="{0} (Built: {1:F})" xml:space="preserve">
     <value>{0} (Kompilacja: {1:F})</value>
   </data>
-  <data name="copyright © 2008-2010 The Eraser Project" xml:space="preserve">
-    <value>copyright © 2008-2010 The Eraser Project</value>
+  <data name="copyright © 2008-2012 The Eraser Project" xml:space="preserve">
+    <value>copyright © 2008-2012 The Eraser Project</value>
   </data>
   <data name="Eraser is free open-source software!" xml:space="preserve">
     <value>Eraser to bezpłatne oprogramowanie o otwartym kodzie!</value>
@@ -162,7 +162,7 @@
   <data name="usage: Eraser &lt;action&gt; &lt;arguments&gt;\r\nwhere action is\r\n  help                Show this help message.\r\n  erase               Erases items specified on the command line. This is\r\n                      equivalent to addtask, with the schedule set to now.\r\n  addtask             Adds a task to the current task list.\r\n  importtasklist      Imports an Eraser Task list to the current user's Task\r\n                      List.\r\n\r\nglobal parameters:\r\n  /quiet              Do not create a Console window to display progress.\r\n\r\nparameters for help:\r\n  eraser help\r\n\r\n  no parameters to set.\r\n\r\nparameters for erase and addtask:\r\n  eraser erase [/method=(&lt;methodGUID&gt;|&lt;methodName&gt;)] &lt;target&gt; [target [...]]\r\n  eraser addtask [/method=(&lt;methodGUID&gt;|&lt;methodName&gt;)] [/schedule=(now|manually|restart)] &lt;target&gt; [target [...]]\r\n\r\n  /method             The Erasure method to use.\r\n    methodGUID and methodName can be any GUID/Name from the following list:\r\n{0}\r\n    Only erasure methods labelled U can be used to erase unused disk space.\r\n\r\n  /schedule           The schedule the task will follow. The value must be one\r\n                      of:\r\n    now               The task will be queued for immediate execution.\r\n    manually          The task will be created but not queued for execution.\r\n    restart           The task will be queued for execution when the computer\r\n                      is next restarted.\r\n\r\n                      This parameter is only valid for use with addtask.\r\n\r\n  target is one or more of:\r\n{1}\r\nparameters for importtasklist:\r\n  eraser importtasklist &lt;file&gt;[...]\r\n\r\n    file               A list of one or more files to import.\r\n\r\nAll arguments are case sensitive.\r\n\r\nResponse files can be used for very long command lines (generally, anything\r\ninvolving more than 32,000 characters.) Response files are used by prepending\r\n@ to the path to the file, and passing it into the command line. The\r\ncontents of the response files' will be substituted at the same position into\r\nthe command line." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Eraser {0}\r\n(c) 2008-2010 The Eraser Project\r\nEraser is Open-Source Software: see http://eraser.heidi.ie/ for details.\r\n" xml:space="preserve">
+  <data name="Eraser {0}\r\n(c) 2008-2012 The Eraser Project\r\nEraser is Open-Source Software: see http://eraser.heidi.ie/ for details.\r\n" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Unknown schedule type: {0}" xml:space="preserve">

@@ -43,7 +43,7 @@ BEGIN
             VALUE "FileDescription", "Eraser File Handle Unlocker"
             VALUE "FileVersion", ERASER_STRING_FILE_VERSION
             VALUE "InternalName", "Eraser.Util.Unlocker.dll"
-            VALUE "LegalCopyright", "Copyright (C) 2009 The Eraser Project"
+            VALUE "LegalCopyright", "Copyright (C) 2009-2012 The Eraser Project"
             VALUE "OriginalFilename", "Eraser.Util.Unlocker"
             VALUE "ProductName", "Eraser"
             VALUE "ProductVersion", ERASER_STRING_PRODUCT_VERSION

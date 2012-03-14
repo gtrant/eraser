@@ -154,7 +154,7 @@ BEGIN
             VALUE "CompanyName", "The Eraser Project"
             VALUE "FileDescription", "Eraser Shell Extension"
             VALUE "FileVersion", ERASER_STRING_FILE_VERSION
-            VALUE "LegalCopyright", "Copyright © 2008-2010 The Eraser Project"
+            VALUE "LegalCopyright", "Copyright © 2008-2012 The Eraser Project"
             VALUE "InternalName", "Eraser.Shell"
             VALUE "OriginalFilename", "Eraser.Shell.dll"
             VALUE "ProductName", "Eraser"

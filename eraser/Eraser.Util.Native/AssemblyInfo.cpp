@@ -38,7 +38,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("The Eraser Project")];
 [assembly:AssemblyProductAttribute("Eraser")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) 2009-2010 The Eraser Project")];
+[assembly:AssemblyCopyrightAttribute("Copyright (c) 2009-2012 The Eraser Project")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
 
