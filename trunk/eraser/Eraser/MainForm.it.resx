@@ -112,17 +112,38 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="tbSchedule.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 28</value>
+    <value>142, 28</value>
   </data>
   <data name="tbSchedule.Text" xml:space="preserve">
     <value>Pianificazioni pulizie</value>
+  </data>
+  <data name="openEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>224, 22</value>
+  </data>
+  <data name="openEraserToolStripMenuItem.Text" xml:space="preserve">
+    <value>Avvio Eraser</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 6</value>
+  </data>
+  <data name="hideWhenMinimisedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>224, 22</value>
+  </data>
+  <data name="hideWhenMinimisedToolStripMenuItem.Text" xml:space="preserve">
+    <value>Nascondi quando minimizzato</value>
+  </data>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>224, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>C&amp;hiudi Eraser</value>
   </data>
   <data name="notificationMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>225, 76</value>
@@ -1687,77 +1708,56 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACAAQAAwAMAAOAHAAD4HwAA
 </value>
   </data>
-  <data name="openEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 22</value>
-  </data>
-  <data name="openEraserToolStripMenuItem.Text" xml:space="preserve">
-    <value>Avvio Eraser</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>221, 6</value>
-  </data>
-  <data name="hideWhenMinimisedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 22</value>
-  </data>
-  <data name="hideWhenMinimisedToolStripMenuItem.Text" xml:space="preserve">
-    <value>Nascondi quando minimizzato</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>C&amp;hiudi Eraser</value>
-  </data>
-  <data name="tbScheduleMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>212, 76</value>
-  </data>
-  <data name="tbScheduleDropDown.Text" xml:space="preserve">
-    <value>Pianificazioni pulizie</value>
-  </data>
-  <data name="tbSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 28</value>
-  </data>
-  <data name="tbSettings.Text" xml:space="preserve">
-    <value>Impostazioni</value>
-  </data>
-  <data name="checkForUpdatesToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="checkForUpdatesToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Ricerca aggiornamenti</value>
-  </data>
-  <data name="aboutEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>191, 22</value>
-  </data>
-  <data name="aboutEraserToolStripMenuItem.Text" xml:space="preserve">
-    <value>Informazioni Eraser</value>
-  </data>
-  <data name="tbHelpMenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 48</value>
-  </data>
-  <data name="ToolBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>430, 32</value>
-  </data>
   <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 22</value>
+    <value>213, 22</value>
   </data>
   <data name="newTaskToolStripMenuItem.Text" xml:space="preserve">
     <value>Nuova operazione</value>
   </data>
   <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>208, 6</value>
+    <value>210, 6</value>
   </data>
   <data name="exportTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 22</value>
+    <value>213, 22</value>
   </data>
   <data name="exportTaskListToolStripMenuItem.Text" xml:space="preserve">
     <value>Esporta lista operazioni</value>
   </data>
   <data name="importTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>211, 22</value>
+    <value>213, 22</value>
   </data>
   <data name="importTaskListToolStripMenuItem.Text" xml:space="preserve">
     <value>Imposta lista operazioni</value>
+  </data>
+  <data name="tbScheduleMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>214, 76</value>
+  </data>
+  <data name="tbScheduleDropDown.Text" xml:space="preserve">
+    <value>Pianificazioni pulizie</value>
+  </data>
+  <data name="tbSettings.Size" type="System.Drawing.Size, System.Drawing">
+    <value>103, 28</value>
+  </data>
+  <data name="tbSettings.Text" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="checkForUpdatesToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="checkForUpdatesToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Ricerca aggiornamenti</value>
+  </data>
+  <data name="aboutEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>193, 22</value>
+  </data>
+  <data name="aboutEraserToolStripMenuItem.Text" xml:space="preserve">
+    <value>Informazioni Eraser</value>
+  </data>
+  <data name="tbHelpMenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>194, 48</value>
+  </data>
+  <data name="ToolBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>437, 32</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

@@ -147,11 +147,11 @@
   <data name="The Eraser Project &lt;eraser-development@lists.sourceforge.net&gt;" xml:space="preserve">
     <value>Projekt Eraser &lt;eraser-development@lists.sourceforge.net&gt;</value>
   </data>
-  <data name="RNGCryptoServiceProvider" xml:space="preserve">
-    <value>RNGCryptoServiceProvider</value>
-  </data>
   <data name="An invalid erasure method was selected." xml:space="preserve">
     <value>Wybrano niewłaściwą metodę wymazania.</value>
+  </data>
+  <data name="RNGCryptoServiceProvider" xml:space="preserve">
+    <value>RNGCryptoServiceProvider</value>
   </data>
   <data name="Could not erase directory entries on the volume {0} because the volume is currently in use." xml:space="preserve">
     <value>Nie można wymazać wpisów katalogów na woluminie {0}, ponieważ ten wolumin jest w użyciu.</value>
@@ -167,6 +167,9 @@
   </data>
   <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
     <value>Nie można wymusić zamknięcia pliku \"{0}\" {1}(zablokowany przez {0})</value>
+  </data>
+  <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
+    <value>Wybrano wymazywanie z opcją prawdopodobnego zaprzeczenia, ale nie wybrano żadnych plików na przynęte. Obecny plik został zastąpiony danymi losowymi.</value>
   </data>
   <data name="Could not erase cluster tips in {0} as the volume is not mounted." xml:space="preserve">
     <value>Nie można wymazać resztek klastrów w {0} ponieważ wolumin nie jest podmontowany.</value>
@@ -237,6 +240,9 @@
   <data name="drive               Erases partitions, volumes or drives\r\n  arguments:\r\n    drive=\Device\Harddisk&lt;index&gt;\r\n    drive=\\.\PhysicalDrive&lt;index&gt;\r\n    drive=\\?\Volume&lt;guid&gt;" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The selected erasure method is not supported for this erasure target." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -247,9 +253,6 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Could not erase files and subfolders in {0} because {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="Erasing files..." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
@@ -324,10 +327,10 @@
   <data name="Save Source file to" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Unused disk space" xml:space="preserve">
+  <data name="Unused disk space ({0})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Unused disk space ({0})" xml:space="preserve">
+  <data name="Unused disk space" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
@@ -365,6 +368,15 @@
   </data>
   <data name="US DoD 5220.22-M (8-306./E)" xml:space="preserve">
     <value>US DoD 5220.22-M (8-306./E)</value>
+  </data>
+  <data name="{0} (1 pass)" xml:space="preserve">
+    <value>{0} (1 przebieg)</value>
+  </data>
+  <data name="{0} ({1} passes)" xml:space="preserve">
+    <value>{0} ({1} przebiegów)</value>
+  </data>
+  <data name="Random" xml:space="preserve">
+    <value>Losowy</value>
   </data>
   <data name="The First/last 16KB erasure method requires another erasure method to erase the file.\n\nThis must be set in the Plugin Settings dialog." xml:space="preserve">
     <value>Metoda wymazywania pierwszych/ostatnich 16KB wymaga dodatkowej metody wymazywania pliku.\n\nSkonfiguruj w ustawieniach wtyczki.</value>
