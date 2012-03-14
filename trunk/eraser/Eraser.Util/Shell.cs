@@ -120,6 +120,39 @@ namespace Eraser.Util
 					NativeMethods.ILFree(pidl);
 				}
 			}
+
+			/// <summary>
+			/// Retrieves the full path of a known folder identified by the folder's
+			/// KNOWNFOLDERID.
+			/// </summary>
+			/// <param name="guid">The KNOWNFOLDERID that identifies the folder.</param>
+			/// <returns>The DirectoryInfo for the given known folder path, or null if
+			/// an error occurred.</returns>
+			public static DirectoryInfo GetPath(Guid guid)
+			{
+				try
+				{
+					IntPtr path = IntPtr.Zero;
+					uint result = NativeMethods.SHGetKnownFolderPath(ref guid, 0, IntPtr.Zero,
+						out path);
+
+					if (result == 0)
+					{
+						string pathStr = Marshal.PtrToStringUni(path);
+						Marshal.FreeCoTaskMem(path);
+
+						return new DirectoryInfo(pathStr);
+					}
+					else
+					{
+						throw Marshal.GetExceptionForHR((int)result);
+					}
+				}
+				catch (EntryPointNotFoundException)
+				{
+					return null;
+				}
+			}
 		}
 	}
 
