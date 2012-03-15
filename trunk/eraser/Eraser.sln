@@ -14,9 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraser", "Eraser\Eraser.csproj", "{A9884ABF-46E8-42C1-A30B-9A3DD6C38004}"
-	ProjectSection(ProjectDependencies) = postProject
-		{21752123-7BD7-4B44-B512-14A963C55FD8} = {21752123-7BD7-4B44-B512-14A963C55FD8}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraser.Manager", "Eraser.Manager\Eraser.Manager.csproj", "{C1AC3255-0939-499D-A69D-725E3DD4F574}"
 EndProject
