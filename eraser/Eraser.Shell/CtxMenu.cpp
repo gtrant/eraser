@@ -975,7 +975,7 @@ namespace Eraser {
 				finalParameters << parameters;
 			}
 		}
-		MessageBox(NULL, finalParameters.str().c_str(), L"Command Line", MB_ICONINFORMATION | MB_OK);
+
 		//If the process must be elevated we use ShellExecute with the runas verb
 		//to elevate the new process.
 		if (elevated && !IsUserAdmin())
