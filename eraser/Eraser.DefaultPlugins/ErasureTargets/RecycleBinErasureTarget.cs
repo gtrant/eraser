@@ -121,7 +121,16 @@ namespace Eraser.DefaultPlugins
 						if (info == null)
 							continue;
 
-						directories.Add(info);
+						foreach (string rootDir in rootDirectory)
+						{
+							//Known folders belong to the current user, so they do not store
+							//objects in a folder with the user's SID
+							string recycleBinPath = System.IO.Path.Combine(info.FullName, rootDir);
+							if (!Directory.Exists(recycleBinPath))
+								continue;
+
+							directories.Add(new DirectoryInfo(recycleBinPath));
+						}
 					}
 				}
 			}
