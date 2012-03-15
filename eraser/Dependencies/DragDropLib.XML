@@ -4,44 +4,84 @@
         <name>DragDropLib</name>
     </assembly>
     <members>
-        <member name="T:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions">
+        <member name="M:DragDropLib.SwfDropTargetHelperExtensions.DragEnter(DragDropLib.IDropTargetHelper,System.Windows.Forms.Control,System.Windows.Forms.IDataObject,System.Drawing.Point,System.Windows.Forms.DragDropEffects)">
             <summary>
-            Provides extended functionality for the COM IDataObject interface.
+            Notifies the DragDropHelper that the specified Control received
+            a DragEnter event.
+            </summary>
+            <param name="dropHelper">The DragDropHelper instance to notify.</param>
+            <param name="control">The Control the received the DragEnter event.</param>
+            <param name="data">The DataObject containing a drag image.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
+        </member>
+        <member name="M:DragDropLib.SwfDropTargetHelperExtensions.DragOver(DragDropLib.IDropTargetHelper,System.Drawing.Point,System.Windows.Forms.DragDropEffects)">
+            <summary>
+            Notifies the DragDropHelper that the current Control received
+            a DragOver event.
+            </summary>
+            <param name="dropHelper">The DragDropHelper instance to notify.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
+        </member>
+        <member name="M:DragDropLib.SwfDropTargetHelperExtensions.Drop(DragDropLib.IDropTargetHelper,System.Windows.Forms.IDataObject,System.Drawing.Point,System.Windows.Forms.DragDropEffects)">
+            <summary>
+            Notifies the DragDropHelper that the current Control received
+            a Drop event.
+            </summary>
+            <param name="dropHelper">The DragDropHelper instance to notify.</param>
+            <param name="data">The DataObject containing a drag image.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
+        </member>
+        <member name="T:System.Windows.Forms.SwfDataObjectExtensions">
+            <summary>
+            Provides extended functionality to the System.Windows.Forms.IDataObject interface.
             </summary>
         </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.SetDropDescription(System.Runtime.InteropServices.ComTypes.IDataObject,DragDropLib.DropDescription)">
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDragImage(System.Windows.Forms.IDataObject,System.Windows.Forms.Control,System.Drawing.Point)">
+            <summary>
+            Sets the drag image as the rendering of a control.
+            </summary>
+            <param name="dataObject">The DataObject to set the drag image on.</param>
+            <param name="control">The Control to render as the drag image.</param>
+            <param name="cursorOffset">The location of the cursor relative to the control.</param>
+        </member>
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDragImage(System.Windows.Forms.IDataObject,System.Drawing.Image,System.Drawing.Point)">
+            <summary>
+            Sets the drag image.
+            </summary>
+            <param name="dataObject">The DataObject to set the drag image on.</param>
+            <param name="image">The drag image.</param>
+            <param name="cursorOffset">The location of the cursor relative to the image.</param>
+        </member>
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.GetHbitmapFromImage(System.Drawing.Image)">
+            <summary>
+            Gets an HBITMAP from any image.
+            </summary>
+            <param name="image">The image to get an HBITMAP from.</param>
+            <returns>An HBITMAP pointer.</returns>
+            <remarks>
+            The caller is responsible to call DeleteObject on the HBITMAP.
+            </remarks>
+        </member>
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDropDescription(System.Windows.Forms.IDataObject,System.Windows.Forms.DropImageType,System.String,System.String)">
             <summary>
             Sets the drop description for the drag image manager.
             </summary>
             <param name="dataObject">The DataObject to set.</param>
-            <param name="dropDescription">The drop description.</param>
+            <param name="type">The type of the drop image.</param>
+            <param name="format">The format string for the description.</param>
+            <param name="insert">The parameter for the drop description.</param>
+            <remarks>
+            When setting the drop description, the text can be set in two part,
+            which will be rendered slightly differently to distinguish the description
+            from the subject. For example, the format can be set as "Move to %1" and
+            the insert as "Temp". When rendered, the "%1" in format will be replaced
+            with "Temp", but "Temp" will be rendered slightly different from "Move to ".
+            </remarks>
         </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetDropDescription(System.Runtime.InteropServices.ComTypes.IDataObject)">
-            <summary>
-            Gets the DropDescription format data.
-            </summary>
-            <param name="dataObject">The DataObject.</param>
-            <returns>The DropDescription, if set.</returns>
-        </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.Advise(System.Runtime.InteropServices.ComTypes.IDataObject,System.Runtime.InteropServices.ComTypes.IAdviseSink,System.String,System.Runtime.InteropServices.ComTypes.ADVF)">
-            <summary>
-            Sets up an advisory connection to the data object.
-            </summary>
-            <param name="dataObject">The data object on which to set the advisory connection.</param>
-            <param name="sink">The advisory sink.</param>
-            <param name="format">The format on which to callback on.</param>
-            <param name="advf">Advisory flags. Can be 0.</param>
-            <returns>The ID of the newly created advisory connection.</returns>
-        </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.FillFormatETC(System.String,System.Runtime.InteropServices.ComTypes.TYMED,System.Runtime.InteropServices.ComTypes.FORMATETC@)">
-            <summary>
-            Fills a FORMATETC structure.
-            </summary>
-            <param name="format">The format name.</param>
-            <param name="tymed">The accepted TYMED.</param>
-            <param name="formatETC">The structure to fill.</param>
-        </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.SetManagedData(System.Runtime.InteropServices.ComTypes.IDataObject,System.String,System.Object)">
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDataEx(System.Windows.Forms.IDataObject,System.String,System.Object)">
             <summary>
             Sets managed data to a clipboard DataObject.
             </summary>
@@ -53,7 +93,24 @@
             unmanaged ones, this function provides intelligent conversion, allowing
             you to set unmanaged data into the COM implemented IDataObject.</remarks>
         </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetManagedData(System.Runtime.InteropServices.ComTypes.IDataObject,System.String)">
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.GetCompatibleTymed(System.String,System.Object)">
+            <summary>
+            Gets a system compatible TYMED for the given format.
+            </summary>
+            <param name="format">The data format.</param>
+            <param name="data">The data.</param>
+            <returns>A TYMED value, indicating a system compatible TYMED that can
+            be used for data marshaling.</returns>
+        </member>
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.IsFormatEqual(System.String,System.String)">
+            <summary>
+            Compares the equality of two clipboard formats.
+            </summary>
+            <param name="formatA">First format.</param>
+            <param name="formatB">Second format.</param>
+            <returns>True if the formats are equal. False otherwise.</returns>
+        </member>
+        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.GetDataEx(System.Windows.Forms.IDataObject,System.String)">
             <summary>
             Gets managed data from a clipboard DataObject.
             </summary>
@@ -61,36 +118,188 @@
             <param name="format">The format for which to get the data in.</param>
             <returns>The data object instance.</returns>
         </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetMediumFromObject(System.Object,System.Runtime.InteropServices.ComTypes.STGMEDIUM@)">
+        <member name="M:DragDropLib.WpfDropTargetHelperExtensions.DragEnter(DragDropLib.IDropTargetHelper,System.Windows.Window,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
             <summary>
-            Serializes managed data to an HGLOBAL.
+            Notifies the DragDropHelper that the specified Window received
+            a DragEnter event.
             </summary>
-            <param name="data">The managed data object.</param>
-            <returns>An STGMEDIUM pointing to the allocated HGLOBAL.</returns>
+            <param name="dropHelper">The DragDropHelper instance to notify.</param>
+            <param name="window">The Window the received the DragEnter event.</param>
+            <param name="data">The DataObject containing a drag image.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
         </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetAsSerializable(System.Object)">
+        <member name="M:DragDropLib.WpfDropTargetHelperExtensions.DragOver(DragDropLib.IDropTargetHelper,System.Windows.Point,System.Windows.DragDropEffects)">
             <summary>
-            Gets a serializable object representing the data.
+            Notifies the DragDropHelper that the current Window received
+            a DragOver event.
             </summary>
-            <param name="obj">The data.</param>
-            <returns>If the data is serializable, then it is returned. Otherwise,
-            type conversion is attempted. If successful, a string value will be
-            returned.</returns>
+            <param name="dropHelper">The DragDropHelper instance to notify.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
         </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.ConvertDataFromString(System.String,System.Type)">
+        <member name="M:DragDropLib.WpfDropTargetHelperExtensions.Drop(DragDropLib.IDropTargetHelper,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
             <summary>
-            Converts data from a string to the specified format.
+            Notifies the DragDropHelper that the current Window received
+            a Drop event.
             </summary>
-            <param name="data">The data to convert.</param>
-            <param name="dataType">The target data type.</param>
-            <returns>Returns the converted data instance.</returns>
+            <param name="dropHelper">The DragDropHelper instance to notify.</param>
+            <param name="data">The DataObject containing a drag image.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
         </member>
-        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetTypeConverterForType(System.Type)">
+        <member name="M:DragDropLib.WpfDragDropLibExtensions.ToWin32Point(System.Windows.Point)">
             <summary>
-            Gets a TypeConverter instance for the specified type.
+            Converts a System.Windows.Point value to a DragDropLib.Win32Point value.
             </summary>
-            <param name="dataType">The type.</param>
-            <returns>An instance of a TypeConverter for the type, if one exists.</returns>
+            <param name="pt">Input value.</param>
+            <returns>Converted value.</returns>
+        </member>
+        <member name="M:DragDropLib.SwfDragDropLibExtensions.ToWin32Point(System.Drawing.Point)">
+            <summary>
+            Converts a System.Windows.Point value to a DragDropLib.Win32Point value.
+            </summary>
+            <param name="pt">Input value.</param>
+            <returns>Converted value.</returns>
+        </member>
+        <member name="T:System.Windows.WpfDataObjectExtensions">
+            <summary>
+            Provides extended functionality to the System.Windows.IDataObject interface.
+            </summary>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.SetDragImage(System.Windows.IDataObject,System.Windows.UIElement,System.Windows.Point)">
+            <summary>
+            Sets the drag image by rendering the specified UIElement.
+            </summary>
+            <param name="dataObject">The DataObject to set the drag image for.</param>
+            <param name="element">The element to render as the drag image.</param>
+            <param name="cursorOffset">The offset of the cursor relative to the UIElement.</param>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.SetDragImage(System.Windows.IDataObject,System.Windows.Media.Imaging.BitmapSource,System.Windows.Point)">
+            <summary>
+            Sets the drag image from a BitmapSource.
+            </summary>
+            <param name="dataObject">The DataObject on which to set the drag image.</param>
+            <param name="image">The image source.</param>
+            <param name="cursorOffset">The offset relative to the bitmap image.</param>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.SetDragImage(System.Windows.IDataObject,System.Drawing.Bitmap,System.Windows.Point)">
+            <summary>
+            Sets the drag image.
+            </summary>
+            <param name="dataObject">The DataObject to set the drag image on.</param>
+            <param name="image">The drag image.</param>
+            <param name="cursorOffset">The location of the cursor relative to the image.</param>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.SetDropDescription(System.Windows.IDataObject,System.Windows.DropImageType,System.String,System.String)">
+            <summary>
+            Sets the drop description for the drag image manager.
+            </summary>
+            <param name="dataObject">The DataObject to set.</param>
+            <param name="type">The type of the drop image.</param>
+            <param name="format">The format string for the description.</param>
+            <param name="insert">The parameter for the drop description.</param>
+            <remarks>
+            When setting the drop description, the text can be set in two part,
+            which will be rendered slightly differently to distinguish the description
+            from the subject. For example, the format can be set as "Move to %1" and
+            the insert as "Temp". When rendered, the "%1" in format will be replaced
+            with "Temp", but "Temp" will be rendered slightly different from "Move to ".
+            </remarks>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.SetDataEx(System.Windows.IDataObject,System.String,System.Object)">
+            <summary>
+            Sets managed data to a clipboard DataObject.
+            </summary>
+            <param name="dataObject">The DataObject to set the data on.</param>
+            <param name="format">The clipboard format.</param>
+            <param name="data">The data object.</param>
+            <remarks>
+            Because the underlying data store is not storing managed objects, but
+            unmanaged ones, this function provides intelligent conversion, allowing
+            you to set unmanaged data into the COM implemented IDataObject.</remarks>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.GetCompatibleTymed(System.String,System.Object)">
+            <summary>
+            Gets a system compatible TYMED for the given format.
+            </summary>
+            <param name="format">The data format.</param>
+            <param name="data">The data.</param>
+            <returns>A TYMED value, indicating a system compatible TYMED that can
+            be used for data marshaling.</returns>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.IsFormatEqual(System.String,System.String)">
+            <summary>
+            Compares the equality of two clipboard formats.
+            </summary>
+            <param name="formatA">First format.</param>
+            <param name="formatB">Second format.</param>
+            <returns>True if the formats are equal. False otherwise.</returns>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.GetDataEx(System.Windows.IDataObject,System.String)">
+            <summary>
+            Gets managed data from a clipboard DataObject.
+            </summary>
+            <param name="dataObject">The DataObject to obtain the data from.</param>
+            <param name="format">The format for which to get the data in.</param>
+            <returns>The data object instance.</returns>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.GetDeviceDpi(System.Windows.Media.Visual,System.Int32@,System.Int32@)">
+            <summary>
+            Gets the device capabilities.
+            </summary>
+            <param name="reference">A reference UIElement for getting the relevant device caps.</param>
+            <param name="dpix">The horizontal DPI.</param>
+            <param name="dpiy">The vertical DPI.</param>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.GetBitmapFromBitmapSource(System.Windows.Media.Imaging.BitmapSource,System.Windows.Media.Color)">
+            <summary>
+            Gets a System.Drawing.Bitmap from a BitmapSource.
+            </summary>
+            <param name="source">The source image from which to create our Bitmap.</param>
+            <param name="transparencyKey">The transparency key. This is used by the DragDropHelper
+            in rendering transparent pixels.</param>
+            <returns>An instance of Bitmap which is a copy of the BitmapSource's image.</returns>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.ReplaceTransparentPixelsWithTransparentKey(System.Drawing.Imaging.BitmapData,System.Drawing.Color)">
+            <summary>
+            Replaces any pixel with a zero alpha value with the specified transparency key.
+            </summary>
+            <param name="bmpData">The bitmap data in which to perform the operation.</param>
+            <param name="transKey">The transparency color. This color is rendered transparent
+            by the DragDropHelper.</param>
+            <remarks>
+            This function only supports 32-bit pixel formats for now.
+            </remarks>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.ToDrawingColor(System.Windows.Media.Color)">
+            <summary>
+            Converts a System.Windows.Media.Color to System.Drawing.Color.
+            </summary>
+            <param name="color">System.Windows.Media.Color value to convert.</param>
+            <returns>System.Drawing.Color value.</returns>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.ToDrawingRectangle(System.Windows.Int32Rect)">
+            <summary>
+            Converts a System.Windows.Int32Rect to a System.Drawing.Rectangle value.
+            </summary>
+            <param name="rect">The System.Windows.Int32Rect to convert.</param>
+            <returns>The System.Drawing.Rectangle converted value.</returns>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.ConvertColorPalette(System.Drawing.Imaging.ColorPalette,System.Windows.Media.Imaging.BitmapPalette)">
+            <summary>
+            Converts the entries in a BitmapPalette to ColorPalette entries.
+            </summary>
+            <param name="destPalette">ColorPalette destination palette.</param>
+            <param name="bitmapPalette">BitmapPalette source palette.</param>
+        </member>
+        <member name="M:System.Windows.WpfDataObjectExtensions.ConvertPixelFormat(System.Windows.Media.PixelFormat)">
+            <summary>
+            Converts a System.Windows.Media.PixelFormat instance to a
+            System.Drawing.Imaging.PixelFormat value.
+            </summary>
+            <param name="pixelFormat">The input PixelFormat.</param>
+            <returns>The converted value.</returns>
         </member>
         <member name="T:DragDropLib.DataObject">
             <summary>
@@ -299,97 +508,6 @@
             <param name="celt">The number of elements to skip.</param>
             <returns>If there are not enough remaining elements to skip, returns S_FALSE. Otherwise, S_OK is returned.</returns>
         </member>
-        <member name="T:System.Windows.Forms.SwfDataObjectExtensions">
-            <summary>
-            Provides extended functionality to the System.Windows.Forms.IDataObject interface.
-            </summary>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDragImage(System.Windows.Forms.IDataObject,System.Windows.Forms.Control,System.Drawing.Point)">
-            <summary>
-            Sets the drag image as the rendering of a control.
-            </summary>
-            <param name="dataObject">The DataObject to set the drag image on.</param>
-            <param name="control">The Control to render as the drag image.</param>
-            <param name="cursorOffset">The location of the cursor relative to the control.</param>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDragImage(System.Windows.Forms.IDataObject,System.Drawing.Image,System.Drawing.Point)">
-            <summary>
-            Sets the drag image.
-            </summary>
-            <param name="dataObject">The DataObject to set the drag image on.</param>
-            <param name="image">The drag image.</param>
-            <param name="cursorOffset">The location of the cursor relative to the image.</param>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.GetHbitmapFromImage(System.Drawing.Image)">
-            <summary>
-            Gets an HBITMAP from any image.
-            </summary>
-            <param name="image">The image to get an HBITMAP from.</param>
-            <returns>An HBITMAP pointer.</returns>
-            <remarks>
-            The caller is responsible to call DeleteObject on the HBITMAP.
-            </remarks>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDropDescription(System.Windows.Forms.IDataObject,System.Windows.Forms.DropImageType,System.String,System.String)">
-            <summary>
-            Sets the drop description for the drag image manager.
-            </summary>
-            <param name="dataObject">The DataObject to set.</param>
-            <param name="type">The type of the drop image.</param>
-            <param name="format">The format string for the description.</param>
-            <param name="insert">The parameter for the drop description.</param>
-            <remarks>
-            When setting the drop description, the text can be set in two part,
-            which will be rendered slightly differently to distinguish the description
-            from the subject. For example, the format can be set as "Move to %1" and
-            the insert as "Temp". When rendered, the "%1" in format will be replaced
-            with "Temp", but "Temp" will be rendered slightly different from "Move to ".
-            </remarks>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.SetDataEx(System.Windows.Forms.IDataObject,System.String,System.Object)">
-            <summary>
-            Sets managed data to a clipboard DataObject.
-            </summary>
-            <param name="dataObject">The DataObject to set the data on.</param>
-            <param name="format">The clipboard format.</param>
-            <param name="data">The data object.</param>
-            <remarks>
-            Because the underlying data store is not storing managed objects, but
-            unmanaged ones, this function provides intelligent conversion, allowing
-            you to set unmanaged data into the COM implemented IDataObject.</remarks>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.GetCompatibleTymed(System.String,System.Object)">
-            <summary>
-            Gets a system compatible TYMED for the given format.
-            </summary>
-            <param name="format">The data format.</param>
-            <param name="data">The data.</param>
-            <returns>A TYMED value, indicating a system compatible TYMED that can
-            be used for data marshaling.</returns>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.IsFormatEqual(System.String,System.String)">
-            <summary>
-            Compares the equality of two clipboard formats.
-            </summary>
-            <param name="formatA">First format.</param>
-            <param name="formatB">Second format.</param>
-            <returns>True if the formats are equal. False otherwise.</returns>
-        </member>
-        <member name="M:System.Windows.Forms.SwfDataObjectExtensions.GetDataEx(System.Windows.Forms.IDataObject,System.String)">
-            <summary>
-            Gets managed data from a clipboard DataObject.
-            </summary>
-            <param name="dataObject">The DataObject to obtain the data from.</param>
-            <param name="format">The format for which to get the data in.</param>
-            <returns>The data object instance.</returns>
-        </member>
-        <member name="M:DragDropLib.SwfDragDropLibExtensions.ToWin32Point(System.Drawing.Point)">
-            <summary>
-            Converts a System.Windows.Point value to a DragDropLib.Win32Point value.
-            </summary>
-            <param name="pt">Input value.</param>
-            <returns>Converted value.</returns>
-        </member>
         <member name="F:System.Windows.Forms.DropTargetHelper.s_instance">
             <summary>
             Internal instance of the DragDropHelper.
@@ -476,36 +594,6 @@
             Tells the DragDropHelper to show or hide the drag image.
             </summary>
             <param name="show">True to show the image. False to hide it.</param>
-        </member>
-        <member name="M:DragDropLib.SwfDropTargetHelperExtensions.DragEnter(DragDropLib.IDropTargetHelper,System.Windows.Forms.Control,System.Windows.Forms.IDataObject,System.Drawing.Point,System.Windows.Forms.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the specified Control received
-            a DragEnter event.
-            </summary>
-            <param name="dropHelper">The DragDropHelper instance to notify.</param>
-            <param name="control">The Control the received the DragEnter event.</param>
-            <param name="data">The DataObject containing a drag image.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="M:DragDropLib.SwfDropTargetHelperExtensions.DragOver(DragDropLib.IDropTargetHelper,System.Drawing.Point,System.Windows.Forms.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the current Control received
-            a DragOver event.
-            </summary>
-            <param name="dropHelper">The DragDropHelper instance to notify.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="M:DragDropLib.SwfDropTargetHelperExtensions.Drop(DragDropLib.IDropTargetHelper,System.Windows.Forms.IDataObject,System.Drawing.Point,System.Windows.Forms.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the current Control received
-            a Drop event.
-            </summary>
-            <param name="dropHelper">The DragDropHelper instance to notify.</param>
-            <param name="data">The DataObject containing a drag image.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
         </member>
         <member name="T:System.Windows.Forms.DragSourceHelper">
             <summary>
@@ -772,12 +860,159 @@
             <param name="format">The data format that had a change.</param>
             <param name="stgmedium">The data value.</param>
         </member>
-        <member name="M:DragDropLib.WpfDragDropLibExtensions.ToWin32Point(System.Windows.Point)">
+        <member name="T:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions">
             <summary>
-            Converts a System.Windows.Point value to a DragDropLib.Win32Point value.
+            Provides extended functionality for the COM IDataObject interface.
             </summary>
-            <param name="pt">Input value.</param>
-            <returns>Converted value.</returns>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.SetDropDescription(System.Runtime.InteropServices.ComTypes.IDataObject,DragDropLib.DropDescription)">
+            <summary>
+            Sets the drop description for the drag image manager.
+            </summary>
+            <param name="dataObject">The DataObject to set.</param>
+            <param name="dropDescription">The drop description.</param>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetDropDescription(System.Runtime.InteropServices.ComTypes.IDataObject)">
+            <summary>
+            Gets the DropDescription format data.
+            </summary>
+            <param name="dataObject">The DataObject.</param>
+            <returns>The DropDescription, if set.</returns>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.Advise(System.Runtime.InteropServices.ComTypes.IDataObject,System.Runtime.InteropServices.ComTypes.IAdviseSink,System.String,System.Runtime.InteropServices.ComTypes.ADVF)">
+            <summary>
+            Sets up an advisory connection to the data object.
+            </summary>
+            <param name="dataObject">The data object on which to set the advisory connection.</param>
+            <param name="sink">The advisory sink.</param>
+            <param name="format">The format on which to callback on.</param>
+            <param name="advf">Advisory flags. Can be 0.</param>
+            <returns>The ID of the newly created advisory connection.</returns>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.FillFormatETC(System.String,System.Runtime.InteropServices.ComTypes.TYMED,System.Runtime.InteropServices.ComTypes.FORMATETC@)">
+            <summary>
+            Fills a FORMATETC structure.
+            </summary>
+            <param name="format">The format name.</param>
+            <param name="tymed">The accepted TYMED.</param>
+            <param name="formatETC">The structure to fill.</param>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.SetManagedData(System.Runtime.InteropServices.ComTypes.IDataObject,System.String,System.Object)">
+            <summary>
+            Sets managed data to a clipboard DataObject.
+            </summary>
+            <param name="dataObject">The DataObject to set the data on.</param>
+            <param name="format">The clipboard format.</param>
+            <param name="data">The data object.</param>
+            <remarks>
+            Because the underlying data store is not storing managed objects, but
+            unmanaged ones, this function provides intelligent conversion, allowing
+            you to set unmanaged data into the COM implemented IDataObject.</remarks>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetManagedData(System.Runtime.InteropServices.ComTypes.IDataObject,System.String)">
+            <summary>
+            Gets managed data from a clipboard DataObject.
+            </summary>
+            <param name="dataObject">The DataObject to obtain the data from.</param>
+            <param name="format">The format for which to get the data in.</param>
+            <returns>The data object instance.</returns>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetMediumFromObject(System.Object,System.Runtime.InteropServices.ComTypes.STGMEDIUM@)">
+            <summary>
+            Serializes managed data to an HGLOBAL.
+            </summary>
+            <param name="data">The managed data object.</param>
+            <returns>An STGMEDIUM pointing to the allocated HGLOBAL.</returns>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetAsSerializable(System.Object)">
+            <summary>
+            Gets a serializable object representing the data.
+            </summary>
+            <param name="obj">The data.</param>
+            <returns>If the data is serializable, then it is returned. Otherwise,
+            type conversion is attempted. If successful, a string value will be
+            returned.</returns>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.ConvertDataFromString(System.String,System.Type)">
+            <summary>
+            Converts data from a string to the specified format.
+            </summary>
+            <param name="data">The data to convert.</param>
+            <param name="dataType">The target data type.</param>
+            <returns>Returns the converted data instance.</returns>
+        </member>
+        <member name="M:System.Runtime.InteropServices.ComTypes.ComDataObjectExtensions.GetTypeConverterForType(System.Type)">
+            <summary>
+            Gets a TypeConverter instance for the specified type.
+            </summary>
+            <param name="dataType">The type.</param>
+            <returns>An instance of a TypeConverter for the type, if one exists.</returns>
+        </member>
+        <member name="F:System.Windows.DropTargetHelper.s_instance">
+            <summary>
+            Internal instance of the DragDropHelper.
+            </summary>
+        </member>
+        <member name="M:System.Windows.DropTargetHelper.DragEnter(System.Windows.Window,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
+            <summary>
+            Notifies the DragDropHelper that the specified Window received
+            a DragEnter event.
+            </summary>
+            <param name="window">The Window the received the DragEnter event.</param>
+            <param name="data">The DataObject containing a drag image.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
+        </member>
+        <member name="M:System.Windows.DropTargetHelper.DragEnter(System.Windows.Window,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects,System.String,System.String)">
+            <summary>
+            Notifies the DragDropHelper that the specified Window received
+            a DragEnter event.
+            </summary>
+            <param name="window">The Window the received the DragEnter event.</param>
+            <param name="data">The DataObject containing a drag image.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
+            <param name="descriptionMessage">The drop description message.</param>
+            <param name="descriptionInsert">The drop description insert.</param>
+            <remarks>Callers of this DragEnter override should make sure to call
+            the DragLeave override taking an IDataObject parameter in order to clear
+            the drop description.</remarks>
+        </member>
+        <member name="M:System.Windows.DropTargetHelper.DragOver(System.Windows.Point,System.Windows.DragDropEffects)">
+            <summary>
+            Notifies the DragDropHelper that the current Window received
+            a DragOver event.
+            </summary>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
+        </member>
+        <member name="M:System.Windows.DropTargetHelper.DragLeave">
+            <summary>
+            Notifies the DragDropHelper that the current Window received
+            a DragLeave event.
+            </summary>
+        </member>
+        <member name="M:System.Windows.DropTargetHelper.DragLeave(System.Windows.IDataObject)">
+            <summary>
+            Notifies the DragDropHelper that the current Window received
+            a DragLeave event.
+            </summary>
+            <param name="data">The data object associated to the event.</param>
+        </member>
+        <member name="M:System.Windows.DropTargetHelper.Drop(System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
+            <summary>
+            Notifies the DragDropHelper that the current Window received
+            a DragOver event.
+            </summary>
+            <param name="data">The DataObject containing a drag image.</param>
+            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
+            <param name="effect">The accepted drag drop effect.</param>
+        </member>
+        <member name="M:System.Windows.DropTargetHelper.Show(System.Boolean)">
+            <summary>
+            Tells the DragDropHelper to show or hide the drag image.
+            </summary>
+            <param name="show">True to show the image. False to hide it.</param>
         </member>
         <member name="T:System.Windows.DragSourceHelper">
             <summary>
@@ -1043,241 +1278,6 @@
             </summary>
             <param name="format">The data format that had a change.</param>
             <param name="stgmedium">The data value.</param>
-        </member>
-        <member name="F:System.Windows.DropTargetHelper.s_instance">
-            <summary>
-            Internal instance of the DragDropHelper.
-            </summary>
-        </member>
-        <member name="M:System.Windows.DropTargetHelper.DragEnter(System.Windows.Window,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the specified Window received
-            a DragEnter event.
-            </summary>
-            <param name="window">The Window the received the DragEnter event.</param>
-            <param name="data">The DataObject containing a drag image.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="M:System.Windows.DropTargetHelper.DragEnter(System.Windows.Window,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects,System.String,System.String)">
-            <summary>
-            Notifies the DragDropHelper that the specified Window received
-            a DragEnter event.
-            </summary>
-            <param name="window">The Window the received the DragEnter event.</param>
-            <param name="data">The DataObject containing a drag image.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-            <param name="descriptionMessage">The drop description message.</param>
-            <param name="descriptionInsert">The drop description insert.</param>
-            <remarks>Callers of this DragEnter override should make sure to call
-            the DragLeave override taking an IDataObject parameter in order to clear
-            the drop description.</remarks>
-        </member>
-        <member name="M:System.Windows.DropTargetHelper.DragOver(System.Windows.Point,System.Windows.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the current Window received
-            a DragOver event.
-            </summary>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="M:System.Windows.DropTargetHelper.DragLeave">
-            <summary>
-            Notifies the DragDropHelper that the current Window received
-            a DragLeave event.
-            </summary>
-        </member>
-        <member name="M:System.Windows.DropTargetHelper.DragLeave(System.Windows.IDataObject)">
-            <summary>
-            Notifies the DragDropHelper that the current Window received
-            a DragLeave event.
-            </summary>
-            <param name="data">The data object associated to the event.</param>
-        </member>
-        <member name="M:System.Windows.DropTargetHelper.Drop(System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the current Window received
-            a DragOver event.
-            </summary>
-            <param name="data">The DataObject containing a drag image.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="M:System.Windows.DropTargetHelper.Show(System.Boolean)">
-            <summary>
-            Tells the DragDropHelper to show or hide the drag image.
-            </summary>
-            <param name="show">True to show the image. False to hide it.</param>
-        </member>
-        <member name="M:DragDropLib.WpfDropTargetHelperExtensions.DragEnter(DragDropLib.IDropTargetHelper,System.Windows.Window,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the specified Window received
-            a DragEnter event.
-            </summary>
-            <param name="dropHelper">The DragDropHelper instance to notify.</param>
-            <param name="window">The Window the received the DragEnter event.</param>
-            <param name="data">The DataObject containing a drag image.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="M:DragDropLib.WpfDropTargetHelperExtensions.DragOver(DragDropLib.IDropTargetHelper,System.Windows.Point,System.Windows.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the current Window received
-            a DragOver event.
-            </summary>
-            <param name="dropHelper">The DragDropHelper instance to notify.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="M:DragDropLib.WpfDropTargetHelperExtensions.Drop(DragDropLib.IDropTargetHelper,System.Windows.IDataObject,System.Windows.Point,System.Windows.DragDropEffects)">
-            <summary>
-            Notifies the DragDropHelper that the current Window received
-            a Drop event.
-            </summary>
-            <param name="dropHelper">The DragDropHelper instance to notify.</param>
-            <param name="data">The DataObject containing a drag image.</param>
-            <param name="cursorOffset">The current cursor's offset relative to the window.</param>
-            <param name="effect">The accepted drag drop effect.</param>
-        </member>
-        <member name="T:System.Windows.WpfDataObjectExtensions">
-            <summary>
-            Provides extended functionality to the System.Windows.IDataObject interface.
-            </summary>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.SetDragImage(System.Windows.IDataObject,System.Windows.UIElement,System.Windows.Point)">
-            <summary>
-            Sets the drag image by rendering the specified UIElement.
-            </summary>
-            <param name="dataObject">The DataObject to set the drag image for.</param>
-            <param name="element">The element to render as the drag image.</param>
-            <param name="cursorOffset">The offset of the cursor relative to the UIElement.</param>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.SetDragImage(System.Windows.IDataObject,System.Windows.Media.Imaging.BitmapSource,System.Windows.Point)">
-            <summary>
-            Sets the drag image from a BitmapSource.
-            </summary>
-            <param name="dataObject">The DataObject on which to set the drag image.</param>
-            <param name="image">The image source.</param>
-            <param name="cursorOffset">The offset relative to the bitmap image.</param>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.SetDragImage(System.Windows.IDataObject,System.Drawing.Bitmap,System.Windows.Point)">
-            <summary>
-            Sets the drag image.
-            </summary>
-            <param name="dataObject">The DataObject to set the drag image on.</param>
-            <param name="image">The drag image.</param>
-            <param name="cursorOffset">The location of the cursor relative to the image.</param>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.SetDropDescription(System.Windows.IDataObject,System.Windows.DropImageType,System.String,System.String)">
-            <summary>
-            Sets the drop description for the drag image manager.
-            </summary>
-            <param name="dataObject">The DataObject to set.</param>
-            <param name="type">The type of the drop image.</param>
-            <param name="format">The format string for the description.</param>
-            <param name="insert">The parameter for the drop description.</param>
-            <remarks>
-            When setting the drop description, the text can be set in two part,
-            which will be rendered slightly differently to distinguish the description
-            from the subject. For example, the format can be set as "Move to %1" and
-            the insert as "Temp". When rendered, the "%1" in format will be replaced
-            with "Temp", but "Temp" will be rendered slightly different from "Move to ".
-            </remarks>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.SetDataEx(System.Windows.IDataObject,System.String,System.Object)">
-            <summary>
-            Sets managed data to a clipboard DataObject.
-            </summary>
-            <param name="dataObject">The DataObject to set the data on.</param>
-            <param name="format">The clipboard format.</param>
-            <param name="data">The data object.</param>
-            <remarks>
-            Because the underlying data store is not storing managed objects, but
-            unmanaged ones, this function provides intelligent conversion, allowing
-            you to set unmanaged data into the COM implemented IDataObject.</remarks>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.GetCompatibleTymed(System.String,System.Object)">
-            <summary>
-            Gets a system compatible TYMED for the given format.
-            </summary>
-            <param name="format">The data format.</param>
-            <param name="data">The data.</param>
-            <returns>A TYMED value, indicating a system compatible TYMED that can
-            be used for data marshaling.</returns>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.IsFormatEqual(System.String,System.String)">
-            <summary>
-            Compares the equality of two clipboard formats.
-            </summary>
-            <param name="formatA">First format.</param>
-            <param name="formatB">Second format.</param>
-            <returns>True if the formats are equal. False otherwise.</returns>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.GetDataEx(System.Windows.IDataObject,System.String)">
-            <summary>
-            Gets managed data from a clipboard DataObject.
-            </summary>
-            <param name="dataObject">The DataObject to obtain the data from.</param>
-            <param name="format">The format for which to get the data in.</param>
-            <returns>The data object instance.</returns>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.GetDeviceDpi(System.Windows.Media.Visual,System.Int32@,System.Int32@)">
-            <summary>
-            Gets the device capabilities.
-            </summary>
-            <param name="reference">A reference UIElement for getting the relevant device caps.</param>
-            <param name="dpix">The horizontal DPI.</param>
-            <param name="dpiy">The vertical DPI.</param>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.GetBitmapFromBitmapSource(System.Windows.Media.Imaging.BitmapSource,System.Windows.Media.Color)">
-            <summary>
-            Gets a System.Drawing.Bitmap from a BitmapSource.
-            </summary>
-            <param name="source">The source image from which to create our Bitmap.</param>
-            <param name="transparencyKey">The transparency key. This is used by the DragDropHelper
-            in rendering transparent pixels.</param>
-            <returns>An instance of Bitmap which is a copy of the BitmapSource's image.</returns>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.ReplaceTransparentPixelsWithTransparentKey(System.Drawing.Imaging.BitmapData,System.Drawing.Color)">
-            <summary>
-            Replaces any pixel with a zero alpha value with the specified transparency key.
-            </summary>
-            <param name="bmpData">The bitmap data in which to perform the operation.</param>
-            <param name="transKey">The transparency color. This color is rendered transparent
-            by the DragDropHelper.</param>
-            <remarks>
-            This function only supports 32-bit pixel formats for now.
-            </remarks>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.ToDrawingColor(System.Windows.Media.Color)">
-            <summary>
-            Converts a System.Windows.Media.Color to System.Drawing.Color.
-            </summary>
-            <param name="color">System.Windows.Media.Color value to convert.</param>
-            <returns>System.Drawing.Color value.</returns>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.ToDrawingRectangle(System.Windows.Int32Rect)">
-            <summary>
-            Converts a System.Windows.Int32Rect to a System.Drawing.Rectangle value.
-            </summary>
-            <param name="rect">The System.Windows.Int32Rect to convert.</param>
-            <returns>The System.Drawing.Rectangle converted value.</returns>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.ConvertColorPalette(System.Drawing.Imaging.ColorPalette,System.Windows.Media.Imaging.BitmapPalette)">
-            <summary>
-            Converts the entries in a BitmapPalette to ColorPalette entries.
-            </summary>
-            <param name="destPalette">ColorPalette destination palette.</param>
-            <param name="bitmapPalette">BitmapPalette source palette.</param>
-        </member>
-        <member name="M:System.Windows.WpfDataObjectExtensions.ConvertPixelFormat(System.Windows.Media.PixelFormat)">
-            <summary>
-            Converts a System.Windows.Media.PixelFormat instance to a
-            System.Drawing.Imaging.PixelFormat value.
-            </summary>
-            <param name="pixelFormat">The input PixelFormat.</param>
-            <returns>The converted value.</returns>
         </member>
     </members>
 </doc>

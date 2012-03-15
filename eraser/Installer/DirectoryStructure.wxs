@@ -54,13 +54,16 @@
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Eraser.exe"
 						Type="string" Value="[!EraserExe]" />
 
-					<File Id="Alglib" Name="alglib.dll" Source="..\bin\Release\alglib.dll"
+					<File Id="Alglib" Name="alglibnet2.dll" Source="..\bin\Release\alglibnet2.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="BevelLine" Name="BevelLine.dll" Source="..\bin\Release\BevelLine.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="CommonLibrary" Name="CommonLibrary.dll" Source="..\bin\Release\CommonLibrary.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="DragDropLib" Name="DragDropLib.dll" Source="..\bin\Release\DragDropLib.dll"
+						ProcessorArchitecture="msil" />
+					<File Id="MicrosoftRuntimeHosting" Name="Microsoft.Runtime.Hosting.dll"
+						Source="..\bin\Release\Microsoft.Runtime.Hosting.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="SharpZipLib" Name="ICSharpCode.SharpZipLib.dll"
 						Source="..\bin\Release\Plugins\ICSharpCode.SharpZipLib.dll" ProcessorArchitecture="msil" />
