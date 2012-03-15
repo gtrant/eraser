@@ -22,10 +22,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+
 using System.ComponentModel;
 using System.Security.Principal;
 using System.Runtime.InteropServices;
+
 using Microsoft.Win32.SafeHandles;
+using Microsoft.Runtime.Hosting;
+using Microsoft.Runtime.Hosting.Interop;
 
 namespace Eraser.Util
 {
@@ -87,9 +91,9 @@ namespace Eraser.Util
 		/// of an assembly, taking into account registry settings.</remarks>
 		public static bool VerifyStrongName(string assemblyPath)
 		{
-			bool wasVerified = false;
-			return NativeMethods.StrongNameSignatureVerificationEx(assemblyPath, false,
-				out wasVerified) && wasVerified;
+			ICLRStrongName strongName = ClrMetaHost.CurrentRuntime.GetInterface<ICLRStrongName>(
+				new Guid(0xB79B0ACD, 0xF5CD, 0x409b, 0xB5, 0xA5, 0xA1, 0x62, 0x44, 0x61, 0x0B, 0x92));
+			return strongName.StrongNameSignatureVerificationEx(assemblyPath, 1) != 0;
 		}
 	}
 }
