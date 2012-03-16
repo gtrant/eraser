@@ -56,8 +56,8 @@ namespace Eraser
 			/// True if the program should not be started with any user-visible interfaces.
 			/// </summary>
 			/// <remarks>Errors will also be silently ignored.</remarks>
-			[Arg("quiet", "The program should not be started with any user-visible interfaces. " +
-				"Errors will be silently ignored.", typeof(bool), false, false, null)]
+			[Arg("quiet", "q", "The program should not be started with any user-visible " +
+				"interfaces. Errors will be silently ignored.", typeof(bool), false, false)]
 			public bool Quiet { get; set; }
 		}
 
@@ -70,8 +70,8 @@ namespace Eraser
 			/// True if the command line specified atRestart, which should result in the
 			/// queueing of tasks meant for running at restart.
 			/// </summary>
-			[Arg("atRestart", "The program should queue all tasks scheduled for running at " +
-				"the system restart.", typeof(bool), false, false, null)]
+			[Arg("atRestart",  "r", "The program should queue all tasks scheduled for " +
+				"running at the system restart.", typeof(bool), false, false)]
 			public bool AtRestart { get; set; }
 		}
 
@@ -98,7 +98,7 @@ namespace Eraser
 			/// <summary>
 			/// The Action which this handler is in charge of.
 			/// </summary>
-			[Arg(0, "The action this command line is stating.", typeof(string), true, null, null)]
+			[Arg(0, "The action this command line is stating.", typeof(string), true, null)]
 			public string Action { get; set; }
 
 			/// <summary>
@@ -106,7 +106,7 @@ namespace Eraser
 			/// </summary>
 			public List<string> PositionalArguments { get; set; }
 		}
-
+		
 		class EraseArguments : ConsoleArguments
 		{
 			/// <summary>
@@ -130,10 +130,10 @@ namespace Eraser
 			/// <summary>
 			/// The erasure method which the user specified on the command line.
 			/// </summary>
-			[Arg("method", "The erasure method to use", typeof(string), false, null, null)]
+			[Arg("method", "m", "The erasure method to use", typeof(string), false, null)]
 			public string ErasureMethod { get; set; }
 		}
-
+		
 		class TaskArguments : EraseArguments
 		{
 			/// <summary>
@@ -156,22 +156,24 @@ namespace Eraser
 			/// <summary>
 			/// The schedule for the current set of targets.
 			/// </summary>
-			[Arg("schedule", "The schedule to use", typeof(Schedule), false, null, null)]
+			[Arg("schedule", "s", "The schedule to use", typeof(Schedule), false, null)]
 			public string Schedule { get; set; }
 		}
-
+		
 		class ShellArguments : TaskArguments
 		{
 			/// <summary>
 			/// The parent HWND which can be used as a parent to display dialogs.
 			/// </summary>
-			[Arg("parent", "The parent HWND which can be used as a parent to display dialogues", typeof(string), false, null, null)]
+			[Arg("parent", "p", "The parent HWND which can be used as a parent to display " +
+				"dialogues", typeof(string), false, null)]
 			public string Parent { get; set; }
 
 			/// <summary>
 			/// Whether we should display a confirmation dialog.
 			/// </summary>
-			[Arg("confirm", "Whether a confirmation dialog should be shown", typeof(bool), false, true, null)]
+			[Arg("confirm", "c", "Whether a confirmation dialog should be shown", typeof(bool),
+				false, true)]
 			public bool Confirm { get; set; }
 		}
 
