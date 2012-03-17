@@ -52,8 +52,6 @@ namespace Eraser
 			/// instances of the program together.</param>
 			public GuiProgram(string[] commandLine, string instanceID)
 			{
-				Application.EnableVisualStyles();
-				Application.SetCompatibleTextRenderingDefault(false);
 				InstanceID = instanceID;
 				CommandLine = commandLine;
 

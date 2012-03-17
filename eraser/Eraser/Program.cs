@@ -231,6 +231,11 @@ namespace Eraser
 				CommandLinePrefixes, CommandLineSeparators);
 			Args parsedArguments = (Args)argumentParser.Item;
 
+			//Set application defaults for consistent behaviour across GUI and
+			//Console instances
+			Application.EnableVisualStyles();
+			Application.SetCompatibleTextRenderingDefault(false);
+
 			//Load the Eraser.Manager library
 			using (ManagerLibrary library = new ManagerLibrary(Settings.Get()))
 			{
@@ -600,18 +605,17 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			ShellArguments arguments = (ShellArguments)args;
 			Task task = TaskFromCommandLine(arguments);
 
-			//Do we have a parent dialog?
-			IWin32Window parent = null;
-			if (!string.IsNullOrEmpty(arguments.Parent))
-			{
-				parent = new Win32Window((IntPtr)(ulong)
-					Convert.ChangeType(arguments.Parent, typeof(ulong)));
-			}
-
 			//Confirm that the user wants the erase.
 			if (arguments.Confirm)
 			{
-				Application.EnableVisualStyles();
+				//Do we have a parent dialog?
+				IWin32Window parent = null;
+				if (!string.IsNullOrEmpty(arguments.Parent))
+				{
+					parent = new Win32Window((IntPtr)(ulong)
+						Convert.ChangeType(arguments.Parent, typeof(ulong)));
+				}
+
 				using (Form dialog = new ShellConfirmationDialog(task))
 				{
 					if (dialog.ShowDialog(parent) != DialogResult.Yes)
