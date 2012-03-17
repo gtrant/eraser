@@ -330,12 +330,6 @@ namespace Eraser
 
 		public static Settings Get()
 		{
-			Instance.SetValue("Test", new int[5] { 1, 7, 9, 5, 1 });
-			object test = Instance.GetValue<ICollection<int>>("Test");
-			Instance.SetValue("Test", new string[5] { "A", "b", "C", "d", "E" });
-			test = Instance.GetValue<ICollection<string>>("Test");
-			Instance.SetValue("Test", new List<string>(new string[5] { "A", "b", "C", "d", "E" }));
-			test = Instance.GetValue<ICollection<string>>("Test");
 			return Instance;
 		}
 
