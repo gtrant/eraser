@@ -112,7 +112,7 @@ namespace Eraser.BlackBox
 				//abort as that may cause a cascade. However, we need to remove the
 				//report folder if the crash report is empty.
 				if (currentStep == 0)
-					Directory.Delete(currentCrashReport);
+					Directory.Delete(currentCrashReport, true);
 			}
 		}
 
@@ -257,6 +257,9 @@ namespace Eraser.BlackBox
 						catch (Win32Exception)
 						{
 						}
+						catch (InvalidOperationException)
+						{
+						}
 					}
 				}
 
@@ -323,7 +326,7 @@ namespace Eraser.BlackBox
 			//Copy a screen DC to the screenshot bitmap
 			Bitmap screenShot = new Bitmap(rect.Width, rect.Height);
 			Graphics bitmap = Graphics.FromImage(screenShot);
-			bitmap.CopyFromScreen(0, 0, 0, 0, rect.Size, CopyPixelOperation.SourceCopy);
+			bitmap.CopyFromScreen(rect.Location, Point.Empty, rect.Size, CopyPixelOperation.SourceCopy);
 
 			//Place the mouse pointer
 			Cursor.Current.Draw(bitmap, new Rectangle(Cursor.Position, Cursor.Current.Size));
