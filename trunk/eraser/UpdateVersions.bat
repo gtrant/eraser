@@ -4,15 +4,30 @@ rem Replace all template version placeholders in the given template file for key
 if not exist "%ProgramFiles%\TortoiseSVN\bin\SubWCRev.exe" goto searchWoWProgramFiles
 "%ProgramFiles%\TortoiseSVN\bin\SubWCRev.exe" %1 %2 %3 -f
 if ERRORLEVEL 1 (
-	goto noSubWCRev
+	exit /b %ERRORLEVEL%
 )
 goto end
 
 :searchWoWProgramFiles
 
-"%ProgramW6432%\TortoiseSVN\bin\SubWCRev.exe" %1 %2 %3 -f
+if not exist "%ProgramFiles(x86)%\TortoiseSVN\bin\SubWCRev.exe" goto searchPath
+"%ProgramFiles(x86)%\TortoiseSVN\bin\SubWCRev.exe" %1 %2 %3 -f
 if ERRORLEVEL 1 (
-	goto noSubWCRev
+	exit /b %ERRORLEVEL%
+)
+goto end
+
+:searchPath
+
+for %i in (SubWCRev.exe) do (
+	if exist "%~$PATH:i" (
+		"SubWCRev.exe" %1 %2 %3 -f
+	) else (
+		goto noSubWCRev
+	)
+)
+if ERRORLEVEL 1 (
+	exit /b %ERRORLEVEL%
 )
 
 goto end
