@@ -143,9 +143,6 @@
   <data name="Message.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="Message.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
-  </data>
   <data name="Message.Location" type="System.Drawing.Point, System.Drawing">
     <value>58, 9</value>
   </data>
