@@ -80,7 +80,7 @@ namespace Eraser
 			UpdateTask(item);
 
 			//If the task is set to Run Immediately, then show that status.
-			if (task.Schedule == Schedule.RunNow)
+			if (task.Schedule == Schedule.RunNow && !task.Executing)
 				item.SubItems[1].Text = S._("Queued for execution");
 		}
 
