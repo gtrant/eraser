@@ -341,7 +341,7 @@ namespace Eraser
 				catch (Exception e)
 				{
 					Console.WriteLine(e.Message);
-					return 1;
+					throw;
 				}
 		}
 
@@ -602,7 +602,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 
 			//Do we have a parent dialog?
 			IWin32Window parent = null;
-			if (arguments.Parent != null)
+			if (!string.IsNullOrEmpty(arguments.Parent))
 			{
 				parent = new Win32Window((IntPtr)(ulong)
 					Convert.ChangeType(arguments.Parent, typeof(ulong)));
