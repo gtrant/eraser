@@ -493,22 +493,22 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				ErasureMethodFromNameOrGuid(arguments.ErasureMethod);
 
 			//Define the schedule
-			switch (arguments.Schedule.ToUpperInvariant())
-			{
-				case "":
-				case "NOW":
-					task.Schedule = Schedule.RunNow;
-					break;
-				case "MANUALLY":
-					task.Schedule = Schedule.RunManually;
-					break;
-				case "RESTART":
-					task.Schedule = Schedule.RunOnRestart;
-					break;
-				default:
-					throw new ArgumentException(
-						S._("Unknown schedule type: {0}", arguments.Schedule), "/schedule");
-			}
+			if (!string.IsNullOrEmpty(arguments.Schedule))
+				switch (arguments.Schedule.ToUpperInvariant())
+				{
+					case "NOW":
+						task.Schedule = Schedule.RunNow;
+						break;
+					case "MANUALLY":
+						task.Schedule = Schedule.RunManually;
+						break;
+					case "RESTART":
+						task.Schedule = Schedule.RunOnRestart;
+						break;
+					default:
+						throw new ArgumentException(
+							S._("Unknown schedule type: {0}", arguments.Schedule), "/schedule");
+				}
 
 			//Parse the rest of the command line parameters as target expressions.
 			foreach (string argument in arguments.PositionalArguments)
