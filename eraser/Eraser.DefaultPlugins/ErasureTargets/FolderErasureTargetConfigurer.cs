@@ -88,14 +88,15 @@ namespace Eraser.DefaultPlugins
 		public string Help()
 		{
 			return S._(@"dir                 Erases files and folders in the directory
-  arguments: dir=<directory>[,-excludeMask][,+includeMask][,deleteIfEmpty]
+  arguments: dir=<directory>[,-excludeMask][,+includeMask][,deleteIfEmpty[=true|false]]
     excludeMask     A wildcard expression for files and folders to
                     exclude.
     includeMask     A wildcard expression for files and folders to
                     include.
                     The include mask is applied before the exclude mask.
     deleteIfEmpty   Deletes the folder at the end of the erasure if it is
-                    empty.");
+                    empty. If this parameter is not specified, it defaults
+                    to true.");
 		}
 
 		public bool ProcessArgument(string argument)
@@ -110,7 +111,7 @@ namespace Eraser.DefaultPlugins
 			{
 				folderPath.Text = match.Groups["directoryName"].Value;
 				if (!match.Groups["directoryDeleteIfEmpty"].Success)
-					folderDelete.Checked = false;
+					folderDelete.Checked = true;
 				else if (!match.Groups["directoryDeleteIfEmptyValue"].Success)
 					folderDelete.Checked = true;
 				else
