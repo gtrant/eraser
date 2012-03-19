@@ -457,6 +457,18 @@ namespace Eraser.Util
 			uint dwShareMode, IntPtr SecurityAttributes, uint dwCreationDisposition,
 			uint dwFlagsAndAttributes, IntPtr hTemplateFile);
 
+		public const uint FILE_READ_DATA = 0x0001;
+		public const uint FILE_LIST_DIRECTORY = 0x0001;
+		public const uint FILE_WRITE_DATA = 0x0002;
+		public const uint FILE_ADD_FILE = 0x0002;
+		public const uint FILE_APPEND_DATA = 0x0004;
+		public const uint FILE_ADD_SUBDIRECTORY = 0x0004;
+		public const uint FILE_CREATE_PIPE_INSTANCE = 0x0004;
+		public const uint FILE_READ_EA = 0x0008;
+		public const uint FILE_WRITE_EA = 0x0010;
+		public const uint FILE_EXECUTE = 0x0020;
+		public const uint FILE_TRAVERSE = 0x0020;
+		public const uint FILE_DELETE_CHILD = 0x0040;
 		public const uint FILE_READ_ATTRIBUTES = 0x0080;
 		public const uint FILE_WRITE_ATTRIBUTES = 0x0100;
 		public const uint GENERIC_READ = 0x80000000;
