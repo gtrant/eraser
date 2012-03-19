@@ -294,11 +294,6 @@ namespace Eraser.Manager
 					((RecurringSchedule)Schedule).Reschedule(DateTime.Now);
 				}
 
-				//If the task is an execute on restart task or run immediately task, it is
-				//only run once and can now be restored to a manually run task
-				if (Schedule == Schedule.RunOnRestart || Schedule == Schedule.RunNow)
-					Schedule = Schedule.RunManually;
-
 				Progress = null;
 				Executing = false;
 				OnTaskFinished();
