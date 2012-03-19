@@ -303,6 +303,22 @@ namespace Eraser.Util
 				}
 				else
 				{
+					//If this is a mountpoint, resolve it before calling
+					//GetVolumeNameForVolumeMountPoint since it will return an error if
+					//the path given is a reparse point, but not a volume reparse point.
+					while ((new DirectoryInfo(currentDir).Attributes & FileAttributes.ReparsePoint) != 0)
+					{
+						currentDir = ExtensionMethods.PathUtil.ResolveReparsePoint(currentDir);
+
+						//Strip the NT namespace bit
+						if (currentDir.StartsWith("\\??\\Volume"))
+							throw new ArgumentException(S._("The path provided includes a reparse" +
+								"point which references another volume."));
+						else
+							currentDir = currentDir.Substring(4);
+						mountpointDir = new DirectoryInfo(currentDir);
+					}
+
 					if (!NativeMethods.GetVolumeNameForVolumeMountPoint(currentDir, volumeID, 50))
 					{
 						int errorCode = Marshal.GetLastWin32Error();

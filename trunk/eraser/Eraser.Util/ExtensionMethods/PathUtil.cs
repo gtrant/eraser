@@ -26,6 +26,8 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
 
 namespace Eraser.Util.ExtensionMethods
 {
@@ -160,6 +162,142 @@ namespace Eraser.Util.ExtensionMethods
 		public static string GetCompactPath(string longPath, int newWidth, Control control)
 		{
 			return GetCompactPath(longPath, newWidth, control.Font);
+		}
+
+		/// <summary>
+		/// Resolves the reparse point pointed to by the path.
+		/// </summary>
+		/// <param name="path">The path to the reparse point.</param>
+		/// <returns>The NT Namespace Name of the reparse point.</returns>
+		public static string ResolveReparsePoint(string path)
+		{
+			if (string.IsNullOrEmpty(path))
+				throw new ArgumentException(path);
+
+			//If the path is a directory, remove the trailing \
+			if (Directory.Exists(path) && path[path.Length - 1] == '\\')
+				path = path.Remove(path.Length - 1);
+
+			using (SafeFileHandle handle = NativeMethods.CreateFile(path,
+				NativeMethods.GENERIC_READ,
+				NativeMethods.FILE_SHARE_READ | NativeMethods.FILE_SHARE_WRITE,
+				IntPtr.Zero, NativeMethods.OPEN_EXISTING,
+				NativeMethods.FILE_FLAG_OPEN_REPARSE_POINT |
+				NativeMethods.FILE_FLAG_BACKUP_SEMANTICS, IntPtr.Zero))
+			{
+				if (handle.IsInvalid)
+					throw new System.IO.IOException(string.Format("Cannot open handle to {0}", path));
+
+				int bufferSize = Marshal.SizeOf(typeof(NativeMethods.REPARSE_DATA_BUFFER)) + 260 * sizeof(char);
+				IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
+
+				//Get all the information about the reparse point.
+				try
+				{
+					uint returnedBytes = 0;
+					while (!NativeMethods.DeviceIoControl(handle, NativeMethods.FSCTL_GET_REPARSE_POINT,
+						IntPtr.Zero, 0, buffer, (uint)bufferSize, out returnedBytes, IntPtr.Zero))
+					{
+						if (Marshal.GetLastWin32Error() == 122) //ERROR_INSUFFICIENT_BUFFER
+						{
+							bufferSize *= 2;
+							Marshal.FreeHGlobal(buffer);
+							buffer = Marshal.AllocHGlobal(bufferSize);
+						}
+						else
+						{
+							throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+						}
+					}
+
+					string result = ResolveReparsePoint(buffer, path);
+
+					//Is it a directory? If it is, we need to add a trailing \
+					if (Directory.Exists(path))
+						result += '\\';
+					return result;
+				}
+				finally
+				{
+					Marshal.FreeHGlobal(buffer);
+				}
+			}
+		}
+
+		private static string ResolveReparsePoint(IntPtr ptr, string path)
+		{
+			NativeMethods.REPARSE_DATA_BUFFER buffer = (NativeMethods.REPARSE_DATA_BUFFER)
+				Marshal.PtrToStructure(ptr, typeof(NativeMethods.REPARSE_DATA_BUFFER));
+
+			//Check that this Reparse Point has a Microsoft Tag
+			if (((uint)buffer.ReparseTag & (1 << 31)) == 0)
+			{
+				//We can only handle Microsoft's reparse tags.
+				throw new ArgumentException("Unknown Reparse point type.");
+			}
+
+			//Then handle the tags
+			switch (buffer.ReparseTag)
+			{
+				case NativeMethods.REPARSE_DATA_TAG.IO_REPARSE_TAG_MOUNT_POINT:
+					return ResolveReparsePointJunction((IntPtr)(ptr.ToInt64() + Marshal.SizeOf(buffer)));
+
+				case NativeMethods.REPARSE_DATA_TAG.IO_REPARSE_TAG_SYMLINK:
+					return ResolveReparsePointSymlink((IntPtr)(ptr.ToInt64() + Marshal.SizeOf(buffer)),
+						path);
+
+				default:
+					throw new ArgumentException("Unsupported Reparse point type.");
+			}
+		}
+
+		private static string ResolveReparsePointJunction(IntPtr ptr)
+		{
+			NativeMethods.REPARSE_DATA_BUFFER.MountPointReparseBuffer buffer =
+				(NativeMethods.REPARSE_DATA_BUFFER.MountPointReparseBuffer)
+				Marshal.PtrToStructure(ptr,
+					typeof(NativeMethods.REPARSE_DATA_BUFFER.MountPointReparseBuffer));
+
+			//Get the substitute and print names from the buffer.
+			string substituteName;
+			string printName;
+			unsafe
+			{
+				char* path = (char*)(((byte*)ptr.ToInt64()) + Marshal.SizeOf(buffer));
+				printName = new string(path + (buffer.PrintNameOffset / sizeof(char)), 0,
+					buffer.PrintNameLength / sizeof(char));
+				substituteName = new string(path + (buffer.SubstituteNameOffset / sizeof(char)), 0,
+					buffer.SubstituteNameLength / sizeof(char));
+			}
+
+			return substituteName;
+		}
+
+		private static string ResolveReparsePointSymlink(IntPtr ptr, string path)
+		{
+			NativeMethods.REPARSE_DATA_BUFFER.SymbolicLinkReparseBuffer buffer =
+				(NativeMethods.REPARSE_DATA_BUFFER.SymbolicLinkReparseBuffer)
+				Marshal.PtrToStructure(ptr,
+					typeof(NativeMethods.REPARSE_DATA_BUFFER.SymbolicLinkReparseBuffer));
+
+			//Get the substitute and print names from the buffer.
+			string substituteName;
+			string printName;
+			unsafe
+			{
+				char* pathBuffer = (char*)(((byte*)ptr.ToInt64()) + Marshal.SizeOf(buffer));
+				printName = new string(pathBuffer + (buffer.PrintNameOffset / sizeof(char)), 0,
+					buffer.PrintNameLength / sizeof(char));
+				substituteName = new string(pathBuffer + (buffer.SubstituteNameOffset / sizeof(char)), 0,
+					buffer.SubstituteNameLength / sizeof(char));
+			}
+
+			if ((buffer.Flags & NativeMethods.REPARSE_DATA_BUFFER.SymbolicLinkFlags.SYMLINK_FLAG_RELATIVE) != 0)
+			{
+				return Path.Combine(Path.GetDirectoryName(path), substituteName);
+			}
+
+			return substituteName;
 		}
 	}
 }

@@ -651,7 +651,7 @@ namespace Eraser.Util
 
 		[DllImport("Kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
-		public static extern bool DeviceIoControl(SafeFileHandle hDevice,
+		public extern static bool DeviceIoControl(SafeFileHandle hDevice,
 			uint dwIoControlCode, IntPtr lpInBuffer, uint nInBufferSize,
 			out NTFS_VOLUME_DATA_BUFFER lpOutBuffer, uint nOutBufferSize,
 			out uint lpBytesReturned, IntPtr lpOverlapped);
@@ -763,6 +763,136 @@ namespace Eraser.Util
 			/// The number of bytes in this extent.
 			/// </summary>
 			public long ExtentLength;
+		}
+
+		public const uint FSCTL_GET_REPARSE_POINT = (9 << 16) | (42 << 2);
+
+		/// <summary>
+		/// The REPARSE_DATA_BUFFER structure contains reparse point data for a
+		/// Microsoft reparse point. (Third-party reparse point owners must use
+		/// the REPARSE_GUID_DATA_BUFFER structure instead.) 
+		/// </summary>
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+		public struct REPARSE_DATA_BUFFER
+		{
+			/// <summary>
+			/// Contains the reparse point information for a Symbolic Link.
+			/// </summary>
+			/// <remarks>The PathBuffer member found at the end of the C structure
+			/// declaration is appended at the end of this structure.</remarks>
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			public struct SymbolicLinkReparseBuffer
+			{
+				/// <summary>
+				/// Offset, in bytes, of the substitute name string in the PathBuffer
+				/// array. Note that this offset must be divided by sizeof(char) to
+				/// get the array index.
+				/// </summary>
+				public ushort SubstituteNameOffset;
+
+				/// <summary>
+				/// Length, in bytes, of the substitute name string. If this string is
+				/// NULL-terminated, SubstituteNameLength does not include space for
+				/// the UNICODE_NULL character.
+				/// </summary>
+				public ushort SubstituteNameLength;
+
+				/// <summary>
+				/// Offset, in bytes, of the print name string in the PathBuffer array.
+				/// Note that this offset must be divided by sizeof(char) to get the
+				/// array index.
+				/// </summary>
+				public ushort PrintNameOffset;
+
+				/// <summary>
+				/// Length, in bytes, of the print name string. If this string is
+				/// NULL-terminated, PrintNameLength does not include space for the
+				/// UNICODE_NULL character.
+				/// </summary>
+				public ushort PrintNameLength;
+
+				/// <summary>
+				/// Used to indicate if the given symbolic link is an absolute or relative
+				/// symbolic link. If Flags contains SYMLINK_FLAG_RELATIVE, the symbolic
+				/// link contained in the PathBuffer array (at offset SubstitueNameOffset)
+				/// is processed as a relative symbolic link; otherwise, it is processed
+				/// as an absolute symbolic link.
+				/// </summary>
+				public SymbolicLinkFlags Flags;
+			}
+
+			/// <summary>
+			/// Contains the reparse point information for a Directory Junction.
+			/// </summary>
+			/// <remarks>The PathBuffer member found at the end of the C structure
+			/// declaration is appended at the end of this structure.</remarks>
+			[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+			public struct MountPointReparseBuffer
+			{
+				/// <summary>
+				/// Offset, in bytes, of the substitute name string in the PathBuffer
+				/// array. Note that this offset must be divided by sizeof(char) to
+				/// get the array index.
+				/// </summary>
+				public ushort SubstituteNameOffset;
+
+				/// <summary>
+				/// Length, in bytes, of the substitute name string. If this string is
+				/// NULL-terminated, SubstituteNameLength does not include space for
+				/// the UNICODE_NULL character.
+				/// </summary>
+				public ushort SubstituteNameLength;
+
+				/// <summary>
+				/// Offset, in bytes, of the print name string in the PathBuffer array.
+				/// Note that this offset must be divided by sizeof(char) to get the
+				/// array index.
+				/// </summary>
+				public ushort PrintNameOffset;
+
+				/// <summary>
+				/// Length, in bytes, of the print name string. If this string is
+				/// NULL-terminated, PrintNameLength does not include space for the
+				/// UNICODE_NULL character.
+				/// </summary>
+				public ushort PrintNameLength;
+			}
+
+			[Flags]
+			public enum SymbolicLinkFlags
+			{
+				/// <summary>
+				/// <see cref="SymbolicLinkReparseBuffer.Flags"/>
+				/// </summary>
+				SYMLINK_FLAG_RELATIVE = 0x00000001
+			}
+
+			/// <summary>
+			/// Reparse point tag. Must be a Microsoft reparse point tag. (See the following Remarks section.)
+			/// </summary>
+			public REPARSE_DATA_TAG ReparseTag;
+
+			/// <summary>
+			/// Size, in bytes, of the reparse data in the DataBuffer member.
+			/// </summary>
+			public ushort ReparseDataLength;
+			ushort Reserved;
+		}
+
+		/// <summary>
+		/// See http://msdn.microsoft.com/en-us/library/windows/desktop/aa365511%28v=vs.85%29.aspx.
+		/// </summary>
+		public enum REPARSE_DATA_TAG : uint
+		{
+			IO_REPARSE_TAG_MOUNT_POINT = 0xA0000003,
+			IO_REPARSE_TAG_HSM = 0xC0000004,
+			IO_REPARSE_TAG_HSM2 = 0x80000006,
+			IO_REPARSE_TAG_SIS = 0x80000007,
+			IO_REPARSE_TAG_WIM = 0x80000008,
+			IO_REPARSE_TAG_CSV = 0x80000009,
+			IO_REPARSE_TAG_DFS = 0x8000000A,
+			IO_REPARSE_TAG_SYMLINK = 0xA000000C,
+			IO_REPARSE_TAG_DFSR = 0x80000012
 		}
 
 		/// <summary>
