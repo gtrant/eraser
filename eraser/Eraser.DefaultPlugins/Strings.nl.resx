@@ -276,7 +276,7 @@
   <data name="Invalid folder path" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="dir                 Erases files and folders in the directory\r\n  arguments: dir=&lt;directory&gt;[,-excludeMask][,+includeMask][,deleteIfEmpty]\r\n    excludeMask     A wildcard expression for files and folders to\r\n                    exclude.\r\n    includeMask     A wildcard expression for files and folders to\r\n                    include.\r\n                    The include mask is applied before the exclude mask.\r\n    deleteIfEmpty   Deletes the folder at the end of the erasure if it is\r\n                    empty." xml:space="preserve">
+  <data name="dir                 Erases files and folders in the directory\r\n  arguments: dir=&lt;directory&gt;[,-excludeMask][,+includeMask][,deleteIfEmpty[=true|false]]\r\n    excludeMask     A wildcard expression for files and folders to\r\n                    exclude.\r\n    includeMask     A wildcard expression for files and folders to\r\n                    include.\r\n                    The include mask is applied before the exclude mask.\r\n    deleteIfEmpty   Deletes the folder at the end of the erasure if it is\r\n                    empty. If this parameter is not specified, it defaults\r\n                    to true." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="The path you selected is invalid." xml:space="preserve">
