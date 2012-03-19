@@ -19,8 +19,8 @@ goto end
 
 :searchPath
 
-for %i in (SubWCRev.exe) do (
-	if exist "%~$PATH:i" (
+for %%i in (SubWCRev.exe) do (
+	if exist "%%~$PATH:i" (
 		"SubWCRev.exe" %1 %2 %3 -f
 	) else (
 		goto noSubWCRev
