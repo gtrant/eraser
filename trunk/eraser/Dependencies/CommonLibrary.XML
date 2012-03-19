@@ -5395,6 +5395,14 @@
             <param name="prop">Property name.</param>
             <param name="propVal">Value to set.</param>
         </member>
+        <member name="M:ComLib.ReflectionHelper.SetProperty(System.Object,System.Reflection.PropertyInfo,System.Object)">
+            <summary>
+            Set the property value using the string value.
+            </summary>
+            <param name="obj">Object whose property is to be set.</param>
+            <param name="prop">Property name.</param>
+            <param name="propVal">Value to set.</param>
+        </member>
         <member name="M:ComLib.ReflectionHelper.GetPropertyValueSafely(System.Object,System.Reflection.PropertyInfo)">
             <summary>
             Gets the property value safely, without throwing an exception.
