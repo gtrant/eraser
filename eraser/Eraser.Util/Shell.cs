@@ -152,6 +152,10 @@ namespace Eraser.Util
 				{
 					return null;
 				}
+				catch (FileNotFoundException)
+				{
+					return null;
+				}
 			}
 		}
 	}
