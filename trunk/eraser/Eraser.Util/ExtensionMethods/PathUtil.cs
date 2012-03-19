@@ -179,7 +179,7 @@ namespace Eraser.Util.ExtensionMethods
 				path = path.Remove(path.Length - 1);
 
 			using (SafeFileHandle handle = NativeMethods.CreateFile(path,
-				NativeMethods.GENERIC_READ,
+				NativeMethods.FILE_READ_ATTRIBUTES | NativeMethods.FILE_READ_EA,
 				NativeMethods.FILE_SHARE_READ | NativeMethods.FILE_SHARE_WRITE,
 				IntPtr.Zero, NativeMethods.OPEN_EXISTING,
 				NativeMethods.FILE_FLAG_OPEN_REPARSE_POINT |
