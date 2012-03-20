@@ -149,7 +149,7 @@ namespace Eraser.Manager
 		public void Insert(int index, IErasureTarget item)
 		{
 			list.Insert(index, item);
-			if (item.Task != null)
+			if (item.Task != Owner && item.Task != null)
 				throw new ArgumentException("Erasure targets can only belong " +
 					"to one Task at any one time.");
 			item.Task = Owner;
