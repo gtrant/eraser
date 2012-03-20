@@ -228,6 +228,12 @@ namespace Eraser
 				return;
 			Task task = (Task)item.Tag;
 
+			if (!task.Executing)
+			{
+				//The task is done! Bail out and let the completion handler reset the UI
+				return;
+			}
+
 			//Update the progress bar
 			SteppedProgressManager progress = task.Progress;
 			schedulerProgress.Style = progress.ProgressIndeterminate ?
