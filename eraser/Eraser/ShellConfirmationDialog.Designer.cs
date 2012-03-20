@@ -85,7 +85,6 @@
 			this.MinimizeBox = false;
 			this.Name = "ShellConfirmationDialog";
 			this.ShowInTaskbar = false;
-			this.TopMost = true;
 			((System.ComponentModel.ISupportInitialize)(this.Image)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
