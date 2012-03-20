@@ -144,4 +144,7 @@
   <data name="Session ended" xml:space="preserve">
     <value>Session ended</value>
   </data>
+  <data name="The path provided includes a reparse point which references another volume." xml:space="preserve">
+    <value>The path provided includes a reparse point which references another volume.</value>
+  </data>
 </root>
