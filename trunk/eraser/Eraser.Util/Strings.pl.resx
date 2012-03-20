@@ -144,4 +144,7 @@
   <data name="Session ended" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The path provided includes a reparse point which references another volume." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
 </root>

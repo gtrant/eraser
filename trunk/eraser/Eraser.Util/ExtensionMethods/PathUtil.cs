@@ -213,7 +213,7 @@ namespace Eraser.Util.ExtensionMethods
 					string result = ResolveReparsePoint(buffer, path);
 
 					//Is it a directory? If it is, we need to add a trailing \
-					if (Directory.Exists(path))
+					if (Directory.Exists(path) && !result.EndsWith("\\"))
 						result += '\\';
 					return result;
 				}

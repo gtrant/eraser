@@ -29,6 +29,7 @@ using System.ComponentModel;
 using System.IO;
 using Microsoft.Win32.SafeHandles;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace Eraser.Util
 {
@@ -310,10 +311,20 @@ namespace Eraser.Util
 					{
 						currentDir = ExtensionMethods.PathUtil.ResolveReparsePoint(currentDir);
 
+						//If we get a volume identifier, we need to see if it is the only thing
+						//in the path. If it is, we found our volume GUID and we won't have to
+						//call GetVolumeNameForVolumeMountPoint.
+						if (currentDir.StartsWith("\\??\\Volume{"))
+						{
+							if (currentDir.Length == 49 && currentDir.EndsWith("}\\"))
+								return new VolumeInfo(string.Format(CultureInfo.InvariantCulture,
+									"\\\\?\\Volume{{{0}}}\\", currentDir.Substring(11, 36)));
+							else
+								throw new ArgumentException(S._("The path provided includes a " +
+									"reparse point which references another volume."));
+						}
+
 						//Strip the NT namespace bit
-						if (currentDir.StartsWith("\\??\\Volume"))
-							throw new ArgumentException(S._("The path provided includes a reparse" +
-								"point which references another volume."));
 						else
 							currentDir = currentDir.Substring(4);
 						mountpointDir = new DirectoryInfo(currentDir);
