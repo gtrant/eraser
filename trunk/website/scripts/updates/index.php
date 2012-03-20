@@ -1,8 +1,8 @@
 <?php
 require_once('../UpdateList.php');
 
-$action = $_GET['action'];
-$version = $_GET['version'];
+$action = empty($_GET['action']) ? null : $_GET['action'];
+$version = empty($_GET['version']) ? null : $_GET['version'];
 $versionMatch = array();
 if (empty($action) || empty($version) || !preg_match('/([0-9]+).([0-9]+).([0-9]+).([0-9]+)/', $version, $versionMatch))
 	exit;
