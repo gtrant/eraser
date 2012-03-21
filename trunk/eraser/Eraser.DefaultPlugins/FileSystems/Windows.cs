@@ -60,12 +60,12 @@ namespace Eraser.DefaultPlugins
 
 		public override void DeleteFolder(DirectoryInfo info, bool recursive)
 		{
-			if (!recursive && info.GetFileSystemInfos().Length != 0)
-				throw new InvalidOperationException(S._("The folder {0} cannot be deleted as it is " +
-					"not empty."));
-
 			if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
 			{
+				if (!recursive && info.GetFileSystemInfos().Length != 0)
+					throw new InvalidOperationException(S._("The folder {0} cannot be deleted as it is " +
+						"not empty."));
+
 				foreach (DirectoryInfo dir in info.GetDirectories())
 					DeleteFolder(dir, true);
 				foreach (FileInfo file in info.GetFiles())
