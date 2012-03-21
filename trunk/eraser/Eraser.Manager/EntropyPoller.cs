@@ -48,6 +48,13 @@ namespace Eraser.Manager
 			//Create the pool.
 			Pool = new byte[sizeof(uint) << 7];
 
+			//Handle the Entropy Source Registered event.
+			Host.Instance.EntropySources.Registered += OnEntropySourceRegistered;
+
+			//Meanwhile, add all entropy sources already registered.
+			foreach (IEntropySource source in Host.Instance.EntropySources)
+				AddEntropySource(source);
+
 			//Then start the thread which maintains the pool.
 			Thread = new Thread(Main);
 			Thread.Start();
@@ -77,7 +84,7 @@ namespace Eraser.Manager
 				//Sleep for a "random" period between roughly [2, 5) seconds from now
 				Thread.Sleep(2000 + (int)(DateTime.Now.Ticks % 2999));
 
-				// Send entropy to the PRNGs for new seeds.
+				//Send entropy to the PRNGs for new seeds.
 				DateTime now = DateTime.Now;
 				if (now - lastAddedEntropy > managerEntropySpan)
 				{
@@ -93,6 +100,17 @@ namespace Eraser.Manager
 		public void Abort()
 		{
 			Thread.Abort();
+		}
+
+		/// <summary>
+		/// Handles the OnEntropySourceRegistered event so we can register them with
+		/// ourselves.
+		/// </summary>
+		/// <param name="sender">The object which was registered.</param>
+		/// <param name="e">Event argument.</param>
+		private void OnEntropySourceRegistered(object sender, EventArgs e)
+		{
+			AddEntropySource((IEntropySource)sender);
 		}
 
 		/// <summary>
@@ -176,20 +194,20 @@ namespace Eraser.Manager
 				int i = 0;
 				for (; i < Pool.Length - hashSize; i += hashSize)
 					Buffer.BlockCopy(hash.ComputeHash(Pool, i,
-						i + mixBlockSize >= Pool.Length ? Pool.Length - i : mixBlockSize),
-						0, Pool, i, i + hashSize >= Pool.Length ? Pool.Length - i : hashSize);
+						Math.Min(mixBlockSize, Pool.Length - i)), 0, Pool, i,
+						Math.Min(hashSize, Pool.Length - i));
 
 				//Mix the remaining blocks which require copying from the front
 				byte[] combinedBuffer = new byte[mixBlockSize];
 				for (; i < Pool.Length; i += hashSize)
 				{
-					Buffer.BlockCopy(Pool, i, combinedBuffer, 0, Pool.Length - i);
-
-					Buffer.BlockCopy(Pool, 0, combinedBuffer, Pool.Length - i,
-								mixBlockSize - (Pool.Length - i));
+					int remainder = Pool.Length - i;
+					Buffer.BlockCopy(Pool, i, combinedBuffer, 0, remainder);
+					Buffer.BlockCopy(Pool, 0, combinedBuffer, remainder,
+						mixBlockSize - remainder);
 
 					Buffer.BlockCopy(hash.ComputeHash(combinedBuffer, 0, mixBlockSize), 0,
-						Pool, i, Pool.Length - i > hashSize ? hashSize : Pool.Length - i);
+						Pool, i, Math.Min(hashSize, remainder));
 				}
 			}
 		}
@@ -221,12 +239,16 @@ namespace Eraser.Manager
 					{
 						//Bring the pool position back to the front if we are at our end
 						if (PoolPosition >= Pool.Length)
+						{
 							PoolPosition = 0;
+							MixPool();
+						}
 
 						int amountToMix = Math.Min(size, Pool.Length - PoolPosition);
 						MemoryXor(pPool + PoolPosition, mpEntropy, amountToMix);
 						mpEntropy = mpEntropy + amountToMix;
 						size -= amountToMix;
+						PoolPosition += amountToMix;
 					}
 				}
 		}
