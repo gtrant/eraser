@@ -307,7 +307,8 @@ namespace Eraser.Util
 					//If this is a mountpoint, resolve it before calling
 					//GetVolumeNameForVolumeMountPoint since it will return an error if
 					//the path given is a reparse point, but not a volume reparse point.
-					while ((new DirectoryInfo(currentDir).Attributes & FileAttributes.ReparsePoint) != 0)
+					while (mountpointDir.Exists &&
+						(mountpointDir.Attributes & FileAttributes.ReparsePoint) != 0)
 					{
 						currentDir = ExtensionMethods.PathUtil.ResolveReparsePoint(currentDir);
 
