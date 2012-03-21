@@ -85,6 +85,25 @@ namespace Eraser.Util.ExtensionMethods
 				NativeMethods.FILE_WRITE_ATTRIBUTES, 0, IntPtr.Zero,
 				NativeMethods.OPEN_EXISTING, 0, IntPtr.Zero))
 			{
+				if (!handle.IsInvalid)
+				{
+					SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+					return;
+				}
+			}
+
+			//If we fall through here, it is a reparse point (most likely) and
+			//the target of the reparse point does not exist. We would then have to
+			//set the time of the reparse point.
+			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
+				NativeMethods.FILE_WRITE_ATTRIBUTES, (uint)FileShare.ReadWrite, IntPtr.Zero,
+				NativeMethods.OPEN_EXISTING, NativeMethods.FILE_FLAG_BACKUP_SEMANTICS |
+				NativeMethods.FILE_FLAG_OPEN_REPARSE_POINT, IntPtr.Zero))
+			{
+				if (handle.IsInvalid)
+					throw new IOException(S._("The folder {0} cannot be opened for writing.",
+						info.FullName));
+
 				SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
 			}
 		}
@@ -104,6 +123,25 @@ namespace Eraser.Util.ExtensionMethods
 				NativeMethods.FILE_WRITE_ATTRIBUTES, (uint)FileShare.ReadWrite, IntPtr.Zero,
 				NativeMethods.OPEN_EXISTING, NativeMethods.FILE_FLAG_BACKUP_SEMANTICS, IntPtr.Zero))
 			{
+				if (!handle.IsInvalid)
+				{
+					SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+					return;
+				}
+			}
+
+			//If we fall through here, it is a reparse point (most likely) and
+			//the target of the reparse point does not exist. We would then have to
+			//set the time of the reparse point.
+			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
+				NativeMethods.FILE_WRITE_ATTRIBUTES, (uint)FileShare.ReadWrite, IntPtr.Zero,
+				NativeMethods.OPEN_EXISTING, NativeMethods.FILE_FLAG_BACKUP_SEMANTICS |
+				NativeMethods.FILE_FLAG_OPEN_REPARSE_POINT, IntPtr.Zero))
+			{
+				if (handle.IsInvalid)
+					throw new IOException(S._("The folder {0} cannot be opened for writing.",
+						info.FullName));
+				
 				SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
 			}
 		}
