@@ -246,7 +246,7 @@ namespace Eraser.Manager
 
 						int amountToMix = Math.Min(size, Pool.Length - PoolPosition);
 						MemoryXor(pPool + PoolPosition, mpEntropy, amountToMix);
-						mpEntropy = mpEntropy + amountToMix;
+						mpEntropy += amountToMix;
 						size -= amountToMix;
 						PoolPosition += amountToMix;
 					}
