@@ -96,5 +96,33 @@ namespace Eraser.Util
 		/// Sets extended styles in list-view controls.
 		/// </summary>
 		public const uint LVM_SETEXTENDEDLISTVIEWSTYLE = (LVM_FIRST + 54);
+
+		/// <summary>
+		/// A handle to the window whose ancestor is to be retrieved. If this parameter
+		/// is the desktop window, the function returns NULL.
+		/// </summary>
+		/// <param name="hwnd">Retrieves the handle to the ancestor of the specified
+		/// window.</param>
+		/// <param name="gaFlags">The ancestor to be retrieved. This parameter can be one
+		/// of the <see cref="GetAncestorFlags"/ >values.</param>
+		/// <returns>The return value is the handle to the ancestor window.</returns>
+		[DllImport("User32.dll")]
+		public static extern IntPtr GetAncestor(IntPtr hwnd, UserApi.GetAncestorFlags gaFlags);
+
+		/// <summary>
+		/// Changes the parent window of the specified child window.
+		/// </summary>
+		/// <param name="hWndChild">A handle to the child window.</param>
+		/// <param name="hWndNewParent">A handle to the new parent window. If
+		/// this parameter is NULL, the desktop window becomes the new parent window.
+		/// If this parameter is HWND_MESSAGE, the child window becomes a message-only
+		/// window.</param>
+		/// <returns>If the function succeeds, the return value is a handle to the
+		/// previous parent window.
+		/// 
+		/// If the function fails, the return value is NULL. To get extended error
+		/// information, call Marshal.GetLastWin32Error.</returns>
+		[DllImport("User32.dll", SetLastError = true)]
+		public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 	}
 }
