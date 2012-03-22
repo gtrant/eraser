@@ -337,6 +337,9 @@ namespace Eraser.Manager
 				{
 					return PrimaryHashAlgorithmCache = func();
 				}
+				catch (PlatformNotSupportedException)
+				{
+				}
 				catch (InvalidOperationException)
 				{
 				}
@@ -369,6 +372,9 @@ namespace Eraser.Manager
 				{
 					SecondaryHashAlgorithmCache = func();
 					break;
+				}
+				catch (PlatformNotSupportedException)
+				{
 				}
 				catch (InvalidOperationException)
 				{
