@@ -31,6 +31,7 @@ using System.Reflection;
 
 using Eraser.Plugins;
 using Eraser.Plugins.ExtensionPoints;
+using Eraser.Util;
 
 namespace Eraser.Manager
 {
@@ -133,14 +134,9 @@ namespace Eraser.Manager
 			//There is a need to catch the InvalidOperationException because if Eraser is
 			//running under an OS with FIPS-compliance mode the RIPEMD-160 algorithm cannot
 			//be used.
-			try
-			{
-				using (HashAlgorithm hash = new RIPEMD160Managed())
-					MixPool(hash);
-			}
-			catch (InvalidOperationException)
-			{
-			}
+			HashAlgorithm secondaryHash = GetSecondaryHash();
+			if (secondaryHash != null)
+				MixPool(secondaryHash);
 		}
 
 		/// <summary>
@@ -214,8 +210,7 @@ namespace Eraser.Manager
 		/// </summary>
 		private void MixPool()
 		{
-			using (HashAlgorithm hash = new SHA1CryptoServiceProvider())
-				MixPool(hash);
+			MixPool(GetPrimaryHash());
 		}
 
 		/// <summary>
@@ -313,6 +308,84 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
+		/// Gets the primary hash algorithm used for pool mixing.
+		/// </summary>
+		/// <returns>A hash algorithm suitable for the current platform serving as the
+		/// primary hash algorithm for pool mixing.</returns>
+		/// <remarks>The instance returned need not be freed as it is cached.</remarks>
+		private static HashAlgorithm GetPrimaryHash()
+		{
+			if (PrimaryHashAlgorithmCache != null)
+				return PrimaryHashAlgorithmCache;
+
+			HashFactoryDelegate[] priorityList = new HashFactoryDelegate[] {
+				delegate() { return new SHA512Cng(); },
+				delegate() { return new SHA512CryptoServiceProvider(); },
+				delegate() { return new SHA512Managed(); },
+				delegate() { return new SHA256Cng(); },
+				delegate() { return new SHA256CryptoServiceProvider(); },
+				delegate() { return new SHA256Managed(); },
+				delegate() { return new SHA1Cng(); },
+				delegate() { return new SHA1CryptoServiceProvider(); },
+				delegate() { return new SHA1Managed(); }
+			};
+
+			foreach (HashFactoryDelegate func in priorityList)
+			{
+				try
+				{
+					return PrimaryHashAlgorithmCache = func();
+				}
+				catch (InvalidOperationException)
+				{
+				}
+			}
+
+			throw new InvalidOperationException(S._("No suitable hash algorithms were found " +
+				"on this computer."));
+		}
+
+		/// <summary>
+		/// Gets the secondary hash algorithm used for pool mixing, serving roughly analogous
+		/// to key whitening.
+		/// </summary>
+		/// <returns>A hash algorithm suitable for the current platform serving as the
+		/// secondary hash algorithm for pool mixing, or null if no secondary hash
+		/// algorithm can be used (e.g. due to FIPS algorithm restrictions)</returns>
+		/// <remarks>The instance returned need not be freed as it is cached.</remarks>
+		private static HashAlgorithm GetSecondaryHash()
+		{
+			if (HasSecondaryHashAlgorithm)
+				return SecondaryHashAlgorithmCache;
+
+			HashFactoryDelegate[] priorityList = new HashFactoryDelegate[] {
+				delegate() { return new RIPEMD160Managed(); }
+			};
+
+			foreach (HashFactoryDelegate func in priorityList)
+			{
+				try
+				{
+					SecondaryHashAlgorithmCache = func();
+					HasSecondaryHashAlgorithm = true;
+					return SecondaryHashAlgorithmCache;
+				}
+				catch (InvalidOperationException)
+				{
+				}
+			}
+
+			return null;
+		}
+
+		/// <summary>
+		/// The function prototype for factory delegates in the Primary and Secondary hash
+		/// priority lists.
+		/// </summary>
+		/// <returns></returns>
+		private delegate HashAlgorithm HashFactoryDelegate();
+
+		/// <summary>
 		/// The pool of data which we currently maintain.
 		/// </summary>
 		private byte[] Pool;
@@ -342,5 +415,21 @@ namespace Eraser.Manager
 		/// The list of entropy sources registered with the Poller.
 		/// </summary>
 		private List<IEntropySource> EntropySources = new List<IEntropySource>();
+
+		/// <summary>
+		/// Cache object for <see cref="GetPrimaryHash"/>
+		/// </summary>
+		private static HashAlgorithm PrimaryHashAlgorithmCache;
+
+		/// <summary>
+		/// Cache object for <see cref="GetSecondaryHash"/>
+		/// </summary>
+		private static HashAlgorithm SecondaryHashAlgorithmCache;
+
+		/// <summary>
+		/// Cache for whether construction for a <see cref="SecondaryHashAlgorithmCache"/>
+		/// has been attempted.
+		/// </summary>
+		private static bool HasSecondaryHashAlgorithm;
 	}
 }
