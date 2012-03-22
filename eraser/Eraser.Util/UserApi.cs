@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Eraser.Util
 {
@@ -63,6 +64,74 @@ namespace Eraser.Util
 			{
 				return NativeMethods.GetMessageTime();
 			}
+		}
+
+		/// <summary>
+		/// Retrieves the handle to the ancestor of the specified window.
+		/// </summary>
+		/// <param name="window">A handle to the window whose ancestor is to be retrieved. If
+		/// this parameter is the desktop window, the function returns null.</param>
+		/// <param name="flags">The ancestor to be retrieved. This parameter can be any of
+		/// the <see cref="GetAncestorFlags"/> flags.</param>
+		/// <returns>The return value is the handle to the ancestor window.</returns>
+		public static IWin32Window GetAncestor(IWin32Window window, GetAncestorFlags flags)
+		{
+			IntPtr result = NativeMethods.GetAncestor(window.Handle, flags);
+			if (result == IntPtr.Zero)
+				return null;
+
+			return new Win32Window(result);
+		}
+
+		[Flags]
+		public enum GetAncestorFlags : uint
+		{
+			/// <summary>
+			/// Retrieves the parent window. This does not include the owner, as it does
+			/// with the GetParent function.
+			/// </summary>
+			GA_PARENT = 1,
+
+			/// <summary>
+			/// Retrieves the root window by walking the chain of parent windows.
+			/// </summary>
+			GA_ROOT = 2,
+			
+			/// <summary>
+			/// Retrieves the owned root window by walking the chain of parent and owner
+			/// windows returned by GetParent. 
+			/// </summary>
+			GA_ROOTOWNER = 3
+		}
+
+		/// <summary>
+		/// Sets a new parent for the given window.
+		/// </summary>
+		/// <param name="window">The window to set the new parent on.</param>
+		/// <param name="parent">The new parent of the window.</param>
+		/// <returns>A handle to the old parent window.</returns>
+		public static IWin32Window SetParent(IWin32Window window, IWin32Window parent)
+		{
+			return new Win32Window(NativeMethods.SetParent(window.Handle, parent.Handle));
+		}
+
+		internal class Win32Window : IWin32Window
+		{
+			public Win32Window(IntPtr hwnd)
+			{
+				Hwnd = hwnd;
+			}
+
+			#region IWin32Window Members
+
+			public IntPtr Handle
+			{
+				get { return Hwnd; }
+			}
+
+			#endregion
+
+			private IntPtr Hwnd;
 		}
 	}
 }

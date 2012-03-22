@@ -612,8 +612,12 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 				IWin32Window parent = null;
 				if (!string.IsNullOrEmpty(arguments.Parent))
 				{
+					//We do. Get the handle
 					parent = new Win32Window((IntPtr)(ulong)
 						Convert.ChangeType(arguments.Parent, typeof(ulong)));
+
+					//And find the top-level window of the handle.
+					parent = UserApi.GetAncestor(parent, UserApi.GetAncestorFlags.GA_ROOT);
 				}
 
 				using (Form dialog = new ShellConfirmationDialog(task))
