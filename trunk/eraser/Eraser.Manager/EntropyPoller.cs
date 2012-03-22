@@ -45,8 +45,11 @@ namespace Eraser.Manager
 		/// </summary>
 		public EntropyPoller()
 		{
-			//Create the pool.
+			//Create the pool and its complement.
 			Pool = new byte[sizeof(uint) << 7];
+			PoolInvert = new byte[Pool.Length];
+			for (uint i = 0, j = (uint)PoolInvert.Length; i < j; ++i)
+				PoolInvert[i] = byte.MaxValue;
 
 			//Handle the Entropy Source Registered event.
 			Host.Instance.EntropySources.Registered += OnEntropySourceRegistered;
@@ -161,21 +164,14 @@ namespace Eraser.Manager
 		}
 
 		/// <summary>
-		/// Inverts the contents of the pool
+		/// Inverts the contents of the pool.
 		/// </summary>
 		private void InvertPool()
 		{
 			lock (PoolLock)
-				unsafe
-				{
-					fixed (byte* fPool = Pool)
-					{
-						uint* pPool = (uint*)fPool;
-						uint poolLength = (uint)(Pool.Length / sizeof(uint));
-						while (poolLength-- != 0)
-							*pPool = (uint)(*pPool++ ^ uint.MaxValue);
-					}
-				}
+			{
+				MemoryXor(PoolInvert, 0, Pool, 0, Pool.Length);
+			}
 		}
 
 		/// <summary>
@@ -320,6 +316,12 @@ namespace Eraser.Manager
 		/// The pool of data which we currently maintain.
 		/// </summary>
 		private byte[] Pool;
+
+		/// <summary>
+		/// A pool, the same size as <see cref="Pool"/>, but containing all bitwise 1's
+		/// for XOR for pool inversion
+		/// </summary>
+		private byte[] PoolInvert;
 
 		/// <summary>
 		/// The next position where entropy will be added to the pool.
