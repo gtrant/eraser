@@ -227,58 +227,92 @@ namespace Eraser.Manager
 		/// </summary>
 		/// <param name="entropy">An array of data which will be XORed with pool
 		/// contents.</param>
-		public unsafe void AddEntropy(byte[] entropy)
+		public void AddEntropy(byte[] entropy)
 		{
 			lock (PoolLock)
-				fixed (byte* pEntropy = entropy)
-				fixed (byte* pPool = Pool)
+			{
+				for (int i = entropy.Length, j = 0; i > 0; )
 				{
-					int size = entropy.Length;
-					byte* mpEntropy = pEntropy;
-					while (size > 0)
+					//Bring the pool position back to the front if we are at our end
+					if (PoolPosition >= Pool.Length)
 					{
-						//Bring the pool position back to the front if we are at our end
-						if (PoolPosition >= Pool.Length)
-						{
-							PoolPosition = 0;
-							MixPool();
-						}
-
-						int amountToMix = Math.Min(size, Pool.Length - PoolPosition);
-						MemoryXor(pPool + PoolPosition, mpEntropy, amountToMix);
-						mpEntropy += amountToMix;
-						size -= amountToMix;
-						PoolPosition += amountToMix;
+						PoolPosition = 0;
+						MixPool();
 					}
+
+					int amountToMix = Math.Min(i, Pool.Length - PoolPosition);
+					MemoryXor(entropy, j, Pool, PoolPosition, amountToMix);
+					i -= amountToMix;
+					j += amountToMix;
+					PoolPosition += amountToMix;
 				}
+			}
 		}
 
 		/// <summary>
-		/// XOR's memory a DWORD at a time.
+		/// Copies a specified number of bytes from a source array starting at a particular
+		/// offset to a destination array starting at a particular offset.
 		/// </summary>
-		/// <param name="destination">The destination buffer to be XOR'ed</param>
-		/// <param name="source">The source buffer to XOR with</param>
-		/// <param name="size">The size of the source buffer</param>
-		private static unsafe void MemoryXor(byte* destination, byte* source, int size)
+		/// <param name="src">The source buffer.</param>
+		/// <param name="srcOffset">The zero-based byte offset into src.</param>
+		/// <param name="dst">The destination buffer.</param>
+		/// <param name="dstOffset">The zero-based byte offset into dst.</param>
+		/// <param name="count">The number of bytes to copy.</param>
+		/// 
+		/// <exception cref="System.ArgumentNullException"><paramref name="src"/> or
+		/// <paramref name="dst"/> is null.</exception>
+		/// <exception cref="System.ArgumentException"><paramref name="src"/> or
+		/// <paramref name="dst"/> is not an array of primitives or the length of
+		/// <paramref name="src"/> is less than <paramref name="srcOffset"/> +
+		/// <paramref name="count"/> or the length of <paramref name="dst"/>
+		/// is less than <paramref name="dstOffset"/> + <paramref name="count"/>.</exception>
+		/// <exception cref="System.ArgumentOutOfRangeException"><paramref name="srcOffset"/>,
+		/// <paramref name="dstOffset"/>, or <paramref name="count"/> is less than 0.</exception>
+		private static void MemoryXor(byte[] src, int srcOffset, byte[] dst, int dstOffset, int count)
 		{
-			// XXX: Further optomisation
-			// check the memory bus frame
-			// use BYTE / WORD / DWORD as required			
+			if (src == null || dst == null)
+				throw new ArgumentNullException();
+			if (src.Length < srcOffset + count ||
+				dst.Length < dstOffset + count)
+				throw new ArgumentException();
+			if (srcOffset < 0 || dstOffset < 0 || count < 0)
+				throw new ArgumentOutOfRangeException();
 			
-			int wsize = size / sizeof(uint);
-			size -= wsize * sizeof(uint);
-			uint* d = (uint*)destination;
-			uint* s = (uint*)source;
-
-			while (wsize-- > 0)
-				*d++ ^= *s++;
-
-			if (size > 0)
+			unsafe
 			{
-				byte* db = (byte*)d,
-				      ds = (byte*)s;
-				while (size-- > 0)
-					*db++ ^= *ds++;
+				fixed (byte* pSrc = src)
+				fixed (byte* pDst = dst)
+					MemoryXor64(pSrc + srcOffset, pDst + dstOffset, (uint)count);
+			}
+		}
+
+		/// <summary>
+
+		/// XOR's <paramref name="source"/> onto <paramref name="destination"/>, at the
+		/// natural word alignment of the current processor.
+		/// </summary>
+		/// <typeparam name="T">An integral type indicating the natural word of the
+		/// processor.</typeparam>
+		/// <param name="destination">The destination buffer to XOR to.</param>
+		/// <param name="source">The source buffer to XOR with.</param>
+		/// <param name="length">The amount of data, in bytes, to XOR.</param>
+		private static unsafe void MemoryXor64(byte* destination, byte* source, uint length)
+		{
+			//XOR the buffers using a processor word
+			{
+				ulong* wDestination = (ulong*)destination;
+				ulong* wSource = (ulong*)source;
+				for (uint i = 0, j = (uint)(length / sizeof(ulong)); i < j; ++i)
+					*wDestination++ ^= *wSource++;
+			}
+
+			//XOR the remaining bytes
+			{
+				uint i = length - (length % sizeof(ulong));
+				destination += i;
+				source += i;
+				for (; i < length; ++i)
+					*destination++ ^= *source++;
 			}
 		}
 
