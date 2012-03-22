@@ -368,15 +368,15 @@ namespace Eraser.Manager
 				try
 				{
 					SecondaryHashAlgorithmCache = func();
-					HasSecondaryHashAlgorithm = true;
-					return SecondaryHashAlgorithmCache;
+					break;
 				}
 				catch (InvalidOperationException)
 				{
 				}
 			}
 
-			return null;
+			HasSecondaryHashAlgorithm = true;
+			return SecondaryHashAlgorithmCache;
 		}
 
 		/// <summary>
