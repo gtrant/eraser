@@ -54,17 +54,17 @@ namespace Eraser.DefaultPlugins
 			this.nameLbl = new System.Windows.Forms.Label();
 			this.nameTxt = new System.Windows.Forms.TextBox();
 			this.passesLv = new System.Windows.Forms.ListView();
-			this.passesColNumber = new System.Windows.Forms.ColumnHeader();
-			this.passesColType = new System.Windows.Forms.ColumnHeader();
+			this.passesColNumber = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.passesColType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.passesAddBtn = new System.Windows.Forms.Button();
 			this.passesRemoveBtn = new System.Windows.Forms.Button();
 			this.passesDuplicateBtn = new System.Windows.Forms.Button();
 			this.passGrp = new System.Windows.Forms.GroupBox();
+			this.passEditor = new Eraser.DefaultPlugins.CustomMethodPassEditor();
 			this.randomizeChk = new System.Windows.Forms.CheckBox();
 			this.okBtn = new System.Windows.Forms.Button();
 			this.cancelBtn = new System.Windows.Forms.Button();
 			this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-			this.passEditor = new Eraser.DefaultPlugins.CustomMethodPassEditor();
 			this.passGrp.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
 			this.SuspendLayout();
@@ -92,11 +92,11 @@ namespace Eraser.DefaultPlugins
 			this.passesLv.Name = "passesLv";
 			this.passesLv.UseCompatibleStateImageBehavior = false;
 			this.passesLv.View = System.Windows.Forms.View.Details;
-			this.passesLv.DragDrop += new System.Windows.Forms.DragEventHandler(this.passesLv_DragDrop);
+			this.passesLv.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.passesLv_ItemDrag);
 			this.passesLv.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.passesLv_ItemSelectionChanged);
+			this.passesLv.DragDrop += new System.Windows.Forms.DragEventHandler(this.passesLv_DragDrop);
 			this.passesLv.DragEnter += new System.Windows.Forms.DragEventHandler(this.passesLv_DragEnter);
 			this.passesLv.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.passesLv_GiveFeedback);
-			this.passesLv.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.passesLv_ItemDrag);
 			// 
 			// passesColNumber
 			// 
@@ -134,6 +134,13 @@ namespace Eraser.DefaultPlugins
 			this.passGrp.Name = "passGrp";
 			this.passGrp.TabStop = false;
 			// 
+			// passEditor
+			// 
+			resources.ApplyResources(this.passEditor, "passEditor");
+			this.passEditor.Name = "passEditor";
+			this.passEditor.PassData = null;
+			this.passEditor.PassType = Eraser.DefaultPlugins.CustomMethodPassEditorPassType.Text;
+			// 
 			// randomizeChk
 			// 
 			resources.ApplyResources(this.randomizeChk, "randomizeChk");
@@ -150,6 +157,7 @@ namespace Eraser.DefaultPlugins
 			// cancelBtn
 			// 
 			resources.ApplyResources(this.cancelBtn, "cancelBtn");
+			this.cancelBtn.CausesValidation = false;
 			this.cancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.cancelBtn.Name = "cancelBtn";
 			this.cancelBtn.UseVisualStyleBackColor = true;
@@ -157,13 +165,6 @@ namespace Eraser.DefaultPlugins
 			// errorProvider
 			// 
 			this.errorProvider.ContainerControl = this;
-			// 
-			// passEditor
-			// 
-			resources.ApplyResources(this.passEditor, "passEditor");
-			this.passEditor.Name = "passEditor";
-			this.passEditor.PassData = null;
-			this.passEditor.PassType = Eraser.DefaultPlugins.CustomMethodPassEditorPassType.Text;
 			// 
 			// CustomMethodEditorForm
 			// 
