@@ -282,7 +282,7 @@ namespace Eraser.Manager
 			{
 				fixed (byte* pSrc = src)
 				fixed (byte* pDst = dst)
-					MemoryXor64(pSrc + srcOffset, pDst + dstOffset, (uint)count);
+					MemoryXor64(pDst + dstOffset, pSrc + srcOffset, (uint)count);
 			}
 		}
 
