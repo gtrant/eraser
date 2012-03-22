@@ -617,7 +617,10 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 						Convert.ChangeType(arguments.Parent, typeof(ulong)));
 
 					//And find the top-level window of the handle.
-					parent = UserApi.GetAncestor(parent, UserApi.GetAncestorFlags.GA_ROOT);
+					IWin32Window topLevel = UserApi.GetAncestor(parent,
+						UserApi.GetAncestorFlags.GA_ROOT);
+					if (topLevel != null)
+						parent = topLevel;
 				}
 
 				using (Form dialog = new ShellConfirmationDialog(task))
