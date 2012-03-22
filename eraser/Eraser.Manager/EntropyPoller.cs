@@ -61,6 +61,7 @@ namespace Eraser.Manager
 
 			//Then start the thread which maintains the pool.
 			Thread = new Thread(Main);
+			Thread.Priority = ThreadPriority.Lowest;
 			Thread.Start();
 		}
 
