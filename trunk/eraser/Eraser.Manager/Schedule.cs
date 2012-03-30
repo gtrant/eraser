@@ -83,9 +83,9 @@ namespace Eraser.Manager
 			{
 			}
 
-			public override string UIText
+			public override string ToString()
 			{
-				get { return string.Empty; }
+				return string.Empty;
 			}
 		}
 
@@ -119,9 +119,9 @@ namespace Eraser.Manager
 			{
 			}
 
-			public override string UIText
+			public override string ToString()
 			{
-				get { return string.Empty; }
+				return string.Empty;
 			}
 		}
 
@@ -155,9 +155,9 @@ namespace Eraser.Manager
 			{
 			}
 
-			public override string UIText
+			public override string ToString()
 			{
-				get { return S._("Running on restart"); }
+				return S._("Running on restart");
 			}
 		}
 		#endregion
@@ -166,10 +166,7 @@ namespace Eraser.Manager
 		/// Retrieves the text that should be displayed detailing the nature of
 		/// the schedule for use in user interface elements.
 		/// </summary>
-		public abstract string UIText
-		{
-			get;
-		}
+		public abstract string ToString();
 
 		/// <summary>
 		/// The owner of this schedule item.
@@ -216,54 +213,51 @@ namespace Eraser.Manager
 	public class RecurringSchedule : Schedule
 	{
 		#region Overridden members
-		public override string UIText
+		public override string ToString()
 		{
-			get
+			string result = string.Empty;
+			switch (type)
 			{
-				string result = string.Empty;
-				switch (type)
-				{
-					case RecurringScheduleUnit.Daily:
-						if (frequency != 1)
-							result = S._("Once every {0} days", frequency);
-						else
-							result = S._("Once every day");
-						break;
-					case RecurringScheduleUnit.Weekdays:
-						result = S._("Every weekday");
-						break;
-					case RecurringScheduleUnit.Weekly:
-						if ((weeklySchedule & DaysOfWeek.Monday) != 0)
-							result = S._("Every Monday, {0}");
-						if ((weeklySchedule & DaysOfWeek.Tuesday) != 0)
-							result += S._("Every Tuesday, {0}");
-						if ((weeklySchedule & DaysOfWeek.Wednesday) != 0)
-							result += S._("Every Wednesday, {0}");
-						if ((weeklySchedule & DaysOfWeek.Thursday) != 0)
-							result += S._("Every Thursday, {0}");
-						if ((weeklySchedule & DaysOfWeek.Friday) != 0)
-							result += S._("Every Friday, {0}");
-						if ((weeklySchedule & DaysOfWeek.Saturday) != 0)
-							result += S._("Every Saturday, {0}");
-						if ((weeklySchedule & DaysOfWeek.Sunday) != 0)
-							result += S._("Every Sunday, {0}");
+				case RecurringScheduleUnit.Daily:
+					if (frequency != 1)
+						result = S._("Once every {0} days", frequency);
+					else
+						result = S._("Once every day");
+					break;
+				case RecurringScheduleUnit.Weekdays:
+					result = S._("Every weekday");
+					break;
+				case RecurringScheduleUnit.Weekly:
+					if ((weeklySchedule & DaysOfWeek.Monday) != 0)
+						result = S._("Every Monday, {0}");
+					if ((weeklySchedule & DaysOfWeek.Tuesday) != 0)
+						result += S._("Every Tuesday, {0}");
+					if ((weeklySchedule & DaysOfWeek.Wednesday) != 0)
+						result += S._("Every Wednesday, {0}");
+					if ((weeklySchedule & DaysOfWeek.Thursday) != 0)
+						result += S._("Every Thursday, {0}");
+					if ((weeklySchedule & DaysOfWeek.Friday) != 0)
+						result += S._("Every Friday, {0}");
+					if ((weeklySchedule & DaysOfWeek.Saturday) != 0)
+						result += S._("Every Saturday, {0}");
+					if ((weeklySchedule & DaysOfWeek.Sunday) != 0)
+						result += S._("Every Sunday, {0}");
 
-						result = string.Format(CultureInfo.CurrentCulture, result,
-							frequency == 1 ?
-								S._("once every {0} week.", frequency) :
-								S._("once every {0} weeks.", frequency));
-						break;
-					case RecurringScheduleUnit.Monthly:
-						if (frequency == 1)
-							result = S._("On day {0} of every month", monthlySchedule);
-						else
-							result = S._("On day {0} of every {1} months", monthlySchedule,
-								frequency);
-						break;
-				}
-
-				return result + S._(", at {0}", executionTime.TimeOfDay.ToString());
+					result = string.Format(CultureInfo.CurrentCulture, result,
+						frequency == 1 ?
+							S._("once every {0} week.", frequency) :
+							S._("once every {0} weeks.", frequency));
+					break;
+				case RecurringScheduleUnit.Monthly:
+					if (frequency == 1)
+						result = S._("On day {0} of every month", monthlySchedule);
+					else
+						result = S._("On day {0} of every {1} months", monthlySchedule,
+							frequency);
+					break;
 			}
+
+			return result + S._(", at {0}", executionTime.TimeOfDay.ToString());
 		}
 		#endregion
 
