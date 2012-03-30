@@ -86,8 +86,8 @@ namespace Eraser.DefaultPlugins
 		public bool ProcessArgument(string argument)
 		{
 			//The secure move source and target, which are separated by a pipe.
-			Regex regex = new Regex("(move=)?(?<source>.*)\\|(?<target>.*)",
-				RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+			Regex regex = new Regex("^(?:move=)?(?<source>.*)\\|(?<target>.*)",
+				RegexOptions.Compiled | RegexOptions.IgnoreCase);
 			Match match = regex.Match(argument);
 
 			if (match.Groups["source"].Success && match.Groups["target"].Success)
