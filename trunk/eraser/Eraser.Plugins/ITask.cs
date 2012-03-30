@@ -24,10 +24,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace Eraser.Plugins
 {
-	public interface ITask : ISerializable
+	public interface ITask : ISerializable, IXmlSerializable
 	{
 		/// <summary>
 		/// Cancels the task from running, or, if the task is queued for running,

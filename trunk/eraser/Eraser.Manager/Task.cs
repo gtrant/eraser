@@ -25,6 +25,8 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Threading;
 
 using Eraser.Util;
@@ -38,7 +40,7 @@ namespace Eraser.Manager
 	/// Deals with an erase task.
 	/// </summary>
 	[Serializable]
-	public class Task : ITask, ISerializable
+	public class Task : ITask
 	{
 		#region Serialization code
 		protected Task(SerializationInfo info, StreamingContext context)
@@ -47,7 +49,7 @@ namespace Eraser.Manager
 			Executor = context.Context as Executor;
 			Targets = (ErasureTargetCollection)info.GetValue("Targets", typeof(ErasureTargetCollection));
 			Targets.Owner = this;
-			Log = (List<LogSink>)info.GetValue("Log", typeof(List<LogSink>));
+			Log = (List<LogSinkBase>)info.GetValue("Log", typeof(List<LogSinkBase>));
 			Canceled = false;
 
 			Schedule schedule = (Schedule)info.GetValue("Schedule", typeof(Schedule));
@@ -72,6 +74,172 @@ namespace Eraser.Manager
 			info.AddValue("Targets", Targets);
 			info.AddValue("Log", Log);
 		}
+
+		public System.Xml.Schema.XmlSchema GetSchema()
+		{
+			return null;
+		}
+
+		public void ReadXml(XmlReader reader)
+		{
+			Canceled = false;
+			Name = reader.GetAttribute("name");
+
+			for (reader.Read() ; reader.NodeType != XmlNodeType.EndElement; reader.Read())
+			{
+				switch (reader.Name)
+				{
+					case "Schedule":
+						ReadSchedule(reader);
+						break;
+
+					case "ErasureTargetCollection":
+						ReadTargets(reader);
+						break;
+
+					case "Logs":
+						ReadLog(reader);
+						break;
+
+					default:
+						System.Diagnostics.Debug.Assert(false);
+						break;
+				}
+			}
+		}
+
+		private void ReadSchedule(XmlReader reader)
+		{
+			switch (reader.GetAttribute("type"))
+			{
+				case "Now":
+					Schedule = Schedule.RunNow;
+					break;
+
+				case "Restart":
+					Schedule = Schedule.RunOnRestart;
+					break;
+
+				case "Recurring":
+					XmlSerializer serializer = new XmlSerializer(typeof(RecurringSchedule));
+					reader.ReadStartElement();
+					schedule = (RecurringSchedule)serializer.Deserialize(reader);
+					break;
+
+				case "Manual":
+				default:
+					Schedule = Schedule.RunManually;
+					break;
+			}
+		}
+
+		private void ReadTargets(XmlReader reader)
+		{
+			XmlSerializer targetsSerializer = new XmlSerializer(Targets.GetType());
+			Targets = (ErasureTargetCollection)targetsSerializer.Deserialize(reader);
+			Targets.Owner = this;
+		}
+
+		private void ReadLog(XmlReader reader)
+		{
+			//We can either have a ArrayOfLogEntry or LogRef element as children.
+			Log = new List<LogSinkBase>();
+			while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+			{
+				if (reader.Name == "LogRef")
+				{
+					Log.Add(new LazyLogSink(reader.ReadString()));
+				}
+				else if (reader.Name == "ArrayOfLogEntry")
+				{
+					XmlSerializer logSerializer = new XmlSerializer(typeof(LogSink));
+					Log.Add((LogSink)logSerializer.Deserialize(reader));
+				}
+			}
+		}
+
+		/// <summary>
+		/// Writes the common part of the Task XML Element.
+		/// </summary>
+		/// <param name="writer">The XML Writer instance to write to.</param>
+		private void WriteXmlCommon(XmlWriter writer)
+		{
+			writer.WriteAttributeString("name", Name);
+
+			writer.WriteStartElement("Schedule");
+			if (schedule.GetType() == Schedule.RunManually.GetType())
+				writer.WriteAttributeString("type", "Manual");
+			else if (schedule.GetType() == Schedule.RunNow.GetType())
+				writer.WriteAttributeString("type", "Now");
+			else if (schedule.GetType() == Schedule.RunOnRestart.GetType())
+				writer.WriteAttributeString("type", "Restart");
+			else if (schedule is RecurringSchedule)
+			{
+				writer.WriteAttributeString("type", "Recurring");
+				XmlSerializer serializer = new XmlSerializer(schedule.GetType());
+				serializer.Serialize(writer, schedule);
+			}
+			writer.WriteEndElement();
+
+			XmlSerializer targetsSerializer = new XmlSerializer(Targets.GetType());
+			targetsSerializer.Serialize(writer, Targets);
+		}
+
+		public void WriteXml(XmlWriter writer)
+		{
+			WriteXmlCommon(writer);
+
+			writer.WriteStartElement("Logs");
+			foreach (LogSinkBase log in Log)
+			{
+				XmlSerializer logSerializer = new XmlSerializer(log.GetType());
+				logSerializer.Serialize(writer, log);
+			}
+			writer.WriteEndElement();
+		}
+
+		/// <summary>
+		/// Writes an XML element with the Log entries linked instead of embedded
+		/// in the task list.
+		/// </summary>
+		/// <param name="writer">The XML Writer instance to write to.</param>
+		/// <param name="logPaths">The path to a folder to store logs in.</param>
+		public void WriteSeparatedXml(XmlWriter writer, string logPaths)
+		{
+			WriteXmlCommon(writer);
+
+			writer.WriteStartElement("Logs");
+			foreach (LogSinkBase log in Log)
+			{
+				//If we have a file-backed log, retain that.
+				if (log is LazyLogSink)
+				{
+					writer.WriteElementString("LogRef", ((LazyLogSink)log).SavePath);
+				}
+				
+				//Otherwise, decide if we want to store the log inline (if small) or
+				//link to the log file.
+				else if (log.Count < 5)
+				{
+					//Small log, keep it inline.
+					XmlSerializer logSerializer = new XmlSerializer(log.GetType());
+					logSerializer.Serialize(writer, log);
+				}
+				else
+				{
+					string savePath;
+					do
+					{
+						savePath = Path.Combine(logPaths, Guid.NewGuid().ToString() + ".log");
+					}
+					while (File.Exists(savePath));
+
+					log.Save(savePath);
+					writer.WriteElementString("LogRef", savePath);
+				}
+			}
+			writer.WriteEndElement();
+		}
 		#endregion
 
 		/// <summary>
@@ -83,7 +251,7 @@ namespace Eraser.Manager
 			Targets = new ErasureTargetCollection(this);
 			Schedule = Schedule.RunNow;
 			Canceled = false;
-			Log = new List<LogSink>();
+			Log = new List<LogSinkBase>();
 		}
 
 		/// <summary>
@@ -182,7 +350,7 @@ namespace Eraser.Manager
 		/// <summary>
 		/// The log entries which this task has accumulated.
 		/// </summary>
-		public List<LogSink> Log { get; private set; }
+		public List<LogSinkBase> Log { get; private set; }
 
 		/// <summary>
 		/// The progress manager object which manages the progress of this task.

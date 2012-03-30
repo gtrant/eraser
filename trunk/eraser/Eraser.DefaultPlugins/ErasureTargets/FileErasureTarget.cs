@@ -39,7 +39,7 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("0D741505-E1C4-400d-8470-598AF35E174D")]
-	class FileErasureTarget : FileSystemObjectErasureTarget
+	public class FileErasureTarget : FileSystemObjectErasureTarget
 	{
 		#region Serialization code
 		protected FileErasureTarget(SerializationInfo info, StreamingContext context)

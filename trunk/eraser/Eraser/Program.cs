@@ -740,11 +740,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 			//Save the task list
 			if (!Directory.Exists(Program.AppDataPath))
 				Directory.CreateDirectory(Program.AppDataPath);
-			using (FileStream stream = new FileStream(TaskListPath, FileMode.Create,
-				FileAccess.Write, FileShare.None))
-			{
-				eraserClient.Tasks.SaveToStream(stream);
-			}
+			eraserClient.Tasks.SaveToFile(TaskListPath);
 
 			//Dispose the eraser executor instance
 			eraserClient.Dispose();
@@ -775,7 +771,7 @@ Eraser is Open-Source Software: see http://eraser.heidi.ie/ for details.
 		/// <summary>
 		/// File name of the Eraser task list.
 		/// </summary>
-		private const string TaskListFileName = @"Task List.ersx";
+		private const string TaskListFileName = @"Task List.ersy";
 
 		/// <summary>
 		/// Path to the Eraser task list.

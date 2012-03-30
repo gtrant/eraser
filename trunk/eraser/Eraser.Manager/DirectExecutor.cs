@@ -26,13 +26,13 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Threading;
 using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
 using Eraser.Plugins;
 using Eraser.Plugins.ExtensionPoints;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Eraser.Manager
 {
@@ -467,23 +467,53 @@ namespace Eraser.Manager
 			public override void SaveToStream(Stream stream)
 			{
 				lock (list)
-					new BinaryFormatter().Serialize(stream, list);
+				{
+					XmlRootAttribute root = new XmlRootAttribute("TaskList");
+					XmlSerializer serializer = new XmlSerializer(list.GetType(), root);
+					serializer.Serialize(stream, list);
+				}
+			}
+
+			public override void SaveToFile(string file)
+			{
+				XmlWriterSettings settings = new XmlWriterSettings();
+				settings.Indent = true;
+				lock (list)
+				using (XmlWriter writer = XmlWriter.Create(file, settings))
+				{
+					writer.WriteStartDocument();
+					writer.WriteStartElement("TaskList");
+
+					string logFolderPath = Path.Combine(Path.GetDirectoryName(file), "Logs");
+					if (!Directory.Exists(logFolderPath))
+						Directory.CreateDirectory(logFolderPath);
+
+					foreach (Task task in list)
+					{
+						writer.WriteStartElement("Task");
+						task.WriteSeparatedXml(writer, logFolderPath);
+						writer.WriteEndElement();
+					}
+
+					writer.WriteEndElement();
+					writer.WriteEndDocument();
+				}
 			}
 
 			public override void LoadFromStream(Stream stream)
 			{
 				//Load the list into the dictionary
-				StreamingContext context = new StreamingContext(
-					StreamingContextStates.All, Owner);
-				BinaryFormatter formatter = new BinaryFormatter(null, context);
+				XmlRootAttribute root = new XmlRootAttribute("TaskList");
+				XmlSerializer serializer = new XmlSerializer(list.GetType(), root);
 
 				try
 				{
-					List<Task> deserialised = (List<Task>)formatter.Deserialize(stream);
+					List<Task> deserialised = (List<Task>)serializer.Deserialize(stream);
 					list.AddRange(deserialised);
 
 					foreach (Task task in deserialised)
 					{
+						task.Executor = Owner;
 						Owner.OnTaskAdded(new TaskEventArgs(task));
 						if (task.Schedule == Schedule.RunNow)
 							Owner.QueueTask(task);
@@ -491,11 +521,11 @@ namespace Eraser.Manager
 							Owner.ScheduleTask(task);
 					}
 				}
-				catch (FileLoadException e)
+				catch (InvalidOperationException e)
 				{
 					throw new InvalidDataException(e.Message, e);
 				}
-				catch (SerializationException e)
+				catch (FileLoadException e)
 				{
 					throw new InvalidDataException(e.Message, e);
 				}

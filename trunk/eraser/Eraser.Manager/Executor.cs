@@ -171,6 +171,19 @@ namespace Eraser.Manager
 		public abstract void SaveToStream(Stream stream);
 
 		/// <summary>
+		/// Saves the task list to file.
+		/// </summary>
+		/// <param name="file">The path to the task list.</param>
+		public virtual void SaveToFile(string file)
+		{
+			using (FileStream stream = new FileStream(file, FileMode.Create,
+				FileAccess.Write, FileShare.None))
+			{
+				SaveToStream(stream);
+			}
+		}
+
+		/// <summary>
 		/// Loads the task list from the given stream.
 		/// </summary>
 		/// <remarks>This will append the tasks in the given stream to the current list of

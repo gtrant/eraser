@@ -22,8 +22,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Security.Permissions;
 using System.Globalization;
 using Eraser.Util;
@@ -34,8 +37,21 @@ namespace Eraser.Manager
 	/// Base class for all schedule types.
 	/// </summary>
 	[Serializable]
-	public abstract class Schedule : ISerializable
+	public abstract class Schedule : ISerializable, IXmlSerializable
 	{
+		#region IXmlSerializable Members
+
+		public System.Xml.Schema.XmlSchema GetSchema()
+		{
+			return null;
+		}
+
+		public abstract void ReadXml(XmlReader reader);
+
+		public abstract void WriteXml(XmlWriter writer);
+
+		#endregion
+
 		#region Default values
 		[Serializable]
 		private class RunManuallySchedule : Schedule
@@ -48,6 +64,18 @@ namespace Eraser.Manager
 			[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 			public override void GetObjectData(SerializationInfo info, StreamingContext context)
 			{
+			}
+
+			public override void ReadXml(XmlReader reader)
+			{
+				if (reader.GetAttribute("type") != "Manual")
+					throw new InvalidDataException();
+				reader.Read();
+			}
+
+			public override void WriteXml(XmlWriter writer)
+			{
+				writer.WriteAttributeString("type", "Manual");
 			}
 			#endregion
 
@@ -73,6 +101,18 @@ namespace Eraser.Manager
 			public override void GetObjectData(SerializationInfo info, StreamingContext context)
 			{
 			}
+
+			public override void ReadXml(XmlReader reader)
+			{
+				if (reader.GetAttribute("type") != "Now")
+					throw new InvalidDataException();
+				reader.Read();
+			}
+
+			public override void WriteXml(XmlWriter writer)
+			{
+				writer.WriteAttributeString("type", "Now");
+			}
 			#endregion
 
 			public RunNowSchedule()
@@ -96,6 +136,18 @@ namespace Eraser.Manager
 			[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 			public override void GetObjectData(SerializationInfo info, StreamingContext context)
 			{
+			}
+
+			public override void ReadXml(XmlReader reader)
+			{
+				if (reader.GetAttribute("type") != "Restart")
+					throw new InvalidDataException();
+				reader.Read();
+			}
+
+			public override void WriteXml(XmlWriter writer)
+			{
+				writer.WriteAttributeString("type", "Restart");
 			}
 			#endregion
 
@@ -238,6 +290,42 @@ namespace Eraser.Manager
 			info.AddValue("MonthlySchedule", monthlySchedule);
 			info.AddValue("LastRun", LastRun);
 			info.AddValue("NextRun", NextRunCache);
+		}
+
+		public override void ReadXml(XmlReader reader)
+		{
+			if (!Enum.TryParse<RecurringScheduleUnit>(reader.GetAttribute("type"), out type))
+				throw new InvalidDataException();
+			if (!int.TryParse(reader.GetAttribute("frequency"), out frequency))
+				throw new InvalidDataException();
+			if (!DateTime.TryParse(reader.GetAttribute("executionTime"), out executionTime))
+				throw new InvalidDataException();
+			if (!Enum.TryParse<DaysOfWeek>(reader.GetAttribute("weeklySchedule"),
+				out weeklySchedule))
+				throw new InvalidDataException();
+			if (!int.TryParse(reader.GetAttribute("monthlySchedule"), out monthlySchedule))
+				throw new InvalidDataException();
+
+			DateTime lastRun;
+			DateTime nextRunCache;
+			if (!DateTime.TryParse(reader.GetAttribute("lastRun"), out lastRun))
+				throw new InvalidDataException();
+			if (!DateTime.TryParse(reader.GetAttribute("nextRun"), out nextRunCache))
+				throw new InvalidDataException();
+			LastRun = lastRun;
+			NextRunCache = nextRunCache;
+			reader.Read();
+		}
+
+		public override void WriteXml(XmlWriter writer)
+		{
+			writer.WriteAttributeString("type", type.ToString());
+			writer.WriteAttributeString("frequency", frequency.ToString());
+			writer.WriteAttributeString("executionTime", executionTime.ToString("O"));
+			writer.WriteAttributeString("weeklySchedule", weeklySchedule.ToString());
+			writer.WriteAttributeString("monthlySchedule", monthlySchedule.ToString());
+			writer.WriteAttributeString("lastRun", LastRun.ToString("O"));
+			writer.WriteAttributeString("nextRun", NextRunCache.ToString("O"));
 		}
 		#endregion
 
