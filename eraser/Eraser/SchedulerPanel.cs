@@ -103,7 +103,7 @@ namespace Eraser
 			else if (task.Schedule == Schedule.RunManually || task.Schedule == Schedule.RunNow)
 				item.SubItems[1].Text = S._("Not queued");
 			else
-				item.SubItems[1].Text = task.Schedule.UIText;
+				item.SubItems[1].Text = task.Schedule.ToString();
 
 			//Set the group of the task.
 			CategorizeTask(task, item);
