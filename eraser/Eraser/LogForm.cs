@@ -45,7 +45,7 @@ namespace Eraser
 			Text = string.Format(CultureInfo.InvariantCulture, "{0} - {1}", Text, task);
 
 			//Populate the list of sessions
-			foreach (LogSink sink in task.Log)
+			foreach (LogSinkBase sink in task.Log)
 				filterSessionCombobox.Items.Add(sink.StartTime);
 			if (filterSessionCombobox.Items.Count != 0)
 				filterSessionCombobox.SelectedIndex = filterSessionCombobox.Items.Count - 1;
@@ -320,7 +320,7 @@ namespace Eraser
 				return;
 
 			Application.UseWaitCursor = true;
-			LogSink sink = Task.Log[filterSessionCombobox.SelectedIndex];
+			LogSinkBase sink = Task.Log[filterSessionCombobox.SelectedIndex];
 			EntryCache.Clear();
 			SelectedEntries.Clear();
 			EntryCache.AddRange(sink.Where(MeetsCriteria));

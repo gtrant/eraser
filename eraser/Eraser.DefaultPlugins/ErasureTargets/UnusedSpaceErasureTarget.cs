@@ -26,8 +26,11 @@ using System.Text;
 
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Security.Permissions;
 using System.IO;
+using System.Globalization;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
@@ -42,7 +45,7 @@ namespace Eraser.DefaultPlugins
 	/// </summary>
 	[Serializable]
 	[Guid("A627BEC4-CAFC-46ce-92AD-209157C3177A")]
-	class UnusedSpaceErasureTarget : ErasureTargetBase
+	public class UnusedSpaceErasureTarget : ErasureTargetBase
 	{
 		#region Serialization code
 		protected UnusedSpaceErasureTarget(SerializationInfo info, StreamingContext context)
@@ -58,6 +61,32 @@ namespace Eraser.DefaultPlugins
 			base.GetObjectData(info, context);
 			info.AddValue("Drive", Drive);
 			info.AddValue("EraseClusterTips", EraseClusterTips);
+		}
+
+		protected override void ReadXml(XmlReader reader, bool advance)
+		{
+			base.ReadXml(reader, false);
+
+			Drive = reader.ReadString();
+			EraseClusterTips = false;
+			if (reader.HasAttributes)
+			{
+				bool eraseClusterTips = false;
+				bool.TryParse(reader.GetAttribute("eraseClusterTips"), out eraseClusterTips);
+				EraseClusterTips = eraseClusterTips;
+			}
+
+			if (advance)
+				reader.Read();
+		}
+
+		public override void WriteXml(XmlWriter writer)
+		{
+			writer.WriteAttributeString("eraseClusterTips", EraseClusterTips.ToString(
+				CultureInfo.InvariantCulture));
+			base.WriteXml(writer);
+
+			writer.WriteString(Drive);
 		}
 		#endregion
 

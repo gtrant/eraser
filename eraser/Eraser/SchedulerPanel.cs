@@ -387,7 +387,7 @@ namespace Eraser
 			for (int i = 0; i < paths.Count; ++i)
 			{
 				//Does this item exclude a task list import?
-				if (isTaskList && Path.GetExtension(paths[i]) != ".ersx")
+				if (isTaskList && Path.GetExtension(paths[i]) != ".ersy")
 					isTaskList = false;
 
 				//Just use the file name/directory name.
@@ -445,7 +445,7 @@ namespace Eraser
 			foreach (string path in paths)
 			{
 				//Does this item exclude a task list import?
-				if (isTaskList && Path.GetExtension(path) != ".ersx")
+				if (isTaskList && Path.GetExtension(path) != ".ersy")
 				{
 					isTaskList = false;
 					break;

@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Security.Permissions;
 
 using Eraser.Util;
@@ -33,7 +35,7 @@ using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
-	abstract class ErasureTargetBase : IErasureTarget
+	public abstract class ErasureTargetBase : IErasureTarget
 	{
 		#region IErasureTarget Members
 
@@ -81,6 +83,49 @@ namespace Eraser.DefaultPlugins
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			info.AddValue("Method", Method.Guid);
+		}
+
+		public System.Xml.Schema.XmlSchema GetSchema()
+		{
+			return null;
+		}
+
+		/// <summary>
+		/// Reads the XML for the current Erasure Target.
+		/// </summary>
+		/// <param name="reader">The XML Reader containing the element to deserialise.</param>
+		/// <param name="advance">Whether to advance the element pointer. Set to false if
+		/// a derived class will be doing further processing on the element.</param>
+		/// <remarks>When inheriting and overriding this method, call the base method with
+		/// <paramref name="advance"/> set to false.</remarks>
+		protected virtual void ReadXml(XmlReader reader, bool advance)
+		{
+			Guid methodGuid = Guid.Empty;
+			if (reader.HasAttributes)
+			{
+				string method = reader.GetAttribute("method");
+				if (method != null)
+					methodGuid = new Guid(method);
+			}
+
+			if (methodGuid == Guid.Empty)
+				Method = ErasureMethodRegistrar.Default;
+			else
+				Method = Host.Instance.ErasureMethods[methodGuid];
+
+			if (advance)
+				reader.Read();
+		}
+
+		public void ReadXml(XmlReader reader)
+		{
+			ReadXml(reader, true);
+		}
+
+		public virtual void WriteXml(XmlWriter writer)
+		{
+			if (method != ErasureMethodRegistrar.Default)
+				writer.WriteAttributeString("method", method.Guid.ToString());
 		}
 		#endregion
 

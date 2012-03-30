@@ -95,16 +95,16 @@
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="Eraser"
 						Value="&quot;[!EraserExe]&quot; /atRestart" Type="string" />
 					
-					<!-- Register the ersx extension with Eraser -->
-					<RegistryValue Id="EraserErsxFileExtension" Root="HKCR"
-						Key=".ersx" Value="Eraser.Ersx" Type="string" />
-					<RegistryValue Id="EraserErsxFileType" Root="HKCR" Key="Eraser.Ersx"
-						Value="Eraser 6 Task List" Type="string" />
-					<RegistryValue Id="EraserErsxFileIcon" Root="HKCR"
-						Key="Eraser.Ersx\DefaultIcon" Value="[!EraserShellDll],1"
+					<!-- Register the ersy extension with Eraser -->
+					<RegistryValue Id="EraserErsyFileExtension" Root="HKCR"
+						Key=".ersy" Value="Eraser.Ersy" Type="string" />
+					<RegistryValue Id="EraserErsyFileType" Root="HKCR" Key="Eraser.Ersy"
+						Value="Eraser 6 XML Task List" Type="string" />
+					<RegistryValue Id="EraserErsyFileIcon" Root="HKCR"
+						Key="Eraser.Ersy\DefaultIcon" Value="[!EraserShellDll],1"
 						Type="string" />
-					<RegistryValue Id="EraserErsxFileOpenAction" Root="HKCR"
-						Key="Eraser.Ersx\shell\open\command"
+					<RegistryValue Id="EraserErsyFileOpenAction" Root="HKCR"
+						Key="Eraser.Ersy\shell\open\command"
 						Value="&quot;[!EraserExe]&quot; importtasklist /quiet &quot;%1&quot;"
 						Type="string" />
 				</Component>

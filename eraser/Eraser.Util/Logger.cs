@@ -27,7 +27,10 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Security.Permissions;
+using System.IO;
 
 namespace Eraser.Util
 {
@@ -66,7 +69,7 @@ namespace Eraser.Util
 	/// Represents a log entry.
 	/// </summary>
 	[Serializable]
-	public struct LogEntry : ISerializable
+	public struct LogEntry : ISerializable, IXmlSerializable
 	{
 		#region Serialization code
 		private LogEntry(SerializationInfo info, StreamingContext context)
@@ -83,6 +86,33 @@ namespace Eraser.Util
 			info.AddValue("Level", Level);
 			info.AddValue("Timestamp", Timestamp);
 			info.AddValue("Message", Message);
+		}
+
+		public System.Xml.Schema.XmlSchema GetSchema()
+		{
+			return null;
+		}
+
+		public void ReadXml(XmlReader reader)
+		{
+			LogLevel level;
+			DateTime timestamp;
+			if (!Enum.TryParse<LogLevel>(reader.GetAttribute("level"), out level))
+				throw new InvalidDataException();
+			if (!DateTime.TryParse(reader.GetAttribute("timestamp"), out timestamp))
+				throw new InvalidDataException();
+
+			Level = level;
+			Timestamp = timestamp;
+			Message = reader.ReadString();
+			reader.Read();
+		}
+
+		public void WriteXml(XmlWriter writer)
+		{
+			writer.WriteAttributeString("level", Level.ToString());
+			writer.WriteAttributeString("timestamp", Timestamp.ToString("O"));
+			writer.WriteString(Message);
 		}
 		#endregion
 
@@ -570,26 +600,22 @@ namespace Eraser.Util
 	/// </summary>
 	/// <remarks>Instance functions of this class are thread-safe.</remarks>
 	[Serializable]
-	public class LogSink : ISerializable, ILogTarget, IList<LogEntry>
+	public abstract class LogSinkBase : ISerializable, ILogTarget, IList<LogEntry>
 	{
-		public LogSink()
+		public LogSinkBase()
 		{
 		}
 
 		#region ISerializable Members
 
-		public LogSink(SerializationInfo info, StreamingContext context)
+		public LogSinkBase(SerializationInfo info, StreamingContext context)
 		{
-			List = (List<LogEntry>)info.GetValue("List", typeof(List<LogEntry>));
 		}
 
 		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-		public void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			info.AddValue("List", List);
-		}
+		public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
 
-		#endregion
+		#endregion 
 
 		#region ILoggerTarget Members
 
@@ -687,8 +713,8 @@ namespace Eraser.Util
 		{
 			get
 			{
-				lock(List)
-					return Count;
+				lock (List)
+					return List.Count;
 			}
 		}
 
@@ -760,8 +786,132 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
+		/// Saves the log to the given path in an XML format which can be read
+		/// by <see cref="LazyLogSink"/>.
+		/// </summary>
+		/// <param name="path">The path to save the log contents to.</param>
+		public void Save(string path)
+		{
+			using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))
+				Save(stream);
+		}
+
+		public void Save(Stream stream)
+		{
+			IList<LogEntry> list = List;
+			lock (list)
+			{
+				XmlRootAttribute root = new XmlRootAttribute("Log");
+				XmlSerializer serializer = new XmlSerializer(list.GetType(), root);
+
+				serializer.Serialize(stream, list);
+			}
+		}
+
+		/// <summary>
 		/// The backing store of this session.
 		/// </summary>
-		private List<LogEntry> List = new List<LogEntry>();
+		protected abstract IList<LogEntry> List
+		{
+			get;
+		}
+	}
+
+	[Serializable]
+	public class LogSink : LogSinkBase
+	{
+		public LogSink()
+		{
+			list = new List<LogEntry>();
+		}
+
+		#region ISerializable Members
+
+		public LogSink(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+			list = (List<LogEntry>)info.GetValue("List", typeof(List<LogEntry>));
+		}
+
+		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			info.AddValue("List", List);
+		}
+
+		#endregion 
+
+		protected override IList<LogEntry> List
+		{
+			get { return list; }
+		}
+		private List<LogEntry> list;
+	}
+
+	[Serializable]
+	public class LazyLogSink : LogSinkBase
+	{
+		/// <summary>
+		/// Constructor.
+		/// </summary>
+		/// <param name="path">The path to the log file.</param>
+		public LazyLogSink(string path)
+		{
+			SavePath = path;
+		}
+
+		#region ISerializable Members
+
+		public LazyLogSink(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+			SavePath = (string)info.GetValue("SavePath", typeof(string));
+		}
+
+		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			info.AddValue("SavePath", SavePath);
+		}
+
+		#endregion
+
+		private void LoadList()
+		{
+			XmlRootAttribute root = new XmlRootAttribute("Log");
+			XmlSerializer serializer = new XmlSerializer(typeof(List<LogEntry>), root);
+
+			using (FileStream stream = new FileStream(SavePath, FileMode.Open))
+				list = (List<LogEntry>)serializer.Deserialize(stream);
+		}
+
+		/// <summary>
+		/// The path the log was saved to.
+		/// </summary>
+		public string SavePath
+		{
+			get;
+			private set;
+		}
+
+		protected override IList<LogEntry> List
+		{
+			get
+			{
+				lock (Synchronise)
+				{
+					if (list == null)
+						LoadList();
+					return list;
+				}
+			}
+		}
+
+		private List<LogEntry> list;
+
+		/// <summary>
+		/// Private object to makw sure LoadList is not called on multiple threads.
+		/// </summary>
+		private object Synchronise = new object();
 	}
 }

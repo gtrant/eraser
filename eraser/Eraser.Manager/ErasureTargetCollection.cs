@@ -25,12 +25,15 @@ using System.Linq;
 using System.Text;
 
 using System.Runtime.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Security.Permissions;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
 using Eraser.Plugins;
 using Eraser.Plugins.ExtensionPoints;
+using System.IO;
 
 namespace Eraser.Manager
 {
@@ -38,12 +41,18 @@ namespace Eraser.Manager
 	/// Maintains a collection of erasure targets.
 	/// </summary>
 	[Serializable]
-	public class ErasureTargetCollection : IList<IErasureTarget>, ISerializable
+	public class ErasureTargetCollection : IList<IErasureTarget>, ISerializable,
+		                                   IXmlSerializable
 	{
 		#region Constructors
-		internal ErasureTargetCollection(Task owner)
+		public ErasureTargetCollection()
 		{
 			this.list = new List<IErasureTarget>();
+		}
+
+		internal ErasureTargetCollection(Task owner)
+			: this()
+		{
 			this.owner = owner;
 		}
 
@@ -70,6 +79,42 @@ namespace Eraser.Manager
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			info.AddValue("list", list);
+		}
+
+		public System.Xml.Schema.XmlSchema GetSchema()
+		{
+			return null;
+		}
+
+		public void ReadXml(XmlReader reader)
+		{
+			List<XmlSerializer> targetSerializers = new List<XmlSerializer>();
+			foreach (IErasureTarget target in Host.Instance.ErasureTargetFactories)
+				targetSerializers.Add(new XmlSerializer(target.GetType()));
+
+			list.Clear();
+			while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+			{
+				foreach (XmlSerializer serializer in targetSerializers)
+				{
+					XmlReader subTree = reader.ReadSubtree();
+					if (serializer.CanDeserialize(subTree))
+					{
+						IErasureTarget target = (IErasureTarget)serializer.Deserialize(subTree);
+						list.Add(target);
+						break;
+					}
+				}
+			}
+		}
+
+		public void WriteXml(XmlWriter writer)
+		{
+			foreach (IErasureTarget target in this)
+			{
+				XmlSerializer serializer = new XmlSerializer(target.GetType());
+				serializer.Serialize(writer, target);
+			}
 		}
 		#endregion
 

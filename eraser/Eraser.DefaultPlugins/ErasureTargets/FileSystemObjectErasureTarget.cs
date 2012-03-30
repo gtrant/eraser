@@ -26,6 +26,8 @@ using System.Text;
 
 using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Security.Permissions;
 using System.IO;
 
@@ -41,7 +43,7 @@ namespace Eraser.DefaultPlugins
 	/// Class representing a tangible object (file/folder) to be erased.
 	/// </summary>
 	[Serializable]
-	abstract class FileSystemObjectErasureTarget : ErasureTargetBase
+	public abstract class FileSystemObjectErasureTarget : ErasureTargetBase
 	{
 		#region Serialization code
 		protected FileSystemObjectErasureTarget(SerializationInfo info, StreamingContext context)
@@ -55,6 +57,21 @@ namespace Eraser.DefaultPlugins
 		{
 			base.GetObjectData(info, context);
 			info.AddValue("Path", Path);
+		}
+
+		protected override void ReadXml(XmlReader reader, bool advance)
+		{
+			base.ReadXml(reader, false);
+			Path = reader.ReadString();
+
+			if (advance)
+				reader.Read();
+		}
+
+		public override void WriteXml(XmlWriter writer)
+		{
+			base.WriteXml(writer);
+			writer.WriteString(Path);
 		}
 		#endregion
 
