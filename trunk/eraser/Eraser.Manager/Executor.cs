@@ -167,6 +167,9 @@ namespace Eraser.Manager
 		}
 		#endregion
 
+		/// <summary>
+		/// Saves a task list to the given stream.
+		/// </summary>
 		/// <param name="stream">The stream to save to.</param>
 		public abstract void SaveToStream(Stream stream);
 
