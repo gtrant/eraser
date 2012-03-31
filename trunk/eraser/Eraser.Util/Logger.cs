@@ -104,8 +104,15 @@ namespace Eraser.Util
 
 			Level = level;
 			Timestamp = timestamp;
-			Message = reader.ReadString();
-			reader.Read();
+			bool empty = reader.IsEmptyElement;
+			Message = string.Empty;
+			reader.ReadStartElement();
+
+			if (!empty)
+			{
+				Message = reader.ReadString();
+				reader.ReadEndElement();
+			}
 		}
 
 		public void WriteXml(XmlWriter writer)

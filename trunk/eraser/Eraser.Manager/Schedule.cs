@@ -166,7 +166,7 @@ namespace Eraser.Manager
 		/// Retrieves the text that should be displayed detailing the nature of
 		/// the schedule for use in user interface elements.
 		/// </summary>
-		public abstract string ToString();
+		public abstract override string ToString();
 
 		/// <summary>
 		/// The owner of this schedule item.
@@ -288,6 +288,7 @@ namespace Eraser.Manager
 
 		public override void ReadXml(XmlReader reader)
 		{
+			bool empty = reader.IsEmptyElement;
 			if (!Enum.TryParse<RecurringScheduleUnit>(reader.GetAttribute("type"), out type))
 				throw new InvalidDataException();
 			if (!int.TryParse(reader.GetAttribute("frequency"), out frequency))
@@ -308,7 +309,17 @@ namespace Eraser.Manager
 				throw new InvalidDataException();
 			LastRun = lastRun;
 			NextRunCache = nextRunCache;
-			reader.Read();
+			reader.ReadStartElement();
+
+			//Skip all child elements until we get to our </RecurringSchedule>
+			if (!empty)
+			{
+				while (reader.Name != "RecurringSchedule" &&
+					reader.NodeType != XmlNodeType.EndElement)
+				{
+					;
+				}
+			}
 		}
 
 		public override void WriteXml(XmlWriter writer)
