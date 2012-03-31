@@ -273,10 +273,10 @@
   <data name="plugins.Label" xml:space="preserve">
     <value>Estensioni</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="eraseDriveMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>196, 13</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Text" xml:space="preserve">
+  <data name="eraseDriveMethodLbl.Text" xml:space="preserve">
     <value>Metodo di default di pulizia spazio libero:</value>
   </data>
   <data name="eraseFilesMethodLbl.Size" type="System.Drawing.Size, System.Drawing">

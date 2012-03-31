@@ -92,8 +92,8 @@ namespace Eraser
 		{
 			IErasureMethod method = (IErasureMethod)sender;
 			eraseFilesMethod.Items.Add(method);
-			if (method is IUnusedSpaceErasureMethod)
-				eraseUnusedMethod.Items.Add(method);
+			if (method is IDriveErasureMethod)
+				eraseDriveMethod.Items.Add(method);
 		}
 
 		private void OnMethodUnregistered(object sender, EventArgs e)
@@ -106,17 +106,17 @@ namespace Eraser
 					break;
 				}
 
-			foreach (IErasureMethod obj in eraseUnusedMethod.Items)
+			foreach (IErasureMethod obj in eraseDriveMethod.Items)
 				if (obj.Guid == method.Guid)
 				{
-					eraseUnusedMethod.Items.Remove(obj);
+					eraseDriveMethod.Items.Remove(obj);
 					break;
 				}
 
 			if (eraseFilesMethod.SelectedIndex == -1)
 				eraseFilesMethod.SelectedIndex = 0;
-			if (eraseUnusedMethod.SelectedIndex == -1)
-				eraseUnusedMethod.SelectedIndex = 0;
+			if (eraseDriveMethod.SelectedIndex == -1)
+				eraseDriveMethod.SelectedIndex = 0;
 		}
 
 		private void LoadPluginDependantValues()
@@ -136,8 +136,8 @@ namespace Eraser
 			foreach (IErasureMethod method in Host.Instance.ErasureMethods)
 			{
 				eraseFilesMethod.Items.Add(method);
-				if (method is IUnusedSpaceErasureMethod)
-					eraseUnusedMethod.Items.Add(method);
+				if (method is IDriveErasureMethod)
+					eraseDriveMethod.Items.Add(method);
 			}
 
 			//Refresh the list of PRNGs
@@ -162,10 +162,10 @@ namespace Eraser
 					break;
 				}
 
-			foreach (IErasureMethod method in eraseUnusedMethod.Items)
-				if (method.Guid == Host.Instance.Settings.DefaultUnusedSpaceErasureMethod)
+			foreach (IErasureMethod method in eraseDriveMethod.Items)
+				if (method.Guid == Host.Instance.Settings.DefaultDriveErasureMethod)
 				{
-					eraseUnusedMethod.SelectedItem = method;
+					eraseDriveMethod.SelectedItem = method;
 					break;
 				}
 
@@ -212,15 +212,15 @@ namespace Eraser
 				}
 				defaultsList.Add(S._("Default file erasure method"));
 			}
-			if (eraseUnusedMethod.SelectedIndex == -1)
+			if (eraseDriveMethod.SelectedIndex == -1)
 			{
-				if (eraseUnusedMethod.Items.Count > 0)
+				if (eraseDriveMethod.Items.Count > 0)
 				{
-					eraseUnusedMethod.SelectedIndex = 0;
-					Host.Instance.Settings.DefaultUnusedSpaceErasureMethod =
-						((IErasureMethod)eraseUnusedMethod.SelectedItem).Guid;
+					eraseDriveMethod.SelectedIndex = 0;
+					Host.Instance.Settings.DefaultDriveErasureMethod =
+						((IErasureMethod)eraseDriveMethod.SelectedItem).Guid;
 				}
-				defaultsList.Add(S._("Default unused space erasure method"));
+				defaultsList.Add(S._("Default drive erasure method"));
 			}
 			if (erasePRNG.SelectedIndex == -1)
 			{
@@ -388,16 +388,16 @@ namespace Eraser
 					"was selected."));
 				return;
 			}
-			else if (eraseUnusedMethod.SelectedIndex == -1)
+			else if (eraseDriveMethod.SelectedIndex == -1)
 			{
-				errorProvider.SetError(eraseUnusedMethod, S._("An invalid unused disk space " +
-					"erasure method was selected."));
+				errorProvider.SetError(eraseDriveMethod, S._("An invalid drive erasure method " +
+					"was selected."));
 				return;
 			}
 			else if (erasePRNG.SelectedIndex == -1)
 			{
-				errorProvider.SetError(erasePRNG, S._("An invalid randomness data " +
-					"source was selected."));
+				errorProvider.SetError(erasePRNG, S._("An invalid randomness data source was " +
+					"selected."));
 				return;
 			}
 			else if (plausibleDeniability.Checked && plausibleDeniabilityFiles.Items.Count == 0)
@@ -421,8 +421,8 @@ namespace Eraser
 
 			Host.Instance.Settings.DefaultFileErasureMethod =
 				((IErasureMethod)eraseFilesMethod.SelectedItem).Guid;
-			Host.Instance.Settings.DefaultUnusedSpaceErasureMethod =
-				((IErasureMethod)eraseUnusedMethod.SelectedItem).Guid;
+			Host.Instance.Settings.DefaultDriveErasureMethod =
+				((IErasureMethod)eraseDriveMethod.SelectedItem).Guid;
 
 			IPrng newPRNG = (IPrng)erasePRNG.SelectedItem;
 			if (newPRNG.Guid != Host.Instance.Prngs.ActivePrng.Guid)

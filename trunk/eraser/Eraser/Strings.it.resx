@@ -294,8 +294,8 @@
   <data name="Default file erasure method" xml:space="preserve">
     <value>Metodo di pulizia di default </value>
   </data>
-  <data name="Default unused space erasure method" xml:space="preserve">
-    <value>Metodo di pulizia dello spazio libero di default</value>
+  <data name="Default drive erasure method" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Randomness data source" xml:space="preserve">
     <value>Sorgente dati casuale</value>
@@ -315,8 +315,8 @@
   <data name="An invalid file erasure method was selected." xml:space="preserve">
     <value>E' stato scelto un metodo di pulizia non valido.</value>
   </data>
-  <data name="An invalid unused disk space erasure method was selected." xml:space="preserve">
-    <value>E' stato scelto un metodo di pulizia dello spazio libero non valido.</value>
+  <data name="An invalid drive erasure method was selected." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="An invalid randomness data source was selected." xml:space="preserve">
     <value>E' stata scelta una sorgente dati casuale non valida.</value>
@@ -333,8 +333,8 @@
   <data name="(This erasure type does not have any settings to define.)" xml:space="preserve">
     <value>(Questo tipo di pulizia non ha impostazioni da definire.)</value>
   </data>
-  <data name="The erasure method selected does not support unused disk space erasures." xml:space="preserve">
-    <value>Il metodo di pulizia selezionato non consente la pulizia dello spazio libero.</value>
+  <data name="The erasure method selected does not support erasing the erasure target." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="{0}, " xml:space="preserve">
     <value>(Untranslated)</value>

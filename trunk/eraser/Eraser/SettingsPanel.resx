@@ -112,32 +112,35 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="errorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="saveSettings.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="saveSettings.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="saveSettings.Location" type="System.Drawing.Point, System.Drawing">
     <value>639, 27</value>
   </data>
   <data name="saveSettings.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 23</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="saveSettings.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
   </data>
@@ -148,7 +151,7 @@
     <value>saveSettings</value>
   </data>
   <data name="&gt;&gt;saveSettings.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;saveSettings.Parent" xml:space="preserve">
     <value>$this</value>
@@ -166,61 +169,61 @@
     <value>pluginsManagerColName</value>
   </data>
   <data name="&gt;&gt;pluginsManagerColName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pluginsManagerColAuthor.Name" xml:space="preserve">
     <value>pluginsManagerColAuthor</value>
   </data>
   <data name="&gt;&gt;pluginsManagerColAuthor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pluginsManagerColVersion.Name" xml:space="preserve">
     <value>pluginsManagerColVersion</value>
   </data>
   <data name="&gt;&gt;pluginsManagerColVersion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pluginsManagerColPath.Name" xml:space="preserve">
     <value>pluginsManagerColPath</value>
   </data>
   <data name="&gt;&gt;pluginsManagerColPath.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;settingsToolStripMenuItem.Name" xml:space="preserve">
     <value>settingsToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;settingsToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pluginsManagerImageList.Name" xml:space="preserve">
     <value>pluginsManagerImageList</value>
   </data>
   <data name="&gt;&gt;pluginsManagerImageList.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ImageList, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;errorProvider.Name" xml:space="preserve">
     <value>errorProvider</value>
   </data>
   <data name="&gt;&gt;errorProvider.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ErrorProvider, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;openFileDialog.Name" xml:space="preserve">
     <value>openFileDialog</value>
   </data>
   <data name="&gt;&gt;openFileDialog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;folderBrowserDialog.Name" xml:space="preserve">
     <value>folderBrowserDialog</value>
   </data>
   <data name="&gt;&gt;folderBrowserDialog.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.FolderBrowserDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>SettingsPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Eraser.BasePanel, Eraser, Version=6.1.0.2112, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
+    <value>Eraser.BasePanel, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="titleIcon.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
@@ -229,7 +232,7 @@
     <value>titleIcon</value>
   </data>
   <data name="&gt;&gt;titleIcon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;titleIcon.Parent" xml:space="preserve">
     <value>$this</value>
@@ -256,7 +259,7 @@
     <value>schedulerClearCompleted</value>
   </data>
   <data name="&gt;&gt;schedulerClearCompleted.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;schedulerClearCompleted.Parent" xml:space="preserve">
     <value>content</value>
@@ -286,7 +289,7 @@
     <value>plausibleDeniabilityFilesAddFolder</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesAddFolder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesAddFolder.Parent" xml:space="preserve">
     <value>content</value>
@@ -316,7 +319,7 @@
     <value>plausibleDeniabilityFilesRemove</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesRemove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesRemove.Parent" xml:space="preserve">
     <value>content</value>
@@ -346,7 +349,7 @@
     <value>plausibleDeniabilityFilesAddFile</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesAddFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesAddFile.Parent" xml:space="preserve">
     <value>content</value>
@@ -373,7 +376,7 @@
     <value>plausibleDeniabilityFiles</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFiles.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFiles.Parent" xml:space="preserve">
     <value>content</value>
@@ -397,7 +400,7 @@
     <value>uiLanguage</value>
   </data>
   <data name="&gt;&gt;uiLanguage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;uiLanguage.Parent" xml:space="preserve">
     <value>content</value>
@@ -427,7 +430,7 @@
     <value>uiLanguageLbl</value>
   </data>
   <data name="&gt;&gt;uiLanguageLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;uiLanguageLbl.Parent" xml:space="preserve">
     <value>content</value>
@@ -457,7 +460,7 @@
     <value>plausibleDeniability</value>
   </data>
   <data name="&gt;&gt;plausibleDeniability.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;plausibleDeniability.Parent" xml:space="preserve">
     <value>content</value>
@@ -481,7 +484,7 @@
     <value>erasePRNG</value>
   </data>
   <data name="&gt;&gt;erasePRNG.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;erasePRNG.Parent" xml:space="preserve">
     <value>content</value>
@@ -511,7 +514,7 @@
     <value>erasePRNGLbl</value>
   </data>
   <data name="&gt;&gt;erasePRNGLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;erasePRNGLbl.Parent" xml:space="preserve">
     <value>content</value>
@@ -541,7 +544,7 @@
     <value>schedulerMissedIgnore</value>
   </data>
   <data name="&gt;&gt;schedulerMissedIgnore.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;schedulerMissedIgnore.Parent" xml:space="preserve">
     <value>content</value>
@@ -571,7 +574,7 @@
     <value>schedulerMissedImmediate</value>
   </data>
   <data name="&gt;&gt;schedulerMissedImmediate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;schedulerMissedImmediate.Parent" xml:space="preserve">
     <value>content</value>
@@ -601,7 +604,7 @@
     <value>schedulerMissed</value>
   </data>
   <data name="&gt;&gt;schedulerMissed.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;schedulerMissed.Parent" xml:space="preserve">
     <value>content</value>
@@ -637,7 +640,7 @@
     <value>scheduler</value>
   </data>
   <data name="&gt;&gt;scheduler.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2112, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;scheduler.Parent" xml:space="preserve">
     <value>content</value>
@@ -672,7 +675,7 @@
   <data name="pluginsManagerColPath.Width" type="System.Int32, mscorlib">
     <value>180</value>
   </data>
-  <metadata name="pluginsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="pluginsMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>134, 17</value>
   </metadata>
   <data name="pluginsMenu.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
@@ -691,11 +694,11 @@
     <value>pluginsMenu</value>
   </data>
   <data name="&gt;&gt;pluginsMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="pluginsManager.Groups" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
         ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
@@ -705,7 +708,7 @@
   </data>
   <data name="pluginsManager.Groups1" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACJTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0dyb3VwBAAAAAZIZWFkZXIPSGVhZGVyQWxpZ25tZW50A1Rh
         ZwROYW1lAQQCAShTeXN0ZW0uV2luZG93cy5Gb3Jtcy5Ib3Jpem9udGFsQWxpZ25tZW50AgAAAAIAAAAG
@@ -722,29 +725,29 @@
   <data name="pluginsManager.Size" type="System.Drawing.Size, System.Drawing">
     <value>689, 235</value>
   </data>
-  <metadata name="pluginsManagerImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="pluginsManagerImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>560, 17</value>
   </metadata>
   <data name="pluginsManagerImageList.ImageStream" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAB4
-        AwAAAk1TRnQBSQFMAwEBAAE8AQABPAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
-        ARADAAEBAQABIAYAARAuAAM/AW0BKgFHAXYB/wM6AWL0AAEfAXYBxwH/AUABzQH8Af8BMgFXAYcB//QA
-        AR8BdgHHAf8BOQGgAdIB/wNEAXn0AAEfAXYBxwH/AUIB0QH8Af8BMgFXAYcB//QAAR8BdgHHAf8BOwGh
-        AdEB/wNEAXn0AAEfAXYBxwH/AUwB4gH9Af8BMwFTAYEB//QAAR8BdgHHAf8BUwHXAfwB/wEzAVMBgQH/
-        8AADLQFGAR8BdgHHAf8BaQHeAfwB/wEzAVMBgQH/AyQBNegAAzUBVgEsAYcBxwH/AVYBwAHwAf8BSwHL
-        Af4B/wFMAbMB3QH/ATcBSAFhAf8DKgFB4AADMQFNASwBhwHIAf8BTQG6AfcB/wFPAcIB+QH/AUUBtwH5
-        Af8BYwHWAfsB/wFAAaYB6AH/ATcBRwFfAf8DJAE23AABXAFhAWgB4QFPAcEB+QH/AUsBtwH5Af8BkwHu
-        Af4B/wGPAewB/gH/AU0BtAHzAf8BjQHjAf4B/wFKAboB4gH/AV4BXwFhAdrcAAE0AXcBpgH8AVQBxgH5
-        Af8BZAGKAawB/wFkAYoBrAH/AWQBigGsAf8BZAGKAawB/wFkAYoBrAH/AV0B1QH6Af8BMgE/AWIB/NwA
-        AVsBZAFuAecBVwHSAfoB/wFFAV8BhAH/DAABSAGQAcEB/wFOAbsB4QH/AloBXAHf3AADTAGSAUEBnQHQ
-        Af8BdQHjAfoB/wFFAYUBngH/AUwBXwGHAf8BTAFxAZwB/wFcAWgBbgHhAUMBjAGqAf8DSAGF3AADEgEY
-        A1QBrAFBAZoBzQH/AWkB1QH1Af8BbAHpAf4B/wFoAdQB8wH/AUUBkgGyAf8BUAJRAZwDFwEg4AADEgEY
-        A0cBggJZAVoBxwFFAYEBmgH7AVwBXwFkAdsDRwGCAxcBINAAAUIBTQE+BwABPgMAASgDAAFAAwABEAMA
-        AQEBAAEBBQABgBcAA/8BAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH8
-        AR8GAAH4AQ8GAAHwAQcGAAHwAQcGAAHwAQcGAAHxAccGAAHwAQcGAAHwAQcGAAH4AQ8GAAs=
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAB0
+        AwAAAk1TRnQBSQFMAwEBAAFEAQABRAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
+        ARADAAEBAQABIAYAARAuAAM/AW0BKQFGAXUB/wM6AWL0AAEeAXUBxwH/AT8BzQH8Af8BMQFWAYcB//QA
+        AR4BdQHHAf8BOAGgAdIB/wNEAXn0AAEeAXUBxwH/AUEB0QH8Af8BMQFWAYcB//QAAR4BdQHHAf8BOgGh
+        AdEB/wNEAXn0AAEeAXUBxwH/AUsB4gH9Af8BMgFSAYEB//QAAR4BdQHHAf8BUgHXAfwB/wEyAVIBgQH/
+        8AADLQFGAR4BdQHHAf8BaAHeAfwB/wEyAVIBgQH/AyQBNegAAzUBVgErAYcBxwH/AVUBwAHwAf8BSgHL
+        Af4B/wFLAbMB3QH/ATYBRwFgAf8DKgFB4AADMQFNASsBhwHIAf8BTAG6AfcB/wFOAcIB+QH/AUQBtwH5
+        Af8BYgHWAfsB/wE/AaYB6AH/ATYBRgFeAf8DJAE23AABXAFhAWYB4QFOAcEB+QH/AUoBtwH5Af8BkwHu
+        Af4B/wGPAewB/gH/AUwBtAHzAf8BjQHjAf4B/wFJAboB4gH/Al4BYQHa3AABMwF2AaMB/AFTAcYB+QH/
+        AWMBigGsAf8BYwGKAawB/wFjAYoBrAH/AWMBigGsAf8BYwGKAawB/wFcAdUB+gH/ATEBPgFhAfzcAAFc
+        AWQBbAHnAVYB0gH6Af8BRAFeAYQB/wwAAUcBkAHBAf8BTQG7AeEB/wJbAVwB39wAA0wBkgFAAZ0B0AH/
+        AXQB4wH6Af8BRAGFAZ4B/wFLAV4BhwH/AUsBcAGcAf8BXAFmAWoB4QFCAYwBqgH/A0gBhdwAAxIBGANU
+        AawBQAGaAc0B/wFoAdUB9QH/AWsB6QH+Af8BZwHUAfMB/wFEAZIBsgH/AVACUQGcAxcBIOAAAxIBGANH
+        AYIDWQHHAUUBgAGYAfsBXAFfAWMB2wNHAYIDFwEg0AABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEA
+        AQEFAAGAFwAD/wEAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAfwBHwYA
+        AfgBDwYAAfABBwYAAfABBwYAAfABBwYAAfEBxwYAAfABBwYAAfABBwYAAfgBDwYACw==
 </value>
   </data>
   <data name="pluginsManager.TabIndex" type="System.Int32, mscorlib">
@@ -754,7 +757,7 @@
     <value>pluginsManager</value>
   </data>
   <data name="&gt;&gt;pluginsManager.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pluginsManager.Parent" xml:space="preserve">
     <value>content</value>
@@ -790,7 +793,7 @@
     <value>plugins</value>
   </data>
   <data name="&gt;&gt;plugins.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2112, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;plugins.Parent" xml:space="preserve">
     <value>content</value>
@@ -798,28 +801,28 @@
   <data name="&gt;&gt;plugins.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="eraseUnusedMethod.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+  <data name="eraseDriveMethod.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
   </data>
-  <data name="eraseUnusedMethod.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="eraseDriveMethod.Location" type="System.Drawing.Point, System.Drawing">
     <value>350, 138</value>
   </data>
-  <data name="eraseUnusedMethod.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="eraseDriveMethod.Size" type="System.Drawing.Size, System.Drawing">
     <value>290, 21</value>
   </data>
-  <data name="eraseUnusedMethod.TabIndex" type="System.Int32, mscorlib">
+  <data name="eraseDriveMethod.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethod.Name" xml:space="preserve">
-    <value>eraseUnusedMethod</value>
+  <data name="&gt;&gt;eraseDriveMethod.Name" xml:space="preserve">
+    <value>eraseDriveMethod</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethod.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;eraseDriveMethod.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethod.Parent" xml:space="preserve">
+  <data name="&gt;&gt;eraseDriveMethod.Parent" xml:space="preserve">
     <value>content</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethod.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;eraseDriveMethod.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
   <data name="eraseFilesMethod.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
@@ -838,7 +841,7 @@
     <value>eraseFilesMethod</value>
   </data>
   <data name="&gt;&gt;eraseFilesMethod.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;eraseFilesMethod.Parent" xml:space="preserve">
     <value>content</value>
@@ -846,34 +849,34 @@
   <data name="&gt;&gt;eraseFilesMethod.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="eraseUnusedMethodLbl.AutoSize" type="System.Boolean, mscorlib">
+  <data name="eraseDriveMethodLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="eraseUnusedMethodLbl.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
+  <data name="eraseDriveMethodLbl.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="eraseDriveMethodLbl.Location" type="System.Drawing.Point, System.Drawing">
     <value>17, 141</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>190, 13</value>
+  <data name="eraseDriveMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 13</value>
   </data>
-  <data name="eraseUnusedMethodLbl.TabIndex" type="System.Int32, mscorlib">
+  <data name="eraseDriveMethodLbl.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Text" xml:space="preserve">
-    <value>Default unused space erasure method:</value>
+  <data name="eraseDriveMethodLbl.Text" xml:space="preserve">
+    <value>Default drive erasure method:</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethodLbl.Name" xml:space="preserve">
-    <value>eraseUnusedMethodLbl</value>
+  <data name="&gt;&gt;eraseDriveMethodLbl.Name" xml:space="preserve">
+    <value>eraseDriveMethodLbl</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethodLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;eraseDriveMethodLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethodLbl.Parent" xml:space="preserve">
+  <data name="&gt;&gt;eraseDriveMethodLbl.Parent" xml:space="preserve">
     <value>content</value>
   </data>
-  <data name="&gt;&gt;eraseUnusedMethodLbl.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;eraseDriveMethodLbl.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
   <data name="eraseFilesMethodLbl.AutoSize" type="System.Boolean, mscorlib">
@@ -898,7 +901,7 @@
     <value>eraseFilesMethodLbl</value>
   </data>
   <data name="&gt;&gt;eraseFilesMethodLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;eraseFilesMethodLbl.Parent" xml:space="preserve">
     <value>content</value>
@@ -934,7 +937,7 @@
     <value>erase</value>
   </data>
   <data name="&gt;&gt;erase.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2112, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;erase.Parent" xml:space="preserve">
     <value>content</value>
@@ -964,7 +967,7 @@
     <value>lockedForceUnlock</value>
   </data>
   <data name="&gt;&gt;lockedForceUnlock.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lockedForceUnlock.Parent" xml:space="preserve">
     <value>content</value>
@@ -994,7 +997,7 @@
     <value>uiContextMenu</value>
   </data>
   <data name="&gt;&gt;uiContextMenu.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;uiContextMenu.Parent" xml:space="preserve">
     <value>content</value>
@@ -1030,7 +1033,7 @@
     <value>ui</value>
   </data>
   <data name="&gt;&gt;ui.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2112, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;ui.Parent" xml:space="preserve">
     <value>content</value>
@@ -1048,7 +1051,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;content.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;content.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1069,7 +1072,7 @@
     <value>titleLabel</value>
   </data>
   <data name="&gt;&gt;titleLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;titleLabel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -1077,13 +1080,13 @@
   <data name="&gt;&gt;titleLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <metadata name="openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>257, 17</value>
   </metadata>
   <data name="openFileDialog.Filter" xml:space="preserve">
     <value>All Files (*.*)|*.*</value>
   </data>
-  <metadata name="folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="folderBrowserDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>397, 17</value>
   </metadata>
 </root>

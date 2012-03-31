@@ -57,15 +57,15 @@ namespace Eraser
 			this.lockedForceUnlock = new System.Windows.Forms.CheckBox();
 			this.erase = new Eraser.LightGroup();
 			this.eraseFilesMethodLbl = new System.Windows.Forms.Label();
-			this.eraseUnusedMethodLbl = new System.Windows.Forms.Label();
+			this.eraseDriveMethodLbl = new System.Windows.Forms.Label();
 			this.eraseFilesMethod = new System.Windows.Forms.ComboBox();
-			this.eraseUnusedMethod = new System.Windows.Forms.ComboBox();
+			this.eraseDriveMethod = new System.Windows.Forms.ComboBox();
 			this.plugins = new Eraser.LightGroup();
 			this.pluginsManager = new System.Windows.Forms.ListView();
-			this.pluginsManagerColName = new System.Windows.Forms.ColumnHeader();
-			this.pluginsManagerColAuthor = new System.Windows.Forms.ColumnHeader();
-			this.pluginsManagerColVersion = new System.Windows.Forms.ColumnHeader();
-			this.pluginsManagerColPath = new System.Windows.Forms.ColumnHeader();
+			this.pluginsManagerColName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.pluginsManagerColAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.pluginsManagerColVersion = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.pluginsManagerColPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.pluginsMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.pluginsManagerImageList = new System.Windows.Forms.ImageList(this.components);
@@ -121,9 +121,9 @@ namespace Eraser
 			this.content.Controls.Add(this.scheduler);
 			this.content.Controls.Add(this.pluginsManager);
 			this.content.Controls.Add(this.plugins);
-			this.content.Controls.Add(this.eraseUnusedMethod);
+			this.content.Controls.Add(this.eraseDriveMethod);
 			this.content.Controls.Add(this.eraseFilesMethod);
-			this.content.Controls.Add(this.eraseUnusedMethodLbl);
+			this.content.Controls.Add(this.eraseDriveMethodLbl);
 			this.content.Controls.Add(this.eraseFilesMethodLbl);
 			this.content.Controls.Add(this.erase);
 			this.content.Controls.Add(this.lockedForceUnlock);
@@ -168,11 +168,11 @@ namespace Eraser
 			this.errorProvider.SetIconAlignment(this.eraseFilesMethodLbl, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("eraseFilesMethodLbl.IconAlignment"))));
 			this.eraseFilesMethodLbl.Name = "eraseFilesMethodLbl";
 			// 
-			// eraseUnusedMethodLbl
+			// eraseDriveMethodLbl
 			// 
-			resources.ApplyResources(this.eraseUnusedMethodLbl, "eraseUnusedMethodLbl");
-			this.errorProvider.SetIconAlignment(this.eraseUnusedMethodLbl, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("eraseUnusedMethodLbl.IconAlignment"))));
-			this.eraseUnusedMethodLbl.Name = "eraseUnusedMethodLbl";
+			resources.ApplyResources(this.eraseDriveMethodLbl, "eraseDriveMethodLbl");
+			this.errorProvider.SetIconAlignment(this.eraseDriveMethodLbl, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("eraseDriveMethodLbl.IconAlignment"))));
+			this.eraseDriveMethodLbl.Name = "eraseDriveMethodLbl";
 			// 
 			// eraseFilesMethod
 			// 
@@ -181,12 +181,12 @@ namespace Eraser
 			resources.ApplyResources(this.eraseFilesMethod, "eraseFilesMethod");
 			this.eraseFilesMethod.Name = "eraseFilesMethod";
 			// 
-			// eraseUnusedMethod
+			// eraseDriveMethod
 			// 
-			this.eraseUnusedMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.errorProvider.SetIconAlignment(this.eraseUnusedMethod, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("eraseUnusedMethod.IconAlignment"))));
-			resources.ApplyResources(this.eraseUnusedMethod, "eraseUnusedMethod");
-			this.eraseUnusedMethod.Name = "eraseUnusedMethod";
+			this.eraseDriveMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.errorProvider.SetIconAlignment(this.eraseDriveMethod, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("eraseDriveMethod.IconAlignment"))));
+			resources.ApplyResources(this.eraseDriveMethod, "eraseDriveMethod");
+			this.eraseDriveMethod.Name = "eraseDriveMethod";
 			// 
 			// plugins
 			// 
@@ -376,10 +376,10 @@ namespace Eraser
 			// 
 			// SettingsPanel
 			// 
+			resources.ApplyResources(this, "$this");
 			this.Controls.Add(this.saveSettings);
 			this.errorProvider.SetIconAlignment(this, ((System.Windows.Forms.ErrorIconAlignment)(resources.GetObject("$this.IconAlignment"))));
 			this.Name = "SettingsPanel";
-			resources.ApplyResources(this, "$this");
 			this.Controls.SetChildIndex(this.saveSettings, 0);
 			this.Controls.SetChildIndex(this.titleLabel, 0);
 			this.Controls.SetChildIndex(this.titleIcon, 0);
@@ -399,11 +399,11 @@ namespace Eraser
 		private System.Windows.Forms.CheckBox lockedForceUnlock;
 		private System.Windows.Forms.CheckBox uiContextMenu;
 		private LightGroup ui;
-		private System.Windows.Forms.Label eraseUnusedMethodLbl;
+		private System.Windows.Forms.Label eraseDriveMethodLbl;
 		private System.Windows.Forms.Label eraseFilesMethodLbl;
 		private LightGroup erase;
 		private System.Windows.Forms.ComboBox eraseFilesMethod;
-		private System.Windows.Forms.ComboBox eraseUnusedMethod;
+		private System.Windows.Forms.ComboBox eraseDriveMethod;
 		private System.Windows.Forms.ListView pluginsManager;
 		private System.Windows.Forms.ColumnHeader pluginsManagerColName;
 		private System.Windows.Forms.ColumnHeader pluginsManagerColAuthor;

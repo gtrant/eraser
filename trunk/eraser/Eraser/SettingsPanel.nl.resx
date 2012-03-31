@@ -343,10 +343,10 @@
   <data name="plugins.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="eraseUnusedMethod.Error" xml:space="preserve">
+  <data name="eraseDriveMethod.Error" xml:space="preserve">
     <value />
   </data>
-  <data name="eraseUnusedMethod.IconPadding" type="System.Int32, mscorlib">
+  <data name="eraseDriveMethod.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="eraseFilesMethod.Error" xml:space="preserve">
@@ -355,16 +355,16 @@
   <data name="eraseFilesMethod.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Error" xml:space="preserve">
+  <data name="eraseDriveMethodLbl.Error" xml:space="preserve">
     <value />
   </data>
-  <data name="eraseUnusedMethodLbl.IconPadding" type="System.Int32, mscorlib">
+  <data name="eraseDriveMethodLbl.IconPadding" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="eraseDriveMethodLbl.Size" type="System.Drawing.Size, System.Drawing">
     <value>211, 13</value>
   </data>
-  <data name="eraseUnusedMethodLbl.Text" xml:space="preserve">
+  <data name="eraseDriveMethodLbl.Text" xml:space="preserve">
     <value>Standaard ongebruikte ruimte wis methode:</value>
   </data>
   <data name="eraseFilesMethodLbl.Error" xml:space="preserve">

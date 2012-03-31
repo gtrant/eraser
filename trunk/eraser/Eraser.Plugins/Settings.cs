@@ -59,22 +59,22 @@ namespace Eraser.Plugins
 		}
 
 		/// <summary>
-		/// The default unused space erasure method. This is a GUID since methods
-		/// are implemented through plugins and plugins may not be loaded and
-		/// missing references may follow.
+		/// The default drive erasure method. This is a GUID since methods are
+		/// implemented through plugins and plugins may not be loaded and missing
+		/// references may follow.
 		/// </summary>
-		public Guid DefaultUnusedSpaceErasureMethod
+		public Guid DefaultDriveErasureMethod
 		{
 			get
 			{
-				Guid result = Store.GetValue<Guid>("DefaultUnusedSpaceErasureMethod");
+				Guid result = Store.GetValue<Guid>("DefaultDriveErasureMethod");
 				if (result == Guid.Empty)
 					result = new Guid("{BF8BA267-231A-4085-9BF9-204DE65A6641}");
 				return result;
 			}
 			set
 			{
-				Store.SetValue("DefaultUnusedSpaceErasureMethod", value);
+				Store.SetValue("DefaultDriveErasureMethod", value);
 			}
 		}
 
