@@ -213,10 +213,10 @@
   <data name="Partition" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
+  <data name="The program does not have the required permissions to erase the disk. Run the program as an administrator and retry the operation." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
+  <data name="The program does not have the required permissions to erase the disk." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="The Drive erasure target requires a volume or physical drive selected for erasure." xml:space="preserve">
@@ -331,6 +331,12 @@
     <value>(Untranslated)</value>
   </data>
   <data name="Unused disk space" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk. Run the program as an administrator and retry the operation." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The program does not have the required permissions to erase the unused space on disk." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="This computer has had System Restore or Volume Shadow Copies enabled. This may allow copies of files stored on the disk to be recovered and pose a security concern." xml:space="preserve">
