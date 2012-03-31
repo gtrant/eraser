@@ -114,7 +114,8 @@ namespace Eraser.DefaultPlugins
 				Method = Host.Instance.ErasureMethods[methodGuid];
 
 			if (advance)
-				reader.Read();
+				throw new NotImplementedException("ErasureTargetBase.ReadXml must be " +
+					"implemented by a derived class.");
 		}
 
 		public void ReadXml(XmlReader reader)
