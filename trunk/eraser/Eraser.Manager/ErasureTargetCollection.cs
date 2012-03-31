@@ -93,18 +93,26 @@ namespace Eraser.Manager
 				targetSerializers.Add(new XmlSerializer(target.GetType()));
 
 			list.Clear();
-			while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+			bool empty = reader.IsEmptyElement;
+			reader.ReadStartElement("ErasureTargetCollection");
+			if (!empty)
 			{
-				foreach (XmlSerializer serializer in targetSerializers)
+				while (reader.NodeType != XmlNodeType.EndElement)
 				{
-					XmlReader subTree = reader.ReadSubtree();
-					if (serializer.CanDeserialize(subTree))
+					foreach (XmlSerializer serializer in targetSerializers)
 					{
-						IErasureTarget target = (IErasureTarget)serializer.Deserialize(subTree);
-						list.Add(target);
-						break;
+						XmlReader subTree = reader.ReadSubtree();
+						if (serializer.CanDeserialize(subTree))
+						{
+							IErasureTarget target = (IErasureTarget)
+								serializer.Deserialize(subTree);
+							list.Add(target);
+							break;
+						}
 					}
 				}
+
+				reader.ReadEndElement();
 			}
 		}
 
