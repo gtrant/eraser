@@ -121,14 +121,14 @@ namespace Eraser.DefaultPlugins
 					return base.EffectiveMethod;
 
 				return Host.Instance.ErasureMethods[
-					Host.Instance.Settings.DefaultUnusedSpaceErasureMethod];
+					Host.Instance.Settings.DefaultDriveErasureMethod];
 			}
 		}
 
 		public override bool SupportsMethod(IErasureMethod method)
 		{
 			return method == ErasureMethodRegistrar.Default ||
-				method is IUnusedSpaceErasureMethod;
+				method is IDriveErasureMethod;
 		}
 
 		/// <summary>

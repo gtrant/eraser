@@ -32,7 +32,7 @@ namespace Eraser.Plugins.ExtensionPoints
 	/// <summary>
 	/// An interface class representing the method for erasure. If classes only
 	/// inherit this class, then the method can only be used to erase abstract
-	/// streams, not unused drive space.
+	/// streams, not drive space.
 	/// </summary>
 	public interface IErasureMethod : IRegisterable
 	{
@@ -109,9 +109,9 @@ namespace Eraser.Plugins.ExtensionPoints
 
 	/// <summary>
 	/// This class adds functionality to the ErasureMethod class to erase
-	/// unused drive space.
+	/// drives (including unused space and for drive erasures)
 	/// </summary>
-	public interface IUnusedSpaceErasureMethod : IErasureMethod
+	public interface IDriveErasureMethod : IErasureMethod
 	{
 		/// <summary>
 		/// This function will allow clients to erase a file in a set of files
@@ -126,6 +126,6 @@ namespace Eraser.Plugins.ExtensionPoints
 		/// <param name="strm">The stream which needs to be erased.</param>
 		/// <param name="prng">The PRNG source for random data.</param>
 		/// <param name="callback">The progress callback function.</param>
-		void EraseUnusedSpace(Stream stream, IPrng prng, ErasureMethodProgressFunction callback);
+		void EraseDriveSpace(Stream stream, IPrng prng, ErasureMethodProgressFunction callback);
 	}
 }

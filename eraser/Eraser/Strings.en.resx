@@ -294,8 +294,8 @@
   <data name="Default file erasure method" xml:space="preserve">
     <value>Default file erasure method</value>
   </data>
-  <data name="Default unused space erasure method" xml:space="preserve">
-    <value>Default unused space erasure method</value>
+  <data name="Default drive erasure method" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Randomness data source" xml:space="preserve">
     <value>Randomness data source</value>
@@ -315,8 +315,8 @@
   <data name="An invalid file erasure method was selected." xml:space="preserve">
     <value>An invalid file erasure method was selected.</value>
   </data>
-  <data name="An invalid unused disk space erasure method was selected." xml:space="preserve">
-    <value>An invalid unused disk space erasure method was selected.</value>
+  <data name="An invalid drive erasure method was selected." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="An invalid randomness data source was selected." xml:space="preserve">
     <value>An invalid randomness data source was selected.</value>
@@ -333,8 +333,8 @@
   <data name="(This erasure type does not have any settings to define.)" xml:space="preserve">
     <value>(This erasure type does not have any settings to define.)</value>
   </data>
-  <data name="The erasure method selected does not support unused disk space erasures." xml:space="preserve">
-    <value>The erasure method selected does not support unused disk space erasures.</value>
+  <data name="The erasure method selected does not support erasing the erasure target." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="{0}, " xml:space="preserve">
     <value>{0}, </value>

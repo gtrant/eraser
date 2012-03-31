@@ -147,7 +147,7 @@ namespace Eraser.DefaultPlugins
 					return base.EffectiveMethod;
 
 				return Host.Instance.ErasureMethods[
-					Host.Instance.Settings.DefaultUnusedSpaceErasureMethod];
+					Host.Instance.Settings.DefaultDriveErasureMethod];
 			}
 		}
 
@@ -198,13 +198,13 @@ namespace Eraser.DefaultPlugins
 					Environment.OSVersion.Version >= new Version(6, 0))
 				{
 					Logger.Log(S._("The program does not have the required permissions to erase " +
-						"the unused space on disk. Run the program as an administrator and retry " +
-						"the operation."), LogLevel.Error);
+						"the disk. Run the program as an administrator and retry the operation."),
+						LogLevel.Error);
 				}
 				else
 				{
 					Logger.Log(S._("The program does not have the required permissions to erase " +
-						"the unused space on disk."), LogLevel.Error);
+						"the disk."), LogLevel.Error);
 				}
 
 				return;

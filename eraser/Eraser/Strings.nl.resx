@@ -294,8 +294,8 @@
   <data name="Default file erasure method" xml:space="preserve">
     <value>Standard bestand verwijder methode</value>
   </data>
-  <data name="Default unused space erasure method" xml:space="preserve">
-    <value>Standaard ongebruikte ruimte verwijder methode</value>
+  <data name="Default drive erasure method" xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Randomness data source" xml:space="preserve">
     <value>Willekeurige data bron</value>
@@ -315,8 +315,8 @@
   <data name="An invalid file erasure method was selected." xml:space="preserve">
     <value>Een foutieve wis methode was geselecteerd.</value>
   </data>
-  <data name="An invalid unused disk space erasure method was selected." xml:space="preserve">
-    <value>Een foutieve ongebruikte schijfruimte wis methode was geselecteerd.</value>
+  <data name="An invalid drive erasure method was selected." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="An invalid randomness data source was selected." xml:space="preserve">
     <value>Een foutieve Willekeurige data bron was geselecteerd.</value>
@@ -333,8 +333,8 @@
   <data name="(This erasure type does not have any settings to define.)" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The erasure method selected does not support unused disk space erasures." xml:space="preserve">
-    <value>Deze geselecteerde wis methode kan geen ongebruikte schijfruimte te wissen.</value>
+  <data name="The erasure method selected does not support erasing the erasure target." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="{0}, " xml:space="preserve">
     <value>(Untranslated)</value>

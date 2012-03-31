@@ -376,7 +376,7 @@ namespace Eraser
 			//Generate the list of erasure methods.
 			foreach (IErasureMethod method in Host.Instance.ErasureTargetFactories)
 			{
-				methods.AppendFormat(methodFormat, (method is IUnusedSpaceErasureMethod) ?
+				methods.AppendFormat(methodFormat, (method is IDriveErasureMethod) ?
 					"U" : "", method.Name, method.Guid);
 			}
 

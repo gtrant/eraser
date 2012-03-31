@@ -95,9 +95,9 @@ namespace Eraser.DefaultPlugins
 		#endregion
 	}
 
-	abstract class UnusedSpaceErasureMethodBase : ErasureMethodBase, IUnusedSpaceErasureMethod
+	abstract class DriveErasureMethodBase : ErasureMethodBase, IDriveErasureMethod
 	{
-		public virtual void EraseUnusedSpace(Stream stream, IPrng prng,
+		public virtual void EraseDriveSpace(Stream stream, IPrng prng,
 			ErasureMethodProgressFunction callback)
 		{
 			Erase(stream, long.MaxValue, prng, callback);
@@ -111,9 +111,9 @@ namespace Eraser.DefaultPlugins
 	/// plugins.
 	/// 
 	/// Since instances of this class apply data by passes, they can by default
-	/// erase unused drive space as well.
+	/// erase drives as well.
 	/// </summary>
-	abstract class PassBasedErasureMethod : UnusedSpaceErasureMethodBase
+	abstract class PassBasedErasureMethod : DriveErasureMethodBase
 	{
 		public override int Passes
 		{

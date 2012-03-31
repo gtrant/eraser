@@ -84,8 +84,7 @@ namespace Eraser
 		/// <summary>
 		/// Retrieves the settings on the property page as the Eraser Manager API equivalent.
 		/// </summary>
-		/// <returns>An Eraser.Manager.Task.Data or Eraser.Manager.Task.UnusedSpace object
-		/// or any of its inherited classes, depending on the task selected</returns>
+		/// <returns>An Erasure Target, containing the information to be erased.</returns>
 		public IErasureTarget Target
 		{
 			get
@@ -155,7 +154,7 @@ namespace Eraser
 				!type.Target.SupportsMethod((IErasureMethod)methodCmb.SelectedItem))
 			{
 				errorProvider.SetError(methodCmb, S._("The erasure method selected does " +
-					"not support unused disk space erasures."));
+					"not support erasing the erasure target."));
 			}
 			else if (type.Configurer == null || type.Configurer.SaveTo(type.Target))
 			{
