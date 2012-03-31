@@ -84,33 +84,47 @@ namespace Eraser.Manager
 		{
 			Canceled = false;
 			Name = reader.GetAttribute("name");
+			bool empty = reader.IsEmptyElement;
+			reader.ReadStartElement("Task");
 
-			for (reader.Read() ; reader.NodeType != XmlNodeType.EndElement; reader.Read())
+			if (!empty)
 			{
-				switch (reader.Name)
+				while (reader.NodeType != XmlNodeType.EndElement)
 				{
-					case "Schedule":
-						ReadSchedule(reader);
-						break;
+					switch (reader.Name)
+					{
+						case "Schedule":
+							ReadSchedule(reader);
+							break;
 
-					case "ErasureTargetCollection":
-						ReadTargets(reader);
-						break;
+						case "ErasureTargetCollection":
+							ReadTargets(reader);
+							break;
 
-					case "Logs":
-						ReadLog(reader);
-						break;
+						case "Logs":
+							ReadLog(reader);
+							break;
 
-					default:
-						System.Diagnostics.Debug.Assert(false);
-						break;
+						default:
+							System.Diagnostics.Debug.Assert(false);
+							break;
+					}
 				}
+
+				reader.ReadEndElement();
 			}
 		}
 
 		private void ReadSchedule(XmlReader reader)
 		{
-			switch (reader.GetAttribute("type"))
+			//Get the type of the schedule.
+			string type = reader.GetAttribute("type");
+			bool empty = reader.IsEmptyElement;
+
+			//Consume the <Schedule> element
+			reader.ReadStartElement("Schedule");
+
+			switch (type)
 			{
 				case "Now":
 					Schedule = Schedule.RunNow;
@@ -122,7 +136,6 @@ namespace Eraser.Manager
 
 				case "Recurring":
 					XmlSerializer serializer = new XmlSerializer(typeof(RecurringSchedule));
-					reader.ReadStartElement();
 					schedule = (RecurringSchedule)serializer.Deserialize(reader);
 					break;
 
@@ -131,6 +144,10 @@ namespace Eraser.Manager
 					Schedule = Schedule.RunManually;
 					break;
 			}
+
+			if (!empty)
+				//Consume the </Schedule> element, if there is one
+				reader.ReadEndElement();
 		}
 
 		private void ReadTargets(XmlReader reader)
@@ -142,13 +159,25 @@ namespace Eraser.Manager
 
 		private void ReadLog(XmlReader reader)
 		{
+			//Consume the <Logs> element.
+			bool empty = reader.IsEmptyElement;
+			reader.ReadStartElement("Logs");
+			if (empty)
+				return;
+
 			//We can either have a ArrayOfLogEntry or LogRef element as children.
 			Log = new List<LogSinkBase>();
-			while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+			while (reader.NodeType != XmlNodeType.EndElement)
 			{
-				if (reader.Name == "LogRef")
+				if (reader.IsEmptyElement)
 				{
+					reader.ReadStartElement();
+				}
+				else if (reader.Name == "LogRef")
+				{
+					reader.ReadStartElement();
 					Log.Add(new LazyLogSink(reader.ReadString()));
+					reader.ReadEndElement();
 				}
 				else if (reader.Name == "ArrayOfLogEntry")
 				{
@@ -156,6 +185,8 @@ namespace Eraser.Manager
 					Log.Add((LogSink)logSerializer.Deserialize(reader));
 				}
 			}
+
+			reader.ReadEndElement();
 		}
 
 		/// <summary>
