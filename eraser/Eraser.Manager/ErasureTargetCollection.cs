@@ -101,17 +101,19 @@ namespace Eraser.Manager
 				{
 					foreach (XmlSerializer serializer in targetSerializers)
 					{
-						XmlReader subTree = reader.ReadSubtree();
-						if (serializer.CanDeserialize(subTree))
+						bool targetEmpty = reader.IsEmptyElement;
+						if (serializer.CanDeserialize(reader))
 						{
 							IErasureTarget target = (IErasureTarget)
-								serializer.Deserialize(subTree);
+								serializer.Deserialize(reader);
 							list.Add(target);
 							break;
 						}
 					}
 				}
 
+				if (reader.Name != "ErasureTargetCollection")
+					throw new InvalidDataException();
 				reader.ReadEndElement();
 			}
 		}
