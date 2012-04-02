@@ -84,7 +84,7 @@ class Build extends Download
 
 	public function __get($name)
 	{
-		return $this->$name;
+		return parent::__get($name);
 	}
 	
 	/**
