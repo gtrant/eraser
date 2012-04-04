@@ -374,7 +374,7 @@ namespace Eraser
 			methods.AppendLine("    " + new string('-', 75));
 
 			//Generate the list of erasure methods.
-			foreach (IErasureMethod method in Host.Instance.ErasureTargetFactories)
+			foreach (IErasureMethod method in Host.Instance.ErasureMethods)
 			{
 				methods.AppendFormat(methodFormat, (method is IDriveErasureMethod) ?
 					"U" : "", method.Name, method.Guid);
