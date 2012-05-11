@@ -65,6 +65,9 @@
       <HintPath>..\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Lzma#">
+      <HintPath>..\Dependencies\Lzma#.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core">

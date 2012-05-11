@@ -38,6 +38,8 @@ using System.Net;
 using System.Xml;
 using System.ComponentModel;
 
+using SevenZip;
+using SevenZip.Compression.LZMA;
 using ICSharpCode.SharpZipLib.Tar;
 using ICSharpCode.SharpZipLib.BZip2;
 using Microsoft.Win32.SafeHandles;
@@ -616,6 +618,34 @@ namespace Eraser.BlackBox
 	/// </summary>
 	public class BlackBoxReportUploader
 	{
+		private class SevenZipProgressCallback : ICodeProgress
+		{
+			public SevenZipProgressCallback(BlackBoxReportUploader uploader,
+				SteppedProgressManager progress, ProgressManager stepProgress,
+				ProgressChangedEventHandler progressChanged)
+			{
+				Uploader = uploader;
+				Progress = progress;
+				StepProgress = stepProgress;
+				EventHandler = progressChanged;
+			}
+
+			#region ICodeProgress Members
+
+			public void SetProgress(long inSize, long outSize)
+			{
+				StepProgress.Completed = inSize;
+				EventHandler(Uploader, new ProgressChangedEventArgs(Progress, null));
+			}
+
+			#endregion
+
+			private BlackBoxReportUploader Uploader;
+			private SteppedProgressManager Progress;
+			private ProgressManager StepProgress;
+			private ProgressChangedEventHandler EventHandler;
+		}
+
 		/// <summary>
 		/// Constructor.
 		/// </summary>
@@ -730,24 +760,46 @@ namespace Eraser.BlackBox
 
 			ProgressManager step = new ProgressManager();
 			progress.Steps.Add(new SteppedProgressManagerStep(step, 0.5f, "Compressing"));
-			using (FileStream bzipFile = new FileStream(ReportBaseName + ".tbz",
+			CoderPropID[] propIDs = 
+				{
+					CoderPropID.DictionarySize,
+					CoderPropID.PosStateBits,
+					CoderPropID.LitContextBits,
+					CoderPropID.LitPosBits,
+					CoderPropID.Algorithm,
+					CoderPropID.NumFastBytes,
+					CoderPropID.MatchFinder,
+					CoderPropID.EndMarker
+				};
+			object[] properties = 
+				{
+					(Int32)(1 << 24),			//Dictionary Size
+					(Int32)2,					//PosState Bits
+					(Int32)0,					//LitContext Bits
+					(Int32)2,					//LitPos Bits
+					(Int32)2,					//Algorithm
+					(Int32)128,					//Fast Bytes
+					"bt4",						//Match Finger
+					true						//Write end-of-stream
+				};
+
+			SevenZip.Compression.LZMA.Encoder encoder = new SevenZip.Compression.LZMA.Encoder();
+			encoder.SetCoderProperties(propIDs, properties);
+
+			using (FileStream sevenZipFile = new FileStream(ReportBaseName + ".tar.7z",
 				FileMode.Create))
 			using (FileStream tarStream = new FileStream(ReportBaseName + ".tar",
 				FileMode.Open, FileAccess.Read, FileShare.Read, 262144, FileOptions.DeleteOnClose))
-			using (BZip2OutputStream bzipStream = new BZip2OutputStream(bzipFile, 262144))
 			{
-				//Compress the tar file
-				int lastRead = 0;
-				byte[] buffer = new byte[524288];
-				while ((lastRead = tarStream.Read(buffer, 0, buffer.Length)) != 0)
-				{
-					bzipStream.Write(buffer, 0, lastRead);
-					step.Total = tarStream.Length;
-					step.Completed = tarStream.Position;
+				encoder.WriteCoderProperties(sevenZipFile);
+				Int64 fileSize = -1;
+				for (int i = 0; i < 8; i++)
+					sevenZipFile.WriteByte((Byte)(fileSize >> (8 * i)));
 
-					if (progressChanged != null)
-						progressChanged(this, new ProgressChangedEventArgs(progress, null));
-				}
+				step.Total = tarStream.Length;
+				ICodeProgress callback = progressChanged == null ? null :
+					new SevenZipProgressCallback(this, progress, step, progressChanged);
+				encoder.Code(tarStream, sevenZipFile, -1, -1, callback);
 			}
 		}
 
@@ -761,14 +813,14 @@ namespace Eraser.BlackBox
 			SteppedProgressManager overallProgress = new SteppedProgressManager();
 			Compress(overallProgress, progressChanged);
 
-			using (FileStream bzipFile = new FileStream(ReportBaseName + ".tbz",
+			using (FileStream bzipFile = new FileStream(ReportBaseName + ".tar.7z",
 				FileMode.Open, FileAccess.Read, FileShare.Read, 131072, FileOptions.DeleteOnClose))
 			using (Stream logFile = Report.DebugLog)
 			{
 				//Build the POST request
 				PostDataBuilder builder = new PostDataBuilder();
 				builder.AddPart(new PostDataField("action", "upload"));
-				builder.AddPart(new PostDataFileField("crashReport", "Report.tbz", bzipFile));
+				builder.AddPart(new PostDataFileField("crashReport", "Report.tar.7z", bzipFile));
 				AddStackTraceToRequest(Report.StackTrace, builder);
 
 				//Upload the POST request
