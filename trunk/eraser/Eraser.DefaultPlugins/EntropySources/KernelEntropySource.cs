@@ -177,20 +177,27 @@ namespace Eraser.DefaultPlugins
 
 			foreach (VolumeInfo info in VolumeInfo.Volumes)
 			{
-				DiskPerformanceInfo performance = info.Performance;
-				if (performance == null)
-					continue;
+				try
+				{
+					DiskPerformanceInfo performance = info.Performance;
+					if (performance == null)
+						continue;
 
-				result.AddRange(StructToBuffer(performance.BytesRead));
-				result.AddRange(StructToBuffer(performance.BytesWritten));
-				result.AddRange(StructToBuffer(performance.IdleTime));
-				result.AddRange(StructToBuffer(performance.QueryTime));
-				result.AddRange(StructToBuffer(performance.QueueDepth));
-				result.AddRange(StructToBuffer(performance.ReadCount));
-				result.AddRange(StructToBuffer(performance.ReadTime));
-				result.AddRange(StructToBuffer(performance.SplitCount));
-				result.AddRange(StructToBuffer(performance.WriteCount));
-				result.AddRange(StructToBuffer(performance.WriteTime));
+					result.AddRange(StructToBuffer(performance.BytesRead));
+					result.AddRange(StructToBuffer(performance.BytesWritten));
+					result.AddRange(StructToBuffer(performance.IdleTime));
+					result.AddRange(StructToBuffer(performance.QueryTime));
+					result.AddRange(StructToBuffer(performance.QueueDepth));
+					result.AddRange(StructToBuffer(performance.ReadCount));
+					result.AddRange(StructToBuffer(performance.ReadTime));
+					result.AddRange(StructToBuffer(performance.SplitCount));
+					result.AddRange(StructToBuffer(performance.WriteCount));
+					result.AddRange(StructToBuffer(performance.WriteTime));
+				}
+				catch (FileNotFoundException)
+				{
+					//This happens if a drive is ejected while the loop is running.
+				}
 			}
 
 			return result.ToArray();
