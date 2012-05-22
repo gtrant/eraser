@@ -470,6 +470,12 @@ namespace Eraser.Manager
 					{
 						throw;
 					}
+					catch (NotSupportedException e)
+					{
+						//This is thrown whenever we try to erase files on an unsupported
+						//filesystem.
+						Logger.Log(e.Message, LogLevel.Error);
+					}
 					catch (SharingViolationException)
 					{
 					}
