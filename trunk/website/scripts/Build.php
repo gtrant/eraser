@@ -15,7 +15,7 @@ class Build extends Download
 {
 	private $Branch;
 	private $Revision;
-	
+
 	/**
 	 * Constructor.
 	 *
@@ -84,9 +84,11 @@ class Build extends Download
 
 	public function __get($name)
 	{
+		if ($name == 'Revision')
+			return $this->Revision;
 		return parent::__get($name);
 	}
-	
+
 	/**
 	 * Gets the link to the download that can be referenced publicly.
 	 *
@@ -96,7 +98,7 @@ class Build extends Download
 	{
 		return sprintf('http://%s/download.php?id=%d', $_SERVER['SERVER_NAME'], $this->ID);
 	}
-	
+
 	/**
 	 * Creates a new build to be published to the website. This function will first upload
 	 * to the public web server before allowing the build to be downloaded.
