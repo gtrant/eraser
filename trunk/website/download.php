@@ -8,8 +8,8 @@ if (!empty($_GET['id']))
 {
 	try
 	{
-		$download = new Download(intval($_GET['id']));	
-		
+		$download = new Download(intval($_GET['id']));
+
 		//Check for supersedence
 		if (!$download->Superseded)
 		{
@@ -74,7 +74,7 @@ if (!empty($_GET['id']))
 						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.9/Eraser%206.0.9.2343.exe/download">Eraser 6.0.9.2343</a></td>
 						<td>6.0.8.2343</td>
 						<td>6/11/2011 1:30pm</td>
-						<td>&nbsp;</td>
+						<td><?php echo SourceForge::GetDownloads('http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.9/Eraser%206.0.9.2343.exe/download'); ?></td>
 					</tr>
 					<tr>
 						<td colspan="4"><h3>Beta Builds</h3></td>
