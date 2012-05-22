@@ -128,6 +128,13 @@ namespace Eraser.DefaultPlugins
 					Logger.Log(S._("Could not erase files and subfolders in {0} because {1}",
 						info.FullName, e.Message), LogLevel.Error);
 				}
+				catch (IOException e)
+				{
+					//We can get IOExceptions if the drive was disconnected during traversal.
+					//Such an occurrance would be when the user disconnects from a network share.
+					Logger.Log(S._("Could not erase files and subfolders in {0} because {1}",
+						info.FullName, e.Message), LogLevel.Error);
+				}
 			}
 
 			return result.ToArray();
