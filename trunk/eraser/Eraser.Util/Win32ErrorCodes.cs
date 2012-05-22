@@ -97,5 +97,6 @@ namespace Eraser.Util
 		public const int RequestAborted = 1235;
 		public const int NotAReparsePoint = 4390;
 		public const int BadCommand = 22;
+		public const int NotSupported = 50;
 	}
 }
