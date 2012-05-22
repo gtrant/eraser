@@ -476,6 +476,12 @@ namespace Eraser.Manager
 						//filesystem.
 						Logger.Log(e.Message, LogLevel.Error);
 					}
+					catch (PathTooLongException e)
+					{
+						//Until we have code to deal with paths using NT names, we can't
+						//do much about it.
+						Logger.Log(e.Message, LogLevel.Error);
+					}
 					catch (SharingViolationException)
 					{
 					}
