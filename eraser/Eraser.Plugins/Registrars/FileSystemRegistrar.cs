@@ -44,6 +44,9 @@ namespace Eraser.Plugins.Registrars
 		{
 			get
 			{
+				if (volume == null)
+					throw new ArgumentNullException("volume");
+
 				foreach (IFileSystem filesystem in this)
 					if (filesystem.Name.ToUpperInvariant() ==
 						volume.VolumeFormat.ToUpperInvariant())
