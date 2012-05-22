@@ -77,6 +77,12 @@ if (!empty($_GET['id']))
 						<td><?php echo SourceForge::GetDownloads('http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.9/Eraser%206.0.9.2343.exe/download'); ?></td>
 					</tr>
 					<tr>
+						<td><a href="http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.10/Eraser%206.0.10.2620.exe/download">Eraser 6.0.10.2620</a></td>
+						<td>6.0.10.2620</td>
+						<td>23/5/2012 10:30am</td>
+						<td><?php echo SourceForge::GetDownloads('http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.10/Eraser%206.0.10.2620.exe/download'); ?></td>
+					</tr>
+					<tr>
 						<td colspan="4"><h3>Beta Builds</h3></td>
 					</tr>
 					<tr>
