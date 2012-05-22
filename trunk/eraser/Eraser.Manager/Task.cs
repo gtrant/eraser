@@ -476,7 +476,7 @@ namespace Eraser.Manager
 						//filesystem.
 						Logger.Log(e.Message, LogLevel.Error);
 					}
-					catch (UnauthorizedAccessException)
+					catch (UnauthorizedAccessException e)
 					{
 						//The OS denied us access to erasing the file.
 						Logger.Log(e.Message, LogLevel.Error);
