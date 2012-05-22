@@ -104,8 +104,15 @@ namespace Eraser.DefaultPlugins
 
 			//Currently running threads (dynamic, but not very)
 			Process currProcess = Process.GetCurrentProcess();
-			foreach (ProcessThread thread in currProcess.Threads)
-				result.AddRange(StructToBuffer(thread.Id));
+			try
+			{
+				foreach (ProcessThread thread in currProcess.Threads)
+					result.AddRange(StructToBuffer(thread.Id));
+			}
+			catch (InvalidOperationException)
+			{
+				//Swallow, this doesn't mean anything to us.
+			}
 
 			//Various process statistics
 			result.AddRange(StructToBuffer(currProcess.VirtualMemorySize64));
