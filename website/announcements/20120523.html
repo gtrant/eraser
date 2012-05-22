@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- InstanceBegin template="/Templates/Eraser.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<!-- InstanceBeginEditable name="Title" -->
+<title>Eraser :: Announcements :: May 23, 2012</title>
+<!-- InstanceEndEditable -->
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link href="../style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts.js"></script>
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+table.changelog td {
+	vertical-align: top;
+}
+
+td.author {
+	padding-left: 1.0em;
+	text-align: right;
+}
+
+code.hash {
+	background-color: #F0F0F0;
+	font-family: Consolas, "Courier New", Courier, mono;
+	font-size: 1.0em;
+	
+	display: block;
+}
+</style>
+<!-- InstanceEndEditable -->
+<!-- InstanceParam name="ArticlePoster" type="boolean" value="true" -->
+</head>
+
+<body onload="MM_preloadImages('../images/btn_home_hov.gif', '../images/btn_download_hov.gif', '../images/btn_forum_hov.gif', '../images/btn_trac_hov.gif')">
+<div id="wrap">
+	<div id="banner">
+		<a href="../index.php"><img src="../images/header.jpg" class="banner_img" alt="Eraser v6" /></a>
+	</div>
+	<div id="content">
+		<div class="left">
+			<!-- InstanceBeginRepeat name="LeftContent" --><!-- InstanceBeginRepeatEntry -->
+			<div class="article">
+				<div class="article_head">
+					<div class="title">
+						<h2><!-- InstanceBeginEditable name="LeftContentEditTitle" --><a href="../index.php">Eraser</a> 6.0.10 released!<!-- InstanceEndEditable --></h2>
+						<div class="posted"><!-- InstanceBeginEditable name="LeftContentEditPoster" -->Posted by: Joel, 23<sup>rd</sup> May 2012, 10:30 am +800GMT<!-- InstanceEndEditable --></div>
+					</div>
+				</div>
+
+				<!-- InstanceBeginEditable name="LeftContentEdit" -->
+				<p>Eraser 6.0.10 has been released today. This is a bugfix release which continues to build on the stability Eraser 6 series. All users are recommended to upgrade to this version.</p>
+				
+				<table class="changelog">
+					<tr>
+						<th>Revision</th>
+						<th>Description</th>
+						<th>Author</th>
+					</tr>
+					<tr>
+						<th>2349-2351</th>
+						<td>Updated Italian translation.</td>
+						<td>A. Ramacciotti</td>
+					</tr>
+					<tr>
+						<th>2401</th>
+						<td>Updated LZMA SDK for Bootstrapper to use the beta 9.22 SDK which is the only one available from 7-zip.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2529</th>
+						<td>Improved Recycle Bin support for non-NTFS drives on Windows.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2540</th>
+						<td>Fixed Scheduler display bug where tasks added using the Shell Context Menu could appear in the schedule as Not Queued even if it was configured to run automatically, if a task was already running.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2547, 2550, 2554, 2562</th>
+						<td>Fixed dereferencing of non-volume reparse points. Erasing files in earlier versions when a reparse point was in a path could cause Eraser to refuse erasing the file.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2563, 2565</th>
+						<td>Disable all entropy mixing algorithms except SHA-1 so that Eraser can continue to function even when FIPS mode is enabled under Windows XP.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2564</th>
+						<td>Bug fix for CryptoAPI crash on startup under certain circumstances.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2575</th>
+						<td>Fixed persistence of non-default erasure methods for erasure targets.</td>
+						<td>Joel</td>
+					</tr>
+					<tr>
+						<th>2576</th>
+						<td>Allow users to exit from an invalid custom erasure method editor state if he clicks cancel or closes the dialog.</td>
+						<td>Joel</td>
+					</tr>
+				</table>
+				
+				<h3>Download/Hashes</h3>
+
+				<p>It is important to note that users downgrading from 6.1 should delete their Task Lists (%LOCALAPPDATA%\Eraser 6\Task List.ersx) before running Eraser 6.0.x as that will result in a crash of 6.0.x builds. If you are upgrading from an earlier 6.0.x build, and especially if you have defined custom erasure methods or Plausible Deniability files, if upon upgrading Eraser refuses to start after the upgrade you can try deleting the task list (the same file as mentioned earlier) and if that fails, the <strong>HKCU\Software\Eraser\Eraser 6</strong> registry key. Deleting the latter will result in a reset of all Eraser settings to defaults.</p>
+				<p><strong>New to Eraser?</strong> Read the top three topics in the <a href="/forum/viewforum.php?f=35">Eraser FAQ forum</a>.</p>
+				<p>Download Eraser 6.0.10 from <a href="http://sourceforge.net/projects/eraser/files/Eraser%206/6.0.10/Eraser%206.0.10.2620.exe/download">SourceForge</a></p>
+				<ul>
+					<li>SHA-1:		<code class="hash">f6c4003ef93bd226a37ef9a86dae4aa21cdbc8d7</code></li>
+					<li>RIPEMD-160:	<code class="hash">9f8460ed61ad3394819688226ff35abc2061ec91</code></li>
+					<li>SHA-256:	<code class="hash">a09787812790b59ec3d36120788ae9f80b7bdda1e2d7a17a46d811232<br />
+4632737</code></li>
+					<li>SHA-512:	<code class="hash">0490255dadcd42e6a40b0d6e6e89b6975ce435c609b418a539189e132
+71717243091f0ad0ad720ed7e89f62353d384bf1ca3de3488efb3ce80<br />
+b46f157cf8346a</code></li>
+					<li>Whirlpool:	<code class="hash">90d8618981c9fb90cfee1089d7f1b54813c7d257c839ae9eb578981d0<br />
+7e0815662d601b60c26a9b08479d64d9d531e951e6ec549e6e7300247<br />
+9fa2dad0cdf907</code></li>
+				</ul>
+				<!-- InstanceEndEditable -->
+			</div>
+			<!-- InstanceEndRepeatEntry --><!-- InstanceEndRepeat -->
+		</div>
+		<div class="right">
+			<div class="right_nav">
+				<div class="right_nav_bg">
+					<a href="../index.php"><img src="../images/btn_home.gif" id="nav1" alt="Home" onmouseover="MM_swapImage('nav1','','../images/btn_home_hov.gif',1)" onmouseout="MM_swapImgRestore()" /></a><a href="../download.php"><img src="../images/btn_download.gif" id="nav2" alt="Download" onmouseover="MM_swapImage('nav2', '', '../images/btn_download_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="/forum/viewforum.php?f=30"><img src="../images/btn_forum.gif" id="nav3" alt="Forum" onmouseover="MM_swapImage('nav3', '', '../images/btn_forum_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a><a href="/trac"><img src="../images/btn_trac.gif" id="nav4" alt="Trac" onmouseover="MM_swapImage('nav4', '', '../images/btn_trac_hov.gif', 1)" onmouseout="MM_swapImgRestore()" /></a>
+				</div>
+			</div>
+			
+			<div class="right_news">
+				<h3>Latest News</h3>
+				<div class="right_news_bg">
+					<h2>Eraser 6.0.9 released!</h2>
+					<div class="posted">Posted by: Joel, 6<sup>th</sup> November 2011, 1:30 pm +800GMT</div>
+					<p>It has been one year since the last release of Eraser, and we are happy to announce the release of Eraser 6.0.9. Eraser 6.0.9 only contains bug fixes and is the most stable release of the Eraser 6.0 series; users are encouraged to upgrade to this version as soon as possible. <a href="20111106.html">Read the full announcement.</a></p>
+				</div>
+			</div>
+
+			<!-- InstanceBeginRepeat name="RightContent" --><!-- InstanceEndRepeat -->
+		</div>
+	</div>
+	<div id="footer">
+		<div class="footer">
+			<div class="footer_l">
+				<p>2008-2012 &copy; Eraser</p>
+			</div>
+			<div class="footer_r">
+				<p>
+					Original Design by <a href="http://eatlon.com" target="_blank">Olle Axelsson</a><br />
+					Modified for Eraser by <a href="http://lemarquis.deviantart.com" target="_blank">Dennis van Lith</a><br />
+					HTML edits by <a href="http://joelsplace.sg" target="_blank">Joel Low</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="ffscrollbarfix"></div>
+</body>
+<!-- InstanceEnd --></html>
