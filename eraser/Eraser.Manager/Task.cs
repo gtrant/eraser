@@ -476,6 +476,11 @@ namespace Eraser.Manager
 						//filesystem.
 						Logger.Log(e.Message, LogLevel.Error);
 					}
+					catch (UnauthorizedAccessException)
+					{
+						//The OS denied us access to erasing the file.
+						Logger.Log(e.Message, LogLevel.Error);
+					}
 					catch (PathTooLongException e)
 					{
 						//Until we have code to deal with paths using NT names, we can't
