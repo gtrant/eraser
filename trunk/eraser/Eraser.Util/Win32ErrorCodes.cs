@@ -66,6 +66,7 @@ namespace Eraser.Util
 				case NotReady:			return new IOException();
 				case RequestAborted:	return new OperationCanceledException();
 				case SharingViolation:	return new SharingViolationException();
+				case BadCommand:		return new NotSupportedException();
 			}
 
 			int HR = GetHRForWin32Error(errorCode);
@@ -95,5 +96,6 @@ namespace Eraser.Util
 		public const int BadDevice = 1200;
 		public const int RequestAborted = 1235;
 		public const int NotAReparsePoint = 4390;
+		public const int BadCommand = 22;
 	}
 }
