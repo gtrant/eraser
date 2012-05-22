@@ -57,6 +57,10 @@ namespace Eraser.DefaultPlugins
 						Cache = S._("Hard disk {0} ({1})", PhysicalDrive.Index,
 							new FileSize(PhysicalDrive.Size));
 					}
+					catch (IOException)
+					{
+						Cache = S._("Hard disk {0}", PhysicalDrive.Index);
+					}
 					catch (UnauthorizedAccessException)
 					{
 						Cache = S._("Hard disk {0}", PhysicalDrive.Index);
