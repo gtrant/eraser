@@ -589,7 +589,17 @@ namespace Eraser.Util
 		/// </summary>
 		public bool IsMounted
 		{
-			get { return MountPoints.Count != 0; }
+			get
+			{
+				try
+				{
+					return MountPoints.Count != 0;
+				}
+				catch (FileNotFoundException)
+				{
+					return false;
+				}
+			}
 		}
 
 		/// <summary>
