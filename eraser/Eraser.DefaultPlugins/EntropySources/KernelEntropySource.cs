@@ -205,6 +205,10 @@ namespace Eraser.DefaultPlugins
 				{
 					//This happens if a drive is ejected while the loop is running.
 				}
+				catch (NotSupportedException)
+				{
+					//Don't bother if this drive doesn't count statistics.
+				}
 			}
 
 			return result.ToArray();
