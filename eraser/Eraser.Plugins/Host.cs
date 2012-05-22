@@ -282,7 +282,7 @@ namespace Eraser.Plugins
 			{
 				if (!LoadPlugin(new AssemblyName(name)))
 					throw new FileLoadException(S._("The required Core plugin {0} could not be " +
-						"loaded. Repair the Eraser installation and try again."));
+						"loaded. Repair the Eraser installation and try again.", name));
 			}
 
 			//Then load the rest
