@@ -341,8 +341,19 @@ namespace Eraser.DefaultPlugins
 						fsManager.EraseFileSystemObject(info, method, callback);
 					else
 						Logger.Log(S._("The file {0} is a hard link or a symbolic link thus the " +
-							"contents of the file was not erased.", LogLevel.Notice));
+							"contents of the file was not erased.", info.FullName), LogLevel.Notice);
 					return;
+				}
+				catch (FileNotFoundException)
+				{
+					Logger.Log(S._("The file {0} was not securely erased because the file was " +
+						"deleted before it could be erased.", info.FullName), LogLevel.Warning);
+				}
+				catch (DirectoryNotFoundException)
+				{
+					Logger.Log(S._("The file {0} was not securely erased because the containing " +
+						"directory was deleted before it could be erased.", info.FullName),
+						LogLevel.Warning);
 				}
 				catch (SharingViolationException)
 				{
