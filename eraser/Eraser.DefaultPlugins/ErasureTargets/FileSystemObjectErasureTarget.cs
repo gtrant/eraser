@@ -376,28 +376,38 @@ namespace Eraser.DefaultPlugins
 
 					//Either we could not close all instances, or we already tried twice. Report
 					//the error.
-					StringBuilder processStr = new StringBuilder();
-					foreach (OpenHandle handle in remainingHandles)
+					string processes = string.Empty;
 					{
-						try
+						StringBuilder processStr = new StringBuilder();
+						foreach (OpenHandle handle in remainingHandles)
 						{
-							processStr.AppendFormat(
-								System.Globalization.CultureInfo.InvariantCulture,
-								"{0}, ", handle.Process.MainModule.FileName);
+							try
+							{
+								processStr.AppendFormat(
+									System.Globalization.CultureInfo.InvariantCulture,
+									"{0}, ", handle.Process.MainModule.FileName);
+							}
+							catch (System.ComponentModel.Win32Exception)
+							{
+								processStr.AppendFormat(
+									System.Globalization.CultureInfo.InvariantCulture,
+									"Process ID {0}, ", handle.Process.Id);
+							}
 						}
-						catch (System.ComponentModel.Win32Exception)
+
+						if (processStr.Length > 2)
 						{
-							processStr.AppendFormat(
-								System.Globalization.CultureInfo.InvariantCulture,
-								"Process ID {0}, ", handle.Process.Id);
+							processes = processStr.ToString().Remove(processStr.Length - 2)).Trim());
+						}
+						else
+						{
+							processes = S._("(unknown)");
 						}
 					}
 
 					throw new SharingViolationException(S._(
 						"Could not force closure of file \"{0}\" {1}", info.FileName,
-						S._("(locked by {0})",
-							processStr.ToString().Remove(processStr.Length - 2)).Trim()),
-						info.FileName);
+						S._("(locked by {0})", processes, info.FileName)));
 				}
 			}
 		}
