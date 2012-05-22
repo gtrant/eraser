@@ -397,7 +397,7 @@ namespace Eraser.DefaultPlugins
 
 						if (processStr.Length > 2)
 						{
-							processes = processStr.ToString().Remove(processStr.Length - 2)).Trim());
+							processes = processStr.ToString().Remove(processStr.Length - 2).Trim();
 						}
 						else
 						{
@@ -407,7 +407,7 @@ namespace Eraser.DefaultPlugins
 
 					throw new SharingViolationException(S._(
 						"Could not force closure of file \"{0}\" {1}", info.FileName,
-						S._("(locked by {0})", processes, info.FileName)));
+						S._("(locked by {0})", processes)));
 				}
 			}
 		}

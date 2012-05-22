@@ -143,7 +143,7 @@ namespace Eraser.DefaultPlugins
 								string processes = string.Empty;
 								{
 									StringBuilder processStr = new StringBuilder();
-									foreach (OpenHandle handle in remainingHandles)
+									foreach (OpenHandle handle in OpenHandle.Close(info.FullName))
 									{
 										try
 										{
@@ -161,7 +161,7 @@ namespace Eraser.DefaultPlugins
 
 									if (processStr.Length > 2)
 									{
-										processes = processStr.ToString().Remove(processStr.Length - 2)).Trim());
+										processes = processStr.ToString().Remove(processStr.Length - 2).Trim();
 									}
 									else
 									{
@@ -170,8 +170,8 @@ namespace Eraser.DefaultPlugins
 								}
 
 								throw new SharingViolationException(S._(
-									"Could not force closure of file \"{0}\" {1}", info.FileName,
-									S._("(locked by {0})", processes, info.FileName)));
+									"Could not force closure of file \"{0}\" {1}", info.FullName,
+									S._("(locked by {0})", processes)));
 							}
 
 							//Let the process locking the file release the lock
