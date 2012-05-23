@@ -100,8 +100,8 @@ class UpdateList1 extends UpdateListBase
 				(
 					(MinVersion IS NULL AND MaxVersion IS NULL) OR
 					(MinVersion IS NULL AND MaxVersion > :Version) OR
-					(MinVersion <= \'%1$s\' AND MaxVersion IS NULL) OR
-					(MinVersion <= \'%1$s\' AND MaxVersion > :Version)
+					(MinVersion <= :Version AND MaxVersion IS NULL) OR
+					(MinVersion <= :Version AND MaxVersion > :Version)
 				)
 			ORDER BY `Type` ASC');
 		$statement->bindParam('Version', $clientVersion);
