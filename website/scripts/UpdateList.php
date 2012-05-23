@@ -92,6 +92,29 @@ class UpdateList1 extends UpdateListBase
 	{
 		//Prepare the list of updates
 		$pdo = new Database();
+
+		/* This following function uses the following function for version comparisons:
+
+		CREATE FUNCTION GetVerMajorMinor(s VARCHAR(255))
+			RETURNS DECIMAL(6,3) DETERMINISTIC
+		RETURN CAST(
+			SUBSTRING_INDEX(s, '.', 2)
+			AS DECIMAL(6,3)
+		);
+
+		CREATE FUNCTION GetVerReleaseBuild(s VARCHAR(255))
+		RETURNS DECIMAL(6,3) DETERMINISTIC
+		RETURN CAST(
+			CASE
+				WHEN LOCATE('.', s) = 0 THEN NULL
+				WHEN LOCATE('.', s, LOCATE('.', s)+1) = 0 THEN SUBSTRING_INDEX(s, '.', -1)
+				ELSE SUBSTRING_INDEX(s, '.', -2)
+			END
+			AS DECIMAL(6,3)
+		);
+
+		*/
+
 		$statement = $pdo->prepare('SELECT DownloadID
 			FROM downloads
 			WHERE
@@ -99,12 +122,31 @@ class UpdateList1 extends UpdateListBase
 				(`Type` <> \'build\') AND
 				(
 					(MinVersion IS NULL AND MaxVersion IS NULL) OR
-					(MinVersion IS NULL AND MaxVersion > :Version) OR
-					(MinVersion <= :Version AND MaxVersion IS NULL) OR
+					(MinVersion IS NULL AND																-- Version < MaxVersion
+						(
+							GetVerMajorMinor(MaxVersion) > :VersionMajorMinor OR						-- a.b > a.b
+							(GetVerMajorMinor(MaxVersion) = :VersionMajorMinor AND						-- a.b = a.b; c.d > c.d
+								GetVerReleaseBuild(MaxVersion) > :VersionReleaseBuild)
+						)
+					) OR
+					(																					-- Version >= MinVersion
+						(
+							GetVerMajorMinor(MinVersion) < :VersionMajorMinor OR						-- a.b < a.b
+							(GetVerMajorMinor(MinVersion) = :VersionMajorMinor AND						-- a.b = a.b; c.d <= c.d
+								GetVerReleaseBuild(MinVersion) <= :VersionReleaseBuild)
+						) AND
+						MaxVersion IS NULL
+					) OR
 					(MinVersion <= :Version AND MaxVersion > :Version)
 				)
 			ORDER BY `Type` ASC');
+
+		$clientComponents = explode('.', $clientVersion);
+		$versionMajorMinor = floatval(implode('.', array_splice($clientComponents, 0, 2)));
+		$versionReleaseBuild = floatval(implode('.', $clientComponents));
 		$statement->bindParam('Version', $clientVersion);
+		$statement->bindParam('VersionMajorMinor', $versionMajorMinor);
+		$statement->bindParam('VersionReleaseBuild', $versionReleaseBuild);
 		$statement->execute();
 
 		$result = array();
