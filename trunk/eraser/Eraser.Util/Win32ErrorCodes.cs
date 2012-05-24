@@ -67,6 +67,7 @@ namespace Eraser.Util
 				case RequestAborted:	return new OperationCanceledException();
 				case SharingViolation:	return new SharingViolationException();
 				case BadCommand:		return new NotSupportedException();
+				case BadArguments:		return new ArgumentException();
 			}
 
 			int HR = GetHRForWin32Error(errorCode);
@@ -98,5 +99,6 @@ namespace Eraser.Util
 		public const int NotAReparsePoint = 4390;
 		public const int BadCommand = 22;
 		public const int NotSupported = 50;
+		public const int BadArguments = 160;
 	}
 }
