@@ -163,7 +163,7 @@ namespace Eraser.DefaultPlugins
 					{
 						Logger.Log(S._("Could not list the Alternate Data Streams for file {0} " +
 							"because the file is being used by another process. The file will not " +
-							"be erased.", fileInfo.FullName), LogLevel.Error);
+							"be erased.", file.FullName), LogLevel.Error);
 					}
 				}
 
