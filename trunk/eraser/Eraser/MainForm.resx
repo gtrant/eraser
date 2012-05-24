@@ -159,30 +159,6 @@
   <metadata name="notificationMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>801, 17</value>
   </metadata>
-  <data name="openEraserToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt, style=Bold</value>
-  </data>
-  <data name="openEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="openEraserToolStripMenuItem.Text" xml:space="preserve">
-    <value>Open Eraser</value>
-  </data>
-  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>189, 6</value>
-  </data>
-  <data name="hideWhenMinimisedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="hideWhenMinimisedToolStripMenuItem.Text" xml:space="preserve">
-    <value>Hide When Minimised</value>
-  </data>
-  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 22</value>
-  </data>
-  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
-    <value>E&amp;xit Eraser</value>
-  </data>
   <data name="notificationMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 76</value>
   </data>
@@ -1758,6 +1734,30 @@
   <data name="notificationIcon.Visible" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="openEraserToolStripMenuItem.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt, style=Bold</value>
+  </data>
+  <data name="openEraserToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="openEraserToolStripMenuItem.Text" xml:space="preserve">
+    <value>Open Eraser</value>
+  </data>
+  <data name="toolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>189, 6</value>
+  </data>
+  <data name="hideWhenMinimisedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="hideWhenMinimisedToolStripMenuItem.Text" xml:space="preserve">
+    <value>Hide When Minimised</value>
+  </data>
+  <data name="exitToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>192, 22</value>
+  </data>
+  <data name="exitToolStripMenuItem.Text" xml:space="preserve">
+    <value>E&amp;xit Eraser</value>
+  </data>
   <metadata name="notificationIconTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>634, 17</value>
   </metadata>
@@ -1767,9 +1767,57 @@
   <data name="ToolBar.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>None</value>
   </data>
+  <data name="ToolBar.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 27</value>
+  </data>
+  <data name="ToolBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>392, 32</value>
+  </data>
+  <data name="ToolBar.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ToolBar.Text" xml:space="preserve">
+    <value>ToolBar</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.Name" xml:space="preserve">
+    <value>ToolBar</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.Type" xml:space="preserve">
+    <value>Eraser.ToolBar, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ToolBar.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
   <metadata name="tbScheduleMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>110, 17</value>
   </metadata>
+  <data name="newTaskToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
+    <value>Ctrl+N</value>
+  </data>
+  <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="newTaskToolStripMenuItem.Text" xml:space="preserve">
+    <value>New Task</value>
+  </data>
+  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>165, 6</value>
+  </data>
+  <data name="exportTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="exportTaskListToolStripMenuItem.Text" xml:space="preserve">
+    <value>Export Task List</value>
+  </data>
+  <data name="importTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 22</value>
+  </data>
+  <data name="importTaskListToolStripMenuItem.Text" xml:space="preserve">
+    <value>Import Task List</value>
+  </data>
   <data name="tbScheduleMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>169, 76</value>
   </data>
@@ -1868,54 +1916,6 @@
   </data>
   <data name="tbHelpDropDown.Text" xml:space="preserve">
     <value>Help</value>
-  </data>
-  <data name="ToolBar.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 27</value>
-  </data>
-  <data name="ToolBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>392, 32</value>
-  </data>
-  <data name="ToolBar.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="ToolBar.Text" xml:space="preserve">
-    <value>ToolBar</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.Name" xml:space="preserve">
-    <value>ToolBar</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.Type" xml:space="preserve">
-    <value>Eraser.ToolBar, Eraser, Version=6.1.0.2112, Culture=neutral, PublicKeyToken=ab8c5acb8db9a36b</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ToolBar.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="newTaskToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+N</value>
-  </data>
-  <data name="newTaskToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 22</value>
-  </data>
-  <data name="newTaskToolStripMenuItem.Text" xml:space="preserve">
-    <value>New Task</value>
-  </data>
-  <data name="toolStripMenuItem2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>165, 6</value>
-  </data>
-  <data name="exportTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 22</value>
-  </data>
-  <data name="exportTaskListToolStripMenuItem.Text" xml:space="preserve">
-    <value>Export Task List</value>
-  </data>
-  <data name="importTaskListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 22</value>
-  </data>
-  <data name="importTaskListToolStripMenuItem.Text" xml:space="preserve">
-    <value>Import Task List</value>
   </data>
   <data name="checkForUpdatesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>171, 22</value>
