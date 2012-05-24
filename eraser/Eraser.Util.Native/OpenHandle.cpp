@@ -42,7 +42,7 @@ namespace Util {
 			}
 			while (!NT_SUCCESS(result));
 
-			if (!NT_SUCCESS(result))
+			if (!NT_SUCCESS(result) || handlesBuffer.size() < sizeof(SYSTEM_HANDLES))
 				throw gcnew InvalidOperationException("The list of open system handles could not be retrieved.");
 		}
 
