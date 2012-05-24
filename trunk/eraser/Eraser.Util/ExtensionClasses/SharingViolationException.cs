@@ -30,7 +30,7 @@ namespace System.IO
 	/// <summary>
 	/// A file sharing violation exception.
 	/// </summary>
-	public class SharingViolationException : IOException
+	public class SharingViolationException : FileLoadException
 	{
 		/// <summary>
 		/// Constructor. This sets the <see cref="FilePath"/> property to null and
