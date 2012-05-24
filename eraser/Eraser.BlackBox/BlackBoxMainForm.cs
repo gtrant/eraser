@@ -63,6 +63,11 @@ namespace Eraser.BlackBox
 			Process.Start((ReportsLv.SelectedItems[0].Tag as BlackBoxReport).Path);
 		}
 
+		private void DataCollectionPolicyLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			Process.Start("http://eraser.heidi.ie/trac/wiki/DataCollectionPolicy");
+		}
+
 		private void SubmitBtn_Click(object sender, EventArgs e)
 		{
 			List<BlackBoxReport> reports = new List<BlackBoxReport>();

@@ -112,46 +112,42 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="MainLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="MainLbl.Location" type="System.Drawing.Point, System.Drawing">
     <value>82, 9</value>
   </data>
   <data name="MainLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>467, 304</value>
+    <value>467, 145</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="MainLbl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="MainLbl.Text" xml:space="preserve">
-    <value>Eraser has encountered problems while running earlier.
+    <value>Eraser has encountered problems while running earlier. The list below shows the reports which have been automatically generated containing information about the error.
 
-The program's state and and a screenshot at the time of the error, as well as the state of your computer, have been stored on your computer as reports and can be sent to the Eraser developers for review. The recorded information was gathered automatically, as a result, the information contained therein may contain potentially sensitive information and you are advised to go through the report before uploading it. Data will be stored on a server which only Eraser developers have access to and personally identifiable data, if any, will be kept confidential and will not be used to identify the reporter. Reports will be completely erased upon the completion of bug fixing.
-
-Select the reports you wish to submit by checking the name of the report below; the contents of each report can be viewed by double-clicking on the report name below. Editing the contents of the report will result in a modified report being uploaded: deleted files in the report will not be uploaded, and modified files will be uploaded as you have modified them. Do note that by doing so, you are reducing the usefulness of the crash report in fixing the bug.
-
-Reports not selected for submission will be discarded after the rest have been submitted.</value>
+Eraser can send the information contained here to Eraser's developers and also check whether the problems have since been fixed. Select the reports you wish to check by checking the name of the report below; the contents of the report can be viewed by double-clicking on the report.</value>
   </data>
   <data name="&gt;&gt;MainLbl.Name" xml:space="preserve">
     <value>MainLbl</value>
   </data>
   <data name="&gt;&gt;MainLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;MainLbl.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;MainLbl.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="SubmitBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -172,13 +168,13 @@ Reports not selected for submission will be discarded after the rest have been s
     <value>SubmitBtn</value>
   </data>
   <data name="&gt;&gt;SubmitBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;SubmitBtn.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;SubmitBtn.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="PostponeBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -199,13 +195,13 @@ Reports not selected for submission will be discarded after the rest have been s
     <value>PostponeBtn</value>
   </data>
   <data name="&gt;&gt;PostponeBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;PostponeBtn.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;PostponeBtn.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="BlackBoxPic.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
@@ -220,13 +216,13 @@ Reports not selected for submission will be discarded after the rest have been s
     <value>BlackBoxPic</value>
   </data>
   <data name="&gt;&gt;BlackBoxPic.Type" xml:space="preserve">
-    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.PictureBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;BlackBoxPic.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;BlackBoxPic.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="ReportsLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -244,10 +240,10 @@ Reports not selected for submission will be discarded after the rest have been s
     <value>250</value>
   </data>
   <data name="ReportsLv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 316</value>
+    <value>12, 157</value>
   </data>
   <data name="ReportsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>537, 202</value>
+    <value>537, 361</value>
   </data>
   <data name="ReportsLv.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -256,15 +252,42 @@ Reports not selected for submission will be discarded after the rest have been s
     <value>ReportsLv</value>
   </data>
   <data name="&gt;&gt;ReportsLv.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ReportsLv.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ReportsLv.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="DataCollectionPolicyLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="DataCollectionPolicyLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 528</value>
+  </data>
+  <data name="DataCollectionPolicyLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 15</value>
+  </data>
+  <data name="DataCollectionPolicyLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="DataCollectionPolicyLbl.Text" xml:space="preserve">
+    <value>Data Collection Policy</value>
+  </data>
+  <data name="&gt;&gt;DataCollectionPolicyLbl.Name" xml:space="preserve">
+    <value>DataCollectionPolicyLbl</value>
+  </data>
+  <data name="&gt;&gt;DataCollectionPolicyLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DataCollectionPolicyLbl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;DataCollectionPolicyLbl.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -1843,18 +1866,18 @@ Reports not selected for submission will be discarded after the rest have been s
     <value>ReportsLvTimestampColumn</value>
   </data>
   <data name="&gt;&gt;ReportsLvTimestampColumn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ReportsLvErrorColumn.Name" xml:space="preserve">
     <value>ReportsLvErrorColumn</value>
   </data>
   <data name="&gt;&gt;ReportsLvErrorColumn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BlackBoxMainForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

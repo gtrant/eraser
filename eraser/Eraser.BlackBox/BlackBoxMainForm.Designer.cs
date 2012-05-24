@@ -55,8 +55,9 @@ namespace Eraser.BlackBox
 			this.PostponeBtn = new System.Windows.Forms.Button();
 			this.BlackBoxPic = new System.Windows.Forms.PictureBox();
 			this.ReportsLv = new System.Windows.Forms.ListView();
-			this.ReportsLvTimestampColumn = new System.Windows.Forms.ColumnHeader();
-			this.ReportsLvErrorColumn = new System.Windows.Forms.ColumnHeader();
+			this.ReportsLvTimestampColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.ReportsLvErrorColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.DataCollectionPolicyLbl = new System.Windows.Forms.LinkLabel();
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -108,10 +109,18 @@ namespace Eraser.BlackBox
 			// 
 			resources.ApplyResources(this.ReportsLvErrorColumn, "ReportsLvErrorColumn");
 			// 
+			// DataCollectionPolicyLbl
+			// 
+			resources.ApplyResources(this.DataCollectionPolicyLbl, "DataCollectionPolicyLbl");
+			this.DataCollectionPolicyLbl.Name = "DataCollectionPolicyLbl";
+			this.DataCollectionPolicyLbl.TabStop = true;
+			this.DataCollectionPolicyLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DataCollectionPolicyLbl_LinkClicked);
+			// 
 			// BlackBoxMainForm
 			// 
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+			this.Controls.Add(this.DataCollectionPolicyLbl);
 			this.Controls.Add(this.ReportsLv);
 			this.Controls.Add(this.BlackBoxPic);
 			this.Controls.Add(this.PostponeBtn);
@@ -122,9 +131,9 @@ namespace Eraser.BlackBox
 			this.MinimizeBox = false;
 			this.Name = "BlackBoxMainForm";
 			this.ShowInTaskbar = false;
-			this.TopMost = true;
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
@@ -137,5 +146,6 @@ namespace Eraser.BlackBox
 		private System.Windows.Forms.ListView ReportsLv;
 		private System.Windows.Forms.ColumnHeader ReportsLvTimestampColumn;
 		private System.Windows.Forms.ColumnHeader ReportsLvErrorColumn;
+		private System.Windows.Forms.LinkLabel DataCollectionPolicyLbl;
 	}
 }
