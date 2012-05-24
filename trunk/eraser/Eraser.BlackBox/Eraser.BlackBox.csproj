@@ -89,12 +89,14 @@
     <Compile Include="BlackBoxMainForm.Designer.cs">
       <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BlackBoxReport.cs" />
     <Compile Include="BlackBoxUploadForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BlackBoxUploadForm.Designer.cs">
       <DependentUpon>BlackBoxUploadForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BlackBoxReportUploader.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
