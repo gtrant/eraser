@@ -56,7 +56,11 @@ namespace Eraser.BlackBox
 		private void OnToolClicked(object sender, EventArgs e)
 		{
 			BlackBoxMainForm form = new BlackBoxMainForm();
-			form.ShowDialog();
+
+			Form owner = null;
+			if (Application.OpenForms.Count > 0)
+				owner = Application.OpenForms[0];
+			form.ShowDialog(owner);
 		}
 	}
 }

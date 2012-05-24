@@ -24,6 +24,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using System.Windows.Forms;
+
 using Eraser.Plugins.ExtensionPoints;
 using Eraser.Util;
 
@@ -95,7 +97,19 @@ namespace Eraser.BlackBox
 		private void OnClick(object sender, EventArgs e)
 		{
 			BlackBoxMainForm form = new BlackBoxMainForm();
-			form.ShowDialog();
+			Form owner = null;
+			if (Application.OpenForms.Count > 0)
+				owner = Application.OpenForms[0];
+
+			if (owner == null)
+			{
+				form.ShowInTaskbar = true;
+				form.Show();
+			}
+			else
+			{
+				form.ShowDialog(owner);
+			}
 		}
 
 		/// <summary>
