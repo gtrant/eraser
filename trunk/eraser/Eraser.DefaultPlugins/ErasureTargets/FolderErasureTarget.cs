@@ -279,6 +279,12 @@ namespace Eraser.DefaultPlugins
 					Host.Instance.FileSystems[VolumeInfo.FromMountPoint(Path)].
 						DeleteFolder(info, true);
 				}
+				catch (DirectoryNotFoundException)
+				{
+					Logger.Log(new LogEntry(S._("The folder {0} could not be erased because " +
+						"the containing directory was deleted before it could be erased.",
+						info.FullName), LogLevel.Error));
+				}
 				catch (UnauthorizedAccessException)
 				{
 					Logger.Log(new LogEntry(S._("The folder {0} could not be deleted because " +
