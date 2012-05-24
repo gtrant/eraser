@@ -159,6 +159,12 @@ namespace Eraser.DefaultPlugins
 							"directory was deleted before it could be erased", file.FullName),
 							LogLevel.Information);
 					}
+					catch (SharingViolationException)
+					{
+						Logger.Log(S._("Could not list the Alternate Data Streams for file {0} " +
+							"because the file is being used by another process. The file will not " +
+							"be erased.", fileInfo.FullName), LogLevel.Error);
+					}
 				}
 
 			return result;

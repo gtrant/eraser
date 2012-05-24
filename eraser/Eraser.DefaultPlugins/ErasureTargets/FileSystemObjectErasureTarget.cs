@@ -141,11 +141,27 @@ namespace Eraser.DefaultPlugins
 		}
 
 		/// <summary>
-		/// Adds ADSes of the given file to the list, forcing the open handles to the
-		/// files closed if necessary.
+		/// Returns the ADSes of the given file, forcing open handles to the files closed
+		/// if necessary.
 		/// </summary>
-		/// <param name="file">The file to look for ADSes</param>
+		/// <param name="file">The file to look for ADSes.</param>
+		/// <exception cref="SharingViolationException">Thrown when the file cannot be unlocked
+		/// and enumerated for ADSes.</exception>
 		protected static StreamInfo[] GetPathADSes(FileInfo file)
+		{
+			int attempts = 1;
+			return GetPathADSes(file, ref attempts);
+		}
+
+		/// <summary>
+		/// Returns the ADSes of the given file, forcing open handles to the files closed
+		/// if necessary.
+		/// </summary>
+		/// <param name="file">The file to look for ADSes.</param>
+		/// <param name="attempts">The number of tries to close open handles. Abort after a
+		/// large number of tries (currently 10 attempts)</param>
+		/// <returns>The list of ADSes the file contains.</returns>
+		private static StreamInfo[] GetPathADSes(FileInfo file, ref int attempts)
 		{
 			try
 			{
@@ -153,6 +169,7 @@ namespace Eraser.DefaultPlugins
 			}
 			catch (FileNotFoundException)
 			{
+				return new StreamInfo[0];
 			}
 			catch (SharingViolationException)
 			{
@@ -160,25 +177,11 @@ namespace Eraser.DefaultPlugins
 				if (!Host.Instance.Settings.ForceUnlockLockedFiles)
 					throw;
 
-				StringBuilder processStr = new StringBuilder();
-				foreach (OpenHandle handle in OpenHandle.Close(file.FullName))
-				{
-					try
-					{
-						processStr.AppendFormat(
-							System.Globalization.CultureInfo.InvariantCulture,
-							"{0}, ", handle.Process.MainModule.FileName);
-					}
-					catch (System.ComponentModel.Win32Exception)
-					{
-						processStr.AppendFormat(
-							System.Globalization.CultureInfo.InvariantCulture,
-							"Process ID {0}, ", handle.Process.Id);
-					}
-				}
-
-				if (processStr.Length == 0)
-					return GetPathADSes(file);
+				//Retry closing the file 10 times. If we can't do that, we should abort
+				//since we may not be able to get the process information of processes
+				//running with higher privileges.
+				if (OpenHandle.Close(file.FullName).Count == 0 && attempts < 10)
+					return GetPathADSes(file, ref attempts);
 				else
 					throw;
 			}

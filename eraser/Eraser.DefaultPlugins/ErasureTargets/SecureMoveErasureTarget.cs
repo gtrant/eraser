@@ -122,11 +122,26 @@ namespace Eraser.DefaultPlugins
 
 			foreach (FileInfo info in files)
 			{
-				//Add the alternate data streams
-				result.AddRange(GetPathADSes(info));
+				try
+				{
+					//Add the alternate data streams
+					result.AddRange(GetPathADSes(info));
 
-				//And the file itself
-				result.Add(new StreamInfo(info.FullName));
+					//And the file itself
+					result.Add(new StreamInfo(info.FullName));
+				}
+				catch (SharingViolationException)
+				{
+					Logger.Log(S._("Could not list the Alternate Data Streams for file {0} " +
+						"because the file is being used by another process. The file will not " +
+						"be erased.", info.FullName), LogLevel.Error);
+				}
+				catch (FileNotFoundException)
+				{
+				}
+				catch (DirectoryNotFoundException)
+				{
+				}
 			}
 
 			return result;

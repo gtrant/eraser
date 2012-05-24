@@ -75,10 +75,22 @@ namespace Eraser.DefaultPlugins
 			List<StreamInfo> result = new List<StreamInfo>();
 			FileInfo fileInfo = new FileInfo(Path);
 
-			if (fileInfo.Exists)
+			try
 			{
 				result.AddRange(GetPathADSes(fileInfo));
 				result.Add(new StreamInfo(Path));
+			}
+			catch (SharingViolationException)
+			{
+				Logger.Log(S._("Could not list the Alternate Data Streams for file {0} " +
+					"because the file is being used by another process. The file will not " +
+					"be erased.", fileInfo.FullName), LogLevel.Error);
+			}
+			catch (FileNotFoundException)
+			{
+			}
+			catch (DirectoryNotFoundException)
+			{
 			}
 
 			return result;
