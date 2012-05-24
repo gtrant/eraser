@@ -140,11 +140,25 @@ namespace Eraser.DefaultPlugins
 			foreach (DirectoryInfo directory in directories)
 				foreach (FileInfo file in GetFiles(directory))
 				{
-					//Add the ADSes
-					result.AddRange(GetPathADSes(file));
+					try
+					{
+						//Add the ADSes
+						result.AddRange(GetPathADSes(file));
 
-					//Then the file itself
-					result.Add(new StreamInfo(file.FullName));
+						//Then the file itself
+						result.Add(new StreamInfo(file.FullName));
+					}
+					catch (FileNotFoundException)
+					{
+						Logger.Log(S._("The file {0} was not erased because it was deleted " +
+							"before it could be erased.", file.FullName), LogLevel.Information);
+					}
+					catch (DirectoryNotFoundException)
+					{
+						Logger.Log(S._("The file {0} was not erased because the containing " +
+							"directory was deleted before it could be erased", file.FullName),
+							LogLevel.Information);
+					}
 				}
 
 			return result;
