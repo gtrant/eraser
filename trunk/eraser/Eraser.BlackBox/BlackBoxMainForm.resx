@@ -147,7 +147,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>$this</value>
   </data>
   <data name="&gt;&gt;MainLbl.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="SubmitBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -174,7 +174,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>$this</value>
   </data>
   <data name="&gt;&gt;SubmitBtn.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="PostponeBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -201,7 +201,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>$this</value>
   </data>
   <data name="&gt;&gt;PostponeBtn.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="BlackBoxPic.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
@@ -222,7 +222,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>$this</value>
   </data>
   <data name="&gt;&gt;BlackBoxPic.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="ReportsLv.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -238,6 +238,24 @@ Eraser can send the information contained here to Eraser's developers and also c
   </data>
   <data name="ReportsLvErrorColumn.Width" type="System.Int32, mscorlib">
     <value>250</value>
+  </data>
+  <metadata name="ReportsMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ReportsMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>108, 26</value>
+  </data>
+  <data name="&gt;&gt;ReportsMenuStrip.Name" xml:space="preserve">
+    <value>ReportsMenuStrip</value>
+  </data>
+  <data name="&gt;&gt;ReportsMenuStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ReportsLv.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 157</value>
@@ -258,7 +276,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ReportsLv.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="DataCollectionPolicyLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -285,7 +303,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>$this</value>
   </data>
   <data name="&gt;&gt;DataCollectionPolicyLbl.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1873,6 +1891,12 @@ Eraser can send the information contained here to Eraser's developers and also c
   </data>
   <data name="&gt;&gt;ReportsLvErrorColumn.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;deleteToolStripMenuItem.Name" xml:space="preserve">
+    <value>deleteToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;deleteToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BlackBoxMainForm</value>
