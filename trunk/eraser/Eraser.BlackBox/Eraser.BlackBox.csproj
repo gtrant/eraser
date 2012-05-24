@@ -89,6 +89,7 @@
     <Compile Include="BlackBoxMainForm.Designer.cs">
       <DependentUpon>BlackBoxMainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BlackBoxNotifier.cs" />
     <Compile Include="BlackBoxReport.cs" />
     <Compile Include="BlackBoxUploadForm.cs">
       <SubType>Form</SubType>
