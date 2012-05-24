@@ -223,7 +223,20 @@ namespace Eraser.DefaultPlugins
 		{
 			//Retrieve the list of files to erase.
 			List<StreamInfo> paths = GetPaths();
-			long dataTotal = paths.Sum(x => x.Length);
+			long dataTotal = paths.Sum(delegate(StreamInfo x) {
+				try
+				{
+					return x.Length;
+				}
+				catch (DirectoryNotFoundException)
+				{
+					return 0;
+				}
+				catch (FileNotFoundException)
+				{
+					return 0;
+				}
+			});
 
 			//Set the event's current target status.
 			if (Progress == null)

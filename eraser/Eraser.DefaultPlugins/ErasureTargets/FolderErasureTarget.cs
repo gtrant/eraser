@@ -146,11 +146,25 @@ namespace Eraser.DefaultPlugins
 				if (excludePattern != null && excludePattern.Match(file.FullName).Success)
 					continue;
 
-				//Add the size of the file and its alternate data streams
-				result.AddRange(GetPathADSes(file));
+				try
+				{
+					//Add the size of the file and its alternate data streams
+					result.AddRange(GetPathADSes(file));
 
-				//And the file itself
-				result.Add(new StreamInfo(file.FullName));
+					//And the file itself
+					result.Add(new StreamInfo(file.FullName));
+				}
+				catch (FileNotFoundException)
+				{
+					Logger.Log(S._("The file {0} was not erased because it was deleted " +
+						"before it could be erased.", file.FullName), LogLevel.Information);
+				}
+				catch (DirectoryNotFoundException)
+				{
+					Logger.Log(S._("The file {0} was not erased because the containing " +
+						"directory was deleted before it could be erased", file.FullName),
+						LogLevel.Information);
+				}
 			}
 
 			//Return the filtered list.
