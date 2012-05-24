@@ -180,7 +180,7 @@ namespace Eraser.DefaultPlugins
 				//Retry closing the file 10 times. If we can't do that, we should abort
 				//since we may not be able to get the process information of processes
 				//running with higher privileges.
-				if (OpenHandle.Close(file.FullName).Count == 0 && attempts < 10)
+				if (OpenHandle.Close(file.FullName).Count == 0 && ++attempts <= 10)
 					return GetPathADSes(file, ref attempts);
 				else
 					throw;
