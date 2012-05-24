@@ -47,7 +47,18 @@ namespace Eraser.BlackBox
 			string stackTracePath = System.IO.Path.Combine(Path, StackTraceFileName);
 			if (!File.Exists(stackTracePath))
 			{
-				Delete();
+				try
+				{
+					Delete();
+				}
+				catch (UnauthorizedAccessException)
+				{
+					//Swallow. We may not be able to access the report; let the user
+					//who owns the report upload it. But in this case, we still need
+					//to still raise InvalidDataException otherwise we will operate
+					//on a report we cannot modify.
+				}
+
 				throw new InvalidDataException("The BlackBox report is corrupt.");
 			}
 
