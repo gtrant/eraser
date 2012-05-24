@@ -126,7 +126,7 @@
     <value>82, 9</value>
   </data>
   <data name="MainLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>467, 145</value>
+    <value>467, 130</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="MainLbl.TabIndex" type="System.Int32, mscorlib">
@@ -135,7 +135,7 @@
   <data name="MainLbl.Text" xml:space="preserve">
     <value>Eraser has encountered problems while running earlier. The list below shows the reports which have been automatically generated containing information about the error.
 
-Eraser can send the information contained here to Eraser's developers and also check whether the problems have since been fixed. Select the reports you wish to check by checking the name of the report below; the contents of the report can be viewed by double-clicking on the report.</value>
+Eraser can send the information contained here to Eraser's developers and also check whether the problems have since been fixed. Select the reports you wish to submit by checking the name of the report below; the contents of the report can be viewed by double-clicking on the report.</value>
   </data>
   <data name="&gt;&gt;MainLbl.Name" xml:space="preserve">
     <value>MainLbl</value>
@@ -153,7 +153,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>Bottom, Right</value>
   </data>
   <data name="SubmitBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>343, 524</value>
+    <value>368, 524</value>
   </data>
   <data name="SubmitBtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
@@ -176,31 +176,31 @@ Eraser can send the information contained here to Eraser's developers and also c
   <data name="&gt;&gt;SubmitBtn.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="PostponeBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="CancelBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="PostponeBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>449, 524</value>
+  <data name="CancelBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>474, 524</value>
   </data>
-  <data name="PostponeBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 23</value>
+  <data name="CancelBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
-  <data name="PostponeBtn.TabIndex" type="System.Int32, mscorlib">
+  <data name="CancelBtn.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="PostponeBtn.Text" xml:space="preserve">
-    <value>Submit Later</value>
+  <data name="CancelBtn.Text" xml:space="preserve">
+    <value>Cancel</value>
   </data>
-  <data name="&gt;&gt;PostponeBtn.Name" xml:space="preserve">
-    <value>PostponeBtn</value>
+  <data name="&gt;&gt;CancelBtn.Name" xml:space="preserve">
+    <value>CancelBtn</value>
   </data>
-  <data name="&gt;&gt;PostponeBtn.Type" xml:space="preserve">
+  <data name="&gt;&gt;CancelBtn.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PostponeBtn.Parent" xml:space="preserve">
+  <data name="&gt;&gt;CancelBtn.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;PostponeBtn.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;CancelBtn.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="BlackBoxPic.Location" type="System.Drawing.Point, System.Drawing">
@@ -258,10 +258,10 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="ReportsLv.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 157</value>
+    <value>12, 142</value>
   </data>
   <data name="ReportsLv.Size" type="System.Drawing.Size, System.Drawing">
-    <value>537, 361</value>
+    <value>537, 376</value>
   </data>
   <data name="ReportsLv.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>

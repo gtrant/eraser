@@ -53,14 +53,14 @@ namespace Eraser.BlackBox
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BlackBoxMainForm));
 			this.MainLbl = new System.Windows.Forms.Label();
 			this.SubmitBtn = new System.Windows.Forms.Button();
-			this.PostponeBtn = new System.Windows.Forms.Button();
+			this.CancelBtn = new System.Windows.Forms.Button();
 			this.BlackBoxPic = new System.Windows.Forms.PictureBox();
 			this.ReportsLv = new System.Windows.Forms.ListView();
 			this.ReportsLvTimestampColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.ReportsLvErrorColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-			this.DataCollectionPolicyLbl = new System.Windows.Forms.LinkLabel();
 			this.ReportsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.DataCollectionPolicyLbl = new System.Windows.Forms.LinkLabel();
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).BeginInit();
 			this.ReportsMenuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -77,12 +77,13 @@ namespace Eraser.BlackBox
 			this.SubmitBtn.UseVisualStyleBackColor = true;
 			this.SubmitBtn.Click += new System.EventHandler(this.SubmitBtn_Click);
 			// 
-			// PostponeBtn
+			// CancelBtn
 			// 
-			resources.ApplyResources(this.PostponeBtn, "PostponeBtn");
-			this.PostponeBtn.Name = "PostponeBtn";
-			this.PostponeBtn.UseVisualStyleBackColor = true;
-			this.PostponeBtn.Click += new System.EventHandler(this.PostponeBtn_Click);
+			resources.ApplyResources(this.CancelBtn, "CancelBtn");
+			this.CancelBtn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.CancelBtn.Name = "CancelBtn";
+			this.CancelBtn.UseVisualStyleBackColor = true;
+			this.CancelBtn.Click += new System.EventHandler(this.PostponeBtn_Click);
 			// 
 			// BlackBoxPic
 			// 
@@ -114,13 +115,6 @@ namespace Eraser.BlackBox
 			// 
 			resources.ApplyResources(this.ReportsLvErrorColumn, "ReportsLvErrorColumn");
 			// 
-			// DataCollectionPolicyLbl
-			// 
-			resources.ApplyResources(this.DataCollectionPolicyLbl, "DataCollectionPolicyLbl");
-			this.DataCollectionPolicyLbl.Name = "DataCollectionPolicyLbl";
-			this.DataCollectionPolicyLbl.TabStop = true;
-			this.DataCollectionPolicyLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DataCollectionPolicyLbl_LinkClicked);
-			// 
 			// ReportsMenuStrip
 			// 
 			this.ReportsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -135,14 +129,23 @@ namespace Eraser.BlackBox
 			resources.ApplyResources(this.deleteToolStripMenuItem, "deleteToolStripMenuItem");
 			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
 			// 
+			// DataCollectionPolicyLbl
+			// 
+			resources.ApplyResources(this.DataCollectionPolicyLbl, "DataCollectionPolicyLbl");
+			this.DataCollectionPolicyLbl.Name = "DataCollectionPolicyLbl";
+			this.DataCollectionPolicyLbl.TabStop = true;
+			this.DataCollectionPolicyLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DataCollectionPolicyLbl_LinkClicked);
+			// 
 			// BlackBoxMainForm
 			// 
+			this.AcceptButton = this.SubmitBtn;
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+			this.CancelButton = this.CancelBtn;
 			this.Controls.Add(this.DataCollectionPolicyLbl);
 			this.Controls.Add(this.ReportsLv);
 			this.Controls.Add(this.BlackBoxPic);
-			this.Controls.Add(this.PostponeBtn);
+			this.Controls.Add(this.CancelBtn);
 			this.Controls.Add(this.SubmitBtn);
 			this.Controls.Add(this.MainLbl);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -161,7 +164,7 @@ namespace Eraser.BlackBox
 
 		private System.Windows.Forms.Label MainLbl;
 		private System.Windows.Forms.Button SubmitBtn;
-		private System.Windows.Forms.Button PostponeBtn;
+		private System.Windows.Forms.Button CancelBtn;
 		private System.Windows.Forms.PictureBox BlackBoxPic;
 		private System.Windows.Forms.ListView ReportsLv;
 		private System.Windows.Forms.ColumnHeader ReportsLvTimestampColumn;

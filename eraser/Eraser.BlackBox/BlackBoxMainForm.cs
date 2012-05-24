@@ -21,6 +21,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -73,6 +75,22 @@ namespace Eraser.BlackBox
 
 		private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			List<ListViewItem> selection = new List<ListViewItem>(
+				ReportsLv.SelectedItems.Cast<ListViewItem>());
+			foreach (ListViewItem item in selection)
+			{
+				try
+				{
+					((BlackBoxReport)item.Tag).Delete();
+					item.Remove();
+				}
+				catch (UnauthorizedAccessException ex)
+				{
+					MessageBox.Show(this, S._("Could not delete report {0} because of " +
+						"the following error: {1}", item.Text, ex.Message), S._("BlackBox"),
+						MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+			}
 		}
 
 		private void DataCollectionPolicyLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -86,8 +104,6 @@ namespace Eraser.BlackBox
 			foreach (ListViewItem item in ReportsLv.Items)
 				if (item.Checked)
 					reports.Add((BlackBoxReport)item.Tag);
-				else
-					((BlackBoxReport)item.Tag).Delete();
 
 			if (reports.Count != 0)
 			{
