@@ -56,9 +56,19 @@ namespace Eraser
 				CommandLine = commandLine;
 
 				//Check if there already is another instance of the program.
-				bool isFirstInstance = false;
-				GlobalMutex = new Mutex(true, instanceID, out isFirstInstance);
-				IsFirstInstance = isFirstInstance;
+				try
+				{
+					bool isFirstInstance = false;
+					GlobalMutex = new Mutex(true, instanceID, out isFirstInstance);
+					IsFirstInstance = isFirstInstance;
+				}
+				catch (UnauthorizedAccessException)
+				{
+					//If we get here, the mutex exists but we cannot modify it. That
+					//would imply that this is not the first instance.
+					//See http://msdn.microsoft.com/en-us/library/bwe34f1k.aspx
+					IsFirstInstance = false;
+				}
 			}
 
 			#region IDisposable Interface
