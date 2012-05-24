@@ -49,6 +49,7 @@ namespace Eraser.BlackBox
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BlackBoxMainForm));
 			this.MainLbl = new System.Windows.Forms.Label();
 			this.SubmitBtn = new System.Windows.Forms.Button();
@@ -58,7 +59,10 @@ namespace Eraser.BlackBox
 			this.ReportsLvTimestampColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.ReportsLvErrorColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.DataCollectionPolicyLbl = new System.Windows.Forms.LinkLabel();
+			this.ReportsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).BeginInit();
+			this.ReportsMenuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// MainLbl
@@ -94,6 +98,7 @@ namespace Eraser.BlackBox
 			this.ReportsLv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ReportsLvTimestampColumn,
             this.ReportsLvErrorColumn});
+			this.ReportsLv.ContextMenuStrip = this.ReportsMenuStrip;
 			this.ReportsLv.FullRowSelect = true;
 			this.ReportsLv.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.ReportsLv.Name = "ReportsLv";
@@ -116,6 +121,20 @@ namespace Eraser.BlackBox
 			this.DataCollectionPolicyLbl.TabStop = true;
 			this.DataCollectionPolicyLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DataCollectionPolicyLbl_LinkClicked);
 			// 
+			// ReportsMenuStrip
+			// 
+			this.ReportsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem});
+			this.ReportsMenuStrip.Name = "ReportsMenuStrip";
+			resources.ApplyResources(this.ReportsMenuStrip, "ReportsMenuStrip");
+			this.ReportsMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.ReportsMenuStrip_Opening);
+			// 
+			// deleteToolStripMenuItem
+			// 
+			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+			resources.ApplyResources(this.deleteToolStripMenuItem, "deleteToolStripMenuItem");
+			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+			// 
 			// BlackBoxMainForm
 			// 
 			resources.ApplyResources(this, "$this");
@@ -132,6 +151,7 @@ namespace Eraser.BlackBox
 			this.Name = "BlackBoxMainForm";
 			this.ShowInTaskbar = false;
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).EndInit();
+			this.ReportsMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -147,5 +167,7 @@ namespace Eraser.BlackBox
 		private System.Windows.Forms.ColumnHeader ReportsLvTimestampColumn;
 		private System.Windows.Forms.ColumnHeader ReportsLvErrorColumn;
 		private System.Windows.Forms.LinkLabel DataCollectionPolicyLbl;
+		private System.Windows.Forms.ContextMenuStrip ReportsMenuStrip;
+		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
 	}
 }
