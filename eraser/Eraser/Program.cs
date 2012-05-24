@@ -324,7 +324,7 @@ namespace Eraser
 					program.Handlers.Add("help",
 						new ConsoleActionData(CommandHelp, new ConsoleArguments()));
 					program.Handlers.Add("erase",
-						new ConsoleActionData(CommandErase, new EraseArguments())); 
+						new ConsoleActionData(CommandErase, new EraseArguments()));
 					program.Handlers.Add("addtask",
 						new ConsoleActionData(CommandAddTask, new TaskArguments()));
 					program.Handlers.Add("importtasklist",
@@ -342,6 +342,11 @@ namespace Eraser
 				{
 					Console.WriteLine(e.Message);
 					return e.ErrorCode;
+				}
+				catch (ArgumentException e)
+				{
+					Console.WriteLine(e.Message);
+					return Win32ErrorCode.BadArguments;
 				}
 				catch (Exception e)
 				{
