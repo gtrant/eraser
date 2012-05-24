@@ -1,8 +1,8 @@
-/* 
+﻿/* 
  * $Id$
  * Copyright 2008-2012 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: 
  * 
  * This file is part of Eraser.
  * 
@@ -18,29 +18,18 @@
  * A copy of the GNU General Public License can be found at
  * <http://www.gnu.org/licenses/>.
  */
+
 using System;
-using System.Reflection;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-[assembly: AssemblyFileVersion("6.1.0.$WCREV$")]
-[assembly: AssemblyVersion("6.1.0.2671")]
-
-namespace Eraser {
-	internal static class BuildInfo
+namespace Eraser.Plugins.Registrars
+{
+	/// <summary>
+	/// A class which manages all Notifier plugins.
+	/// </summary>
+	public class NotifierRegistrar : Registrar<ExtensionPoints.INotifier>
 	{
-		public static readonly DateTime BuildDate = DateTime.Parse("$WCNOW$",
-			System.Globalization.CultureInfo.InvariantCulture);
-		public const bool CustomBuild = $WCMODS?true:false$;
-		public static Version AssemblyFileVersion
-		{
-			get
-			{
-				FileVersionInfo version = FileVersionInfo.GetVersionInfo(
-					Assembly.GetExecutingAssembly().Location);
-
-				return new Version(version.FileMajorPart, version.FileMinorPart,
-					version.FileBuildPart, version.FilePrivatePart);
-			}
-		}
 	}
 }

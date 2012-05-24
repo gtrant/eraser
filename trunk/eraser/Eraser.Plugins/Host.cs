@@ -95,6 +95,7 @@ namespace Eraser.Plugins
 			ErasureTargetFactories = new ErasureTargetFactoryRegistrar();
 			FileSystems = new FileSystemRegistrar();
 			ClientTools = new ClientToolRegistrar();
+			Notifiers = new NotifierRegistrar();
 		}
 
 		/// <summary>
@@ -231,9 +232,18 @@ namespace Eraser.Plugins
 		}
 
 		/// <summary>
-		/// The global instance of the Client Tools
+		/// The global instance of the Client Tools Registrar.
 		/// </summary>
 		public ClientToolRegistrar ClientTools
+		{
+			get;
+			private set;
+		}
+
+		/// <summary>
+		/// The global instance of the Notifier Registrar.
+		/// </summary>
+		public NotifierRegistrar Notifiers
 		{
 			get;
 			private set;
