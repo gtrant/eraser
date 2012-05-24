@@ -369,14 +369,14 @@ namespace Eraser.DefaultPlugins
 				}
 				catch (FileNotFoundException)
 				{
-					Logger.Log(S._("The file {0} was not securely erased because the file was " +
-						"deleted before it could be erased.", info.FullName), LogLevel.Warning);
+					Logger.Log(S._("The file {0} was not erased because it was " +
+						"deleted before it could be erased.", info.FullName), LogLevel.Information);
 				}
 				catch (DirectoryNotFoundException)
 				{
-					Logger.Log(S._("The file {0} was not securely erased because the containing " +
+					Logger.Log(S._("The file {0} was not erased because the containing " +
 						"directory was deleted before it could be erased.", info.FullName),
-						LogLevel.Warning);
+						LogLevel.Information);
 				}
 				catch (SharingViolationException)
 				{

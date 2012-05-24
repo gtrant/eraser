@@ -162,7 +162,7 @@ namespace Eraser.DefaultPlugins
 				catch (DirectoryNotFoundException)
 				{
 					Logger.Log(S._("The file {0} was not erased because the containing " +
-						"directory was deleted before it could be erased", file.FullName),
+						"directory was deleted before it could be erased.", file.FullName),
 						LogLevel.Information);
 				}
 				catch (SharingViolationException)
@@ -287,9 +287,9 @@ namespace Eraser.DefaultPlugins
 				}
 				catch (DirectoryNotFoundException)
 				{
-					Logger.Log(new LogEntry(S._("The folder {0} could not be erased because " +
+					Logger.Log(new LogEntry(S._("The folder {0} was not erased because " +
 						"the containing directory was deleted before it could be erased.",
-						info.FullName), LogLevel.Error));
+						info.FullName), LogLevel.Information));
 				}
 				catch (UnauthorizedAccessException)
 				{

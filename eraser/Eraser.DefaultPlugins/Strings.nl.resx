@@ -165,6 +165,9 @@
   <data name="The file {0} is currently in use and cannot be removed." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="(unknown)" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -246,6 +249,9 @@
   <data name="File" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Could not list the Alternate Data Streams for file {0} because the file is being used by another process. The file will not be erased." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Invalid file path" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -264,10 +270,19 @@
   <data name="The file {0} is a hard link or a symbolic link thus the contents of the file was not erased." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The file {0} was not erased because it was deleted before it could be erased." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The file {0} was not erased because the containing directory was deleted before it could be erased." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Files in Folder" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Removing folders..." xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="The folder {0} was not erased because the containing directory was deleted before it could be erased." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="The folder {0} could not be deleted because the folder's permissions prevents the deletion of the folder." xml:space="preserve">
