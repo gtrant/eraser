@@ -56,6 +56,7 @@
     <Compile Include="ExtensionPoints\IErasureMethod.cs" />
     <Compile Include="ExtensionPoints\IErasureTarget.cs" />
     <Compile Include="ExtensionPoints\IFileSystem.cs" />
+    <Compile Include="ExtensionPoints\INotifier.cs" />
     <Compile Include="ExtensionPoints\IPrng.cs" />
     <Compile Include="IConfigurer.cs" />
     <Compile Include="IPlugin.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Registrars\ErasureMethodRegistrar.cs" />
     <Compile Include="Registrars\ErasureTargetFactoryRegistrar.cs" />
     <Compile Include="Registrars\FileSystemRegistrar.cs" />
+    <Compile Include="Registrars\NotifierRegistrar.cs" />
     <Compile Include="Registrars\PrngRegistrar.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Version.cs" />
