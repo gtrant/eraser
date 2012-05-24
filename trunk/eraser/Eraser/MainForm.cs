@@ -42,7 +42,7 @@ using Eraser.Properties;
 
 namespace Eraser
 {
-	public partial class MainForm : Form
+	public partial class MainForm : Form, INotificationSink
 	{
 		private BasePanel CurrPage;
 		private SchedulerPanel SchedulerPage;
@@ -71,6 +71,11 @@ namespace Eraser
 				tbToolsDropDown.Visible = false;
 			}
 
+			//We also need to see if we have any notifier classes we need to register
+			foreach (INotifier notifier in Host.Instance.Notifiers)
+				notifier.Sink = this;
+			Host.Instance.Notifiers.Registered += Notifier_Registered;
+
 			//For every task we need to register the Task Started and Task Finished
 			//event handlers for progress notifications
 			foreach (Task task in Program.eraserClient.Tasks)
@@ -97,6 +102,19 @@ namespace Eraser
 			ChangePage(MainFormPage.Scheduler);
 		}
 
+		#region Notifications handling code
+		/// <summary>
+		/// Stores information about pending notifications.
+		/// </summary>
+		private struct NotificationInfo
+		{
+			public INotifier Source;
+			public int Timeout;
+			public ToolTipIcon Icon;
+			public string Title;
+			public string Message;
+		}
+
 		/// <summary>
 		/// Diplays the given title, message and icon as a system notification area balloon.
 		/// </summary>
@@ -105,11 +123,81 @@ namespace Eraser
 		/// <param name="icon">The icon to show.</param>
 		public void ShowNotificationBalloon(string title, string message, ToolTipIcon icon)
 		{
-			notificationIcon.BalloonTipTitle = title;
-			notificationIcon.BalloonTipText = message;
-			notificationIcon.BalloonTipIcon = icon;
-			notificationIcon.ShowBalloonTip(0);
+			NotificationInfo info;
+			info.Source = null;
+			info.Timeout = 0;
+			info.Icon = icon;
+			info.Title = title;
+			info.Message = message;
+
+			NotificationsQueue.Add(info);
+
+			//Can we show the notification immediately?
+			if (NotificationsQueue.Count == 1)
+				ShowNextNotification();
 		}
+
+		public void ShowNotification(INotifier source, int timeout, ToolTipIcon icon,
+			string title, string message)
+		{
+			NotificationInfo info;
+			info.Source = source;
+			info.Timeout = timeout;
+			info.Icon = icon;
+			info.Title = title;
+			info.Message = message;
+
+			NotificationsQueue.Add(info);
+
+			//Can we show the notification immediately?
+			if (NotificationsQueue.Count == 1)
+				ShowNextNotification();
+		}
+
+		private void Notifier_Registered(object sender, EventArgs e)
+		{
+			((INotifier)sender).Sink = this;
+		}
+
+		private void ShowNextNotification()
+		{
+			Debug.Assert(NotificationsQueue.Count != 0);
+			NotificationInfo info = NotificationsQueue[0];
+			notificationIcon.ShowBalloonTip(info.Timeout, info.Title, info.Message, info.Icon);
+		}
+
+		private void notificationIcon_BalloonTipShown(object sender, EventArgs e)
+		{
+			Debug.Assert(NotificationsQueue.Count != 0);
+			if (NotificationsQueue[0].Source != null)
+				NotificationsQueue[0].Source.Shown(sender, e);
+		}
+
+		private void notificationIcon_BalloonTipClosed(object sender, EventArgs e)
+		{
+			Debug.Assert(NotificationsQueue.Count != 0);
+
+			if (NotificationsQueue[0].Source != null)
+				NotificationsQueue[0].Source.Closed(sender, e);
+			NotificationsQueue.RemoveAt(0);
+
+			if (NotificationsQueue.Count > 0)
+				ShowNextNotification();
+		}
+
+		private void notificationIcon_BalloonTipClicked(object sender, EventArgs e)
+		{
+			Debug.Assert(NotificationsQueue.Count != 0);
+			if (NotificationsQueue[0].Source != null)
+				NotificationsQueue[0].Source.Clicked(sender, e);
+		}
+
+		/// <summary>
+		/// The queue holding the list of notifications to be displayed sequentially.
+		/// The notification being displayed is the first item in the list.
+		/// </summary>
+		private List<NotificationInfo> NotificationsQueue = new List<NotificationInfo>();
+		#endregion
 
 		/// <summary>
 		/// Changes the active page displayed in the form.
