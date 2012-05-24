@@ -99,6 +99,10 @@ namespace Eraser
 			/// </summary>
 			public void Run()
 			{
+				//Check that we've got an action corresponding to one the user requested.
+				if (!Handlers.ContainsKey(Arguments.Action))
+					throw new ArgumentException(S._("Unknown action {0}", Arguments.Action));
+
 				//Re-parse the command line arguments as arguments for the given action.
 				ConsoleActionData data = Handlers[Arguments.Action];
 				ConsoleArguments arguments = data.Arguments;
