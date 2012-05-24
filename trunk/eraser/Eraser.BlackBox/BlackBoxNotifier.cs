@@ -95,7 +95,7 @@ namespace Eraser.BlackBox
 		private void OnClick(object sender, EventArgs e)
 		{
 			BlackBoxMainForm form = new BlackBoxMainForm();
-			form.Show();
+			form.ShowDialog();
 		}
 
 		/// <summary>

@@ -83,6 +83,7 @@
       <Link>Version.cs</Link>
     </Compile>
     <Compile Include="BlackBox.cs" />
+    <Compile Include="BlackBoxClientTool.cs" />
     <Compile Include="BlackBoxMainForm.cs">
       <SubType>Form</SubType>
     </Compile>
