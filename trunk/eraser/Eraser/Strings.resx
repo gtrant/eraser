@@ -153,6 +153,9 @@
   <data name="Processing:" xml:space="preserve">
     <value>Processing:</value>
   </data>
+  <data name="Unknown action {0}" xml:space="preserve">
+    <value>Unknown action {0}</value>
+  </data>
   <data name="Eraser cannot connect to the running instance for erasures." xml:space="preserve">
     <value>Eraser cannot connect to the running instance for erasures.</value>
   </data>
