@@ -61,6 +61,7 @@ namespace Eraser.BlackBox
 			this.ReportsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.DataCollectionPolicyLbl = new System.Windows.Forms.LinkLabel();
+			this.ReportsLvStatusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).BeginInit();
 			this.ReportsMenuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -98,7 +99,8 @@ namespace Eraser.BlackBox
 			this.ReportsLv.CheckBoxes = true;
 			this.ReportsLv.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ReportsLvTimestampColumn,
-            this.ReportsLvErrorColumn});
+            this.ReportsLvErrorColumn,
+            this.ReportsLvStatusColumn});
 			this.ReportsLv.ContextMenuStrip = this.ReportsMenuStrip;
 			this.ReportsLv.FullRowSelect = true;
 			this.ReportsLv.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -106,6 +108,7 @@ namespace Eraser.BlackBox
 			this.ReportsLv.UseCompatibleStateImageBehavior = false;
 			this.ReportsLv.View = System.Windows.Forms.View.Details;
 			this.ReportsLv.ItemActivate += new System.EventHandler(this.ReportsLv_ItemActivate);
+			this.ReportsLv.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ReportsLv_ItemCheck);
 			// 
 			// ReportsLvTimestampColumn
 			// 
@@ -135,6 +138,10 @@ namespace Eraser.BlackBox
 			this.DataCollectionPolicyLbl.Name = "DataCollectionPolicyLbl";
 			this.DataCollectionPolicyLbl.TabStop = true;
 			this.DataCollectionPolicyLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DataCollectionPolicyLbl_LinkClicked);
+			// 
+			// ReportsLvStatusColumn
+			// 
+			resources.ApplyResources(this.ReportsLvStatusColumn, "ReportsLvStatusColumn");
 			// 
 			// BlackBoxMainForm
 			// 
@@ -172,5 +179,6 @@ namespace Eraser.BlackBox
 		private System.Windows.Forms.LinkLabel DataCollectionPolicyLbl;
 		private System.Windows.Forms.ContextMenuStrip ReportsMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+		private System.Windows.Forms.ColumnHeader ReportsLvStatusColumn;
 	}
 }

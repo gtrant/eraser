@@ -44,17 +44,25 @@ namespace Eraser.BlackBox
 			ReportsLv.BeginUpdate();
 			foreach (BlackBoxReport report in BlackBox.GetDumps())
 			{
-				if (report.Submitted)
-					continue;
-
 				ListViewItem item = ReportsLv.Items.Add(report.Timestamp.ToString(
-					"F", CultureInfo.CurrentCulture));
+					"g", CultureInfo.CurrentCulture));
 				if (report.StackTrace.Count != 0)
 					item.SubItems.Add(report.StackTrace[0].ExceptionType);
+				else
+					item.SubItems.Add(string.Empty);
+				item.SubItems.Add(report.Submitted ?
+					S._("Submitted") : S._("Not submitted"));
 				item.Tag = report;
-				item.Checked = true;
+				item.Checked = !report.Submitted;
 			}
 			ReportsLv.EndUpdate();
+		}
+
+		private void ReportsLv_ItemCheck(object sender, ItemCheckEventArgs e)
+		{
+			BlackBoxReport report = ((BlackBoxReport)ReportsLv.Items[e.Index].Tag);
+			if (e.NewValue == CheckState.Checked && report.Submitted)
+				e.NewValue = CheckState.Unchecked;
 		}
 
 		private void ReportsLv_ItemActivate(object sender, EventArgs e)

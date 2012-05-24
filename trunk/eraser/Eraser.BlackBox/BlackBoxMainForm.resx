@@ -231,7 +231,7 @@ Eraser can send the information contained here to Eraser's developers and also c
     <value>Report Created</value>
   </data>
   <data name="ReportsLvTimestampColumn.Width" type="System.Int32, mscorlib">
-    <value>280</value>
+    <value>160</value>
   </data>
   <data name="ReportsLvErrorColumn.Text" xml:space="preserve">
     <value>Error Type</value>
@@ -239,15 +239,15 @@ Eraser can send the information contained here to Eraser's developers and also c
   <data name="ReportsLvErrorColumn.Width" type="System.Int32, mscorlib">
     <value>250</value>
   </data>
+  <data name="ReportsLvStatusColumn.Text" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ReportsLvStatusColumn.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
   <metadata name="ReportsMenuStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>152, 22</value>
-  </data>
-  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
   <data name="ReportsMenuStrip.Size" type="System.Drawing.Size, System.Drawing">
     <value>108, 26</value>
   </data>
@@ -277,6 +277,12 @@ Eraser can send the information contained here to Eraser's developers and also c
   </data>
   <data name="&gt;&gt;ReportsLv.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="deleteToolStripMenuItem.Text" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="DataCollectionPolicyLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1897,6 +1903,12 @@ Eraser can send the information contained here to Eraser's developers and also c
   </data>
   <data name="&gt;&gt;deleteToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ReportsLvStatusColumn.Name" xml:space="preserve">
+    <value>ReportsLvStatusColumn</value>
+  </data>
+  <data name="&gt;&gt;ReportsLvStatusColumn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BlackBoxMainForm</value>
