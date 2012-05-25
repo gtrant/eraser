@@ -208,15 +208,22 @@ namespace Eraser.BlackBox
 				overallProgress.Steps.Add(new SteppedProgressManagerStep(
 					progress, 0.5f, "Uploading"));
 
-				QueryServer("upload", delegate(long uploaded, long total)
+				XmlDocument result = QueryServer("upload", delegate(long uploaded, long total)
 					{
 						progress.Total = total;
 						progress.Completed = uploaded;
 						progressChanged(this, new ProgressChangedEventArgs(overallProgress, null));
 					}, fields.ToArray());
 
-
-				Report.Submitted = true;
+				//Parse the result document
+				XmlNode node = result.SelectSingleNode("/crashReport");
+				string reportStatus = node.Attributes.GetNamedItem("status").Value;
+				if (reportStatus == "exists")
+				{
+					string reportId = node.Attributes.GetNamedItem("id").Value;
+					Report.Submitted = true;
+					Report.ID = Convert.ToInt32(reportId);
+				}
 			}
 		}
 
@@ -258,6 +265,7 @@ namespace Eraser.BlackBox
 		{
 			PostDataBuilder builder = new PostDataBuilder();
 			builder.AddPart(new PostDataField("action", action));
+			builder.AddParts(fields);
 
 			WebRequest reportRequest = HttpWebRequest.Create(BlackBoxServer);
 			reportRequest.ContentType = builder.ContentType;
