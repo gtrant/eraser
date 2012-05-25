@@ -70,14 +70,7 @@ namespace Eraser.BlackBox
 				overallProgress.Steps.Add(new SteppedProgressManagerStep(reportProgress,
 					1.0f / reports.Count));
 
-				BlackBoxReportUploader uploader = new BlackBoxReportUploader(reports[i]);
-
-				//Check that a similar report has not yet been uploaded.
-				UploadWorker.ReportProgress((int)(overallProgress.Progress * 100),
-					S._("Checking for status of report {0}...", reports[i].Name));
-				if (!uploader.IsNew)
-					continue;
-
+				//Allow us to bail out.
 				if (UploadWorker.CancellationPending)
 					throw new OperationCanceledException();
 
@@ -85,6 +78,7 @@ namespace Eraser.BlackBox
 				UploadWorker.ReportProgress((int)(overallProgress.Progress * 100),
 					S._("Compressing Report {0}: {1:#0.00%}", reports[i].Name, 0));
 
+				BlackBoxReportUploader uploader = new BlackBoxReportUploader(reports[i]);
 				uploader.Submit(delegate(object from, EraserProgressChangedEventArgs e2)
 					{
 						reportProgress.Completed = (int)(e2.Progress.Progress * reportProgress.Total);
