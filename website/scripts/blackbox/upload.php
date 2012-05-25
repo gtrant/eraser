@@ -62,12 +62,27 @@ function GetExceptionIDFromExceptionInfo($exception, $exceptionDepth)
 	return $row['ExceptionID'];
 }
 
+function GetReportIDFromExceptionIDs(array $exceptionIDs)
+{
+	$ids = implode(', ', $exceptionIDs);
+	$pdo = new Database();
+	$result = $pdo->query(sprintf('SELECT ReportID, COUNT(ID) as Matches FROM blackbox_exceptions
+		WHERE ID IN (%s) GROUP BY ReportID ORDER BY Matches DESC', $ids));
+
+	if ($result->rowCount() > 0)
+	{
+		$row = $result->fetch();
+		return $row['ReportID'];
+	}
+
+	return null;
+}
+
 function QueryStatus($stackTrace)
 {
 	$status = 'exists';
 	$reportID = false;
 	$exceptionIDs = array();
-	$pdo = new Database();
 	
 	foreach ($stackTrace as $exceptionDepth => $exception)
 	{
@@ -89,14 +104,9 @@ function QueryStatus($stackTrace)
 	//If this is an existing exception, try to find the most similar report.
 	if ($status == 'exists' && count($exceptionIDs) > 0)
 	{
-		$ids = implode(', ', $exceptionIDs);
-		$result = $pdo->query(sprintf('SELECT ReportID, COUNT(ID) as Matches FROM blackbox_exceptions
-			WHERE ID IN (%s) GROUP BY ReportID ORDER BY Matches DESC', $ids));
-		if ($result->rowCount() > 0)
+		$reportID = GetReportIDFromExceptionIDs($exceptionIDs);
+		if ($reportID !== null)
 		{
-			$row = $result->fetch();
-			$reportID = $row['ReportID'];
-
 			printf('<?xml version="1.0"?>
 <crashReport status="exists" id="%s" />', htmlspecialchars($status), $reportID);
 			return;
