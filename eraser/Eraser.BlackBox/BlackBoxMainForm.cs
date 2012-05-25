@@ -50,11 +50,11 @@ namespace Eraser.BlackBox
 		private BlackBoxMainForm()
 		{
 			InitializeComponent();
-			Theming.ApplyTheme(this);
 		}
 
 		private void BlackBoxMainForm_Load(object sender, EventArgs e)
 		{
+			Theming.ApplyTheme(this);
 			RefreshReports();
 		}
 
