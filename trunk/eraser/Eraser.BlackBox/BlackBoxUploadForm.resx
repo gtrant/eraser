@@ -112,175 +112,178 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;TitleLbl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="CancelBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>260, 8</value>
-  </data>
-  <data name="&gt;&gt;ProgressLbl.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ProgressPb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>321, 17</value>
-  </data>
-  <data name="&gt;&gt;ProgressPb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ProgressLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 52</value>
-  </data>
-  <data name="&gt;&gt;UploadWorker.Type" xml:space="preserve">
-    <value>System.ComponentModel.BackgroundWorker, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ButtonsBevel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="ProgressPb.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 70</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ButtonsBevel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ButtonsBevel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>345, 2</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ButtonsBevel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;ButtonsPnl.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="CancelBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="&gt;&gt;UploadWorker.Name" xml:space="preserve">
-    <value>UploadWorker</value>
-  </data>
-  <data name="ProgressLbl.Text" xml:space="preserve">
-    <value>Compressing reports...</value>
-  </data>
-  <data name="&gt;&gt;CancelBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ButtonsPnl.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="ProgressLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="&gt;&gt;ButtonsBevel.Name" xml:space="preserve">
     <value>ButtonsBevel</value>
   </data>
-  <data name="ProgressLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;TitleLbl.Name" xml:space="preserve">
-    <value>TitleLbl</value>
-  </data>
-  <data name="&gt;&gt;ProgressLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ButtonsPnl.Name" xml:space="preserve">
-    <value>ButtonsPnl</value>
-  </data>
-  <data name="TitleLbl.Text" xml:space="preserve">
-    <value>Uploading Crash Report</value>
-  </data>
-  <data name="CancelBtn.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;ProgressLbl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ButtonsPnl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CancelBtn.Text" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="&gt;&gt;ButtonsBevel.Type" xml:space="preserve">
+    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.4456.34141, Culture=neutral, PublicKeyToken=3ac89a0351e689b6</value>
   </data>
   <data name="&gt;&gt;ButtonsBevel.Parent" xml:space="preserve">
     <value>ButtonsPnl</value>
   </data>
-  <data name="TitleLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 9</value>
-  </data>
-  <data name="&gt;&gt;CancelBtn.Name" xml:space="preserve">
-    <value>CancelBtn</value>
-  </data>
-  <data name="&gt;&gt;TitleLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;ButtonsBevel.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>344, 132</value>
-  </data>
-  <data name="&gt;&gt;ButtonsBevel.Type" xml:space="preserve">
-    <value>Trustbridge.Windows.Controls.BevelLine, BevelLine, Version=1.0.3589.29437, Culture=neutral, PublicKeyToken=77979e16578a2d88</value>
-  </data>
-  <data name="ProgressLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>130, 15</value>
-  </data>
-  <data name="&gt;&gt;ProgressPb.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ProgressPb.Name" xml:space="preserve">
-    <value>ProgressPb</value>
-  </data>
-  <data name="TitleLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
   </data>
   <data name="ButtonsPnl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
-  <data name="ButtonsPnl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 38</value>
+  <data name="CancelBtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>260, 8</value>
   </data>
-  <data name="&gt;&gt;ProgressPb.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="CancelBtn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
   </data>
-  <data name="&gt;&gt;ProgressLbl.Name" xml:space="preserve">
-    <value>ProgressLbl</value>
+  <data name="CancelBtn.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Eraser Crash Assistant</value>
+  <data name="CancelBtn.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;CancelBtn.Name" xml:space="preserve">
+    <value>CancelBtn</value>
+  </data>
+  <data name="&gt;&gt;CancelBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CancelBtn.Parent" xml:space="preserve">
     <value>ButtonsPnl</value>
   </data>
-  <data name="ButtonsBevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="TitleLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TitleLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 20</value>
+  <data name="&gt;&gt;CancelBtn.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="ButtonsPnl.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 96</value>
   </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 9pt</value>
+  <data name="ButtonsPnl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>345, 38</value>
+  </data>
+  <data name="ButtonsPnl.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;ButtonsPnl.Name" xml:space="preserve">
+    <value>ButtonsPnl</value>
+  </data>
+  <data name="&gt;&gt;ButtonsPnl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ButtonsPnl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ButtonsPnl.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="TitleLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TitleLbl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 12pt</value>
+  </data>
+  <data name="TitleLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 9</value>
+  </data>
+  <data name="TitleLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 20</value>
+  </data>
+  <data name="TitleLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="TitleLbl.Text" xml:space="preserve">
+    <value>Checking for Solutions</value>
+  </data>
+  <data name="&gt;&gt;TitleLbl.Name" xml:space="preserve">
+    <value>TitleLbl</value>
+  </data>
+  <data name="&gt;&gt;TitleLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TitleLbl.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TitleLbl.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
+  <data name="ProgressPb.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 70</value>
+  </data>
+  <data name="ProgressPb.Size" type="System.Drawing.Size, System.Drawing">
+    <value>321, 17</value>
   </data>
   <data name="ProgressPb.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
+  </data>
+  <data name="&gt;&gt;ProgressPb.Name" xml:space="preserve">
+    <value>ProgressPb</value>
+  </data>
+  <data name="&gt;&gt;ProgressPb.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ProgressPb.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ProgressPb.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <metadata name="UploadWorker.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="ProgressLbl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ProgressLbl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 52</value>
+  </data>
+  <data name="ProgressLbl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>130, 15</value>
+  </data>
+  <data name="ProgressLbl.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ProgressLbl.Text" xml:space="preserve">
+    <value>Compressing reports...</value>
+  </data>
+  <data name="&gt;&gt;ProgressLbl.Name" xml:space="preserve">
+    <value>ProgressLbl</value>
+  </data>
+  <data name="&gt;&gt;ProgressLbl.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ProgressLbl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ProgressLbl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>96, 96</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>344, 132</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 9pt</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -1842,25 +1845,19 @@
         AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACAAQAAwAMAAOAHAAD4HwAA
 </value>
   </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Eraser Crash Assistant</value>
+  </data>
+  <data name="&gt;&gt;UploadWorker.Name" xml:space="preserve">
+    <value>UploadWorker</value>
+  </data>
+  <data name="&gt;&gt;UploadWorker.Type" xml:space="preserve">
+    <value>System.ComponentModel.BackgroundWorker, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BlackBoxUploadForm</value>
   </data>
-  <data name="&gt;&gt;CancelBtn.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ButtonsBevel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>345, 2</value>
-  </data>
-  <data name="TitleLbl.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 12pt</value>
-  </data>
-  <metadata name="UploadWorker.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Italian</value>
-  </metadata>
 </root>

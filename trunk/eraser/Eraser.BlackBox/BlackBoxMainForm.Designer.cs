@@ -108,7 +108,6 @@ namespace Eraser.BlackBox
 			this.ReportsLv.UseCompatibleStateImageBehavior = false;
 			this.ReportsLv.View = System.Windows.Forms.View.Details;
 			this.ReportsLv.ItemActivate += new System.EventHandler(this.ReportsLv_ItemActivate);
-			this.ReportsLv.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.ReportsLv_ItemCheck);
 			// 
 			// ReportsLvTimestampColumn
 			// 
@@ -161,7 +160,6 @@ namespace Eraser.BlackBox
 			this.Name = "BlackBoxMainForm";
 			this.ShowInTaskbar = false;
 			this.Load += new System.EventHandler(this.BlackBoxMainForm_Load);
-			this.Shown += new System.EventHandler(this.BlackBoxMainForm_Shown);
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).EndInit();
 			this.ReportsMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
