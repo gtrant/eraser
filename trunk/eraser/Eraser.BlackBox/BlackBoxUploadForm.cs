@@ -80,7 +80,7 @@ namespace Eraser.BlackBox
 
 				//Otherwise check for solutions.
 				else
-					;
+					CheckStatus(reports[i], overallProgress, reportProgress);
 			}
 		}
 
@@ -108,6 +108,18 @@ namespace Eraser.BlackBox
 					if (UploadWorker.CancellationPending)
 						throw new OperationCanceledException();
 				});
+		}
+
+		private void CheckStatus(BlackBoxReport report, SteppedProgressManager overallProgress,
+			ProgressManager reportProgress)
+		{
+			//Upload the report.
+			UploadWorker.ReportProgress((int)(overallProgress.Progress * 100),
+				S._("Checking for solution for {0}...", report.Name));
+
+			BlackBoxReportUploader uploader = new BlackBoxReportUploader(report);
+			if (uploader.Status == ReportStatus.Resolved)
+				;
 		}
 
 		private void UploadWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
