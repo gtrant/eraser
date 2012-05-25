@@ -135,7 +135,13 @@ function Upload($stackTrace, $crashReport)
 	$pdo->commit();
 
 	//Move the temporary file to out dumps folder for later inspection
-	if (!move_uploaded_file($crashReport['tmp_name'], 'dumps/' . $reportId . '.tbz'))
+	$localName = $crashReport['name'];
+	$lastDot = strrpos($localName, '.');
+	if ($lastDot !== false)
+		$localExt = substr($localName, strrpos($localName, '.') + 1);
+	else
+		$localExt = 'bz2';
+	if (!move_uploaded_file($crashReport['tmp_name'], 'dumps/' . $reportId . '.tar.' . $localExt))
 		throw new Exception('Could not store crash dump onto server.');
 }
 
