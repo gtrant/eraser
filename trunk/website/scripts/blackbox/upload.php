@@ -11,18 +11,18 @@ function GetFunctionNameFromStackTrace($line)
 	return $result->function;
 }
 
-function GetStackFrameInformation($line)
+function GetStackFrameInformation($stackFrame)
 {
 	//at Eraser.Program.OnGUIInitInstance(Object sender) in D:\Development\Projects\Eraser 6.2\Eraser\Program.cs:line 191
 	$matches = array();
 	$function = $file = $line = null;
-	if (preg_match('/^([^ 	]+) (.*) ([^ 	]+) (.*):([^ 	]+) ([0-9]+)/', $line, $matches))
+	if (preg_match('/^([^ 	]+) (.*) ([^ 	]+) (.*):([^ 	]+) ([0-9]+)/', $stackFrame, $matches))
 	{
 		$function = $matches[2];
 		$file = $matches[4];
 		$line = intval($matches[6]);
 	}
-	else if (preg_match('/^([^ 	]+) (.*)/', $line, $matches))
+	else if (preg_match('/^([^ 	]+) (.*)/', $stackFrame, $matches))
 	{
 		$function = $matches[2];
 	}
@@ -209,9 +209,11 @@ function Upload($stackTrace, $crashReport)
 	}
 
 	//Add the dump to the report.
-	$statement = $pdo->prepare('INSERT INTO blackbox_dumps SET ReportID=?');
+	$pdo = new Database();
+	$statement = $pdo->prepare('INSERT INTO blackbox_dumps SET ReportID=?, IPAddress=?');
+	$ipAddress = inet_pton($_SERVER['REMOTE_ADDR']);
 	$statement->bindParam(1, $reportId);
-	$statement->bindParam(2, inet_pton($_SERVER['REMOTE_ADDR']));
+	$statement->bindParam(2, $ipAddress);
 	try
 	{
 		$statement->execute();
