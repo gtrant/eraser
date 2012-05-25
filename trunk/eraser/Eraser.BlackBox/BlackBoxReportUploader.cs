@@ -97,7 +97,8 @@ namespace Eraser.BlackBox
 			get
 			{
 				//Get the status from the server.
-				XmlDocument result = QueryServer("status", true);
+				XmlDocument result = QueryServer("status", null,
+					GetStackTraceField(Report.StackTrace).ToArray());
 				
 				//Parse the result document
 				XmlNode node = result.SelectSingleNode("/crashReport");
@@ -200,113 +201,68 @@ namespace Eraser.BlackBox
 				FileMode.Open, FileAccess.Read, FileShare.Read, 131072, FileOptions.DeleteOnClose))
 			using (Stream logFile = Report.DebugLog)
 			{
-				//Build the POST request
-				PostDataBuilder builder = new PostDataBuilder();
-				builder.AddPart(new PostDataField("action", "upload"));
-				builder.AddPart(new PostDataFileField("crashReport", "Report.tar.7z", bzipFile));
-				AddStackTraceToRequest(Report.StackTrace, builder);
+				List<PostDataField> fields = GetStackTraceField(Report.StackTrace);
+				fields.Add(new PostDataFileField("crashReport", "Report.tar.7z", bzipFile));
 
-				//Upload the POST request
-				WebRequest reportRequest = HttpWebRequest.Create(BlackBoxServer);
-				reportRequest.ContentType = builder.ContentType;
-				reportRequest.Method = "POST";
-				reportRequest.Timeout = int.MaxValue;
-				using (Stream formStream = builder.Stream)
-				{
-					ProgressManager progress = new ProgressManager();
-					overallProgress.Steps.Add(new SteppedProgressManagerStep(
-						progress, 0.5f, "Uploading"));
-					reportRequest.ContentLength = formStream.Length;
+				ProgressManager progress = new ProgressManager();
+				overallProgress.Steps.Add(new SteppedProgressManagerStep(
+					progress, 0.5f, "Uploading"));
 
-					using (Stream requestStream = reportRequest.GetRequestStream())
+				QueryServer("upload", delegate(long uploaded, long total)
 					{
-						int lastRead = 0;
-						byte[] buffer = new byte[32768];
-						while ((lastRead = formStream.Read(buffer, 0, buffer.Length)) != 0)
-						{
-							requestStream.Write(buffer, 0, lastRead);
+						progress.Total = total;
+						progress.Completed = uploaded;
+						progressChanged(this, new ProgressChangedEventArgs(overallProgress, null));
+					}, fields.ToArray());
 
-							progress.Total = formStream.Length;
-							progress.Completed = formStream.Position;
-							progressChanged(this, new ProgressChangedEventArgs(overallProgress, null));
-						}
-					}
-				}
 
-				try
-				{
-					HttpWebResponse response = reportRequest.GetResponse() as HttpWebResponse;
-					using (Stream responseStream = response.GetResponseStream())
-					{
-						XmlReader reader = XmlReader.Create(responseStream);
-						reader.ReadToFollowing("crashReport");
-						string reportStatus = reader.GetAttribute("status");
-						string reportId = reader.GetAttribute("id");
-					}
-
-					Report.Submitted = true;
-				}
-				catch (WebException e)
-				{
-					if (e.Response == null)
-						throw;
-
-					using (Stream responseStream = e.Response.GetResponseStream())
-					{
-						try
-						{
-							XmlReader reader = XmlReader.Create(responseStream);
-							reader.ReadToFollowing("error");
-							throw new InvalidDataException(string.Format(CultureInfo.CurrentCulture,
-								"The server encountered a problem while processing the request: {0}",
-								reader.ReadString()));
-						}
-						catch (XmlException)
-						{
-						}
-					}
-
-					throw new InvalidDataException(((HttpWebResponse)e.Response).StatusDescription);
-				}
+				Report.Submitted = true;
 			}
 		}
 
 		/// <summary>
-		/// Adds the stack trace to the given form request.
+		/// Builds the stackTrace POST data field and retrieves the Post data fields to include
+		/// with the request.
 		/// </summary>
 		/// <param name="stackTrace">The stack trace to add.</param>
-		/// <param name="builder">The Form request builder to add the stack trace to.</param>
-		private static void AddStackTraceToRequest(IList<BlackBoxExceptionEntry> stackTrace,
-			PostDataBuilder builder)
+		/// <returns>A list of PostDataField objects which can be added to a PostDataBuilder
+		/// object to add stack trace information to the request.</returns>
+		private static List<PostDataField> GetStackTraceField(IList<BlackBoxExceptionEntry> stackTrace)
 		{
 			int exceptionIndex = 0;
+			List<PostDataField> result = new List<PostDataField>();
 			foreach (BlackBoxExceptionEntry exceptionStack in stackTrace)
 			{
 				foreach (string stackFrame in exceptionStack.StackTrace)
-					builder.AddPart(new PostDataField(
+					result.Add(new PostDataField(
 						string.Format(CultureInfo.InvariantCulture, "stackTrace[{0}][]", exceptionIndex), stackFrame));
-				builder.AddPart(new PostDataField(string.Format(CultureInfo.InvariantCulture,
+
+				result.Add(new PostDataField(string.Format(CultureInfo.InvariantCulture,
 					"stackTrace[{0}][exception]", exceptionIndex), exceptionStack.ExceptionType));
 				++exceptionIndex;
 			}
+
+			return result;
 		}
 
 		/// <summary>
 		/// Builds a WebRequest object and queries the server for a response.
 		/// </summary>
 		/// <param name="action">The action to perform.</param>
-		/// <param name="includeStackTrace">Whether to include a stack trace.</param>
+		/// <param name="progressChanged">A progress changed event handler receiving
+		/// upload progress information.</param>
+		/// <param name="fields">The POST fields to upload along with the request.</param>
 		/// <returns>An XmlReader containing the response.</returns>
-		private XmlDocument QueryServer(string action, bool includeStackTrace)
+		private XmlDocument QueryServer(string action, QueryProgress progressChanged = null,
+			params PostDataField[] fields)
 		{
 			PostDataBuilder builder = new PostDataBuilder();
 			builder.AddPart(new PostDataField("action", action));
-			if (includeStackTrace)
-				AddStackTraceToRequest(Report.StackTrace, builder);
 
 			WebRequest reportRequest = HttpWebRequest.Create(BlackBoxServer);
 			reportRequest.ContentType = builder.ContentType;
 			reportRequest.Method = "POST";
+			reportRequest.Timeout = int.MaxValue;
 			using (Stream formStream = builder.Stream)
 			{
 				reportRequest.ContentLength = formStream.Length;
@@ -315,7 +271,11 @@ namespace Eraser.BlackBox
 					int lastRead = 0;
 					byte[] buffer = new byte[32768];
 					while ((lastRead = formStream.Read(buffer, 0, buffer.Length)) != 0)
+					{
 						requestStream.Write(buffer, 0, lastRead);
+						if (progressChanged != null)
+							progressChanged(formStream.Position, formStream.Length);
+					}
 				}
 			}
 
@@ -353,6 +313,13 @@ namespace Eraser.BlackBox
 				throw new InvalidDataException(((HttpWebResponse)e.Response).StatusDescription);
 			}
 		}
+
+		/// <summary>
+		/// Delegate object for upload progress callbacks.
+		/// </summary>
+		/// <param name="uploaded">The amount of data uploaded.</param>
+		/// <param name="total">The amount of data to upload.</param>
+		private delegate void QueryProgress(long uploaded, long total);
 
 		/// <summary>
 		/// The path to where the temporary files are stored before uploading.
