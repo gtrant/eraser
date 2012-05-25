@@ -96,7 +96,7 @@ namespace Eraser.BlackBox
 		/// <param name="e"></param>
 		private void OnClick(object sender, EventArgs e)
 		{
-			BlackBoxMainForm form = new BlackBoxMainForm();
+			BlackBoxMainForm form = BlackBoxMainForm.Get();
 			Form owner = null;
 			if (Application.OpenForms.Count > 0)
 				owner = Application.OpenForms[0];

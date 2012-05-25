@@ -36,34 +36,26 @@ namespace Eraser.BlackBox
 {
 	public partial class BlackBoxMainForm : Form
 	{
-		public BlackBoxMainForm()
+		#region Singleton instance
+		public static BlackBoxMainForm Get()
+		{
+			if (Instance == null)
+				Instance = new BlackBoxMainForm();
+			return Instance;
+		}
+
+		private static BlackBoxMainForm Instance;
+		#endregion
+
+		private BlackBoxMainForm()
 		{
 			InitializeComponent();
 			Theming.ApplyTheme(this);
-
-			ReportsLv.BeginUpdate();
-			foreach (BlackBoxReport report in BlackBox.GetDumps())
-			{
-				ListViewItem item = ReportsLv.Items.Add(report.Timestamp.ToString(
-					"g", CultureInfo.CurrentCulture));
-				if (report.StackTrace.Count != 0)
-					item.SubItems.Add(report.StackTrace[0].ExceptionType);
-				else
-					item.SubItems.Add(string.Empty);
-				item.SubItems.Add(report.Submitted ?
-					S._("Submitted (Report ID {0})", report.ID) :
-					S._("Not submitted"));
-				item.Tag = report;
-				item.Checked = !report.Submitted;
-			}
-			ReportsLv.EndUpdate();
 		}
 
-		private void ReportsLv_ItemCheck(object sender, ItemCheckEventArgs e)
+		private void BlackBoxMainForm_Load(object sender, EventArgs e)
 		{
-			BlackBoxReport report = ((BlackBoxReport)ReportsLv.Items[e.Index].Tag);
-			if (e.NewValue == CheckState.Checked && report.Submitted)
-				e.NewValue = CheckState.Unchecked;
+			RefreshReports();
 		}
 
 		private void ReportsLv_ItemActivate(object sender, EventArgs e)
@@ -126,6 +118,27 @@ namespace Eraser.BlackBox
 		private void PostponeBtn_Click(object sender, EventArgs e)
 		{
 			Close();
+		}
+
+		private void RefreshReports()
+		{
+			ReportsLv.BeginUpdate();
+			ReportsLv.Items.Clear();
+			foreach (BlackBoxReport report in BlackBox.GetDumps())
+			{
+				ListViewItem item = ReportsLv.Items.Add(report.Timestamp.ToString(
+					"g", CultureInfo.CurrentCulture));
+				if (report.StackTrace.Count != 0)
+					item.SubItems.Add(report.StackTrace[0].ExceptionType);
+				else
+					item.SubItems.Add(string.Empty);
+				item.SubItems.Add(report.Submitted ?
+					S._("Submitted (Report ID {0})", report.ID) :
+					S._("Not submitted"));
+				item.Tag = report;
+				item.Checked = true;
+			}
+			ReportsLv.EndUpdate();
 		}
 
 		/// <summary>
