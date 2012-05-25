@@ -92,28 +92,37 @@ namespace Eraser.BlackBox
 		/// Gets from the server based on the stack trace whether this report has been
 		/// submitted before.
 		/// </summary>
+		[Obsolete]
 		public bool IsNew
+		{
+			get
+			{
+				return Status == ReportStatus.New;
+			}
+		}
+
+		/// <summary>
+		/// Gets the status of the report.
+		/// </summary>
+		public ReportStatus Status
 		{
 			get
 			{
 				//Get the status from the server.
 				XmlDocument result = QueryServer("status", null,
 					GetStackTraceField(Report.StackTrace).ToArray());
-				
+
 				//Parse the result document
 				XmlNode node = result.SelectSingleNode("/crashReport");
 				string reportStatus = node.Attributes.GetNamedItem("status").Value;
-				switch (reportStatus)
+				try
 				{
-					case "exists":
-						return false;
-
-					case "new":
-						return true;
-
-					default:
-						throw new InvalidDataException(
-							"Unknown crash report server response.");
+					return (ReportStatus)Enum.Parse(typeof(ReportStatus), reportStatus, true);
+				}
+				catch (ArgumentException e)
+				{
+					throw new InvalidDataException(
+						"Unknown crash report server response.", e);
 				}
 			}
 		}
@@ -353,5 +362,26 @@ namespace Eraser.BlackBox
 		/// The base name of the report.
 		/// </summary>
 		private readonly string ReportBaseName;
+	}
+
+	/// <summary>
+	/// Statuses of reports on the server.
+	/// </summary>
+	public enum ReportStatus
+	{
+		/// <summary>
+		/// The report has not been reported before.
+		/// </summary>
+		New,
+
+		/// <summary>
+		/// The report has been reported before and pending a resolution.
+		/// </summary>
+		Exists,
+
+		/// <summary>
+		/// The report has been resolved.
+		/// </summary>
+		Resolved
 	}
 }
