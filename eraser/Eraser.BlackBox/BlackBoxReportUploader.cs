@@ -97,14 +97,14 @@ namespace Eraser.BlackBox
 		{
 			get
 			{
-				return Status == ReportStatus.New;
+				return Status == BlackBoxReportStatus.New;
 			}
 		}
 
 		/// <summary>
 		/// Gets the status of the report.
 		/// </summary>
-		public ReportStatus Status
+		public BlackBoxReportStatus Status
 		{
 			get
 			{
@@ -117,7 +117,7 @@ namespace Eraser.BlackBox
 				string reportStatus = node.Attributes.GetNamedItem("status").Value;
 				try
 				{
-					return (ReportStatus)Enum.Parse(typeof(ReportStatus), reportStatus, true);
+					return (BlackBoxReportStatus)Enum.Parse(typeof(BlackBoxReportStatus), reportStatus, true);
 				}
 				catch (ArgumentException e)
 				{
@@ -362,26 +362,5 @@ namespace Eraser.BlackBox
 		/// The base name of the report.
 		/// </summary>
 		private readonly string ReportBaseName;
-	}
-
-	/// <summary>
-	/// Statuses of reports on the server.
-	/// </summary>
-	public enum ReportStatus
-	{
-		/// <summary>
-		/// The report has not been reported before.
-		/// </summary>
-		New,
-
-		/// <summary>
-		/// The report has been reported before and pending a resolution.
-		/// </summary>
-		Exists,
-
-		/// <summary>
-		/// The report has been resolved.
-		/// </summary>
-		Resolved
 	}
 }

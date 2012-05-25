@@ -118,8 +118,7 @@ namespace Eraser.BlackBox
 				S._("Checking for solution for {0}...", report.Name));
 
 			BlackBoxReportUploader uploader = new BlackBoxReportUploader(report);
-			if (uploader.Status == ReportStatus.Resolved)
-				;
+			report.Status = uploader.Status;
 		}
 
 		private void UploadWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
