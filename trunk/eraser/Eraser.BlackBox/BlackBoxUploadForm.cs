@@ -74,28 +74,40 @@ namespace Eraser.BlackBox
 				if (UploadWorker.CancellationPending)
 					throw new OperationCanceledException();
 
-				//Upload the report.
-				UploadWorker.ReportProgress((int)(overallProgress.Progress * 100),
-					S._("Compressing Report {0}: {1:#0.00%}", reports[i].Name, 0));
+				//If we have not submitted the report before upload it.
+				if (!reports[i].Submitted)
+					Upload(reports[i], overallProgress, reportProgress);
 
-				BlackBoxReportUploader uploader = new BlackBoxReportUploader(reports[i]);
-				uploader.Submit(delegate(object from, EraserProgressChangedEventArgs e2)
-					{
-						reportProgress.Completed = (int)(e2.Progress.Progress * reportProgress.Total);
-						SteppedProgressManager reportSteps = (SteppedProgressManager)e2.Progress;
-						int step = reportSteps.Steps.IndexOf(reportSteps.CurrentStep);
-
-						UploadWorker.ReportProgress((int)overallProgress.Progress,
-							step == 0 ? 
-								S._("Compressing Report {0}: {1:#0.00%}",
-									reports[i].Name, reportSteps.Progress) :
-								S._("Uploading Report {0}: {1:#0.00%}",
-									reports[i].Name, reportSteps.Progress));
-
-						if (UploadWorker.CancellationPending)
-							throw new OperationCanceledException();
-					});
+				//Otherwise check for solutions.
+				else
+					;
 			}
+		}
+
+		private void Upload(BlackBoxReport report, SteppedProgressManager overallProgress,
+			ProgressManager reportProgress)
+		{
+			//Upload the report.
+			UploadWorker.ReportProgress((int)(overallProgress.Progress * 100),
+				S._("Compressing Report {0}: {1:#0.00%}", report.Name, 0));
+
+			BlackBoxReportUploader uploader = new BlackBoxReportUploader(report);
+			uploader.Submit(delegate(object from, EraserProgressChangedEventArgs e2)
+				{
+					reportProgress.Completed = (int)(e2.Progress.Progress * reportProgress.Total);
+					SteppedProgressManager reportSteps = (SteppedProgressManager)e2.Progress;
+					int step = reportSteps.Steps.IndexOf(reportSteps.CurrentStep);
+
+					UploadWorker.ReportProgress((int)overallProgress.Progress,
+						step == 0 ?
+							S._("Compressing Report {0}: {1:#0.00%}",
+								report.Name, reportSteps.Progress) :
+							S._("Uploading Report {0}: {1:#0.00%}",
+								report.Name, reportSteps.Progress));
+
+					if (UploadWorker.CancellationPending)
+						throw new OperationCanceledException();
+				});
 		}
 
 		private void UploadWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
