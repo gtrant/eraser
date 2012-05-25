@@ -197,12 +197,11 @@ namespace Eraser.BlackBox
 			SteppedProgressManager overallProgress = new SteppedProgressManager();
 			Compress(overallProgress, progressChanged);
 
-			using (FileStream bzipFile = new FileStream(ReportBaseName + ".tar.7z",
+			using (FileStream dumpFile = new FileStream(ReportBaseName + ".tar.7z",
 				FileMode.Open, FileAccess.Read, FileShare.Read, 131072, FileOptions.DeleteOnClose))
-			using (Stream logFile = Report.DebugLog)
 			{
 				List<PostDataField> fields = GetStackTraceField(Report.StackTrace);
-				fields.Add(new PostDataFileField("crashReport", "Report.tar.7z", bzipFile));
+				fields.Add(new PostDataFileField("crashReport", "Report.tar.7z", dumpFile));
 
 				ProgressManager progress = new ProgressManager();
 				overallProgress.Steps.Add(new SteppedProgressManagerStep(
@@ -297,6 +296,10 @@ namespace Eraser.BlackBox
 					result.Load(reader);
 					return result;
 				}
+			}
+			catch (XmlException)
+			{
+				return null;
 			}
 			catch (WebException e)
 			{
