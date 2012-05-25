@@ -89,76 +89,30 @@ namespace Eraser.BlackBox
 		}
 
 		/// <summary>
-		/// Gets from the server based on the stack trace whether this report is
-		/// new.
+		/// Gets from the server based on the stack trace whether this report has been
+		/// submitted before.
 		/// </summary>
 		public bool IsNew
 		{
 			get
 			{
-				PostDataBuilder builder = new PostDataBuilder();
-				builder.AddPart(new PostDataField("action", "status"));
-				AddStackTraceToRequest(Report.StackTrace, builder);
-
-				WebRequest reportRequest = HttpWebRequest.Create(BlackBoxServer);
-				reportRequest.ContentType = builder.ContentType;
-				reportRequest.Method = "POST";
-				using (Stream formStream = builder.Stream)
+				//Get the status from the server.
+				XmlDocument result = QueryServer("status", true);
+				
+				//Parse the result document
+				XmlNode node = result.SelectSingleNode("/crashReport");
+				string reportStatus = node.Attributes.GetNamedItem("status").Value;
+				switch (reportStatus)
 				{
-					reportRequest.ContentLength = formStream.Length;
-					using (Stream requestStream = reportRequest.GetRequestStream())
-					{
-						int lastRead = 0;
-						byte[] buffer = new byte[32768];
-						while ((lastRead = formStream.Read(buffer, 0, buffer.Length)) != 0)
-							requestStream.Write(buffer, 0, lastRead);
-					}
-				}
+					case "exists":
+						return false;
 
-				try
-				{
-					HttpWebResponse response = reportRequest.GetResponse() as HttpWebResponse;
-					using (Stream responseStream = response.GetResponseStream())
-					{
-						XmlReader reader = XmlReader.Create(responseStream);
-						reader.ReadToFollowing("crashReport");
-						string reportStatus = reader.GetAttribute("status");
-						switch (reportStatus)
-						{
-							case "exists":
-								Report.Submitted = true;
-								return false;
+					case "new":
+						return true;
 
-							case "new":
-								return true;
-
-							default:
-								throw new InvalidDataException(
-									"Unknown crash report server response.");
-						}
-					}
-				}
-				catch (WebException e)
-				{
-					if (e.Response == null)
-						throw;
-
-					using (Stream responseStream = e.Response.GetResponseStream())
-					{
-						try
-						{
-							XmlReader reader = XmlReader.Create(responseStream);
-							reader.ReadToFollowing("error");
-							throw new InvalidDataException(string.Format(CultureInfo.CurrentCulture,
-								"The server encountered a problem while processing the request: {0}",
-								reader.ReadString()));
-						}
-						catch (XmlException)
-						{
-						}
-					}
-
-					throw new InvalidDataException(((HttpWebResponse)e.Response).StatusDescription);
+					default:
+						throw new InvalidDataException(
+							"Unknown crash report server response.");
 				}
 			}
 		}
@@ -334,6 +288,69 @@ namespace Eraser.BlackBox
 				builder.AddPart(new PostDataField(string.Format(CultureInfo.InvariantCulture,
 					"stackTrace[{0}][exception]", exceptionIndex), exceptionStack.ExceptionType));
 				++exceptionIndex;
+			}
+		}
+
+		/// <summary>
+		/// Builds a WebRequest object and queries the server for a response.
+		/// </summary>
+		/// <param name="action">The action to perform.</param>
+		/// <param name="includeStackTrace">Whether to include a stack trace.</param>
+		/// <returns>An XmlReader containing the response.</returns>
+		private XmlDocument QueryServer(string action, bool includeStackTrace)
+		{
+			PostDataBuilder builder = new PostDataBuilder();
+			builder.AddPart(new PostDataField("action", action));
+			if (includeStackTrace)
+				AddStackTraceToRequest(Report.StackTrace, builder);
+
+			WebRequest reportRequest = HttpWebRequest.Create(BlackBoxServer);
+			reportRequest.ContentType = builder.ContentType;
+			reportRequest.Method = "POST";
+			using (Stream formStream = builder.Stream)
+			{
+				reportRequest.ContentLength = formStream.Length;
+				using (Stream requestStream = reportRequest.GetRequestStream())
+				{
+					int lastRead = 0;
+					byte[] buffer = new byte[32768];
+					while ((lastRead = formStream.Read(buffer, 0, buffer.Length)) != 0)
+						requestStream.Write(buffer, 0, lastRead);
+				}
+			}
+
+			try
+			{
+				HttpWebResponse response = reportRequest.GetResponse() as HttpWebResponse;
+				using (Stream responseStream = response.GetResponseStream())
+				{
+					XmlReader reader = XmlReader.Create(responseStream);
+					XmlDocument result = new XmlDocument();
+					result.Load(reader);
+					return result;
+				}
+			}
+			catch (WebException e)
+			{
+				if (e.Response == null)
+					throw;
+
+				using (Stream responseStream = e.Response.GetResponseStream())
+				{
+					try
+					{
+						XmlReader reader = XmlReader.Create(responseStream);
+						reader.ReadToFollowing("error");
+						throw new InvalidDataException(string.Format(CultureInfo.CurrentCulture,
+							"The server encountered a problem while processing the request: {0}",
+							reader.ReadString()));
+					}
+					catch (XmlException)
+					{
+					}
+				}
+
+				throw new InvalidDataException(((HttpWebResponse)e.Response).StatusDescription);
 			}
 		}
 
