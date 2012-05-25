@@ -7,15 +7,27 @@ require('../Database.php');
 
 function GetFunctionNameFromStackTrace($line)
 {
+	$result = GetStackFrameInformation($line);
+	return $result->function;
+}
+
+function GetStackFrameInformation($line)
+{
+	//at Eraser.Program.OnGUIInitInstance(Object sender) in D:\Development\Projects\Eraser 6.2\Eraser\Program.cs:line 191
 	$matches = array();
+	$function = $file = $line = null;
 	if (preg_match('/^([^ 	]+) (.*) ([^ 	]+) (.*):([^ 	]+) ([0-9]+)/', $line, $matches))
 	{
+		$function = $matches[2];
+		$file = $matches[4];
+		$line = intval($matches[6]);
 	}
 	else if (preg_match('/^([^ 	]+) (.*)/', $line, $matches))
 	{
+		$function = $matches[2];
 	}
-	
-	return $matches[2];
+
+	return (object)array('function' => $function, 'file' => $file, 'line' => $line);
 }
 
 function QueryStatus($stackTrace)
@@ -102,25 +114,13 @@ function Upload($stackTrace, $crashReport)
 			if ((string)$stackIndex == 'exception')
 				continue;
 			
-			//at Eraser.Program.OnGUIInitInstance(Object sender) in D:\Development\Projects\Eraser 6.2\Eraser\Program.cs:line 191
-			$matches = array();
-			$function = $file = $line = null;
-			if (preg_match('/^([^ 	]+) (.*) ([^ 	]+) (.*):([^ 	]+) ([0-9]+)/', $stackFrame, $matches))
-			{
-				$function = $matches[2];
-				$file = $matches[4];
-				$line = intval($matches[6]);
-			}
-			else if (preg_match('/^([^ 	]+) (.*)/', $stackFrame, $matches))
-			{
-				$function = $matches[2];
-			}
+			$stackFrameInfo = GetStackFrameInformation($stackFrame);
 
 			$stackFrameInsert->bindParam(1, $exceptionId);
 			$stackFrameInsert->bindParam(2, $stackIndex);
-			$stackFrameInsert->bindParam(3, $function);
-			$stackFrameInsert->bindParam(4, $file);
-			$stackFrameInsert->bindParam(5, $line);
+			$stackFrameInsert->bindParam(3, $stackFrameInfo->function);
+			$stackFrameInsert->bindParam(4, $stackFrameInfo->file);
+			$stackFrameInsert->bindParam(5, $stackFrameInfo->line);
 			try
 			{
 				$stackFrameInsert->execute();
