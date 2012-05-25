@@ -120,65 +120,107 @@ function QueryStatus($stackTrace)
 
 function Upload($stackTrace, $crashReport)
 {
-	$pdo = new Database();
-	$pdo->beginTransaction();
+	//Check if we have a similar report to add a new dump to
+	$reportId = null;
+	$exceptionIDs = array();
+	$newException = false;
+	foreach ($stackTrace as $exceptionDepth => $exception)
+	{
+		$exceptionID = GetExceptionIDFromExceptionInfo($exception, $exceptionDepth);
+		if ($exceptionID === null)
+			continue;
+		else if ($exceptionID === false)
+		{
+			$newException = true;
+			break;
+		}
+		else
+			//Store the current exception ID on the stack
+			array_push($exceptionIDs, $exceptionID);
+	}
 
-	$statement = $pdo->prepare('INSERT INTO blackbox_reports SET IPAddress=?');
-	$statement->bindParam(1, sprintf('%u', ip2long($_SERVER['REMOTE_ADDR'])));
+	//If this is not a new exception, find the report this belongs to.
+	if (!$newException && count($exceptionIDs) > 0)
+	{
+		$reportId = GetReportIDFromExceptionIDs($exceptionIDs);
+	}
+
+	//Otherwise, create a new report.
+	else
+	{
+		$pdo = new Database();
+		$pdo->beginTransaction();
+
+		$statement = $pdo->prepare('INSERT INTO blackbox_reports () VALUES ()');
+		try
+		{
+			$statement->execute();
+		}
+		catch (PDOException $e)
+		{
+			throw new Exception('Could not insert crash report into Reports table', null, $e);
+		}
+
+		$reportId = $pdo->lastInsertId();
+		$exceptionInsert = $pdo->prepare('INSERT INTO blackbox_exceptions
+			SET ReportID=?, ExceptionType=?, ExceptionDepth=?');
+		$exceptionInsert->bindParam(1, $reportId);
+		$stackFrameInsert = $pdo->prepare('INSERT INTO blackbox_stackframes SET
+			ExceptionID=?, StackFrameIndex=?, Function=?, File=?, Line=?');
+		foreach ($stackTrace as $exceptionDepth => $exception)
+		{
+			$exceptionInsert->bindParam(2, $exception['exception']);
+			$exceptionInsert->bindParam(3, $exceptionDepth);
+			try
+			{
+				$exceptionInsert->execute();
+			}
+			catch (PDOException $e)
+			{
+				throw new Exception('Could not insert exception into Exceptions table', null, $e);
+			}
+
+			$exceptionId = $pdo->lastInsertId();
+			foreach ($exception as $stackIndex => $stackFrame)
+			{
+				//Ignore the exception key; that stores the exception type.
+				if ((string)$stackIndex == 'exception')
+					continue;
+
+				$stackFrameInfo = GetStackFrameInformation($stackFrame);
+
+				$stackFrameInsert->bindParam(1, $exceptionId);
+				$stackFrameInsert->bindParam(2, $stackIndex);
+				$stackFrameInsert->bindParam(3, $stackFrameInfo->function);
+				$stackFrameInsert->bindParam(4, $stackFrameInfo->file);
+				$stackFrameInsert->bindParam(5, $stackFrameInfo->line);
+				try
+				{
+					$stackFrameInsert->execute();
+				}
+				catch (PDOException $e)
+				{
+					throw new Exception('Could not insert stack frame into Stack Frames table', null, $e);
+				}
+			}
+		}
+
+		$pdo->commit();
+	}
+
+	//Add the dump to the report.
+	$statement = $pdo->prepare('INSERT INTO blackbox_dumps SET ReportID=?');
+	$statement->bindParam(1, $reportId);
+	$statement->bindParam(2, inet_pton($_SERVER['REMOTE_ADDR']));
 	try
 	{
 		$statement->execute();
 	}
 	catch (PDOException $e)
 	{
-		throw new Exception('Could not insert crash report into Reports table', null, $e);
+		throw new Exception('Could not add dump into Dumps table', null, $e);
 	}
-
-	$reportId = $pdo->lastInsertId();
-	$exceptionInsert = $pdo->prepare('INSERT INTO blackbox_exceptions
-		SET ReportID=?, ExceptionType=?, ExceptionDepth=?');
-	$exceptionInsert->bindParam(1, $reportId);
-	$stackFrameInsert = $pdo->prepare('INSERT INTO blackbox_stackframes SET
-		ExceptionID=?, StackFrameIndex=?, Function=?, File=?, Line=?');
-	foreach ($stackTrace as $exceptionDepth => $exception)
-	{
-		$exceptionInsert->bindParam(2, $exception['exception']);
-		$exceptionInsert->bindParam(3, $exceptionDepth);
-		try
-		{
-			$exceptionInsert->execute();
-		}
-		catch (PDOException $e)
-		{
-			throw new Exception('Could not insert exception into Exceptions table', null, $e);
-		}
-		
-		$exceptionId = $pdo->lastInsertId();
-		foreach ($exception as $stackIndex => $stackFrame)
-		{
-			//Ignore the exception key; that stores the exception type.
-			if ((string)$stackIndex == 'exception')
-				continue;
-			
-			$stackFrameInfo = GetStackFrameInformation($stackFrame);
-
-			$stackFrameInsert->bindParam(1, $exceptionId);
-			$stackFrameInsert->bindParam(2, $stackIndex);
-			$stackFrameInsert->bindParam(3, $stackFrameInfo->function);
-			$stackFrameInsert->bindParam(4, $stackFrameInfo->file);
-			$stackFrameInsert->bindParam(5, $stackFrameInfo->line);
-			try
-			{
-				$stackFrameInsert->execute();
-			}
-			catch (PDOException $e)
-			{
-				throw new Exception('Could not insert stack frame into Stack Frames table', null, $e);
-			}
-		}
-	}
-	
-	$pdo->commit();
+	$dumpId = $pdo->lastInsertId();
 
 	//Move the temporary file to out dumps folder for later inspection
 	$localName = $crashReport['name'];
@@ -187,7 +229,7 @@ function Upload($stackTrace, $crashReport)
 		$localExt = substr($localName, strrpos($localName, '.') + 1);
 	else
 		$localExt = 'bz2';
-	if (!move_uploaded_file($crashReport['tmp_name'], 'dumps/' . $reportId . '.tar.' . $localExt))
+	if (!move_uploaded_file($crashReport['tmp_name'], sprintf('dumps/%u-%u.tar.%s', $reportId, $dumpId, $localExt)))
 		throw new Exception('Could not store crash dump onto server.');
 }
 
