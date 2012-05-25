@@ -55,8 +55,8 @@ function QueryStatus($stackTrace)
 			continue;
 		
 		//Query for the list of exceptions containing the given functions
-		$statement = $pdo->prepare(sprintf('SELECT DISTINCT(BlackBox_Exceptions.ID) FROM BlackBox_StackFrames
-			INNER JOIN BlackBox_Exceptions ON BlackBox_StackFrames.ExceptionID=BlackBox_Exceptions.ID
+		$statement = $pdo->prepare(sprintf('SELECT DISTINCT(blackbox_exceptions.ID) FROM blackbox_stackframes
+			INNER JOIN blackbox_exceptions ON blackbox_stackframes.ExceptionID=blackbox_exceptions.ID
 			WHERE (%s) AND ExceptionDepth=? AND ExceptionType=?',
 			substr($stackFrames, 0, strlen($stackFrames) - 4)));
 		$statement->bindParam(1, $exceptionDepth);
@@ -77,7 +77,7 @@ function Upload($stackTrace, $crashReport)
 	$pdo = new Database();
 	$pdo->beginTransaction();
 
-	$statement = $pdo->prepare('INSERT INTO BlackBox_Reports SET IPAddress=?');
+	$statement = $pdo->prepare('INSERT INTO blackbox_reports SET IPAddress=?');
 	$statement->bindParam(1, sprintf('%u', ip2long($_SERVER['REMOTE_ADDR'])));
 	try
 	{
@@ -89,10 +89,10 @@ function Upload($stackTrace, $crashReport)
 	}
 
 	$reportId = $pdo->lastInsertId();
-	$exceptionInsert = $pdo->prepare('INSERT INTO BlackBox_Exceptions
+	$exceptionInsert = $pdo->prepare('INSERT INTO blackbox_exceptions
 		SET ReportID=?, ExceptionType=?, ExceptionDepth=?');
 	$exceptionInsert->bindParam(1, $reportId);
-	$stackFrameInsert = $pdo->prepare('INSERT INTO BlackBox_StackFrames SET
+	$stackFrameInsert = $pdo->prepare('INSERT INTO blackbox_stackframes SET
 		ExceptionID=?, StackFrameIndex=?, Function=?, File=?, Line=?');
 	foreach ($stackTrace as $exceptionDepth => $exception)
 	{
