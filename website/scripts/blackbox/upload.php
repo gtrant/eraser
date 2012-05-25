@@ -30,44 +30,80 @@ function GetStackFrameInformation($line)
 	return (object)array('function' => $function, 'file' => $file, 'line' => $line);
 }
 
+function GetExceptionIDFromExceptionInfo($exception, $exceptionDepth)
+{
+	$pdo = new Database();
+	$stackFrames = '';
+	foreach ($exception as $stackIndex => $stackFrame)
+	{
+		//Ignore the exception key; that stores the exception type.
+		if ($stackIndex == 'exception')
+			continue;
+
+		$stackFrames .= sprintf('(StackFrameIndex=%d AND Function=%s) OR ',
+			$stackIndex, $pdo->quote(GetFunctionNameFromStackTrace($stackFrame)));
+	}
+
+	if (empty($stackFrames))
+		return null;
+
+	//Query for the list of exceptions containing the given functions
+	$statement = $pdo->prepare(sprintf('SELECT DISTINCT(blackbox_exceptions.ID) AS ExceptionID FROM blackbox_stackframes
+		INNER JOIN blackbox_exceptions ON blackbox_stackframes.ExceptionID=blackbox_exceptions.ID
+		WHERE (%s) AND ExceptionDepth=? AND ExceptionType=?',
+		substr($stackFrames, 0, strlen($stackFrames) - 4)));
+	$statement->bindParam(1, $exceptionDepth);
+	$statement->bindParam(2, $exception['exception']);
+	$statement->execute();
+
+	if ($statement->rowCount() == 0)
+		return false;
+	$row = $statement->fetch();
+	return $row['ExceptionID'];
+}
+
 function QueryStatus($stackTrace)
 {
-	//Check that a similar stack trace hasn't been uploaded.
 	$status = 'exists';
+	$reportID = false;
+	$exceptionIDs = array();
 	$pdo = new Database();
+	
 	foreach ($stackTrace as $exceptionDepth => $exception)
 	{
-		if ($status != 'exists')
-			break;
-
-		$stackFrames = '';
-		foreach ($exception as $stackIndex => $stackFrame)
-		{
-			//Ignore the exception key; that stores the exception type.
-			if ($stackIndex == 'exception')
-				continue;
-
-			$stackFrames .= sprintf('(StackFrameIndex=%d AND Function=%s) OR ',
-				$stackIndex, $pdo->quote(GetFunctionNameFromStackTrace($stackFrame)));
-		}
-		
-		if (empty($stackFrames))
+		$exceptionID = GetExceptionIDFromExceptionInfo($exception, $exceptionDepth);
+		if ($exceptionID === null)
 			continue;
-		
-		//Query for the list of exceptions containing the given functions
-		$statement = $pdo->prepare(sprintf('SELECT DISTINCT(blackbox_exceptions.ID) FROM blackbox_stackframes
-			INNER JOIN blackbox_exceptions ON blackbox_stackframes.ExceptionID=blackbox_exceptions.ID
-			WHERE (%s) AND ExceptionDepth=? AND ExceptionType=?',
-			substr($stackFrames, 0, strlen($stackFrames) - 4)));
-		$statement->bindParam(1, $exceptionDepth);
-		$statement->bindParam(2, $exception['exception']);
-		$statement->execute();
-
-		if ($statement->rowCount() == 0)
+		else if ($exceptionID === false)
+		{
 			$status = 'new';
+			break;
+		}
+		else
+			//Store the current exception ID on the stack
+			array_push($exceptionIDs, $exceptionID);
 	}
-	
+
 	header('Content-Type: application/xml');
+	
+	//If this is an existing exception, try to find the most similar report.
+	if ($status == 'exists' && count($exceptionIDs) > 0)
+	{
+		$ids = implode(', ', $exceptionIDs);
+		$result = $pdo->query(sprintf('SELECT ReportID, COUNT(ID) as Matches FROM blackbox_exceptions
+			WHERE ID IN (%s) GROUP BY ReportID ORDER BY Matches DESC', $ids));
+		if ($result->rowCount() > 0)
+		{
+			$row = $result->fetch();
+			$reportID = $row['ReportID'];
+
+			printf('<?xml version="1.0"?>
+<crashReport status="exists" id="%s" />', htmlspecialchars($status), $reportID);
+			return;
+		}
+	}
+
+	//Otherwise just return the status of the report.
 	printf('<?xml version="1.0"?>
 <crashReport status="%s" />', htmlspecialchars($status));
 }
