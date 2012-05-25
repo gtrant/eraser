@@ -189,6 +189,21 @@ namespace Eraser.BlackBox
 		{
 			get
 			{
+				return Status == 1;
+			}
+			set
+			{
+				Status = Convert.ToByte(value);
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the status of the report.
+		/// </summary>
+		private byte Status
+		{
+			get
+			{
 				byte[] buffer = new byte[1];
 				using (FileStream stream = new FileStream(System.IO.Path.Combine(Path, StatusFileName),
 					FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read))
@@ -196,12 +211,12 @@ namespace Eraser.BlackBox
 					stream.Read(buffer, 0, buffer.Length);
 				}
 
-				return buffer[0] == 1;
+				return buffer[0];
 			}
 
 			set
 			{
-				byte[] buffer = { Convert.ToByte(value) };
+				byte[] buffer = { value };
 				using (FileStream stream = new FileStream(System.IO.Path.Combine(Path, StatusFileName),
 					FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
 				{
