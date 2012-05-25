@@ -281,7 +281,15 @@ namespace Eraser.BlackBox
 
 				try
 				{
-					reportRequest.GetResponse();
+					HttpWebResponse response = reportRequest.GetResponse() as HttpWebResponse;
+					using (Stream responseStream = response.GetResponseStream())
+					{
+						XmlReader reader = XmlReader.Create(responseStream);
+						reader.ReadToFollowing("crashReport");
+						string reportStatus = reader.GetAttribute("status");
+						string reportId = reader.GetAttribute("id");
+					}
+
 					Report.Submitted = true;
 				}
 				catch (WebException e)
