@@ -58,10 +58,10 @@ namespace Eraser.BlackBox
 			this.ReportsLv = new System.Windows.Forms.ListView();
 			this.ReportsLvTimestampColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.ReportsLvErrorColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.ReportsLvStatusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.ReportsMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.DataCollectionPolicyLbl = new System.Windows.Forms.LinkLabel();
-			this.ReportsLvStatusColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).BeginInit();
 			this.ReportsMenuStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -118,6 +118,10 @@ namespace Eraser.BlackBox
 			// 
 			resources.ApplyResources(this.ReportsLvErrorColumn, "ReportsLvErrorColumn");
 			// 
+			// ReportsLvStatusColumn
+			// 
+			resources.ApplyResources(this.ReportsLvStatusColumn, "ReportsLvStatusColumn");
+			// 
 			// ReportsMenuStrip
 			// 
 			this.ReportsMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -139,10 +143,6 @@ namespace Eraser.BlackBox
 			this.DataCollectionPolicyLbl.TabStop = true;
 			this.DataCollectionPolicyLbl.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DataCollectionPolicyLbl_LinkClicked);
 			// 
-			// ReportsLvStatusColumn
-			// 
-			resources.ApplyResources(this.ReportsLvStatusColumn, "ReportsLvStatusColumn");
-			// 
 			// BlackBoxMainForm
 			// 
 			this.AcceptButton = this.SubmitBtn;
@@ -160,6 +160,8 @@ namespace Eraser.BlackBox
 			this.MinimizeBox = false;
 			this.Name = "BlackBoxMainForm";
 			this.ShowInTaskbar = false;
+			this.Load += new System.EventHandler(this.BlackBoxMainForm_Load);
+			this.Shown += new System.EventHandler(this.BlackBoxMainForm_Shown);
 			((System.ComponentModel.ISupportInitialize)(this.BlackBoxPic)).EndInit();
 			this.ReportsMenuStrip.ResumeLayout(false);
 			this.ResumeLayout(false);
