@@ -183,44 +183,65 @@ namespace Eraser.BlackBox
 		}
 
 		/// <summary>
-		/// Gets or sets whether the given report has been uploaded to the server.
+		/// Gets whether the given report has been uploaded to the server.
 		/// </summary>
 		public bool Submitted
 		{
 			get
 			{
-				return Status == 1;
+				return Status[0] == 1;
 			}
-			set
+			internal set
 			{
-				Status = Convert.ToByte(value);
+				byte[] status = Status;
+				status[0] = Convert.ToByte(value);
+				Status = status;
+			}
+		}
+
+		/// <summary>
+		/// Gets the ID of the current report returned by the server during upload.
+		/// This will be 0 if <see cref="Submitted"/> is false.
+		/// </summary>
+		public int ID
+		{
+			get
+			{
+				return BitConverter.ToInt32(Status, 1);
+			}
+
+			internal set
+			{
+				byte[] bytes = BitConverter.GetBytes(value);
+				byte[] status = Status;
+				Buffer.BlockCopy(bytes, 0, status, 1, bytes.Length);
+				Status = status;
 			}
 		}
 
 		/// <summary>
 		/// Gets or sets the status of the report.
 		/// </summary>
-		private byte Status
+		private byte[] Status
 		{
 			get
 			{
-				byte[] buffer = new byte[1];
+				byte[] buffer = new byte[5];
 				using (FileStream stream = new FileStream(System.IO.Path.Combine(Path, StatusFileName),
 					FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read))
 				{
 					stream.Read(buffer, 0, buffer.Length);
 				}
 
-				return buffer[0];
+				return buffer;
 			}
 
 			set
 			{
-				byte[] buffer = { value };
 				using (FileStream stream = new FileStream(System.IO.Path.Combine(Path, StatusFileName),
 					FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read))
 				{
-					stream.Write(buffer, 0, buffer.Length);
+					stream.Write(value, 0, Math.Min(value.Length, 5));
 				}
 			}
 		}
