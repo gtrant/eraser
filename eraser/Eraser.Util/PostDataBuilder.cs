@@ -86,6 +86,12 @@ namespace Eraser.Util
 			}
 		}
 
+		public void AddParts(ICollection<PostDataField> fields)
+		{
+			foreach (PostDataField field in fields)
+				AddPart(field);
+		}
+
 		/// <summary>
 		/// Gets a stream with which to read the data from.
 		/// </summary>
