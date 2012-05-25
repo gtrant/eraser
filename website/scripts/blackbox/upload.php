@@ -233,6 +233,11 @@ function Upload($stackTrace, $crashReport)
 		$localExt = 'bz2';
 	if (!move_uploaded_file($crashReport['tmp_name'], sprintf('dumps/%u-%u.tar.%s', $reportId, $dumpId, $localExt)))
 		throw new Exception('Could not store crash dump onto server.');
+
+	//Give the client the Report ID so he can check whether the report has since been fixed.
+	header('Content-Type: application/xml');
+	printf('<?xml version="1.0"?>
+<crashReport id="%d" />', $reportId);
 }
 
 try
