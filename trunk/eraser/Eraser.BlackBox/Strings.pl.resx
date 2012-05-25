@@ -120,6 +120,18 @@
   <data name="Manage BlackBox Reports" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="Submitted (Report ID {0})" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Not submitted" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Could not delete report {0} because of the following error: {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="BlackBox" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Eraser BlackBox: Crash Reports Collected" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

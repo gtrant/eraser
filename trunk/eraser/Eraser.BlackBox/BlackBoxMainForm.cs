@@ -51,7 +51,8 @@ namespace Eraser.BlackBox
 				else
 					item.SubItems.Add(string.Empty);
 				item.SubItems.Add(report.Submitted ?
-					S._("Submitted") : S._("Not submitted"));
+					S._("Submitted (Report ID {0})", report.ID) :
+					S._("Not submitted"));
 				item.Tag = report;
 				item.Checked = !report.Submitted;
 			}
