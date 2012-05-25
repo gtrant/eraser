@@ -40,7 +40,7 @@ namespace Eraser.BlackBox
 
 			bool allSubmitted = true;
 			foreach (BlackBoxReport report in blackBox.GetDumps())
-				if (!report.Submitted)
+				if (report.Status == BlackBoxReportStatus.New)
 				{
 					allSubmitted = false;
 					break;

@@ -132,9 +132,9 @@ namespace Eraser.BlackBox
 					item.SubItems.Add(report.StackTrace[0].ExceptionType);
 				else
 					item.SubItems.Add(string.Empty);
-				item.SubItems.Add(report.Submitted ?
-					S._("Submitted (Report ID {0})", report.ID) :
-					S._("Not submitted"));
+				item.SubItems.Add(report.Status == BlackBoxReportStatus.New ?
+					S._("Not submitted") :
+					S._("Submitted (Report ID {0})", report.ID));
 				item.Tag = report;
 				item.Checked = true;
 			}

@@ -89,19 +89,6 @@ namespace Eraser.BlackBox
 		}
 
 		/// <summary>
-		/// Gets from the server based on the stack trace whether this report has been
-		/// submitted before.
-		/// </summary>
-		[Obsolete]
-		public bool IsNew
-		{
-			get
-			{
-				return Status == BlackBoxReportStatus.New;
-			}
-		}
-
-		/// <summary>
 		/// Gets the status of the report.
 		/// </summary>
 		public BlackBoxReportStatus Status
@@ -229,7 +216,7 @@ namespace Eraser.BlackBox
 				if (reportStatus == "exists")
 				{
 					string reportId = node.Attributes.GetNamedItem("id").Value;
-					Report.Submitted = true;
+					Report.Status = BlackBoxReportStatus.Uploaded;
 					Report.ID = Convert.ToInt32(reportId);
 				}
 			}

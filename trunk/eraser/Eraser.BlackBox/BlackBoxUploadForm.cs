@@ -75,7 +75,7 @@ namespace Eraser.BlackBox
 					throw new OperationCanceledException();
 
 				//If we have not submitted the report before upload it.
-				if (!reports[i].Submitted)
+				if (reports[i].Status == BlackBoxReportStatus.New)
 					Upload(reports[i], overallProgress, reportProgress);
 
 				//Otherwise check for solutions.

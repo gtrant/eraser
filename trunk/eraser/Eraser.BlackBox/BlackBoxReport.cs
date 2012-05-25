@@ -183,22 +183,6 @@ namespace Eraser.BlackBox
 		}
 
 		/// <summary>
-		/// Gets whether the given report has been uploaded to the server.
-		/// </summary>
-		[Obsolete]
-		public bool Submitted
-		{
-			get
-			{
-				return Status == BlackBoxReportStatus.Uploaded;
-			}
-			internal set
-			{
-				Status = value ? BlackBoxReportStatus.Uploaded : BlackBoxReportStatus.New;
-			}
-		}
-
-		/// <summary>
 		/// Gets the status of the report.
 		/// </summary>
 		public BlackBoxReportStatus Status
