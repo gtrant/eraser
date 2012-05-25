@@ -108,7 +108,7 @@ function QueryStatus($stackTrace)
 		if ($reportID !== null)
 		{
 			printf('<?xml version="1.0"?>
-<crashReport status="exists" id="%s" />', htmlspecialchars($status), $reportID);
+<crashReport status="exists" id="%d" />', $reportID);
 			return;
 		}
 	}
@@ -237,7 +237,7 @@ function Upload($stackTrace, $crashReport)
 	//Give the client the Report ID so he can check whether the report has since been fixed.
 	header('Content-Type: application/xml');
 	printf('<?xml version="1.0"?>
-<crashReport id="%d" />', $reportId);
+<crashReport status="exists" id="%d" />', $reportId);
 }
 
 try
