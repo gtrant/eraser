@@ -185,17 +185,34 @@ namespace Eraser.BlackBox
 		/// <summary>
 		/// Gets whether the given report has been uploaded to the server.
 		/// </summary>
+		[Obsolete]
 		public bool Submitted
 		{
 			get
 			{
-				return Status[0] == 1;
+				return Status == BlackBoxReportStatus.Uploaded;
 			}
 			internal set
 			{
-				byte[] status = Status;
+				Status = value ? BlackBoxReportStatus.Uploaded : BlackBoxReportStatus.New;
+			}
+		}
+
+		/// <summary>
+		/// Gets the status of the report.
+		/// </summary>
+		public BlackBoxReportStatus Status
+		{
+			get
+			{
+				return (BlackBoxReportStatus)StatusData[0];
+			}
+
+			internal set
+			{
+				byte[] status = StatusData;
 				status[0] = Convert.ToByte(value);
-				Status = status;
+				StatusData = status;
 			}
 		}
 
@@ -207,22 +224,22 @@ namespace Eraser.BlackBox
 		{
 			get
 			{
-				return BitConverter.ToInt32(Status, 1);
+				return BitConverter.ToInt32(StatusData, 1);
 			}
 
 			internal set
 			{
 				byte[] bytes = BitConverter.GetBytes(value);
-				byte[] status = Status;
+				byte[] status = StatusData;
 				Buffer.BlockCopy(bytes, 0, status, 1, bytes.Length);
-				Status = status;
+				StatusData = status;
 			}
 		}
 
 		/// <summary>
 		/// Gets or sets the status of the report.
 		/// </summary>
-		private byte[] Status
+		private byte[] StatusData
 		{
 			get
 			{
@@ -318,5 +335,26 @@ namespace Eraser.BlackBox
 		/// The backing variable for the <see cref="StackTrace"/> property.
 		/// </summary>
 		private List<string> StackTraceCache;
+	}
+
+	/// <summary>
+	/// Statuses of reports on the server.
+	/// </summary>
+	public enum BlackBoxReportStatus
+	{
+		/// <summary>
+		/// The report has not been reported before.
+		/// </summary>
+		New,
+
+		/// <summary>
+		/// The report has been reported before and pending a resolution.
+		/// </summary>
+		Uploaded,
+
+		/// <summary>
+		/// The report has been resolved.
+		/// </summary>
+		Resolved
 	}
 }
