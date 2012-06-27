@@ -33,11 +33,13 @@ using System.Net;
 using System.Net.Cache;
 using System.Net.Mime;
 using System.Globalization;
+using System.ComponentModel;
 
 using Eraser.Util;
 using Eraser.Plugins;
 
 using DoWorkEventArgs = System.ComponentModel.DoWorkEventArgs;
+using ProgressChangedEventArgs = Eraser.Plugins.ProgressChangedEventArgs;
 using ProgressChangedEventHandler = Eraser.Plugins.ProgressChangedEventHandler;
 using RunWorkerCompletedEventArgs = System.ComponentModel.RunWorkerCompletedEventArgs;
 
@@ -714,49 +716,77 @@ namespace Eraser
 
 			try
 			{
-				//Request the download.
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Link);
-				using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+				Uri downloadLink = Link;
+				ContentDisposition contentDisposition = null;
+				for (int redirects = 0; redirects < 20; ++redirects)
 				{
-					//Do the progress calculations
-					progress.Total = response.ContentLength;
-
-					//Check for a suggested filename.
-					ContentDisposition contentDisposition = null;
-					foreach (string header in response.Headers.AllKeys)
-						if (header.ToUpperInvariant() == "CONTENT-DISPOSITION")
-							contentDisposition = new ContentDisposition(response.Headers[header]);
-
-					//Create the file name.
-					DownloadedFile = new FileInfo(Path.Combine(
-						TempPath.FullName, string.Format(CultureInfo.InvariantCulture,
-							"{0:00}-{1}", ++DownloadFileIndex, contentDisposition == null ?
-								Path.GetFileName(Link.GetComponents(UriComponents.Path, UriFormat.Unescaped)) :
-								contentDisposition.FileName)));
-
-					using (Stream responseStream = response.GetResponseStream())
-					using (FileStream fileStream = DownloadedFile.OpenWrite())
+					//Request the download.
+					HttpWebRequest request = (HttpWebRequest)WebRequest.Create(downloadLink);
+					request.AllowAutoRedirect = false;
+					using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
 					{
-						//Copy the information into the file stream
-						int lastRead = 0;
-						byte[] buffer = new byte[16384];
-						while ((lastRead = responseStream.Read(buffer, 0, buffer.Length)) != 0)
+						//Check for a suggested filename. Store this until we get the final URI.
+						foreach (string header in response.Headers.AllKeys)
+							if (header.ToUpperInvariant() == "CONTENT-DISPOSITION")
+								contentDisposition = new ContentDisposition(response.Headers[header]);
+
+						//Handle 3xx series response codes.
+						if ((int)response.StatusCode >= 300 && (int)response.StatusCode <= 399)
 						{
-							fileStream.Write(buffer, 0, lastRead);
+							//Redirect.
+							bool locationHeader = false;
+							foreach (string header in response.Headers.AllKeys)
+								if (header.ToUpperInvariant() == "LOCATION")
+								{
+									locationHeader = true;
+									downloadLink = new Uri(response.Headers[header]);
+									break;
+								}
 
-							//Compute progress
-							progress.Completed = fileStream.Position;
+							if (!locationHeader)
+								throw new WebException("A redirect response was received but no redirection" +
+									"URI was provided.");
 
-							//Call the progress handler
-							if (handler != null)
-								handler(this, new ProgressChangedEventArgs(progress, null));
+							continue;
 						}
+
+						//Do the progress calculations
+						progress.Total = response.ContentLength;
+
+						//Create the file name.
+						DownloadedFile = new FileInfo(Path.Combine(
+							TempPath.FullName, string.Format(CultureInfo.InvariantCulture,
+								"{0:00}-{1}", ++DownloadFileIndex, contentDisposition == null ?
+									Path.GetFileName(downloadLink.GetComponents(UriComponents.Path, UriFormat.Unescaped)) :
+									contentDisposition.FileName)));
+
+						using (Stream responseStream = response.GetResponseStream())
+						using (FileStream fileStream = DownloadedFile.OpenWrite())
+						{
+							//Copy the information into the file stream
+							int lastRead = 0;
+							byte[] buffer = new byte[16384];
+							while ((lastRead = responseStream.Read(buffer, 0, buffer.Length)) != 0)
+							{
+								fileStream.Write(buffer, 0, lastRead);
+
+								//Compute progress
+								progress.Completed = fileStream.Position;
+
+								//Call the progress handler
+								if (handler != null)
+									handler(this, new ProgressChangedEventArgs(progress, null));
+							}
+						}
+
+						//Let the event handler know the download is complete.
+						progress.MarkComplete();
+						if (handler != null)
+							handler(this, new ProgressChangedEventArgs(progress, null));
+						return;
 					}
 
-					//Let the event handler know the download is complete.
-					progress.MarkComplete();
-					if (handler != null)
-						handler(this, new ProgressChangedEventArgs(progress, null));
+					throw new WebException("The server is not redirecting properly.");
 				}
 			}
 			catch (Exception e)
@@ -780,8 +810,23 @@ namespace Eraser
 			info.FileName = DownloadedFile.FullName;
 			info.UseShellExecute = true;
 
-			Process process = Process.Start(info);
-			process.WaitForExit(Int32.MaxValue);
+			try
+			{
+				Process process = Process.Start(info);
+				process.WaitForExit(Int32.MaxValue);
+
+				if (process.ExitCode != 0)
+					throw new ApplicationException(S._("Installation failed with exit code {0}",
+						process.ExitCode));
+			}
+			catch (Win32Exception e)
+			{
+				if (e.ErrorCode != 1223)
+					throw;
+
+				throw new OperationCanceledException(S._("Installation cancelled"), e);
+			}
+
 		}
 
 		/// <summary>
