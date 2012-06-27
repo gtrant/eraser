@@ -229,7 +229,20 @@ namespace Eraser.DefaultPlugins
 				{
 					stepProgress.Total = PhysicalDrive.Size;
 					PhysicalDrive.DeleteDriveLayout();
-					stream = PhysicalDrive.Open(FileAccess.ReadWrite, FileShare.ReadWrite);
+					if (PhysicalDrive.Volumes.Count == 1)
+					{
+						//This could be a removable device where Windows sees an oversized floppy.
+						stream = PhysicalDrive.Volumes[0].Open(FileAccess.ReadWrite, FileShare.ReadWrite);
+					}
+					else if (PhysicalDrive.Volumes.Count > 0)
+					{
+						throw new InvalidOperationException(S._("The partition table on the drive " +
+							"could not be erased."));
+					}
+					else
+					{
+						stream = PhysicalDrive.Open(FileAccess.ReadWrite, FileShare.ReadWrite);
+					}
 				}
 				else
 					throw new InvalidOperationException(S._("The Drive erasure target requires a " +
