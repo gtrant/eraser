@@ -120,16 +120,16 @@
   <data name="Manage BlackBox Reports" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Submitted (Report ID {0})" xml:space="preserve">
+  <data name="Could not delete report {0} because of the following error: {1}" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="BlackBox" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Not submitted" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Could not delete report {0} because of the following error: {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
-  </data>
-  <data name="BlackBox" xml:space="preserve">
+  <data name="Submitted (Report ID {0})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Eraser BlackBox: Crash Reports Collected" xml:space="preserve">
@@ -138,14 +138,14 @@
   <data name="There are crash reports which have yet to be submitted. Click on this balloon to see the list of reports." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Checking for status of report {0}..." xml:space="preserve">
-    <value>Verifica dello stato del report {0}...</value>
-  </data>
   <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
     <value>Compressione Report {0}: {1:#0.00%}</value>
   </data>
   <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
     <value>Trasmissione Report {0}: {1:#0.00%}</value>
+  </data>
+  <data name="Checking for solution for {0}..." xml:space="preserve">
+    <value>(Untranslated)</value>
   </data>
   <data name="Reports submitted successfully." xml:space="preserve">
     <value>I report sono stati trasmessi con successo.</value>
