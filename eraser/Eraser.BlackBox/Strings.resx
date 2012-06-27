@@ -120,17 +120,17 @@
   <data name="Manage BlackBox Reports" xml:space="preserve">
     <value>Manage BlackBox Reports</value>
   </data>
-  <data name="Submitted (Report ID {0})" xml:space="preserve">
-    <value>Submitted (Report ID {0})</value>
-  </data>
-  <data name="Not submitted" xml:space="preserve">
-    <value>Not submitted</value>
-  </data>
   <data name="Could not delete report {0} because of the following error: {1}" xml:space="preserve">
     <value>Could not delete report {0} because of the following error: {1}</value>
   </data>
   <data name="BlackBox" xml:space="preserve">
     <value>BlackBox</value>
+  </data>
+  <data name="Not submitted" xml:space="preserve">
+    <value>Not submitted</value>
+  </data>
+  <data name="Submitted (Report ID {0})" xml:space="preserve">
+    <value>Submitted (Report ID {0})</value>
   </data>
   <data name="Eraser BlackBox: Crash Reports Collected" xml:space="preserve">
     <value>Eraser BlackBox: Crash Reports Collected</value>
@@ -138,14 +138,14 @@
   <data name="There are crash reports which have yet to be submitted. Click on this balloon to see the list of reports." xml:space="preserve">
     <value>There are crash reports which have yet to be submitted. Click on this balloon to see the list of reports.</value>
   </data>
-  <data name="Checking for status of report {0}..." xml:space="preserve">
-    <value>Checking for status of report {0}...</value>
-  </data>
   <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
     <value>Compressing Report {0}: {1:#0.00%}</value>
   </data>
   <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
     <value>Uploading Report {0}: {1:#0.00%}</value>
+  </data>
+  <data name="Checking for solution for {0}..." xml:space="preserve">
+    <value>Checking for solution for {0}...</value>
   </data>
   <data name="Reports submitted successfully." xml:space="preserve">
     <value>Reports submitted successfully.</value>
