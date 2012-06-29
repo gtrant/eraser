@@ -41,6 +41,15 @@ namespace Util {
 			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT12 or FAT16 volume."));
 	}
 
+	Fat12Or16Api::!Fat12Or16Api()
+	{
+		if (Fat != NULL)
+		{
+			delete[] Fat;
+			Fat = NULL;
+		}
+	}
+
 	void Fat12Or16Api::LoadFat()
 	{
 		Fat = new char[SectorSizeToSize(BootSector->SectorsPerFat)];
@@ -123,6 +132,16 @@ namespace Util {
 		: Api(api),
 		  FatDirectoryBase(String::Empty, nullptr, 0)
 	{
+	}
+
+	Fat12Or16Api::RootDirectory::!RootDirectory()
+	{
+		if (Directory != NULL)
+		{
+			delete[] Directory;
+			Directory = NULL;
+			DirectorySize = 0;
+		}
 	}
 
 	void Fat12Or16Api::RootDirectory::ReadDirectory()

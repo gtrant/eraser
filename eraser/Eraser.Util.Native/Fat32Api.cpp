@@ -41,6 +41,15 @@ namespace Util {
 			throw gcnew ArgumentException(S::_(L"The volume provided is not a FAT32 volume."));
 	}
 
+	Fat32Api::!Fat32Api()
+	{
+		if (Fat != NULL)
+		{
+			delete[] Fat;
+			Fat = NULL;
+		}
+	}
+
 	void Fat32Api::LoadFat()
 	{
 		Fat = new char[SectorSizeToSize(BootSector->Fat32ParameterBlock.SectorsPerFat)];

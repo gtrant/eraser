@@ -69,6 +69,15 @@ namespace Util {
 		LoadFat();
 	}
 
+	FatApi::!FatApi()
+	{
+		if (BootSector != NULL)
+		{
+			delete BootSector;
+			BootSector = NULL;
+		}
+	}
+
 	FatDirectoryBase^ FatApi::LoadDirectory(String^ directory)
 	{
 		//Return the root directory if nothing is specified
@@ -341,6 +350,16 @@ namespace Util {
 		: Api(api),
 		  FatDirectoryBase(name, parent, cluster)
 	{
+	}
+
+	FatDirectory::!FatDirectory()
+	{
+		if (Directory != NULL)
+		{
+			delete[] Directory;
+			Directory = NULL;
+			DirectorySize = 0;
+		}
 	}
 
 	void FatDirectory::ReadDirectory()

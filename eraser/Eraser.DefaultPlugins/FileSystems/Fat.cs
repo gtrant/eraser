@@ -74,25 +74,27 @@ namespace Eraser.DefaultPlugins
 			FileSystemEntriesEraseProgress callback)
 		{
 			using (FileStream stream = info.Open(FileAccess.ReadWrite, FileShare.ReadWrite))
+			using (FatApi api = GetFatApi(info, stream))
 			{
 				int directoriesCleaned = 0;
-				FatApi api = GetFatApi(info, stream);
 				HashSet<uint> eraseQueueClusters = new HashSet<uint>();
 				List<FatDirectoryEntry> eraseQueue = new List<FatDirectoryEntry>();
-				{
-					FatDirectoryEntry entry = api.LoadDirectory(string.Empty);
-					eraseQueue.Add(entry);
-					eraseQueueClusters.Add(entry.Cluster);
-				}
 
 				try
 				{
+					{
+						FatDirectoryEntry entry = api.LoadDirectory(string.Empty);
+						eraseQueue.Add(entry);
+						eraseQueueClusters.Add(entry.Cluster);
+					}
+
 					while (eraseQueue.Count != 0)
 					{
 						if (callback != null)
 							callback(directoriesCleaned, directoriesCleaned + eraseQueue.Count);
 
 						FatDirectoryBase currentDir = api.LoadDirectory(eraseQueue[0].FullName);
+						eraseQueue[0].Dispose();
 						eraseQueue.RemoveAt(0);
 
 						//Queue the subfolders in this directory
@@ -116,6 +118,11 @@ namespace Eraser.DefaultPlugins
 				{
 					Logger.Log(S._("Could not erase directory entries on the volume {0} because " +
 						"the volume is currently in use."));
+				}
+				finally
+				{
+					foreach (FatDirectoryEntry entry in eraseQueue)
+						entry.Dispose();
 				}
 			}
 		}
