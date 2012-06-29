@@ -298,7 +298,7 @@
     <value>Default file erasure method</value>
   </data>
   <data name="Default drive erasure method" xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>Default drive erasure method</value>
   </data>
   <data name="Randomness data source" xml:space="preserve">
     <value>Randomness data source</value>
@@ -319,7 +319,7 @@
     <value>An invalid file erasure method was selected.</value>
   </data>
   <data name="An invalid drive erasure method was selected." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>An invalid drive erasure method was selected.</value>
   </data>
   <data name="An invalid randomness data source was selected." xml:space="preserve">
     <value>An invalid randomness data source was selected.</value>
@@ -337,7 +337,7 @@
     <value>(This erasure type does not have any settings to define.)</value>
   </data>
   <data name="The erasure method selected does not support erasing the erasure target." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>The erasure method selected does not support erasing the erasure target.</value>
   </data>
   <data name="{0}, " xml:space="preserve">
     <value>{0}, </value>
