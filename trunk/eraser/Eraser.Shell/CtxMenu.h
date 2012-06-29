@@ -41,9 +41,8 @@ namespace Eraser
 		public IContextMenu3
 	{
 	public:
-		CCtxMenu()
-		{
-		}
+		CCtxMenu() {}
+		virtual ~CCtxMenu() {}
 
 		/// The place where the context menu extension was invoked.
 		enum InvokeReasons
