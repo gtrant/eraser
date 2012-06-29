@@ -222,6 +222,9 @@
   <data name="The program does not have the required permissions to erase the disk." xml:space="preserve">
     <value>The program does not have the required permissions to erase the disk.</value>
   </data>
+  <data name="The partition table on the drive could not be erased." xml:space="preserve">
+    <value>The partition table on the drive could not be erased.</value>
+  </data>
   <data name="The Drive erasure target requires a volume or physical drive selected for erasure." xml:space="preserve">
     <value>The Drive erasure target requires a volume or physical drive selected for erasure.</value>
   </data>
