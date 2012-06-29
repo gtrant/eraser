@@ -50,6 +50,12 @@ namespace Util {
 		/// <param name="stream">The stream to use to read/write to the disk.</param>
 		FatApi(IO::Stream^ stream);
 
+		/// Destructor.
+		virtual ~FatApi() { this->!FatApi(); }
+
+		/// Finalizer.
+		!FatApi();
+
 	public:
 		/// <summary>
 		/// Loads the File Allocation Table from disk.
@@ -175,6 +181,9 @@ namespace Util {
 	public ref class FatDirectoryEntry
 	{
 	public:
+		virtual ~FatDirectoryEntry() {}
+
+	public:
 		/// <summary>
 		/// Gets the name of the file or directory.
 		/// </summary>
@@ -255,6 +264,8 @@ namespace Util {
 		/// <param name="parent">The parent directory containing this directory.</param>
 		/// <param name="cluster">The cluster at which the directory list starts.</param>
 		FatDirectoryBase(String^ name, FatDirectoryBase^ parent, unsigned cluster);
+
+		virtual ~FatDirectoryBase() {}
 
 	public:
 		/// <summary>
@@ -344,6 +355,12 @@ namespace Util {
 		/// <param name="api">The FAT API object which is creating this object.</param>
 		FatDirectory(String^ name, FatDirectoryBase^ parent, unsigned cluster, FatApi^ api);
 
+		/// Destructor.
+		virtual ~FatDirectory() { this->!FatDirectory(); }
+
+		/// Finalizer.
+		!FatDirectory();
+
 		virtual void ReadDirectory() override;
 		virtual void WriteDirectory() override;
 
@@ -356,6 +373,9 @@ namespace Util {
 	protected:
 		Fat12Or16Api(VolumeInfo^ info);
 		Fat12Or16Api(VolumeInfo^ info, IO::Stream^ stream);
+
+		virtual ~Fat12Or16Api() { this->!Fat12Or16Api(); }
+		!Fat12Or16Api();
 
 	public:
 		virtual void LoadFat() override;
@@ -371,6 +391,9 @@ namespace Util {
 		{
 		public:
 			RootDirectory(Fat12Or16Api^ api);
+
+			virtual ~RootDirectory() { this->!RootDirectory(); }
+			!RootDirectory();
 
 		protected:
 			virtual void ReadDirectory() override;
@@ -429,6 +452,9 @@ namespace Util {
 	public:
 		Fat32Api(VolumeInfo^ info);
 		Fat32Api(VolumeInfo^ info, IO::Stream^ stream);
+
+		virtual ~Fat32Api() { this->!Fat32Api(); }
+		!Fat32Api();
 
 	public:
 		virtual void LoadFat() override;
