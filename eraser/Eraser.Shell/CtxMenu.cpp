@@ -300,6 +300,7 @@ namespace Eraser {
 		}
 
 		//Insert the submenu into the Context menu provided by Explorer.
+		if (GetMenuItemCount(hSubmenu) > 0)
 		{
 			MENUITEMINFO mii = { sizeof(MENUITEMINFO) };
 			mii.wID = uID++;
