@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="No suitable hash algorithms were found on this computer." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>No suitable hash algorithms were found on this computer.</value>
   </data>
   <data name="Running on restart" xml:space="preserve">
     <value>Running on restart</value>

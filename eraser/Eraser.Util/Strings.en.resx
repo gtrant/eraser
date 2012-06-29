@@ -148,6 +148,6 @@
     <value>The path provided includes a reparse point which references another volume.</value>
   </data>
   <data name="The folder {0} cannot be opened for writing." xml:space="preserve">
-    <value>(Untranslated)</value>
+    <value>The folder {0} cannot be opened for writing.</value>
   </data>
 </root>
