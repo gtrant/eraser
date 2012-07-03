@@ -52,7 +52,7 @@
 					</File>
 					<RegistryValue Action="write" Id="EraserExeAppPath" Root="HKLM"
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Eraser.exe"
-						Type="string" Value="[!EraserExe]" />
+						Type="string" Value="[#EraserExe]" />
 
 					<File Id="Alglib" Name="alglibnet2.dll" Source="..\bin\Release\alglibnet2.dll"
 						ProcessorArchitecture="msil" />
@@ -93,7 +93,7 @@
 					<!-- Start Eraser when Windows starts -->
 					<RegistryValue Id="EraserStartup" Root="HKLM"
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="Eraser"
-						Value="&quot;[!EraserExe]&quot; /atRestart" Type="string" />
+						Value="&quot;[#EraserServiceExe]&quot; /atRestart" Type="string" />
 					
 					<!-- Register the ersy extension with Eraser -->
 					<RegistryValue Id="EraserErsyFileExtension" Root="HKCR"
@@ -101,11 +101,11 @@
 					<RegistryValue Id="EraserErsyFileType" Root="HKCR" Key="Eraser.Ersy"
 						Value="Eraser 6 XML Task List" Type="string" />
 					<RegistryValue Id="EraserErsyFileIcon" Root="HKCR"
-						Key="Eraser.Ersy\DefaultIcon" Value="[!EraserShellDll],1"
+						Key="Eraser.Ersy\DefaultIcon" Value="[#EraserExe],1"
 						Type="string" />
 					<RegistryValue Id="EraserErsyFileOpenAction" Root="HKCR"
 						Key="Eraser.Ersy\shell\open\command"
-						Value="&quot;[!EraserExe]&quot; importtasklist /quiet &quot;%1&quot;"
+						Value="&quot;[#EraserExe]&quot; importtasklist /quiet &quot;%1&quot;"
 						Type="string" />
 				</Component>
 				<Component Id="EraserShell" Guid="4C446C7E-BCBC-4561-B8F6-D406516D356F">
@@ -198,7 +198,7 @@
 							Value="Eraser Shell Extension" Type="string" />
 						<RegistryKey Key="InprocServer32">
 							<RegistryValue Id="EraserShellHKCRClsidInprocServer32DefaultValue"
-								Value="&quot;[!EraserShellDll]&quot;" Type="string" />
+								Value="&quot;[#EraserShellDll]&quot;" Type="string" />
 							<RegistryValue Id="EraserShellHKCRClsidInprocServer32ThreadingModel"
 								Name="ThreadingModel" Value="Apartment" Type="string" />
 						</RegistryKey>
