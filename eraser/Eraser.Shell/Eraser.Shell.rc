@@ -302,8 +302,6 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_SYS_DEFAULT
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-ERASER                  ICON                    "..\\Resources\\Eraser.ico"
-ERASER_DOCUMENT         ICON                    "..\\Resources\\EraserTaskList.ico"
 #endif    // Neutral (Sys. Default) resources
 /////////////////////////////////////////////////////////////////////////////
 
