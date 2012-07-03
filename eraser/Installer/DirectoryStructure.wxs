@@ -93,7 +93,7 @@
 					<!-- Start Eraser when Windows starts -->
 					<RegistryValue Id="EraserStartup" Root="HKLM"
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="Eraser"
-						Value="&quot;[#EraserServiceExe]&quot; /atRestart" Type="string" />
+						Value="&quot;[#EraserExe]&quot; /atRestart" Type="string" />
 					
 					<!-- Register the ersy extension with Eraser -->
 					<RegistryValue Id="EraserErsyFileExtension" Root="HKCR"
