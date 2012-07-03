@@ -177,30 +177,6 @@ namespace Eraser
 			public bool Confirm { get; set; }
 		}
 
-		public enum ShellActions
-		{
-			/// <summary>
-			/// Erase the selected items now.
-			/// </summary>
-			EraseNow,
-
-			/// <summary>
-			/// Erase the selected items on restart.
-			/// </summary>
-			EraseOnRestart,
-
-			/// <summary>
-			/// Erase the unused space on the drive.
-			/// </summary>
-			EraseUnusedSpace,
-
-			/// <summary>
-			/// Securely moves a file from one drive to another (simple rename if the source and
-			/// destination drives are the same)
-			/// </summary>
-			SecureMove
-		}
-
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
