@@ -65,8 +65,6 @@
 					<File Id="MicrosoftRuntimeHosting" Name="Microsoft.Runtime.Hosting.dll"
 						Source="..\bin\Release\Microsoft.Runtime.Hosting.dll"
 						ProcessorArchitecture="msil" />
-					<File Id="SharpZipLib" Name="ICSharpCode.SharpZipLib.dll"
-						Source="..\bin\Release\Plugins\ICSharpCode.SharpZipLib.dll" ProcessorArchitecture="msil" />
 					<File Id="TaskDialog" Name="TaskDialog.dll"
 						Source="..\bin\Release\TaskDialog.dll" ProcessorArchitecture="msil" />
 
@@ -247,6 +245,11 @@
 						<File Id="EraserBlackBoxDll" Name="Eraser.BlackBox.dll"
 							Source="..\Bin\Release\Plugins\Eraser.BlackBox.dll"
 							ProcessorArchitecture="msil" />
+						<File Id="LzmaSharpDll" Name="LZMA#.dll"
+							Source="..\Bin\Release\Plugins\LZMA#.dll"
+							ProcessorArchitecture="msil" />
+						<File Id="SharpZipLib" Name="ICSharpCode.SharpZipLib.dll"
+							Source="..\bin\Release\Plugins\ICSharpCode.SharpZipLib.dll" ProcessorArchitecture="msil" />
 					</Component>
 
 					<Directory Id="EraserPluginsLangEnDir" Name="en">
