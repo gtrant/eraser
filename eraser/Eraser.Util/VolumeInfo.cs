@@ -825,7 +825,7 @@ namespace Eraser.Util
 
 		protected override void Dispose(bool disposing)
 		{
-			if (Access == FileAccess.Write || Access == FileAccess.ReadWrite)
+			if ((Access == FileAccess.Write || Access == FileAccess.ReadWrite) && IsLocked)
 				UnlockVolume();
 			base.Dispose(disposing);
 		}
