@@ -89,7 +89,7 @@ namespace Eraser.BlackBox
 		{
 			//Upload the report.
 			UploadWorker.ReportProgress((int)(overallProgress.Progress * 100),
-				S._("Compressing Report {0}: {1:#0.00%}", report.Name, 0));
+				S._("Compressing Report {0}", report.Name));
 
 			reportProgress.Total = int.MaxValue;
 			BlackBoxReportUploader uploader = new BlackBoxReportUploader(report);
@@ -101,10 +101,8 @@ namespace Eraser.BlackBox
 
 					UploadWorker.ReportProgress((int)(overallProgress.Progress * 100),
 						step == 0 ?
-							S._("Compressing Report {0}: {1:#0.00%}",
-								report.Name, reportSteps.CurrentStep.Progress.Progress) :
-							S._("Uploading Report {0}: {1:#0.00%}",
-								report.Name, reportSteps.CurrentStep.Progress.Progress));
+							S._("Compressing Report {0}", report.Name) :
+							S._("Uploading Report {0}", report.Name));
 
 					if (UploadWorker.CancellationPending)
 						throw new OperationCanceledException();
