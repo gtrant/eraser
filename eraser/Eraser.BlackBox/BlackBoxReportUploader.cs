@@ -57,14 +57,19 @@ namespace Eraser.BlackBox
 				Progress = progress;
 				StepProgress = stepProgress;
 				EventHandler = progressChanged;
+				LastProgressReport = DateTime.MinValue;
 			}
 
 			#region ICodeProgress Members
 
 			public void SetProgress(long inSize, long outSize)
 			{
-				StepProgress.Completed = inSize;
-				EventHandler(Uploader, new ProgressChangedEventArgs(Progress, null));
+				if ((DateTime.Now - LastProgressReport).Ticks > TimeSpan.TicksPerSecond)
+				{
+					StepProgress.Completed = inSize;
+					EventHandler(Uploader, new ProgressChangedEventArgs(Progress, null));
+					LastProgressReport = DateTime.Now;
+				}
 			}
 
 			#endregion
@@ -73,6 +78,8 @@ namespace Eraser.BlackBox
 			private SteppedProgressManager Progress;
 			private ProgressManager StepProgress;
 			private ProgressChangedEventHandler EventHandler;
+
+			private DateTime LastProgressReport;
 		}
 
 		/// <summary>
@@ -338,7 +345,7 @@ namespace Eraser.BlackBox
 		/// The URI to the BlackBox server.
 		/// </summary>
 		private static readonly Uri BlackBoxServer =
-			new Uri("http://eraser.heidi.ie/scripts/blackbox/upload.php");
+			new Uri("http://eraser.clients.bookmarkconsultants.com/scripts/blackbox/upload.php");
 
 		/// <summary>
 		/// The report being uploaded.
