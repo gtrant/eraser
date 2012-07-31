@@ -345,7 +345,7 @@ namespace Eraser.BlackBox
 		/// The URI to the BlackBox server.
 		/// </summary>
 		private static readonly Uri BlackBoxServer =
-			new Uri("http://eraser.clients.bookmarkconsultants.com/scripts/blackbox/upload.php");
+			new Uri("http://eraser.heidi.ie/scripts/blackbox/upload.php");
 
 		/// <summary>
 		/// The report being uploaded.
