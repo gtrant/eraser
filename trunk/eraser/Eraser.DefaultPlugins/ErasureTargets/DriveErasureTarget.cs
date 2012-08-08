@@ -266,7 +266,8 @@ namespace Eraser.DefaultPlugins
 			finally
 			{
 				Progress = null;
-				stream.Close();
+				if (stream != null)
+					stream.Close();
 			}
 		}
 	}
