@@ -22,13 +22,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Text;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.Reflection;
 using Eraser.Util;
 using System.Diagnostics;
 using System.Globalization;
@@ -37,13 +32,13 @@ namespace Eraser
 {
 	public partial class AboutForm : Form
 	{
-		private Bitmap AboutBitmap;
-		private Point AboutBitmapPos;
-		private string AboutText;
-		private Bitmap AboutTextBitmap;
-		private Rectangle AboutTextRect;
+        private readonly Bitmap AboutBitmap;
+        private readonly Point AboutBitmapPos;
+        private readonly string AboutText;
+        private readonly Bitmap AboutTextBitmap;
+        private readonly Rectangle AboutTextRect;
 
-		private Bitmap ParentBitmap;
+        private readonly Bitmap ParentBitmap;
 		private int ParentOpacity;
 		private int AboutTextScrollTop;
 
@@ -152,7 +147,7 @@ Eraser Project Members:
 				SizeF copyrightSize = g.MeasureString(copyrightText, Font);
 				g.DrawString(copyrightText, Font, textBrush, copyrightPos);
 
-				string websiteText = "http://eraser.heidi.ie/";
+				const string websiteText = "http://eraser.heidi.ie/";
 				PointF websitePos = new PointF(copyrightPos.X, copyrightPos.Y + copyrightSize.Height);
 				SizeF websiteSize = g.MeasureString(websiteText, Font);
 				g.DrawString(websiteText, underlineFont, textBrush, websitePos);
@@ -214,6 +209,10 @@ Eraser Project Members:
 			animationTimer_Tick(null, null);
 			animationTimer.Start();
 		}
+        public AboutForm()
+        {
+            
+        }
 
 		private void AboutForm_Click(object sender, EventArgs e)
 		{
@@ -247,10 +246,10 @@ Eraser Project Members:
 
 		private void AboutForm_MouseMove(object sender, MouseEventArgs e)
 		{
-			Cursor.Current = Cursors.Default;
-			if (WebsiteRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))) ||
-				DonateRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))))
-				Cursor.Current = Cursors.Hand;
+            if (WebsiteRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))) || DonateRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))))
+                Cursor.Current = Cursors.Hand;
+            else
+                Cursor.Current = Cursors.Default;
 		}
 
 		private void AboutForm_MouseLeave(object sender, EventArgs e)
@@ -323,7 +322,7 @@ Eraser Project Members:
 
 		private double mouseSpeed;
 		private DateTime mouseDownTime = DateTime.MinValue;
-		private TimeSpan mouseSpeedUpSpan = new TimeSpan(0, 0, 0, 0, 230);
+        private readonly TimeSpan mouseSpeedUpSpan = new TimeSpan(0, 0, 0, 0, 230);
 		private MouseButtons mouseBotton;
 		private void AboutForm_MouseDown(object sender, MouseEventArgs e)
 		{
