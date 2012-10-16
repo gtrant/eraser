@@ -38,11 +38,7 @@ namespace Eraser.Util
 		public static void Dump(FileStream stream)
 		{
 			//Store the exception information
-			NativeMethods.MiniDumpExceptionInfo exception =
-				new NativeMethods.MiniDumpExceptionInfo();
-			exception.ClientPointers = false;
-			exception.ExceptionPointers = Marshal.GetExceptionPointers();
-			exception.ThreadId = (uint)AppDomain.GetCurrentThreadId();
+            NativeMethods.MiniDumpExceptionInfo exception = new NativeMethods.MiniDumpExceptionInfo() { ClientPointers = false, ExceptionPointers = Marshal.GetExceptionPointers(), ThreadId = (uint)AppDomain.GetCurrentThreadId() };
 
 			NativeMethods.MiniDumpWriteDump(Process.GetCurrentProcess().Handle,
 				(uint)Process.GetCurrentProcess().Id, stream.SafeFileHandle,
