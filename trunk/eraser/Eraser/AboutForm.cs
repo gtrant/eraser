@@ -1,6 +1,6 @@
 /* 
  * $Id$
- * Copyright 2008-2012 The Eraser Project
+ * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net>
  * 
@@ -142,7 +142,7 @@ Eraser Project Members:
 					Font, textBrush, new PointF(eraserPos.X + eraserSize.Width + 3, eraserPos.Y));
 
 				//Copyright and Website
-				string copyrightText = S._("copyright \u00a9 2008-2012 The Eraser Project");
+				string copyrightText = S._("copyright \u00a9 2008-2013 The Eraser Project");
 				PointF copyrightPos = new PointF(eraserPos.X, eraserPos.Y + eraserSize.Height);
 				SizeF copyrightSize = g.MeasureString(copyrightText, Font);
 				g.DrawString(copyrightText, Font, textBrush, copyrightPos);

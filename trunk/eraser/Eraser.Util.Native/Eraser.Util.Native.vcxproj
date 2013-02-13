@@ -79,7 +79,7 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\Strong Name.snk</LinkKeyFile>
+    <LinkKeyFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\Strong Name.snk</LinkKeyFile>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">obj\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
@@ -100,7 +100,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <PreBuildEvent>
       <Command>"$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\" "$(SolutionDir)Version.rc.in" "$(SolutionDir)Version.rc"
-csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
+$(SolutionDir)csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
 if ERRORLEVEL 0 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
@@ -126,7 +126,7 @@ if ERRORLEVEL 0 exit 0</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <PreBuildEvent>
       <Command>"$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\" "$(SolutionDir)Version.rc.in" "$(SolutionDir)Version.rc"
-csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
+$(SolutionDir)csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
 if ERRORLEVEL 0 exit 0</Command>
     </PreBuildEvent>
     <Midl>
@@ -155,7 +155,7 @@ if ERRORLEVEL 0 exit 0</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <PreBuildEvent>
       <Command>"$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\" "$(SolutionDir)Version.rc.in" "$(SolutionDir)Version.rc"
-csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
+$(SolutionDir)csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
 if ERRORLEVEL 0 exit 0</Command>
     </PreBuildEvent>
     <ClCompile>
@@ -179,7 +179,7 @@ if ERRORLEVEL 0 exit 0</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <PreBuildEvent>
       <Command>"$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\" "$(SolutionDir)Version.rc.in" "$(SolutionDir)Version.rc"
-csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
+$(SolutionDir)csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
 if ERRORLEVEL 0 exit 0</Command>
     </PreBuildEvent>
     <Midl>
