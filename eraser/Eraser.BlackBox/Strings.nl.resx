@@ -138,10 +138,10 @@
   <data name="There are crash reports which have yet to be submitted. Click on this balloon to see the list of reports." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Compressing Report {0}: {1:#0.00%}" xml:space="preserve">
+  <data name="Compressing Report {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Uploading Report {0}: {1:#0.00%}" xml:space="preserve">
+  <data name="Uploading Report {0}" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Checking for solution for {0}..." xml:space="preserve">

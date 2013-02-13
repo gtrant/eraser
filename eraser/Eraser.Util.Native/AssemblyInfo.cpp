@@ -1,6 +1,6 @@
 /* 
  * $Id$
- * Copyright 2008-2012 The Eraser Project
+ * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
  * 
@@ -38,9 +38,10 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyConfigurationAttribute("")];
 [assembly:AssemblyCompanyAttribute("The Eraser Project")];
 [assembly:AssemblyProductAttribute("Eraser")];
-[assembly:AssemblyCopyrightAttribute("Copyright (c) 2009-2012 The Eraser Project")];
+[assembly:AssemblyCopyrightAttribute("Copyright (c) 2009-2013 The Eraser Project")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
+[assembly: AssemblyKeyFile("..\\Strong Name.snk")];
 
 //
 // Version information for an assembly consists of the following four values:
