@@ -71,7 +71,7 @@ namespace Eraser
 				tbToolsDropDown.Visible = false;
 			}
 
-			//We also need to see if we have any notifier classes we need to register
+			//We also need to see if we have any notifier classes we need to register.
 			foreach (INotifier notifier in Host.Instance.Notifiers)
 				notifier.Sink = this;
 			Host.Instance.Notifiers.Registered += Notifier_Registered;
