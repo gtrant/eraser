@@ -9,7 +9,7 @@ for /r "%~1\bin\Release\" %%i in (*.exe) do (
 	)
 )
 
-c:\codesign\signtool sign /a /t http://timestamp.verisign.com/scripts/timestamp.dll !binaries!
+signtool sign /a /t http://timestamp.verisign.com/scripts/timestamp.dll !binaries!
 if %errorlevel% geq 1 (
 	echo The Eraser binaries were not signed; see the signtool log for details.
 	exit 0;
