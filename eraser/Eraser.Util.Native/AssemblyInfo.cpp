@@ -41,7 +41,7 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyCopyrightAttribute("Copyright (c) 2009-2013 The Eraser Project")];
 [assembly:AssemblyTrademarkAttribute("")];
 [assembly:AssemblyCultureAttribute("")];
-[assembly: AssemblyKeyFile("..\\Strong Name.snk")];
+[assembly: AssemblyKeyFile("Strong Name.snk")];
 
 //
 // Version information for an assembly consists of the following four values:
