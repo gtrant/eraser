@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: 
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
  * 
  * This file is part of Eraser.
  * 
@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using System.IO;
 using System.Diagnostics;
@@ -36,208 +35,212 @@ using System.Runtime.InteropServices;
 
 namespace Eraser.DefaultPlugins
 {
-	/// <summary>
-	/// Provides means of generating random entropy from the system or user space
-	/// randomness.
-	/// This class is hardcoded into the Manager Library as we need at least one
-	/// instance of such behaviour within our system. The other classes could be
-	/// implemented as plugins, managed by EntropySourceManager.
-	/// </summary>
-	class KernelEntropySource : IEntropySource
-	{
-		public byte[] GetPrimer()
-		{
-			List<byte> result = new List<byte>();
+    /// <summary>
+    /// Provides means of generating random entropy from the system or user space
+    /// randomness.
+    /// This class is hardcoded into the Manager Library as we need at least one
+    /// instance of such behaviour within our system. The other classes could be
+    /// implemented as plugins, managed by EntropySourceManager.
+    /// </summary>
+    class KernelEntropySource : IEntropySource
+    {
+        public byte[] GetPrimer()
+        {
+            List<byte> result = new List<byte>();
 
-			//Process information
-			result.AddRange(StructToBuffer(Process.GetCurrentProcess().Id));
-			result.AddRange(StructToBuffer(Process.GetCurrentProcess().StartTime.Ticks));
+            //Process information
+            result.AddRange(StructToBuffer(Process.GetCurrentProcess().Id));
+            result.AddRange(StructToBuffer(Process.GetCurrentProcess().StartTime.Ticks));
 
-			result.AddRange(GetFastEntropy());
-			result.AddRange(GetSlowEntropy());
-			return result.ToArray();
-		}
+            result.AddRange(GetFastEntropy());
+            result.AddRange(GetSlowEntropy());
+            return result.ToArray();
+        }
 
-		public Guid Guid
-		{
-			get
-			{
-				return new Guid("{11EDCECF-AD81-4e50-A73D-B9CF1F813093}");
-			}
-		}
+        public Guid Guid
+        {
+            get
+            {
+                return new Guid("{11EDCECF-AD81-4e50-A73D-B9CF1F813093}");
+            }
+        }
 
-		public string Name
-		{
-			get
-			{
-				return S._("Kernel Entropy Source");
-			}
-		}
+        public string Name
+        {
+            get
+            {
+                return S._("Kernel Entropy Source");
+            }
+        }
 
-		public byte[] GetEntropy()
-		{
-			List<byte> result = new List<byte>();
-			result.AddRange(GetFastEntropy());
-			result.AddRange(GetSlowEntropy());
+        public byte[] GetEntropy()
+        {
+            List<byte> result = new List<byte>();
+            result.AddRange(GetFastEntropy());
+            result.AddRange(GetSlowEntropy());
 
-			return result.ToArray();
-		}
+            return result.ToArray();
+        }
 
-		/// <summary>
-		/// Retrieves entropy from quick sources.
-		/// </summary>
-		public byte[] GetFastEntropy()
-		{
-			List<byte> result = new List<byte>();
+        /// <summary>
+        /// Retrieves entropy from quick sources.
+        /// </summary>
+        public byte[] GetFastEntropy()
+        {
+            List<byte> result = new List<byte>();
 
-			//Add the free disk space to the pool
-			result.AddRange(StructToBuffer(new DriveInfo(new DirectoryInfo(Environment.SystemDirectory).
-				Root.FullName).TotalFreeSpace));
+            //Add the free disk space to the pool
+            result.AddRange(StructToBuffer(new DriveInfo(new DirectoryInfo(Environment.SystemDirectory).
+                Root.FullName).TotalFreeSpace));
 
-			//Miscellaneous window handles
-			result.AddRange(StructToBuffer(UserApi.MessagePos));
-			result.AddRange(StructToBuffer(UserApi.MessageTime));
+            //Miscellaneous window handles
+            result.AddRange(StructToBuffer(UserApi.MessagePos));
+            result.AddRange(StructToBuffer(UserApi.MessageTime));
 
-			//The caret and cursor positions
-			result.AddRange(StructToBuffer(UserApi.CaretPos));
-			result.AddRange(StructToBuffer(Cursor.Position));
+            //The caret and cursor positions
+            result.AddRange(StructToBuffer(UserApi.CaretPos));
+            result.AddRange(StructToBuffer(Cursor.Position));
 
-			//Currently running threads (dynamic, but not very)
-			Process currProcess = Process.GetCurrentProcess();
-			try
-			{
-				foreach (ProcessThread thread in currProcess.Threads)
-					result.AddRange(StructToBuffer(thread.Id));
-			}
-			catch (InvalidOperationException)
-			{
-				//Swallow, this doesn't mean anything to us.
-			}
+            //Currently running threads (dynamic, but not very)
+            using (Process currProcess = Process.GetCurrentProcess())
+            {
+                try
+                {
+                    foreach (ProcessThread thread in currProcess.Threads)
+                        result.AddRange(StructToBuffer(thread.Id));
+                }
+                catch (InvalidOperationException)
+                {
+                    //Swallow, this doesn't mean anything to us.
+                }
+                //Various process statistics
+                result.AddRange(StructToBuffer(currProcess.VirtualMemorySize64));
+                result.AddRange(StructToBuffer(currProcess.MaxWorkingSet));
+                result.AddRange(StructToBuffer(currProcess.MinWorkingSet));
+                result.AddRange(StructToBuffer(currProcess.NonpagedSystemMemorySize64));
+                result.AddRange(StructToBuffer(currProcess.PagedMemorySize64));
+                result.AddRange(StructToBuffer(currProcess.PagedSystemMemorySize64));
+                result.AddRange(StructToBuffer(currProcess.PeakPagedMemorySize64));
+                result.AddRange(StructToBuffer(currProcess.PeakVirtualMemorySize64));
+                result.AddRange(StructToBuffer(currProcess.PeakWorkingSet64));
+                result.AddRange(StructToBuffer(currProcess.PrivateMemorySize64));
+                result.AddRange(StructToBuffer(currProcess.WorkingSet64));
+                result.AddRange(StructToBuffer(currProcess.HandleCount));
+                //Amount of free memory
+                ComputerInfo computerInfo = new ComputerInfo();
+                result.AddRange(StructToBuffer(computerInfo.AvailablePhysicalMemory));
+                result.AddRange(StructToBuffer(computerInfo.AvailableVirtualMemory));
+                //Process execution times
+                result.AddRange(StructToBuffer(currProcess.TotalProcessorTime));
+                result.AddRange(StructToBuffer(currProcess.UserProcessorTime));
+                result.AddRange(StructToBuffer(currProcess.PrivilegedProcessorTime));
+                //Thread execution times
+                foreach (ProcessThread thread in currProcess.Threads)
+                {
+                    try
+                    {
+                        result.AddRange(StructToBuffer(thread.TotalProcessorTime));
+                        result.AddRange(StructToBuffer(thread.UserProcessorTime));
+                        result.AddRange(StructToBuffer(thread.PrivilegedProcessorTime));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        //Caught when the thread has exited in the middle of the foreach.
+                    }
+                    catch (System.ComponentModel.Win32Exception e)
+                    {
+                        if (e.NativeErrorCode != Win32ErrorCode.AccessDenied)
+                            throw;
+                    }
+                }
+            }
 
-			//Various process statistics
-			result.AddRange(StructToBuffer(currProcess.VirtualMemorySize64));
-			result.AddRange(StructToBuffer(currProcess.MaxWorkingSet));
-			result.AddRange(StructToBuffer(currProcess.MinWorkingSet));
-			result.AddRange(StructToBuffer(currProcess.NonpagedSystemMemorySize64));
-			result.AddRange(StructToBuffer(currProcess.PagedMemorySize64));
-			result.AddRange(StructToBuffer(currProcess.PagedSystemMemorySize64));
-			result.AddRange(StructToBuffer(currProcess.PeakPagedMemorySize64));
-			result.AddRange(StructToBuffer(currProcess.PeakVirtualMemorySize64));
-			result.AddRange(StructToBuffer(currProcess.PeakWorkingSet64));
-			result.AddRange(StructToBuffer(currProcess.PrivateMemorySize64));
-			result.AddRange(StructToBuffer(currProcess.WorkingSet64));
-			result.AddRange(StructToBuffer(currProcess.HandleCount));
+            //Current system time
+            result.AddRange(StructToBuffer(DateTime.Now.Ticks));
 
-			//Amount of free memory
-			ComputerInfo computerInfo = new ComputerInfo();
-			result.AddRange(StructToBuffer(computerInfo.AvailablePhysicalMemory));
-			result.AddRange(StructToBuffer(computerInfo.AvailableVirtualMemory));
+            //The high resolution performance counter
+            result.AddRange(StructToBuffer(SystemInfo.PerformanceCounter));
 
-			//Process execution times
-			result.AddRange(StructToBuffer(currProcess.TotalProcessorTime));
-			result.AddRange(StructToBuffer(currProcess.UserProcessorTime));
-			result.AddRange(StructToBuffer(currProcess.PrivilegedProcessorTime));
+            //Ticks since start up
+            result.AddRange(StructToBuffer(Environment.TickCount));
+            return result.ToArray();
+        }
 
-			//Thread execution times
-			foreach (ProcessThread thread in currProcess.Threads)
-			{
-				try
-				{
-					result.AddRange(StructToBuffer(thread.TotalProcessorTime));
-					result.AddRange(StructToBuffer(thread.UserProcessorTime));
-					result.AddRange(StructToBuffer(thread.PrivilegedProcessorTime));
-				}
-				catch (InvalidOperationException)
-				{
-					//Caught when the thread has exited in the middle of the foreach.
-				}
-				catch (System.ComponentModel.Win32Exception e)
-				{
-					if (e.NativeErrorCode != Win32ErrorCode.AccessDenied)
-						throw;
-				}
-			}
+        /// <summary>
+        /// Retrieves entropy from sources which are relatively slower than those from
+        /// the FastAddEntropy function.
+        /// </summary>
+        public byte[] GetSlowEntropy()
+        {
+            List<byte> result = new List<byte>();
 
-			//Current system time
-			result.AddRange(StructToBuffer(DateTime.Now.Ticks));
+            //NetAPI statistics
+            byte[] netApiStats = NetApi.NetStatisticsGet(null, NetApiService.Workstation, 0, 0);
+            if (netApiStats != null)
+                result.AddRange(netApiStats);
 
-			//The high resolution performance counter
-			result.AddRange(StructToBuffer(SystemInfo.PerformanceCounter));
+            foreach (VolumeInfo info in VolumeInfo.Volumes)
+            {
+                if (info.VolumeType != DriveType.Removable)
+                {
+                    if (info.IsReady == true)
+                    {
+                        try
+                        {
+                            DiskPerformanceInfo performance = info.Performance;
+                            if (performance == null)
+                                continue;
 
-			//Ticks since start up
-			result.AddRange(StructToBuffer(Environment.TickCount));
-			return result.ToArray();
-		}
+                            result.AddRange(StructToBuffer(performance.BytesRead));
+                            result.AddRange(StructToBuffer(performance.BytesWritten));
+                            result.AddRange(StructToBuffer(performance.IdleTime));
+                            result.AddRange(StructToBuffer(performance.QueryTime));
+                            result.AddRange(StructToBuffer(performance.QueueDepth));
+                            result.AddRange(StructToBuffer(performance.ReadCount));
+                            result.AddRange(StructToBuffer(performance.ReadTime));
+                            result.AddRange(StructToBuffer(performance.SplitCount));
+                            result.AddRange(StructToBuffer(performance.WriteCount));
+                            result.AddRange(StructToBuffer(performance.WriteTime));
+                        }
+                        catch (FileNotFoundException)
+                        {
+                            //This happens if a drive is ejected while the loop is running.
+                        }
+                        catch (NotSupportedException)
+                        {
+                            //Don't bother if this drive doesn't count statistics.
+                        }
+                    }
+                }
+            }
 
-		/// <summary>
-		/// Retrieves entropy from sources which are relatively slower than those from
-		/// the FastAddEntropy function.
-		/// </summary>
-		public byte[] GetSlowEntropy()
-		{
-			List<byte> result = new List<byte>();
+            return result.ToArray();
+        }
 
-			//NetAPI statistics
-			byte[] netApiStats = NetApi.NetStatisticsGet(null, NetApiService.Workstation, 0, 0);
-			if (netApiStats != null)
-				result.AddRange(netApiStats);
+        /// <summary>
+        /// Converts value types into a byte array. This is a helper function to allow
+        /// inherited classes to convert value types into byte arrays which can be
+        /// returned to the EntropyPoller class.
+        /// </summary>
+        /// <typeparam name="T">Any value type</typeparam>
+        /// <param name="entropy">A value which will be XORed with pool contents.</param>
+        private static byte[] StructToBuffer<T>(T entropy) where T : struct
+        {
+            int sizeofObject = Marshal.SizeOf(entropy);
+            IntPtr memory = Marshal.AllocHGlobal(sizeofObject);
+            try
+            {
+                Marshal.StructureToPtr(entropy, memory, false);
+                byte[] dest = new byte[sizeofObject];
 
-			foreach (VolumeInfo info in VolumeInfo.Volumes)
-			{
-				try
-				{
-					DiskPerformanceInfo performance = info.Performance;
-					if (performance == null)
-						continue;
-
-					result.AddRange(StructToBuffer(performance.BytesRead));
-					result.AddRange(StructToBuffer(performance.BytesWritten));
-					result.AddRange(StructToBuffer(performance.IdleTime));
-					result.AddRange(StructToBuffer(performance.QueryTime));
-					result.AddRange(StructToBuffer(performance.QueueDepth));
-					result.AddRange(StructToBuffer(performance.ReadCount));
-					result.AddRange(StructToBuffer(performance.ReadTime));
-					result.AddRange(StructToBuffer(performance.SplitCount));
-					result.AddRange(StructToBuffer(performance.WriteCount));
-					result.AddRange(StructToBuffer(performance.WriteTime));
-				}
-				catch (FileNotFoundException)
-				{
-					//This happens if a drive is ejected while the loop is running.
-				}
-				catch (NotSupportedException)
-				{
-					//Don't bother if this drive doesn't count statistics.
-				}
-			}
-
-			return result.ToArray();
-		}
-
-		/// <summary>
-		/// Converts value types into a byte array. This is a helper function to allow
-		/// inherited classes to convert value types into byte arrays which can be
-		/// returned to the EntropyPoller class.
-		/// </summary>
-		/// <typeparam name="T">Any value type</typeparam>
-		/// <param name="entropy">A value which will be XORed with pool contents.</param>
-		private static byte[] StructToBuffer<T>(T entropy) where T : struct
-		{
-			int sizeofObject = Marshal.SizeOf(entropy);
-			IntPtr memory = Marshal.AllocHGlobal(sizeofObject);
-			try
-			{
-				Marshal.StructureToPtr(entropy, memory, false);
-				byte[] dest = new byte[sizeofObject];
-
-				//Copy the memory
-				Marshal.Copy(memory, dest, 0, sizeofObject);
-				return dest;
-			}
-			finally
-			{
-				Marshal.FreeHGlobal(memory);
-			}
-		}
-	}
+                //Copy the memory
+                Marshal.Copy(memory, dest, 0, sizeofObject);
+                return dest;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(memory);
+            }
+        }
+    }
 }

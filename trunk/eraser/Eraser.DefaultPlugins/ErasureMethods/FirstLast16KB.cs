@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -127,11 +127,7 @@ namespace Eraser.DefaultPlugins
 			//We need to intercept the callback function as we run the erasure method
 			//twice on two parts of the file.
 			long dataSize = method.CalculateEraseDataSize(null, DataSize * 2);
-			ErasureMethodProgressFunction customCallback =
-				delegate(long lastWritten, long totalData, int currentPass)
-				{
-					callback(lastWritten, dataSize, currentPass);
-				};
+            ErasureMethodProgressFunction customCallback = (lastWritten, totalData, currentPass) => callback(lastWritten, dataSize, currentPass);
 
 			//Seek to the beginning and write 16kb.
 			strm.Seek(0, SeekOrigin.Begin);
@@ -147,6 +143,6 @@ namespace Eraser.DefaultPlugins
 		/// </summary>
 		private const long DataSize = 16 * 1024;
 
-		private IErasureMethod method;
+        private readonly IErasureMethod method;
 	}
 }
