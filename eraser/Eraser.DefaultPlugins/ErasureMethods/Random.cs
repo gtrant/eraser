@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -21,12 +21,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 using Eraser.Util;
-using Eraser.Plugins;
-using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {

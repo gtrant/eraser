@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -55,6 +55,6 @@ namespace Eraser.DefaultPlugins
 			//No-op. RNGCryptoServiceProviders can't be reseeded.
 		}
 
-		RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider();
+        readonly RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider();
 	}
 }

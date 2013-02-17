@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -21,12 +21,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 
 using ComLib.Arguments;
 
-using Eraser.Manager;
 using Eraser.Util;
 
 namespace Eraser
@@ -141,12 +138,12 @@ namespace Eraser
 			/// <summary>
 			/// The command line arguments the program was started with.
 			/// </summary>
-			private string[] CommandLine;
+            private readonly string[] CommandLine;
 
 			/// <summary>
 			/// Stores the common Console arguments which were given on the command line.
 			/// </summary>
-			private ConsoleArguments Arguments;
+            private readonly ConsoleArguments Arguments;
 		}
 
 		/// <summary>

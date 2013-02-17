@@ -64,7 +64,7 @@ namespace Eraser.BlackBox
 
 		public string Author
 		{
-			get { return "The Eraser Project <eraser-development@lists.sourceforge.net>"; }
+			get { return "The Eraser Project"; }
 		}
 
 		public bool Configurable

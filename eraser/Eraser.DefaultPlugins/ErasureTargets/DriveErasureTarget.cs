@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -22,12 +22,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Runtime.Serialization;
 using System.Xml;
-using System.Xml.Serialization;
 using System.IO;
 using System.Globalization;
 
@@ -252,16 +250,13 @@ namespace Eraser.DefaultPlugins
 				stepProgress.Total = method.CalculateEraseDataSize(null, stepProgress.Total);
 
 				//Then run the erase task
-				method.Erase(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng,
-					delegate(long lastWritten, long totalData, int currentPass)
-					{
-						stepProgress.Completed += lastWritten;
-						stepProgress.Tag = new int[] { currentPass, method.Passes };
-
-						if (Task.Canceled)
-							throw new OperationCanceledException(S._("The task was cancelled."));
-					}
-				);
+                method.Erase(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng, (lastWritten, totalData, currentPass) =>
+                {
+                    stepProgress.Completed += lastWritten;
+                    stepProgress.Tag = new int[] { currentPass, method.Passes };
+                    if (Task.Canceled)
+                        throw new OperationCanceledException(S._("The task was cancelled."));
+                });
 			}
 			finally
 			{

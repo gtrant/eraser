@@ -110,7 +110,6 @@ namespace Eraser.DefaultPlugins
 				try
 				{
 					ResetFileTimes(info);
-
 					//Try to rename the file. If it fails, it is probably due to another
 					//process locking the file. Defer, then rename again.
 					info.MoveTo(newPath);

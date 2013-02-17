@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * The algorithm in this file is implemented using the description in EMIShredder
  * (http://www.codeplex.com/EMISecurityShredder)
@@ -24,12 +24,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 
 using Eraser.Util;
-using Eraser.Plugins;
-using Eraser.Plugins.ExtensionPoints;
 
 namespace Eraser.DefaultPlugins
 {
