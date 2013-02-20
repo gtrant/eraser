@@ -13,6 +13,10 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+	<SuppressIces>ICE03;ICE82</SuppressIces>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>PLATFORMDIR=Win32</DefineConstants>
     <DefineConstants>Debug</DefineConstants>
     <VerboseOutput>True</VerboseOutput>
   </PropertyGroup>
@@ -29,6 +33,10 @@
     <VerboseOutput>True</VerboseOutput>
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+	<SuppressIces>ICE03;ICE82;ICE80</SuppressIces>
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>PLATFORMDIR=x64</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
