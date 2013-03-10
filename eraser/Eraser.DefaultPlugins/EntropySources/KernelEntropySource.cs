@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 using System.IO;
 using System.Diagnostics;
@@ -53,7 +54,7 @@ namespace Eraser.DefaultPlugins
             result.AddRange(StructToBuffer(Process.GetCurrentProcess().StartTime.Ticks));
 
             result.AddRange(GetFastEntropy());
-            result.AddRange(GetSlowEntropy());
+            //result.AddRange(GetSlowEntropy());
             return result.ToArray();
         }
 
@@ -77,7 +78,7 @@ namespace Eraser.DefaultPlugins
         {
             List<byte> result = new List<byte>();
             result.AddRange(GetFastEntropy());
-            result.AddRange(GetSlowEntropy());
+            //result.AddRange(GetSlowEntropy());
 
             return result.ToArray();
         }
@@ -181,9 +182,9 @@ namespace Eraser.DefaultPlugins
 
             foreach (VolumeInfo info in VolumeInfo.Volumes)
             {
-                if (info.VolumeType != DriveType.Removable)
+                if ((info.VolumeType != DriveType.Removable)||(info.VolumeType != DriveType.CDRom))
                 {
-                    if (info.IsReady == true)
+                    if ((info.IsReady == true) && (info.IsMounted == true))
                     {
                         try
                         {
