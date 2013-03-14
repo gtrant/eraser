@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
  * 
  * This file is part of Eraser.
  * 
@@ -22,7 +22,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using System.Windows.Forms;
 
@@ -94,12 +93,14 @@ namespace Eraser.BlackBox
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		private void OnClick(object sender, EventArgs e)
+		private static void OnClick(object sender, EventArgs e)
 		{
 			BlackBoxMainForm form = BlackBoxMainForm.Get();
-			Form owner = null;
-			if (Application.OpenForms.Count > 0)
-				owner = Application.OpenForms[0];
+            Form owner;
+            if (Application.OpenForms.Count > 0)
+                owner = Application.OpenForms[0];
+            else
+                owner = null;
 
 			if (owner == null)
 			{

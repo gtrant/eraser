@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
  * 
  * This file is part of Eraser.
  * 
@@ -135,14 +135,16 @@ namespace Eraser.BlackBox
 					FileMode.Create, FileAccess.Write))
 			{
 				//Add the report into a tar file
-				TarArchive archive = TarArchive.CreateOutputTarArchive(archiveStream);
-				foreach (FileInfo file in Report.Files)
-				{
-					TarEntry entry = TarEntry.CreateEntryFromFile(file.FullName);
-					entry.Name = Path.GetFileName(entry.Name);
-					archive.WriteEntry(entry, false);
-				}
-				archive.Close();
+                using (TarArchive archive = TarArchive.CreateOutputTarArchive(archiveStream))
+                {
+                    foreach (FileInfo file in Report.Files)
+                    {
+                        TarEntry entry = TarEntry.CreateEntryFromFile(file.FullName);
+                        entry.Name = Path.GetFileName(entry.Name);
+                        archive.WriteEntry(entry, false);
+                    }
+                    archive.Close();
+                }
 			}
 
 			ProgressManager step = new ProgressManager();
@@ -350,7 +352,7 @@ namespace Eraser.BlackBox
 		/// <summary>
 		/// The report being uploaded.
 		/// </summary>
-		private BlackBoxReport Report;
+        private readonly BlackBoxReport Report;
 
 		/// <summary>
 		/// The base name of the report.
