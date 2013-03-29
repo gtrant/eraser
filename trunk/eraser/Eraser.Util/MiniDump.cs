@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Diagnostics;
 using System.IO;
 
@@ -37,7 +38,7 @@ namespace Eraser.Util
 		public static void Dump(FileStream stream)
 		{
 			//Store the exception information
-            NativeMethods.MiniDumpExceptionInfo exception = new NativeMethods.MiniDumpExceptionInfo() { ClientPointers = false, ExceptionPointers = Marshal.GetExceptionPointers(), ThreadId = (uint)AppDomain.GetCurrentThreadId() };
+            NativeMethods.MiniDumpExceptionInfo exception = new NativeMethods.MiniDumpExceptionInfo() { ClientPointers = false, ExceptionPointers = Marshal.GetExceptionPointers(), ThreadId = (uint)System.Threading.Thread.CurrentThread.ManagedThreadId};
 
 			NativeMethods.MiniDumpWriteDump(Process.GetCurrentProcess().Handle,
 				(uint)Process.GetCurrentProcess().Id, stream.SafeFileHandle,

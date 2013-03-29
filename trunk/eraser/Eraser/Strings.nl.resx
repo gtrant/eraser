@@ -309,6 +309,9 @@
   <data name="The path you selected is invalid." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="You must run Eraser as Administrator\nRight Click on Eraser.exe and select 'Run As Administrator'" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
   <data name="Plugins which have just been approved will only be loaded the next time Eraser is started." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>

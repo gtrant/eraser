@@ -3,7 +3,7 @@
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @10/18/2008
- * Modified By: 
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -23,425 +23,479 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
+using System.Security.Principal;
+using System.Security.AccessControl;
 using System.Windows.Forms;
 
 using Microsoft.Win32;
 using System.Globalization;
-using System.Threading;
 
 using Eraser.Manager;
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
 using Eraser.Plugins;
 using Eraser.Plugins.ExtensionPoints;
-using Eraser.Plugins.Registrars;
 
 namespace Eraser
 {
-	internal partial class SettingsPanel : BasePanel
-	{
-		public SettingsPanel()
-		{
-			InitializeComponent();
+    internal partial class SettingsPanel : BasePanel
+    {
+        public SettingsPanel()
+        {
+            InitializeComponent();
 
-			//For new plugins, register the callback.
-			Host.Instance.PluginLoaded += OnNewPluginLoaded;
-			Host.Instance.ErasureMethods.Registered += OnMethodRegistered;
-			Host.Instance.ErasureMethods.Unregistered += OnMethodUnregistered;
+            //For new plugins, register the callback.
+            Host.Instance.PluginLoaded += OnNewPluginLoaded;
+            Host.Instance.ErasureMethods.Registered += OnMethodRegistered;
+            Host.Instance.ErasureMethods.Unregistered += OnMethodUnregistered;
 
-			//Load the values
-			LoadPluginDependantValues();
-			LoadSettings();
-		}
+            //Load the values
+            LoadPluginDependantValues();
+            LoadSettings();
+        }
 
-		private void OnNewPluginLoaded(object sender, PluginLoadedEventArgs e)
-		{
-			ListViewItem item = new ListViewItem();
-			if (e.Plugin.Loaded)
-			{
-				item.Text = e.Plugin.Plugin.Name;
-				item.SubItems.Add(e.Plugin.Plugin.Author);
-			}
-			else
-			{
-				item.Text = System.IO.Path.GetFileNameWithoutExtension(e.Plugin.Assembly.Location);
-				item.SubItems.Add(e.Plugin.AssemblyInfo.Author);
-			}
-			
-			//The item is checked if the plugin was given the green light to load
-			item.Checked = e.Plugin.Loaded ||
-				(ManagerLibrary.Instance.Settings.PluginApprovals.ContainsKey(
-					e.Plugin.AssemblyInfo.Guid) && ManagerLibrary.Instance.
-					Settings.PluginApprovals[e.Plugin.AssemblyInfo.Guid]
-				);
+        private void OnNewPluginLoaded(object sender, PluginLoadedEventArgs e)
+        {
+            ListViewItem item = new ListViewItem();
+            if (e.Plugin.Loaded)
+            {
+                item.Text = e.Plugin.Plugin.Name;
+                item.SubItems.Add(e.Plugin.Plugin.Author);
+            }
+            else
+            {
+                item.Text = System.IO.Path.GetFileNameWithoutExtension(e.Plugin.Assembly.Location);
+                item.SubItems.Add(e.Plugin.AssemblyInfo.Author);
+            }
 
-			//Visually display the other metadata associated with the assembly
-			item.ImageIndex = e.Plugin.AssemblyAuthenticode == null ? -1 : 0;
-			item.Group = e.Plugin.LoadingPolicy == PluginLoadingPolicy.Core ?
-				pluginsManager.Groups[0] : pluginsManager.Groups[1];
-			item.SubItems.Add(e.Plugin.Assembly.GetFileVersion().ToString());
-			item.SubItems.Add(e.Plugin.Assembly.Location);
-			item.Tag = e.Plugin;
-			pluginsManager.Items.Add(item);
-		}
+            //The item is checked if the plugin was given the green light to load
+            item.Checked = e.Plugin.Loaded ||
+                (ManagerLibrary.Instance.Settings.PluginApprovals.ContainsKey(
+                    e.Plugin.AssemblyInfo.Guid) && ManagerLibrary.Instance.
+                    Settings.PluginApprovals[e.Plugin.AssemblyInfo.Guid]
+                );
 
-		private void OnMethodRegistered(object sender, EventArgs e)
-		{
-			IErasureMethod method = (IErasureMethod)sender;
-			eraseFilesMethod.Items.Add(method);
-			if (method is IDriveErasureMethod)
-				eraseDriveMethod.Items.Add(method);
-		}
+            //Visually display the other metadata associated with the assembly
+            item.ImageIndex = e.Plugin.AssemblyAuthenticode == null ? -1 : 0;
+            item.Group = e.Plugin.LoadingPolicy == PluginLoadingPolicy.Core ?
+                pluginsManager.Groups[0] : pluginsManager.Groups[1];
+            item.SubItems.Add(e.Plugin.Assembly.GetFileVersion().ToString());
+            item.SubItems.Add(e.Plugin.Assembly.Location);
+            item.Tag = e.Plugin;
+            pluginsManager.Items.Add(item);
+        }
 
-		private void OnMethodUnregistered(object sender, EventArgs e)
-		{
-			IErasureMethod method = (IErasureMethod)sender;
-			foreach (IErasureMethod obj in eraseFilesMethod.Items)
-				if (obj.Guid == method.Guid)
-				{
-					eraseFilesMethod.Items.Remove(obj);
-					break;
-				}
+        private void OnMethodRegistered(object sender, EventArgs e)
+        {
+            IErasureMethod method = (IErasureMethod)sender;
+            eraseFilesMethod.Items.Add(method);
+            if (method is IDriveErasureMethod)
+                eraseDriveMethod.Items.Add(method);
+        }
 
-			foreach (IErasureMethod obj in eraseDriveMethod.Items)
-				if (obj.Guid == method.Guid)
-				{
-					eraseDriveMethod.Items.Remove(obj);
-					break;
-				}
+        private void OnMethodUnregistered(object sender, EventArgs e)
+        {
+            IErasureMethod method = (IErasureMethod)sender;
+            foreach (IErasureMethod obj in eraseFilesMethod.Items)
+                if (obj.Guid == method.Guid)
+                {
+                    eraseFilesMethod.Items.Remove(obj);
+                    break;
+                }
 
-			if (eraseFilesMethod.SelectedIndex == -1)
-				eraseFilesMethod.SelectedIndex = 0;
-			if (eraseDriveMethod.SelectedIndex == -1)
-				eraseDriveMethod.SelectedIndex = 0;
-		}
+            foreach (IErasureMethod obj in eraseDriveMethod.Items)
+                if (obj.Guid == method.Guid)
+                {
+                    eraseDriveMethod.Items.Remove(obj);
+                    break;
+                }
 
-		private void LoadPluginDependantValues()
-		{
-			//Load the list of plugins
-			Host instance = Host.Instance;
-			IEnumerator<PluginInfo> i = instance.Plugins.GetEnumerator();
-			while (i.MoveNext())
-				OnNewPluginLoaded(this, new PluginLoadedEventArgs(i.Current));
+            if (eraseFilesMethod.SelectedIndex == -1)
+                eraseFilesMethod.SelectedIndex = 0;
+            if (eraseDriveMethod.SelectedIndex == -1)
+                eraseDriveMethod.SelectedIndex = 0;
+        }
 
-			//Refresh the list of languages
-			IList<CultureInfo> languages = Localisation.Localisations;
-			foreach (CultureInfo culture in languages)
-				uiLanguage.Items.Add(culture);
+        private void LoadPluginDependantValues()
+        {
+            //Load the list of plugins
+            Host instance = Host.Instance;
+            IEnumerator<PluginInfo> i = instance.Plugins.GetEnumerator();
+            while (i.MoveNext())
+                OnNewPluginLoaded(this, new PluginLoadedEventArgs(i.Current));
 
-			//Refresh the list of erasure methods
-			foreach (IErasureMethod method in Host.Instance.ErasureMethods)
-			{
-				eraseFilesMethod.Items.Add(method);
-				if (method is IDriveErasureMethod)
-					eraseDriveMethod.Items.Add(method);
-			}
+            //Refresh the list of languages
+            IList<CultureInfo> languages = Localisation.Localisations;
+            foreach (CultureInfo culture in languages)
+                uiLanguage.Items.Add(culture);
 
-			//Refresh the list of PRNGs
-			foreach (IPrng prng in Host.Instance.Prngs)
-				erasePRNG.Items.Add(prng);
-		}
+            //Refresh the list of erasure methods
+            foreach (IErasureMethod method in Host.Instance.ErasureMethods)
+            {
+                eraseFilesMethod.Items.Add(method);
+                if (method is IDriveErasureMethod)
+                    eraseDriveMethod.Items.Add(method);
+            }
 
-		private void LoadSettings()
-		{
-			EraserSettings settings = EraserSettings.Get();
-			foreach (CultureInfo lang in uiLanguage.Items)
-				if (lang.Name == settings.Language)
-				{
-					uiLanguage.SelectedItem = lang;
-					break;
-				}
+            //Refresh the list of PRNGs
+            foreach (IPrng prng in Host.Instance.Prngs)
+                erasePRNG.Items.Add(prng);
+        }
 
-			foreach (IErasureMethod method in eraseFilesMethod.Items)
-				if (method.Guid == Host.Instance.Settings.DefaultFileErasureMethod)
-				{
-					eraseFilesMethod.SelectedItem = method;
-					break;
-				}
+        private void LoadSettings()
+        {
+            EraserSettings settings = EraserSettings.Get();
+            foreach (CultureInfo lang in uiLanguage.Items)
+                if (lang.Name == settings.Language)
+                {
+                    uiLanguage.SelectedItem = lang;
+                    break;
+                }
 
-			foreach (IErasureMethod method in eraseDriveMethod.Items)
-				if (method.Guid == Host.Instance.Settings.DefaultDriveErasureMethod)
-				{
-					eraseDriveMethod.SelectedItem = method;
-					break;
-				}
+            foreach (IErasureMethod method in eraseFilesMethod.Items)
+                if (method.Guid == Host.Instance.Settings.DefaultFileErasureMethod)
+                {
+                    eraseFilesMethod.SelectedItem = method;
+                    break;
+                }
 
-			foreach (IPrng prng in erasePRNG.Items)
-				if (prng.Guid == Host.Instance.Settings.ActivePrng)
-				{
-					erasePRNG.SelectedItem = prng;
-					break;
-				}
+            foreach (IErasureMethod method in eraseDriveMethod.Items)
+                if (method.Guid == Host.Instance.Settings.DefaultDriveErasureMethod)
+                {
+                    eraseDriveMethod.SelectedItem = method;
+                    break;
+                }
 
-			foreach (string path in Host.Instance.Settings.PlausibleDeniabilityFiles)
-				plausibleDeniabilityFiles.Items.Add(path);
-			plausibleDeniability.Checked =
-				Host.Instance.Settings.PlausibleDeniability;
+            foreach (IPrng prng in erasePRNG.Items)
+                if (prng.Guid == Host.Instance.Settings.ActivePrng)
+                {
+                    erasePRNG.SelectedItem = prng;
+                    break;
+                }
 
-			uiContextMenu.Checked = settings.IntegrateWithShell;
-			lockedForceUnlock.Checked =
-				Host.Instance.Settings.ForceUnlockLockedFiles;
-			schedulerMissedImmediate.Checked =
-				ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
-			schedulerMissedIgnore.Checked =
-				!ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
-			schedulerClearCompleted.Checked = settings.ClearCompletedTasks;
+            foreach (string path in Host.Instance.Settings.PlausibleDeniabilityFiles)
+                plausibleDeniabilityFiles.Items.Add(path);
+            plausibleDeniability.Checked =
+                Host.Instance.Settings.PlausibleDeniability;
 
-			List<string> defaultsList = new List<string>();
+            uiContextMenu.Checked = settings.IntegrateWithShell;
+            lockedForceUnlock.Checked =
+                Host.Instance.Settings.ForceUnlockLockedFiles;
+            schedulerMissedImmediate.Checked =
+                ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
+            schedulerMissedIgnore.Checked =
+                !ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
+            schedulerClearCompleted.Checked = settings.ClearCompletedTasks;
+            chkSwpFile.Checked = settings.ClearSwapFile;
 
-			//Select an intelligent default if the settings are invalid.
-			if (uiLanguage.SelectedIndex == -1)
-			{
-				foreach (CultureInfo lang in uiLanguage.Items)
-					if (lang.Name == "en")
-					{
-						uiLanguage.SelectedItem = lang;
-						break;
-					}
-			}
-			if (eraseFilesMethod.SelectedIndex == -1)
-			{
-				if (eraseFilesMethod.Items.Count > 0)
-				{
-					eraseFilesMethod.SelectedIndex = 0;
-					Host.Instance.Settings.DefaultFileErasureMethod =
-						((IErasureMethod)eraseFilesMethod.SelectedItem).Guid;
-				}
-				defaultsList.Add(S._("Default file erasure method"));
-			}
-			if (eraseDriveMethod.SelectedIndex == -1)
-			{
-				if (eraseDriveMethod.Items.Count > 0)
-				{
-					eraseDriveMethod.SelectedIndex = 0;
-					Host.Instance.Settings.DefaultDriveErasureMethod =
-						((IErasureMethod)eraseDriveMethod.SelectedItem).Guid;
-				}
-				defaultsList.Add(S._("Default drive erasure method"));
-			}
-			if (erasePRNG.SelectedIndex == -1)
-			{
-				if (erasePRNG.Items.Count > 0)
-				{
-					erasePRNG.SelectedIndex = 0;
-					Host.Instance.Settings.ActivePrng =
-						((IPrng)erasePRNG.SelectedItem).Guid;
-				}
-				defaultsList.Add(S._("Randomness data source"));
-			}
+            List<string> defaultsList = new List<string>();
 
-			//Remind the user.
-			if (defaultsList.Count != 0)
-			{
-				string defaults = string.Empty;
-				foreach (string item in defaultsList)
-					defaults += "\t" + item + "\n";
-				MessageBox.Show(S._("The following settings held invalid values:\n\n" +
-					"{0}\nThese settings have now been set to naive defaults.\n\n" +
-					"Please check that the new settings suit your required level of security.",
-					defaults), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Warning,
-					MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-				saveSettings_Click(null, null);
-			}
-		}
+            //Select an intelligent default if the settings are invalid.
+            if (uiLanguage.SelectedIndex == -1)
+            {
+                foreach (CultureInfo lang in uiLanguage.Items)
+                    if (lang.Name == "en")
+                    {
+                        uiLanguage.SelectedItem = lang;
+                        break;
+                    }
+            }
+            if (eraseFilesMethod.SelectedIndex == -1)
+            {
+                if (eraseFilesMethod.Items.Count > 0)
+                {
+                    eraseFilesMethod.SelectedIndex = 0;
+                    Host.Instance.Settings.DefaultFileErasureMethod =
+                        ((IErasureMethod)eraseFilesMethod.SelectedItem).Guid;
+                }
+                defaultsList.Add(S._("Default file erasure method"));
+            }
+            if (eraseDriveMethod.SelectedIndex == -1)
+            {
+                if (eraseDriveMethod.Items.Count > 0)
+                {
+                    eraseDriveMethod.SelectedIndex = 0;
+                    Host.Instance.Settings.DefaultDriveErasureMethod =
+                        ((IErasureMethod)eraseDriveMethod.SelectedItem).Guid;
+                }
+                defaultsList.Add(S._("Default drive erasure method"));
+            }
+            if (erasePRNG.SelectedIndex == -1)
+            {
+                if (erasePRNG.Items.Count > 0)
+                {
+                    erasePRNG.SelectedIndex = 0;
+                    Host.Instance.Settings.ActivePrng =
+                        ((IPrng)erasePRNG.SelectedItem).Guid;
+                }
+                defaultsList.Add(S._("Randomness data source"));
+            }
 
-		private void plausableDeniabilityFilesRemoveUpdate()
-		{
-			plausibleDeniabilityFilesRemove.Enabled = plausibleDeniability.Checked &&
-				plausibleDeniabilityFiles.SelectedIndices.Count > 0;
-		}
+            //Remind the user.
+            if (defaultsList.Count != 0)
+            {
+                string defaults = string.Empty;
+                foreach (string item in defaultsList)
+                    defaults += String.Format("\t{0}\n", item);
+                MessageBox.Show(S._("The following settings held invalid values:\n\n" +
+                    "{0}\nThese settings have now been set to naive defaults.\n\n" +
+                    "Please check that the new settings suit your required level of security.",
+                    defaults), S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Warning,
+                    MessageBoxDefaultButton.Button1,
+                    Localisation.IsRightToLeft(this) ?
+                        MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+                saveSettings_Click(null, null);
+            }
+        }
 
-		private void plausibleDeniability_CheckedChanged(object sender, EventArgs e)
-		{
-			plausibleDeniabilityFiles.Enabled = plausibleDeniabilityFilesAddFile.Enabled =
-				plausibleDeniabilityFilesAddFolder.Enabled = plausibleDeniability.Checked;
-			plausableDeniabilityFilesRemoveUpdate();
-		}
+        private void plausableDeniabilityFilesRemoveUpdate()
+        {
+            plausibleDeniabilityFilesRemove.Enabled = plausibleDeniability.Checked &&
+                plausibleDeniabilityFiles.SelectedIndices.Count > 0;
+        }
 
-		private void plausibleDeniabilityFiles_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			plausableDeniabilityFilesRemoveUpdate();
-		}
+        private void plausibleDeniability_CheckedChanged(object sender, EventArgs e)
+        {
+            plausibleDeniabilityFiles.Enabled = plausibleDeniabilityFilesAddFile.Enabled =
+                plausibleDeniabilityFilesAddFolder.Enabled = plausibleDeniability.Checked;
+            plausableDeniabilityFilesRemoveUpdate();
+        }
 
-		private void plausibleDeniabilityFilesAddFile_Click(object sender, EventArgs e)
-		{
-			if (openFileDialog.ShowDialog() == DialogResult.OK)
-				plausibleDeniabilityFiles.Items.AddRange(openFileDialog.FileNames);
+        private void plausibleDeniabilityFiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            plausableDeniabilityFilesRemoveUpdate();
+        }
 
-			plausableDeniabilityFilesRemoveUpdate();
-		}
+        private void plausibleDeniabilityFilesAddFile_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+                plausibleDeniabilityFiles.Items.AddRange(openFileDialog.FileNames);
 
-		private void plausibleDeniabilityFilesAddFolder_Click(object sender, EventArgs e)
-		{
-			try
-			{
-				if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-					plausibleDeniabilityFiles.Items.Add(folderBrowserDialog.SelectedPath);
-				plausableDeniabilityFilesRemoveUpdate();
-			}
-			catch (NotSupportedException)
-			{
-				MessageBox.Show(this, S._("The path you selected is invalid."), S._("Eraser"),
-					MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-			}
-		}
+            plausableDeniabilityFilesRemoveUpdate();
+        }
 
-		private void plausibleDeniabilityFilesRemove_Click(object sender, EventArgs e)
-		{
-			if (plausibleDeniabilityFiles.SelectedIndex != -1)
-			{
-				ListBox.SelectedObjectCollection items =
-					plausibleDeniabilityFiles.SelectedItems;
+        private void plausibleDeniabilityFilesAddFolder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    plausibleDeniabilityFiles.Items.Add(folderBrowserDialog.SelectedPath);
+                plausableDeniabilityFilesRemoveUpdate();
+            }
+            catch (NotSupportedException)
+            {
+                MessageBox.Show(this, S._("The path you selected is invalid."), S._("Eraser"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1,
+                    Localisation.IsRightToLeft(this) ?
+                        MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+            }
+        }
 
-				while (items.Count > 0)
-					plausibleDeniabilityFiles.Items.Remove(items[0]);
-				plausableDeniabilityFilesRemoveUpdate();
-			}
-		}
+        private void plausibleDeniabilityFilesRemove_Click(object sender, EventArgs e)
+        {
+            if (plausibleDeniabilityFiles.SelectedIndex != -1)
+            {
+                ListBox.SelectedObjectCollection items =
+                    plausibleDeniabilityFiles.SelectedItems;
 
-		private void pluginsManager_ItemCheck(object sender, ItemCheckEventArgs e)
-		{
-			ListViewItem item = pluginsManager.Items[e.Index];
-			PluginInfo plugin = (PluginInfo)item.Tag;
-			if (plugin.LoadingPolicy == PluginLoadingPolicy.Core)
-				e.NewValue = CheckState.Checked;
-		}
+                while (items.Count > 0)
+                    plausibleDeniabilityFiles.Items.Remove(items[0]);
+                plausableDeniabilityFilesRemoveUpdate();
+            }
+        }
 
-		private void pluginsMenu_Opening(object sender, CancelEventArgs e)
-		{
-			if (pluginsManager.SelectedItems.Count == 1)
-			{
-				PluginInfo plugin = (PluginInfo)pluginsManager.SelectedItems[0].Tag;
-				e.Cancel = !(plugin.Loaded && plugin.Plugin.Configurable);
-			}
-			else
-				e.Cancel = true;
-		}
+        private void pluginsManager_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            ListViewItem item = pluginsManager.Items[e.Index];
+            PluginInfo plugin = (PluginInfo)item.Tag;
+            if (plugin.LoadingPolicy == PluginLoadingPolicy.Core)
+                e.NewValue = CheckState.Checked;
+        }
 
-		private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			if (pluginsManager.SelectedItems.Count != 1)
-				return;
+        private void pluginsMenu_Opening(object sender, CancelEventArgs e)
+        {
+            if (pluginsManager.SelectedItems.Count == 1)
+            {
+                PluginInfo plugin = (PluginInfo)pluginsManager.SelectedItems[0].Tag;
+                e.Cancel = !(plugin.Loaded && plugin.Plugin.Configurable);
+            }
+            else
+                e.Cancel = true;
+        }
 
-			PluginInfo plugin = (PluginInfo)pluginsManager.SelectedItems[0].Tag;
-			plugin.Plugin.DisplaySettings(this);
-		}
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (pluginsManager.SelectedItems.Count != 1)
+                return;
 
-		private void saveSettings_Click(object sender, EventArgs e)
-		{
-			EraserSettings settings = EraserSettings.Get();
+            PluginInfo plugin = (PluginInfo)pluginsManager.SelectedItems[0].Tag;
+            plugin.Plugin.DisplaySettings(this);
+        }
+        
+        private void saveSettings_Click(object sender, EventArgs e)
+        {
+            EraserSettings settings = EraserSettings.Get();
 
-			//Save the settings that don't fail first.
-			Host.Instance.Settings.ForceUnlockLockedFiles = lockedForceUnlock.Checked;
-			ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately =
-				schedulerMissedImmediate.Checked;
-			settings.ClearCompletedTasks = schedulerClearCompleted.Checked;
+            //Save the settings that don't fail first.
+            Host.Instance.Settings.ForceUnlockLockedFiles = lockedForceUnlock.Checked;
+            ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately =
+                schedulerMissedImmediate.Checked;
+            settings.ClearCompletedTasks = schedulerClearCompleted.Checked;
+            settings.ClearSwapFile = chkSwpFile.Checked;
 
-			bool pluginApprovalsChanged = false;
-			IDictionary<Guid, bool> pluginApprovals =
-				ManagerLibrary.Instance.Settings.PluginApprovals;
-			foreach (ListViewItem item in pluginsManager.Items)
-			{
-				PluginInfo plugin = (PluginInfo)item.Tag;
-				Guid guid = plugin.AssemblyInfo.Guid;
-				if (!pluginApprovals.ContainsKey(guid))
-				{
-					if (plugin.Loaded != item.Checked)
-					{
-						pluginApprovals.Add(guid, item.Checked);
-						pluginApprovalsChanged = true;
-					}
-				}
-				else if (pluginApprovals[guid] != item.Checked)
-				{
-					pluginApprovals[guid] = item.Checked;
-					pluginApprovalsChanged = true;
-				}
-			}
+/*
+            try
+            {
+                using (RegistryKey registry = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", true))
+                {
+                    //SetRegistryPermissionToUser(registry, String.Format("{0}\\{1}", Environment.UserDomainName, Environment.UserName));
+                    SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+                    NTAccount account = sid.Translate(typeof(NTAccount)) as NTAccount;
+                    // Get ACL from Windows
+                    // CHANGED to add to existing security: RegistrySecurity rs = new RegistrySecurity();
+                    RegistrySecurity rs = registry.GetAccessControl();
+                    // Creating registry access rule for 'Everyone' NT account
+                    RegistryAccessRule rar = new RegistryAccessRule(account.ToString(), RegistryRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow);
+                    rs.AddAccessRule(rar);
+                    registry.SetAccessControl(rs);
+                    registry.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, S._("You must run Eraser as Administrator\n" +
+                    "Right Click on Eraser.exe and select 'Run As Administrator'"),
+                    S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1,
+                    Localisation.IsRightToLeft(this) ?
+                        MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+            }
+ */
+            try
+            {
+                using (RegistryKey registry = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", RegistryKeyPermissionCheck.ReadWriteSubTree))
+                {
+                    if (registry != null)
+                    {
+                        if (chkSwpFile.Checked == true)
+                        {
+                            registry.SetValue("ClearPageFileAtShutdown", 1, RegistryValueKind.DWord);
+                        }
+                        else
+                        {
+                            registry.SetValue("ClearPageFileAtShutdown", 0, RegistryValueKind.DWord);
+                        }
+                        registry.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, S._("You must run Eraser as Administrator\n" +
+                    "Right Click on Eraser.exe and select 'Run As Administrator'"),
+                    S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1,
+                    Localisation.IsRightToLeft(this) ?
+                        MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+            }
+            bool pluginApprovalsChanged = false;
+            IDictionary<Guid, bool> pluginApprovals =
+                ManagerLibrary.Instance.Settings.PluginApprovals;
+            foreach (ListViewItem item in pluginsManager.Items)
+            {
+                PluginInfo plugin = (PluginInfo)item.Tag;
+                Guid guid = plugin.AssemblyInfo.Guid;
+                if (!pluginApprovals.ContainsKey(guid))
+                {
+                    if (plugin.Loaded != item.Checked)
+                    {
+                        pluginApprovals.Add(guid, item.Checked);
+                        pluginApprovalsChanged = true;
+                    }
+                }
+                else if (pluginApprovals[guid] != item.Checked)
+                {
+                    pluginApprovals[guid] = item.Checked;
+                    pluginApprovalsChanged = true;
+                }
+            }
 
-			if (pluginApprovalsChanged)
-			{
-				MessageBox.Show(this, S._("Plugins which have just been approved will only be loaded " +
-					"the next time Eraser is started."), S._("Eraser"), MessageBoxButtons.OK,
-					MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-			}
+            if (pluginApprovalsChanged)
+            {
+                MessageBox.Show(this, S._("Plugins which have just been approved will only be loaded " +
+                    "the next time Eraser is started."), S._("Eraser"), MessageBoxButtons.OK,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
+                    Localisation.IsRightToLeft(this) ?
+                        MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+            }
 
-			//Error checks for the rest that do.
-			errorProvider.Clear();
-			if (uiLanguage.SelectedIndex == -1)
-			{
-				errorProvider.SetError(uiLanguage, S._("An invalid language was selected."));
-				return;
-			}
-			else if (eraseFilesMethod.SelectedIndex == -1)
-			{
-				errorProvider.SetError(eraseFilesMethod, S._("An invalid file erasure method " +
-					"was selected."));
-				return;
-			}
-			else if (eraseDriveMethod.SelectedIndex == -1)
-			{
-				errorProvider.SetError(eraseDriveMethod, S._("An invalid drive erasure method " +
-					"was selected."));
-				return;
-			}
-			else if (erasePRNG.SelectedIndex == -1)
-			{
-				errorProvider.SetError(erasePRNG, S._("An invalid randomness data source was " +
-					"selected."));
-				return;
-			}
-			else if (plausibleDeniability.Checked && plausibleDeniabilityFiles.Items.Count == 0)
-			{
-				errorProvider.SetError(plausibleDeniabilityFiles, S._("Erasures with plausible deniability " +
-					"was selected, but no files were selected to be used as decoys."));
-				errorProvider.SetIconPadding(plausibleDeniabilityFiles, -16);
-				return;
-			}
+            //Error checks for the rest that do.
+            errorProvider.Clear();
+            if (uiLanguage.SelectedIndex == -1)
+            {
+                errorProvider.SetError(uiLanguage, S._("An invalid language was selected."));
+                return;
+            }
+            else if (eraseFilesMethod.SelectedIndex == -1)
+            {
+                errorProvider.SetError(eraseFilesMethod, S._("An invalid file erasure method " +
+                    "was selected."));
+                return;
+            }
+            else if (eraseDriveMethod.SelectedIndex == -1)
+            {
+                errorProvider.SetError(eraseDriveMethod, S._("An invalid drive erasure method " +
+                    "was selected."));
+                return;
+            }
+            else if (erasePRNG.SelectedIndex == -1)
+            {
+                errorProvider.SetError(erasePRNG, S._("An invalid randomness data source was " +
+                    "selected."));
+                return;
+            }
+            else if (plausibleDeniability.Checked && plausibleDeniabilityFiles.Items.Count == 0)
+            {
+                errorProvider.SetError(plausibleDeniabilityFiles, S._("Erasures with plausible deniability " +
+                    "was selected, but no files were selected to be used as decoys."));
+                errorProvider.SetIconPadding(plausibleDeniabilityFiles, -16);
+                return;
+            }
 
-			if (CultureInfo.CurrentUICulture.Name != ((CultureInfo)uiLanguage.SelectedItem).Name)
-			{
-				settings.Language = ((CultureInfo)uiLanguage.SelectedItem).Name;
-				MessageBox.Show(this, S._("The new UI language will take only effect when " +
-					"Eraser is restarted."), S._("Eraser"), MessageBoxButtons.OK,
-					MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-			}
-			settings.IntegrateWithShell = uiContextMenu.Checked;
+            if (CultureInfo.CurrentUICulture.Name != ((CultureInfo)uiLanguage.SelectedItem).Name)
+            {
+                settings.Language = ((CultureInfo)uiLanguage.SelectedItem).Name;
+                MessageBox.Show(this, S._("The new UI language will take only effect when " +
+                    "Eraser is restarted."), S._("Eraser"), MessageBoxButtons.OK,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1,
+                    Localisation.IsRightToLeft(this) ?
+                        MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+            }
+            settings.IntegrateWithShell = uiContextMenu.Checked;
 
-			Host.Instance.Settings.DefaultFileErasureMethod =
-				((IErasureMethod)eraseFilesMethod.SelectedItem).Guid;
-			Host.Instance.Settings.DefaultDriveErasureMethod =
-				((IErasureMethod)eraseDriveMethod.SelectedItem).Guid;
+            Host.Instance.Settings.DefaultFileErasureMethod =
+                ((IErasureMethod)eraseFilesMethod.SelectedItem).Guid;
+            Host.Instance.Settings.DefaultDriveErasureMethod =
+                ((IErasureMethod)eraseDriveMethod.SelectedItem).Guid;
 
-			IPrng newPRNG = (IPrng)erasePRNG.SelectedItem;
-			if (newPRNG.Guid != Host.Instance.Prngs.ActivePrng.Guid)
-			{
-				MessageBox.Show(this, S._("The new randomness data source will only be used when " +
-					"the next task is run.\nCurrently running tasks will use the old source."),
-					S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
-					MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-				Host.Instance.Settings.ActivePrng = newPRNG.Guid;
-			}
+            IPrng newPRNG = (IPrng)erasePRNG.SelectedItem;
+            if (newPRNG.Guid != Host.Instance.Prngs.ActivePrng.Guid)
+            {
+                MessageBox.Show(this, S._("The new randomness data source will only be used when " +
+                    "the next task is run.\nCurrently running tasks will use the old source."),
+                    S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1,
+                    Localisation.IsRightToLeft(this) ?
+                        MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+                Host.Instance.Settings.ActivePrng = newPRNG.Guid;
+            }
 
-			Host.Instance.Settings.PlausibleDeniability = plausibleDeniability.Checked;
-			IList<string> plausibleDeniabilityFilesList = Host.Instance.Settings.PlausibleDeniabilityFiles;
-			plausibleDeniabilityFilesList.Clear();
-			foreach (string str in this.plausibleDeniabilityFiles.Items)
-				plausibleDeniabilityFilesList.Add(str);
-		}
-	}
+            Host.Instance.Settings.PlausibleDeniability = plausibleDeniability.Checked;
+            IList<string> plausibleDeniabilityFilesList = Host.Instance.Settings.PlausibleDeniabilityFiles;
+            plausibleDeniabilityFilesList.Clear();
+            foreach (string str in this.plausibleDeniabilityFiles.Items)
+                plausibleDeniabilityFilesList.Add(str);
+        }
+    }
 }
 
