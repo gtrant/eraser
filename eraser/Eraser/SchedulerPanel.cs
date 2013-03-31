@@ -236,11 +236,14 @@ namespace Eraser
 
 			//Update the progress bar
 			SteppedProgressManager progress = task.Progress;
-			schedulerProgress.Style = progress.ProgressIndeterminate ?
-				ProgressBarStyle.Marquee : ProgressBarStyle.Continuous;
+            if (progress != null)
+            {
+                schedulerProgress.Style = progress.ProgressIndeterminate ?
+                    ProgressBarStyle.Marquee : ProgressBarStyle.Continuous;
 
-			if (!progress.ProgressIndeterminate)
-				schedulerProgress.Value = (int)(progress.Progress * 1000.0);
+                if (!progress.ProgressIndeterminate)
+                    schedulerProgress.Value = (int)(progress.Progress * 1000.0);
+            }
 		}
 
 		/// <summary>

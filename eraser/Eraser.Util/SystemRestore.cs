@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -124,7 +124,7 @@ namespace Eraser.Util
         // Property returns the namespace of the WMI class.
         [Browsable(true)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public string OriginatingNamespace {
+        public static string OriginatingNamespace {
             get {
                 return "root\\default";
             }
@@ -495,13 +495,10 @@ namespace Eraser.Util
                     mgmtScope = statMgmtScope;
                 }
             }
-            System.Management.ManagementPath pathObj = new System.Management.ManagementPath();
-            pathObj.ClassName = "SystemRestore";
-            pathObj.NamespacePath = "root\\default";
+            System.Management.ManagementPath pathObj = new System.Management.ManagementPath() { ClassName = "SystemRestore", NamespacePath = "root\\default" };
             System.Management.ManagementClass clsObject = new System.Management.ManagementClass(mgmtScope, pathObj, null);
             if ((enumOptions == null)) {
-                enumOptions = new System.Management.EnumerationOptions();
-                enumOptions.EnsureLocatable = true;
+                enumOptions = new System.Management.EnumerationOptions() { EnsureLocatable = true };
             }
             return new SystemRestoreCollection(clsObject.GetInstances(enumOptions));
         }
@@ -561,8 +558,10 @@ namespace Eraser.Util
                 inParams["Description"] = ((System.String )(Description));
                 inParams["EventType"] = ((System.UInt32 )(EventType));
                 inParams["RestorePointType"] = ((System.UInt32 )(RestorePointType));
-                System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("CreateRestorePoint", inParams, null);
-                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                using (System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("CreateRestorePoint", inParams, null))
+                {
+                    return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                }
             }
             else {
                 return System.Convert.ToUInt32(0);
@@ -577,8 +576,10 @@ namespace Eraser.Util
                 System.Management.ManagementClass classObj = new System.Management.ManagementClass(statMgmtScope, mgmtPath, null);
                 inParams = classObj.GetMethodParameters("Disable");
                 inParams["Drive"] = ((System.String )(Drive));
-                System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("Disable", inParams, null);
-                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                using (System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("Disable", inParams, null))
+                {
+                    return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                }
             }
             else {
                 return System.Convert.ToUInt32(0);
@@ -594,8 +595,10 @@ namespace Eraser.Util
                 inParams = classObj.GetMethodParameters("Enable");
                 inParams["Drive"] = ((System.String )(Drive));
                 inParams["WaitTillEnabled"] = ((System.Boolean )(WaitTillEnabled));
-                System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("Enable", inParams, null);
-                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                using (System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("Enable", inParams, null))
+                {
+                    return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                }
             }
             else {
                 return System.Convert.ToUInt32(0);
@@ -608,8 +611,10 @@ namespace Eraser.Util
                 System.Management.ManagementBaseObject inParams = null;
                 System.Management.ManagementPath mgmtPath = new System.Management.ManagementPath(CreatedClassName);
                 System.Management.ManagementClass classObj = new System.Management.ManagementClass(statMgmtScope, mgmtPath, null);
-                System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("GetLastRestoreStatus", inParams, null);
-                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                using (System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("GetLastRestoreStatus", inParams, null))
+                {
+                    return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                }
             }
             else {
                 return System.Convert.ToUInt32(0);
@@ -624,8 +629,10 @@ namespace Eraser.Util
                 System.Management.ManagementClass classObj = new System.Management.ManagementClass(statMgmtScope, mgmtPath, null);
                 inParams = classObj.GetMethodParameters("Restore");
                 inParams["SequenceNumber"] = ((System.UInt32 )(SequenceNumber));
-                System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("Restore", inParams, null);
-                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                using (System.Management.ManagementBaseObject outParams = classObj.InvokeMethod("Restore", inParams, null))
+                {
+                    return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+                }
             }
             else {
                 return System.Convert.ToUInt32(0);

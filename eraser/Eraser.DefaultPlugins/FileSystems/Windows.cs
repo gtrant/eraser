@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -47,15 +47,16 @@ namespace Eraser.DefaultPlugins
 
 		public override void DeleteFile(FileInfo info)
 		{
-			//If the user wants plausible deniability, find a random file from the
+            //If the user wants plausible deniability, find a random file from the
 			//list of decoys and write it over.
-			if (Host.Instance.Settings.PlausibleDeniability)
-			{
-				using (FileStream fileStream = info.OpenWrite())
-					CopyPlausibleDeniabilityFile(fileStream);
-			}
-
-			DeleteFileSystemInfo(info);
+            if (Host.Instance.Settings.PlausibleDeniability)
+            {
+                CopyPlausibleDeniabilityFile(info);
+            }
+            else
+            {
+                DeleteFileSystemInfo(info);
+            }
 		}
 
 		public override void DeleteFolder(DirectoryInfo info, bool recursive)
@@ -227,69 +228,83 @@ namespace Eraser.DefaultPlugins
 		/// Writes a file for plausible deniability over the current stream.
 		/// </summary>
 		/// <param name="stream">The stream to write the data to.</param>
-		private static void CopyPlausibleDeniabilityFile(Stream stream)
+		private static void CopyPlausibleDeniabilityFile(FileInfo info)
 		{
-			//Get the template file to copy
-			FileInfo shadowFileInfo;
-			{
-				string shadowFile = null;
-				List<string> entries = new List<string>(
-					Host.Instance.Settings.PlausibleDeniabilityFiles);
-				IPrng prng = Host.Instance.Prngs.ActivePrng;
-				do
-				{
-					if (entries.Count == 0)
-						throw new FatalException(S._("Plausible deniability was selected, " +
-							"but no decoy files were found. The current file has been only " +
-							"replaced with random data."));
+            using (Stream stream = info.OpenWrite())
+            {
+                //Get the template file to copy
+                FileInfo shadowFileInfo;
+                {
+                    string shadowFile = null;
+                    List<string> entries = new List<string>(
+                        Host.Instance.Settings.PlausibleDeniabilityFiles);
+                    IPrng prng = Host.Instance.Prngs.ActivePrng;
+                    do
+                    {
+                        if (entries.Count == 0)
+                            throw new FatalException(S._("Plausible deniability was selected, " +
+                                "but no decoy files were found. The current file has been only " +
+                                "replaced with random data."));
 
-					//Get an item from the list of files, and then check that the item exists.
-					int index = prng.Next(entries.Count - 1);
-					shadowFile = entries[index];
-					if (File.Exists(shadowFile) || Directory.Exists(shadowFile))
-					{
-						if ((File.GetAttributes(shadowFile) & FileAttributes.Directory) != 0)
-						{
-							DirectoryInfo dir = new DirectoryInfo(shadowFile);
-							FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
-							entries.Capacity += files.Length;
-							foreach (FileInfo f in files)
-								entries.Add(f.FullName);
-						}
-						else
-							shadowFile = entries[index];
-					}
-					else
-						shadowFile = null;
+                        //Get an item from the list of files, and then check that the item exists.
+                        int index = prng.Next(entries.Count - 1);
+                        shadowFile = entries[index];
+                        if (File.Exists(shadowFile) || Directory.Exists(shadowFile))
+                        {
+                            if ((File.GetAttributes(shadowFile) & FileAttributes.Directory) != 0)
+                            {
+                                DirectoryInfo dir = new DirectoryInfo(shadowFile);
+                                FileInfo[] files = dir.GetFiles("*", SearchOption.AllDirectories);
+                                entries.Capacity += files.Length;
+                                foreach (FileInfo f in files)
+                                    entries.Add(f.FullName);
+                                shadowFile = entries[prng.Next(entries.Count - 1)];
+                            }
+                            else
+                                shadowFile = entries[index];
+                        }
+                        else
+                            shadowFile = null;
 
-					entries.RemoveAt(index);
-				}
-				while (string.IsNullOrEmpty(shadowFile));
-				shadowFileInfo = new FileInfo(shadowFile);
-			}
+                        //entries.RemoveAt(index);
 
-			//Dump the copy (the first 4MB, or less, depending on the file size and size of
-			//the original file)
-			long amountToCopy = Math.Min(stream.Length,
-				Math.Min(4 * 1024 * 1024, shadowFileInfo.Length));
-			using (FileStream shadowFileStream = shadowFileInfo.Open(
-					FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-			{
-				while (stream.Position < amountToCopy)
-				{
-					byte[] buf = new byte[524288];
-					int bytesRead = shadowFileStream.Read(buf, 0, buf.Length);
+                    }
+                    while (string.IsNullOrEmpty(shadowFile));
+                    shadowFileInfo = new FileInfo(shadowFile);
+                }
 
-					//Stop bothering if the input stream is at the end
-					if (bytesRead == 0)
-						break;
+                //Dump the copy (the first 4MB, or less, depending on the file size and size of
+                //the original file)
+                long amountToCopy = Math.Min(4 * 1024 * 1024, shadowFileInfo.Length);
+                //long amountToCopy = Math.Min(stream.Length, Math.Min(4 * 1024 * 1024, shadowFileInfo.Length));
+                using (FileStream shadowFileStream = shadowFileInfo.Open(
+                        FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    while (stream.Position < amountToCopy)
+                    {
+                        byte[] buf = new byte[524288];
+                        int bytesRead = shadowFileStream.Read(buf, 0, buf.Length);
 
-					//Dump the read contents onto the file to be deleted
-					stream.Write(buf, 0,
-						(int)Math.Min(bytesRead, amountToCopy - stream.Position));
-				}
-			}
-		}
+                        //Stop bothering if the input stream is at the end
+                        if (bytesRead == 0)
+                            break;
+
+                        //Dump the read contents onto the file to be deleted
+                        stream.Write(buf, 0,
+                            (int)Math.Min(bytesRead, amountToCopy - stream.Position));
+                    }
+                    shadowFileStream.Close();
+                }
+                stream.Close();
+                if (shadowFileInfo.IsCompressed()) { info.Compress(); }
+                info.CopyTimes(shadowFileInfo);
+                info.SetAccessControl(shadowFileInfo.GetAccessControl());
+                File.SetCreationTime(info.FullName, File.GetCreationTime(shadowFileInfo.FullName));
+                string TargetName = String.Format("{0}{1}", info.DirectoryName, shadowFileInfo.Name);
+                File.Move(info.FullName,TargetName);
+                File.Delete(TargetName);
+            }
+        }
 
 		public override void EraseClusterTips(VolumeInfo info, IErasureMethod method,
 			ClusterTipsSearchProgress searchCallback, ClusterTipsEraseProgress eraseCallback)
@@ -329,7 +344,7 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		private void ListFiles(DirectoryInfo info, List<string> files,
+		private static void ListFiles(DirectoryInfo info, List<string> files,
 			ClusterTipsSearchProgress searchCallback)
 		{
 			try
@@ -410,6 +425,7 @@ namespace Eraser.DefaultPlugins
 			DateTime lastAccess = streamInfo.LastAccessTime;
 			DateTime lastWrite = streamInfo.LastWriteTime;
 			DateTime created = streamInfo.CreationTime;
+            DateTime updated = streamInfo.LastAccessTime;
 
 			//Get the file attributes
 			FileAttributes attributes = streamInfo.Attributes;
@@ -460,8 +476,9 @@ namespace Eraser.DefaultPlugins
 				if (streamInfo.Attributes != attributes)
 					streamInfo.Attributes = attributes;
 
-				//Reset the file times
-				streamInfo.SetTimes(MinTimestamp, created, lastWrite, lastAccess);
+				//Reset the file times 
+                //Removed MinTimestamp as first param GT31MAR2013
+				streamInfo.SetTimes(updated, created, lastWrite, lastAccess);
 			}
 		}
 

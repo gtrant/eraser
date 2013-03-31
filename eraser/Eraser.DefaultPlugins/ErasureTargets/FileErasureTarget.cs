@@ -91,7 +91,6 @@ namespace Eraser.DefaultPlugins
 			catch (DirectoryNotFoundException)
 			{
 			}
-
 			return result;
 		}
 

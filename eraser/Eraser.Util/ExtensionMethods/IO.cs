@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
  * 
  * This file is part of Eraser.
  * 
@@ -149,12 +149,7 @@ namespace Eraser.Util.ExtensionMethods
 		internal static void SetTimes(SafeFileHandle handle, DateTime updateTime,
 			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
 		{
-			NativeMethods.FILE_BASIC_INFORMATION fileInfo =
-				new NativeMethods.FILE_BASIC_INFORMATION();
-			fileInfo.ChangeTime = updateTime.ToFileTime();
-			fileInfo.CreationTime = createdTime.ToFileTime();
-			fileInfo.LastAccessTime = lastAccessedTime.ToFileTime();
-			fileInfo.LastWriteTime = lastModifiedTime.ToFileTime();
+            NativeMethods.FILE_BASIC_INFORMATION fileInfo = new NativeMethods.FILE_BASIC_INFORMATION() { ChangeTime = updateTime.ToFileTime(), CreationTime = createdTime.ToFileTime(), LastAccessTime = lastAccessedTime.ToFileTime(), LastWriteTime = lastModifiedTime.ToFileTime() };
 
 			if (fileInfo.ChangeTime == 0)
 				throw new ArgumentOutOfRangeException("updateTime");
