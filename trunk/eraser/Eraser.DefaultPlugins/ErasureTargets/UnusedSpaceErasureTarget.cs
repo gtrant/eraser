@@ -266,16 +266,13 @@ namespace Eraser.DefaultPlugins
 				ProgressManager residentProgress = new ProgressManager();
 				Progress.Steps.Add(new SteppedProgressManagerStep(residentProgress,
 					0.05f, S._("Old resident file system table files")));
-				fsManager.EraseOldFileSystemResidentFiles(volInfo, info, method,
-					delegate(int currentFile, int totalFiles)
-					{
-						residentProgress.Completed = currentFile;
-						residentProgress.Total = totalFiles;
-
-						if (Task.Canceled)
-							throw new OperationCanceledException(S._("The task was cancelled."));
-					}
-				);
+                fsManager.EraseOldFileSystemResidentFiles(volInfo, info, method, (currentFile, totalFiles) =>
+                {
+                    residentProgress.Completed = currentFile;
+                    residentProgress.Total = totalFiles;
+                    if (Task.Canceled)
+                        throw new OperationCanceledException(S._("The task was cancelled."));
+                });
 
 				residentProgress.MarkComplete();
 			}
@@ -285,7 +282,10 @@ namespace Eraser.DefaultPlugins
 				ProgressManager tempFiles = new ProgressManager();
 				Progress.Steps.Add(new SteppedProgressManagerStep(tempFiles,
 					0.0f, S._("Removing temporary files...")));
-				info.Delete(true);
+
+                Fat32FileSystem iDelete = new Fat32FileSystem();
+                iDelete.DeleteFolder(info, true);
+
 				tempFiles.MarkComplete();
 
 				//Reset the low disk space notifications
@@ -296,17 +296,14 @@ namespace Eraser.DefaultPlugins
 			ProgressManager structureProgress = new ProgressManager();
 			Progress.Steps.Add(new SteppedProgressManagerStep(structureProgress,
 				0.05f, S._("Erasing unused directory structures...")));
-			fsManager.EraseDirectoryStructures(volInfo,
-				delegate(int currentFile, int totalFiles)
-				{
-					if (Task.Canceled)
-						throw new OperationCanceledException(S._("The task was cancelled."));
-
-					//Compute the progress
-					structureProgress.Total = totalFiles;
-					structureProgress.Completed = currentFile;
-				}
-			);
+            fsManager.EraseDirectoryStructures(volInfo, (currentFile, totalFiles) =>
+            {
+                if (Task.Canceled)
+                    throw new OperationCanceledException(S._("The task was cancelled."));
+                //Compute the progress
+                structureProgress.Total = totalFiles;
+                structureProgress.Completed = currentFile;
+            });
 
 			structureProgress.MarkComplete();
 			Progress = null;
@@ -354,16 +351,13 @@ namespace Eraser.DefaultPlugins
 						}
 
 					//Then run the erase task
-					method.Erase(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng,
-						delegate(long lastWritten, long totalData, int currentPass)
-						{
-							mainProgress.Completed += lastWritten;
-							mainProgress.Tag = new int[] { currentPass, method.Passes };
-
-							if (Task.Canceled)
-								throw new OperationCanceledException(S._("The task was cancelled."));
-						}
-					);
+                    method.Erase(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng, (lastWritten, totalData, currentPass) =>
+                    {
+                        mainProgress.Completed += lastWritten;
+                        mainProgress.Tag = new int[] { currentPass, method.Passes };
+                        if (Task.Canceled)
+                            throw new OperationCanceledException(S._("The task was cancelled."));
+                    });
 				}
 				finally
 				{

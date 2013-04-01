@@ -172,9 +172,11 @@ namespace Eraser.DefaultPlugins
 			ErasureMethodProgressFunction callback)
 		{
 			//Randomize the order of the passes
-			ErasureMethodPass[] randomizedPasses = PassesSet;
-			if (RandomizePasses)
-				randomizedPasses = ShufflePasses(randomizedPasses);
+            ErasureMethodPass[] randomizedPasses;
+            if (RandomizePasses)
+                randomizedPasses = ShufflePasses(PassesSet);
+            else
+                randomizedPasses = PassesSet;
 
 			//Remember the starting position of the stream.
 			long strmStart = stream.Position;
@@ -196,29 +198,22 @@ namespace Eraser.DefaultPlugins
 
 				//Write the buffer to disk.
 				long toWrite = strmLength;
-				int dataStopped = buffer.Length;
 				while (toWrite > 0)
 				{
-					//Calculate how much of the buffer to write to disk.
-					int amount = (int)Math.Min(toWrite, buffer.Length - dataStopped);
+                    int sizeOfChunkToWrite = (toWrite > buffer.Length) ? buffer.Length : (int)toWrite;
+					
+                    randomizedPasses[pass].Execute(buffer, prng);
 
-					//If we have no data left, get more!
-					if (amount == 0)
-					{
-						randomizedPasses[pass].Execute(buffer, prng);
-						dataStopped = 0;
-						continue;
-					}
+                    //Write the data.
+                    stream.Write(buffer, 0, sizeOfChunkToWrite);
 
-					//Write the data.
-					stream.Write(buffer, dataStopped, amount);
-					stream.Flush();
-					toWrite -= amount;
-
+                    toWrite -= sizeOfChunkToWrite;
+ 
 					//Do a progress callback.
 					if (callback != null)
-						callback(amount, totalData, pass + 1);
+                        callback(sizeOfChunkToWrite, totalData, pass + 1);
 				}
+                stream.Flush();
 			}
 		}
 
@@ -230,9 +225,9 @@ namespace Eraser.DefaultPlugins
 
 		/// <summary>
 		/// Unused space erasure file size. Each of the files used in erasing
-		/// unused space will be of this size.
+		/// unused space will be of this size. 
 		/// </summary>
-		public const int FreeSpaceFileUnit = DiskOperationUnit * 36;
+		public const long FreeSpaceFileUnit = DiskOperationUnit * 36;
 	}
 
 	/// <summary>
