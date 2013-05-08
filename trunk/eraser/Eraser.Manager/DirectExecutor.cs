@@ -3,7 +3,7 @@
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @17/10/2008
- * Modified By: 
+ * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
  * This file is part of Eraser.
  * 
@@ -56,26 +56,28 @@ namespace Eraser.Manager
 				return;
 
 			if (disposing)
-			{
-				thread.Abort();
-				schedulerInterrupt.Set();
-
-				//Wait for the executor thread to exit -- we call some event functions
-				//and these events may need invocation on the main thread. So,
-				//pump messages from the main thread until the thread exits.
-				if (System.Windows.Forms.Application.MessageLoop)
-				{
-					if (!thread.Join(new TimeSpan(0, 0, 0, 0, 100)))
-						System.Windows.Forms.Application.DoEvents();
-				}
-
-				//If we are disposing on a secondary thread, or a thread without
-				//a message loop, just wait for the thread to exit indefinitely
-				else
-					thread.Join();
-
-				schedulerInterrupt.Close();
-			}
+{
+    thread.Abort();
+    schedulerInterrupt.Set();
+    //Wait for the executor thread to exit -- we call some event functions
+    //and these events may need invocation on the main thread. So,
+    //pump messages from the main thread until the thread exits.
+    if (System.Windows.Forms.Application.MessageLoop)
+    {
+        if (!thread.Join(new TimeSpan(0, 0, 0, 0, 100)))
+            System.Windows.Forms.Application.DoEvents();
+    }
+    //If we are disposing on a secondary thread, or a thread without
+    //a message loop, just wait for the thread to exit indefinitely
+    else
+        thread.Join();
+    schedulerInterrupt.Close();
+    if (schedulerInterrupt != null)
+    {
+        schedulerInterrupt.Dispose();
+        schedulerInterrupt = null;
+    }
+}
 
 			thread = null;
 			schedulerInterrupt = null;
@@ -311,20 +313,19 @@ namespace Eraser.Manager
 		/// The lock preventing concurrent access for the tasks list and the
 		/// tasks queue.
 		/// </summary>
-		private object tasksLock = new object();
+        private readonly object tasksLock = new object();
 
 		/// <summary>
 		/// The queue of tasks. This queue is executed when the first element's
 		/// timestamp (the key) has been past. This list assumes that all tasks
 		/// are sorted by timestamp, smallest one first.
 		/// </summary>
-		private SortedList<DateTime, List<Task>> scheduledTasks =
-			new SortedList<DateTime, List<Task>>();
+        private readonly SortedList<DateTime, List<Task>> scheduledTasks = new SortedList<DateTime, List<Task>>();
 
 		/// <summary>
 		/// The task list associated with this executor instance.
 		/// </summary>
-		private DirectExecutorTasksCollection tasks;
+        private readonly DirectExecutorTasksCollection tasks;
 
 		/// <summary>
 		/// The currently executing task.
@@ -349,6 +350,16 @@ namespace Eraser.Manager
 				: base(executor)
 			{
 			}
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="executor">The <seealso cref="Executor"/> object owning
+            /// this task list.</param>
+            protected DirectExecutorTasksCollection(Executor executor)
+                : base(executor)
+            {
+                
+            }
 
 			#region IList<Task> Members
 			public override int IndexOf(Task item)
@@ -476,8 +487,7 @@ namespace Eraser.Manager
 
 			public override void SaveToFile(string file)
 			{
-				XmlWriterSettings settings = new XmlWriterSettings();
-				settings.Indent = true;
+                XmlWriterSettings settings = new XmlWriterSettings() { Indent = true };
 				lock (list)
 				using (XmlWriter writer = XmlWriter.Create(file, settings))
 				{
@@ -534,7 +544,7 @@ namespace Eraser.Manager
 			/// <summary>
 			/// The data store for this object.
 			/// </summary>
-			private List<Task> list = new List<Task>();
+            private readonly List<Task> list = new List<Task>();
 		}
 	}
 }
