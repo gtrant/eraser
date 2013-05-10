@@ -33,13 +33,13 @@ namespace Eraser.BlackBox
 		public void Initialize(PluginInfo info)
 		{
 			//Initialise our crash handler
-			
+			BlackBox blackBox = BlackBox.Get();
 
 			//Register our client tools
 			Host.Instance.ClientTools.Add(new BlackBoxClientTool());
 
 			bool allSubmitted = true;
-			foreach (BlackBoxReport report in BlackBox.GetDumps())
+			foreach (BlackBoxReport report in blackBox.GetDumps())
 				if (report.Status == BlackBoxReportStatus.New)
 				{
 					allSubmitted = false;

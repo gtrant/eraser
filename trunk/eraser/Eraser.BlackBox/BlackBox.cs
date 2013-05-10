@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
+ * Modified By:  
  * 
  * This file is part of Eraser.
  * 
@@ -63,7 +63,7 @@ namespace Eraser.BlackBox
 		/// Creates a new BlackBox report based on the exception provided.
 		/// </summary>
 		/// <param name="e">The exception which triggered this dump.</param>
-		public static void CreateReport(Exception e)
+		public void CreateReport(Exception e)
 		{
 			if (e == null)
 				throw new ArgumentNullException("e");
@@ -110,7 +110,7 @@ namespace Eraser.BlackBox
 		/// Enumerates the list of crash dumps waiting for upload.
 		/// </summary>
 		/// <returns>A string array containing the list of dumps waiting for upload.</returns>
-		public static BlackBoxReport[] GetDumps()
+		public BlackBoxReport[] GetDumps()
 		{
 			DirectoryInfo dirInfo = new DirectoryInfo(CrashReportsPath);
 			List<BlackBoxReport> result = new List<BlackBoxReport>();
@@ -154,7 +154,7 @@ namespace Eraser.BlackBox
 		/// </summary>
 		/// <param name="dumpFolder">Path to the folder to store the dump file.</param>
 		/// <param name="e">The exception which is being handled.</param>
-		private static void WriteMemoryDump(string dumpFolder, Exception e)
+		private void WriteMemoryDump(string dumpFolder, Exception e)
 		{
 			//Open a file stream
 			using (FileStream stream = new FileStream(Path.Combine(dumpFolder, MemoryDumpFileName),
@@ -170,7 +170,7 @@ namespace Eraser.BlackBox
 		/// </summary>
 		/// <param name="screenshotPath">The path to store the screenshot into.</param>
 		/// <param name="exception">The exception to log about.</param>
-		private static void WriteDebugLog(string dumpFolder, Exception exception)
+		private void WriteDebugLog(string dumpFolder, Exception exception)
 		{
 			using (FileStream file = new FileStream(Path.Combine(dumpFolder, DebugLogFileName),
 				FileMode.OpenOrCreate, FileAccess.Write, FileShare.None))
@@ -237,7 +237,7 @@ namespace Eraser.BlackBox
 				}
 				stream.WriteLine("SystemPageSize:  {0}\n", Environment.SystemPageSize);
 				stream.WriteLine("Version:  {0}", Environment.Version);
-			
+
 				//Running processes
 				stream.WriteLine();
 				stream.WriteLine("Running Processes");
@@ -324,7 +324,7 @@ namespace Eraser.BlackBox
 		/// Writes a screenshot to the given directory
 		/// </summary>
 		/// <param name="dumpFolder">The path to save the screenshot to.</param>
-		private static void WriteScreenshot(string dumpFolder)
+		private void WriteScreenshot(string dumpFolder)
 		{
 			//Get the size of the screen
 			Rectangle rect = new Rectangle(int.MaxValue, int.MaxValue, int.MinValue, int.MinValue);
