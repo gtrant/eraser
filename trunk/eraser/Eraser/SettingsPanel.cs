@@ -3,7 +3,7 @@
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @10/18/2008
- * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
+ * Modified By: 
  * 
  * This file is part of Eraser.
  * 
@@ -23,8 +23,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Security.Principal;
-using System.Security.AccessControl;
+using System.Data;
+using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.Win32;
@@ -186,7 +187,6 @@ namespace Eraser
 			schedulerMissedIgnore.Checked =
 				!ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately;
 			schedulerClearCompleted.Checked = settings.ClearCompletedTasks;
-			chkSwpFile.Checked = settings.ClearSwapFile;
 
 			List<string> defaultsList = new List<string>();
 
@@ -331,7 +331,7 @@ namespace Eraser
 			PluginInfo plugin = (PluginInfo)pluginsManager.SelectedItems[0].Tag;
 			plugin.Plugin.DisplaySettings(this);
 		}
-		
+
 		private void saveSettings_Click(object sender, EventArgs e)
 		{
 			EraserSettings settings = EraserSettings.Get();
@@ -341,63 +341,7 @@ namespace Eraser
 			ManagerLibrary.Instance.Settings.ExecuteMissedTasksImmediately =
 				schedulerMissedImmediate.Checked;
 			settings.ClearCompletedTasks = schedulerClearCompleted.Checked;
-			settings.ClearSwapFile = chkSwpFile.Checked;
 
-/*
-			try
-			{
-				using (RegistryKey registry = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", true))
-				{
-					//SetRegistryPermissionToUser(registry, String.Format("{0}\\{1}", Environment.UserDomainName, Environment.UserName));
-					SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
-					NTAccount account = sid.Translate(typeof(NTAccount)) as NTAccount;
-					// Get ACL from Windows
-					// CHANGED to add to existing security: RegistrySecurity rs = new RegistrySecurity();
-					RegistrySecurity rs = registry.GetAccessControl();
-					// Creating registry access rule for 'Everyone' NT account
-					RegistryAccessRule rar = new RegistryAccessRule(account.ToString(), RegistryRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow);
-					rs.AddAccessRule(rar);
-					registry.SetAccessControl(rs);
-					registry.Close();
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(this, S._("You must run Eraser as Administrator\n" +
-					"Right Click on Eraser.exe and select 'Run As Administrator'"),
-					S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
-					MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-			}
- */
-			try
-			{
-				using (RegistryKey registry = Registry.LocalMachine.CreateSubKey(@"SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management", RegistryKeyPermissionCheck.ReadWriteSubTree))
-				{
-					if (registry != null)
-					{
-						if (chkSwpFile.Checked == true)
-						{
-							registry.SetValue("ClearPageFileAtShutdown", 1, RegistryValueKind.DWord);
-						}
-						else
-						{
-							registry.SetValue("ClearPageFileAtShutdown", 0, RegistryValueKind.DWord);
-						}
-						registry.Close();
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(this, S._("You must run Eraser as Administrator\n" +
-					"Right Click on Eraser.exe and select 'Run As Administrator'"),
-					S._("Eraser"), MessageBoxButtons.OK, MessageBoxIcon.Information,
-					MessageBoxDefaultButton.Button1,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-			}
 			bool pluginApprovalsChanged = false;
 			IDictionary<Guid, bool> pluginApprovals =
 				ManagerLibrary.Instance.Settings.PluginApprovals;
