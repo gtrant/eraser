@@ -223,7 +223,7 @@
     <value>SettingsPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Eraser.BasePanel, Eraser, Version=6.2.0.2826, Culture=neutral, PublicKeyToken=176ab345a48e1e35</value>
+    <value>Eraser.BasePanel, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="titleIcon.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
@@ -239,39 +239,6 @@
   </data>
   <data name="&gt;&gt;titleIcon.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="chkSwpFile.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="chkSwpFile.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
-    <value>TopLeft</value>
-  </data>
-  <data name="chkSwpFile.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="chkSwpFile.Location" type="System.Drawing.Point, System.Drawing">
-    <value>350, 53</value>
-  </data>
-  <data name="chkSwpFile.Size" type="System.Drawing.Size, System.Drawing">
-    <value>154, 17</value>
-  </data>
-  <data name="chkSwpFile.TabIndex" type="System.Int32, mscorlib">
-    <value>29</value>
-  </data>
-  <data name="chkSwpFile.Text" xml:space="preserve">
-    <value>Clear pagefile on shutdown</value>
-  </data>
-  <data name="&gt;&gt;chkSwpFile.Name" xml:space="preserve">
-    <value>chkSwpFile</value>
-  </data>
-  <data name="&gt;&gt;chkSwpFile.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;chkSwpFile.Parent" xml:space="preserve">
-    <value>content</value>
-  </data>
-  <data name="&gt;&gt;chkSwpFile.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="schedulerClearCompleted.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -298,7 +265,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;schedulerClearCompleted.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFolder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -328,7 +295,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesAddFolder.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="plausibleDeniabilityFilesRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -358,7 +325,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesRemove.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="plausibleDeniabilityFilesAddFile.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -388,7 +355,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFilesAddFile.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="plausibleDeniabilityFiles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -415,7 +382,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;plausibleDeniabilityFiles.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="uiLanguage.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
@@ -439,7 +406,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;uiLanguage.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="uiLanguageLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -469,7 +436,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;uiLanguageLbl.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="plausibleDeniability.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -499,7 +466,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;plausibleDeniability.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="erasePRNG.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
@@ -523,7 +490,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;erasePRNG.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="erasePRNGLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -553,7 +520,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;erasePRNGLbl.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="schedulerMissedIgnore.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -583,7 +550,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;schedulerMissedIgnore.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="schedulerMissedImmediate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -613,7 +580,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;schedulerMissedImmediate.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="schedulerMissed.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -643,7 +610,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;schedulerMissed.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="scheduler.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -673,13 +640,13 @@
     <value>scheduler</value>
   </data>
   <data name="&gt;&gt;scheduler.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.2.0.2826, Culture=neutral, PublicKeyToken=176ab345a48e1e35</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;scheduler.Parent" xml:space="preserve">
     <value>content</value>
   </data>
   <data name="&gt;&gt;scheduler.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="pluginsManager.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -713,6 +680,12 @@
   </metadata>
   <data name="pluginsMenu.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
+  </data>
+  <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>125, 22</value>
+  </data>
+  <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Settings...</value>
   </data>
   <data name="pluginsMenu.Size" type="System.Drawing.Size, System.Drawing">
     <value>126, 26</value>
@@ -759,22 +732,22 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABy
-        AwAAAk1TRnQBSQFMAwEBAAFMAQABTAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
-        ARADAAEBAQABIAYAARAuAAM/AW0BKAFFAXQB/wM6AWL0AAEdAXQBxwH/AT4BzQH8Af8BMAFVAYcB//QA
-        AR0BdAHHAf8BNwGgAdIB/wNEAXn0AAEdAXQBxwH/AUAB0QH8Af8BMAFVAYcB//QAAR0BdAHHAf8BOQGh
-        AdEB/wNEAXn0AAEdAXQBxwH/AUoB4gH9Af8BMQFRAYEB//QAAR0BdAHHAf8BUQHXAfwB/wExAVEBgQH/
-        8AADLQFGAR0BdAHHAf8BZwHeAfwB/wExAVEBgQH/AyQBNegAAzUBVgEqAYcBxwH/AVQBwAHwAf8BSQHL
-        Af4B/wFKAbMB3QH/ATUBRgFfAf8DKgFB4AADMQFNASoBhwHIAf8BSwG6AfcB/wFNAcIB+QH/AUMBtwH5
-        Af8BYQHWAfsB/wE+AaYB6AH/ATUBRQFdAf8DJAE23AABXAFhAWQB4QFNAcEB+QH/AUkBtwH5Af8BkwHu
-        Af4B/wGPAewB/gH/AUsBtAHzAf8BjQHjAf4B/wFIAboB4gH/Al4BYQHa3AABMgF1AaAB/AFSAcYB+QH/
-        AWIBigGsAf8BYgGKAawB/wFiAYoBrAH/AWIBigGsAf8BYgGKAawB/wFbAdUB+gH/ATABPQFgAfzcAAFc
-        AWQBagHnAVUB0gH6Af8BQwFdAYQB/wwAAUYBkAHBAf8BTAG7AeEB/wNcAd/cAANMAZIBPwGdAdAB/wFz
-        AeMB+gH/AUMBhQGeAf8BSgFdAYcB/wFKAW8BnAH/AVwBZAFoAeEBQQGMAaoB/wNIAYXcAAMSARgDVAGs
-        AT8BmgHNAf8BZwHVAfUB/wFqAekB/gH/AWYB1AHzAf8BQwGSAbIB/wFQAlEBnAMXASDgAAMSARgDRwGC
-        A1kBxwFFAX8BlgH7AVwBXwFhAdsDRwGCAxcBINAAAUIBTQE+BwABPgMAASgDAAFAAwABEAMAAQEBAAEB
-        BQABgBcAA/8BAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH+AT8GAAH8AR8GAAH4
-        AQ8GAAHwAQcGAAHwAQcGAAHwAQcGAAHxAccGAAHwAQcGAAHwAQcGAAH4AQ8GAAs=
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAB0
+        AwAAAk1TRnQBSQFMAwEBAAFEAQABRAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
+        ARADAAEBAQABIAYAARAuAAM/AW0BKQFGAXUB/wM6AWL0AAEeAXUBxwH/AT8BzQH8Af8BMQFWAYcB//QA
+        AR4BdQHHAf8BOAGgAdIB/wNEAXn0AAEeAXUBxwH/AUEB0QH8Af8BMQFWAYcB//QAAR4BdQHHAf8BOgGh
+        AdEB/wNEAXn0AAEeAXUBxwH/AUsB4gH9Af8BMgFSAYEB//QAAR4BdQHHAf8BUgHXAfwB/wEyAVIBgQH/
+        8AADLQFGAR4BdQHHAf8BaAHeAfwB/wEyAVIBgQH/AyQBNegAAzUBVgErAYcBxwH/AVUBwAHwAf8BSgHL
+        Af4B/wFLAbMB3QH/ATYBRwFgAf8DKgFB4AADMQFNASsBhwHIAf8BTAG6AfcB/wFOAcIB+QH/AUQBtwH5
+        Af8BYgHWAfsB/wE/AaYB6AH/ATYBRgFeAf8DJAE23AABXAFhAWYB4QFOAcEB+QH/AUoBtwH5Af8BkwHu
+        Af4B/wGPAewB/gH/AUwBtAHzAf8BjQHjAf4B/wFJAboB4gH/Al4BYQHa3AABMwF2AaMB/AFTAcYB+QH/
+        AWMBigGsAf8BYwGKAawB/wFjAYoBrAH/AWMBigGsAf8BYwGKAawB/wFcAdUB+gH/ATEBPgFhAfzcAAFc
+        AWQBbAHnAVYB0gH6Af8BRAFeAYQB/wwAAUcBkAHBAf8BTQG7AeEB/wJbAVwB39wAA0wBkgFAAZ0B0AH/
+        AXQB4wH6Af8BRAGFAZ4B/wFLAV4BhwH/AUsBcAGcAf8BXAFmAWoB4QFCAYwBqgH/A0gBhdwAAxIBGANU
+        AawBQAGaAc0B/wFoAdUB9QH/AWsB6QH+Af8BZwHUAfMB/wFEAZIBsgH/AVACUQGcAxcBIOAAAxIBGANH
+        AYIDWQHHAUUBgAGYAfsBXAFfAWMB2wNHAYIDFwEg0AABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEA
+        AQEFAAGAFwAD/wEAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAfwBHwYA
+        AfgBDwYAAfABBwYAAfABBwYAAfABBwYAAfEBxwYAAfABBwYAAfABBwYAAfgBDwYACw==
 </value>
   </data>
   <data name="pluginsManager.TabIndex" type="System.Int32, mscorlib">
@@ -790,7 +763,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;pluginsManager.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>14</value>
   </data>
   <data name="plugins.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -820,13 +793,13 @@
     <value>plugins</value>
   </data>
   <data name="&gt;&gt;plugins.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.2.0.2826, Culture=neutral, PublicKeyToken=176ab345a48e1e35</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;plugins.Parent" xml:space="preserve">
     <value>content</value>
   </data>
   <data name="&gt;&gt;plugins.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
   </data>
   <data name="eraseDriveMethod.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
@@ -850,7 +823,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;eraseDriveMethod.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="eraseFilesMethod.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
@@ -874,7 +847,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;eraseFilesMethod.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="eraseDriveMethodLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -904,7 +877,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;eraseDriveMethodLbl.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>18</value>
   </data>
   <data name="eraseFilesMethodLbl.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -934,7 +907,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;eraseFilesMethodLbl.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>19</value>
   </data>
   <data name="erase.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -964,13 +937,13 @@
     <value>erase</value>
   </data>
   <data name="&gt;&gt;erase.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.2.0.2826, Culture=neutral, PublicKeyToken=176ab345a48e1e35</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;erase.Parent" xml:space="preserve">
     <value>content</value>
   </data>
   <data name="&gt;&gt;erase.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>20</value>
   </data>
   <data name="lockedForceUnlock.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1000,7 +973,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;lockedForceUnlock.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>21</value>
   </data>
   <data name="uiContextMenu.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1030,7 +1003,7 @@
     <value>content</value>
   </data>
   <data name="&gt;&gt;uiContextMenu.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>22</value>
   </data>
   <data name="ui.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -1060,19 +1033,16 @@
     <value>ui</value>
   </data>
   <data name="&gt;&gt;ui.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.2.0.2826, Culture=neutral, PublicKeyToken=176ab345a48e1e35</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
   </data>
   <data name="&gt;&gt;ui.Parent" xml:space="preserve">
     <value>content</value>
   </data>
   <data name="&gt;&gt;ui.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>23</value>
   </data>
   <data name="content.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
-  </data>
-  <data name="content.Location" type="System.Drawing.Point, System.Drawing">
-    <value>20, 51</value>
   </data>
   <data name="content.Size" type="System.Drawing.Size, System.Drawing">
     <value>712, 786</value>
@@ -1109,12 +1079,6 @@
   </data>
   <data name="&gt;&gt;titleLabel.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 22</value>
-  </data>
-  <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Settings...</value>
   </data>
   <metadata name="openFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>257, 17</value>
