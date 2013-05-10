@@ -114,6 +114,7 @@ namespace Eraser.DefaultPlugins
 				{
 					//Swallow, this doesn't mean anything to us.
 				}
+
 				//Various process statistics
 				result.AddRange(StructToBuffer(currProcess.VirtualMemorySize64));
 				result.AddRange(StructToBuffer(currProcess.MaxWorkingSet));
@@ -127,14 +128,17 @@ namespace Eraser.DefaultPlugins
 				result.AddRange(StructToBuffer(currProcess.PrivateMemorySize64));
 				result.AddRange(StructToBuffer(currProcess.WorkingSet64));
 				result.AddRange(StructToBuffer(currProcess.HandleCount));
+
 				//Amount of free memory
 				ComputerInfo computerInfo = new ComputerInfo();
 				result.AddRange(StructToBuffer(computerInfo.AvailablePhysicalMemory));
 				result.AddRange(StructToBuffer(computerInfo.AvailableVirtualMemory));
+
 				//Process execution times
 				result.AddRange(StructToBuffer(currProcess.TotalProcessorTime));
 				result.AddRange(StructToBuffer(currProcess.UserProcessorTime));
 				result.AddRange(StructToBuffer(currProcess.PrivilegedProcessorTime));
+
 				//Thread execution times
 				foreach (ProcessThread thread in currProcess.Threads)
 				{
@@ -182,35 +186,32 @@ namespace Eraser.DefaultPlugins
 
 			foreach (VolumeInfo info in VolumeInfo.Volumes)
 			{
-				if (info.VolumeType != DriveType.Removable)
+				if (info.IsReady && info.VolumeType != DriveType.Removable)
 				{
-					if (info.IsReady == true)
+					try
 					{
-						try
-						{
-							DiskPerformanceInfo performance = info.Performance;
-							if (performance == null)
-								continue;
+						DiskPerformanceInfo performance = info.Performance;
+						if (performance == null)
+							continue;
 
-							result.AddRange(StructToBuffer(performance.BytesRead));
-							result.AddRange(StructToBuffer(performance.BytesWritten));
-							result.AddRange(StructToBuffer(performance.IdleTime));
-							result.AddRange(StructToBuffer(performance.QueryTime));
-							result.AddRange(StructToBuffer(performance.QueueDepth));
-							result.AddRange(StructToBuffer(performance.ReadCount));
-							result.AddRange(StructToBuffer(performance.ReadTime));
-							result.AddRange(StructToBuffer(performance.SplitCount));
-							result.AddRange(StructToBuffer(performance.WriteCount));
-							result.AddRange(StructToBuffer(performance.WriteTime));
-						}
-						catch (FileNotFoundException)
-						{
-							//This happens if a drive is ejected while the loop is running.
-						}
-						catch (NotSupportedException)
-						{
-							//Don't bother if this drive doesn't count statistics.
-						}
+						result.AddRange(StructToBuffer(performance.BytesRead));
+						result.AddRange(StructToBuffer(performance.BytesWritten));
+						result.AddRange(StructToBuffer(performance.IdleTime));
+						result.AddRange(StructToBuffer(performance.QueryTime));
+						result.AddRange(StructToBuffer(performance.QueueDepth));
+						result.AddRange(StructToBuffer(performance.ReadCount));
+						result.AddRange(StructToBuffer(performance.ReadTime));
+						result.AddRange(StructToBuffer(performance.SplitCount));
+						result.AddRange(StructToBuffer(performance.WriteCount));
+						result.AddRange(StructToBuffer(performance.WriteTime));
+					}
+					catch (FileNotFoundException)
+					{
+						//This happens if a drive is ejected while the loop is running.
+					}
+					catch (NotSupportedException)
+					{
+						//Don't bother if this drive doesn't count statistics.
 					}
 				}
 			}
