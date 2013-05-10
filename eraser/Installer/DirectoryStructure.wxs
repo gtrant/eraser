@@ -53,15 +53,7 @@
 					<RegistryValue Action="write" Id="EraserExeAppPath" Root="HKLM"
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\Eraser.exe"
 						Type="string" Value="[#EraserExe]" />
-					<!--
-					<File Id="EraserService" Name="Eraser.Service.exe" Source="..\bin\Release\Eraser.Service.exe"
-						  ProcessorArchitecture="msil" />
-					<ServiceInstall Vital='yes' ErrorControl='ignore' Type='ownProcess' 
-                            DisplayName='Eraser Project Service'
-                            Description='Eraser background worker service' Name='EraserService' Start='auto' />
-					<ServiceControl Id='ControlEraserService' Remove='both' Name='EraserService' 
-                            Start='install' Stop='both' Wait='yes' />
-					-->
+
 					<File Id="Alglib" Name="alglibnet2.dll" Source="..\bin\Release\alglibnet2.dll"
 						ProcessorArchitecture="msil" />
 					<File Id="BevelLine" Name="BevelLine.dll" Source="..\bin\Release\BevelLine.dll"
