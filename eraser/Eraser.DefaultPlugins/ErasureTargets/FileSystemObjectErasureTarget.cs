@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
+ * Modified By:
  * 
  * This file is part of Eraser.
  * 
@@ -338,7 +338,7 @@ namespace Eraser.DefaultPlugins
 		/// <param name="method">The erasure method to use to erase the stream.</param>
 		/// <param name="info">The stream to erase.</param>
 		/// <param name="callback">The erasure progress callback.</param>
-		private static void TryEraseStream(IFileSystem fsManager, IErasureMethod method, StreamInfo info,
+		private void TryEraseStream(IFileSystem fsManager, IErasureMethod method, StreamInfo info,
 			ErasureMethodProgressFunction callback)
 		{
 			for (int i = 0; ; ++i)
