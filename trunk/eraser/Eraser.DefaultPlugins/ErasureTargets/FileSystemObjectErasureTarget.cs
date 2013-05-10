@@ -294,14 +294,16 @@ namespace Eraser.DefaultPlugins
 					info.IsReadOnly = false;
 
 				//Define the callback function for progress reporting.
-				ErasureMethodProgressFunction callback = (lastWritten, totalData, currentPass) =>
-				{
-					if (Task.Canceled)
-						throw new OperationCanceledException(S._("The task was cancelled."));
-					progress.Tag = new int[] { currentPass, method.Passes };
-					progress.Total = totalData;
-					progress.Completed += lastWritten;
-				};
+				ErasureMethodProgressFunction callback =
+					delegate(long lastWritten, long totalData, int currentPass)
+					{
+						if (Task.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
+
+						progress.Tag = new int[] { currentPass, method.Passes };
+						progress.Total = totalData;
+						progress.Completed += lastWritten;
+					};
 
 				TryEraseStream(fsManager, method, info, callback);
 
