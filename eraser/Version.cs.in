@@ -28,7 +28,7 @@ using System.Diagnostics;
 namespace Eraser {
 	internal static class BuildInfo
 	{
-		public static readonly DateTime BuildDate = DateTime.Parse("",
+		public static readonly DateTime BuildDate = DateTime.Parse("$WCNOW$",
 			System.Globalization.CultureInfo.InvariantCulture);
 		public const bool CustomBuild = $WCMODS?true:false$;
 		public static Version AssemblyFileVersion
