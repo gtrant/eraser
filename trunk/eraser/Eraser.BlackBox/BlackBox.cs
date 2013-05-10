@@ -224,19 +224,23 @@ namespace Eraser.BlackBox
 				stream.WriteLine();
 				stream.WriteLine("Logical Drives");
 				stream.WriteLine(separator);
-				foreach (System.IO.DriveInfo DriveInfo1 in System.IO.DriveInfo.GetDrives())
+				foreach (DriveInfo drive in DriveInfo.GetDrives())
 				{
-					try
-					{
-						stream.WriteLine("\t Drive: {0}\n\t\t VolumeLabel: {1}\n\t\t DriveType: {2}\n\t\t DriveFormat: {3}\n\t\t TotalSize: {4}\n\t\t AvailableFreeSpace: {5}\n",
-							DriveInfo1.Name, DriveInfo1.VolumeLabel, DriveInfo1.DriveType, DriveInfo1.DriveFormat, DriveInfo1.TotalSize, DriveInfo1.AvailableFreeSpace);
-					}
-					catch
-					{
-					}
+					stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+						"Drive", drive.Name));
+					stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+						"Label", drive.VolumeLabel));
+					stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+						"Type", drive.DriveType));
+					stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+						"Format", drive.DriveFormat));
+					stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+						"Total Size", drive.TotalSize));
+					stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+						"Available Space", drive.AvailableFreeSpace));
 				}
-				stream.WriteLine("SystemPageSize:  {0}\n", Environment.SystemPageSize);
-				stream.WriteLine("Version:  {0}", Environment.Version);
+				stream.WriteLine(string.Format(CultureInfo.InvariantCulture, lineFormat,
+					"Pagefile size", Environment.SystemPageSize));
 
 				//Running processes
 				stream.WriteLine();
