@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
+ * Modified By: 
  * 
  * This file is part of Eraser.
  * 
@@ -21,5 +21,5 @@
 
 #define ERASER_FILE_VERSION 6,1,0,$WCREV$
 #define ERASER_PRODUCT_VERSION ERASER_FILE_VERSION
-#define ERASER_STRING_FILE_VERSION "6.2.0.$WCREV$"
+#define ERASER_STRING_FILE_VERSION "6.1.0.$WCREV$"
 #define ERASER_STRING_PRODUCT_VERSION ERASER_STRING_FILE_VERSION

@@ -144,8 +144,8 @@
   <data name="Default Erasure Methods and PRNGs" xml:space="preserve">
     <value>Domyślna metoda wymazywania i generatora liczb pseudolosowych (PRNG)</value>
   </data>
-  <data name="The Eraser Project" xml:space="preserve">
-    <value>(Untranslated)</value>
+  <data name="The Eraser Project &lt;eraser-development@lists.sourceforge.net&gt;" xml:space="preserve">
+    <value>Projekt Eraser &lt;eraser-development@lists.sourceforge.net&gt;</value>
   </data>
   <data name="An invalid erasure method was selected." xml:space="preserve">
     <value>Wybrano niewłaściwą metodę wymazania.</value>
