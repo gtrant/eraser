@@ -235,7 +235,6 @@ void ExtractTempFiles(std::wstring pathToExtract)
 		SRes result = SZ_OK;
 
 		//Create the output file
-		size_t convertedChars = 0;
 		wchar_t fileName[MAX_PATH];
 		SzArEx_GetFileNameUtf16(&db, i, reinterpret_cast<UInt16*>(fileName));
 		
