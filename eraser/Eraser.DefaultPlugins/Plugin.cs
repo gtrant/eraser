@@ -145,6 +145,6 @@ namespace Eraser.DefaultPlugins
 		/// <summary>
 		/// The data store for our settings.
 		/// </summary>
-        readonly PersistentStore Store;
+		PersistentStore Store;
 	}
 }
