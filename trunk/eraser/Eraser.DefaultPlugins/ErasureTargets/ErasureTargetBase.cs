@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
+ * Modified By: 
  * 
  * This file is part of Eraser.
  * 
@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Security.Permissions;
