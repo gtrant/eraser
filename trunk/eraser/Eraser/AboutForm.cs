@@ -25,21 +25,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using Eraser.Util;
 using System.Diagnostics;
 using System.Globalization;
+
+using Eraser.Util;
 
 namespace Eraser
 {
 	public partial class AboutForm : Form
 	{
-        private readonly Bitmap AboutBitmap;
-        private readonly Point AboutBitmapPos;
-        private readonly string AboutText;
-        private readonly Bitmap AboutTextBitmap;
-        private readonly Rectangle AboutTextRect;
+		private readonly Bitmap AboutBitmap;
+		private readonly Point AboutBitmapPos;
+		private readonly string AboutText;
+		private readonly Bitmap AboutTextBitmap;
+		private readonly Rectangle AboutTextRect;
 
-        private readonly Bitmap ParentBitmap;
+		private readonly Bitmap ParentBitmap;
 		private int ParentOpacity;
 		private int AboutTextScrollTop;
 
@@ -210,10 +211,6 @@ Eraser Project Members:
 			animationTimer_Tick(null, null);
 			animationTimer.Start();
 		}
-        public AboutForm()
-        {
-            
-        }
 
 		private void AboutForm_Click(object sender, EventArgs e)
 		{
@@ -247,10 +244,11 @@ Eraser Project Members:
 
 		private void AboutForm_MouseMove(object sender, MouseEventArgs e)
 		{
-            if (WebsiteRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))) || DonateRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))))
-                Cursor.Current = Cursors.Hand;
-            else
-                Cursor.Current = Cursors.Default;
+			if (WebsiteRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))) ||
+				DonateRect.IntersectsWith(new Rectangle(e.Location, new Size(1, 1))))
+				Cursor.Current = Cursors.Hand;
+			else
+				Cursor.Current = Cursors.Default;
 		}
 
 		private void AboutForm_MouseLeave(object sender, EventArgs e)
@@ -323,7 +321,7 @@ Eraser Project Members:
 
 		private double mouseSpeed;
 		private DateTime mouseDownTime = DateTime.MinValue;
-        private readonly TimeSpan mouseSpeedUpSpan = new TimeSpan(0, 0, 0, 0, 230);
+		private readonly TimeSpan mouseSpeedUpSpan = new TimeSpan(0, 0, 0, 0, 230);
 		private MouseButtons mouseBotton;
 		private void AboutForm_MouseDown(object sender, MouseEventArgs e)
 		{
