@@ -42,10 +42,6 @@ namespace Eraser.Util
 		{
 			Index = index;
 		}
-        public PhysicalDriveInfo()
-        {
-            
-        }
 
 		/// <summary>
 		/// The physical drive index of the current drive in the computer.
@@ -64,8 +60,7 @@ namespace Eraser.Util
 			get
 			{
 				List<PhysicalDriveInfo> result = new List<PhysicalDriveInfo>();
-                try
-                {
+
 				//Iterate over every hard disk index until we find one that doesn't exist.
 				for (int i = 0; ; ++i)
 				{
@@ -78,11 +73,7 @@ namespace Eraser.Util
 
 					result.Add(new PhysicalDriveInfo(i));
 				}
-                }
-                finally
-                {
 
-                }
 				return result.AsReadOnly();
 			}
 		}
@@ -95,19 +86,15 @@ namespace Eraser.Util
 			get
 			{
 				List<VolumeInfo> result = new List<VolumeInfo>();
-                try
-                {
-                    //Check every volume for which disk it is on.
-                    foreach (VolumeInfo info in VolumeInfo.Volumes)
-                    {
-                        if (Equals(info.PhysicalDrive))
-                            result.Add(info);
-                    }
-                } finally
-                {
-                  
-                }
-                return result;
+
+				//Check every volume for which disk it is on.
+				foreach (VolumeInfo info in VolumeInfo.Volumes)
+				{
+					if (Equals(info.PhysicalDrive))
+						result.Add(info);
+				}
+
+				return result;
 			}
 		}
 
@@ -373,6 +360,6 @@ namespace Eraser.Util
 		/// <summary>
 		/// The <see cref="VolumeInfo"/> object this stream is encapsulating.
 		/// </summary>
-        private readonly PhysicalDriveInfo Drive;
+		private PhysicalDriveInfo Drive;
 	}
 }
