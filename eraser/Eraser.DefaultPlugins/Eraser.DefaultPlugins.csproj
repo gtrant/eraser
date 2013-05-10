@@ -299,7 +299,7 @@
     <PostBuildEvent>
     </PostBuildEvent>
     <PreBuildEvent>call "$(SolutionDir)UpdateVersions.bat" "$(SolutionDir)\." "$(SolutionDir)Version.cs.in" "$(SolutionDir)Version.cs"
-$(SolutionDir)csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
+csgettext --merge --recursive EN,NL,IT,PL "$(ProjectDir)\." Strings
 if ERRORLEVEL 0 exit 0</PreBuildEvent>
   </PropertyGroup>
 </Project>
