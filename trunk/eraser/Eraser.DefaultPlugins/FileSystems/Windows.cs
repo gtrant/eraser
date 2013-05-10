@@ -356,7 +356,7 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		private static void ListFiles(DirectoryInfo info, List<string> files,
+		private void ListFiles(DirectoryInfo info, List<string> files,
 			ClusterTipsSearchProgress searchCallback)
 		{
 			try
@@ -437,7 +437,6 @@ namespace Eraser.DefaultPlugins
 			DateTime lastAccess = streamInfo.LastAccessTime;
 			DateTime lastWrite = streamInfo.LastWriteTime;
 			DateTime created = streamInfo.CreationTime;
-			DateTime updated = streamInfo.LastAccessTime;
 
 			//Get the file attributes
 			FileAttributes attributes = streamInfo.Attributes;
@@ -488,9 +487,8 @@ namespace Eraser.DefaultPlugins
 				if (streamInfo.Attributes != attributes)
 					streamInfo.Attributes = attributes;
 
-				//Reset the file times 
-				//Removed MinTimestamp as first param GT31MAR2013
-				streamInfo.SetTimes(updated, created, lastWrite, lastAccess);
+				//Reset the file times
+				streamInfo.SetTimes(MinTimestamp, created, lastWrite, lastAccess);
 			}
 		}
 
