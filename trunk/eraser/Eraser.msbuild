@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="BuildInstaller">
 	<ItemGroup>
 		<ProjectToBuild Include="Eraser.sln">
-			<AdditionalProperties>Platform=Win32</AdditionalProperties>
+			<AdditionalProperties>Platform=x86</AdditionalProperties>
 		</ProjectToBuild>
 		<ProjectToBuild Include="Eraser.sln">
 			<AdditionalProperties>Platform=x64</AdditionalProperties>
