@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
+ * Modified By:
  * 
  * This file is part of Eraser.
  * 
@@ -55,13 +55,12 @@ namespace Eraser.BlackBox
 
 		private void OnToolClicked(object sender, EventArgs e)
 		{
-                BlackBoxMainForm form = BlackBoxMainForm.Get();
-                Form owner;
-                if (Application.OpenForms.Count > 0)
-                    owner = Application.OpenForms[0];
-                else
-                    owner = null;
-                form.ShowDialog(owner);
+			BlackBoxMainForm form = BlackBoxMainForm.Get();
+
+			Form owner = null;
+			if (Application.OpenForms.Count > 0)
+				owner = Application.OpenForms[0];
+			form.ShowDialog(owner);
 		}
 	}
 }

@@ -110,22 +110,23 @@ namespace Eraser.DefaultPlugins
                 //Generate a new file name for the file/directory.
                 string newPath = GenerateRandomFileName(info.GetParent(), info.Name.Length);
 
-                try
-                {
-                    ResetFileTimes(info);
-                    //Try to rename the file. If it fails, it is probably due to another
-                    //process locking the file. Defer, then rename again.
-                    info.MoveTo(newPath);
-                    ++i;
-                }
-                catch (IOException e)
-                {
-                    switch (System.Runtime.InteropServices.Marshal.GetLastWin32Error())
-                    {
-                        case Win32ErrorCode.AccessDenied:
-                            throw new UnauthorizedAccessException(S._("The file {0} could not " +
-                                "be erased because the file's permissions prevent access to the file.",
-                                info.FullName));
+				try
+				{
+					ResetFileTimes(info);
+
+					//Try to rename the file. If it fails, it is probably due to another
+					//process locking the file. Defer, then rename again.
+					info.MoveTo(newPath);
+					++i;
+				}
+				catch (IOException e)
+				{
+					switch (System.Runtime.InteropServices.Marshal.GetLastWin32Error())
+					{
+						case Win32ErrorCode.AccessDenied:
+							throw new UnauthorizedAccessException(S._("The file {0} could not " +
+								"be erased because the file's permissions prevent access to the file.",
+								info.FullName));
 
                         case Win32ErrorCode.SharingViolation:
                             //If after FilenameEraseTries the file is still locked, some program is

@@ -55,6 +55,6 @@ namespace Eraser.DefaultPlugins
 			//No-op. RNGCryptoServiceProviders can't be reseeded.
 		}
 
-        readonly RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider();
+		readonly RNGCryptoServiceProvider rand = new RNGCryptoServiceProvider();
 	}
 }
