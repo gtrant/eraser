@@ -54,7 +54,7 @@ namespace Eraser.DefaultPlugins
 			result.AddRange(StructToBuffer(Process.GetCurrentProcess().StartTime.Ticks));
 
 			result.AddRange(GetFastEntropy());
-			//result.AddRange(GetSlowEntropy());
+			result.AddRange(GetSlowEntropy());
 			return result.ToArray();
 		}
 
@@ -78,7 +78,7 @@ namespace Eraser.DefaultPlugins
 		{
 			List<byte> result = new List<byte>();
 			result.AddRange(GetFastEntropy());
-			//result.AddRange(GetSlowEntropy());
+			result.AddRange(GetSlowEntropy());
 
 			return result.ToArray();
 		}
@@ -103,7 +103,8 @@ namespace Eraser.DefaultPlugins
 			result.AddRange(StructToBuffer(Cursor.Position));
 
 			//Currently running threads (dynamic, but not very)
-			Process currProcess = Process.GetCurrentProcess();
+			using (Process currProcess = Process.GetCurrentProcess())
+			{
 				try
 				{
 					foreach (ProcessThread thread in currProcess.Threads)
@@ -113,7 +114,6 @@ namespace Eraser.DefaultPlugins
 				{
 					//Swallow, this doesn't mean anything to us.
 				}
-
 				//Various process statistics
 				result.AddRange(StructToBuffer(currProcess.VirtualMemorySize64));
 				result.AddRange(StructToBuffer(currProcess.MaxWorkingSet));
@@ -127,17 +127,14 @@ namespace Eraser.DefaultPlugins
 				result.AddRange(StructToBuffer(currProcess.PrivateMemorySize64));
 				result.AddRange(StructToBuffer(currProcess.WorkingSet64));
 				result.AddRange(StructToBuffer(currProcess.HandleCount));
-
 				//Amount of free memory
 				ComputerInfo computerInfo = new ComputerInfo();
 				result.AddRange(StructToBuffer(computerInfo.AvailablePhysicalMemory));
 				result.AddRange(StructToBuffer(computerInfo.AvailableVirtualMemory));
-
 				//Process execution times
 				result.AddRange(StructToBuffer(currProcess.TotalProcessorTime));
 				result.AddRange(StructToBuffer(currProcess.UserProcessorTime));
 				result.AddRange(StructToBuffer(currProcess.PrivilegedProcessorTime));
-
 				//Thread execution times
 				foreach (ProcessThread thread in currProcess.Threads)
 				{
@@ -157,6 +154,7 @@ namespace Eraser.DefaultPlugins
 							throw;
 					}
 				}
+			}
 
 			//Current system time
 			result.AddRange(StructToBuffer(DateTime.Now.Ticks));
@@ -184,6 +182,10 @@ namespace Eraser.DefaultPlugins
 
 			foreach (VolumeInfo info in VolumeInfo.Volumes)
 			{
+				if (info.VolumeType != DriveType.Removable)
+				{
+					if (info.IsReady == true)
+					{
 						try
 						{
 							DiskPerformanceInfo performance = info.Performance;
@@ -210,6 +212,8 @@ namespace Eraser.DefaultPlugins
 							//Don't bother if this drive doesn't count statistics.
 						}
 					}
+				}
+			}
 
 			return result.ToArray();
 		}
