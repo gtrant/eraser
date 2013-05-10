@@ -172,11 +172,11 @@ namespace Eraser.DefaultPlugins
 			ErasureMethodProgressFunction callback)
 		{
 			//Randomize the order of the passes
-            ErasureMethodPass[] randomizedPasses;
-            if (RandomizePasses)
-                randomizedPasses = ShufflePasses(PassesSet);
-            else
-                randomizedPasses = PassesSet;
+			ErasureMethodPass[] randomizedPasses;
+			if (RandomizePasses)
+				randomizedPasses = ShufflePasses(PassesSet);
+			else
+				randomizedPasses = PassesSet;
 
 			//Remember the starting position of the stream.
 			long strmStart = stream.Position;
@@ -200,20 +200,20 @@ namespace Eraser.DefaultPlugins
 				long toWrite = strmLength;
 				while (toWrite > 0)
 				{
-                    int sizeOfChunkToWrite = (toWrite > buffer.Length) ? buffer.Length : (int)toWrite;
+					int sizeOfChunkToWrite = (toWrite > buffer.Length) ? buffer.Length : (int)toWrite;
 					
-                    randomizedPasses[pass].Execute(buffer, prng);
+					randomizedPasses[pass].Execute(buffer, prng);
 
-                    //Write the data.
-                    stream.Write(buffer, 0, sizeOfChunkToWrite);
+					//Write the data.
+					stream.Write(buffer, 0, sizeOfChunkToWrite);
 
-                    toWrite -= sizeOfChunkToWrite;
+					toWrite -= sizeOfChunkToWrite;
  
 					//Do a progress callback.
 					if (callback != null)
-                        callback(sizeOfChunkToWrite, totalData, pass + 1);
+						callback(sizeOfChunkToWrite, totalData, pass + 1);
 				}
-                stream.Flush();
+				stream.Flush();
 			}
 		}
 

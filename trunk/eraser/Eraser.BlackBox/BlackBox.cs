@@ -220,24 +220,24 @@ namespace Eraser.BlackBox
 					"Virtual Memory", string.Format(CultureInfo.InvariantCulture,
 						"{0}/{1}", info.AvailableVirtualMemory, info.TotalVirtualMemory)));
 
-                //Disk Drives
-                stream.WriteLine();
-                stream.WriteLine("Logical Drives");
-                stream.WriteLine(separator);
-                foreach (System.IO.DriveInfo DriveInfo1 in System.IO.DriveInfo.GetDrives())
-                {
-                    try
-                    {
-                        stream.WriteLine("\t Drive: {0}\n\t\t VolumeLabel: {1}\n\t\t DriveType: {2}\n\t\t DriveFormat: {3}\n\t\t TotalSize: {4}\n\t\t AvailableFreeSpace: {5}\n",
-                            DriveInfo1.Name, DriveInfo1.VolumeLabel, DriveInfo1.DriveType, DriveInfo1.DriveFormat, DriveInfo1.TotalSize, DriveInfo1.AvailableFreeSpace);
-                    }
-                    catch
-                    {
-                    }
-                }
-                stream.WriteLine("SystemPageSize:  {0}\n", Environment.SystemPageSize);
-                stream.WriteLine("Version:  {0}", Environment.Version);
-            
+				//Disk Drives
+				stream.WriteLine();
+				stream.WriteLine("Logical Drives");
+				stream.WriteLine(separator);
+				foreach (System.IO.DriveInfo DriveInfo1 in System.IO.DriveInfo.GetDrives())
+				{
+					try
+					{
+						stream.WriteLine("\t Drive: {0}\n\t\t VolumeLabel: {1}\n\t\t DriveType: {2}\n\t\t DriveFormat: {3}\n\t\t TotalSize: {4}\n\t\t AvailableFreeSpace: {5}\n",
+							DriveInfo1.Name, DriveInfo1.VolumeLabel, DriveInfo1.DriveType, DriveInfo1.DriveFormat, DriveInfo1.TotalSize, DriveInfo1.AvailableFreeSpace);
+					}
+					catch
+					{
+					}
+				}
+				stream.WriteLine("SystemPageSize:  {0}\n", Environment.SystemPageSize);
+				stream.WriteLine("Version:  {0}", Environment.Version);
+			
 				//Running processes
 				stream.WriteLine();
 				stream.WriteLine("Running Processes");

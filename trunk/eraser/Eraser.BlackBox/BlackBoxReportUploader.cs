@@ -135,16 +135,16 @@ namespace Eraser.BlackBox
 					FileMode.Create, FileAccess.Write))
 			{
 				//Add the report into a tar file
-                using (TarArchive archive = TarArchive.CreateOutputTarArchive(archiveStream))
-                {
-                    foreach (FileInfo file in Report.Files)
-                    {
-                        TarEntry entry = TarEntry.CreateEntryFromFile(file.FullName);
-                        entry.Name = Path.GetFileName(entry.Name);
-                        archive.WriteEntry(entry, false);
-                    }
-                    archive.Close();
-                }
+				using (TarArchive archive = TarArchive.CreateOutputTarArchive(archiveStream))
+				{
+					foreach (FileInfo file in Report.Files)
+					{
+						TarEntry entry = TarEntry.CreateEntryFromFile(file.FullName);
+						entry.Name = Path.GetFileName(entry.Name);
+						archive.WriteEntry(entry, false);
+					}
+					archive.Close();
+				}
 			}
 
 			ProgressManager step = new ProgressManager();
@@ -352,7 +352,7 @@ namespace Eraser.BlackBox
 		/// <summary>
 		/// The report being uploaded.
 		/// </summary>
-        private readonly BlackBoxReport Report;
+		private readonly BlackBoxReport Report;
 
 		/// <summary>
 		/// The base name of the report.

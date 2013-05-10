@@ -734,21 +734,21 @@ namespace Eraser
 				settings.SetValue("ClearCompletedTasks", value);
 			}
 		}
-        /// <summary>
-        /// Gets ot setts a value whether tasks which were completed successfully
-        /// should be removed by the Eraser client.
-        /// </summary>
-        public bool ClearSwapFile
-        {
-            get
-            {
-                return settings.GetValue("ClearSwapFile", true);
-            }
-            set
-            {
-                settings.SetValue("ClearSwapFile", value);
-            }
-        }
+		/// <summary>
+		/// Gets ot setts a value whether tasks which were completed successfully
+		/// should be removed by the Eraser client.
+		/// </summary>
+		public bool ClearSwapFile
+		{
+			get
+			{
+				return settings.GetValue("ClearSwapFile", true);
+			}
+			set
+			{
+				settings.SetValue("ClearSwapFile", value);
+			}
+		}
 		/// <summary>
 		/// Gets the most specific UI culture with a localisation available, defaulting to English
 		/// if none exist.
