@@ -90,10 +90,10 @@ namespace Eraser.DefaultPlugins
 
 		public void DisplaySettings(Control parent)
 		{
-            using (SettingsForm form = new SettingsForm())
-            {
-                form.ShowDialog();
-            }
+			using (SettingsForm form = new SettingsForm())
+			{
+				form.ShowDialog();
+			}
 		}
 
 		/// <summary>
