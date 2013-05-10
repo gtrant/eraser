@@ -21,9 +21,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text; 
+using System.Text;
 using System.IO;
- 
+
 namespace Eraser.Manager
 {
 	/// <summary>
