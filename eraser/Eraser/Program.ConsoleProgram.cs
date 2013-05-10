@@ -21,6 +21,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.IO;
 
 using ComLib.Arguments;
 
@@ -138,12 +140,12 @@ namespace Eraser
 			/// <summary>
 			/// The command line arguments the program was started with.
 			/// </summary>
-            private readonly string[] CommandLine;
+			private readonly string[] CommandLine;
 
 			/// <summary>
 			/// Stores the common Console arguments which were given on the command line.
 			/// </summary>
-            private readonly ConsoleArguments Arguments;
+			private readonly ConsoleArguments Arguments;
 		}
 
 		/// <summary>

@@ -2,7 +2,7 @@
  * $Id$
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By: Garrett Trant <gtrant@users.sourceforge.net> 
+ * Modified By: 
  * 
  * This file is part of Eraser.
  * 
@@ -22,7 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Text;
 
 using System.IO;
 using System.Diagnostics;
@@ -103,8 +103,7 @@ namespace Eraser.DefaultPlugins
             result.AddRange(StructToBuffer(Cursor.Position));
 
             //Currently running threads (dynamic, but not very)
-            using (Process currProcess = Process.GetCurrentProcess())
-            {
+			Process currProcess = Process.GetCurrentProcess();
                 try
                 {
                     foreach (ProcessThread thread in currProcess.Threads)
@@ -114,6 +113,7 @@ namespace Eraser.DefaultPlugins
                 {
                     //Swallow, this doesn't mean anything to us.
                 }
+
                 //Various process statistics
                 result.AddRange(StructToBuffer(currProcess.VirtualMemorySize64));
                 result.AddRange(StructToBuffer(currProcess.MaxWorkingSet));
@@ -127,14 +127,17 @@ namespace Eraser.DefaultPlugins
                 result.AddRange(StructToBuffer(currProcess.PrivateMemorySize64));
                 result.AddRange(StructToBuffer(currProcess.WorkingSet64));
                 result.AddRange(StructToBuffer(currProcess.HandleCount));
+
                 //Amount of free memory
                 ComputerInfo computerInfo = new ComputerInfo();
                 result.AddRange(StructToBuffer(computerInfo.AvailablePhysicalMemory));
                 result.AddRange(StructToBuffer(computerInfo.AvailableVirtualMemory));
+
                 //Process execution times
                 result.AddRange(StructToBuffer(currProcess.TotalProcessorTime));
                 result.AddRange(StructToBuffer(currProcess.UserProcessorTime));
                 result.AddRange(StructToBuffer(currProcess.PrivilegedProcessorTime));
+
                 //Thread execution times
                 foreach (ProcessThread thread in currProcess.Threads)
                 {
@@ -154,7 +157,6 @@ namespace Eraser.DefaultPlugins
                             throw;
                     }
                 }
-            }
 
             //Current system time
             result.AddRange(StructToBuffer(DateTime.Now.Ticks));
@@ -182,10 +184,6 @@ namespace Eraser.DefaultPlugins
 
             foreach (VolumeInfo info in VolumeInfo.Volumes)
             {
-                if ((info.VolumeType != DriveType.Removable)||(info.VolumeType != DriveType.CDRom))
-                {
-                    if ((info.IsReady == true) && (info.IsMounted == true))
-                    {
                         try
                         {
                             DiskPerformanceInfo performance = info.Performance;
@@ -212,8 +210,6 @@ namespace Eraser.DefaultPlugins
                             //Don't bother if this drive doesn't count statistics.
                         }
                     }
-                }
-            }
 
             return result.ToArray();
         }
