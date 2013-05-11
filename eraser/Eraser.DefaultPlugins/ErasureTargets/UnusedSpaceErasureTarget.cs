@@ -286,9 +286,7 @@ namespace Eraser.DefaultPlugins
 				Progress.Steps.Add(new SteppedProgressManagerStep(tempFiles,
 					0.0f, S._("Removing temporary files...")));
 
-				Fat32FileSystem iDelete = new Fat32FileSystem();
-				iDelete.DeleteFolder(info, true);
-
+				fsManager.DeleteFolder(info, true);
 				tempFiles.MarkComplete();
 
 				//Reset the low disk space notifications
