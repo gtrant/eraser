@@ -47,18 +47,16 @@ namespace Eraser.DefaultPlugins
 
 		public override void DeleteFile(FileInfo info)
 		{
-			//If the user wants plausible deniability, find a random file from the
-			//list of decoys and write it over.
+			//If the user wants plausible deniability, make sure that we make the
+			//deleted file look like it was meant to be there.
 			if (Host.Instance.Settings.PlausibleDeniability)
 			{
-				DeleteFileSystemInfo(info, false);
-				CopyPlausibleDeniabilityFile(info);
+				DeleteFileWithPlausibleDeniability(info);
 			}
 			else
 			{ 
-				DeleteFileSystemInfo(info,true); 
+				DeleteFileSystemInfo(info); 
 			}
-
 		}
 
 		public override void DeleteFolder(DirectoryInfo info, bool recursive)
@@ -75,15 +73,14 @@ namespace Eraser.DefaultPlugins
 					DeleteFile(file);
 			}
 
-			DeleteFileSystemInfo(info,true);
+			DeleteFileSystemInfo(info);
 		}
 
 		/// <summary>
-		/// Deletes a directory or file from disk. This assumes that directories already
-		/// have been deleted.
+		/// Obfuscates the file name and file attributes of the given file.
 		/// </summary>
-		/// <param name="info">The file or directory to delete.</param>
-		private void DeleteFileSystemInfo(FileSystemInfo info, Boolean RemoveFile)
+		/// <param name="info">The file to obfuscate.</param>
+		private void ObfuscateFileSystemInfoName(FileSystemInfo info)
 		{
 			//If the file/directory doesn't exist, pass.
 			if (!info.Exists)
@@ -192,49 +189,62 @@ namespace Eraser.DefaultPlugins
 					}
 				}
 			}
-			if (RemoveFile == true)
-			{
-				//Then delete the file.
-				for (int i = 0; i < FileNameEraseTries; ++i)
-					try
-					{
-						info.Delete();
-						break;
-					}
-					catch (IOException e)
-					{
-						switch (System.Runtime.InteropServices.Marshal.GetLastWin32Error())
-						{
-							case Win32ErrorCode.AccessDenied:
-								throw new UnauthorizedAccessException(S._("The file {0} could not " +
-									"be erased because the file's permissions prevent access to the file.",
-									info.FullName), e);
-
-							case Win32ErrorCode.SharingViolation:
-								//If after FilenameEraseTries the file is still locked, some program is
-								//definitely using the file; throw an exception.
-								if (i > FileNameEraseTries)
-									throw new IOException(S._("The file {0} is currently in use and " +
-										"cannot be removed.", info.FullName), e);
-
-								//Let the process locking the file release the lock
-								Thread.Sleep(100);
-								break;
-
-							default:
-								throw;
-						}
-					}
-			}
 		}
 
+		/// <summary>
+		/// Deletes a directory or file from disk. This assumes that directories already
+		/// have been deleted.
+		/// </summary>
+		/// <param name="info">The file or directory to delete.</param>
+		private void DeleteFileSystemInfo(FileSystemInfo info)
+		{
+			//If the file/directory doesn't exist, pass.
+			if (!info.Exists)
+				return;
+
+			ObfuscateFileSystemInfoName(info);
+
+			//Then delete the file.
+			for (int i = 0; i < FileNameEraseTries; ++i)
+				try
+				{
+					info.Delete();
+					break;
+				}
+				catch (IOException e)
+				{
+					switch (System.Runtime.InteropServices.Marshal.GetLastWin32Error())
+					{
+						case Win32ErrorCode.AccessDenied:
+							throw new UnauthorizedAccessException(S._("The file {0} could not " +
+								"be erased because the file's permissions prevent access to the file.",
+								info.FullName), e);
+
+						case Win32ErrorCode.SharingViolation:
+							//If after FilenameEraseTries the file is still locked, some program is
+							//definitely using the file; throw an exception.
+							if (i > FileNameEraseTries)
+								throw new IOException(S._("The file {0} is currently in use and " +
+									"cannot be removed.", info.FullName), e);
+
+							//Let the process locking the file release the lock
+							Thread.Sleep(100);
+							break;
+
+						default:
+							throw;
+					}
+				}
+		}
 
 		/// <summary>
 		/// Writes a file for plausible deniability over the current stream.
 		/// </summary>
 		/// <param name="stream">The stream to write the data to.</param>
-		private static void CopyPlausibleDeniabilityFile(FileInfo info)
+		private void DeleteFileWithPlausibleDeniability(FileInfo info)
 		{
+			ObfuscateFileSystemInfoName(info);
+
 			//Get the template file to copy
 			FileInfo shadowFileInfo;
 			{
@@ -275,20 +285,11 @@ namespace Eraser.DefaultPlugins
 				shadowFileInfo = new FileInfo(shadowFile);
 			}
 
-			//First Lets Copy over the attributes and name
-			if (shadowFileInfo.IsCompressed()) { info.Compress(); }
-			info.CopyTimes(shadowFileInfo);
-			info.SetAccessControl(shadowFileInfo.GetAccessControl());
-			File.SetCreationTime(info.FullName, File.GetCreationTime(shadowFileInfo.FullName));
-			string TargetName = String.Format("{0}\\{1}", info.DirectoryName, shadowFileInfo.Name);
-			info.MoveTo(TargetName);
-
-			// Now lets fill it with data from the source file.
+			//Copy the contents of the shadow.
 			using (Stream stream = info.OpenWrite())
 			{
 				//Dump the copy (the first 4MB, or less, depending on the file size and size of
 				//the original file)
-				// At this point the original file has been marked to zero length
 				long amountToCopy = Math.Min(4 * 1024 * 1024, shadowFileInfo.Length);
 				using (FileStream shadowFileStream = shadowFileInfo.Open(
 						FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -306,15 +307,20 @@ namespace Eraser.DefaultPlugins
 						stream.Write(buf, 0,
 							(int)Math.Min(bytesRead, amountToCopy - stream.Position));
 					}
-					shadowFileStream.Close();
 				}
-				// Make the file same length as copied file
-				// This may produce an output with artifacts from the disk making the file more plausable
+
+				//Make the file to be deleted have the same length as the file
+				//which is being used as a decoy. The end of the file might contain
+				//noise, which should make the decoy more convincing.
 				stream.SetLength(shadowFileInfo.Length);
-				stream.Close();
-				// Delete normally
-				File.Delete(TargetName);
 			}
+
+			//Make the file to be deleted look like the shadow.
+			info.MoveTo(Path.Combine(info.DirectoryName, shadowFileInfo.Name));
+			if (shadowFileInfo.IsCompressed())
+				info.Compress();
+			info.SetAccessControl(shadowFileInfo.GetAccessControl());
+			info.CopyTimes(shadowFileInfo);
 		}
 
 		public override void EraseClusterTips(VolumeInfo info, IErasureMethod method,
