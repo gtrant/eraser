@@ -213,6 +213,7 @@ namespace Eraser.DefaultPlugins
 					//Write the data.
 					stream.Write(buffer, dataStopped, amount);
 					stream.Flush();
+					dataStopped += amount;
 					toWrite -= amount;
 
 					//Do a progress callback.
