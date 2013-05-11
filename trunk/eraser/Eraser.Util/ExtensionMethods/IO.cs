@@ -43,14 +43,26 @@ namespace Eraser.Util.ExtensionMethods
 		/// <param name="rhs">The file times to copy from.</param>
 		public static void CopyTimes(this FileSystemInfo lhs, FileSystemInfo rhs)
 		{
-			lhs.CreationTimeUtc = rhs.CreationTimeUtc;
-			lhs.LastAccessTimeUtc = rhs.LastAccessTimeUtc;
-			lhs.LastWriteTimeUtc = rhs.LastWriteTimeUtc;
+			lhs.SetTimes(rhs.GetLastUpdateTime(), rhs.CreationTime, rhs.LastWriteTime,
+				rhs.LastAccessTime);
+		}
+
+		/// <summary>
+		/// Gets the NTFS last-updated time from the object.
+		/// </summary>
+		/// <param name="info">The <see cref="FileSystemInfo"/> object to query.</param>
+		/// <returns>The time the file object was last updated.</returns>
+		public static DateTime GetLastUpdateTime(this FileSystemInfo info)
+		{
+			using (SafeFileHandle handle = OpenHandle(info, NativeMethods.FILE_READ_ATTRIBUTES))
+			{
+				return GetUpdateTime(handle);
+			}
 		}
 
 		/// <summary>
 		/// Deeply sets the file times associated with the current
-		/// <see cref="FileInfo"/> object.
+		/// <see cref="FileSystemInfo"/> object.
 		/// </summary>
 		/// <param name="updateTime">The time the basic information was last set.</param>
 		/// <param name="createdTime">The time the file was created.</param>
@@ -59,90 +71,68 @@ namespace Eraser.Util.ExtensionMethods
 		public static void SetTimes(this FileSystemInfo info, DateTime updateTime,
 			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
 		{
-			FileInfo file = info as FileInfo;
-			DirectoryInfo directory = info as DirectoryInfo;
-
-			if (file != null)
-				file.SetTimes(updateTime, createdTime, lastModifiedTime, lastAccessedTime);
-			else if (directory != null)
-				directory.SetTimes(updateTime, createdTime, lastModifiedTime, lastAccessedTime);
-			else
-				throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Deeply sets the file times associated with the current
-		/// <see cref="FileInfo"/> object.
-		/// </summary>
-		/// <param name="updateTime">The time the basic information was last set.</param>
-		/// <param name="createdTime">The time the file was created.</param>
-		/// <param name="lastModifiedTime">The time the file was last modified.</param>
-		/// <param name="lastAccessedTime">The time the file was last accessed.</param>
-		public static void SetTimes(this FileInfo info, DateTime updateTime,
-			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
-		{
-			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
-				NativeMethods.FILE_WRITE_ATTRIBUTES, 0, IntPtr.Zero,
-				NativeMethods.OPEN_EXISTING, 0, IntPtr.Zero))
+			using (SafeFileHandle handle = OpenHandle(info, NativeMethods.FILE_WRITE_ATTRIBUTES))
 			{
-				if (!handle.IsInvalid)
-				{
-					SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
-					return;
-				}
-			}
-
-			//If we fall through here, it is a reparse point (most likely) and
-			//the target of the reparse point does not exist. We would then have to
-			//set the time of the reparse point.
-			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
-				NativeMethods.FILE_WRITE_ATTRIBUTES, (uint)FileShare.ReadWrite, IntPtr.Zero,
-				NativeMethods.OPEN_EXISTING, NativeMethods.FILE_FLAG_BACKUP_SEMANTICS |
-				NativeMethods.FILE_FLAG_OPEN_REPARSE_POINT, IntPtr.Zero))
-			{
-				if (handle.IsInvalid)
-					throw new IOException(S._("The folder {0} cannot be opened for writing.",
-						info.FullName));
-
 				SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
 			}
 		}
 
 		/// <summary>
-		/// Deeply sets the file times associated with the current
-		/// <see cref="DirectoryInfo"/> object.
+		/// Opens a handle to the file system info object. This can be directories
+		/// or files.
 		/// </summary>
-		/// <param name="updateTime">The time the basic information was last set.</param>
-		/// <param name="createdTime">The time the file was created.</param>
-		/// <param name="lastModifiedTime">The time the file was last modified.</param>
-		/// <param name="lastAccessedTime">The time the file was last accessed.</param>
-		public static void SetTimes(this DirectoryInfo info, DateTime updateTime,
-			DateTime createdTime, DateTime lastModifiedTime, DateTime lastAccessedTime)
+		/// <param name="info">The file system object to open a handle on.</param>
+		/// <returns>The file handle to the object. This handle is guaranteed to be
+		/// valid.</returns>
+		private static SafeFileHandle OpenHandle(FileSystemInfo info, uint desiredAccess)
 		{
-			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
-				NativeMethods.FILE_WRITE_ATTRIBUTES, (uint)FileShare.ReadWrite, IntPtr.Zero,
-				NativeMethods.OPEN_EXISTING, NativeMethods.FILE_FLAG_BACKUP_SEMANTICS, IntPtr.Zero))
-			{
-				if (!handle.IsInvalid)
-				{
-					SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
-					return;
-				}
-			}
+			uint flagsAndAttributes = 0;
+			if (info is DirectoryInfo)
+				flagsAndAttributes |= NativeMethods.FILE_FLAG_BACKUP_SEMANTICS;
+
+			SafeFileHandle handle = NativeMethods.CreateFile(info.FullName, desiredAccess,
+				(uint)FileShare.ReadWrite, IntPtr.Zero, NativeMethods.OPEN_EXISTING,
+				flagsAndAttributes, IntPtr.Zero);
+			if (handle != null && !handle.IsInvalid)
+				return handle;
 
 			//If we fall through here, it is a reparse point (most likely) and
 			//the target of the reparse point does not exist. We would then have to
 			//set the time of the reparse point.
-			using (SafeFileHandle handle = NativeMethods.CreateFile(info.FullName,
-				NativeMethods.FILE_WRITE_ATTRIBUTES, (uint)FileShare.ReadWrite, IntPtr.Zero,
-				NativeMethods.OPEN_EXISTING, NativeMethods.FILE_FLAG_BACKUP_SEMANTICS |
-				NativeMethods.FILE_FLAG_OPEN_REPARSE_POINT, IntPtr.Zero))
-			{
-				if (handle.IsInvalid)
-					throw new IOException(S._("The folder {0} cannot be opened for writing.",
+			handle = NativeMethods.CreateFile(info.FullName, desiredAccess,
+				(uint)FileShare.ReadWrite, IntPtr.Zero, NativeMethods.OPEN_EXISTING,
+				flagsAndAttributes | NativeMethods.FILE_FLAG_BACKUP_SEMANTICS |
+				NativeMethods.FILE_FLAG_OPEN_REPARSE_POINT, IntPtr.Zero);
+			if (handle == null || handle.IsInvalid)
+				throw new IOException(S._("The file {0} cannot be opened for access.",
 						info.FullName));
-				
-				SetTimes(handle, updateTime, createdTime, lastModifiedTime, lastAccessedTime);
+
+			return handle;
+		}
+
+		private static DateTime GetUpdateTime(SafeFileHandle handle)
+		{
+			NativeMethods.FILE_BASIC_INFORMATION fileInfo =
+				new NativeMethods.FILE_BASIC_INFORMATION();
+			IntPtr fileInfoPtr = Marshal.AllocHGlobal(Marshal.SizeOf(fileInfo));
+			
+			try
+			{
+				NativeMethods.IO_STATUS_BLOCK status;
+				uint result = NativeMethods.NtQueryInformationFile(handle,
+					out status, fileInfoPtr, (uint)Marshal.SizeOf(fileInfo),
+					NativeMethods.FILE_INFORMATION_CLASS.FileBasicInformation);
+
+				if (result != 0)
+					throw new IOException();
+
+				fileInfo = (NativeMethods.FILE_BASIC_INFORMATION)
+					Marshal.PtrToStructure(fileInfoPtr, fileInfo.GetType());
+				return DateTime.FromFileTime(fileInfo.ChangeTime);
+			}
+			finally
+			{
+				Marshal.FreeHGlobal(fileInfoPtr);
 			}
 		}
 
@@ -192,7 +182,7 @@ namespace Eraser.Util.ExtensionMethods
 		/// to query its parent.</param>
 		/// <returns>The parent directory of the current
 		/// <see cref="System.IO.FileSystemInfo"/> object, or null if info is
-		/// aleady the root</returns>
+		/// already the root</returns>
 		public static DirectoryInfo GetParent(this FileSystemInfo info)
 		{
 			FileInfo file = info as FileInfo;
@@ -279,7 +269,7 @@ namespace Eraser.Util.ExtensionMethods
 		/// Uncompresses the given file.
 		/// </summary>
 		/// <param name="info">The File to uncompress.</param>
-		/// <returns>The success ofthe uncompression</returns>
+		/// <returns>The success of the uncompression</returns>
 		public static bool Uncompress(this FileSystemInfo info)
 		{
 			return SetCompression(info.FullName, false);
@@ -346,7 +336,7 @@ namespace Eraser.Util.ExtensionMethods
 		/// <summary>
 		/// Determines if a given file is protected by SFC.
 		/// </summary>
-		/// <param name="info">The file systme object to check.</param>
+		/// <param name="info">The file system object to check.</param>
 		/// <returns>True if the file is protected.</returns>
 		public static bool IsProtectedSystemFile(this FileSystemInfo info)
 		{
@@ -462,7 +452,7 @@ namespace Eraser.Util.ExtensionMethods
 
 		private static NativeMethods.FILE_STREAM_INFORMATION[] GetADSes(SafeFileHandle FileHandle)
 		{
-			NativeMethods.IO_STATUS_BLOCK status = new NativeMethods.IO_STATUS_BLOCK();
+			NativeMethods.IO_STATUS_BLOCK status;
 			IntPtr fileInfoPtr = IntPtr.Zero;
 
 			try
@@ -479,7 +469,7 @@ namespace Eraser.Util.ExtensionMethods
 						Marshal.FreeHGlobal(fileInfoPtr);
 					fileInfoPtr = Marshal.AllocHGlobal(fileInfoPtrLength);
 
-					ntStatus = NativeMethods.NtQueryInformationFile(FileHandle, ref status,
+					ntStatus = NativeMethods.NtQueryInformationFile(FileHandle, out status,
 						fileInfoPtr, (uint)fileInfoPtrLength,
 						NativeMethods.FILE_INFORMATION_CLASS.FileStreamInformation);
 				}

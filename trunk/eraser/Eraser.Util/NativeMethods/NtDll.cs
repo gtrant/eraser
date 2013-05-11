@@ -54,7 +54,7 @@ namespace Eraser.Util
 		/// NTSTATUS error code.</returns>
 		[DllImport("NtDll.dll")]
 		public static extern uint NtQueryInformationFile(SafeFileHandle FileHandle,
-			ref IO_STATUS_BLOCK IoStatusBlock, IntPtr FileInformation, uint Length,
+			out IO_STATUS_BLOCK IoStatusBlock, IntPtr FileInformation, uint Length,
 			FILE_INFORMATION_CLASS FileInformationClass);
 
 		/// <summary>
