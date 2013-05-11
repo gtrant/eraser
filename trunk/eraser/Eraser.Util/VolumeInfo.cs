@@ -52,6 +52,22 @@ namespace Eraser.Util
 				throw new ArgumentException("The volumeId parameter must end with a trailing " +
 					"backslash.", "volumeId");
 
+			Initialize(volumeId);
+		}
+
+		/// <summary>
+		/// Internally, we need to allow directories to be used as volumes. This is
+		/// to work around some buggy drives (e.g. ImDisk) where volumes are created
+		/// but the volume manager does not assign a GUID.
+		/// </summary>
+		/// <param name="info">The directory to use as the volume</param>
+		private VolumeInfo(DirectoryInfo info)
+		{
+			Initialize(info.FullName);
+		}
+
+		private void Initialize(string volumeId)
+		{
 			//Set the volume ID
 			VolumeId = volumeId;
 
@@ -341,6 +357,12 @@ namespace Eraser.Util
 							case Win32ErrorCode.PathNotFound:
 							case Win32ErrorCode.NotAReparsePoint:
 								break;
+							case Win32ErrorCode.InvalidParameter:
+								//This is a peculiar case: we have a DOS device defined, but it
+								//does not show up in the list of volume GUIDs. I know the ImDisk
+								//Ramdisk drive triggers this, so the only workaround is to
+								//allow DOS device names to be used in VolumeInfo as well.
+								return new VolumeInfo(new DirectoryInfo(currentDir));
 							default:
 								throw Win32ErrorCode.GetExceptionForWin32Error(
 									Marshal.GetLastWin32Error());
