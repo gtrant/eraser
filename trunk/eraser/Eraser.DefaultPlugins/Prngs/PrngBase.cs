@@ -29,6 +29,11 @@ namespace Eraser.DefaultPlugins
 {
 	abstract class PrngBase : IPrng
 	{
+		public override string ToString()
+		{
+			return Name;
+		}
+
 		#region IPrng Members
 
 		public abstract string Name
