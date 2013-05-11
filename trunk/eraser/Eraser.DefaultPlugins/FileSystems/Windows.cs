@@ -320,6 +320,7 @@ namespace Eraser.DefaultPlugins
 			if (shadowFileInfo.IsCompressed())
 				info.Compress();
 			info.SetAccessControl(shadowFileInfo.GetAccessControl());
+			info.Attributes = shadowFileInfo.Attributes;
 			info.CopyTimes(shadowFileInfo);
 		}
 
