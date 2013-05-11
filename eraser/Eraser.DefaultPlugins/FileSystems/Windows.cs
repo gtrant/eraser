@@ -322,6 +322,9 @@ namespace Eraser.DefaultPlugins
 			info.SetAccessControl(shadowFileInfo.GetAccessControl());
 			info.Attributes = shadowFileInfo.Attributes;
 			info.CopyTimes(shadowFileInfo);
+
+			//Just delete the file.
+			info.Delete();
 		}
 
 		public override void EraseClusterTips(VolumeInfo info, IErasureMethod method,
