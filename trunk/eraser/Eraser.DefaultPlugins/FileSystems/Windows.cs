@@ -261,7 +261,7 @@ namespace Eraser.DefaultPlugins
 							entries.Capacity += files.Length;
 							foreach (FileInfo f in files)
 								entries.Add(f.FullName);
-							shadowFile = entries[prng.Next(entries.Count - 1)];
+							shadowFile = null;
 						}
 						else
 							shadowFile = entries[index];
@@ -269,8 +269,7 @@ namespace Eraser.DefaultPlugins
 					else
 						shadowFile = null;
 
-					//entries.RemoveAt(index);
-
+					entries.RemoveAt(index);
 				}
 				while (string.IsNullOrEmpty(shadowFile));
 				shadowFileInfo = new FileInfo(shadowFile);
