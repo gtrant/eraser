@@ -223,7 +223,7 @@
     <value>SettingsPanel</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Eraser.BasePanel, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
+    <value>Eraser.BasePanel, Eraser, Version=6.1.0.2671, Culture=neutral, PublicKeyToken=8781ed8f0ef786fb</value>
   </data>
   <data name="titleIcon.IconAlignment" type="System.Windows.Forms.ErrorIconAlignment, System.Windows.Forms">
     <value>TopLeft</value>
@@ -640,7 +640,7 @@
     <value>scheduler</value>
   </data>
   <data name="&gt;&gt;scheduler.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2671, Culture=neutral, PublicKeyToken=8781ed8f0ef786fb</value>
   </data>
   <data name="&gt;&gt;scheduler.Parent" xml:space="preserve">
     <value>content</value>
@@ -732,22 +732,22 @@
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
-        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAB0
-        AwAAAk1TRnQBSQFMAwEBAAFEAQABRAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
-        ARADAAEBAQABIAYAARAuAAM/AW0BKQFGAXUB/wM6AWL0AAEeAXUBxwH/AT8BzQH8Af8BMQFWAYcB//QA
-        AR4BdQHHAf8BOAGgAdIB/wNEAXn0AAEeAXUBxwH/AUEB0QH8Af8BMQFWAYcB//QAAR4BdQHHAf8BOgGh
-        AdEB/wNEAXn0AAEeAXUBxwH/AUsB4gH9Af8BMgFSAYEB//QAAR4BdQHHAf8BUgHXAfwB/wEyAVIBgQH/
-        8AADLQFGAR4BdQHHAf8BaAHeAfwB/wEyAVIBgQH/AyQBNegAAzUBVgErAYcBxwH/AVUBwAHwAf8BSgHL
-        Af4B/wFLAbMB3QH/ATYBRwFgAf8DKgFB4AADMQFNASsBhwHIAf8BTAG6AfcB/wFOAcIB+QH/AUQBtwH5
-        Af8BYgHWAfsB/wE/AaYB6AH/ATYBRgFeAf8DJAE23AABXAFhAWYB4QFOAcEB+QH/AUoBtwH5Af8BkwHu
-        Af4B/wGPAewB/gH/AUwBtAHzAf8BjQHjAf4B/wFJAboB4gH/Al4BYQHa3AABMwF2AaMB/AFTAcYB+QH/
-        AWMBigGsAf8BYwGKAawB/wFjAYoBrAH/AWMBigGsAf8BYwGKAawB/wFcAdUB+gH/ATEBPgFhAfzcAAFc
-        AWQBbAHnAVYB0gH6Af8BRAFeAYQB/wwAAUcBkAHBAf8BTQG7AeEB/wJbAVwB39wAA0wBkgFAAZ0B0AH/
-        AXQB4wH6Af8BRAGFAZ4B/wFLAV4BhwH/AUsBcAGcAf8BXAFmAWoB4QFCAYwBqgH/A0gBhdwAAxIBGANU
-        AawBQAGaAc0B/wFoAdUB9QH/AWsB6QH+Af8BZwHUAfMB/wFEAZIBsgH/AVACUQGcAxcBIOAAAxIBGANH
-        AYIDWQHHAUUBgAGYAfsBXAFfAWMB2wNHAYIDFwEg0AABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEA
-        AQEFAAGAFwAD/wEAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAfwBHwYA
-        AfgBDwYAAfABBwYAAfABBwYAAfABBwYAAfEBxwYAAfABBwYAAfABBwYAAfgBDwYACw==
+        ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAABu
+        AwAAAk1TRnQBSQFMAwEBAAFcAQABXAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
+        ARADAAEBAQABIAYAARAuAAM/AW0BJgFDAXIB/wM6AWL0AAEbAXIBxwH/ATwBzQH8Af8BLgFTAYcB//QA
+        ARsBcgHHAf8BNQGgAdIB/wNEAXn0AAEbAXIBxwH/AT4B0QH8Af8BLgFTAYcB//QAARsBcgHHAf8BNwGh
+        AdEB/wNEAXn0AAEbAXIBxwH/AUgB4gH9Af8BLwFPAYEB//QAARsBcgHHAf8BTwHXAfwB/wEvAU8BgQH/
+        8AADLQFGARsBcgHHAf8BZQHeAfwB/wEvAU8BgQH/AyQBNegAAzUBVgEoAYcBxwH/AVIBwAHwAf8BRwHL
+        Af4B/wFIAbMB3QH/ATMBRAFdAf8DKgFB4AADMQFNASgBhwHIAf8BSQG6AfcB/wFLAcIB+QH/AUEBtwH5
+        Af8BXwHWAfsB/wE8AaYB6AH/ATMBQwFbAf8DJAE23AABXAJhAeEBSwHBAfkB/wFHAbcB+QH/AZMB7gH+
+        Af8BjwHsAf4B/wFJAbQB8wH/AY0B4wH+Af8BRgG6AeIB/wJeAWEB2twAATABcwGaAfwBUAHGAfkB/wFg
+        AYoBrAH/AWABigGsAf8BYAGKAawB/wFgAYoBrAH/AWABigGsAf8BWQHVAfoB/wEuATsBXgH83AABXAFk
+        AWUB5wFTAdIB+gH/AUEBWwGEAf8MAAFEAZABwQH/AUoBuwHhAf8DXAHf3AADTAGSAT0BnQHQAf8BcQHj
+        AfoB/wFBAYUBngH/AUgBWwGHAf8BSAFtAZwB/wFcAWEBZAHhAT8BjAGqAf8DSAGF3AADEgEYA1QBrAE9
+        AZoBzQH/AWUB1QH1Af8BaAHpAf4B/wFkAdQB8wH/AUEBkgGyAf8BUAJRAZwDFwEg4AADEgEYA0cBggNZ
+        AccBRQF5AZQB+wFcAl8B2wNHAYIDFwEg0AABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEAAQEFAAGA
+        FwAD/wEAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAf4BPwYAAfwBHwYAAfgBDwYA
+        AfABBwYAAfABBwYAAfABBwYAAfEBxwYAAfABBwYAAfABBwYAAfgBDwYACw==
 </value>
   </data>
   <data name="pluginsManager.TabIndex" type="System.Int32, mscorlib">
@@ -793,7 +793,7 @@
     <value>plugins</value>
   </data>
   <data name="&gt;&gt;plugins.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2671, Culture=neutral, PublicKeyToken=8781ed8f0ef786fb</value>
   </data>
   <data name="&gt;&gt;plugins.Parent" xml:space="preserve">
     <value>content</value>
@@ -937,7 +937,7 @@
     <value>erase</value>
   </data>
   <data name="&gt;&gt;erase.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2671, Culture=neutral, PublicKeyToken=8781ed8f0ef786fb</value>
   </data>
   <data name="&gt;&gt;erase.Parent" xml:space="preserve">
     <value>content</value>
@@ -1033,7 +1033,7 @@
     <value>ui</value>
   </data>
   <data name="&gt;&gt;ui.Type" xml:space="preserve">
-    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2532, Culture=neutral, PublicKeyToken=5fdae78f3f1dcf4a</value>
+    <value>Eraser.LightGroup, Eraser, Version=6.1.0.2671, Culture=neutral, PublicKeyToken=8781ed8f0ef786fb</value>
   </data>
   <data name="&gt;&gt;ui.Parent" xml:space="preserve">
     <value>content</value>
