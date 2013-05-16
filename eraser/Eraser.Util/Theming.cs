@@ -61,6 +61,7 @@ namespace Eraser.Util
 			ButtonBase button = control as ButtonBase;
 			ListView listview = control as ListView;
 			ToolStrip toolstrip = control as ToolStrip;
+			ComboBox combobox = control as ComboBox;
 
 			if (container != null)
 				container.Font = SystemFonts.MessageBoxFont;
@@ -72,6 +73,8 @@ namespace Eraser.Util
 				ApplyTheme(button);
 			else if (listview != null)
 				ApplyTheme(listview);
+			else if (combobox != null)
+				ApplyTheme(combobox);
 			else if (toolstrip != null)
 				ApplyTheme(toolstrip);
 
@@ -108,6 +111,28 @@ namespace Eraser.Util
 			}
 			catch (DllNotFoundException)
 			{
+			}
+		}
+
+		/// <summary>
+		/// Updates the control's theme to fit in with the latest Windows visuals.
+		/// </summary>
+		/// <param name="cb">The Combobox control to set the theme on.</param>
+		public static void ApplyTheme(ComboBox cb)
+		{
+			//No themeing. I lied. This is to make focus behaviour work as expected.
+			//Find all containers this belongs in and assign them a click handler.
+			Control parent = cb.Parent;
+			while (parent != null)
+			{
+				ScrollableControl container = parent as ScrollableControl;
+				if (container != null && !ThemedContainers.Contains(container))
+				{
+					container.Click += OnContainerClicked;
+					container.Disposed += OnContainerDisposed;
+					ThemedContainers.Add(container);
+				}
+				parent = parent.Parent;
 			}
 		}
 
@@ -158,6 +183,17 @@ namespace Eraser.Util
 		}
 
 		/// <summary>
+		/// Handles the container clicked event. This is to act as a compatibility
+		/// layer for combobox focus behaviour: if we click on a form, focus is not
+		/// given to the form and scrolling would still remain in the combobox.
+		/// </summary>
+		private static void OnContainerClicked(object sender, EventArgs e)
+		{
+			ScrollableControl container = (ScrollableControl)sender;
+			container.Focus();
+		}
+
+		/// <summary>
 		/// Handles the theme changed event - reassigning the renderers to managed
 		/// context menus.
 		/// </summary>
@@ -171,6 +207,15 @@ namespace Eraser.Util
 				else
 					value.Key.RenderMode = ToolStripRenderMode.ManagerRenderMode;
 			}
+		}
+
+		/// <summary>
+		/// Clean up the reference to the container control when it is disposed
+		/// so we allow garbage collection.
+		/// </summary>
+		private static void OnContainerDisposed(object sender, EventArgs e)
+		{
+			ThemedContainers.Remove((ScrollableControl)sender);
 		}
 
 		/// <summary>
@@ -189,6 +234,14 @@ namespace Eraser.Util
 		/// </summary>
 		private static Dictionary<ToolStrip, UXThemeMenuRenderer> ThemedMenus =
 			new Dictionary<ToolStrip, UXThemeMenuRenderer>();
+
+		/// <summary>
+		/// The private list of containers which have comboboxes as one of their
+		/// descendants. This is so that clicking outside the combobox will
+		/// allow the focus to be lost. Users seem to expect this behaviour.
+		/// </summary>
+		private static HashSet<ScrollableControl> ThemedContainers =
+			new HashSet<ScrollableControl>();
 
 		/// <summary>
 		/// Filters the Application message loop for WM_THEMECHANGED messages
