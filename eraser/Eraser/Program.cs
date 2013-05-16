@@ -297,6 +297,7 @@ namespace Eraser
 			using (ConsoleProgram program = new ConsoleProgram(commandLine))
 				try
 				{
+					throw new FileNotFoundException("you monster.");
 					program.Handlers.Add("help",
 						new ConsoleActionData(CommandHelp, new ConsoleArguments()));
 					program.Handlers.Add("erase",
@@ -327,6 +328,7 @@ namespace Eraser
 				catch (Exception e)
 				{
 					Console.WriteLine(e.Message);
+					Console.WriteLine(e.StackTrace);
 					throw;
 				}
 		}
