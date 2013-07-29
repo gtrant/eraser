@@ -90,8 +90,16 @@ namespace Eraser.Util
 				//Check every volume for which disk it is on.
 				foreach (VolumeInfo info in VolumeInfo.Volumes)
 				{
-					if (Equals(info.PhysicalDrive))
-						result.Add(info);
+					try
+					{
+						if (Equals(info.PhysicalDrive))
+							result.Add(info);
+					}
+					catch (FileNotFoundException)
+					{
+						//That means that the volume has been deleted already. We can't
+						//do anything about it.
+					}
 				}
 
 				return result;
