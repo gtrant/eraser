@@ -1,5 +1,5 @@
 /* 
- * $Id: Version.cs.in 2922 2013-05-10 05:19:13Z lowjoel $
+ * $Id: Version.cs.in 2949 2014-10-02 12:43:10Z gtrant $
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -14,7 +14,7 @@
  * Eraser is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *  
  * A copy of the GNU General Public License can be found at
  * <http://www.gnu.org/licenses/>.
  */
@@ -22,13 +22,13 @@ using System;
 using System.Reflection;
 using System.Diagnostics;
 
-[assembly: AssemblyFileVersion("6.1.0.2948")]
+[assembly: AssemblyFileVersion("6.1.0.2950")]
 [assembly: AssemblyVersion("6.1.0.2671")]
 
 namespace Eraser {
 	internal static class BuildInfo
 	{
-		public static readonly DateTime BuildDate = DateTime.Parse("2014/04/30 14:10:22",
+		public static readonly DateTime BuildDate = DateTime.Parse("2014/10/02 17:17:37",
 			System.Globalization.CultureInfo.InvariantCulture);
 		public const bool CustomBuild = true;
 		public static Version AssemblyFileVersion
