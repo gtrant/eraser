@@ -21,6 +21,6 @@
 -->
 
 <Include>
-	<?define VERSIONSTRING=6.1.0.$WCREV$ ?><!-- Major.Minor.Release.Build -->
-	<?define INTERNALVERSIONSTRING=6.1.$WCREV$ ?><!-- Major.Minor.Build; used for MSI version comparisons -->
+	<?define VERSIONSTRING=6.2.0.$WCREV$ ?><!-- Major.Minor.Release.Build -->
+	<?define INTERNALVERSIONSTRING=6.2.$WCREV$ ?><!-- Major.Minor.Build; used for MSI version comparisons -->
 </Include>

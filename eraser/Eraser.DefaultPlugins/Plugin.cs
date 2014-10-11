@@ -80,7 +80,7 @@ namespace Eraser.DefaultPlugins
 
 		public string Author
 		{
-			get { return S._("The Eraser Project <eraser-development@lists.sourceforge.net>"); }
+			get { return S._("The Eraser Project"); }
 		}
 
 		public bool Configurable
