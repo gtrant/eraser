@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
- * $Id: Version.wxs.in 2908 2013-05-10 02:49:45Z lowjoel $
+ * $Id: Version.wxs.in 2954 2014-10-11 13:19:35Z gtrant $
  * Copyright 2008-2013 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
@@ -21,6 +21,6 @@
 -->
 
 <Include>
-	<?define VERSIONSTRING=62.0.2952 ?><!-- Major.Minor.Release.Build -->
-	<?define INTERNALVERSIONSTRING=6.2.2952 ?><!-- Major.Minor.Build; used for MSI version comparisons -->
+	<?define VERSIONSTRING=6.2.0.2956 ?><!-- Major.Minor.Release.Build -->
+	<?define INTERNALVERSIONSTRING=6.2.2956 ?><!-- Major.Minor.Build; used for MSI version comparisons -->
 </Include>
