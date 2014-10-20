@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Resources;
 
@@ -11,7 +10,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The Eraser Project")]
 [assembly: AssemblyProduct("Eraser")]
-[assembly: AssemblyCopyright("Copyright © 2008-2013 The Eraser Project")]
+[assembly: AssemblyCopyright("Copyright © 2008-2014 The Eraser Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

@@ -1,6 +1,6 @@
 ﻿/* 
  * $Id$
- * Copyright 2008-2013 The Eraser Project
+ * Copyright 2008-2014 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
  * 
@@ -435,17 +435,18 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
-		/// <summary>
-		/// Erases the cluster tips of the given file.
-		/// </summary>
-		/// <param name="stream">The stream to erase.</param>
-		/// <param name="method">The erasure method to use.</param>
-		private void EraseFileClusterTips(StreamInfo streamInfo, IErasureMethod method)
-		{
-			//Get the file access times
-			DateTime lastAccess = streamInfo.LastAccessTime;
-			DateTime lastWrite = streamInfo.LastWriteTime;
-			DateTime created = streamInfo.CreationTime;
+        /// <summary>
+        /// Erases the cluster tips of the given file.
+        /// </summary>
+        /// <param name="stream">The stream to erase.</param>
+        /// <param name="method">The erasure method to use.</param>
+        private void EraseFileClusterTips(StreamInfo streamInfo, IErasureMethod method)
+        {
+            //Get the file access times
+            DateTime lastAccess = streamInfo.LastAccessTime;
+            DateTime lastWrite = streamInfo.LastWriteTime;
+            DateTime created = streamInfo.CreationTime;
+            DateTime updated = streamInfo.LastAccessTime;
 
 			//Get the file attributes
 			FileAttributes attributes = streamInfo.Attributes;
@@ -497,7 +498,8 @@ namespace Eraser.DefaultPlugins
 					streamInfo.Attributes = attributes;
 
 				//Reset the file times
-				streamInfo.SetTimes(MinTimestamp, created, lastWrite, lastAccess);
+                //Removed MinTimestamp as first param GT31MAR2013
+                streamInfo.SetTimes(updated, created, lastWrite, lastAccess);
 			}
 		}
 
