@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Eraser is an advanced security tool for Windows, which allows you to completely remove sensitive data from your hard drive by overwriting it several times with carefully selected patterns. Eraser is Free software and its source code is released under GNU General Public License.\r\n\r\nErasure Method Credits:\r\nGutmann (35 Pass):	 	Copyright Peter Gutmann &amp; Colin Plumb\r\nGutmann Lite (10 pass): 		Copyright Peter Gutmann &amp; Colin Plumb\r\nUS DoD (7 pass):			Copyright United States Department of\r\n				Defense\r\nUS DoD (3 pass):			Copyright United States Department of\r\n				Defense\r\nUS Air Force 5020 (3 pass):	Copyright United States Department of\r\n				Defense\r\nUS Army AR380-19 (3 pass):	Copyright United States Department of\r\n				Defense\r\nRCMP TSSIT OPS-II (7 pass):	Copyright Government of Canada,\r\n				Royal Canadian Mounted Police\r\nSchneier's Method (7 pass):	Copyright Bruce Schneier\r\nGerman VSITR (7 pass):		Copyright Germany BSI Verschlusssachen\r\n				-IT-Richtlinien\r\nBritish HMG IS5 (3 pass):		Copyright British Government\r\nBritish HMG IS5 (1 pass):		Copyright British Government\r\nRussian GOST P50739-95 (2 pass):	Copyright Government of the Soviet\r\n				Union \r\nPseudorandom data (1 pass):	Public Domain\r\nFirst/Last 16Kb:			Copyright The Eraser Project\r\n\r\nEraser Copyright © The Eraser Project\r\n\r\nEraser Project Members:\r\n• Sami Tolvanen:		Mentor/Initiator\r\n• Garrett Trant:		Mentor/Researcher\r\n• Joel Low:		Lead Developer\r\n• Kasra Nassiri:		Developer/Security Researcher\r\n• Dennis van Lith:		Designer" xml:space="preserve">
     <value>(Untranslated)</value>
@@ -129,7 +129,7 @@
   <data name="{0} (Built: {1:F})" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="copyright © 2008-2013 The Eraser Project" xml:space="preserve">
+  <data name="copyright © 2008-2014 The Eraser Project" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Eraser is free open-source software!" xml:space="preserve">
@@ -165,7 +165,7 @@
   <data name="usage: Eraser &lt;action&gt; &lt;arguments&gt;\r\nwhere action is\r\n  help                Show this help message.\r\n  erase               Erases items specified on the command line. This is\r\n                      equivalent to addtask, with the schedule set to now.\r\n  addtask             Adds a task to the current task list.\r\n  importtasklist      Imports an Eraser Task list to the current user's Task\r\n                      List.\r\n\r\nglobal parameters:\r\n  /quiet              Do not create a Console window to display progress.\r\n\r\nparameters for help:\r\n  eraser help\r\n\r\n  no parameters to set.\r\n\r\nparameters for erase and addtask:\r\n  eraser erase [/method=(&lt;methodGUID&gt;|&lt;methodName&gt;)] &lt;target&gt; [target [...]]\r\n  eraser addtask [/method=(&lt;methodGUID&gt;|&lt;methodName&gt;)] [/schedule=(now|manually|restart)] &lt;target&gt; [target [...]]\r\n\r\n  /method             The Erasure method to use.\r\n    methodGUID and methodName can be any GUID/Name from the following list:\r\n{0}\r\n    Only erasure methods labelled U can be used to erase unused disk space.\r\n\r\n  /schedule           The schedule the task will follow. The value must be one\r\n                      of:\r\n    now               The task will be queued for immediate execution.\r\n    manually          The task will be created but not queued for execution.\r\n    restart           The task will be queued for execution when the computer\r\n                      is next restarted.\r\n\r\n                      This parameter is only valid for use with addtask.\r\n\r\n  target is one or more of:\r\n{1}\r\nparameters for importtasklist:\r\n  eraser importtasklist &lt;file&gt;[...]\r\n\r\n    file               A list of one or more files to import.\r\n\r\nAll arguments are case sensitive.\r\n\r\nResponse files can be used for very long command lines (generally, anything\r\ninvolving more than 32,000 characters.) Response files are used by prepending\r\n@ to the path to the file, and passing it into the command line. The\r\ncontents of the response files' will be substituted at the same position into\r\nthe command line." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Eraser {0}\r\n(c) 2008-2013 The Eraser Project\r\nEraser is Open-Source Software: see http://eraser.heidi.ie/ for details.\r\n" xml:space="preserve">
+  <data name="Eraser {0}\r\n(c) 2008-2014 The Eraser Project\r\nEraser is Open-Source Software: see http://eraser.heidi.ie/ for details.\r\n" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
   <data name="Unknown schedule type: {0}" xml:space="preserve">

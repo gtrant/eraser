@@ -176,10 +176,6 @@
     <EmbeddedResource Include="Strings.pl.resx" />
     <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Strng Name.snk" />
-    <None Include="Strong Name.snk" />
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

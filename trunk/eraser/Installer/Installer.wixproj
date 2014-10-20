@@ -8,6 +8,11 @@
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>Eraser</OutputName>
     <OutputType>Package</OutputType>
+	<IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+	<SuppressIces>ICE03;ICE82</SuppressIces>
+    <WixVariables>
+    </WixVariables>
+	<DefineConstants>PLATFORMDIR=Win32</DefineConstants>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
