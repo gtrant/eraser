@@ -22,13 +22,13 @@ using System;
 using System.Reflection;
 using System.Diagnostics;
 
-[assembly: AssemblyFileVersion("6.2.0.2958")]
-[assembly: AssemblyVersion("6.2.0.2958")]
+[assembly: AssemblyFileVersion("6.2.0.2959")]
+[assembly: AssemblyVersion("6.2.0.2959")]
 
 namespace Eraser {
 	internal static class BuildInfo
 	{
-		public static readonly DateTime BuildDate = DateTime.Parse("2014/10/20 22:03:07",
+		public static readonly DateTime BuildDate = DateTime.Parse("2014/10/20 22:34:41",
 			System.Globalization.CultureInfo.InvariantCulture);
 		public const bool CustomBuild = true;
 		public static Version AssemblyFileVersion
