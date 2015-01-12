@@ -424,11 +424,11 @@ namespace Eraser {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Eraser {0}\r\n(c) 2008-2014 The Eraser Project\r\nEraser is Open-Source Software: see http://eraser.heidi.ie/ for details.\r\n.
+        ///   Looks up a localized string similar to Eraser {0}\r\n(c) 2008-2015 The Eraser Project\r\nEraser is Open-Source Software: see http://eraser.heidi.ie/ for details.\r\n.
         /// </summary>
         internal static string Eraser__0__r_n_c__2008_2014_The_Eraser_Project_r_nEraser_is_Open_Source_Software__see_http___eraser_heidi_ie__for_details__r_n {
             get {
-                return ResourceManager.GetString("Eraser {0}\\r\\n(c) 2008-2014 The Eraser Project\\r\\nEraser is Open-Source Software:" +
+                return ResourceManager.GetString("Eraser {0}\\r\\n(c) 2008-2015 The Eraser Project\\r\\nEraser is Open-Source Software:" +
                         " see http://eraser.heidi.ie/ for details.\\r\\n", resourceCulture);
             }
         }
