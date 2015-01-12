@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The Eraser Project")]
 [assembly: AssemblyProduct("Eraser")]
-[assembly: AssemblyCopyright("Copyright © 2008-2014 The Eraser Project")]
+[assembly: AssemblyCopyright("Copyright © 2008-2015 The Eraser Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
