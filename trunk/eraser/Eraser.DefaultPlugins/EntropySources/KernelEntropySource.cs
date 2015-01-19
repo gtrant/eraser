@@ -54,7 +54,7 @@ namespace Eraser.DefaultPlugins
 			result.AddRange(StructToBuffer(Process.GetCurrentProcess().StartTime.Ticks));
 
 			result.AddRange(GetFastEntropy());
-			result.AddRange(GetSlowEntropy());
+			//result.AddRange(GetSlowEntropy());
 			return result.ToArray();
 		}
 
@@ -78,7 +78,7 @@ namespace Eraser.DefaultPlugins
 		{
 			List<byte> result = new List<byte>();
 			result.AddRange(GetFastEntropy());
-			result.AddRange(GetSlowEntropy());
+			//result.AddRange(GetSlowEntropy());
 
 			return result.ToArray();
 		}

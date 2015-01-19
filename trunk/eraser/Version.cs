@@ -1,5 +1,5 @@
 /* 
- * $Id: Version.cs.in 2958 2014-10-20 19:49:13Z gtrant $
+ * $Id: Version.cs.in 2962 2015-01-12 18:49:58Z gtrant $
  * Copyright 2008-2015 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -22,13 +22,13 @@ using System;
 using System.Reflection;
 using System.Diagnostics;
 
-[assembly: AssemblyFileVersion("6.2.0.2960")]
-[assembly: AssemblyVersion("6.2.0.2960")]
+[assembly: AssemblyFileVersion("6.2.0.2962")]
+[assembly: AssemblyVersion("6.2.0.2962")]
 
 namespace Eraser {
 	internal static class BuildInfo
 	{
-		public static readonly DateTime BuildDate = DateTime.Parse("2015/01/12 17:14:05",
+		public static readonly DateTime BuildDate = DateTime.Parse("2015/01/19 20:46:29",
 			System.Globalization.CultureInfo.InvariantCulture);
 		public const bool CustomBuild = true;
 		public static Version AssemblyFileVersion
