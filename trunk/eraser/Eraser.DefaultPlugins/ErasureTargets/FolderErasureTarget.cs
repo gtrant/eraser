@@ -66,16 +66,21 @@ namespace Eraser.DefaultPlugins
 
 		protected override void ReadXml(XmlReader reader, bool advance)
 		{
-			base.ReadXml(reader, false);
+            
 			IncludeMask = reader.GetAttribute("includeMask");
 			ExcludeMask = reader.GetAttribute("excludeMask");
+            bool deleteIfEmpty = true;
+            bool.TryParse(reader.GetAttribute("deleteIfEmpty"), out deleteIfEmpty);
+            DeleteIfEmpty = deleteIfEmpty;
 
-			if (reader.HasAttributes)
+            base.ReadXml(reader, false);
+           
+			/*if (reader.HasAttributes)
 			{
 				bool deleteIfEmpty = true;
 				bool.TryParse(reader.GetAttribute("deleteIfEmpty"), out deleteIfEmpty);
 				DeleteIfEmpty = deleteIfEmpty;
-			}
+			}*/
 
 			if (advance)
 				reader.Read();
