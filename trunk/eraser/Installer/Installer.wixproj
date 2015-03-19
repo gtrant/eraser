@@ -88,7 +88,7 @@
 	</Target>
 	-->
   <PropertyGroup>
-    <PostBuildEvent>signtool sign /a /t http://timestamp.verisign.com/scripts/timestamp.dll "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>signtool sign /a /t http://time.certum.pl "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>call "$(ProjectDir)..\UpdateVersions.bat" "$(ProjectDir)\..\\" "$(ProjectDir)..\Version.wxs.in" "$(ProjectDir)..\Version.wxs"
