@@ -9,7 +9,7 @@ for /r "%~1\bin\Release\" %%i in (*.exe) do (
 	)
 )
 
-signtool sign /a /t http://tsa.safecreative.org !binaries!
+signtool sign /a /t http://time.certum.pl !binaries!
 if %errorlevel% geq 1 (
 	echo The Eraser binaries were not signed; see the signtool log for details.
 	exit 0;
