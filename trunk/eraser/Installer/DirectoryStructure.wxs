@@ -92,10 +92,10 @@
 					<RegistryValue Id="EraserStartup" Root="HKLM"
 						Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Run" Name="Eraser"
 						Value="&quot;[#EraserExe]&quot; -atRestart" Type="string" />
-          <RegistryValue Id="EraserStartup" Root="HKLM"
+          <RegistryValue Id="EraserSec1" Root="HKLM"
 						Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" Name="[#EraserExe]"
 						Value="RUNASADMIN" Type="string" />
-          <RegistryValue Id="EraserStartup" Root="HKCU"
+          <RegistryValue Id="EraserSec2" Root="HKCU"
 						Key="SOFTWARE\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers" Name="[#EraserExe]"
 						Value="RUNASADMIN" Type="string" />
 
