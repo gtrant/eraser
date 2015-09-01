@@ -24,24 +24,28 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <SuppressIces>ICE03;ICE82</SuppressIces>
+    <SuppressIces>ICE03;ICE82;ICE80;ICE57</SuppressIces>
     <WixVariables>
     </WixVariables>
     <DefineConstants>PLATFORMDIR=Win32</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <DefineConstants>Debug</DefineConstants>
+    <DefineConstants>Debug;PLATFORMDIR=x64;</DefineConstants>
     <VerboseOutput>True</VerboseOutput>
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
+    <CompilerAdditionalOptions>
+    </CompilerAdditionalOptions>
+    <WixVariables>
+    </WixVariables>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
-    <SuppressIces>ICE03;ICE82;ICE80</SuppressIces>
+    <SuppressIces>ICE03;ICE82;ICE80;ICE57</SuppressIces>
     <WixVariables>
     </WixVariables>
-    <DefineConstants>PLATFORMDIR=x64</DefineConstants>
+    <DefineConstants>PLATFORMDIR=X64</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DirectoryStructure.wxs" />
@@ -88,10 +92,10 @@
 	</Target>
 	-->
   <PropertyGroup>
-    <PostBuildEvent>signtool sign /a /t http://time.certum.pl "$(TargetPath)"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <PreBuildEvent>call "$(ProjectDir)..\UpdateVersions.bat" "$(ProjectDir)\..\\" "$(ProjectDir)..\Version.wxs.in" "$(ProjectDir)..\Version.wxs"
 call "$(ProjectDir)\SignBin.bat" "$(ProjectDir)..\\"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>C:\codesign\signtool.exe sign /a /t http://time.certum.pl "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
