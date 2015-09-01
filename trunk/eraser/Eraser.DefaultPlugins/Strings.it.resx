@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Random Data" xml:space="preserve">
     <value>Dati "casuali"</value>
@@ -150,56 +150,62 @@
   <data name="An invalid erasure method was selected." xml:space="preserve">
     <value>E' stato selezionato un metodo di pulizia non valido.</value>
   </data>
-  <data name="RNGCryptoServiceProvider" xml:space="preserve">
-    <value>RNGCryptoServiceProvider</value>
-  </data>
-  <data name="Could not erase directory entries on the volume {0} because the volume is currently in use." xml:space="preserve">
-    <value>Impossibile pulire i puntamenti ai folder sul volume {0} perchè è attualmente in uso.</value>
-  </data>
-  <data name="The folder {0} cannot be deleted as it is not empty." xml:space="preserve">
-    <value>La cartella {0} non può essere cancellata perhcè non è vuota.</value>
-  </data>
-  <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
-    <value>Non è stato possibile pulire il file {0} perchè i permessi su di esso ne impediscono l'accesso.</value>
-  </data>
-  <data name="The file {0} is currently in use and cannot be removed." xml:space="preserve">
-    <value>Il file {0} è attualmente in uso e non può essere rimosso.</value>
-  </data>
-  <data name="(unknown)" xml:space="preserve">
+  <data name="Kernel Entropy Source" xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
-    <value>Impossibile forzare la chiusura del file \"{0}\" {1}(in uso da {0})</value>
+  <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">
+    <value>Il metodo di pulizia custom può solo prevedere passi costanti oppure casuali</value>
   </data>
-  <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
-    <value>E' stata selezionata una "Plausible deniability", but no decoy files were found. The current file has been only replaced with random data.</value>
+  <data name="US DoD 5220.22-M (8-306./E, C &amp; E)" xml:space="preserve">
+    <value>US DoD 5220.22-M (8-306./E, C &amp; E)</value>
   </data>
-  <data name="Could not erase cluster tips in {0} as the volume is not mounted." xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips in {0} perchè il volumen non è montato.</value>
+  <data name="US DoD 5220.22-M (8-306./E)" xml:space="preserve">
+    <value>US DoD 5220.22-M (8-306./E)</value>
   </data>
-  <data name="{0} did not have its cluster tips erased because you do not have the required permissions to erase the file cluster tips." xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips di {0} perchè non in possesso dei necessari permessi.</value>
+  <data name="{0} (1 pass)" xml:space="preserve">
+    <value>{0} (1 passo)</value>
   </data>
-  <data name="{0} did not have its cluster tips erased. The error returned was: {1}" xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips di {0}. L'errore ricevuto è: {1}</value>
+  <data name="{0} ({1} passes)" xml:space="preserve">
+    <value>{0} ({1} passi)</value>
   </data>
-  <data name="Files in {0} did not have their cluster tips erased because it is a hard link or a symbolic link." xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips dei files in {0} perchè è un hard link oppure un symbolic link.</value>
+  <data name="Random" xml:space="preserve">
+    <value>Casuale</value>
   </data>
-  <data name="{0} did not have its cluster tips erased, because it is a system file" xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips di {0} perchè è un file di sistema.</value>
+  <data name="The First/last 16KB erasure method requires another erasure method to erase the file.\n\nThis must be set in the Plugin Settings dialog." xml:space="preserve">
+    <value>Il metodo di pulizia First/last 16KB richiede un altro metodo di pulizia per la cancellazione del file.\n\nQuesto deve essere indicato nelle impostazioni dell'estensione.</value>
   </data>
-  <data name="{0} did not have its cluster tips erased because it is a hard link or a symbolic link." xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips di {0} perchè è un hard link oppure un symbolic link.</value>
+  <data name="First/last 16KB Erasure" xml:space="preserve">
+    <value>First/last 16KB Erasure</value>
   </data>
-  <data name="{0} did not have its cluster tips erased because it is compressed, encrypted or a sparse file." xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips di {0} perchè è compresso, crittato o distribuito.</value>
+  <data name="Russian GOST P50739-95" xml:space="preserve">
+    <value>Russian GOST P50739-95</value>
   </data>
-  <data name="{0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
-    <value>Non sono stati puliti i cluster tips di {0} per il seguente errore: {1}</value>
+  <data name="Gutmann" xml:space="preserve">
+    <value>Gutmann</value>
   </data>
-  <data name="Files in {0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
-    <value>(Untranslated)</value>
+  <data name="British HMG IS5 (Baseline)" xml:space="preserve">
+    <value>British HMG IS5 (Baseline)</value>
+  </data>
+  <data name="British HMG IS5 (Enhanced)" xml:space="preserve">
+    <value>British HMG IS5 (Enhanced)</value>
+  </data>
+  <data name="Pseudorandom Data" xml:space="preserve">
+    <value>Pseudorandom Data</value>
+  </data>
+  <data name="RCMP TSSIT OPS-II" xml:space="preserve">
+    <value>RCMP TSSIT OPS-II</value>
+  </data>
+  <data name="Schneier 7 pass" xml:space="preserve">
+    <value>Schneier 7 pass</value>
+  </data>
+  <data name="US Air Force 5020" xml:space="preserve">
+    <value>US Air Force 5020</value>
+  </data>
+  <data name="US Army AR380-19" xml:space="preserve">
+    <value>US Army AR380-19</value>
+  </data>
+  <data name="German VSITR" xml:space="preserve">
+    <value>German VSITR</value>
   </data>
   <data name="Drive/Partition" xml:space="preserve">
     <value>(Untranslated)</value>
@@ -267,6 +273,9 @@
   <data name="The file {0} was not erased as the file does not exist." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
+  <data name="The file {0} could not be erased because the file's permissions prevent access to the file." xml:space="preserve">
+    <value>Non è stato possibile pulire il file {0} perchè i permessi su di esso ne impediscono l'accesso.</value>
+  </data>
   <data name="The file {0} could not be erased because the file is currently in used by another application." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
@@ -281,6 +290,12 @@
   </data>
   <data name="The file {0} was not erased because the containing directory was deleted before it could be erased." xml:space="preserve">
     <value>(Untranslated)</value>
+  </data>
+  <data name="(unknown)" xml:space="preserve">
+    <value>(Untranslated)</value>
+  </data>
+  <data name="Could not force closure of file \&quot;{0}\&quot; {1}(locked by {0})" xml:space="preserve">
+    <value>Impossibile forzare la chiusura del file \"{0}\" {1}(in uso da {0})</value>
   </data>
   <data name="Files in Folder" xml:space="preserve">
     <value>File in cartella</value>
@@ -387,61 +402,46 @@
   <data name="unused              Erases unused space in the volume.\r\n  arguments: unused=&lt;drive&gt;[,clusterTips[=(true|false)]]\r\n  clusterTips     If specified, the drive's files will have their\r\n                  cluster tips erased. This parameter accepts a Boolean\r\n                  value (true/false) as an argument; if none is specified\r\n                  true is assumed." xml:space="preserve">
     <value>(Untranslated)</value>
   </data>
-  <data name="The custom erasure method can only comprise passes containing constant or random passes" xml:space="preserve">
-    <value>Il metodo di pulizia custom può solo prevedere passi costanti oppure casuali</value>
+  <data name="Could not erase directory entries on the volume {0} because the volume is currently in use." xml:space="preserve">
+    <value>Impossibile pulire i puntamenti ai folder sul volume {0} perchè è attualmente in uso.</value>
   </data>
-  <data name="US DoD 5220.22-M (8-306./E, C &amp; E)" xml:space="preserve">
-    <value>US DoD 5220.22-M (8-306./E, C &amp; E)</value>
+  <data name="The folder {0} cannot be deleted as it is not empty." xml:space="preserve">
+    <value>La cartella {0} non può essere cancellata perhcè non è vuota.</value>
   </data>
-  <data name="US DoD 5220.22-M (8-306./E)" xml:space="preserve">
-    <value>US DoD 5220.22-M (8-306./E)</value>
+  <data name="The file {0} is currently in use and cannot be removed." xml:space="preserve">
+    <value>Il file {0} è attualmente in uso e non può essere rimosso.</value>
   </data>
-  <data name="{0} (1 pass)" xml:space="preserve">
-    <value>{0} (1 passo)</value>
+  <data name="Plausible deniability was selected, but no decoy files were found. The current file has been only replaced with random data." xml:space="preserve">
+    <value>E' stata selezionata una "Plausible deniability", but no decoy files were found. The current file has been only replaced with random data.</value>
   </data>
-  <data name="{0} ({1} passes)" xml:space="preserve">
-    <value>{0} ({1} passi)</value>
+  <data name="Could not erase cluster tips in {0} as the volume is not mounted." xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips in {0} perchè il volumen non è montato.</value>
   </data>
-  <data name="Random" xml:space="preserve">
-    <value>Casuale</value>
+  <data name="{0} did not have its cluster tips erased because you do not have the required permissions to erase the file cluster tips." xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips di {0} perchè non in possesso dei necessari permessi.</value>
   </data>
-  <data name="The First/last 16KB erasure method requires another erasure method to erase the file.\n\nThis must be set in the Plugin Settings dialog." xml:space="preserve">
-    <value>Il metodo di pulizia First/last 16KB richiede un altro metodo di pulizia per la cancellazione del file.\n\nQuesto deve essere indicato nelle impostazioni dell'estensione.</value>
+  <data name="{0} did not have its cluster tips erased. The error returned was: {1}" xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips di {0}. L'errore ricevuto è: {1}</value>
   </data>
-  <data name="First/last 16KB Erasure" xml:space="preserve">
-    <value>First/last 16KB Erasure</value>
+  <data name="Files in {0} did not have their cluster tips erased because it is a hard link or a symbolic link." xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips dei files in {0} perchè è un hard link oppure un symbolic link.</value>
   </data>
-  <data name="Russian GOST P50739-95" xml:space="preserve">
-    <value>Russian GOST P50739-95</value>
+  <data name="{0} did not have its cluster tips erased, because it is a system file" xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips di {0} perchè è un file di sistema.</value>
   </data>
-  <data name="Gutmann" xml:space="preserve">
-    <value>Gutmann</value>
+  <data name="{0} did not have its cluster tips erased because it is a hard link or a symbolic link." xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips di {0} perchè è un hard link oppure un symbolic link.</value>
   </data>
-  <data name="British HMG IS5 (Baseline)" xml:space="preserve">
-    <value>British HMG IS5 (Baseline)</value>
+  <data name="{0} did not have its cluster tips erased because it is compressed, encrypted or a sparse file." xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips di {0} perchè è compresso, crittato o distribuito.</value>
   </data>
-  <data name="British HMG IS5 (Enhanced)" xml:space="preserve">
-    <value>British HMG IS5 (Enhanced)</value>
+  <data name="{0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
+    <value>Non sono stati puliti i cluster tips di {0} per il seguente errore: {1}</value>
   </data>
-  <data name="Pseudorandom Data" xml:space="preserve">
-    <value>Pseudorandom Data</value>
-  </data>
-  <data name="RCMP TSSIT OPS-II" xml:space="preserve">
-    <value>RCMP TSSIT OPS-II</value>
-  </data>
-  <data name="Schneier 7 pass" xml:space="preserve">
-    <value>Schneier 7 pass</value>
-  </data>
-  <data name="US Air Force 5020" xml:space="preserve">
-    <value>US Air Force 5020</value>
-  </data>
-  <data name="US Army AR380-19" xml:space="preserve">
-    <value>US Army AR380-19</value>
-  </data>
-  <data name="German VSITR" xml:space="preserve">
-    <value>German VSITR</value>
-  </data>
-  <data name="Kernel Entropy Source" xml:space="preserve">
+  <data name="Files in {0} did not have its cluster tips erased because of the following error: {1}" xml:space="preserve">
     <value>(Untranslated)</value>
+  </data>
+  <data name="RNGCryptoServiceProvider" xml:space="preserve">
+    <value>RNGCryptoServiceProvider</value>
   </data>
 </root>
