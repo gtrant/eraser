@@ -27,7 +27,7 @@
 		<!-- Add/Remove programs information -->
 		<Property Id="ARPCOMMENTS">Secure Data Removal for Windows</Property>
 		<Property Id="ARPPRODUCTICON">Eraser.exe</Property>
-		<Property Id="ARPHELPLINK">http://bbs.heidi.ie/viewforum.php?f=30</Property>
+		<Property Id="ARPHELPLINK">http://eraser.heidi.ie/forum/</Property>
 		<Property Id="ARPURLINFOABOUT">http://eraser.heidi.ie/</Property>
 
 		<UI>
