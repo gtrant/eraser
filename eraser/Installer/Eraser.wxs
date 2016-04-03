@@ -22,7 +22,6 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include "..\Version.wxs"?>
-
 	<Product Id="*" Name="Eraser $(var.VERSIONSTRING)" Language="1033"
 			Version="$(var.INTERNALVERSIONSTRING)" Manufacturer="The Eraser Project"
 			UpgradeCode="073882B4-E059-4FB4-9D36-11E88D14AE87">
@@ -83,8 +82,8 @@
 				<ComponentRef Id="EraserShell" />
 			</Feature>
 			<FeatureRef Id="EraserLanguages" />
-			<MergeRef Id="VCRedist"/>
-			<MergeRef Id="VCMfcRedist"/>
+			<!--<MergeRef Id="VCRedist"/>
+			<MergeRef Id="VCMfcRedist"/> -->
 		</Feature>
 	</Product>
 </Wix>
