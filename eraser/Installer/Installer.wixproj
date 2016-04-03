@@ -65,8 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.rtf" />
-    <Content Include="Merge Modules\Microsoft_VC120_CRT_x64.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_MFC_x64.msm" />
     <Content Include="Resources\Banner.bmp" />
     <Content Include="Resources\Dialog.bmp" />
     <Content Include="Resources\Exclamation.ico" />

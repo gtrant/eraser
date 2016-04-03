@@ -391,7 +391,7 @@ bool InstallNetFramework(std::wstring tempDir, bool quiet)
 	if (std::wstring(L"\\/").find(tempDir[tempDir.length() - 1]) == std::wstring::npos)
 		tempDir += L"\\";
 	std::wstring commandLine(L'"' + tempDir);
-	commandLine += L"dotNetFx40_Full_setup.exe\" /norestart";
+	commandLine += L"dotNetFx40_Full_x86_x64.exe\" /norestart";
 
 	//If the user wants it quiet then pass the /q switch
 	if (quiet)
