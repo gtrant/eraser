@@ -80,10 +80,8 @@
 				<ComponentRef Id="EraserShell" />
 			</Feature>
 			<FeatureRef Id="EraserLanguages" />
-      <!-- Not Needed
 			<MergeRef Id="VCRedist"/>
 			<MergeRef Id="VCMfcRedist"/>
-			<MergeRef Id="VCAtlRedist"/>-->
 		</Feature>
 	</Product>
 </Wix>
