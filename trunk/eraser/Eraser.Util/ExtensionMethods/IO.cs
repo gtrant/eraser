@@ -228,7 +228,19 @@ namespace Eraser.Util.ExtensionMethods
 		{
 			return PathUtil.GetCompactPath(info.FullName, newWidth, drawFont);
 		}
-
+        /// <summary>
+        /// Checks whether the path given is encrypted.
+        /// </summary>
+        /// <param name="info">The <see cref="System.IO.FileInfo"/> object</param>
+        /// <returns>True if the file is encrypted.</returns>
+        public static bool IsEncrypted(this FileSystemInfo info)
+        {
+            Boolean encryptionStatus = false;
+            FileInfo fi = new FileInfo(info.FullName);
+            if (fi.Attributes.HasFlag(FileAttributes.Encrypted))
+            { encryptionStatus = true; }
+            return encryptionStatus;
+        }
 		/// <summary>
 		/// Checks whether the path given is compressed.
 		/// </summary>
