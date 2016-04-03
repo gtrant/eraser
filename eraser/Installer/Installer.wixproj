@@ -7,7 +7,7 @@
     <ProjectGuid>{318964cf-278d-41b2-a825-b9a0d1f5d766}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
     <OutputName>Eraser</OutputName>
-    <OutputType>Package</OutputType>
+    <OutputType>Bundle</OutputType>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <SuppressIces>ICE03;ICE82</SuppressIces>
     <WixVariables>
@@ -65,12 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.rtf" />
-    <Content Include="Merge Modules\Microsoft_VC110_ATL_x64.msm" />
-    <Content Include="Merge Modules\Microsoft_VC110_ATL_x86.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_CRT_x64.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_CRT_x86.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_MFC_x64.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_MFC_x86.msm" />
     <Content Include="Resources\Banner.bmp" />
     <Content Include="Resources\Dialog.bmp" />
     <Content Include="Resources\Exclamation.ico" />
