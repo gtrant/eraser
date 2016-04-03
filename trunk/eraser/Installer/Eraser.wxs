@@ -22,11 +22,14 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<?include "..\Version.wxs"?>
+
 	<Product Id="*" Name="Eraser $(var.VERSIONSTRING)" Language="1033"
 			Version="$(var.INTERNALVERSIONSTRING)" Manufacturer="The Eraser Project"
 			UpgradeCode="073882B4-E059-4FB4-9D36-11E88D14AE87">
-		<Package Id="*" InstallerVersion="300" Compressed="yes" Keywords="Eraser"
+
+		<Package Id="*" InstallerVersion="405" Compressed="yes" Keywords="Eraser"
 			Description="Eraser Installer" Manufacturer="The Eraser Project" />
+    
 		<Media Id="1" Cabinet="Installer.cab" CompressionLevel="none" EmbedCab="yes" />
 
 		<!-- Prevent those pesky MSI shortcuts which prevent running as Administrator -->
