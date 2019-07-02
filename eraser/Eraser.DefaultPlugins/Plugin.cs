@@ -58,7 +58,8 @@ namespace Eraser.DefaultPlugins
 			Host.Instance.FileSystems.Add(new Fat12FileSystem());
 			Host.Instance.FileSystems.Add(new Fat16FileSystem());
 			Host.Instance.FileSystems.Add(new Fat32FileSystem());
-			Host.Instance.FileSystems.Add(new NtfsFileSystem());
+            Host.Instance.FileSystems.Add(new exFatFileSystem());
+            Host.Instance.FileSystems.Add(new NtfsFileSystem());
 
 			Host.Instance.ErasureTargetFactories.Add(new FileErasureTarget());
 			Host.Instance.ErasureTargetFactories.Add(new FolderErasureTarget());

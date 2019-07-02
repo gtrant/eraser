@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4AA1FBC2-DA5C-4204-B152-B5929516DC48}"
 	ProjectSection(SolutionItems) = preProject
@@ -49,6 +49,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraser.BlackBox", "Eraser.BlackBox\Eraser.BlackBox.csproj", "{F8C3524E-B846-454B-BA41-5E2AA64BD56B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eraser.Plugins", "Eraser.Plugins\Eraser.Plugins.csproj", "{59F7ED0F-3589-4112-B612-4A9A6588F4A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BevelLine", "..\..\..\EraserExtras\BevelLine_Code_2005_BETA2\BevelLine\BevelLine.csproj", "{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -133,8 +135,8 @@ Global
 		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|Any CPU.ActiveCfg = Release|x86
 		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|Mixed Platforms.Build.0 = Release|x86
-		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|x64.ActiveCfg = Release|x86
-		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|x64.Build.0 = Release|x86
+		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|x64.ActiveCfg = Release|x64
+		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|x64.Build.0 = Release|x64
 		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|x86.ActiveCfg = Release|x86
 		{318964CF-278D-41B2-A825-B9A0D1F5D766}.Release|x86.Build.0 = Release|x86
 		{4F6CD250-0A08-4DB8-8E07-848E4FF01C21}.Debug|Any CPU.ActiveCfg = Debug|Win32
@@ -209,8 +211,27 @@ Global
 		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|x64.Build.0 = Release|Any CPU
 		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|x86.ActiveCfg = Release|Any CPU
 		{59F7ED0F-3589-4112-B612-4A9A6588F4A0}.Release|x86.Build.0 = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|x64.Build.0 = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Debug|x86.Build.0 = Debug|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|x64.ActiveCfg = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|x64.Build.0 = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|x86.ActiveCfg = Release|Any CPU
+		{F7D374B1-345C-4CB6-A564-C1B1AC2B3C4A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68E0C197-1BAA-4337-8DC5-4FD3A1F331E8}
 	EndGlobalSection
 EndGlobal

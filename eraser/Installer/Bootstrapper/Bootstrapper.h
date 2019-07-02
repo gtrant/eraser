@@ -26,6 +26,7 @@
 #include <map>
 
 #include "resource.h"
+#include "base64.h"
 #undef Yield
 #undef min
 

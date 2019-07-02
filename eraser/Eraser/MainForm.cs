@@ -431,7 +431,7 @@ namespace Eraser
 		{
 			try
 			{
-				Process.Start("http://eraser.heidi.ie/");
+				Process.Start("https://eraser.heidi.ie/");
 			}
 			catch (Win32Exception ex)
 			{

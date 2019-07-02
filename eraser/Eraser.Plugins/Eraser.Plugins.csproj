@@ -134,7 +134,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Strings.en.resx" />
+    <EmbeddedResource Include="Strings.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Strings.it.resx" />
     <EmbeddedResource Include="Strings.nl.resx" />
     <EmbeddedResource Include="Strings.pl.resx" />

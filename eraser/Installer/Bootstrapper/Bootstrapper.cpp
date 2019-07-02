@@ -392,7 +392,16 @@ bool InstallNetFramework(std::wstring tempDir, bool quiet)
 		tempDir += L"\\";
 	std::wstring commandLine(L'"' + tempDir);
 	commandLine += L"dotNetFx40_Full_x86_x64.exe\" /norestart";
+	//commandLine += L"dotNetFx40_Full_setup.exe\" /norestart";
 
+	/*
+	//Due to virus false positives we base64 encode some strings namely "dotNetFx40_Full_x86_x64.exe /norestart"
+	//std::vector<BYTE> myData;
+	//std::string encodedData = base64_encode(&myData[0], myData.size());
+	std::vector<BYTE> decodedData = base64_decode("ZG90TmV0Rng0MF9GdWxsX3g4Nl94NjQuZXhlIC9ub3Jlc3RhcnQ=");
+	std::wstring ustr(decodedData.begin(), decodedData.end());
+	commandLine += ustr; 
+	*/
 	//If the user wants it quiet then pass the /q switch
 	if (quiet)
 		commandLine += L" /q";

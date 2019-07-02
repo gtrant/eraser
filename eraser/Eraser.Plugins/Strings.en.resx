@@ -139,6 +139,6 @@
     <value>(default)</value>
   </data>
   <data name="The file system on the drive {0} is not supported." xml:space="preserve">
-    <value>The file system on the drive {0} is not supported.</value>
+    <value>(Untranslated)</value>
   </data>
 </root>

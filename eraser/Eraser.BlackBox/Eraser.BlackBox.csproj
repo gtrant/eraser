@@ -55,11 +55,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BevelLine, Version=1.0.3589.29437, Culture=neutral, PublicKeyToken=77979e16578a2d88, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\BevelLine.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=3ac89a0351e689b6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -138,6 +133,10 @@
     <EmbeddedResource Include="Strings.resx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\EraserExtras\BevelLine_Code_2005_BETA2\BevelLine\BevelLine.csproj">
+      <Project>{f7d374b1-345c-4cb6-a564-c1b1ac2b3c4a}</Project>
+      <Name>BevelLine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Eraser.Plugins\Eraser.Plugins.csproj">
       <Project>{59F7ED0F-3589-4112-B612-4A9A6588F4A0}</Project>
       <Name>Eraser.Plugins</Name>

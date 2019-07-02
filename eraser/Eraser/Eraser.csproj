@@ -68,10 +68,6 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BevelLine, Version=1.0.2859.29240, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dependencies\BevelLine.dll</HintPath>
-    </Reference>
     <Reference Include="CommonLibrary, Version=0.9.3.10, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\CommonLibrary.dll</HintPath>
@@ -413,6 +409,10 @@
     <Content Include="Resources\ToolbarSettings.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\EraserExtras\BevelLine_Code_2005_BETA2\BevelLine\BevelLine.csproj">
+      <Project>{f7d374b1-345c-4cb6-a564-c1b1ac2b3c4a}</Project>
+      <Name>BevelLine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Eraser.Manager\Eraser.Manager.csproj">
       <Project>{C1AC3255-0939-499D-A69D-725E3DD4F574}</Project>
       <Name>Eraser.Manager</Name>
