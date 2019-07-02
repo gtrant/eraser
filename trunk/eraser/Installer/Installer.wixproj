@@ -54,6 +54,10 @@
     <Compile Include="UserInterface.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
     <WixExtension Include="WixUIExtension">
       <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
       <Name>WixUIExtension</Name>
@@ -65,10 +69,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="License.rtf" />
-    <Content Include="Merge Modules\Microsoft_VC120_CRT_x64.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_CRT_x86.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_MFC_x64.msm" />
-    <Content Include="Merge Modules\Microsoft_VC120_MFC_x86.msm" />
+    <Content Include="Merge Modules\Microsoft_VC140_CRT_x64.msm" />
+    <Content Include="Merge Modules\Microsoft_VC140_CRT_x86.msm" />
+    <Content Include="Merge Modules\Microsoft_VC140_MFC_x64.msm" />
+    <Content Include="Merge Modules\Microsoft_VC140_MFC_x86.msm" />
     <Content Include="Resources\Banner.bmp" />
     <Content Include="Resources\Dialog.bmp" />
     <Content Include="Resources\Exclamation.ico" />
@@ -94,6 +98,6 @@
 call "$(ProjectDir)\SignBin.bat" "$(ProjectDir)..\\"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>C:\codesign\signtool.exe sign /a /t http://time.certum.pl "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0\x64\signtool.exe" sign /a /t http://time.certum.pl "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

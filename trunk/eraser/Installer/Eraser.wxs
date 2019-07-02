@@ -21,69 +21,70 @@
 -->
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<?include "..\Version.wxs"?>
-	<Product Id="*" Name="Eraser $(var.VERSIONSTRING)" Language="1033"
+  <?include "..\Version.wxs"?>
+
+  <Product Id="*" Name="Eraser $(var.VERSIONSTRING)" Language="1033"
 			Version="$(var.INTERNALVERSIONSTRING)" Manufacturer="The Eraser Project"
 			UpgradeCode="073882B4-E059-4FB4-9D36-11E88D14AE87">
 
-		<Package Id="*" InstallerVersion="405" Compressed="yes" Keywords="Eraser"
+    <Package Id="*" InstallerVersion="405" Compressed="yes" Keywords="Eraser"
 			Description="Eraser Installer" Manufacturer="The Eraser Project" />
-    
-		<Media Id="1" Cabinet="Installer.cab" CompressionLevel="none" EmbedCab="yes" />
 
-		<!-- Prevent those pesky MSI shortcuts which prevent running as Administrator -->
-		<Property Id="DISABLEADVTSHORTCUTS" Value="1" />
+    <Media Id="1" Cabinet="Installer.cab" CompressionLevel="none" EmbedCab="yes" />
 
-		<!-- Program upgrades-->
-		<Upgrade Id="073882B4-E059-4FB4-9D36-11E88D14AE87">
-			<UpgradeVersion Property="ERASERUPDATE" Minimum="6.0.0" Maximum="$(var.INTERNALVERSIONSTRING)" OnlyDetect="no" />
-			<UpgradeVersion Property="ERASERDOWNDATE" Minimum="$(var.INTERNALVERSIONSTRING)" OnlyDetect="yes" />
-		</Upgrade>
-		<CustomAction Id="AlreadyUpdated" Error="A newer version of Eraser is already installed. Setup will now exit." />
-		<InstallUISequence>
-			<FindRelatedProducts Before="LaunchConditions" />
-			<Custom Action="AlreadyUpdated" After="FindRelatedProducts">ERASERDOWNDATE</Custom>
-		</InstallUISequence>
-		<InstallExecuteSequence>
-			<RemoveExistingProducts After="InstallInitialize" />
-		</InstallExecuteSequence>
+    <!-- Prevent those pesky MSI shortcuts which prevent running as Administrator -->
+    <Property Id="DISABLEADVTSHORTCUTS" Value="1" />
 
-		<!-- Program directory -->
-		<Directory Id="TARGETDIR" Name="SourceDir">
-			<?if $(sys.BUILDARCH) = "x64"?>
-				<Directory Id="ProgramFiles64Folder">
-					<Directory Id="PFFolder" />
-				</Directory>
-			<?else?>
-				<Directory Id="ProgramFilesFolder">
-					<Directory Id="PFFolder" />
-				</Directory>
-			<?endif?>
+    <!-- Program upgrades-->
+    <Upgrade Id="073882B4-E059-4FB4-9D36-11E88D14AE87">
+      <UpgradeVersion Property="ERASERUPDATE" Minimum="6.0.0" Maximum="$(var.INTERNALVERSIONSTRING)" OnlyDetect="no" />
+      <UpgradeVersion Property="ERASERDOWNDATE" Minimum="$(var.INTERNALVERSIONSTRING)" OnlyDetect="yes" />
+    </Upgrade>
+    <CustomAction Id="AlreadyUpdated" Error="A newer version of Eraser is already installed. Setup will now exit." />
+    <InstallUISequence>
+      <FindRelatedProducts Before="LaunchConditions" />
+      <Custom Action="AlreadyUpdated" After="FindRelatedProducts">ERASERDOWNDATE</Custom>
+    </InstallUISequence>
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallInitialize" />
+    </InstallExecuteSequence>
 
-			<Directory Id="ProgramMenuFolder" Name="ProgramMenu" />
-			<Directory Id="DesktopFolder" Name="Desktop" />
-		</Directory>
+    <!-- Program directory -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <?if $(sys.BUILDARCH) = "x64"?>
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="PFFolder" />
+      </Directory>
+      <?else?>
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="PFFolder" />
+      </Directory>
+      <?endif?>
 
-		<!-- Features -->
-		<Feature Id="EraserMain" Title="Eraser" Description="The main Eraser program files." Level="1"
+      <Directory Id="ProgramMenuFolder" Name="ProgramMenu" />
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <!-- Features -->
+    <Feature Id="EraserMain" Title="Eraser" Description="The main Eraser program files." Level="1"
 				ConfigurableDirectory="INSTALLLOCATION" AllowAdvertise="system" Display="expand">
-			<ComponentRef Id="EraserMain" />
-			<ComponentRef Id="EraserLangEn" />
-			<ComponentRef Id="EraserPlugins" />
-			<ComponentRef Id="EraserDefaultPluginsLangEn" />
+      <ComponentRef Id="EraserMain" />
+      <ComponentRef Id="EraserLangEn" />
+      <ComponentRef Id="EraserPlugins" />
+      <ComponentRef Id="EraserDefaultPluginsLangEn" />
 
-			<Feature Id="EraserMainBlackBox" Title="Eraser BlackBox"
+      <Feature Id="EraserMainBlackBox" Title="Eraser BlackBox"
 					Description="Eraser BlackBox error reporting component" Level="1">
-				<ComponentRef Id="EraserBlackBox"/>
-				<ComponentRef Id="EraserBlackBoxLangEn" />
-			</Feature>
-			<Feature Id="EraserMainShell" Title="Eraser Shell Extension"
+        <ComponentRef Id="EraserBlackBox"/>
+        <ComponentRef Id="EraserBlackBoxLangEn" />
+      </Feature>
+      <Feature Id="EraserMainShell" Title="Eraser Shell Extension"
 					Description="Eraser shell integration" Level="1">
-				<ComponentRef Id="EraserShell" />
-			</Feature>
-			<FeatureRef Id="EraserLanguages" />
-			<MergeRef Id="VCRedist"/>
-			<MergeRef Id="VCMfcRedist"/> 
-		</Feature>
-	</Product>
+        <ComponentRef Id="EraserShell" />
+      </Feature>
+      <FeatureRef Id="EraserLanguages" />
+      <MergeRef Id="VCRedist"/>
+      <MergeRef Id="VCMfcRedist"/>
+    </Feature>
+  </Product>
 </Wix>

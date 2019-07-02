@@ -59,7 +59,7 @@ namespace Eraser.Util
 			double variance = Math.Sqrt(Samples.Sum(
 				sample => Math.Pow(sample.Value - mean, 2.0)) / (double)(Samples.Count - 1));
 			double tPercentile = alglib.studenttdistr.invstudenttdistribution(
-				Samples.Count - 1, (significanceLevel + 1) / 2);
+				Samples.Count - 1, (significanceLevel + 1) / 2,null);
 
 			double interval = tPercentile * variance * Math.Sqrt(1 + (1.0 / Samples.Count));
 			return new Interval(mean - interval, mean + interval);

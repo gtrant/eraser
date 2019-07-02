@@ -197,4 +197,22 @@ namespace Eraser.DefaultPlugins
 			return new Fat32Api(info, stream);
 		}
 	}
+    [Guid("F4BF892D-2739-4DE0-B0F0-AD2280B7E15D")]
+    class exFatFileSystem : FatFileSystem
+    {
+        public override Guid Guid
+        {
+            get { return GetType().GUID; }
+        }
+
+        public override string Name
+        {
+            get { return "exFAT"; }
+        }
+
+        protected override FatApi GetFatApi(VolumeInfo info, FileStream stream)
+        {
+            return new Fat32Api(info, stream);
+        }
+    }
 }

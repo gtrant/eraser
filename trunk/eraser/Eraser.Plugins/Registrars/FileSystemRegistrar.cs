@@ -54,7 +54,7 @@ namespace Eraser.Plugins.Registrars
 						return filesystem;
 					}
 
-				throw new NotSupportedException(S._("The file system on the drive {0} is not " +
+                throw new NotSupportedException(S._("The file system on the drive {0} is not " +
 					"supported.", volume));
 			}
 		}
