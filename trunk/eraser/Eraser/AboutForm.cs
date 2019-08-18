@@ -148,7 +148,7 @@ Eraser Project Members:
 				SizeF copyrightSize = g.MeasureString(copyrightText, Font);
 				g.DrawString(copyrightText, Font, textBrush, copyrightPos);
 
-				const string websiteText = "http://eraser.heidi.ie/";
+				const string websiteText = "https://eraser.heidi.ie/";
 				PointF websitePos = new PointF(copyrightPos.X, copyrightPos.Y + copyrightSize.Height);
 				SizeF websiteSize = g.MeasureString(websiteText, Font);
 				g.DrawString(websiteText, underlineFont, textBrush, websitePos);
@@ -217,7 +217,7 @@ Eraser Project Members:
 			try
 			{
 				if (WebsiteRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
-					Process.Start("http://eraser.heidi.ie/");
+					Process.Start("https://eraser.heidi.ie/");
 				else if (DonateRect.IntersectsWith(new Rectangle(cursorPos, new Size(1, 1))))
 					Process.Start("http://sourceforge.net/donate/index.php?group_id=37015");
 				else if ((DateTime.Now - mouseDownTime < mouseSpeedUpSpan))

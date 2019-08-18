@@ -119,10 +119,14 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="Image.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 9</value>
+    <value>18, 14</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="Image.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="Image.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 40</value>
+    <value>60, 60</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Image.TabIndex" type="System.Int32, mscorlib">
@@ -144,10 +148,13 @@
     <value>True</value>
   </data>
   <data name="Message.Location" type="System.Drawing.Point, System.Drawing">
-    <value>58, 9</value>
+    <value>87, 14</value>
+  </data>
+  <data name="Message.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="Message.Size" type="System.Drawing.Size, System.Drawing">
-    <value>272, 15</value>
+    <value>413, 25</value>
   </data>
   <data name="Message.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -167,15 +174,17 @@
   <data name="&gt;&gt;Message.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="YesBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="YesBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>275, 70</value>
+    <value>412, 105</value>
+  </data>
+  <data name="YesBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="YesBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 27</value>
+    <value>135, 40</value>
   </data>
   <data name="YesBtn.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -202,10 +211,13 @@
     <value>NoControl</value>
   </data>
   <data name="NoBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>377, 70</value>
+    <value>566, 105</value>
+  </data>
+  <data name="NoBtn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="NoBtn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 27</value>
+    <value>135, 40</value>
   </data>
   <data name="NoBtn.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -226,10 +238,13 @@
     <value>1</value>
   </data>
   <data name="OptionsButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 70</value>
+    <value>18, 105</value>
+  </data>
+  <data name="OptionsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="OptionsButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 27</value>
+    <value>135, 40</value>
   </data>
   <data name="OptionsButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -253,16 +268,16 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>96, 96</value>
+    <value>144, 144</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>479, 107</value>
+    <value>718, 160</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 5, 2, 5</value>
+    <value>3, 8, 3, 8</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
