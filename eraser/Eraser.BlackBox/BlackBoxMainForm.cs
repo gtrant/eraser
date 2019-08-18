@@ -1,6 +1,6 @@
 ﻿/* 
  * $Id$
- * Copyright 2008-2015 The Eraser Project
+ * Copyright 2008-2019 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -96,7 +96,7 @@ namespace Eraser.BlackBox
 
 		private void DataCollectionPolicyLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			Process.Start("http://eraser.heidi.ie/trac/wiki/DataCollectionPolicy");
+			Process.Start("https://eraser.heidi.ie/trac/wiki/DataCollectionPolicy");
 		}
 
 		private void SubmitBtn_Click(object sender, EventArgs e)

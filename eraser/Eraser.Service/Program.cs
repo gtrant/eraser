@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: Program.cs 2770 2012-07-03 03:35:31Z lowjoel $
+ * $Id$
  * Copyright 2008-2012 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:

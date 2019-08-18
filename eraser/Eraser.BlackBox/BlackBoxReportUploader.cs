@@ -1,6 +1,6 @@
 ﻿/* 
  * $Id$
- * Copyright 2008-2015 The Eraser Project
+ * Copyright 2008-2019 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -345,7 +345,7 @@ namespace Eraser.BlackBox
 		/// The URI to the BlackBox server.
 		/// </summary>
 		private static readonly Uri BlackBoxServer =
-			new Uri("http://eraser.heidi.ie/scripts/blackbox/upload.php");
+			new Uri("https://eraser.heidi.ie/scripts/blackbox/upload.php");
 
 		/// <summary>
 		/// The report being uploaded.
