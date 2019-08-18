@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: Settings.cs 2743 2012-07-02 00:55:46Z lowjoel $
+ * $Id$
  * Copyright 2008-2012 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:

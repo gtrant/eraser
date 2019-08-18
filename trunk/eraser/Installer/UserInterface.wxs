@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  * $Id$
- * Copyright 2008-2015 The Eraser Project
+ * Copyright 2008-2019 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  *
@@ -27,8 +27,8 @@
 		<!-- Add/Remove programs information -->
 		<Property Id="ARPCOMMENTS">Secure Data Removal for Windows</Property>
 		<Property Id="ARPPRODUCTICON">Eraser.exe</Property>
-		<Property Id="ARPHELPLINK">http://eraser.heidi.ie/forum/</Property>
-		<Property Id="ARPURLINFOABOUT">http://eraser.heidi.ie/</Property>
+		<Property Id="ARPHELPLINK">https://eraser.heidi.ie/forum/</Property>
+		<Property Id="ARPURLINFOABOUT">https://eraser.heidi.ie/</Property>
 
 		<UI>
 			<UIRef Id="WixUI_Mondo" />

@@ -1,6 +1,6 @@
 /* 
  * $Id$
- * Copyright 2008-2015 The Eraser Project
+ * Copyright 2008-2019 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @17/10/2008
  * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
