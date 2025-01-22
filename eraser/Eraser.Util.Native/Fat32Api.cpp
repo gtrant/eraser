@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: Fat32Api.cpp 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
  * 
@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-#include <stdafx.h>
+#include "stdafx.h"
 #include "FatApi.h"
 
 using namespace System::IO;

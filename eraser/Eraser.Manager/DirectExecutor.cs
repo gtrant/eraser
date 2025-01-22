@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: DirectExecutor.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @17/10/2008
  * Modified By: Garrett Trant <gtrant@users.sourceforge.net>
@@ -288,11 +288,11 @@ namespace Eraser.Manager
 
 						//If the task is an execute on restart task or run immediately task, it is
 						//only run once and can now be restored to a manually run task
-						else if (task.Schedule == Schedule.RunOnRestart ||
-							task.Schedule == Schedule.RunNow)
-						{
-							task.Schedule = Schedule.RunManually;
-						}
+						//else if (task.Schedule == Schedule.RunOnRestart ||
+						//	task.Schedule == Schedule.RunNow)
+						//{
+                        //    task.Schedule = Schedule.RunManually;
+						//}
 
 						//Remove the actively executing task from our instance variable
 						currentTask = null;

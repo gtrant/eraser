@@ -160,7 +160,7 @@
     <value>1</value>
   </data>
   <data name="Message.Text" xml:space="preserve">
-    <value>Are you sure you want to erase the selected items?</value>
+    <value>Are you sure you wish to erase the selected items?</value>
   </data>
   <data name="&gt;&gt;Message.Name" xml:space="preserve">
     <value>Message</value>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -42,6 +42,7 @@
     <CodeAnalysisRules>
     </CodeAnalysisRules>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -52,11 +53,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="alglibnet2">
-      <HintPath>..\Dependencies\alglibnet2.dll</HintPath>
-    </Reference>
     <Reference Include="CommonLibrary, Version=0.9.3.10, Culture=neutral, PublicKeyToken=3ac89a0351e689b6, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\CommonLibrary.dll</HintPath>
@@ -85,6 +84,16 @@
     <Compile Include="..\Version.cs">
       <Link>Version.cs</Link>
     </Compile>
+    <Compile Include="alglibinternal.cs" />
+    <Compile Include="alglibmisc.cs" />
+    <Compile Include="ap.cs" />
+    <Compile Include="dataanalysis.cs" />
+    <Compile Include="diffequations.cs" />
+    <Compile Include="fasttransforms.cs" />
+    <Compile Include="integration.cs" />
+    <Compile Include="interpolation.cs" />
+    <Compile Include="linalg.cs" />
+    <Compile Include="optimization.cs" />
     <Compile Include="Security.cs" />
     <Compile Include="ExtensionMethods\IO.cs" />
     <Compile Include="Binders.cs" />
@@ -98,6 +107,9 @@
     <Compile Include="NativeMethods\WinTrust.cs" />
     <Compile Include="NtfsApi.cs" />
     <Compile Include="RecycleBin.cs" />
+    <Compile Include="solvers.cs" />
+    <Compile Include="specialfunctions.cs" />
+    <Compile Include="statistics.cs" />
     <Compile Include="SystemRestore.cs">
       <SubType>Component</SubType>
     </Compile>

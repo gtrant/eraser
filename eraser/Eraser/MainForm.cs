@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: MainForm.cs 2995 2024-11-04 17:26:46Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -173,19 +173,34 @@ namespace Eraser
 				NotificationsQueue[0].Source.Shown(sender, e);
 		}
 
-		private void notificationIcon_BalloonTipClosed(object sender, EventArgs e)
-		{
-			Debug.Assert(NotificationsQueue.Count != 0);
+        private void notificationIcon_BalloonTipClosed(object sender, EventArgs e)
+        {
+            try
+            {
+                if (NotificationsQueue.Count > 0)  // Check if queue has items
+                {
+                    if (NotificationsQueue[0].Source != null)
+                    {
+                        NotificationsQueue[0].Source.Closed(sender, e);
+                    }
+                    NotificationsQueue.RemoveAt(0);
 
-			if (NotificationsQueue[0].Source != null)
-				NotificationsQueue[0].Source.Closed(sender, e);
-			NotificationsQueue.RemoveAt(0);
+                    if (NotificationsQueue.Count > 0)
+                    {
+                        ShowNextNotification();
+                    }
+                }
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // Log the error 
+                // Debug.WriteLine($"Error accessing NotificationsQueue: {ex.Message}");
+                // Clear the queue as it's in an invalid state
+                NotificationsQueue.Clear();
+            }
+        }
 
-			if (NotificationsQueue.Count > 0)
-				ShowNextNotification();
-		}
-
-		private void notificationIcon_BalloonTipClicked(object sender, EventArgs e)
+        private void notificationIcon_BalloonTipClicked(object sender, EventArgs e)
 		{
 			Debug.Assert(NotificationsQueue.Count != 0);
 			if (NotificationsQueue[0].Source != null)

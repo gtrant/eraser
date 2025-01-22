@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: Bootstrapper.cpp 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -391,20 +391,21 @@ bool InstallNetFramework(std::wstring tempDir, bool quiet)
 	if (std::wstring(L"\\/").find(tempDir[tempDir.length() - 1]) == std::wstring::npos)
 		tempDir += L"\\";
 	std::wstring commandLine(L'"' + tempDir);
-	commandLine += L"dotNetFx40_Full_x86_x64.exe\" /norestart";
+	//commandLine += L"dotNetFx40_Full_x86_x64.exe\" /norestart";
 	//commandLine += L"dotNetFx40_Full_setup.exe\" /norestart";
+	commandLine += L"NDP46-KB3045557-x86-x64-AllOS-ENU.exe\" /norestart /quiet";
 
-	/*
-	//Due to virus false positives we base64 encode some strings namely "dotNetFx40_Full_x86_x64.exe /norestart"
+	
+	//Due to virus false positives we base64 encode some strings namely "NDP46-KB3045557-x86-x64-AllOS-ENU.exe /norestart /quiet"
 	//std::vector<BYTE> myData;
 	//std::string encodedData = base64_encode(&myData[0], myData.size());
-	std::vector<BYTE> decodedData = base64_decode("ZG90TmV0Rng0MF9GdWxsX3g4Nl94NjQuZXhlIC9ub3Jlc3RhcnQ=");
-	std::wstring ustr(decodedData.begin(), decodedData.end());
-	commandLine += ustr; 
-	*/
+	//std::vector<BYTE> decodedData = base64_decode("TkRQNDYtS0IzMDQ1NTU3LXg4Ni14NjQtQWxsT1MtRU5VLmV4ZSAvbm9yZXN0YXJ0IC9xdWlldA==");
+	//std::wstring ustr(decodedData.begin(), decodedData.end());
+	//commandLine += ustr; 
+	
 	//If the user wants it quiet then pass the /q switch
-	if (quiet)
-		commandLine += L" /q";
+	//if (quiet)
+	//	commandLine += L" /q";
 
 	//And the return code is true if the process exited with 0.
 	return CreateProcessAndWait(commandLine, L".NET Framework Installer") == 0;

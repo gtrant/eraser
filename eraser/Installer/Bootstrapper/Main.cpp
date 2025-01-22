@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: Main.cpp 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -122,7 +122,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/,
 				for (++i; i < argc; ++i)
 				{
 					arg = argv[i];
-					if (arg.substr(0, 9) == L"--out")
+					if (arg.substr(0, 5) == L"--out")
 					{
 						if (++i != argc)
 							destItem = argv[i];
@@ -177,10 +177,10 @@ int Install(bool quiet)
 	mainWin.EnableCancellation(false);
 
 	//Install the .NET framework
-	if (!HasNetFramework())
-		if (!InstallNetFramework(tempDir, quiet))
-			return 0;
-
+	//if (!HasNetFramework())
+	//	if (!InstallNetFramework(tempDir, quiet))
+	//		return 0;
+    
 	//Then install Eraser!
 	mainWin.Show(false);
 	InstallEraser(tempDir, quiet);

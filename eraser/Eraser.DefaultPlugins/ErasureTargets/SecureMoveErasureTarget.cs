@@ -1,6 +1,6 @@
 ﻿/* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: SecureMoveErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -61,8 +61,8 @@ namespace Eraser.DefaultPlugins
 
 		protected override void ReadXml(XmlReader reader, bool advance)
 		{
-			base.ReadXml(reader, false);
-			Destination = reader.GetAttribute("destination");
+            Destination = reader.GetAttribute("destination");
+            base.ReadXml(reader, false);
 
 			if (advance)
 				reader.Read();

@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: Executor.cs 2994 2023-12-07 08:36:59Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -88,7 +88,7 @@ namespace Eraser.Manager
 		/// This is a separate function rather than just running them by default on
 		/// task load because creating a new instance and loading the task list
 		/// may just be a program restart and may not necessarily be a system
-		/// restart. Therefore this fuction has to be explicitly called by clients.
+		/// restart. Therefore this function has to be explicitly called by clients.
 		/// </summary>
 		public abstract void QueueRestartTasks();
 

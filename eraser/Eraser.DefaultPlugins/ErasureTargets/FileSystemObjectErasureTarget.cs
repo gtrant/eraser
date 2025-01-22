@@ -1,8 +1,8 @@
 ﻿/* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: FileSystemObjectErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
- * Modified By:
+ * Modified By: $Author: gtrant $
  * 
  * This file is part of Eraser.
  * 
@@ -302,7 +302,10 @@ namespace Eraser.DefaultPlugins
 
 						progress.Tag = new int[] { currentPass, method.Passes };
 						progress.Total = totalData;
-						progress.Completed += lastWritten;
+                        if (method.Guid == typeof(FirstLast16KB).GUID)
+                            progress.Completed = lastWritten;
+                        else
+                            progress.Completed += lastWritten;
 					};
 
 				TryEraseStream(fsManager, method, info, callback);
@@ -318,7 +321,7 @@ namespace Eraser.DefaultPlugins
 				Logger.Log(S._("The file {0} could not be erased because the file's " +
 					"permissions prevent access to the file.", info.FullName), LogLevel.Error);
 			}
-			catch (SharingViolationException e)
+			catch (SharingViolationException)
 			{
 				Logger.Log(S._("The file {0} could not be erased because the file is " +
 					"currently in used by another application.", info.FullName), LogLevel.Error);

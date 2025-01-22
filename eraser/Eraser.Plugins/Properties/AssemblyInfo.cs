@@ -1,6 +1,6 @@
 ﻿/* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: AssemblyInfo.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -31,7 +31,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The Eraser Project")]
 [assembly: AssemblyProduct("Eraser")]
-[assembly: AssemblyCopyright("Copyright © 2008-2015 The Eraser Project")]
+[assembly: AssemblyCopyright("Copyright © 2008-2021 The Eraser Project")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

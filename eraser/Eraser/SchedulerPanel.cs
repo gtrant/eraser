@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: SchedulerPanel.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -518,19 +518,20 @@ namespace Eraser
 				dialog.UseCommandLinks = true;
 				action = (DialogResult)dialog.Show(this);
 			}
-			else
-			{
-				action = MessageBox.Show(S._("Are you sure you wish to erase the selected "
-					+ "items?"), S._("Eraser"), MessageBoxButtons.YesNo,
-					MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-					Localisation.IsRightToLeft(this) ?
-						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
-			}
+            else
+            {
+                    action = MessageBox.Show(S._("Are you sure you wish to erase the selected "
+                                                 + "items?"), S._("Eraser"), MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
+                        Localisation.IsRightToLeft(this)
+                            ? MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign
+ 
+            }
 
-			switch (action)
+            switch (action)
 			{
 				case DialogResult.OK:
-					task.Schedule = Schedule.RunManually;
+					task.Schedule = Schedule.RunNow;
 					goto case DialogResult.Yes;
 
 				case DialogResult.Yes:

@@ -1,6 +1,6 @@
 ﻿/* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: Program.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -423,7 +423,7 @@ the command line.", methods, targets));
 		private static void CommandHelp(ConsoleArguments arguments)
 		{
 			Console.WriteLine(S._(@"Eraser {0}
-(c) 2008-2015 The Eraser Project
+(c) 2008-2021 The Eraser Project
 Eraser is Open-Source Software: see https://eraser.heidi.ie/ for details.
 ", BuildInfo.AssemblyFileVersion));
 
@@ -611,9 +611,9 @@ Eraser is Open-Source Software: see https://eraser.heidi.ie/ for details.
 				}
 			}
 
-			//Then queue for erasure.
-			using (eraserClient = CommandConnect())
-				eraserClient.Tasks.Add(task);
+            //Then queue for erasure.
+            using (eraserClient = CommandConnect())
+                eraserClient.Tasks.Add(task);
 		}
 		#endregion
 

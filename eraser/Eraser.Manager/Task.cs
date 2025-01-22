@@ -1,6 +1,6 @@
 /* 
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+ * $Id: Task.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  * 
@@ -247,7 +247,7 @@ namespace Eraser.Manager
 				{
 					writer.WriteElementString("LogRef", ((LazyLogSink)log).SavePath);
 				}
-				
+
 				//Otherwise, decide if we want to store the log inline (if small) or
 				//link to the log file.
 				else if (log.Count < 5)
@@ -489,6 +489,11 @@ namespace Eraser.Manager
 					}
 					catch (SharingViolationException)
 					{
+					}
+					catch (IOException e)
+					{
+						//Disconnected disks or write disk errors
+						Logger.Log(e.Message, LogLevel.Error);
 					}
 			}
 			catch (FatalException e)

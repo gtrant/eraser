@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+﻿<!--
+ * $Id: Eraser.wxs 2994 2023-12-07 08:36:59Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  *
@@ -20,15 +19,10 @@
  * <http://www.gnu.org/licenses/>.
 -->
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <?include "..\Version.wxs"?>
 
-  <Product Id="*" Name="Eraser $(var.VERSIONSTRING)" Language="1033"
-			Version="$(var.INTERNALVERSIONSTRING)" Manufacturer="The Eraser Project"
-			UpgradeCode="073882B4-E059-4FB4-9D36-11E88D14AE87">
-
-    <Package Id="*" InstallerVersion="405" Compressed="yes" Keywords="Eraser"
-			Description="Eraser Installer" Manufacturer="The Eraser Project" />
+  <Package Name="Eraser $(var.VERSIONSTRING)" Language="1033" Version="$(var.INTERNALVERSIONSTRING)" Manufacturer="The Eraser Project" UpgradeCode="073882B4-E059-4FB4-9D36-11E88D14AE87" InstallerVersion="405"><SummaryInformation Keywords="Eraser" Description="Eraser Installer" Manufacturer="The Eraser Project" />
 
     <Media Id="1" Cabinet="Installer.cab" CompressionLevel="none" EmbedCab="yes" />
 
@@ -43,48 +37,44 @@
     <CustomAction Id="AlreadyUpdated" Error="A newer version of Eraser is already installed. Setup will now exit." />
     <InstallUISequence>
       <FindRelatedProducts Before="LaunchConditions" />
-      <Custom Action="AlreadyUpdated" After="FindRelatedProducts">ERASERDOWNDATE</Custom>
+      <Custom Action="AlreadyUpdated" After="FindRelatedProducts" Condition="ERASERDOWNDATE" />
     </InstallUISequence>
     <InstallExecuteSequence>
       <RemoveExistingProducts After="InstallInitialize" />
     </InstallExecuteSequence>
 
     <!-- Program directory -->
-    <Directory Id="TARGETDIR" Name="SourceDir">
-      <?if $(sys.BUILDARCH) = "x64"?>
-      <Directory Id="ProgramFiles64Folder">
-        <Directory Id="PFFolder" />
-      </Directory>
-      <?else?>
-      <Directory Id="ProgramFilesFolder">
-        <Directory Id="PFFolder" />
-      </Directory>
-      <?endif?>
-
-      <Directory Id="ProgramMenuFolder" Name="ProgramMenu" />
-      <Directory Id="DesktopFolder" Name="Desktop" />
-    </Directory>
+    
 
     <!-- Features -->
-    <Feature Id="EraserMain" Title="Eraser" Description="The main Eraser program files." Level="1"
-				ConfigurableDirectory="INSTALLLOCATION" AllowAdvertise="system" Display="expand">
+    <Feature Id="EraserMain" Title="Eraser" Description="The main Eraser program files." Level="1" ConfigurableDirectory="INSTALLLOCATION" AllowAdvertise="yes" Display="expand">
       <ComponentRef Id="EraserMain" />
       <ComponentRef Id="EraserLangEn" />
       <ComponentRef Id="EraserPlugins" />
       <ComponentRef Id="EraserDefaultPluginsLangEn" />
-
-      <Feature Id="EraserMainBlackBox" Title="Eraser BlackBox"
-					Description="Eraser BlackBox error reporting component" Level="1">
-        <ComponentRef Id="EraserBlackBox"/>
+      <Feature Id="EraserMainBlackBox" Title="Eraser BlackBox" Description="Eraser BlackBox error reporting component" Level="1">
+        <ComponentRef Id="EraserBlackBox" />
         <ComponentRef Id="EraserBlackBoxLangEn" />
       </Feature>
-      <Feature Id="EraserMainShell" Title="Eraser Shell Extension"
-					Description="Eraser shell integration" Level="1">
+      <Feature Id="EraserMainShell" Title="Eraser Shell Extension" Description="Eraser shell integration" Level="1">
         <ComponentRef Id="EraserShell" />
       </Feature>
       <FeatureRef Id="EraserLanguages" />
-      <MergeRef Id="VCRedist"/>
-      <MergeRef Id="VCMfcRedist"/>
+      <MergeRef Id="VCRedist" />
+      <MergeRef Id="VCMfcRedist" />
     </Feature>
-  </Product>
+  
+      <?if $(sys.BUILDARCH) = "x64"?>
+      <StandardDirectory Id="ProgramFiles64Folder">
+        <Directory Id="PFFolder" />
+      </StandardDirectory>
+      <?else?>
+      <StandardDirectory Id="ProgramFilesFolder">
+        <Directory Id="PFFolder" />
+      </StandardDirectory>
+      <?endif?>
+
+      <StandardDirectory Id="ProgramMenuFolder" />
+      <StandardDirectory Id="DesktopFolder" />
+    </Package>
 </Wix>

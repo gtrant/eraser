@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- * $Id$
- * Copyright 2008-2019 The Eraser Project
+﻿<!--
+ * $Id: Localisations.wxs 2994 2023-12-07 08:36:59Z gtrant $
+ * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
  *
@@ -20,101 +19,63 @@
  * <http://www.gnu.org/licenses/>.
 -->
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<Fragment Id="EraserLocalisationsFragment">
 		<DirectoryRef Id="INSTALLLOCATION">
 			<Directory Id="EraserLangNlDir" Name="nl">
 				<Component Id="EraserLangNl" Guid="A404FC89-2216-4e14-96D5-30F54D120FBB">
-					<File Id="EraserNl" Name="Eraser.resources.dll"
-						Source="..\bin\Release\nl\Eraser.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserManagerNl" Name="Eraser.Manager.resources.dll"
-						Source="..\bin\Release\nl\Eraser.Manager.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserUtilNl" Name="Eraser.Util.resources.dll"
-						Source="..\bin\Release\nl\Eraser.Util.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserUtilNativeNl" Name="Eraser.Util.Native.resources.dll"
-						Source="..\bin\Release\$(var.PLATFORMDIR)\nl\Eraser.Util.Native.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserNl" Name="Eraser.resources.dll" Source="..\bin\Release\nl\Eraser.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserManagerNl" Name="Eraser.Manager.resources.dll" Source="..\bin\Release\nl\Eraser.Manager.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNl" Name="Eraser.Util.resources.dll" Source="..\bin\Release\nl\Eraser.Util.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNativeNl" Name="Eraser.Util.Native.resources.dll" Source="..\bin\Release\$(var.PLATFORMDIR)\nl\Eraser.Util.Native.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 			<Directory Id="EraserLangItDir" Name="it">
 				<Component Id="EraserLangIt" Guid="CF4A007F-6619-4de4-B947-5F1113FB6F73">
-					<File Id="EraserIt" Name="Eraser.resources.dll"
-						Source="..\bin\Release\it\Eraser.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserManagerIt" Name="Eraser.Manager.resources.dll"
-						Source="..\bin\Release\it\Eraser.Manager.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserUtilIt" Name="Eraser.Util.resources.dll"
-						Source="..\bin\Release\it\Eraser.Util.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserUtilNativeIt" Name="Eraser.Util.Native.resources.dll"
-						Source="..\bin\Release\$(var.PLATFORMDIR)\it\Eraser.Util.Native.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserIt" Name="Eraser.resources.dll" Source="..\bin\Release\it\Eraser.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserManagerIt" Name="Eraser.Manager.resources.dll" Source="..\bin\Release\it\Eraser.Manager.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserUtilIt" Name="Eraser.Util.resources.dll" Source="..\bin\Release\it\Eraser.Util.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNativeIt" Name="Eraser.Util.Native.resources.dll" Source="..\bin\Release\$(var.PLATFORMDIR)\it\Eraser.Util.Native.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 			<Directory Id="EraserLangPlDir" Name="pl">
 				<Component Id="EraserLangPl" Guid="83E40D11-60DC-4d5d-8072-1B814B85D3FC">
-					<File Id="EraserPl" Name="Eraser.resources.dll"
-						Source="..\bin\Release\pl\Eraser.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserManagerPl" Name="Eraser.Manager.resources.dll"
-						Source="..\bin\Release\pl\Eraser.Manager.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserUtilPl" Name="Eraser.Util.resources.dll"
-						Source="..\bin\Release\pl\Eraser.Util.resources.dll"
-						ProcessorArchitecture="msil" />
-					<File Id="EraserUtilNativePl" Name="Eraser.Util.Native.resources.dll"
-						Source="..\bin\Release\$(var.PLATFORMDIR)\pl\Eraser.Util.Native.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserPl" Name="Eraser.resources.dll" Source="..\bin\Release\pl\Eraser.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserManagerPl" Name="Eraser.Manager.resources.dll" Source="..\bin\Release\pl\Eraser.Manager.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserUtilPl" Name="Eraser.Util.resources.dll" Source="..\bin\Release\pl\Eraser.Util.resources.dll" ProcessorArchitecture="msil" />
+					<File Id="EraserUtilNativePl" Name="Eraser.Util.Native.resources.dll" Source="..\bin\Release\$(var.PLATFORMDIR)\pl\Eraser.Util.Native.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 		</DirectoryRef>
 		<DirectoryRef Id="EraserPluginsDir">
 			<Directory Id="EraserPluginsLangNlDir" Name="nl">
 				<Component Id="EraserDefaultPluginsLangNl" Guid="CD85AC3F-2B4E-4ac8-8FF9-6BD3BC90BD3D">
-					<File Id="EraserDefaultPluginsNl" Name="Eraser.DefaultPlugins.resources.dll"
-						Source="..\bin\Release\Plugins\nl\Eraser.DefaultPlugins.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserDefaultPluginsNl" Name="Eraser.DefaultPlugins.resources.dll" Source="..\bin\Release\Plugins\nl\Eraser.DefaultPlugins.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 				<Component Id="EraserBlackBoxLangNl" Guid="A336F90E-38EE-4883-91D9-3791C0E897EA" Transitive="yes">
-					<File Id="EraserBlackBoxNl" Name="Eraser.BlackBox.resources.dll"
-						Source="..\bin\Release\Plugins\nl\Eraser.BlackBox.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserBlackBoxNl" Name="Eraser.BlackBox.resources.dll" Source="..\bin\Release\Plugins\nl\Eraser.BlackBox.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 			<Directory Id="EraserPluginsLangItDir" Name="it">
 				<Component Id="EraserDefaultPluginsLangIt" Guid="26236C68-69E8-4cc6-B8AA-C6130A7EDB10">
-					<File Id="EraserDefaultPluginsIt" Name="Eraser.DefaultPlugins.resources.dll"
-						Source="..\bin\Release\Plugins\it\Eraser.DefaultPlugins.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserDefaultPluginsIt" Name="Eraser.DefaultPlugins.resources.dll" Source="..\bin\Release\Plugins\it\Eraser.DefaultPlugins.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 				<Component Id="EraserBlackBoxLangIt" Guid="9A7134F4-DED9-4ef6-B624-B5D0CD03FD43" Transitive="yes">
-					<File Id="EraserBlackBoxIt" Name="Eraser.BlackBox.resources.dll"
-						Source="..\bin\Release\Plugins\it\Eraser.BlackBox.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserBlackBoxIt" Name="Eraser.BlackBox.resources.dll" Source="..\bin\Release\Plugins\it\Eraser.BlackBox.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 			<Directory Id="EraserPluginsLangPlDir" Name="pl">
 				<Component Id="EraserDefaultPluginsLangPl" Guid="138E9CF4-17B9-498a-B476-0A1F91FFB64B">
-					<File Id="EraserDefaultPluginsPl" Name="Eraser.DefaultPlugins.resources.dll"
-						Source="..\bin\Release\Plugins\pl\Eraser.DefaultPlugins.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserDefaultPluginsPl" Name="Eraser.DefaultPlugins.resources.dll" Source="..\bin\Release\Plugins\pl\Eraser.DefaultPlugins.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 				<Component Id="EraserBlackBoxLangPl" Guid="63F255DF-9DD5-46ff-BC92-1AAE00772193" Transitive="yes">
-					<File Id="EraserBlackBoxPl" Name="Eraser.BlackBox.resources.dll"
-						Source="..\bin\Release\Plugins\pl\Eraser.BlackBox.resources.dll"
-						ProcessorArchitecture="msil" />
+					<File Id="EraserBlackBoxPl" Name="Eraser.BlackBox.resources.dll" Source="..\bin\Release\Plugins\pl\Eraser.BlackBox.resources.dll" ProcessorArchitecture="msil" />
 				</Component>
 			</Directory>
 		</DirectoryRef>
 
 		<!-- Reference all languages in Localisations.wxs -->
-		<Feature Id="EraserLanguages" Title="Alternative Languages"
-				Description="Alternative localised version of Eraser." Level="10"
-				Display="expand">
+		<Feature Id="EraserLanguages" Title="Alternative Languages" Description="Alternative localised version of Eraser." Level="10" Display="expand">
 			<Feature Id="EraserLanguagesNl" Title="Dutch" Description="Dutch localisation" Level="10">
 				<ComponentRef Id="EraserLangNl" />
 				<ComponentRef Id="EraserDefaultPluginsLangNl" />
@@ -126,8 +87,8 @@
 				<ComponentRef Id="EraserBlackBoxLangIt" />
 			</Feature>
 			<Feature Id="EraserLanguagesPl" Title="Polish" Description="Polish localisation" Level="10">
-				<ComponentRef Id="EraserLangPl"/>
-				<ComponentRef Id="EraserDefaultPluginsLangPl"/>
+				<ComponentRef Id="EraserLangPl" />
+				<ComponentRef Id="EraserDefaultPluginsLangPl" />
 				<ComponentRef Id="EraserBlackBoxLangPl" />
 			</Feature>
 		</Feature>

@@ -9,7 +9,7 @@ for /r "%~1\bin\Release\" %%i in (*.exe) do (
 	)
 )
 
-"C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0\x64\signtool.exe" sign /a /t http://time.certum.pl !binaries!
+"C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64\signtool.exe" sign /a /tr http://rfc3161timestamp.globalsign.com/advanced /td SHA256 !binaries!
 if %errorlevel% geq 1 (
 	echo The Eraser binaries were not signed; see the signtool log for details.
 	exit 0;
