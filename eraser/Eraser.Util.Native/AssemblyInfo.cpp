@@ -1,5 +1,5 @@
 /* 
- * $Id: AssemblyInfo.cpp 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: AssemblyInfo.cpp 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -26,7 +26,6 @@ using namespace System;
 using namespace System::Reflection;
 using namespace System::Runtime::CompilerServices;
 using namespace System::Runtime::InteropServices;
-using namespace System::Security::Permissions;
 
 //
 // General Information about an assembly is controlled through the following
@@ -56,4 +55,3 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyVersionAttribute(ERASER_STRING_FILE_VERSION)];
 [assembly:ComVisible(false)];
 [assembly:CLSCompliantAttribute(true)];
-[assembly:SecurityPermission(SecurityAction::RequestMinimum, UnmanagedCode = true)];

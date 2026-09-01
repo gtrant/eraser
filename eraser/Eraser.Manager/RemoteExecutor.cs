@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: RemoteExecutor.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: RemoteExecutor.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Kasra Nassiri <cjax@users.sourceforge.net>
  * Modified By: Joel Low <lowjoel@users.sourceforge.net>
@@ -207,7 +207,9 @@ namespace Eraser.Manager
 						mstream.Position = 0;
 						try
 						{
+#pragma warning disable SYSLIB0011
 							request = (RemoteExecutorRequest)new BinaryFormatter().Deserialize(mstream);
+#pragma warning restore SYSLIB0011
 						}
 						catch (SerializationException)
 						{
@@ -253,7 +255,9 @@ namespace Eraser.Manager
 						{
 							byte[] header = BitConverter.GetBytes((Int32)1);
 							byte[] buffer = null;
+#pragma warning disable SYSLIB0011
 							new BinaryFormatter().Serialize(mStream, returnValue);
+#pragma warning restore SYSLIB0011
 
 							server.Write(header, 0, header.Length);
 							server.Write(buffer, 0, buffer.Length);
@@ -357,7 +361,9 @@ namespace Eraser.Manager
 			using (MemoryStream mStream = new MemoryStream())
 			{
 				//Serialise the request
+#pragma warning disable SYSLIB0011
 				new BinaryFormatter().Serialize(mStream, new RemoteExecutorRequest(function, args));
+#pragma warning restore SYSLIB0011
 
 				//Write the request to the pipe
 				byte[] buffer = mStream.ToArray();
@@ -388,7 +394,9 @@ namespace Eraser.Manager
 					//Deserialise the response
 					mStream.Position = 0;
 					if (mStream.Length > 0)
+#pragma warning disable SYSLIB0011
 						result = new BinaryFormatter().Deserialize(mStream);
+#pragma warning restore SYSLIB0011
 				}
 			}
 

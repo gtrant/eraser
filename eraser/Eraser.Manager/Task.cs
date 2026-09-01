@@ -1,5 +1,5 @@
 /* 
- * $Id: Task.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: Task.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -24,10 +24,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
@@ -66,7 +66,6 @@ namespace Eraser.Manager
 					"the task schedule"));
 		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			info.AddValue("Name", Name);
@@ -461,6 +460,82 @@ namespace Eraser.Manager
 						Progress.Steps.Add(new ErasureTargetProgressManagerStep(
 							target, Targets.Count));
 						target.Execute();
+					}
+					catch (FatalException)
+					{
+						throw;
+					}
+					catch (OperationCanceledException)
+					{
+						throw;
+					}
+					catch (NotSupportedException e)
+					{
+						//This is thrown whenever we try to erase files on an unsupported
+						//filesystem.
+						Logger.Log(e.Message, LogLevel.Error);
+					}
+					catch (UnauthorizedAccessException e)
+					{
+						//The OS denied us access to erasing the file.
+						Logger.Log(e.Message, LogLevel.Error);
+					}
+					catch (PathTooLongException e)
+					{
+						//Until we have code to deal with paths using NT names, we can't
+						//do much about it.
+						Logger.Log(e.Message, LogLevel.Error);
+					}
+					catch (SharingViolationException)
+					{
+					}
+					catch (IOException e)
+					{
+						//Disconnected disks or write disk errors
+						Logger.Log(e.Message, LogLevel.Error);
+					}
+			}
+			catch (FatalException e)
+			{
+				Logger.Log(e.Message, LogLevel.Fatal);
+			}
+			catch (OperationCanceledException e)
+			{
+				Logger.Log(e.Message, LogLevel.Fatal);
+			}
+			catch (SharingViolationException)
+			{
+			}
+			finally
+			{
+				//If the task is a recurring task, reschedule it since we are done.
+				if (Schedule is RecurringSchedule)
+				{
+					((RecurringSchedule)Schedule).Reschedule(DateTime.Now);
+				}
+
+				Progress = null;
+				Executing = false;
+				OnTaskFinished();
+			}
+		}
+
+		public async System.Threading.Tasks.Task ExecuteAsync()
+		{
+			OnTaskStarted();
+			Executing = true;
+			Canceled = false;
+			Progress = new SteppedProgressManager();
+
+			try
+			{
+				//Run the task
+				foreach (IErasureTarget target in Targets)
+					try
+					{
+						Progress.Steps.Add(new ErasureTargetProgressManagerStep(
+							target, Targets.Count));
+						await target.ExecuteAsync().ConfigureAwait(false);
 					}
 					catch (FatalException)
 					{

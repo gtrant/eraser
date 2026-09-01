@@ -1,5 +1,5 @@
 /* 
- * $Id: VolumeInfo.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: VolumeInfo.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -196,8 +196,11 @@ namespace Eraser.Util
 			IntPtr enumHandle;
 			uint errorCode = NativeMethods.WNetOpenEnum(NativeMethods.RESOURCE_CONNECTED,
 				NativeMethods.RESOURCETYPE_DISK, 0, IntPtr.Zero, out enumHandle);
+			if (errorCode == Win32ErrorCode.NoMoreFiles ||
+				errorCode == Win32ErrorCode.NoMoreItems)
+				return result;
 			if (errorCode != Win32ErrorCode.Success)
-				throw Win32ErrorCode.GetExceptionForWin32Error(Marshal.GetLastWin32Error());
+				throw Win32ErrorCode.GetExceptionForWin32Error((int)errorCode);
 
 			try
 			{

@@ -25,14 +25,27 @@
     <application>
       <!-- A list of all Windows versions that this application is designed to work with. Windows will automatically select the most compatible environment.-->
 
-      <!-- If your application is designed to work with Windows 7, uncomment the following supportedOS node-->
-      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}"/>-->
-      
+      <!-- Windows 7 -->
+      <supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}"/>
+      <!-- Windows 8 -->
+      <supportedOS Id="{44084504-5106-4fbd-8118-220729226bad}"/>
+      <!-- Windows 8.1 -->
+      <supportedOS Id="{19c10514-1644-4d11-8553-1893ad1d5a41}"/>
+      <!-- Windows 10 -->
+      <supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/>
+
     </application>
   </compatibility>
-  
+
+  <!-- <application xmlns="urn:schemas-microsoft-com:asm.v3">
+    <windowsSettings>
+      <dpiAware xmlns="http://schemas.microsoft.com/schemas-microsoft-com:asm.v3">true/pm</dpiAware>
+      <dpiAwareness xmlns="http://schemas.microsoft.com/schemas-microsoft-com:asm.v3">PerMonitorV2</dpiAwareness>
+    </windowsSettings>
+  </application> -->
+
   <!-- Enable themes for Windows common controls and dialogs (Windows XP and later) -->
-  <!-- <dependency>
+  <dependency>
     <dependentAssembly>
       <assemblyIdentity
           type="win32"
@@ -43,6 +56,6 @@
           language="*"
         />
     </dependentAssembly>
-  </dependency>-->
+  </dependency>
 
 </asmv1:assembly>

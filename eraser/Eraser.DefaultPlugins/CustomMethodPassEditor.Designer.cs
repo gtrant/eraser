@@ -1,5 +1,5 @@
 /* 
- * $Id: CustomMethodPassEditor.Designer.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: CustomMethodPassEditor.Designer.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -130,7 +130,7 @@ namespace Eraser.DefaultPlugins
 			// CustomMethodPassEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
 			this.Controls.Add(this.passTxt);
 			this.Controls.Add(this.passTypeGrp);
 			this.Name = "CustomMethodPassEditor";

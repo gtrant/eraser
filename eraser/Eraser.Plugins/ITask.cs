@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: ITask.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: ITask.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace Eraser.Plugins
 {
@@ -35,6 +36,17 @@ namespace Eraser.Plugins
 		/// removes the task from the queue.
 		/// </summary>
 		void Cancel();
+
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
+		void Execute();
+
+		/// <summary>
+		/// Executes the task.
+		/// </summary>
+		/// <returns>A task representing the asynchronous execution operation.</returns>
+		Task ExecuteAsync();
 
 		/// <summary>
 		/// The name for this task. This is just an opaque value for the user to

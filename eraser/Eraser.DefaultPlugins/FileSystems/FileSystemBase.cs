@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: FileSystemBase.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: FileSystemBase.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 
 using Eraser.Plugins;
 using Eraser.Plugins.ExtensionPoints;
@@ -57,6 +58,9 @@ namespace Eraser.DefaultPlugins
 			FileSystemEntriesEraseProgress callback);
 
 		public abstract void EraseFileSystemObject(StreamInfo info, IErasureMethod method,
+			ErasureMethodProgressFunction callback);
+
+		public abstract Task EraseFileSystemObjectAsync(StreamInfo info, IErasureMethod method,
 			ErasureMethodProgressFunction callback);
 
 		public abstract long GetFileArea(StreamInfo filePath);

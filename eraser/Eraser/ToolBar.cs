@@ -1,5 +1,5 @@
 /* 
- * $Id: ToolBar.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: ToolBar.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -43,14 +43,26 @@ namespace Eraser
 
 		private class EraserToolStripRenderer : ToolStripRenderer
 		{
+			/// <summary>
+			/// Scales a pixel value by the current DPI scale factor.
+			/// </summary>
+			private int ScaleForDpi(Graphics g, int value)
+			{
+				return (int)(value * g.DpiX / 96.0f);
+			}
+
 			protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
 			{
 				Graphics g = e.Graphics;
 
+				// Scale pixel values for high DPI support
+				int inflate = ScaleForDpi(g, 3);
+				int offset = ScaleForDpi(g, 3);
+
 				//Draw the actual text
 				Rectangle tempRect = e.TextRectangle;
-				tempRect.Inflate(3, 3);
-				tempRect.Offset(3, 3);
+				tempRect.Inflate(inflate, inflate);
+				tempRect.Offset(offset, offset);
 				e.TextRectangle = tempRect;
 				using (SolidBrush textBrush = new SolidBrush(TextColour))
 					g.DrawString(e.Text, e.TextFont, textBrush, e.TextRectangle);

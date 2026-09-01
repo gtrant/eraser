@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: IErasureMethod.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: IErasureMethod.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 
 using System.IO;
+using System.Threading.Tasks;
 using Eraser.Util;
 
 namespace Eraser.Plugins.ExtensionPoints
@@ -92,6 +93,24 @@ namespace Eraser.Plugins.ExtensionPoints
 		/// <param name="callback">The progress callback function.</param>
 		void Erase(Stream stream, long erasureLength, IPrng prng,
 			ErasureMethodProgressFunction callback);
+
+		/// <summary>
+		/// The main bit of the class! This function is called whenever data has
+		/// to be erased. Erase the stream passed in, using the given PRNG for
+		/// randomness where necessary.
+		/// 
+		/// This function should be implemented thread-safe as using the same
+		/// instance, this function may be called across different threads.
+		/// </summary>
+		/// <param name="stream">The stream which needs to be erased.</param>
+		/// <param name="erasureLength">The length of the stream to erase. If all
+		/// data in the stream should be overwritten, then pass in the maximum
+		/// value for long, the function will take the minimum.</param>
+		/// <param name="prng">The PRNG source for random data.</param>
+		/// <param name="callback">The progress callback function.</param>
+		/// <returns>A task representing the asynchronous erasure operation.</returns>
+		Task EraseAsync(Stream stream, long erasureLength, IPrng prng,
+			ErasureMethodProgressFunction callback);
 	}
 
 	/// <summary>
@@ -123,9 +142,25 @@ namespace Eraser.Plugins.ExtensionPoints
 		/// This function should be implemented thread-safe as using the same
 		/// instance, this function may be called across different threads.
 		/// </summary>
-		/// <param name="strm">The stream which needs to be erased.</param>
+		/// <param name="stream">The stream which needs to be erased.</param>
 		/// <param name="prng">The PRNG source for random data.</param>
 		/// <param name="callback">The progress callback function.</param>
 		void EraseDriveSpace(Stream stream, IPrng prng, ErasureMethodProgressFunction callback);
+
+		/// <summary>
+		/// This function will allow clients to erase a file in a set of files
+		/// used to fill the disk, thus achieving disk unused space erasure.
+		/// 
+		/// By default, this function will simply call the Erase method inherited
+		/// from the ErasureMethod class.
+		/// 
+		/// This function should be implemented thread-safe as using the same
+		/// instance, this function may be called across different threads.
+		/// </summary>
+		/// <param name="stream">The stream which needs to be erased.</param>
+		/// <param name="prng">The PRNG source for random data.</param>
+		/// <param name="callback">The progress callback function.</param>
+		/// <returns>A task representing the asynchronous erasure operation.</returns>
+		Task EraseDriveSpaceAsync(Stream stream, IPrng prng, ErasureMethodProgressFunction callback);
 	}
 }

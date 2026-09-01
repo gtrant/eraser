@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: DriveErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: DriveErasureTarget.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -24,7 +24,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
@@ -65,7 +64,6 @@ namespace Eraser.DefaultPlugins
 				throw new InvalidDataException();
 		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
@@ -262,6 +260,88 @@ namespace Eraser.DefaultPlugins
 							throw new OperationCanceledException(S._("The task was cancelled."));
 					}
 				);
+			}
+			finally
+			{
+				Progress = null;
+				if (stream != null)
+					stream.Close();
+			}
+		}
+
+		public override async System.Threading.Tasks.Task ExecuteAsync()
+		{
+			//Check for sufficient privileges to run the erasure.
+			if (!Security.IsAdministrator())
+			{
+				if (Environment.OSVersion.Platform == PlatformID.Win32NT &&
+					Environment.OSVersion.Version >= new Version(6, 0))
+				{
+					Logger.Log(S._("The program does not have the required permissions to erase " +
+						"the disk. Run the program as an administrator and retry the operation."),
+						LogLevel.Error);
+				}
+				else
+				{
+					Logger.Log(S._("The program does not have the required permissions to erase " +
+						"the disk."), LogLevel.Error);
+				}
+
+				return;
+			}
+
+			Progress = new SteppedProgressManager();
+			ProgressManager stepProgress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(stepProgress, 1.0f,
+				ToString()));
+			FileStream stream = null;
+
+			try
+			{
+				//Overwrite the entire drive
+				IErasureMethod method = EffectiveMethod;
+				if (Volume != null)
+				{
+					stepProgress.Total = Volume.TotalSize;
+					stream = Volume.Open(FileAccess.ReadWrite, FileShare.ReadWrite);
+				}
+				else if (PhysicalDrive != null)
+				{
+					stepProgress.Total = PhysicalDrive.Size;
+					PhysicalDrive.DeleteDriveLayout();
+					if (PhysicalDrive.Volumes.Count == 1)
+					{
+						//This could be a removable device where Windows sees an oversized floppy.
+						stream = PhysicalDrive.Volumes[0].Open(FileAccess.ReadWrite, FileShare.ReadWrite);
+					}
+					else if (PhysicalDrive.Volumes.Count > 0)
+					{
+						throw new InvalidOperationException(S._("The partition table on the drive " +
+							"could not be erased."));
+					}
+					else
+					{
+						stream = PhysicalDrive.Open(FileAccess.ReadWrite, FileShare.ReadWrite);
+					}
+				}
+				else
+					throw new InvalidOperationException(S._("The Drive erasure target requires a " +
+						"volume or physical drive selected for erasure."));
+
+				//Calculate the size of the erasure
+				stepProgress.Total = method.CalculateEraseDataSize(null, stepProgress.Total);
+
+				//Then run the erase task
+				await method.EraseAsync(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng,
+					delegate(long lastWritten, long totalData, int currentPass)
+					{
+						stepProgress.Completed += lastWritten;
+						stepProgress.Tag = new int[] { currentPass, method.Passes };
+
+						if (Task.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
+					}
+				).ConfigureAwait(false);
 			}
 			finally
 			{

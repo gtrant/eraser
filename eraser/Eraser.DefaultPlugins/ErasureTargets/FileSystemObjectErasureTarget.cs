@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: FileSystemObjectErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: FileSystemObjectErasureTarget.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: $Author: gtrant $
@@ -28,8 +28,8 @@ using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Security.Permissions;
 using System.IO;
+using System.Threading.Tasks;
 
 using Eraser.Util;
 using Eraser.Util.ExtensionMethods;
@@ -52,7 +52,6 @@ namespace Eraser.DefaultPlugins
 			Path = (string)info.GetValue("Path", typeof(string));
 		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
@@ -261,6 +260,45 @@ namespace Eraser.DefaultPlugins
 			}
 		}
 
+		public override async Task ExecuteAsync()
+		{
+			//Retrieve the list of files to erase.
+			List<StreamInfo> paths = GetPaths();
+			long dataTotal = paths.Sum(delegate(StreamInfo x) {
+				try
+				{
+					return x.Length;
+				}
+				catch (DirectoryNotFoundException)
+				{
+					return 0;
+				}
+				catch (FileNotFoundException)
+				{
+					return 0;
+				}
+			});
+
+			//Set the event's current target status.
+			if (Progress == null)
+				throw new InvalidOperationException("The Progress property must not be null.");
+
+			//Iterate over every path, and erase the path.
+			for (int i = 0; i < paths.Count; ++i)
+			{
+				//Does the file still exist after our enumeration?
+				if (!paths[i].Exists)
+					continue;
+
+				//Create a new progress manager for the file.
+				ProgressManager step = new ProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(step,
+					dataTotal == 0 ? 0.0f : paths[i].Length / (float)dataTotal,
+					paths[i].FullName));
+				await EraseStreamAsync(paths[i], step).ConfigureAwait(false);
+			}
+		}
+
 		/// <summary>
 		/// Erases the provided stream, and updates progress using the provided
 		/// progress manager.
@@ -302,13 +340,86 @@ namespace Eraser.DefaultPlugins
 
 						progress.Tag = new int[] { currentPass, method.Passes };
 						progress.Total = totalData;
-                        if (method.Guid == typeof(FirstLast16KB).GUID)
-                            progress.Completed = lastWritten;
-                        else
-                            progress.Completed += lastWritten;
+						if (method.Guid == typeof(FirstLast16KB).GUID)
+							progress.Completed = lastWritten;
+						else
+							progress.Completed += lastWritten;
 					};
 
 				TryEraseStream(fsManager, method, info, callback);
+
+				//Remove the file.
+				FileInfo fileInfo = info.File;
+				if (fileInfo != null)
+					fsManager.DeleteFile(fileInfo);
+				progress.MarkComplete();
+			}
+			catch (UnauthorizedAccessException)
+			{
+				Logger.Log(S._("The file {0} could not be erased because the file's " +
+					"permissions prevent access to the file.", info.FullName), LogLevel.Error);
+			}
+			catch (SharingViolationException)
+			{
+				Logger.Log(S._("The file {0} could not be erased because the file is " +
+					"currently in used by another application.", info.FullName), LogLevel.Error);
+			}
+			finally
+			{
+				//Re-set the read-only flag if the file exists (i.e. there was an error)
+				if (isReadOnly && info.Exists && !info.IsReadOnly)
+					info.IsReadOnly = isReadOnly;
+			}
+		}
+
+		/// <summary>
+		/// Erases the provided stream, and updates progress using the provided
+		/// progress manager.
+		/// </summary>
+		/// <param name="info">The information regarding the stream that needs erasure.</param>
+		/// <param name="progress">The progress manager for the erasure of the current
+		/// stream.</param>
+		protected async Task EraseStreamAsync(StreamInfo info, ProgressManager progress)
+		{
+			//Check that the file exists - we do not want to bother erasing nonexistant files
+			if (!info.Exists)
+			{
+				Logger.Log(S._("The file {0} was not erased as the file does not exist.",
+					info.FileName), LogLevel.Notice);
+				return;
+			}
+
+			//Get the filesystem provider to handle the secure file erasures
+			IFileSystem fsManager = Host.Instance.FileSystems[
+				VolumeInfo.FromMountPoint(info.DirectoryName)];
+
+			bool isReadOnly = false;
+
+			try
+			{
+				//Update the task progress
+				IErasureMethod method = EffectiveMethod;
+				
+				//Remove the read-only flag, if it is set.
+				if (isReadOnly = info.IsReadOnly)
+					info.IsReadOnly = false;
+
+				//Define the callback function for progress reporting.
+				ErasureMethodProgressFunction callback =
+					delegate(long lastWritten, long totalData, int currentPass)
+					{
+						if (Task.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
+
+						progress.Tag = new int[] { currentPass, method.Passes };
+						progress.Total = totalData;
+						if (method.Guid == typeof(FirstLast16KB).GUID)
+							progress.Completed = lastWritten;
+						else
+							progress.Completed += lastWritten;
+					};
+
+				await TryEraseStreamAsync(fsManager, method, info, callback).ConfigureAwait(false);
 
 				//Remove the file.
 				FileInfo fileInfo = info.File;
@@ -366,6 +477,96 @@ namespace Eraser.DefaultPlugins
 					//to be to garbage.
 					if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
 						fsManager.EraseFileSystemObject(info, method, callback);
+					else
+						Logger.Log(S._("The file {0} is a hard link or a symbolic link thus the " +
+							"contents of the file was not erased.", info.FullName), LogLevel.Notice);
+					return;
+				}
+				catch (FileNotFoundException)
+				{
+					Logger.Log(S._("The file {0} was not erased because it was " +
+						"deleted before it could be erased.", info.FullName), LogLevel.Information);
+				}
+				catch (DirectoryNotFoundException)
+				{
+					Logger.Log(S._("The file {0} was not erased because the containing " +
+						"directory was deleted before it could be erased.", info.FullName),
+						LogLevel.Information);
+				}
+				catch (SharingViolationException)
+				{
+					if (!Host.Instance.Settings.ForceUnlockLockedFiles)
+						throw;
+
+					//Try closing all open handles. If it succeeds, we can run the erase again.
+					//To prevent Eraser from deadlocking, we will only attempt this once. Some
+					//programs may be aggressive and keep a handle open in a tight loop.
+					List<OpenHandle> remainingHandles = OpenHandle.Close(info.FullName);
+					if (i == 0 && remainingHandles.Count == 0)
+						continue;
+
+					//Either we could not close all instances, or we already tried twice. Report
+					//the error.
+					string processes = string.Empty;
+					{
+						StringBuilder processStr = new StringBuilder();
+						foreach (OpenHandle handle in remainingHandles)
+						{
+							try
+							{
+								processStr.AppendFormat(
+									System.Globalization.CultureInfo.InvariantCulture,
+									"{0}, ", handle.Process.MainModule.FileName);
+							}
+							catch (System.ComponentModel.Win32Exception)
+							{
+								processStr.AppendFormat(
+									System.Globalization.CultureInfo.InvariantCulture,
+									"Process ID {0}, ", handle.Process.Id);
+							}
+						}
+
+						if (processStr.Length > 2)
+						{
+							processes = processStr.ToString().Remove(processStr.Length - 2).Trim();
+						}
+						else
+						{
+							processes = S._("(unknown)");
+						}
+					}
+
+					throw new SharingViolationException(S._(
+						"Could not force closure of file \"{0}\" {1}", info.FileName,
+						S._("(locked by {0})", processes)));
+				}
+			}
+		}
+
+		private async Task TryEraseStreamAsync(IFileSystem fsManager, IErasureMethod method, StreamInfo info,
+			ErasureMethodProgressFunction callback)
+		{
+			for (int i = 0; ; ++i)
+			{
+				try
+				{
+					//Make sure the file does not have any attributes which may affect
+					//the erasure process
+					if ((info.Attributes & FileAttributes.Compressed) != 0 ||
+						(info.Attributes & FileAttributes.Encrypted) != 0 ||
+						(info.Attributes & FileAttributes.SparseFile) != 0)
+					{
+						//Log the error
+						Logger.Log(S._("The file {0} could not be erased because the file was " +
+							"either compressed, encrypted or a sparse file.", info.FullName),
+							LogLevel.Error);
+						return;
+					}
+
+					//Do not erase reparse points, as they will cause other references to the file
+					//to be to garbage.
+					if ((info.Attributes & FileAttributes.ReparsePoint) == 0)
+						await fsManager.EraseFileSystemObjectAsync(info, method, callback).ConfigureAwait(false);
 					else
 						Logger.Log(S._("The file {0} is a hard link or a symbolic link thus the " +
 							"contents of the file was not erased.", info.FullName), LogLevel.Notice);

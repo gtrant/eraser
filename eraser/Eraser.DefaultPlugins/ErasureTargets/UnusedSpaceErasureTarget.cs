@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: UnusedSpaceErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: UnusedSpaceErasureTarget.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -28,7 +28,6 @@ using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Security.Permissions;
 using System.IO;
 using System.Globalization;
 
@@ -55,7 +54,6 @@ namespace Eraser.DefaultPlugins
 			EraseClusterTips = (bool)info.GetValue("EraseClusterTips", typeof(bool));
 		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
@@ -311,6 +309,242 @@ namespace Eraser.DefaultPlugins
 
 			structureProgress.MarkComplete();
 			Progress = null;
+		}
+
+		public override async System.Threading.Tasks.Task ExecuteAsync()
+		{
+			//Check for sufficient privileges to run the unused space erasure.
+			if (!Security.IsAdministrator())
+			{
+				if (Environment.OSVersion.Platform == PlatformID.Win32NT &&
+					Environment.OSVersion.Version >= new Version(6, 0))
+				{
+					Logger.Log(S._("The program does not have the required permissions to erase " +
+						"the unused space on disk. Run the program as an administrator and retry " +
+						"the operation."), LogLevel.Error);
+				}
+				else
+				{
+					Logger.Log(S._("The program does not have the required permissions to erase " +
+						"the unused space on disk."), LogLevel.Error);
+				}
+
+				return;
+			}
+
+			//Check whether System Restore has any available checkpoints.
+			if (SystemRestore.GetInstances().Count != 0)
+			{
+				Logger.Log(S._("This computer has had System Restore or Volume Shadow Copies " +
+					"enabled. This may allow copies of files stored on the disk to be recovered " +
+					"and pose a security concern.", Drive), LogLevel.Warning);
+			}
+
+			//If the user is under disk quotas, log a warning message
+			if (VolumeInfo.FromMountPoint(Drive).HasQuota)
+			{
+				Logger.Log(S._("The drive {0} has disk quotas active. This will prevent the " +
+					"complete erasure of unused space and may pose a security concern.",
+					Drive), LogLevel.Warning);
+			}
+
+			//Get the erasure method if the user specified he wants the default.
+			IErasureMethod method = EffectiveMethod;
+
+			//Make a folder to dump our temporary files in
+			DirectoryInfo info = new DirectoryInfo(Drive);
+			VolumeInfo volInfo = VolumeInfo.FromMountPoint(Drive);
+			IFileSystem fsManager = Host.Instance.FileSystems[volInfo];
+
+			//Start sampling the speed of the task.
+			Progress = new SteppedProgressManager();
+
+			//Erase the cluster tips of every file on the drive.
+			if (EraseClusterTips)
+			{
+				//Define the callback handlers
+				ProgressManager tipSearch = new ProgressManager();
+				tipSearch.MarkIndeterminate();
+				Progress.Steps.Add(new SteppedProgressManagerStep(tipSearch,
+					0.0f, S._("Searching for files' cluster tips...")));
+				ClusterTipsSearchProgress searchProgress = delegate(string path)
+				{
+					if (Task.Canceled)
+						throw new OperationCanceledException(S._("The task was cancelled."));
+
+					tipSearch.Tag = path;
+				};
+
+				ProgressManager tipProgress = new ProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(tipProgress, 0.1f,
+					S._("Erasing cluster tips...")));
+				ClusterTipsEraseProgress eraseProgress =
+					delegate(int currentFile, int totalFiles, string currentFilePath)
+					{
+						tipSearch.MarkComplete();
+						tipProgress.Total = totalFiles;
+						tipProgress.Completed = currentFile;
+						tipProgress.Tag = currentFilePath;
+
+						if (Task.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
+					};
+
+				//Start counting statistics
+				await System.Threading.Tasks.Task.Run(() =>
+					fsManager.EraseClusterTips(VolumeInfo.FromMountPoint(Drive),
+						method, searchProgress, eraseProgress)
+				).ConfigureAwait(false);
+				tipProgress.MarkComplete();
+			}
+
+			bool lowDiskSpaceNotifications = Shell.LowDiskSpaceNotificationsEnabled;
+			info = info.CreateSubdirectory(Path.GetFileName(
+				FileSystemBase.GenerateRandomFileName(info, 18)));
+			try
+			{
+				//Set the folder's compression flag off since we want to use as much
+				//space as possible
+				if (info.IsCompressed())
+					info.Uncompress();
+
+				//Disable the low disk space notifications
+				Shell.LowDiskSpaceNotificationsEnabled = false;
+
+				//Fill the disk
+				await EraseUnusedSpaceAsync(volInfo, info, fsManager, method).ConfigureAwait(false);
+
+				//Erase old resident file system table files
+				ProgressManager residentProgress = new ProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(residentProgress,
+					0.05f, S._("Old resident file system table files")));
+				await System.Threading.Tasks.Task.Run(() =>
+					fsManager.EraseOldFileSystemResidentFiles(volInfo, info, method,
+						delegate(int currentFile, int totalFiles)
+						{
+							residentProgress.Completed = currentFile;
+							residentProgress.Total = totalFiles;
+
+							if (Task.Canceled)
+								throw new OperationCanceledException(S._("The task was cancelled."));
+						}
+					)
+				).ConfigureAwait(false);
+
+				residentProgress.MarkComplete();
+			}
+			finally
+			{
+				//Remove the folder holding all our temporary files.
+				ProgressManager tempFiles = new ProgressManager();
+				Progress.Steps.Add(new SteppedProgressManagerStep(tempFiles,
+					0.0f, S._("Removing temporary files...")));
+
+				fsManager.DeleteFolder(info, true);
+				tempFiles.MarkComplete();
+
+				//Reset the low disk space notifications
+				Shell.LowDiskSpaceNotificationsEnabled = lowDiskSpaceNotifications;
+			}
+
+			//Then clean the old file system entries
+			ProgressManager structureProgress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(structureProgress,
+				0.05f, S._("Erasing unused directory structures...")));
+			await System.Threading.Tasks.Task.Run(() =>
+				fsManager.EraseDirectoryStructures(volInfo,
+					delegate(int currentFile, int totalFiles)
+					{
+						if (Task.Canceled)
+							throw new OperationCanceledException(S._("The task was cancelled."));
+
+						//Compute the progress
+						structureProgress.Total = totalFiles;
+						structureProgress.Completed = currentFile;
+					}
+				)
+			).ConfigureAwait(false);
+
+			structureProgress.MarkComplete();
+			Progress = null;
+		}
+
+		private async System.Threading.Tasks.Task EraseUnusedSpaceAsync(VolumeInfo volInfo, DirectoryInfo info, IFileSystem fsInfo,
+			IErasureMethod method)
+		{
+			ProgressManager mainProgress = new ProgressManager();
+			Progress.Steps.Add(new SteppedProgressManagerStep(mainProgress,
+				EraseClusterTips ? 0.8f : 0.9f, S._("Erasing unused space...")));
+
+			//Continue creating files while there is free space.
+			while (volInfo.AvailableFreeSpace > 0)
+			{
+				//Generate a non-existant file name
+				string currFile = FileSystemBase.GenerateRandomFileName(info, 18);
+
+				//Create the stream
+				FileStream stream = new FileStream(currFile, FileMode.CreateNew,
+					FileAccess.Write, FileShare.None, 8, FileOptions.WriteThrough);
+				try
+				{
+					//Set the length of the file to be the amount of free space left
+					//or the maximum size of one of these dumps.
+					mainProgress.Total = mainProgress.Completed +
+						method.CalculateEraseDataSize(null, volInfo.AvailableFreeSpace);
+					long streamLength = Math.Min(PassBasedErasureMethod.FreeSpaceFileUnit,
+						volInfo.AvailableFreeSpace);
+
+					//Handle IO exceptions gracefully, because the filesystem
+					//may require more space than demanded by us for file allocation.
+					while (true)
+						try
+						{
+							stream.SetLength(streamLength);
+							break;
+						}
+						catch (IOException)
+						{
+							if (streamLength == 0)
+								break;
+							streamLength /= 2;
+						}
+
+					//Erase the stream
+					if (streamLength != 0)
+					{
+						await method.EraseAsync(stream, long.MaxValue, Host.Instance.Prngs.ActivePrng,
+							delegate(long lastWritten, long totalData, int currentPass)
+							{
+								mainProgress.Completed += lastWritten;
+								mainProgress.Tag = new int[] { currentPass, method.Passes };
+
+								if (Task.Canceled)
+									throw new OperationCanceledException(S._("The task was cancelled."));
+							}
+						).ConfigureAwait(false);
+					}
+
+					//Close the stream and rename it before deleting.
+					stream.Close();
+					stream = null;
+
+					for (int i = 0; i < FileSystemBase.FileNameErasePasses; ++i)
+					{
+						string nextFile = FileSystemBase.GenerateRandomFileName(info, 18);
+						File.Move(currFile, nextFile);
+						currFile = nextFile;
+					}
+
+					File.Delete(currFile);
+				}
+				finally
+				{
+					if (stream != null)
+						stream.Close();
+				}
+			}
+
+			mainProgress.MarkComplete();
 		}
 
 		private void EraseUnusedSpace(VolumeInfo volInfo, DirectoryInfo info, IFileSystem fsInfo,

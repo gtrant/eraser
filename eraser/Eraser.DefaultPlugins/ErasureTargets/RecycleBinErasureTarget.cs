@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: RecycleBinErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: RecycleBinErasureTarget.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -185,6 +185,27 @@ namespace Eraser.DefaultPlugins
 			{
 				Progress = null;
 			}
+		}
+
+		public override System.Threading.Tasks.Task ExecuteAsync()
+		{
+			Progress = new SteppedProgressManager();
+
+			return base.ExecuteAsync().ContinueWith(t =>
+			{
+				try
+				{
+					if (t.IsFaulted)
+						throw t.Exception;
+
+					//Empty the contents of the Recycle Bin
+					EmptyRecycleBin();
+				}
+				finally
+				{
+					Progress = null;
+				}
+			});
 		}
 
 		private void EmptyRecycleBin()

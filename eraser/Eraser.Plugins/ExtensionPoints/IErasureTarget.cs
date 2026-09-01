@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: IErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: IErasureTarget.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -26,6 +26,7 @@ using System.Text;
 
 using System.Runtime.Serialization;
 using System.Security.Permissions;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 using Eraser.Util;
@@ -93,6 +94,12 @@ namespace Eraser.Plugins.ExtensionPoints
 		/// Executes the given target.
 		/// </summary>
 		void Execute();
+
+		/// <summary>
+		/// Executes the given target.
+		/// </summary>
+		/// <returns>A task representing the asynchronous execution operation.</returns>
+		Task ExecuteAsync();
 
 		/// <summary>
 		/// Gets the progress manager for this Erasure Target.

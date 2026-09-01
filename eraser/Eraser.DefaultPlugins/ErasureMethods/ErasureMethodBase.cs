@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: ErasureMethodBase.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: ErasureMethodBase.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Threading.Tasks;
 
 using Eraser.Util;
 using Eraser.Plugins;
@@ -83,6 +84,9 @@ namespace Eraser.DefaultPlugins
 		public abstract void Erase(Stream stream, long erasureLength, IPrng prng,
 			ErasureMethodProgressFunction callback);
 
+		public abstract Task EraseAsync(Stream stream, long erasureLength, IPrng prng,
+			ErasureMethodProgressFunction callback);
+
 		#endregion
 
 		#region IRegisterable Members
@@ -101,6 +105,12 @@ namespace Eraser.DefaultPlugins
 			ErasureMethodProgressFunction callback)
 		{
 			Erase(stream, long.MaxValue, prng, callback);
+		}
+
+		public virtual Task EraseDriveSpaceAsync(Stream stream, IPrng prng,
+			ErasureMethodProgressFunction callback)
+		{
+			return EraseAsync(stream, long.MaxValue, prng, callback);
 		}
 	}
 
@@ -213,6 +223,61 @@ namespace Eraser.DefaultPlugins
 					//Write the data.
 					stream.Write(buffer, dataStopped, amount);
 					stream.Flush();
+					dataStopped += amount;
+					toWrite -= amount;
+
+					//Do a progress callback.
+					if (callback != null)
+						callback(amount, totalData, pass + 1);
+				}
+			}
+		}
+
+		public override async Task EraseAsync(Stream stream, long erasureLength, IPrng prng,
+			ErasureMethodProgressFunction callback)
+		{
+			//Randomize the order of the passes
+			ErasureMethodPass[] randomizedPasses = PassesSet;
+			if (RandomizePasses)
+				randomizedPasses = ShufflePasses(randomizedPasses);
+
+			//Remember the starting position of the stream.
+			long strmStart = stream.Position;
+			long strmLength = Math.Min(stream.Length - strmStart, erasureLength);
+			long totalData = CalculateEraseDataSize(null, strmLength);
+
+			//Allocate memory for a buffer holding data for the pass.
+			byte[] buffer = new byte[Math.Min(DiskOperationUnit, strmLength)];
+
+			//Run every pass!
+			for (int pass = 0; pass < Passes; ++pass)
+			{
+				//Do a progress callback first.
+				if (callback != null)
+					callback(0, totalData, pass + 1);
+
+				//Start from the beginning again
+				stream.Seek(strmStart, SeekOrigin.Begin);
+
+				//Write the buffer to disk.
+				long toWrite = strmLength;
+				int dataStopped = buffer.Length;
+				while (toWrite > 0)
+				{
+					//Calculate how much of the buffer to write to disk.
+					int amount = (int)Math.Min(toWrite, buffer.Length - dataStopped);
+
+					//If we have no data left, get more!
+					if (amount == 0)
+					{
+						randomizedPasses[pass].Execute(buffer, prng);
+						dataStopped = 0;
+						continue;
+					}
+
+					//Write the data.
+					await stream.WriteAsync(buffer, dataStopped, amount).ConfigureAwait(false);
+					await stream.FlushAsync().ConfigureAwait(false);
 					dataStopped += amount;
 					toWrite -= amount;
 

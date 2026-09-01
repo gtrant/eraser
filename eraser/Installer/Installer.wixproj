@@ -9,7 +9,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
-    <DefineConstants>Debug</DefineConstants>
+    <SuppressIces>ICE03;ICE82;ICE80;ICE57</SuppressIces>
+    <DefineConstants>Debug;PLATFORMDIR=Win32</DefineConstants>
     <VerboseOutput>True</VerboseOutput>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
@@ -21,6 +22,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
     <DefineConstants>Debug;PLATFORMDIR=x64;</DefineConstants>
     <VerboseOutput>True</VerboseOutput>
+    <SuppressIces>ICE03;ICE82;ICE80;ICE57</SuppressIces>
     <OutputPath>..\bin\Installer\$(Platform)\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
     <CompilerAdditionalOptions></CompilerAdditionalOptions>
@@ -61,6 +63,6 @@
 call "$(ProjectDir)\SignBin.bat" "$(ProjectDir)..\\"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64\signtool.exe" sign /a /tr http://rfc3161timestamp.globalsign.com/advanced /td SHA256 "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe" sign /sha1 a77cb0890edacb1628c0a2e55f2bfc02a6ca26e8 /a /tr http://rfc3161timestamp.globalsign.com/advanced /fd SHA256 /td SHA256 "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

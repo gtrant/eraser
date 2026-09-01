@@ -1,5 +1,5 @@
 /* 
- * $Id: Host.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: Host.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -26,6 +26,7 @@ using System.Linq;
 
 using System.IO;
 using System.Reflection;
+using System.Security;
 
 using Eraser.Util;
 using Eraser.Plugins.ExtensionPoints;
@@ -264,7 +265,6 @@ namespace Eraser.Plugins
 		{
 			//Specify additional places to load assemblies from
 			AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolve;
-			AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += ResolveReflectionDependency;
 		}
 
 		protected override void Dispose(bool disposing)
@@ -304,11 +304,29 @@ namespace Eraser.Plugins
 					{
 						LoadPlugin(file.FullName);
 					}
-					catch (BadImageFormatException)
+					catch (BadImageFormatException ex)
 					{
+						// Log bad image format - could be non-.NET DLL or corrupted
+						Logger.Log(string.Format("Invalid plugin format: {0} - {1}", file.FullName, ex.Message), LogLevel.Warning);
+						RecordFailedPluginLoad(file.FullName, "BadImageFormat", ex);
 					}
-					catch (FileLoadException)
+					catch (FileLoadException ex)
 					{
+						// Log file load errors - could be dependency issues or access problems
+						Logger.Log(string.Format("Plugin load failed: {0} - {1}", file.FullName, ex.Message), LogLevel.Error);
+						RecordFailedPluginLoad(file.FullName, "LoadFailure", ex);
+					}
+					catch (SecurityException ex)
+					{
+						// Log security violations - this is critical for a security application
+						Logger.Log(string.Format("Security violation loading plugin: {0} - {1}", file.FullName, ex.Message), LogLevel.Error);
+						RecordFailedPluginLoad(file.FullName, "SecurityViolation", ex);
+					}
+					catch (Exception ex)
+					{
+						// Log any other unexpected errors during plugin loading
+						Logger.Log(string.Format("Unexpected error loading plugin: {0} - {1}", file.FullName, ex.Message), LogLevel.Error);
+						RecordFailedPluginLoad(file.FullName, "UnexpectedError", ex);
 					}
 			}
 		}
@@ -329,7 +347,7 @@ namespace Eraser.Plugins
 			return typePlugin != null;
 		}
 
-		public bool LoadPlugin(AssemblyName name)
+		private bool LoadPlugin(AssemblyName name)
 		{
 			//Check the plugins folder
 			foreach (string fileName in Directory.GetFiles(PluginsFolder))
@@ -338,17 +356,24 @@ namespace Eraser.Plugins
 				if (file.Extension == ".dll")
 					try
 					{
-						Assembly assembly = Assembly.ReflectionOnlyLoadFrom(file.FullName);
-						if (AssemblyMatchesName(assembly, name))
+						// .NET Core/5+ does not support ReflectionOnlyLoadFrom.
+						// We use AssemblyName.GetAssemblyName to inspect the assembly identity 
+						// without loading the actual bytes into the execution context.
+						AssemblyName discoveredName = AssemblyName.GetAssemblyName(file.FullName);
+						if (AssemblyName.ReferenceMatchesDefinition(name, discoveredName))
 						{
+							// Now load it properly for use
+							Assembly assembly = Assembly.LoadFrom(file.FullName);
 							return LoadPlugin(assembly);
 						}
 					}
-					catch (BadImageFormatException)
+					catch (BadImageFormatException ex)
 					{
+						Logger.Log(string.Format("Plugin load by name - invalid format: {0} - {1}", file.FullName, ex.Message), LogLevel.Debug);
 					}
-					catch (FileLoadException)
+					catch (FileLoadException ex)
 					{
+						Logger.Log(string.Format("Plugin load by name - load failed: {0} - {1}", file.FullName, ex.Message), LogLevel.Debug);
 					}
 			}
 
@@ -357,7 +382,9 @@ namespace Eraser.Plugins
 
 		public override bool LoadPlugin(string filePath)
 		{
-			return LoadPlugin(Assembly.ReflectionOnlyLoadFrom(filePath));
+			// .NET Core/5+ does not support ReflectionOnlyLoadFrom.
+			// We load directly using LoadFrom instead.
+			return LoadPlugin(Assembly.LoadFrom(filePath));
 		}
 
 		/// <summary>
@@ -458,41 +485,109 @@ namespace Eraser.Plugins
 
 		private Assembly AssemblyResolve(object sender, ResolveEventArgs args)
 		{
-			//Parse the assembly name
-			AssemblyName name = new AssemblyName(args.Name);
-
-			//Check the plugins folder
-			foreach (string fileName in Directory.GetFiles(PluginsFolder))
+			// CRITICAL: Prevent re-entrancy to avoid stack overflow
+			// Check if we're already inside this handler for this thread
+			if (isResolving)
+				return null;
+			
+			try
 			{
-				FileInfo file = new FileInfo(fileName);
-				if (file.Extension.Equals(".dll"))
+				isResolving = true;
+				
+				// Parse the assembly name
+				AssemblyName name = new AssemblyName(args.Name);
+				
+				// Don't try to resolve system/framework assemblies or resource assemblies
+				if (name.Name.StartsWith("System.", StringComparison.OrdinalIgnoreCase) ||
+					name.Name.StartsWith("Microsoft.", StringComparison.OrdinalIgnoreCase) ||
+					name.Name.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase) ||
+					name.Name.EndsWith(".resources", StringComparison.OrdinalIgnoreCase) || // CRITICAL: Exclude resource assemblies
+					name.GetPublicKeyToken()?.SequenceEqual(new byte[] { 0xb0, 0x3f, 0x5f, 0x7f, 0x11, 0xd5, 0x0a, 0x3a }) == true ||
+					name.GetPublicKeyToken()?.SequenceEqual(new byte[] { 0xb7, 0x7a, 0x5c, 0x56, 0x19, 0x34, 0xe0, 0x89 }) == true)
+				{
+					return null;
+				}
+				
+				// Cache the directory files
+				string[] pluginFiles;
+				try
+				{
+					pluginFiles = Directory.GetFiles(PluginsFolder, "*.dll", SearchOption.TopDirectoryOnly);
+				}
+				catch
+				{
+					return null;
+				}
+				
+				// Check the plugins folder
+				foreach (string fileName in pluginFiles)
+				{
+					FileInfo file = new FileInfo(fileName);
 					try
 					{
-						Assembly assembly = Assembly.ReflectionOnlyLoadFrom(file.FullName);
-						if (AssemblyMatchesName(assembly, name))
+						string expectedFileName = name.Name + ".dll";
+						if (!file.Name.Equals(expectedFileName, StringComparison.OrdinalIgnoreCase))
+							continue;
+						
+						AssemblyName discoveredName = AssemblyName.GetAssemblyName(file.FullName);
+						if (AssemblyName.ReferenceMatchesDefinition(name, discoveredName))
 						{
-							return Assembly.LoadFile(file.FullName);
+							return Assembly.LoadFrom(file.FullName);
 						}
 					}
 					catch (BadImageFormatException)
 					{
+						// NO Logger.Log here - causes re-entrancy!
 					}
 					catch (FileLoadException)
 					{
+						// NO Logger.Log here - causes re-entrancy!
 					}
+					catch (Exception)
+					{
+						// NO Logger.Log here - causes re-entrancy!
+					}
+				}
+				
+				return null;
 			}
-
-			return null;
+			finally
+			{
+				isResolving = false;
+			}
 		}
 
-		private Assembly ResolveReflectionDependency(object sender, ResolveEventArgs args)
-		{
-			return Assembly.ReflectionOnlyLoad(args.Name);
-		}
+		// Add this field to the DefaultHost class
+		[ThreadStatic]
+		private static bool isResolving;
 
 		public override IList<PluginInfo> Plugins
 		{
 			get { return plugins.AsReadOnly(); }
+		}
+
+		/// <summary>
+		/// Records a failed plugin load attempt for audit purposes.
+		/// </summary>
+		/// <param name="pluginPath">Path to the plugin that failed to load.</param>
+		/// <param name="failureType">Type of failure.</param>
+		/// <param name="exception">The exception that occurred.</param>
+		private static void RecordFailedPluginLoad(string pluginPath, string failureType, Exception exception)
+		{
+			try
+			{
+				string auditMessage = $"PLUGIN_LOAD_FAILED: {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss UTC} | " +
+					$"Path: {pluginPath} | " +
+					$"FailureType: {failureType} | " +
+					$"Error: {exception.Message}";
+
+				Logger.Log(auditMessage, LogLevel.Warning);
+			}
+			catch (Exception ex)
+			{
+				// Never let audit recording prevent normal operation
+				Logger.Log($"Failed to record plugin load failure: {ex.Message}", LogLevel.Error);
+			}
 		}
 
 		/// <summary>

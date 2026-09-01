@@ -1,5 +1,5 @@
 ﻿<!--
- * $Id: DirectoryStructure.wxs 2994 2023-12-07 08:36:59Z gtrant $
+ * $Id: DirectoryStructure.wxs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -25,11 +25,11 @@
 			<Directory Id="INSTALLLOCATION" Name="Eraser">
 				<!-- Dependencies (of Eraser.Shell.Dll) -->
         <?if $(sys.BUILDARCH) = "x64"?>
-					<Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x64.msm" DiskId="1" Language="0" />
-					<Merge Id="VCMfcRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_MFC_x64.msm" DiskId="1" Language="0" />
+					<Merge Id="VCRedist" SourceFile="Merge Modules\Microsoft_VC140_CRT_x64.msm" DiskId="1" Language="0" />
+					<Merge Id="VCMfcRedist" SourceFile="Merge Modules\Microsoft_VC140_MFC_x64.msm" DiskId="1" Language="0" />
 				<?else?>
-					<Merge Id="VCRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0" />
-					<Merge Id="VCMfcRedist" SourceFile="C:\Program Files (x86)\Common Files\Merge Modules\Microsoft_VC140_MFC_x86.msm" DiskId="1" Language="0" />
+					<Merge Id="VCRedist" SourceFile="Merge Modules\Microsoft_VC140_CRT_x86.msm" DiskId="1" Language="0" />
+					<Merge Id="VCMfcRedist" SourceFile="Merge Modules\Microsoft_VC140_MFC_x86.msm" DiskId="1" Language="0" />
 				<?endif?>
 				
 				<Component Id="EraserMain" Guid="D9D7F28B-1F5E-4da4-8FF2-4F8DC031E472">

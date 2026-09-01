@@ -1,5 +1,5 @@
 /* 
- * $Id: MainForm.cs 2995 2024-11-04 17:26:46Z gtrant $
+ * $Id: MainForm.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -39,6 +39,7 @@ using Eraser.Plugins;
 using Eraser.Plugins.Registrars;
 using Eraser.Plugins.ExtensionPoints;
 using Eraser.Properties;
+using Task = Eraser.Manager.Task;
 
 namespace Eraser
 {
@@ -48,9 +49,37 @@ namespace Eraser
 		private SchedulerPanel SchedulerPage;
 		private SettingsPanel SettingsPage;
 
+		/// <summary>
+		/// The current DPI scale factor relative to 96 DPI.
+		/// </summary>
+		private float DpiScale = 1.0f;
+
+		/// <summary>
+		/// Scales a pixel value by the current DPI scale factor.
+		/// </summary>
+		private int ScaleForDpi(int value)
+		{
+			return (int)(value * DpiScale);
+		}
+
+		/// <summary>
+		/// Scales a float pixel value by the current DPI scale factor.
+		/// </summary>
+		private float ScaleForDpi(float value)
+		{
+			return value * DpiScale;
+		}
+
 		public MainForm()
 		{
 			InitializeComponent();
+
+			// Calculate DPI scale factor for high DPI support
+			using (Graphics g = CreateGraphics())
+			{
+				DpiScale = g.DpiX / 96.0f;
+			}
+
 			SettingsPage = new SettingsPanel();
 			SchedulerPage = new SchedulerPanel();
 			contentPanel.Controls.Add(SchedulerPage);
@@ -169,6 +198,9 @@ namespace Eraser
 		private void notificationIcon_BalloonTipShown(object sender, EventArgs e)
 		{
 			Debug.Assert(NotificationsQueue.Count != 0);
+			if (NotificationsQueue == null || NotificationsQueue.Count == 0)
+				return;
+
 			if (NotificationsQueue[0].Source != null)
 				NotificationsQueue[0].Source.Shown(sender, e);
 		}
@@ -177,7 +209,7 @@ namespace Eraser
         {
             try
             {
-                if (NotificationsQueue.Count > 0)  // Check if queue has items
+                if (NotificationsQueue != null && NotificationsQueue.Count > 0)  // Check if queue is initialized and has items
                 {
                     if (NotificationsQueue[0].Source != null)
                     {
@@ -194,15 +226,18 @@ namespace Eraser
             catch (ArgumentOutOfRangeException ex)
             {
                 // Log the error 
-                // Debug.WriteLine($"Error accessing NotificationsQueue: {ex.Message}");
+                Debug.WriteLine($"Error accessing NotificationsQueue: {ex.Message}");
                 // Clear the queue as it's in an invalid state
-                NotificationsQueue.Clear();
+                NotificationsQueue?.Clear();
             }
         }
 
         private void notificationIcon_BalloonTipClicked(object sender, EventArgs e)
 		{
 			Debug.Assert(NotificationsQueue.Count != 0);
+			if (NotificationsQueue == null || NotificationsQueue.Count == 0)
+				return;
+
 			if (NotificationsQueue[0].Source != null)
 				NotificationsQueue[0].Source.Clicked(sender, e);
 		}
@@ -293,25 +328,48 @@ namespace Eraser
 
 		private void DrawBackground(Graphics dc)
 		{
+			// Scale pixel values for high DPI support
+			int sideGradientWidth = ScaleForDpi(338);
+			int topBackgroundHeight = ScaleForDpi(32);
+			int contentPanelPadding = ScaleForDpi(5);
+			float cornerRadius = ScaleForDpi(3.0f);
+
+			// Use actual contentPanel bounds (already scaled by Windows Forms)
+			int contentPanelX = contentPanel.Left - contentPanelPadding;
+			int contentPanelY = contentPanel.Top - contentPanelPadding;
+			int contentPanelWidth = contentPanel.Width + (contentPanelPadding * 2);
+			int contentPanelHeight = contentPanel.Height + (contentPanelPadding * 2);
+
 			//Draw the base background
-			dc.FillRectangle(new SolidBrush(Color.FromArgb(unchecked((int)0xFF292929))),
-				new Rectangle(new Point(0, 0), Size));
+			using (var baseBrush = new SolidBrush(Color.FromArgb(unchecked((int)0xFF292929))))
+			{
+				dc.FillRectangle(baseBrush, new Rectangle(new Point(0, 0), Size));
+			}
 
 			//Then the side gradient
-			dc.FillRectangle(new LinearGradientBrush(new Rectangle(0, 0, 338, Math.Max(1, ClientSize.Height)),
-					Color.FromArgb(unchecked((int)0xFF363636)),
-					Color.FromArgb(unchecked((int)0xFF292929)), 0.0),
-				0, 0, 338, ClientSize.Height);
+			using (var gradientBrush = new LinearGradientBrush(
+				new Rectangle(0, 0, sideGradientWidth, Math.Max(1, ClientSize.Height)),
+				Color.FromArgb(unchecked((int)0xFF363636)),
+				Color.FromArgb(unchecked((int)0xFF292929)), 0.0f))
+			{
+				dc.FillRectangle(gradientBrush, 0, 0, sideGradientWidth, ClientSize.Height);
+			}
 
 			//Draw the top background
-			dc.FillRectangle(new SolidBrush(Color.FromArgb(unchecked((int)0xFF414141))),
-				new Rectangle(0, 0, ClientSize.Width, 32));
+			using (var topBrush = new SolidBrush(Color.FromArgb(unchecked((int)0xFF414141))))
+			{
+				dc.FillRectangle(topBrush, new Rectangle(0, 0, ClientSize.Width, topBackgroundHeight));
+			}
 
 			//The top gradient
 			dc.DrawImage(Properties.Resources.BackgroundGradient, new Point(0, 0));
 
 			dc.SmoothingMode = SmoothingMode.AntiAlias;
-			dc.FillPath(Brushes.White, CreateRoundRect(11, 74, contentPanel.Width + 8, ClientSize.Height - 85, 3));
+			using (var roundRect = CreateRoundRect(contentPanelX, contentPanelY,
+				contentPanelWidth, contentPanelHeight, cornerRadius))
+			{
+				dc.FillPath(Brushes.White, roundRect);
+			}
 		}
 
 		private void MainForm_Paint(object sender, PaintEventArgs e)
@@ -324,11 +382,8 @@ namespace Eraser
 		{
 			if (WindowState != FormWindowState.Minimized)
 			{
-				Bitmap bmp = new Bitmap(Width, Height);
-				Graphics dc = Graphics.FromImage(bmp);
-				DrawBackground(dc);
-
-				CreateGraphics().DrawImage(bmp, new Point(0, 0));
+				// Trigger a proper repaint through the Paint event
+				Invalidate();
 			}
 			else if (EraserSettings.Get().HideWhenMinimised)
 			{
@@ -567,6 +622,25 @@ namespace Eraser
 		{
 			EraserSettings.Get().HideWhenMinimised =
 				hideWhenMinimisedToolStripMenuItem.Checked;
+		}
+		#endregion
+
+		#region High DPI support
+		private const int WM_DPICHANGED = 0x02E0;
+
+		protected override void WndProc(ref Message m)
+		{
+			if (m.Msg == WM_DPICHANGED)
+			{
+				// Update DPI scale factor when the window moves to a monitor with different DPI
+				int newDpi = (m.WParam.ToInt32() >> 16) & 0xFFFF;
+				DpiScale = newDpi / 96.0f;
+
+				// Force a repaint to use the new DPI scale
+				Invalidate();
+			}
+
+			base.WndProc(ref m);
 		}
 		#endregion
 	}

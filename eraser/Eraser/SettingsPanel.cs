@@ -1,5 +1,5 @@
 /* 
- * $Id: SettingsPanel.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: SettingsPanel.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @10/18/2008
@@ -53,6 +53,15 @@ namespace Eraser
 			//Load the values
 			LoadPluginDependantValues();
 			LoadSettings();
+
+			HandleDestroyed += SettingsPanel_HandleDestroyed;
+		}
+
+		private void SettingsPanel_HandleDestroyed(object sender, EventArgs e)
+		{
+			Host.Instance.PluginLoaded -= OnNewPluginLoaded;
+			Host.Instance.ErasureMethods.Registered -= OnMethodRegistered;
+			Host.Instance.ErasureMethods.Unregistered -= OnMethodUnregistered;
 		}
 
 		private void OnNewPluginLoaded(object sender, PluginLoadedEventArgs e)

@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: Ntfs.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: Ntfs.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -25,6 +25,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 using System.IO;
+using System.Threading.Tasks;
 
 using Eraser.Util;
 using Eraser.Plugins;
@@ -190,6 +191,47 @@ namespace Eraser.DefaultPlugins
 
 				//Then erase the file.
 				method.Erase(strm, long.MaxValue, Host.Instance.Prngs.ActivePrng, callback);
+
+				//Set the length of the file to 0.
+				strm.Seek(0, SeekOrigin.Begin);
+				strm.SetLength(0);
+			}
+		}
+
+		public override async Task EraseFileSystemObjectAsync(StreamInfo info, IErasureMethod method,
+			ErasureMethodProgressFunction callback)
+		{
+			//Check if the file fits in one cluster - if it does it may be MFT resident
+			//TODO: any more deterministic way of finding out?
+			VolumeInfo volume = VolumeInfo.FromMountPoint(info.DirectoryName);
+			if (info.Length < NtfsApi.GetMftRecordSegmentSize(volume))
+			{
+				//Yes it does, erase exactly to the file length
+				using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
+					FileShare.None))
+				{
+					await method.EraseAsync(strm, long.MaxValue, Host.Instance.Prngs.ActivePrng,
+						null).ConfigureAwait(false);
+				}
+			}
+
+			//Create the file stream, and call the erasure method to write to
+			//the stream.
+			long fileArea = GetFileArea(info);
+
+			//If the stream is empty, there's nothing to overwrite. Continue
+			//to the next entry
+			if (fileArea == 0)
+				return;
+
+			using (FileStream strm = info.Open(FileMode.Open, FileAccess.Write,
+				FileShare.None, FileOptions.WriteThrough))
+			{
+				//Set the end of the stream after the wrap-round the cluster size
+				strm.SetLength(fileArea);
+
+				//Then erase the file.
+				await method.EraseAsync(strm, long.MaxValue, Host.Instance.Prngs.ActivePrng, callback).ConfigureAwait(false);
 
 				//Set the length of the file to 0.
 				strm.Seek(0, SeekOrigin.Begin);

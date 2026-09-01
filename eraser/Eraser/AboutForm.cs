@@ -1,5 +1,5 @@
 /* 
- * $Id: AboutForm.cs 2994 2023-12-07 08:36:59Z gtrant $
+ * $Id: AboutForm.cs 2999 2026-09-01 13:56:13Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net>
@@ -47,24 +47,45 @@ namespace Eraser
 		private Rectangle DonateRect;
 
 		private Bitmap DoubleBufferBitmap;
+		private readonly float dpiScale;
 
 		public AboutForm(Control parent)
 		{
 			//Create and position the dialog
 			InitializeComponent();
 			Theming.ApplyTheme(this);
+
+			// Calculate DPI scale for proper screen capture
+			using (Graphics controlDC = parent.CreateGraphics())
+			{
+				dpiScale = controlDC.DpiX / 96.0f;
+			}
+
 			ClientSize = new Size(parent.ClientSize.Width, parent.ClientSize.Height);
 			Point point = parent.PointToScreen(new Point(0, 0));
 			Left = point.X;
 			Top = point.Y;
 
 			//Get the parent dialog's screen buffer.
+			// Use physical pixel size for screen capture to avoid DPI scaling issues
+			int physicalWidth = (int)(parent.ClientSize.Width * dpiScale);
+			int physicalHeight = (int)(parent.ClientSize.Height * dpiScale);
 			ParentBitmap = new Bitmap(parent.ClientSize.Width, parent.ClientSize.Height);
 			using (Graphics dest = Graphics.FromImage(ParentBitmap))
 			{
 				parent.Refresh();
 				Point parentPos = parent.PointToScreen(new Point(0, 0));
-				dest.CopyFromScreen(parentPos, new Point(0, 0), parent.ClientSize);
+				// CopyFromScreen uses physical pixels, so we need to capture the right size
+				using (Bitmap physicalCapture = new Bitmap(physicalWidth, physicalHeight))
+				{
+					using (Graphics physicalGraphics = Graphics.FromImage(physicalCapture))
+					{
+						physicalGraphics.CopyFromScreen(parentPos, new Point(0, 0),
+							new Size(physicalWidth, physicalHeight));
+					}
+					// Scale down to logical size for display
+					dest.DrawImage(physicalCapture, 0, 0, parent.ClientSize.Width, parent.ClientSize.Height);
+				}
 			}
 
 			//Load the localised About Text
@@ -105,14 +126,7 @@ Eraser Project Members:
 			//Create the About bitmap localised for the current version (sans scrolling
 			//text) so it can be drawn quickly later.
 			//First, duplicate the bitmap and scale it according to the resolution of the
-			//monitor.
-			float dpiScale = 0f;
-			using (Graphics controlDC = CreateGraphics())
-			{
-				Debug.Assert(controlDC.DpiX == controlDC.DpiY);
-				dpiScale = controlDC.DpiX / 96.0f;
-			}
-
+			//monitor (dpiScale is already calculated above).
 			Bitmap sourceBitmap = Properties.Resources.AboutDialog;
 			AboutBitmap = new Bitmap((int)(sourceBitmap.Width * dpiScale),
 				(int)(sourceBitmap.Height * dpiScale));
@@ -123,50 +137,55 @@ Eraser Project Members:
 				g.DrawImage(sourceBitmap, Point.Empty);
 
 				//Scale the font down since we will be using a scale transform later.
+				// The current font may be inherited from the parent or shared with other
+				// controls. Disposing it here invalidates its native GDI+ resources and can
+				// cause the DrawString calls below to fail with InvalidParameter.
 				Font = new Font(Font.FontFamily, Font.SizeInPoints / dpiScale);
 
 				//Version number
-				Font boldFont = new Font(Font, FontStyle.Bold);
-				Font underlineFont = new Font(Font, FontStyle.Underline);
-				Brush textBrush = new SolidBrush(Color.White);
-				PointF eraserPos = new PointF(168, 80);
-				SizeF eraserSize = g.MeasureString(S._("Eraser"), boldFont);
-				g.DrawString(S._("Eraser"), boldFont, textBrush, eraserPos);
+				using (Font boldFont = new Font(Font, FontStyle.Bold))
+				using (Font underlineFont = new Font(Font, FontStyle.Underline))
+				using (Brush textBrush = new SolidBrush(Color.White))
+				{
+					PointF eraserPos = new PointF(168, 80);
+					SizeF eraserSize = g.MeasureString(S._("Eraser"), boldFont);
+					g.DrawString(S._("Eraser"), boldFont, textBrush, eraserPos);
 
-				#pragma warning disable 429
-				string versionString = BuildInfo.CustomBuild ?
-					S._("{0} (Built: {1:F}, special build)") : S._("{0} (Built: {1:F})");
-				#pragma warning restore 429
+					#pragma warning disable 429
+					string versionString = BuildInfo.CustomBuild ?
+						S._("{0} (Built: {1:F}, special build)") : S._("{0} (Built: {1:F})");
+					#pragma warning restore 429
 
-				g.DrawString(string.Format(CultureInfo.CurrentCulture, versionString,
-					BuildInfo.AssemblyFileVersion, BuildInfo.BuildDate),
-					Font, textBrush, new PointF(eraserPos.X + eraserSize.Width + 3, eraserPos.Y));
+					g.DrawString(string.Format(CultureInfo.CurrentCulture, versionString,
+						BuildInfo.AssemblyFileVersion, BuildInfo.BuildDate),
+						Font, textBrush, new PointF(eraserPos.X + eraserSize.Width + 3, eraserPos.Y));
 
-				//Copyright and Website
-				string copyrightText = S._("copyright \u00a9 2008-2022 The Eraser Project");
-				PointF copyrightPos = new PointF(eraserPos.X, eraserPos.Y + eraserSize.Height);
-				SizeF copyrightSize = g.MeasureString(copyrightText, Font);
-				g.DrawString(copyrightText, Font, textBrush, copyrightPos);
+					//Copyright and Website
+					string copyrightText = S._("copyright \u00a9 2008-2026 The Eraser Project");
+					PointF copyrightPos = new PointF(eraserPos.X, eraserPos.Y + eraserSize.Height);
+					SizeF copyrightSize = g.MeasureString(copyrightText, Font);
+					g.DrawString(copyrightText, Font, textBrush, copyrightPos);
 
-				const string websiteText = "https://eraser.heidi.ie/";
-				PointF websitePos = new PointF(copyrightPos.X, copyrightPos.Y + copyrightSize.Height);
-				SizeF websiteSize = g.MeasureString(websiteText, Font);
-				g.DrawString(websiteText, underlineFont, textBrush, websitePos);
-				WebsiteRect = new Rectangle((int)websitePos.X, (int)websitePos.Y,
-					(int)websiteSize.Width, (int)websiteSize.Height);
+					const string websiteText = "https://eraser.heidi.ie/";
+					PointF websitePos = new PointF(copyrightPos.X, copyrightPos.Y + copyrightSize.Height);
+					SizeF websiteSize = g.MeasureString(websiteText, Font);
+					g.DrawString(websiteText, underlineFont, textBrush, websitePos);
+					WebsiteRect = new Rectangle((int)websitePos.X, (int)websitePos.Y,
+						(int)websiteSize.Width, (int)websiteSize.Height);
 
-				//Open source disclaimer.
-				string disclaimerText = S._("Eraser is free open-source software!");
-				PointF disclaimerPos = new PointF(websitePos.X, websitePos.Y + websiteSize.Height * 1.5f);
-				g.DrawString(disclaimerText, Font, textBrush, disclaimerPos);
+					//Open source disclaimer.
+					string disclaimerText = S._("Eraser is free open-source software!");
+					PointF disclaimerPos = new PointF(websitePos.X, websitePos.Y + websiteSize.Height * 1.5f);
+					g.DrawString(disclaimerText, Font, textBrush, disclaimerPos);
 
-				//Donation statement
-				string donationText = S._("Please help us to continue developing Eraser - donate some coffee!");
-				PointF donationPos = new PointF(disclaimerPos.X, disclaimerPos.Y + 170);
-				SizeF donationSize = g.MeasureString(donationText, Font);
-				g.DrawString(donationText, Font, textBrush, donationPos);
-				DonateRect = new Rectangle((int)donationPos.X, (int)donationPos.Y,
-					(int)donationSize.Width, (int)donationSize.Height);
+					//Donation statement
+					string donationText = S._("Please help us to continue developing Eraser - donate some coffee!");
+					PointF donationPos = new PointF(disclaimerPos.X, disclaimerPos.Y + 170);
+					SizeF donationSize = g.MeasureString(donationText, Font);
+					g.DrawString(donationText, Font, textBrush, donationPos);
+					DonateRect = new Rectangle((int)donationPos.X, (int)donationPos.Y,
+						(int)donationSize.Width, (int)donationSize.Height);
+				}
 			}
 
 			//Calculate the position of the About bitmap
@@ -198,10 +217,11 @@ Eraser Project Members:
 			}
 			AboutTextBitmap = new Bitmap(AboutTextRect.Width, (int)aboutTextSize.Height);
 			using (Graphics g = Graphics.FromImage(AboutTextBitmap))
+			using (Brush whiteBrush = new SolidBrush(Color.White))
 			{
 				g.Clear(Color.FromArgb(0, 0, 0, 0));
 				g.ScaleTransform(dpiScale, dpiScale);
-				g.DrawString(AboutText, Font, new SolidBrush(Color.White),
+				g.DrawString(AboutText, Font, whiteBrush,
 					new RectangleF(0.0f, 0.0f, AboutTextBitmap.Width / dpiScale,
 						AboutTextBitmap.Height / dpiScale));
 			}
@@ -291,30 +311,41 @@ Eraser Project Members:
 			if (DoubleBufferBitmap == null)
 				DoubleBufferBitmap = new Bitmap(ClientSize.Width, ClientSize.Height);
 			using (Graphics bg = Graphics.FromImage(DoubleBufferBitmap))
+			using (Brush fadeBrush = new SolidBrush(Color.FromArgb(ParentOpacity, 0, 0, 0)))
 			{
 				//Draw the parent image with a fading out effect
 				if (ParentOpacity > 128)
-					bg.Clip = new Region(AboutTextRect);
+				{
+					using (Region clipRegion = new Region(AboutTextRect))
+						bg.Clip = clipRegion;
+				}
 
-				Brush brush = new SolidBrush(Color.FromArgb(ParentOpacity, 0, 0, 0));
 				bg.DrawImageUnscaled(ParentBitmap, 0, 0);
-				bg.FillRectangle(brush, ClientRectangle);
+				bg.FillRectangle(fadeBrush, ClientRectangle);
 
 				//Then draw the About bitmap (which we cached in the constructor)
 				bg.DrawImageUnscaled(AboutBitmap, AboutBitmapPos);
 
 				//And the scrolling text
-				bg.Clip = new Region(AboutTextRect);
-				bg.DrawImageUnscaled(AboutTextBitmap, AboutTextRect.Left,
-					AboutTextRect.Top + AboutTextScrollTop);
+				using (Region textClipRegion = new Region(AboutTextRect))
+				{
+					bg.Clip = textClipRegion;
+					bg.DrawImageUnscaled(AboutTextBitmap, AboutTextRect.Left,
+						AboutTextRect.Top + AboutTextScrollTop);
+				}
 				bg.ResetClip();
 			}
 
 			if (ParentOpacity > 128)
-				if (g.Clip != null)
-					g.Clip.Complement(new Region(AboutTextRect));
-				else
-					g.Clip = new Region(AboutTextRect);
+			{
+				using (Region complementRegion = new Region(AboutTextRect))
+				{
+					if (g.Clip != null)
+						g.Clip.Complement(complementRegion);
+					else
+						g.Clip = complementRegion;
+				}
+			}
 			g.DrawImageUnscaled(DoubleBufferBitmap, 0, 0);
 		}
 

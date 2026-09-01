@@ -1,5 +1,5 @@
 /* 
- * $Id: FirstLast16KB.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: FirstLast16KB.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -140,6 +140,48 @@ namespace Eraser.DefaultPlugins
 			//Seek to the end - 16kb, and write.
 			strm.Seek(-dataSize, SeekOrigin.End);
 			method.Erase(strm, long.MaxValue, prng, callback == null ? null : customCallback);
+		}
+
+		public override async System.Threading.Tasks.Task EraseAsync(Stream strm, long erasureLength, IPrng prng,
+			ErasureMethodProgressFunction callback)
+		{
+			//If we have no default or we are the default then throw an exception
+			if (method == null || method.Guid == Guid)
+				throw new InvalidOperationException(S._("The First/last 16KB erasure method " +
+					"requires another erasure method to erase the file.\n\nThis must " +
+					"be set in the Plugin Settings dialog."));
+
+			//Make sure that the erasureLength passed in here is the maximum value
+			//for the size of long, since we don't want to write extra or write
+			//less.
+			if (erasureLength != long.MaxValue)
+				throw new ArgumentException("The amount of data erased should not be " +
+					"limited, since this is a self-limiting erasure method.");
+
+			//If the target stream is shorter than or equal to 32kb, just forward it to
+			//the default function.
+			if (strm.Length < DataSize * 2)
+			{
+				await method.EraseAsync(strm, erasureLength, prng, callback).ConfigureAwait(false);
+				return;
+			}
+
+			//We need to intercept the callback function as we run the erasure method
+			//twice on two parts of the file.
+			long dataSize = method.CalculateEraseDataSize(null, DataSize * 2);
+			ErasureMethodProgressFunction customCallback =
+				delegate(long lastWritten, long totalData, int currentPass)
+				{
+					callback(lastWritten, dataSize, currentPass);
+				};
+
+			//Seek to the beginning and write 16kb.
+			strm.Seek(0, SeekOrigin.Begin);
+			await method.EraseAsync(strm, dataSize, prng, callback == null ? null : customCallback).ConfigureAwait(false);
+
+			//Seek to the end - 16kb, and write.
+			strm.Seek(-dataSize, SeekOrigin.End);
+			await method.EraseAsync(strm, long.MaxValue, prng, callback == null ? null : customCallback).ConfigureAwait(false);
 		}
 
 		/// <summary>

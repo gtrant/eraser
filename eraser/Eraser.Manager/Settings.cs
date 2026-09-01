@@ -1,5 +1,5 @@
 /* 
- * $Id: Settings.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: Settings.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -70,6 +70,21 @@ namespace Eraser.Manager
 			get
 			{
 				return Store.GetValue<IDictionary<Guid, bool>>("ApprovedPlugins");
+			}
+		}
+
+		/// <summary>
+		/// Whether third-party plugins are allowed to be loaded.
+		/// </summary>
+		public bool AllowThirdPartyPlugins
+		{
+			get
+			{
+				return Store.GetValue("AllowThirdPartyPlugins", false); // Default to false for security
+			}
+			set
+			{
+				Store.SetValue("AllowThirdPartyPlugins", value);
 			}
 		}
 

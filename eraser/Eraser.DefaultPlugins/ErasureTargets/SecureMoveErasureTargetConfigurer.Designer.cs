@@ -1,5 +1,5 @@
-﻿/* 
- * $Id: SecureMoveErasureTargetConfigurer.Designer.cs 2993 2021-09-25 17:23:27Z gtrant $
+/* 
+ * $Id: SecureMoveErasureTargetConfigurer.Designer.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:

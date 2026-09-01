@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: ErasureMethodRegistrar.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: ErasureMethodRegistrar.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -73,6 +73,13 @@ namespace Eraser.Plugins.Registrars
 			}
 
 			public void Erase(Stream strm, long erasureLength, IPrng prng,
+				ErasureMethodProgressFunction callback)
+			{
+				throw new InvalidOperationException("The DefaultMethod class should never " +
+					"be used and should instead be replaced before execution!");
+			}
+
+			public System.Threading.Tasks.Task EraseAsync(Stream strm, long erasureLength, IPrng prng,
 				ErasureMethodProgressFunction callback)
 			{
 				throw new InvalidOperationException("The DefaultMethod class should never " +

@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: ErasureTargetBase.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: ErasureTargetBase.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.Xml;
-using System.Security.Permissions;
+using System.Threading.Tasks;
 
 using Eraser.Util;
 using Eraser.Plugins;
@@ -61,6 +61,8 @@ namespace Eraser.DefaultPlugins
 
 		public abstract void Execute();
 
+		public abstract Task ExecuteAsync();
+
 		public SteppedProgressManager Progress
 		{
 			get;
@@ -78,7 +80,6 @@ namespace Eraser.DefaultPlugins
 				Method = Host.Instance.ErasureMethods[methodGuid];
 		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			info.AddValue("Method", Method.Guid);

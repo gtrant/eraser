@@ -1,5 +1,5 @@
 /* 
- * $Id: SchedulerPanel.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: SchedulerPanel.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -37,6 +37,10 @@ using Eraser.Plugins.ExtensionPoints;
 using Microsoft.Samples;
 
 using ProgressChangedEventArgs = Eraser.Plugins.ProgressChangedEventArgs;
+using Task = Eraser.Manager.Task;
+using TaskDialog = Microsoft.Samples.TaskDialog;
+using TaskDialogButton = Microsoft.Samples.TaskDialogButton;
+using TaskDialogIcon = Microsoft.Samples.TaskDialogIcon;
 
 namespace Eraser
 {
@@ -518,17 +522,16 @@ namespace Eraser
 				dialog.UseCommandLinks = true;
 				action = (DialogResult)dialog.Show(this);
 			}
-            else
-            {
-                    action = MessageBox.Show(S._("Are you sure you wish to erase the selected "
-                                                 + "items?"), S._("Eraser"), MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
-                        Localisation.IsRightToLeft(this)
-                            ? MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign
- 
-            }
+			else
+			{
+				action = MessageBox.Show(S._("Are you sure you wish to erase the selected "
+					+ "items?"), S._("Eraser"), MessageBoxButtons.YesNo,
+					MessageBoxIcon.Question, MessageBoxDefaultButton.Button2,
+					Localisation.IsRightToLeft(this) ?
+						MessageBoxOptions.RtlReading | MessageBoxOptions.RightAlign : 0);
+			}
 
-            switch (action)
+			switch (action)
 			{
 				case DialogResult.OK:
 					task.Schedule = Schedule.RunNow;

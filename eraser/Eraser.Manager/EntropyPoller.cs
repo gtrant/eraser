@@ -1,5 +1,5 @@
 /* 
- * $Id: EntropyPoller.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: EntropyPoller.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net>
@@ -39,7 +39,7 @@ namespace Eraser.Manager
 	/// A class which uses EntropyPoll class to fetch system data as a source of
 	/// randomness at "regular" but "random" intervals
 	/// </summary>
-	public class EntropyPoller
+	public class EntropyPoller : IDisposable
 	{
 		/// <summary>
 		/// Constructor.
@@ -59,6 +59,9 @@ namespace Eraser.Manager
 			foreach (IEntropySource source in Host.Instance.EntropySources)
 				AddEntropySource(source);
 
+			//Initialize cancellation token source
+			cancellationTokenSource = new CancellationTokenSource();
+
 			//Then start the thread which maintains the pool.
 			Thread = new Thread(Main);
 			Thread.Priority = ThreadPriority.Lowest;
@@ -72,39 +75,146 @@ namespace Eraser.Manager
 		/// </summary>
 		private void Main()
 		{
-			//Maintain the time we last provided entropy to the PRNGs. We will only
-			//provide entropy every 10 minutes.
-			DateTime lastAddedEntropy = DateTime.Now;
-			TimeSpan managerEntropySpan = new TimeSpan(0, 10, 0);
-
-			while (Thread.ThreadState != System.Threading.ThreadState.AbortRequested)
+			try
 			{
-				lock (EntropySources)
-					foreach (IEntropySource src in EntropySources)
-					{
-						byte[] entropy = src.GetEntropy();
-						AddEntropy(entropy);
-					}
+				//Maintain the time we last provided entropy to the PRNGs. We will only
+				//provide entropy every 10 minutes.
+				DateTime lastAddedEntropy = DateTime.Now;
+				TimeSpan managerEntropySpan = new TimeSpan(0, 10, 0);
 
-				//Sleep for a "random" period between roughly [2, 5) seconds from now
-				Thread.Sleep(2000 + (int)(DateTime.Now.Ticks % 2999));
-
-				//Send entropy to the PRNGs for new seeds.
-				DateTime now = DateTime.Now;
-				if (now - lastAddedEntropy > managerEntropySpan)
+				while (!cancellationTokenSource.Token.IsCancellationRequested)
 				{
-					Host.Instance.Prngs.AddEntropy(GetPool());
-					lastAddedEntropy = now;
+					try
+					{
+						// Check cancellation before processing entropy sources
+						cancellationTokenSource.Token.ThrowIfCancellationRequested();
+
+						lock (EntropySources)
+						{
+							foreach (IEntropySource src in EntropySources)
+							{
+								// Check cancellation during entropy collection
+								cancellationTokenSource.Token.ThrowIfCancellationRequested();
+								
+								try
+								{
+									byte[] entropy = src.GetEntropy();
+									AddEntropy(entropy);
+								}
+								catch (Exception ex)
+								{
+									// Log entropy source errors but continue with other sources
+									Logger.Log(string.Format("Entropy source error: {0}", ex.Message), LogLevel.Warning);
+								}
+							}
+						}
+
+						//Sleep for a "random" period between roughly [2, 5) seconds from now
+						int sleepTime = 2000 + (int)(DateTime.Now.Ticks % 2999);
+						
+						// Use cancellation token for interruptible sleep
+						if (cancellationTokenSource.Token.WaitHandle.WaitOne(sleepTime))
+						{
+							// Cancellation was requested during sleep
+							break;
+						}
+
+						//Send entropy to the PRNGs for new seeds.
+						DateTime now = DateTime.Now;
+						if (now - lastAddedEntropy > managerEntropySpan)
+						{
+							try
+							{
+								Host.Instance.Prngs.AddEntropy(GetPool());
+								lastAddedEntropy = now;
+							}
+							catch (Exception ex)
+							{
+								// Log PRNG seeding errors but continue operation
+								Logger.Log(string.Format("Error adding entropy to PRNGs: {0}", ex.Message), LogLevel.Error);
+							}
+						}
+					}
+					catch (OperationCanceledException)
+					{
+						// Expected when cancellation is requested
+						break;
+					}
 				}
+			}
+			catch (Exception ex)
+			{
+				// Log unexpected errors but allow thread to exit gracefully
+				Logger.Log(string.Format("Unexpected error in EntropyPoller main loop: {0}", ex.Message), LogLevel.Error);
 			}
 		}
 
 		/// <summary>
-		/// Stops the execution of the thread.
+		/// Stops the execution of the thread gracefully.
 		/// </summary>
 		public void Abort()
 		{
-			Thread.Abort();
+			try
+			{
+				cancellationTokenSource?.Cancel();
+				
+				// Wait for the thread to exit gracefully with timeout
+				if (Thread != null && Thread.IsAlive)
+				{
+					if (!Thread.Join(TimeSpan.FromSeconds(5)))
+					{
+						Logger.Log( "EntropyPoller thread did not terminate gracefully within timeout",LogLevel.Warning);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Logger.Log(string.Format("Error stopping EntropyPoller: {0}", ex.Message), LogLevel.Error);
+			}
+		}
+
+		/// <summary>
+		/// Disposes of resources used by the EntropyPoller.
+		/// </summary>
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		/// <summary>
+		/// Protected dispose method.
+		/// </summary>
+		/// <param name="disposing">True if disposing managed resources.</param>
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing && !disposed)
+			{
+				try
+				{
+					// Unregister from events to prevent callbacks during shutdown
+					if (Host.Instance?.EntropySources != null)
+					{
+						Host.Instance.EntropySources.Registered -= OnEntropySourceRegistered;
+					}
+
+					// Stop the thread gracefully
+					Abort();
+
+					// Dispose managed resources
+					cancellationTokenSource?.Dispose();
+				}
+				catch (Exception ex)
+				{
+					Logger.Log(string.Format("Error during EntropyPoller disposal: {0}", ex.Message), LogLevel.Error);
+				}
+				finally
+				{
+					cancellationTokenSource = null;
+					Thread = null;
+					disposed = true;
+				}
+			}
 		}
 
 		/// <summary>
@@ -320,15 +430,9 @@ namespace Eraser.Manager
 				return PrimaryHashAlgorithmCache;
 
 			HashFactoryDelegate[] priorityList = new HashFactoryDelegate[] {
-				delegate() { return new SHA512Cng(); },
-				delegate() { return new SHA512CryptoServiceProvider(); },
-				delegate() { return new SHA512Managed(); },
-				delegate() { return new SHA256Cng(); },
-				delegate() { return new SHA256CryptoServiceProvider(); },
-				delegate() { return new SHA256Managed(); },
-				delegate() { return new SHA1Cng(); },
-				delegate() { return new SHA1CryptoServiceProvider(); },
-				delegate() { return new SHA1Managed(); }
+				delegate() { return SHA512.Create(); },
+				delegate() { return SHA256.Create(); },
+				delegate() { return SHA1.Create(); }
 			};
 
 			foreach (HashFactoryDelegate func in priorityList)
@@ -337,11 +441,13 @@ namespace Eraser.Manager
 				{
 					return PrimaryHashAlgorithmCache = func();
 				}
-				catch (PlatformNotSupportedException)
+				catch (PlatformNotSupportedException ex)
 				{
+					Logger.Log(string.Format("Hash algorithm not supported on platform: {0}", ex.Message), LogLevel.Warning);
 				}
-				catch (InvalidOperationException)
+				catch (InvalidOperationException ex)
 				{
+					Logger.Log(string.Format("Hash algorithm invalid operation: {0}", ex.Message), LogLevel.Warning);
 				}
 			}
 
@@ -363,7 +469,11 @@ namespace Eraser.Manager
 				return SecondaryHashAlgorithmCache;
 
 			HashFactoryDelegate[] priorityList = new HashFactoryDelegate[] {
+#if NETFRAMEWORK
 				delegate() { return new RIPEMD160Managed(); }
+#else
+				delegate() { return HashAlgorithm.Create("RIPEMD160")!; }
+#endif
 			};
 
 			foreach (HashFactoryDelegate func in priorityList)
@@ -373,11 +483,13 @@ namespace Eraser.Manager
 					SecondaryHashAlgorithmCache = func();
 					break;
 				}
-				catch (PlatformNotSupportedException)
+				catch (PlatformNotSupportedException ex)
 				{
+					Logger.Log(string.Format("Secondary hash algorithm not supported on platform: {0}", ex.Message), LogLevel.Information);
 				}
-				catch (InvalidOperationException)
+				catch (InvalidOperationException ex)
 				{
+					Logger.Log(string.Format("Secondary hash algorithm invalid operation: {0}", ex.Message), LogLevel.Information);
 				}
 			}
 
@@ -438,5 +550,15 @@ namespace Eraser.Manager
 		/// has been attempted.
 		/// </summary>
 		private static bool HasSecondaryHashAlgorithm;
+
+		/// <summary>
+		/// Cancellation token source for graceful thread shutdown.
+		/// </summary>
+		private CancellationTokenSource cancellationTokenSource;
+
+		/// <summary>
+		/// Flag to track if the object has been disposed.
+		/// </summary>
+		private bool disposed = false;
 	}
 }

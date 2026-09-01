@@ -1,5 +1,5 @@
 /* 
- * $Id: DirectExecutor.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: DirectExecutor.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: Kasra Nassiri <cjax@users.sourceforge.net> @17/10/2008
@@ -47,40 +47,77 @@ namespace Eraser.Manager
 			TaskAdded += OnTaskAdded;
 			TaskDeleted += OnTaskDeleted;
 			tasks = new DirectExecutorTasksCollection(this);
+			cancellationTokenSource = new CancellationTokenSource();
 			thread = new Thread(Main);
 		}
 
 		protected override void Dispose(bool disposing)
 		{
-			if (thread == null || schedulerInterrupt == null)
+			if (cancellationTokenSource == null)
 				return;
 
 			if (disposing)
-{
-    thread.Abort();
-    schedulerInterrupt.Set();
-    //Wait for the executor thread to exit -- we call some event functions
-    //and these events may need invocation on the main thread. So,
-    //pump messages from the main thread until the thread exits.
-    if (System.Windows.Forms.Application.MessageLoop)
-    {
-        if (!thread.Join(new TimeSpan(0, 0, 0, 0, 100)))
-            System.Windows.Forms.Application.DoEvents();
-    }
-    //If we are disposing on a secondary thread, or a thread without
-    //a message loop, just wait for the thread to exit indefinitely
-    else
-        thread.Join();
-    schedulerInterrupt.Close();
-    if (schedulerInterrupt != null)
-    {
-        schedulerInterrupt.Dispose();
-        schedulerInterrupt = null;
-    }
-}
+			{
+				try
+				{
+					// Signal graceful shutdown
+					cancellationTokenSource.Cancel();
+					schedulerInterrupt?.Set();
 
-			thread = null;
-			schedulerInterrupt = null;
+					// Wait for thread to exit gracefully with timeout
+					if (thread != null && thread.IsAlive)
+					{
+						bool threadExited = false;
+						
+						// If we're on the UI thread, pump messages while waiting
+						if (System.Windows.Forms.Application.MessageLoop)
+						{
+							DateTime timeoutTime = DateTime.UtcNow.AddSeconds(5);
+							while (!threadExited && DateTime.UtcNow < timeoutTime)
+							{
+								threadExited = thread.Join(100);
+								if (!threadExited)
+									System.Windows.Forms.Application.DoEvents();
+							}
+						}
+						else
+						{
+							// Wait up to 5 seconds for graceful shutdown
+							threadExited = thread.Join(TimeSpan.FromSeconds(5));
+						}
+
+						if (!threadExited)
+						{
+							// Log warning about forceful termination - thread didn't exit gracefully
+							Logger.Log("DirectExecutor thread did not terminate gracefully within timeout", LogLevel.Warning);
+						}
+					}
+				}
+				catch (Exception ex)
+				{
+					// Log disposal errors but don't throw during cleanup
+					Logger.Log(string.Format("Error during DirectExecutor disposal: {0}", ex.Message), LogLevel.Error);
+				}
+				finally
+				{
+					// Clean up resources
+					try
+					{
+						schedulerInterrupt?.Close();
+						schedulerInterrupt?.Dispose();
+						cancellationTokenSource?.Dispose();
+					}
+					catch
+					{
+						// Ignore cleanup exceptions
+					}
+					
+					schedulerInterrupt = null;
+					cancellationTokenSource = null;
+					thread = null;
+				}
+			}
+
 			base.Dispose(disposing);
 		}
 
@@ -214,11 +251,13 @@ namespace Eraser.Manager
 		/// </summary>
 		private void Main()
 		{
-			//The waiting thread will utilize a polling loop to check for new
-			//scheduled tasks. This will be checked every 30 seconds. However,
-			//when the thread is waiting for a new task, it can be interrupted.
-			while (thread.ThreadState != ThreadState.AbortRequested)
+			try
 			{
+				//The waiting thread will utilize a polling loop to check for new
+				//scheduled tasks. This will be checked every 30 seconds. However,
+				//when the thread is waiting for a new task, it can be interrupted.
+				while (!cancellationTokenSource.Token.IsCancellationRequested)
+				{
 				//Check for a new task
 				Task task = null;
 				lock (tasksLock)
@@ -271,7 +310,7 @@ namespace Eraser.Manager
 							Power.ExecutionState = ExecutionState.Continuous |
 								ExecutionState.SystemRequired;
 
-							task.Execute();
+							task.ExecuteAsync().GetAwaiter().GetResult();
 						}
 					}
 					finally
@@ -299,8 +338,33 @@ namespace Eraser.Manager
 					}
 				}
 
-				//Wait for half a minute to check for the next scheduled task.
-				schedulerInterrupt.WaitOne(30000, false);
+					//Wait for half a minute to check for the next scheduled task.
+					// Use cancellation token to enable graceful shutdown
+					try
+					{
+						if (cancellationTokenSource.Token.WaitHandle.WaitOne(30000))
+						{
+							// Cancellation was requested
+							break;
+						}
+						// Also check if scheduler interrupt was signaled
+						schedulerInterrupt?.WaitOne(0);
+					}
+					catch (ObjectDisposedException)
+					{
+						// Expected during shutdown
+						break;
+					}
+				}
+			}
+			catch (OperationCanceledException)
+			{
+				// Expected when cancellation is requested
+			}
+			catch (Exception ex)
+			{
+				// Log unexpected errors but allow thread to exit gracefully
+				Logger.Log(string.Format("Unexpected error in DirectExecutor main loop: {0}", ex.Message), LogLevel.Error);
 			}
 		}
 
@@ -339,6 +403,11 @@ namespace Eraser.Manager
 		/// task to be due.
 		/// </summary>
 		AutoResetEvent schedulerInterrupt = new AutoResetEvent(true);
+
+		/// <summary>
+		/// Cancellation token source for graceful thread shutdown.
+		/// </summary>
+		private CancellationTokenSource cancellationTokenSource;
 
 		private class DirectExecutorTasksCollection : ExecutorTasksCollection
 		{

@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: IFileSystem.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: IFileSystem.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By: 
@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 
 using System.IO;
+using System.Threading.Tasks;
 
 using Eraser.Util;
 
@@ -111,6 +112,14 @@ namespace Eraser.Plugins.ExtensionPoints
 		/// </summary>
 		/// <param name="info"></param>
 		void EraseFileSystemObject(StreamInfo info, IErasureMethod method,
+			ErasureMethodProgressFunction callback);
+
+		/// <summary>
+		/// Erases the file system object from the drive.
+		/// </summary>
+		/// <param name="info"></param>
+		/// <returns>A task representing the asynchronous erasure operation.</returns>
+		Task EraseFileSystemObjectAsync(StreamInfo info, IErasureMethod method,
 			ErasureMethodProgressFunction callback);
 
 		//TODO: This is supposed to be in VolumeInfo!

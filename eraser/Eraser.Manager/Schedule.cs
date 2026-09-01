@@ -1,5 +1,5 @@
 /* 
- * $Id: Schedule.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: Schedule.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -27,7 +27,6 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Security.Permissions;
 using System.Globalization;
 using Eraser.Util;
 
@@ -61,7 +60,6 @@ namespace Eraser.Manager
 			{
 			}
 
-			[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 			public override void GetObjectData(SerializationInfo info, StreamingContext context)
 			{
 			}
@@ -97,7 +95,6 @@ namespace Eraser.Manager
 			{
 			}
 
-			[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 			public override void GetObjectData(SerializationInfo info, StreamingContext context)
 			{
 			}
@@ -133,7 +130,6 @@ namespace Eraser.Manager
 			{
 			}
 
-			[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 			public override void GetObjectData(SerializationInfo info, StreamingContext context)
 			{
 			}
@@ -183,7 +179,6 @@ namespace Eraser.Manager
 		/// </summary>
 		/// <param name="info">The SerializationInfo to populate with data.</param>
 		/// <param name="context">The destination for this serialization.</param>
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
 
 		/// <summary>
@@ -274,7 +269,6 @@ namespace Eraser.Manager
 			NextRunCache = (DateTime)info.GetDateTime("NextRun");
 		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			info.AddValue("Type", type);

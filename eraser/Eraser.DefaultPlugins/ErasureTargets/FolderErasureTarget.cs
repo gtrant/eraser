@@ -1,5 +1,5 @@
 ﻿/* 
- * $Id: FolderErasureTarget.cs 2993 2021-09-25 17:23:27Z gtrant $
+ * $Id: FolderErasureTarget.cs 2998 2026-07-18 22:51:27Z gtrant $
  * Copyright 2008-2021 The Eraser Project
  * Original Author: Joel Low <lowjoel@users.sourceforge.net>
  * Modified By:
@@ -55,7 +55,6 @@ namespace Eraser.DefaultPlugins
 			DeleteIfEmpty = (bool)info.GetValue("DeleteIfEmpty", typeof(bool));
 		}
 
-		[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
@@ -217,6 +216,28 @@ namespace Eraser.DefaultPlugins
 			{
 				Progress = null;
 			}
+		}
+
+		public override System.Threading.Tasks.Task ExecuteAsync()
+		{
+			Progress = new SteppedProgressManager();
+
+			return base.ExecuteAsync().ContinueWith(t =>
+			{
+				try
+				{
+					if (t.IsFaulted)
+						throw t.Exception;
+
+					//Remove the contents of the folder, deleting the folder if it is empty
+					//at the end of it.
+					EraseFolder();
+				}
+				finally
+				{
+					Progress = null;
+				}
+			});
 		}
 
 		/// <summary>
